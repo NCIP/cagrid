@@ -112,7 +112,7 @@ public class GroupPrivilegeWindow extends GridPortalComponent {
 		if (isUpdate) {
 			this.setTitle("Update Group Privilege(s)");
 		} else {
-			this.setTitle("Add Groupb Privilege(s)");
+			this.setTitle("Add Group Privilege(s)");
 		}
 		this.setFrameIcon(GridGrouperLookAndFeel.getPrivilegesIcon());
 	}
