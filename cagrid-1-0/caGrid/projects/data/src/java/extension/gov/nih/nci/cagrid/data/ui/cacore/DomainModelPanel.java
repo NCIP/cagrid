@@ -49,6 +49,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 
 /** 
  *  DomainModelPanel
@@ -389,6 +390,7 @@ public class DomainModelPanel extends AbstractWizardPanel {
 	private JList getSelectedPackagesList() {
 		if (selectedPackagesList == null) {
 			selectedPackagesList = new JList();
+			selectedPackagesList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		}
 		return selectedPackagesList;
 	}
@@ -440,7 +442,7 @@ public class DomainModelPanel extends AbstractWizardPanel {
 								DomainModelPanel.this, message, "Project Conflict", JOptionPane.YES_NO_OPTION);
 							if (choice == JOptionPane.YES_OPTION) {
 								// remove all packages from list, set the last selected project
-								getSelectedPackagesList().setListData(new Object[0]);
+								getSelectedPackagesList().setListData(new String[0]);
 							} else {
 								// user selected no, so bail out
 								return;
@@ -449,7 +451,9 @@ public class DomainModelPanel extends AbstractWizardPanel {
 					}
 					lastSelectedProject = proj;
 					UMLPackageMetadata pack = getCaDsrBrowser().getSelectedPackage();
-					addUmlPackage(pack);
+					if (pack != null) {
+						addUmlPackage(pack);
+					}
 				}
 			});
 		}
@@ -468,8 +472,14 @@ public class DomainModelPanel extends AbstractWizardPanel {
 			removePackageButton.setText("Remove");
 			removePackageButton.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
-					String[] names = (String[]) getSelectedPackagesList().getSelectedValues();
-					removeUmlPackages(names);
+					Object[] selection = getSelectedPackagesList().getSelectedValues();
+					if (selection != null && selection.length != 0) {
+						String[] names = new String[selection.length];
+						for (int i = 0; i < selection.length; i++) {
+							names[i] = selection[i].toString();
+						}
+						removeUmlPackages(names);
+					}
 				}
 			});
 		}
@@ -535,40 +545,51 @@ public class DomainModelPanel extends AbstractWizardPanel {
 	
 	
 	private void addUmlPackage(UMLPackageMetadata pack) {
-		// add the package name to the list
-		String[] names = new String[getSelectedPackagesList().getModel().getSize() + 1];
+		// see if the package name is new
+		boolean newName = true;
 		for (int i = 0; i < getSelectedPackagesList().getModel().getSize(); i++) {
-			names[i] = (String) getSelectedPackagesList().getModel().getElementAt(i);
+			if (pack.getName().equals(getSelectedPackagesList().getModel().getElementAt(i))) {
+				newName = false;
+				break;
+			}
 		}
-		names[names.length - 1] = pack.getName();
-		getSelectedPackagesList().setListData(names);
-		// add the package to the cadsr information in extension data
-		try {
-			Data data = ExtensionDataUtils.getExtensionData(getExtensionData());
-			CadsrInformation info = data.getCadsrInformation();
-			if (info == null) {
-				info = new CadsrInformation();
-				data.setCadsrInformation(info);
+		
+		if (newName) {
+			// add the package name to the list
+			String[] names = new String[getSelectedPackagesList().getModel().getSize() + 1];
+			for (int i = 0; i < getSelectedPackagesList().getModel().getSize(); i++) {
+				names[i] = (String) getSelectedPackagesList().getModel().getElementAt(i);
 			}
-			// create cadsr package for the new metadata package
-			CadsrPackage newPackage = new CadsrPackage();
-			newPackage.setName(pack.getName());
-			newPackage.setCadsrClass(getClassMappings(lastSelectedProject, pack));
-			newPackage.setMappedNamespace(NamespaceUtils.createNamespaceString(lastSelectedProject, pack));			
-			CadsrPackage[] packages = info.getPackages();
-			if (packages == null) {
-				packages = new CadsrPackage[] {newPackage};
-			} else {
-				packages = (CadsrPackage[]) Utils.appendToArray(packages, newPackage);
+			names[names.length - 1] = pack.getName();
+			getSelectedPackagesList().setListData(names);
+			// add the package to the cadsr information in extension data
+			try {
+				Data data = ExtensionDataUtils.getExtensionData(getExtensionData());
+				CadsrInformation info = data.getCadsrInformation();
+				if (info == null) {
+					info = new CadsrInformation();
+					data.setCadsrInformation(info);
+				}
+				// create cadsr package for the new metadata package
+				CadsrPackage newPackage = new CadsrPackage();
+				newPackage.setName(pack.getName());
+				newPackage.setCadsrClass(getClassMappings(lastSelectedProject, pack));
+				newPackage.setMappedNamespace(NamespaceUtils.createNamespaceString(lastSelectedProject, pack));			
+				CadsrPackage[] packages = info.getPackages();
+				if (packages == null) {
+					packages = new CadsrPackage[] {newPackage};
+				} else {
+					packages = (CadsrPackage[]) Utils.appendToArray(packages, newPackage);
+				}
+				info.setPackages(packages);
+				info.setServiceUrl(getCaDsrBrowser().getCadsr().getText());
+				info.setProjectLongName(lastSelectedProject.getLongName());
+				info.setProjectVersion(lastSelectedProject.getVersion());
+				ExtensionDataUtils.storeExtensionData(getExtensionData(), data);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				ErrorDialog.showErrorDialog("Error storing the new package information", ex);
 			}
-			info.setPackages(packages);
-			info.setServiceUrl(getCaDsrBrowser().getCadsr().getText());
-			info.setProjectLongName(lastSelectedProject.getLongName());
-			info.setProjectVersion(lastSelectedProject.getVersion());
-			ExtensionDataUtils.storeExtensionData(getExtensionData(), data);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			ErrorDialog.showErrorDialog("Error storing the new package information", ex);
 		}
 	}
 	
@@ -576,14 +597,17 @@ public class DomainModelPanel extends AbstractWizardPanel {
 	private ClassMapping[] getClassMappings(Project proj, UMLPackageMetadata pack) throws Exception {
 		CaDSRServiceClient client = new CaDSRServiceClient(getCaDsrBrowser().getCadsr().getText());
 		UMLClassMetadata[] classMdArray = client.findClassesInPackage(proj, pack.getName());
-		ClassMapping[] mappings = new ClassMapping[classMdArray.length];
-		for (int i = 0; i < classMdArray.length; i++) {
-			ClassMapping map = new ClassMapping();
-			map.setClassName(classMdArray[i].getName());
-			map.setElementName(classMdArray[i].getName());
-			map.setSelected(true);
-			map.setTargetable(true);
-			mappings[i] = map;
+		ClassMapping[] mappings = new ClassMapping[] {};
+		if (classMdArray != null) {
+			mappings = new ClassMapping[classMdArray.length];
+			for (int i = 0; i < classMdArray.length; i++) {
+				ClassMapping map = new ClassMapping();
+				map.setClassName(classMdArray[i].getName());
+				map.setElementName(classMdArray[i].getName());
+				map.setSelected(true);
+				map.setTargetable(true);
+				mappings[i] = map;
+			}
 		}
 		return mappings;
 	}
