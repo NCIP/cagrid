@@ -18,8 +18,10 @@ import gov.nih.nci.cagrid.introduce.info.ServiceInformation;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.io.File;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -67,15 +69,26 @@ public class SchemaTypesPanel extends AbstractWizardPanel {
 		try {
 			Data data = ExtensionDataUtils.getExtensionData(getExtensionData());
 			CadsrInformation info = data.getCadsrInformation();
+			Set currentPackageNames = new HashSet();
+			for (int i = 0; i < getPackageNamespaceTable().getRowCount(); i++) {
+				currentPackageNames.add(getPackageNamespaceTable().getValueAt(i, 0));
+			}
 			if (info != null && info.getPackages() != null) {
 				CadsrPackage[] packs = info.getPackages();
 				if (packs != null && packs.length != 0) {
+					// add any new packages to the table
 					for (int i = 0; i < packs.length; i++) {
 						if (!getPackageNamespaceTable().isPackageInTable(packs[i])) {
 							getPackageNamespaceTable().addNewCadsrPackage(getServiceInformation(), packs[i]);
 						}
+						currentPackageNames.remove(packs[i].getName());
 					}
 				}
+			}
+			Iterator invalidPackageNameIter = currentPackageNames.iterator();
+			while (invalidPackageNameIter.hasNext()) {
+				String invalidName = (String) invalidPackageNameIter.next();
+				getPackageNamespaceTable().removeCadsrPackage(invalidName);
 			}
 			setWizardComplete(allSchemasResolved());
 		} catch (Exception ex) {
