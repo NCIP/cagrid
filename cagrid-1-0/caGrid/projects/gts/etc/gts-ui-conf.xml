@@ -31,6 +31,7 @@
 		<gts-services>
 			<gts-service>https://cagrid-gts-master.nci.nih.gov:8443/wsrf/services/cagrid/GTS</gts-service>
 			<gts-service>https://cagrid-gts-slave.nci.nih.gov:8443/wsrf/services/cagrid/GTS</gts-service>
+			<gts-service>https://localhost:8443/wsrf/services/cagrid/GTS</gts-service>
 		</gts-services>
         </gts-portal-config>
 	</resource>
