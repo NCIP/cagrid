@@ -233,7 +233,7 @@ public class GridGrouperClient extends ServiceSecurityClient implements
 					proxy = cred;
 				}
 			} catch (Exception e) {
-				System.out.println("Error loading default proxy: "
+				System.out.println("Warning could not locate a default proxy: "
 						+ e.getMessage());
 			}
 
