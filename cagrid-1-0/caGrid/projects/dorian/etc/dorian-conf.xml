@@ -7,10 +7,10 @@
 				<name/>
 				<driver>com.mysql.jdbc.Driver</driver>
 				<urlPrefix>jdbc:mysql:</urlPrefix>
-				<host>cbioapp519.nci.nih.gov</host>
-				<port>3628</port>
-				<username>cagradmin</username>
-				<password>password_goes_here</password>
+				<host>localhost</host>
+				<port>3306</port>
+				<username>root</username>
+				<password></password>
 				<pool>1</pool>
 			</database>
 		</dorian-config>
