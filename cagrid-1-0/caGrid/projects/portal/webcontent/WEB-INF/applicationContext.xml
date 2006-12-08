@@ -33,7 +33,7 @@
         <!--Set the indexes to aggregate from-->
         <property name="indexSet">
             <set>
-                <value>http://cagrid04.bmi.ohio-state.edu:7080/wsrf/services/DefaultIndexService</value>
+                <value>http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService</value>
             </set>
         </property>
         <property name="manager">
