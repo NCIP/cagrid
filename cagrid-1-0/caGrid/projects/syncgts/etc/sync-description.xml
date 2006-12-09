@@ -17,10 +17,10 @@
                   </ns2:TrustLevels>
                 </ns1:TrustedAuthorityFilter>
                 <ns1:PerformAuthorization>true</ns1:PerformAuthorization>
-                <ns1:GTSIdentity>/O=NIH/OU=NCI/OU=NCICB/OU=caGrid/CN=host/cagrid-gts-slave.nci.nih.gov</ns1:GTSIdentity>
+                <ns1:GTSIdentity>/O=NIH/OU=NCI/OU=NCICB/OU=caBIG Trust Group/CN=host/cagrid-gts-slave.nci.nih.gov</ns1:GTSIdentity>
         </ns1:SyncDescriptor>
         <ns1:ExcludedCAs>
-                <ns1:CASubject>O=NIH,OU=NCI,OU=NCICB,OU=caGrid,CN=GTSCA</ns1:CASubject>
+                <ns1:CASubject>O=NIH,OU=NCI,OU=NCICB,OU=caBIG Trust Group,CN=caBIG Trust CA</ns1:CASubject>
         </ns1:ExcludedCAs>
         <ns1:DeleteInvalidFiles>false</ns1:DeleteInvalidFiles>
         <ns1:NextSync>120</ns1:NextSync>
