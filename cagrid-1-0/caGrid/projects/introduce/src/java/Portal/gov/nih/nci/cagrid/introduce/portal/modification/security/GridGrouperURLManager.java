@@ -10,7 +10,7 @@ import java.util.StringTokenizer;
 public class GridGrouperURLManager {
 	public final static String GRID_GROUPER_URL_PROPERTY = "Grid Grouper URLs";
 	public final static String GRID_GROUPER_LOAD_PROPERTY = "Grid Grouper Load On Startup";
-	public final static String DEFAULT_GRID_GROUPER_URL = "https://cagrid02.bmi.ohio-state.edu:8443/wsrf/services/cagrid/GridGrouper";
+	public final static String DEFAULT_GRID_GROUPER_URL = "https://cagrid-auth.nci.nih.gov:8443/wsrf/services/cagrid/GridGrouper";
 	public final static String DEFAULT_LOAD_ON_STARTUP = "false";
 
 	public static boolean getLoadOnStartup() {
