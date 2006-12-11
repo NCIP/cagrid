@@ -39,7 +39,7 @@
 					class="gov.nih.nci.cagrid.dorian.service.ifs.AutoApprovalAutoRenewalPolicy"/>
 			</policies>
 			<gts-services>
-				<gts-service>https://cagrid-gts-master.nci.nih.gov:8443/wsrf/services/cagrid/GTS</gts-service>
+				<!-- <gts-service>https://cagrid-gts-master.nci.nih.gov:8443/wsrf/services/cagrid/GTS</gts-service> -->
 			</gts-services>
 		</ifs-config>
 	</resource>
@@ -49,7 +49,7 @@
 			<ca-password value="admin"/>
 			<auto-create enabled="true">
 				<time-valid years="5" months="0" days="0" hours="0" minutes="0" seconds="0"/>
-				<ca-subject dn="O=NIH,OU=NCI,OU=NCICB,OU=caGrid,OU=Dorian,OU=cagrid-dorian.nci.nih.gov,CN=caGrid Dorian CA"/>
+				<ca-subject dn="O=Testing Organization,OU=Testing Organization Unit,OU=caGrid,OU=Dorian,CN=caGrid Dorian CA"/>
 			</auto-create>
 			<auto-renewal enabled="true" years="5" months="0" days="0" hours="0" minutes="0"
 				seconds="0"/>
