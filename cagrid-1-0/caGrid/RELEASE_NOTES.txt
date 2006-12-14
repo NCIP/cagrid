@@ -242,6 +242,7 @@ FIX:
 ----------
 
 
+
 --------------------
 caCORE Query Processor Related
 --------------------
@@ -289,7 +290,7 @@ ISSUE:
 DETAILS:
 	http://gforge.nci.nih.gov/tracker/index.php?func=detail&aid=1277&group_id=38&atid=279
 IMPACT:
-	GME will not accept XSDs with cycles, therefore caBIO XSDs cannot be uploaded.
+	GME will not accept XSDs with cycles, therefore XSDs with cycles cannot be uploaded.
 WORKAROUND:
 	None, without editing the XSD/Model.
 ----------
@@ -302,6 +303,25 @@ IMPACT:
 	Minimal; makes it difficult to identify "real" exceptions in caDSR service.
 WORKAROUND:
 	None (without editing caCORE source code).
+----------
+
+
+--------------------
+Worflow Related
+--------------------
+----------
+ISSUE:
+	Services using Secure Messaging/Conversation cannot be accessed by the Workflow service
+WORKAROUND:
+	None, support will be provided as a fix in the incremental release.
+----------
+----------
+ISSUE:
+	Services using WSRF Resource pattern cannot be accessed by the Workflow service
+DETAILS:
+	Current version of ActiveBPEL, 2.1, does not support this yet.
+WORKAROUND:
+	None, until ActiveBPEL supports (development under way)
 ----------
 
 
