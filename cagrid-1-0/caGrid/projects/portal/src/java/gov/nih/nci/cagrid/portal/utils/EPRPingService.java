@@ -1,6 +1,11 @@
 package gov.nih.nci.cagrid.portal.utils;
 
 import gov.nih.nci.cagrid.metadata.MetadataConstants;
+import gov.nih.nci.cagrid.metadata.ResourcePropertyHelper;
+import gov.nih.nci.cagrid.metadata.exceptions.InvalidResourcePropertyException;
+import gov.nih.nci.cagrid.metadata.exceptions.RemoteResourcePropertyRetrievalException;
+import gov.nih.nci.cagrid.metadata.exceptions.ResourcePropertyRetrievalException;
+
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.oasis.wsrf.properties.WSResourcePropertiesServiceAddressingLocator;
 
@@ -41,19 +46,18 @@ public class EPRPingService {
      *         -1 means service is active but not a valid caGrid service
      */
     public static int ping(EndpointReferenceType epr) {
-        WSResourcePropertiesServiceAddressingLocator locator = new WSResourcePropertiesServiceAddressingLocator();
-
-
-        try {
-            org.oasis.wsrf.properties.GetResourceProperty props = locator.getGetResourcePropertyPort(epr);
-            props.getResourceProperty(MetadataConstants.CAGRID_MD_QNAME);
-        } catch (RemoteException e) {
-            return SERVICE_INACTIVE;
-        } catch (ServiceException e) {
-            /** no remote exception means service is valid but error getting
-             * cagrid metadata **/
-            return SERVICE_INVALID;
-        }
+    	try {
+			ResourcePropertyHelper.getResourceProperty(epr,
+					MetadataConstants.CAGRID_MD_QNAME);
+		}catch(Exception ex){
+			if(ex instanceof RemoteResourcePropertyRetrievalException){
+				return SERVICE_INACTIVE;
+			}else if(ex instanceof InvalidResourcePropertyException || ex instanceof ResourcePropertyRetrievalException){
+				return SERVICE_INVALID;
+			}else{
+				throw new RuntimeException("Error checking service status: " + ex.getMessage(), ex);
+			}
+		}
 
         //if it reaches this point
         return SERVICE_ACTIVE;
