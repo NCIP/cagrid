@@ -72,6 +72,8 @@ public class GTS implements TrustedAuthorityLevelRemover, TrustLevelLookup {
 	private Log log;
 
 	private Database db;
+	
+	
 
 
 	public GTS(GTSConfiguration conf, String gtsURI) {
