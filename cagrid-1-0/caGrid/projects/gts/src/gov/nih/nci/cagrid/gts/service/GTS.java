@@ -43,7 +43,6 @@ import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.globus.wsrf.impl.security.authorization.IdentityAuthorization;
-import org.projectmobius.common.MobiusPoolManager;
 import org.projectmobius.common.MobiusRunnable;
 
 
@@ -72,8 +71,6 @@ public class GTS implements TrustedAuthorityLevelRemover, TrustLevelLookup {
 
 	private Log log;
 
-	private MobiusPoolManager threadManager;
-
 	private Database db;
 
 
@@ -82,22 +79,25 @@ public class GTS implements TrustedAuthorityLevelRemover, TrustLevelLookup {
 		this.gtsURI = gtsURI;
 		log = LogFactory.getLog(this.getClass().getName());
 
-		DBManager dbManager = new MySQLManager(new MySQLDatabase(this.conf.getConnectionManager(), this.conf
-			.getGTSInternalId()));
+		DBManager dbManager = new MySQLManager(new MySQLDatabase(this.conf
+				.getConnectionManager(), this.conf.getGTSInternalId()));
 		this.db = dbManager.getDatabase();
 		trust = new TrustedAuthorityManager(this.gtsURI, this, dbManager);
 		trustLevelManager = new TrustLevelManager(this.gtsURI, this, dbManager);
 		permissions = new PermissionManager(dbManager);
-		authority = new GTSAuthorityManager(gtsURI, conf.getAuthoritySyncTime(), dbManager);
+		authority = new GTSAuthorityManager(gtsURI,
+				conf.getAuthoritySyncTime(), dbManager);
 		if (SYNC_WITH_AUTHORITIES) {
-			this.threadManager = new MobiusPoolManager();
 			MobiusRunnable runner = new MobiusRunnable() {
 				public void execute() {
 					synchronizeWithAuthorities();
 				}
 			};
+
 			try {
-				this.threadManager.executeInBackground(runner);
+				Thread t = new Thread(runner);
+				t.setDaemon(true);
+				t.start();
 			} catch (Exception e) {
 				log.error(e);
 			}
