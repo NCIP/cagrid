@@ -9,6 +9,7 @@ import gov.nih.nci.cagrid.data.extension.CQLProcessorConfig;
 import gov.nih.nci.cagrid.data.extension.CQLProcessorConfigProperty;
 import gov.nih.nci.cagrid.data.extension.CadsrInformation;
 import gov.nih.nci.cagrid.data.extension.CadsrPackage;
+import gov.nih.nci.cagrid.data.extension.ClassMapping;
 import gov.nih.nci.cagrid.data.extension.Data;
 import gov.nih.nci.cagrid.introduce.IntroduceConstants;
 import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionTypeExtensionData;
@@ -25,6 +26,7 @@ import gov.nih.nci.cagrid.introduce.extension.ExtensionTools;
 import gov.nih.nci.cagrid.introduce.info.ServiceInformation;
 import gov.nih.nci.cagrid.metadata.MetadataUtils;
 import gov.nih.nci.cagrid.metadata.dataservice.DomainModel;
+import gov.nih.nci.cagrid.metadata.dataservice.UMLClass;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -155,8 +157,11 @@ public class DataServiceCodegenPreProcessor implements CodegenExtensionPreProces
 			proj.setLongName(cadsrInfo.getProjectLongName());
 			proj.setVersion(cadsrInfo.getProjectVersion());
 
-			// sets for holding all selected classes and associations
+			// Set of selected (fully qualified) class names
 			Set selectedClasses = new HashSet();
+			
+			// Set of targetable class names
+			Set targetableClasses = new HashSet();
 
 			// walk through the selected packages
 			for (int i = 0; cadsrInfo.getPackages() != null && i < cadsrInfo.getPackages().length; i++) {
@@ -165,7 +170,14 @@ public class DataServiceCodegenPreProcessor implements CodegenExtensionPreProces
 				// get selected classes from the package
 				if (packageInfo.getCadsrClass() != null) {
 					for (int j = 0; j < packageInfo.getCadsrClass().length; j++) {
-						selectedClasses.add(packName + "." + packageInfo.getCadsrClass(j).getClassName());
+						ClassMapping currentClass = packageInfo.getCadsrClass(j);
+						if (currentClass.isSelected()) {
+							String fullClassName = packName + "." + currentClass.getClassName();
+							selectedClasses.add(fullClassName);
+							if (currentClass.isTargetable()) {
+								targetableClasses.add(fullClassName);
+							}
+						}
 					}
 				}
 			}
@@ -191,12 +203,18 @@ public class DataServiceCodegenPreProcessor implements CodegenExtensionPreProces
 			System.out.println("Contacting caDSR to build domain model.  This might take a while...");
 			DomainModel model = null;
 			try {
-				// TODO; change this to use EXCLUDED associations
 				String classNames[] = new String[selectedClasses.size()];
 				selectedClasses.toArray(classNames);
 				model = cadsrClient.generateDomainModelForClasses(proj, classNames);
 				if (model == null) {
 					throw new CodegenExtensionException("caDSR returned a null domain model.");
+				}
+				LOG.info("Setting targetability in the domain model");
+				System.out.println("Setting targetability in the domain model");
+				UMLClass[] exposedClasses = model.getExposedUMLClassCollection().getUMLClass();
+				for (int i = 0; exposedClasses != null && i < exposedClasses.length; i++) {
+					String fullClassName = exposedClasses[i].getPackageName() + "." + exposedClasses[i].getClassName();
+					exposedClasses[i].setAllowableAsTarget(targetableClasses.contains(fullClassName));
 				}
 				System.out.println("Created data service Domain Model!");
 				LOG.info("Created data service Domain Model!");
