@@ -80,7 +80,9 @@ public class ServicesList {
 
 
     public int getCount() {
-        return gridServiceManager.getCount(RegisteredService.class);
+        //return gridServiceManager.getCount(RegisteredService.class);
+        return (gridServiceManager.getUniqueServices().size());
+
     }
 
     public int getNavigatedServiceStatus() {
