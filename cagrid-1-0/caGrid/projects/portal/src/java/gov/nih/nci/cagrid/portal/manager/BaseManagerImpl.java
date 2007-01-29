@@ -86,6 +86,9 @@ public abstract class BaseManagerImpl implements BaseManager {
         return gridServiceBaseDAO.getCount(cls);
     }
 
+
+
+
     /**
      * setters for spring *
      */
