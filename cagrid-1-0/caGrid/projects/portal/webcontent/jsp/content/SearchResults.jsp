@@ -23,7 +23,7 @@
 
 
         <t:panelTab id="participants" rendered="#{not empty participants.list}"
-                    label="caBIG Participants (#{participants.listSize})">
+                    label="caBIG Organizations (#{participants.listSize})">
             <tiles:insert attribute="participantsResult" flush="false" ignore="true"/>
         </t:panelTab>
 
