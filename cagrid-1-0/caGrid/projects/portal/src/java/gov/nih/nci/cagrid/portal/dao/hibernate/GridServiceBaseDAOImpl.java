@@ -19,6 +19,12 @@ public final class GridServiceBaseDAOImpl extends BaseDAOImpl
         implements GridServiceBaseDAO {
 
     public List getUniqueServices() throws DataAccessException {
+
+//        // Test: Why the services.count and unique services give different result
+//        // Get all services
+//        List resultsetALL = getHibernateTemplate().find("from RegisteredService service");
+//        List resultSetUnique = getHibernateTemplate().find("from RegisteredService service group by service.EPR order by service.name desc");
+//        return (resultsetALL);
         return getHibernateTemplate().find("from RegisteredService service group by service.EPR order by service.name desc");
     }
 
@@ -33,9 +39,9 @@ public final class GridServiceBaseDAOImpl extends BaseDAOImpl
         StringBuffer sb = new StringBuffer("from RegisteredService service where");
         sb.append(" service.EPR like '%").append(keyword.trim()).append("%'");
         sb.append(" or service.name like '%").append(keyword.trim()).append("%'");
-        sb.append(" or service.description like '%").append(keyword.trim()).append("%'");
-        sb.append(" or service.rc.displayName like '%").append(keyword.trim()).append("%'");
-        sb.append(" or service.rc.shortName like '%").append(keyword.trim()).append("%'");
+//        sb.append(" or service.description like '%").append(keyword.trim()).append("%'");
+//        sb.append(" or service.rc.displayName like '%").append(keyword.trim()).append("%'");
+//        sb.append(" or service.rc.shortName like '%").append(keyword.trim()).append("%'");
 
 
         _logger.debug("Find Registered Services for keyword" + keyword);
