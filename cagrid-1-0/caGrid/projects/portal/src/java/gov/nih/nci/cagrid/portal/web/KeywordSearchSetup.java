@@ -28,7 +28,10 @@ public class KeywordSearchSetup {
         SelectItem all = new SelectItem(SEARCH_CATEGORY_ALL, "All");
         SelectItem services = new SelectItem(SEARCH_CATEGORY_SERVICES, "caGrid Services");
         SelectItem people = new SelectItem(SEARCH_CATEGORY_PEOPLE, "People");
-        SelectItem participants = new SelectItem(SEARCH_CATEGORY_PARTICIPANTS, "caBIG Participants");
+        //SelectItem participants = new SelectItem(SEARCH_CATEGORY_PARTICIPANTS, "caBIG Participants");
+
+        // TODO: Replace hard coded strings with resource bundle.
+        SelectItem participants = new SelectItem(SEARCH_CATEGORY_PARTICIPANTS, "caBIG Organizations");
 
         searchCategorySelected.add(SEARCH_CATEGORY_SERVICES);
         searchCategorySelected.add(SEARCH_CATEGORY_PEOPLE);
