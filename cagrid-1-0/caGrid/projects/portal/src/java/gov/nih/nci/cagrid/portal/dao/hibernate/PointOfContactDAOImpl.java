@@ -17,19 +17,23 @@ public class PointOfContactDAOImpl extends BaseDAOImpl
 
     /**
      * Will return a unique list
-     * of Points Of Contact.
+     * of Points Of Contact, excluding NCICB Application Support
      * <p/>
      * Unique by a combination of {Email,Role}
      *
      * @return List PointOfContacts
      */
     public List getUniquePeople() throws DataAccessException {
-        return getHibernateTemplate().find("from PointOfContact poc group by poc.email order by poc.firstName");
+
+        //return getHibernateTemplate().find("from PointOfContact poc group by poc.email order by poc.firstName");
+        String hqlStr = "from PointOfContact poc where poc.affiliation != 'NCICB Application Support' group by poc.email order by poc.firstName";
+        return getHibernateTemplate().find(hqlStr);
+
     }
 
     public List keywordSearch(String keyword) {
 
-        StringBuffer sb = new StringBuffer("from PointOfContact poc where ");
+        StringBuffer sb = new StringBuffer("from PointOfContact poc where poc.affliation != 'NCICB Application Support' and ");
         sb.append("poc.affiliation like '%").append(keyword.trim()).append("%'");
         sb.append(" or poc.email like '%").append(keyword.trim()).append("%'");
         sb.append(" or poc.firstName like '%").append(keyword.trim()).append("%'");
