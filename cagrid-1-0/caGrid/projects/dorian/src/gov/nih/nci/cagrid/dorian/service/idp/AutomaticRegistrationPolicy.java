@@ -31,8 +31,7 @@ public class AutomaticRegistrationPolicy implements IdPRegistrationPolicy{
 		ar.setRole(IdPUserRole.Non_Administrator);
 		ar
 				.setMessage("Your account was approved, your current account status is "
-						+ IdPUserStatus.Active + " you mail use "
-						+ a.getEmail() + " to access your account");
+						+ IdPUserStatus.Active);
 		return ar;
 	}
 
