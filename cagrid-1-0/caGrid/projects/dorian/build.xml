@@ -378,6 +378,35 @@
 		</java>
 	</target>
 	
+	
+	<target name="createProxy" description="Create a Grid User Proxy." depends="checkGlobus">
+					<input message="Please enter the Authentication Service URL [https://cagrid-dorian.nci.nih.gov:8443/wsrf/services/cagrid/Dorian]:"
+					               addproperty="auth.input" defaultvalue="https://cagrid-dorian.nci.nih.gov:8443/wsrf/services/cagrid/Dorian"/>
+		<input message="Please enter the Dorian Service URL [https://cagrid-dorian.nci.nih.gov:8443/wsrf/services/cagrid/Dorian]:"
+						               addproperty="dorian.input" defaultvalue="https://cagrid-dorian.nci.nih.gov:8443/wsrf/services/cagrid/Dorian"/>
+					
+		<input message="Please enter your username:"
+								               addproperty="username.input"/>
+		<input message="Please enter your password:"
+							               addproperty="password.input"/>
+		<input message="Please enter the number of hours the proxy should be valid for [12]:" 
+							               addproperty="hours.input" defaultvalue="12"/>
+					<java classname="gov.nih.nci.cagrid.dorian.tools.GridProxyInit" fork="yes" newenvironment="true">
+		                <jvmarg value="-Djava.endorsed.dirs=ext/endorsed/lib" />
+						<arg value="-a" />
+						<arg value="${auth.input}" />
+						<arg value="-d" />
+						<arg value="${dorian.input}"/>
+						<arg value="-u" />
+						<arg value="${username.input}"/>
+						<arg value="-p" />
+						<arg value="${password.input}"/>
+						<arg value="-h" />
+						<arg value="${hours.input}"/>
+						<classpath refid="service.run.classpath"/>
+					</java>
+				</target>
+	
 	<target name="importCA" description="Imports an external CA, for Dorian to use as its CA." depends="checkGlobus">
 			<input message="Please enter the location to the CA's certificate (PEM Format):"
 			               addproperty="cacert.input"/>
