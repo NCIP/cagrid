@@ -8,6 +8,7 @@ import java.util.Properties;
 
 import org.cagrid.installer.model.CaGridInstallerModel;
 import org.cagrid.installer.steps.Constants;
+import org.cagrid.installer.util.Utils;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
@@ -33,8 +34,9 @@ public class DeployServiceTask extends CaGridAntTask {
 	protected Object runAntTask(Map state, String target, Map env,
 			Properties sysProps) throws Exception {
 		String antTarget = target;
-		if(this.model.getMessage("container.type.globus").equals(this.model.getState().get(Constants.CONTAINER_TYPE))){
-			antTarget = "deployGlobus"; 
+		if (this.model.getMessage("container.type.globus").equals(
+				this.model.getState().get(Constants.CONTAINER_TYPE))) {
+			antTarget = "deployGlobus";
 		}
 		new AntTask("", "", antTarget, env, sysProps).execute(state);
 
@@ -42,8 +44,8 @@ public class DeployServiceTask extends CaGridAntTask {
 	}
 
 	protected String getBuildFilePath(Map state) {
-		return state.get(Constants.CAGRID_HOME) + "/projects/"
-				+ this.serviceName + "/build.xml";
+		return Utils.getServiceDestDir(state) + "/" + this.serviceName
+				+ "/build.xml";
 	}
 
 }

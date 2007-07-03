@@ -6,6 +6,7 @@ package org.cagrid.installer.tasks;
 import java.util.Map;
 
 import org.cagrid.installer.steps.Constants;
+import org.cagrid.installer.util.Utils;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
@@ -22,7 +23,6 @@ public class GenerateServiceCredsTask extends CaGridAntTask {
 	}
 
 	protected String getBuildFilePath(Map state) {
-		return state.get(Constants.CAGRID_HOME)
-				+ "/projects/installer/deployer/build.xml";
+		return Utils.getScriptsBuildFilePath();
 	}
 }

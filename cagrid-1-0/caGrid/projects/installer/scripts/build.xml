@@ -1,0 +1,536 @@
+<project name="installer-scripts">
+
+	<property name="cagrid.home" value="../../.." />
+	<property name="selected.services" value="dorian,gts" />
+	<property name="service.dest.dir" value="service-temp" />
+	<property name="lib.dir" value="../lib" />
+
+	<path id="xmltaskdef.cp">
+		<fileset dir="${lib.dir}">
+			<include name="xmltask-v1.14.jar" />
+		</fileset>
+	</path>
+
+	<taskdef name="xmltask"
+		classname="com.oopsconsultancy.xmltask.ant.XmlTask"
+		classpathref="xmltaskdef.cp" />
+
+	<taskdef resource="net/sf/antcontrib/antlib.xml">
+		<classpath>
+			<fileset dir="${cagrid.home}/share/lib">
+				<include name="ant-contrib*.jar" />
+			</fileset>
+		</classpath>
+	</taskdef>
+
+	<target name="copy-selected-services">
+
+		<mkdir dir="${service.dest.dir}" />
+
+		<for list="${selected.services}" param="serviceName"
+			parallel="false">
+			<sequential>
+				<copy todir="${service.dest.dir}">
+					<fileset dir="${cagrid.home}/projects">
+						<include name="@{serviceName}/**" />
+					</fileset>
+				</copy>
+			</sequential>
+		</for>
+
+	</target>
+
+	<target name="configure-dorian-conf">
+
+		<property name="dorian.config.ns"
+			value="http://cagrid.nci.nih.gov/dorian/conf" />
+
+		<property name="config.file"
+			value="${service.dest.dir}/dorian/etc/dorian-conf.xml" />
+		<xmltask source="${config.file}" dest="${config.file}">
+			<replace
+				path="/*[local-name()='DorianConfiguration']/*[local-name()='DorianInternalId']">
+				<![CDATA[
+						<DorianInternalId xmlns="${dorian.config.ns}">${dorian.db.id}</DorianInternalId>
+					]]>
+
+			</replace>
+			<replace
+				path="/*[local-name()='DorianConfiguration']/*[local-name()='database']/*[local-name()='host']">
+				<![CDATA[
+					<host xmlns="${dorian.config.ns}">${dorian.db.host}</host>
+				]]>
+
+			</replace>
+			<replace
+				path="/*[local-name()='DorianConfiguration']/*[local-name()='database']/*[local-name()='port']">
+				<![CDATA[
+					<port xmlns="${dorian.config.ns}">${dorian.db.port}</port>
+				]]>
+
+			</replace>
+			<replace
+				path="/*[local-name()='DorianConfiguration']/*[local-name()='database']/*[local-name()='username']">
+				<![CDATA[
+					<username xmlns="${dorian.config.ns}">${dorian.db.username}</username>
+				]]>
+
+			</replace>
+			<replace
+				path="/*[local-name()='DorianConfiguration']/*[local-name()='database']/*[local-name()='password']">
+				<![CDATA[
+					<password xmlns="${dorian.config.ns}">${dorian.db.password}</password>
+				]]>
+
+			</replace>
+
+			<replace
+				path="/*[local-name()='DorianConfiguration']/*[local-name()='IdentityProviderConfiguration']/*[local-name()='IdentityProviderName']">
+				<![CDATA[
+						<IdentityProviderName xmlns="${dorian.config.ns}">${dorian.idp.name}</IdentityProviderName>
+					]]>
+
+			</replace>
+
+			<attr attr="min"
+				path="/*[local-name()='DorianConfiguration']/*[local-name()='IdentityProviderConfiguration']/*[local-name()='UIDLength']"
+				value="${dorian.idp.uid.min}" />
+
+			<attr attr="max"
+				path="/*[local-name()='DorianConfiguration']/*[local-name()='IdentityProviderConfiguration']/*[local-name()='UIDLength']"
+				value="${dorian.idp.uid.max}" />
+
+			<attr attr="min"
+				path="/*[local-name()='DorianConfiguration']/*[local-name()='IdentityProviderConfiguration']/*[local-name()='PasswordLength']"
+				value="${dorian.idp.pwd.min}" />
+
+			<attr attr="max"
+				path="/*[local-name()='DorianConfiguration']/*[local-name()='IdentityProviderConfiguration']/*[local-name()='PasswordLength']"
+				value="${dorian.idp.pwd.max}" />
+		</xmltask>
+
+		<if>
+			<equals arg1="${dorian.idp.regpolicy}"
+				arg2="Manual Registration" trim="true" />
+			<then>
+				<xmltask source="${config.file}"
+					dest="${config.file}">
+					<replace
+						path="/*[local-name()='DorianConfiguration']/*[local-name()='IdentityProviderConfiguration']/*[local-name()='RegistrationPolicy']">
+						<![CDATA[
+						<RegistrationPolicy xmlns="${dorian.config.ns}">gov.nih.nci.cagrid.dorian.service.idp.ManualRegistrationPolicy</RegistrationPolicy>
+						]]>
+					</replace>
+				</xmltask>
+			</then>
+			<else>
+				<xmltask source="${config.file}"
+					dest="${config.file}">
+					<replace
+						path="/*[local-name()='DorianConfiguration']/*[local-name()='IdentityProviderConfiguration']/*[local-name()='RegistrationPolicy']">
+						<![CDATA[
+						<RegistrationPolicy xmlns="${dorian.config.ns}">gov.nih.nci.cagrid.dorian.service.idp.AutomaticRegistrationPolicy</RegistrationPolicy>
+						]]>
+					</replace>
+				</xmltask>
+			</else>
+		</if>
+
+		<xmltask source="${config.file}" dest="${config.file}">
+			<replace
+				path="/*[local-name()='DorianConfiguration']/*[local-name()='IdentityProviderConfiguration']/*[local-name()='AssertingCredentials']/*[local-name()='AutoRenew']">
+				<![CDATA[
+						<AutoRenew xmlns="${dorian.config.ns}">${dorian.idp.saml.autorenew}</AutoRenew>
+					]]>
+			</replace>
+
+			<replace
+				path="/*[local-name()='DorianConfiguration']/*[local-name()='IdentityProviderConfiguration']/*[local-name()='AssertingCredentials']/*[local-name()='KeyPassword']">
+				<![CDATA[
+						<KeyPassword xmlns="${dorian.config.ns}">${dorian.idp.saml.keypwd}</KeyPassword>
+					]]>
+			</replace>
+
+			<attr attr="min"
+				path="/*[local-name()='DorianConfiguration']/*[local-name()='IdentityFederationConfiguration']/*[local-name()='IdentityProviderNameLength']"
+				value="${dorian.ifs.idpname.min}" />
+
+			<attr attr="max"
+				path="/*[local-name()='DorianConfiguration']/*[local-name()='IdentityFederationConfiguration']/*[local-name()='IdentityProviderNameLength']"
+				value="${dorian.ifs.idpname.max}" />
+		</xmltask>
+
+		<if>
+			<equals arg1="${dorian.ifs.idpolicy}" arg2="Name"
+				trim="true" />
+			<then>
+				<xmltask source="${config.file}"
+					dest="${config.file}">
+					<replace
+						path="/*[local-name()='DorianConfiguration']/*[local-name()='IdentityFederationConfiguration']/*[local-name()='IdentityAssignmentPolicy']">
+						<![CDATA[
+						<IdentityAssignmentPolicy xmlns="${dorian.config.ns}">name</IdentityAssignmentPolicy>
+					]]>
+					</replace>
+				</xmltask>
+			</then>
+			<else>
+				<xmltask source="${config.file}"
+					dest="${config.file}">
+					<replace
+						path="/*[local-name()='DorianConfiguration']/*[local-name()='IdentityFederationConfiguration']/*[local-name()='IdentityAssignmentPolicy']">
+						<![CDATA[
+						<IdentityAssignmentPolicy xmlns="${dorian.config.ns}">id</IdentityAssignmentPolicy>
+					]]>
+					</replace>
+				</xmltask>
+			</else>
+		</if>
+
+		<xmltask source="${config.file}" dest="${config.file}">
+			<attr attr="years"
+				path="/*[local-name()='DorianConfiguration']/*[local-name()='IdentityFederationConfiguration']/*[local-name()='CredentialPolicy']/*[local-name()='CredentialLifetime']"
+				value="${dorian.ifs.credlifetime.years}" />
+			<attr attr="months"
+				path="/*[local-name()='DorianConfiguration']/*[local-name()='IdentityFederationConfiguration']/*[local-name()='CredentialPolicy']/*[local-name()='CredentialLifetime']"
+				value="${dorian.ifs.credlifetime.months}" />
+			<attr attr="days"
+				path="/*[local-name()='DorianConfiguration']/*[local-name()='IdentityFederationConfiguration']/*[local-name()='CredentialPolicy']/*[local-name()='CredentialLifetime']"
+				value="${dorian.ifs.credlifetime.days}" />
+			<attr attr="hours"
+				path="/*[local-name()='DorianConfiguration']/*[local-name()='IdentityFederationConfiguration']/*[local-name()='CredentialPolicy']/*[local-name()='CredentialLifetime']"
+				value="${dorian.ifs.credlifetime.hours}" />
+			<attr attr="minutes"
+				path="/*[local-name()='DorianConfiguration']/*[local-name()='IdentityFederationConfiguration']/*[local-name()='CredentialPolicy']/*[local-name()='CredentialLifetime']"
+				value="${dorian.ifs.credlifetime.minutes}" />
+			<attr attr="seconds"
+				path="/*[local-name()='DorianConfiguration']/*[local-name()='IdentityFederationConfiguration']/*[local-name()='CredentialPolicy']/*[local-name()='CredentialLifetime']"
+				value="${dorian.ifs.credlifetime.seconds}" />
+
+			<replace
+				path="/*[local-name()='DorianConfiguration']/*[local-name()='IdentityFederationConfiguration']/*[local-name()='CredentialPolicy']/*[local-name()='HostCertificateAutoApproval']">
+				<![CDATA[
+						<HostCertificateAutoApproval xmlns="${dorian.config.ns}">${dorian.ifs.hostcert.autoapprove}</HostCertificateAutoApproval>
+					]]>
+			</replace>
+
+			<attr attr="hours"
+				path="/*[local-name()='DorianConfiguration']/*[local-name()='IdentityFederationConfiguration']/*[local-name()='ProxyPolicy']/*[local-name()='ProxyLifetime']"
+				value="${dorian.ifs.proxylifetime.hours}" />
+			<attr attr="minutes"
+				path="/*[local-name()='DorianConfiguration']/*[local-name()='IdentityFederationConfiguration']/*[local-name()='ProxyPolicy']/*[local-name()='ProxyLifetime']"
+				value="${dorian.ifs.proxylifetime.minutes}" />
+			<attr attr="seconds"
+				path="/*[local-name()='DorianConfiguration']/*[local-name()='IdentityFederationConfiguration']/*[local-name()='ProxyPolicy']/*[local-name()='ProxyLifetime']"
+				value="${dorian.ifs.proxylifetime.seconds}" />
+
+			<remove
+				path="/*[local-name()='DorianConfiguration']/*[local-name()='IdentityFederationConfiguration']/*[local-name()='CRLPublish']" />
+
+			<!-- TODO: figure out why this causes an error
+				<insert
+				path="/*[local-name()='DorianConfiguration']/*[local-name()='IdentityFederationConfiguration']">
+				<![CDATA[
+				<CRLPublish xmlns="${dorian.config.ns}">
+				<gts xmlns="${dorian.config.ns}">${dorian.ifs.gts.url}</gts>
+				</CRLPublish>
+				]]>
+				</insert>
+			-->
+
+			<replace
+				path="/*[local-name()='DorianConfiguration']/*[local-name()='DorianCAConfiguration']/*[local-name()='CertificateAuthorityPassword']">
+				<![CDATA[
+						<CertificateAuthorityPassword xmlns="${dorian.config.ns}">${dorian.ca.key.pwd}</CertificateAuthorityPassword>
+					]]>
+			</replace>
+
+
+			<remove
+				path="/*[local-name()='DorianConfiguration']/*[local-name()='DorianCAConfiguration']/*[local-name()='CertificatePolicyOID']" />
+		</xmltask>
+		<if>
+			<not>
+				<equals arg1="${dorian.ca.oid}" arg2="" trim="true" />
+			</not>
+			<then>
+				<xmltask source="${config.file}"
+					dest="${config.file}">
+
+					<insert
+						path="/*[local-name()='DorianConfiguration']/*[local-name()='DorianCAConfiguration']/*[local-name()='CertificateAuthorityPassword']"
+						position="after">
+						<![CDATA[
+							<CertificatePolicyOID xmlns="${dorian.config.ns}">${dorian.ca.oid}</CertificatePolicyOID>
+						]]>
+					</insert>
+				</xmltask>
+			</then>
+		</if>
+		<xmltask source="${config.file}" dest="${config.file}">
+			<replace
+				path="/*[local-name()='DorianConfiguration']/*[local-name()='DorianCAConfiguration']/*[local-name()='UserKeySize']">
+				<![CDATA[
+						<UserKeySize xmlns="${dorian.config.ns}">${dorian.ca.userkey.size}</UserKeySize>
+					]]>
+			</replace>
+
+		</xmltask>
+		<xmltask source="${config.file}" dest="${config.file}">
+			<remove
+				path="/*[local-name()='DorianConfiguration']/*[local-name()='DorianCAConfiguration']/*[local-name()='AutoCreate']" />
+		</xmltask>
+		<if>
+			<and>
+				<not>
+					<istrue value="${dorian.ca.present}" />
+				</not>
+				<not>
+					<istrue value="${dorian.use.gen.ca}" />
+				</not>
+			</and>
+			<then>
+				<xmltask source="${config.file}"
+					dest="${config.file}">
+
+					<insert position="after"
+						path="/*[local-name()='DorianConfiguration']/*[local-name()='DorianCAConfiguration']/*[local-name()='UserKeySize']">
+						<![CDATA[
+						<AutoCreate xmlns="${dorian.config.ns}">
+							<CASubject xmlns="${dorian.config.ns}">${dorian.ca.subject}</CASubject>
+							<CAKeySize xmlns="${dorian.config.ns}">${dorian.ca.cakey.size}</CAKeySize>
+							<lifetime xmlns="${dorian.config.ns}" 
+					               years="${dorian.ca.lifetime.years}" 
+					               months="${dorian.ca.lifetime.months}" 
+					               days="${dorian.ca.lifetime.days}" 
+					               hours="${dorian.ca.lifetime.hours}" 
+					               minutes="${dorian.ca.lifetime.minutes}" 
+					               seconds="${dorian.ca.lifetime.seconds}"/>
+						</AutoCreate>
+						]]>
+					</insert>
+				</xmltask>
+			</then>
+		</if>
+
+		<xmltask source="${config.file}" dest="${config.file}">
+			<attr attr="years"
+				path="/*[local-name()='DorianConfiguration']/*[local-name()='DorianCAConfiguration']/*[local-name()='AutoRenewal']"
+				value="${dorian.ca.autorenew.years}" />
+			<attr attr="months"
+				path="/*[local-name()='DorianConfiguration']/*[local-name()='DorianCAConfiguration']/*[local-name()='AutoRenewal']"
+				value="${dorian.ca.autorenew.months}" />
+			<attr attr="days"
+				path="/*[local-name()='DorianConfiguration']/*[local-name()='DorianCAConfiguration']/*[local-name()='AutoRenewal']"
+				value="${dorian.ca.autorenew.days}" />
+			<attr attr="hours"
+				path="/*[local-name()='DorianConfiguration']/*[local-name()='DorianCAConfiguration']/*[local-name()='AutoRenewal']"
+				value="${dorian.ca.autorenew.hours}" />
+			<attr attr="minutes"
+				path="/*[local-name()='DorianConfiguration']/*[local-name()='DorianCAConfiguration']/*[local-name()='AutoRenewal']"
+				value="${dorian.ca.autorenew.minutes}" />
+			<attr attr="seconds"
+				path="/*[local-name()='DorianConfiguration']/*[local-name()='DorianCAConfiguration']/*[local-name()='AutoRenewal']"
+				value="${dorian.ca.autorenew.seconds}" />
+		</xmltask>
+
+	</target>
+
+
+	<target name="deployTomcatEndorsedJars">
+		<copy todir="${tomcat.home}/common/endorsed" overwrite="true">
+			<fileset
+				dir="${service.dest.dir}/dorian/ext/endorsed/lib">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="deployGlobusEndorsedJars">
+		<copy todir="${globus.home}/endorsed" overwrite="true">
+			<fileset
+				dir="${service.dest.dir}/dorian/ext/endorsed/lib">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="generate-ca">
+
+		<touch mkdirs="true" file="${ca.key.path}" />
+		<touch mkdirs="true" file="${ca.cert.path}" />
+
+		<ant inheritAll="false" inheritRefs="false"
+			antfile="${gridca.build.file.path}" target="generateCA">
+			<property name="dn.input" value="${ca.dn.input}" />
+			<property name="days.input" value="${ca.days.valid}" />
+			<property name="password.input" value="${ca.key.pwd}" />
+			<property name="key.input" value="${ca.key.path}" />
+			<property name="cert.input" value="${ca.cert.path}" />
+		</ant>
+	</target>
+
+	<target name="generate-host-creds">
+
+		<touch mkdirs="true" file="${service.cert.path}" />
+		<touch mkdirs="true" file="${service.key.path}" />
+
+		<ant inheritAll="false" inheritRefs="false"
+			antfile="${gridca.build.file.path}"
+			target="createAndSignHostCertificate">
+			<property name="key.input" value="${ca.key.path}" />
+			<property name="password.input" value="${ca.key.pwd}" />
+			<property name="ca.input" value="${ca.cert.path}" />
+			<property name="hostname.input" value="service.hostname" />
+			<property name="days.input"
+				value="${service.cert.days.valid}" />
+			<property name="hostkey.input" value="${service.key.path}" />
+			<property name="cert.input" value="${service.cert.path}" />
+		</ant>
+	</target>
+
+	<target name="globus-deploy-tomcat">
+
+		<property name="target.name" value="deployTomcat" />
+
+		<property name="old.tomcat.build.file"
+			value="${globus.dir.path}/share/globus_wsrf_common/tomcat/tomcat.xml" />
+		<property name="new.tomcat.build.file"
+			value="${globus.dir.path}/share/globus_wsrf_common/tomcat/tomcat-fixed.xml" />
+
+		<xmltask source="${old.tomcat.build.file}"
+			dest="${new.tomcat.build.file}">
+			<attr
+				path="/project/target[@name='_baseTomcatDeploy']/copy[contains(@file, 'web.xml')]"
+				attr="file"
+				value="${globus.dir.path}/share/globus_wsrf_common/tomcat/web.xml" />
+		</xmltask>
+
+		<ant antfile="${new.tomcat.build.file}" dir="."
+			target="${target.name}">
+			<property name="tomcat.dir" value="${tomcat.dir.path}" />
+		</ant>
+	</target>
+
+	<target name="globus-deploy-secure-tomcat">
+		<antcall target="globus-deploy-tomcat">
+			<param name="target.name" value="deploySecureTomcat" />
+		</antcall>
+	</target>
+
+	<target name="fix-secure-web-xml">
+		<antcall target="fix-web-xml">
+			<param name="scheme" value="https" />
+			<param name="tomcat.port" value="${tomcat.secure.port}" />
+		</antcall>
+	</target>
+
+	<target name="fix-web-xml">
+		<property name="scheme" value="http" />
+		<property name="tomcat.port" value="8080" />
+		<property name="web.xml.file"
+			value="${tomcat.dir.path}/webapps/wsrf/WEB-INF/web.xml" />
+		<xmltask source="${web.xml.file}" dest="${web.xml.file}">
+			<remove
+				path="/web-app/servlet[servlet-name='WSRFServlet']/init-param[param-name='defaultProtocol']" />
+			<remove
+				path="/web-app/servlet[servlet-name='WSRFServlet']/init-param[param-name='defaultPort']" />
+			<insert
+				path="/web-app/servlet[servlet-name='WSRFServlet']/servlet-class"
+				position="after">
+				<![CDATA[
+				         <init-param>
+				<param-name>defaultProtocol</param-name>
+				<param-value>${scheme}</param-value>
+			</init-param>
+			<init-param>
+				<param-name>defaultPort</param-name>
+				<param-value>${tomcat.port}</param-value>
+			</init-param>
+				]]>
+			</insert>
+		</xmltask>
+	</target>
+
+	<target name="insert-secure-connector">
+		<xmltask source="${tomcat.dir.path}/conf/server.xml"
+			dest="${tomcat.dir.path}/conf/server.xml">
+			<remove
+				path="/Service/Service[@name='Catalina']/Connector[@port='${tomcat.secure.port}']" />
+			<insert path="/Server/Service[@name='Catalina']">
+				<![CDATA[
+				<Connector
+				  className="org.globus.tomcat.coyote.net.HTTPSConnector"
+				  port="${tomcat.secure.port}" maxThreads="150" minSpareThreads="25" maxSpareThreads="75" 
+				  autoFlush="true"
+				  disableUploadTimeout="true" scheme="https"
+				  enableLookups="true" acceptCount="10" debug="0" 
+				   cert="${tomcat.cert.path}"
+				   key="${tomcat.key.path}"/>
+				]]>
+			</insert>
+		</xmltask>
+	</target>
+
+	<target name="insert-valve">
+
+		<xmltask source="${tomcat.dir.path}/conf/server.xml"
+			dest="${tomcat.dir.path}/conf/server.xml">
+			<remove
+				path="/Server/Service[@name='Catalina']/Engine[@name='Catalina']/Valve[className='org.globus.tomcat.coyote.valves.HTTPSValve']" />
+			<insert
+				path="/Server/Service[@name='Catalina']/Engine[@name='Catalina']">
+				<![CDATA[
+						<Valve className="org.globus.tomcat.coyote.valves.HTTPSValve"/>
+						]]>
+			</insert>
+		</xmltask>
+	</target>
+
+	<target name="set-global-cert-and-key-paths">
+		<property name="secdesc.file"
+			value="${tomcat.dir.path}/webapps/wsrf/WEB-INF/etc/globus_wsrf_core/global_security_descriptor.xml" />
+		<xmltask source="${secdesc.file}" dest="${secdesc.file}">
+			<attr
+				path="/*[local-name()='securityConfig']/*[local-name()='credential']/*[local-name()='key-file']"
+				attr="value" value="${tomcat.key.path}" />
+			<attr
+				path="/*[local-name()='securityConfig']/*[local-name()='credential']/*[local-name()='cert-file']"
+				attr="value" value="${tomcat.cert.path}" />
+		</xmltask>
+	</target>
+
+	<target name="copy-global-cert-and-key">
+		<property name="tomcat.cert.dest"
+			value="${tomcat.dir.path}/${tomcat.cert.path}" />
+		<property name="tomcat.key.dest"
+			value="${tomcat.dir.path}/${tomcat.key.path}" />
+
+		<touch mkdirs="true" file="${tomcat.cert.dest}" />
+		<touch mkdirs="true" file="${tomcat.key.dest}" />
+
+		<copy file="${tomcat.cert}" tofile="${tomcat.cert.dest}"
+			overwrite="true" />
+		<copy file="${tomcat.key}" tofile="${tomcat.key.dest}"
+			overwrite="true" />
+	</target>
+
+	<target name="configure-security-descriptor">
+		<property name="secdesc.file"
+			value="${globus.home}/etc/globus_wsrf_core/global_security_descriptor.xml" />
+
+		<xmltask source="${secdesc.file}" dest="${secdesc.file}">
+
+			<remove
+				path="/*[local-name()='securityConfig']/*[local-name()='gridmap']" />
+
+			<attr
+				path="/*[local-name()='securityConfig']/*[local-name()='credential']/*[local-name()='key-file']"
+				attr="value" value="${service.key.path}" />
+			<attr
+				path="/*[local-name()='securityConfig']/*[local-name()='credential']/*[local-name()='cert-file']"
+				attr="value" value="${service.cert.path}" />
+		</xmltask>
+	</target>
+
+</project>

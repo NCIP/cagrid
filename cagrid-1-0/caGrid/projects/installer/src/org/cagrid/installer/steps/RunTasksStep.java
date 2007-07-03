@@ -66,6 +66,8 @@ public class RunTasksStep extends PanelWizardStep implements
 
 	private ProgressBarTaskMonitor monitor;
 
+	private PrintStream out;
+
 	/**
 	 * 
 	 */
@@ -130,10 +132,8 @@ public class RunTasksStep extends PanelWizardStep implements
 		// taskOutput.setAutoscrolls(true);
 		taskOutput.setMargin(new Insets(5, 5, 5, 5));
 		taskOutput.setEditable(false);
-		PrintStream out = new PrintStream(new TextAreaOutputStream(taskOutput));
-		System.setOut(out);
-		System.setErr(out);
-
+		this.out = new PrintStream(new TextAreaOutputStream(taskOutput));
+		
 		add(new JScrollPane(taskOutput), gridBagConstraints3);
 	}
 
@@ -155,6 +155,8 @@ public class RunTasksStep extends PanelWizardStep implements
 			this.monitor.addTask(t);
 		}
 		this.monitor.reset();
+		System.setOut(this.out);
+		System.setErr(this.out);
 	}
 
 	private JPanel getDescriptionPanel() {

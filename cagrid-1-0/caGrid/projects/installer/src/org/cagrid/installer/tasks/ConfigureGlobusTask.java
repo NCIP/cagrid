@@ -6,6 +6,7 @@ package org.cagrid.installer.tasks;
 import java.util.Map;
 
 import org.cagrid.installer.steps.Constants;
+import org.cagrid.installer.util.Utils;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
@@ -23,7 +24,7 @@ public class ConfigureGlobusTask extends CaGridAntTask {
 	}
 
 	protected String getBuildFilePath(Map state) {
-		return (String) state.get(Constants.CAGRID_HOME) + "/projects/installer/deployer/globus-tools.xml";
+		return Utils.getScriptsBuildFilePath();
 	}
 
 }

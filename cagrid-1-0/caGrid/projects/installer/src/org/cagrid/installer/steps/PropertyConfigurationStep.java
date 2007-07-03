@@ -35,6 +35,7 @@ import org.cagrid.installer.steps.options.ListPropertyConfigurationOption;
 import org.cagrid.installer.steps.options.PasswordPropertyConfigurationOption;
 import org.cagrid.installer.steps.options.PropertyConfigurationOption;
 import org.cagrid.installer.steps.options.TextPropertyConfigurationOption;
+import org.cagrid.installer.steps.options.ListPropertyConfigurationOption.LabelValuePair;
 import org.cagrid.installer.validator.Validator;
 import org.pietschy.wizard.InvalidStateException;
 import org.pietschy.wizard.PanelWizardStep;
@@ -190,20 +191,20 @@ public class PropertyConfigurationStep extends PanelWizardStep {
 				option.getName());
 		if (defaultValue != null) {
 			boolean foundIt = false;
-			for (String value : option.getChoices()) {
-				if (value.equals(defaultValue)) {
+			for (LabelValuePair value : option.getChoices()) {
+				if (value.getValue().equals(defaultValue)) {
 					foundIt = true;
 					break;
 				}
 			}
 			if (!foundIt) {
-				defaultValue = option.getChoices()[0];
+				defaultValue = option.getChoices()[0].getValue();
 				logger.warn("Pre-existing value of '" + defaultValue
 						+ "' is not valid. Using default value of '"
 						+ defaultValue + "'");
 			}
 		} else {
-			defaultValue = option.getChoices()[0];
+			defaultValue = option.getChoices()[0].getValue();
 		}
 		JComboBox valueField = new JComboBox(option.getChoices());
 		valueField.setSelectedItem(defaultValue);
@@ -308,8 +309,9 @@ public class PropertyConfigurationStep extends PanelWizardStep {
 					value = String.valueOf(((JCheckBox) optionValueFields
 							.get(i)).isSelected());
 				} else if (optionValueFields.get(i) instanceof JComboBox) {
-					value = String.valueOf(((JComboBox) optionValueFields
-							.get(i)).getSelectedItem());
+					LabelValuePair pair = (LabelValuePair) ((JComboBox) optionValueFields
+							.get(i)).getSelectedItem();
+					value = pair.getValue();
 				}
 				// logger.debug("Setting " + key + " = " + value);
 				tempState.put(key, value);

@@ -8,7 +8,7 @@ import javax.swing.JCheckBox;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
- *
+ * 
  */
 public class CheckSecureContainerStep extends PropertyConfigurationStep {
 
@@ -35,11 +35,14 @@ public class CheckSecureContainerStep extends PropertyConfigurationStep {
 	public CheckSecureContainerStep(String name, String description, Icon icon) {
 		super(name, description, icon);
 	}
-	
-	public void prepare(){
-		if("true".equals(this.model.getState().get(Constants.INSTALL_DORIAN))){
-			JCheckBox checkBox = (JCheckBox)getOption(Constants.USE_SECURE_CONTAINER);
+
+	public void prepare() {
+		if ("true".equals(this.model.getState().get(Constants.INSTALL_DORIAN))
+				|| "true".equals(this.model.getState().get(
+						Constants.INSTALL_GTS))) {
+			JCheckBox checkBox = (JCheckBox) getOption(Constants.USE_SECURE_CONTAINER);
 			checkBox.setSelected(true);
+			checkBox.setEnabled(false);
 		}
 	}
 

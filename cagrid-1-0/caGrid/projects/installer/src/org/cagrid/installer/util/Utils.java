@@ -4,14 +4,20 @@
 package org.cagrid.installer.util;
 
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Enumeration;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -114,8 +120,39 @@ public class Utils {
 	}
 
 	public static boolean checkGenerateCA(CaGridInstallerModel model) {
-		return "true".equals(model.getState().get(Constants.USE_SECURE_CONTAINER)) && 
-		!"true".equals(model.getState().get(Constants.SERVICE_CERT_PRESENT)) &&
-		!"true".equals(model.getState().get(Constants.CA_CERT_PRESENT));
+		return "true".equals(model.getState().get(
+				Constants.USE_SECURE_CONTAINER))
+				&& !"true".equals(model.getState().get(
+						Constants.SERVICE_CERT_PRESENT))
+				&& !"true".equals(model.getState().get(
+						Constants.CA_CERT_PRESENT));
+	}
+
+	public static void copyCACertToTrustStore(String certPath) throws IOException {
+
+		BufferedReader in = new BufferedReader(new FileReader(certPath));
+		File trustDir = new File(System.getProperty("user.home")
+				+ "/.globus/certificates");
+		if (!trustDir.exists()) {
+			trustDir.mkdirs();
+		}
+		BufferedWriter out = new BufferedWriter(new FileWriter(trustDir
+				.getAbsolutePath()
+				+ "/CA.0"));
+		String line = null;
+		while ((line = in.readLine()) != null) {
+			out.write(line);
+		}
+		in.close();
+		out.flush();
+		out.close();
+	}
+
+	public static String getServiceDestDir(Map state) {
+		return state.get(Constants.TEMP_DIR_PATH) + "/services";
+	}
+
+	public static String getScriptsBuildFilePath() {
+		return new File("scripts/build.xml").getAbsolutePath();
 	}
 }

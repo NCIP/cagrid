@@ -3,11 +3,6 @@
  */
 package org.cagrid.installer.tasks;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -15,6 +10,7 @@ import java.util.Properties;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.installer.steps.Constants;
+import org.cagrid.installer.util.Utils;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
@@ -37,16 +33,14 @@ public class ConfigureDorianTask extends CaGridAntTask {
 			Properties sysProps) throws Exception {
 
 		Map m = new HashMap(state);
-		// logger.debug("########## " + Constants.DORIAN_IFS_PROXYLIFETIME_HOURS
-		// + " = " + state.get(Constants.DORIAN_IFS_PROXYLIFETIME_HOURS));
-		m.put(Constants.BUILD_FILE_PATH, state.get(Constants.CAGRID_HOME)
-				+ "/projects/installer/deployer/build.xml");
-		new AntTask("", "", "configure-dorian-conf2", env, sysProps).execute(m);
+		m.put(Constants.BUILD_FILE_PATH, Utils.getScriptsBuildFilePath());
+		String serviceDestDir = Utils.getServiceDestDir(state);
+		new AntTask("", "", "configure-dorian-conf", env, sysProps).execute(m);
 
 		if ("true".equals(state.get(Constants.DORIAN_CA_PRESENT))
 				|| "true".equals(state.get(Constants.DORIAN_USE_GEN_CA))) {
-			m.put(Constants.BUILD_FILE_PATH, state.get(Constants.CAGRID_HOME)
-					+ "/projects/dorian/build.xml");
+			m.put(Constants.BUILD_FILE_PATH, serviceDestDir
+					+ "/dorian/build.xml");
 			sysProps.setProperty("cacert.input", (String) state
 					.get(Constants.DORIAN_CA_CERT_PATH));
 			sysProps.setProperty("cakey.input", (String) state
@@ -57,27 +51,12 @@ public class ConfigureDorianTask extends CaGridAntTask {
 		} else {
 			// Have to copy CA cert to HOME/.globus/certificates
 			logger.debug("Copying CA cert to trust store");
-			BufferedReader in = new BufferedReader(new FileReader(
-					(String) state.get(Constants.CA_CERT_PATH)));
-			File trustDir = new File(System.getProperty("user.home")
-					+ "/.globus/certificates");
-			if (!trustDir.exists()) {
-				trustDir.mkdirs();
-			}
-			BufferedWriter out = new BufferedWriter(new FileWriter(trustDir
-					.getAbsolutePath()
-					+ "/CA.0"));
-			String line = null;
-			while ((line = in.readLine()) != null) {
-				out.write(line);
-			}
-			in.close();
-			out.flush();
-			out.close();
-		}
+			Utils.copyCACertToTrustStore((String) state
+					.get(Constants.CA_CERT_PATH));
 
-		m.put(Constants.BUILD_FILE_PATH, state.get(Constants.CAGRID_HOME)
-				+ "/projects/dorian/build.xml");
+		}
+		m.put(Constants.BUILD_FILE_PATH, serviceDestDir
+				+ "/dorian/build.xml");
 		new AntTask("", "", "configureGlobusToTrustDorian", env, sysProps)
 				.execute(m);
 

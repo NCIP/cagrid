@@ -30,9 +30,10 @@ public class ConfigureEnvironmentTask extends BasicTask {
 	protected Object internalExecute(Map state) throws Exception {
 		state.put(Constants.GLOBUS_DIR_PATH, state.get(Constants.GLOBUS_HOME));
 		state.put(Constants.TOMCAT_DIR_PATH, state.get(Constants.TOMCAT_HOME));
-		state.put(Constants.GRIDCA_BUILD_FILE_PATH, state
-				.get(Constants.CAGRID_HOME)
-				+ "/projects/gridca/build.xml");
+		
+//		state.put(Constants.GRIDCA_BUILD_FILE_PATH, state
+//				.get(Constants.CAGRID_HOME)
+//				+ "/projects/gridca/build.xml");
 
 		int caDaysValid = Integer.valueOf((String) state
 				.get(Constants.CA_DAYS_VALID));

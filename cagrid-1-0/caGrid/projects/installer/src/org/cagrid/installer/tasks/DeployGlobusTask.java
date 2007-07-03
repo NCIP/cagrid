@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.cagrid.installer.steps.Constants;
+import org.cagrid.installer.util.Utils;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
@@ -24,8 +25,10 @@ public class DeployGlobusTask extends CaGridAntTask {
 
 	protected Object runAntTask(Map state, String target, Map env,
 			Properties sysProps) throws Exception {
+		
 		boolean secure = "true".equals(state
 				.get(Constants.USE_SECURE_CONTAINER));
+		
 		if (!secure) {
 			setStepCount(2);
 			new AntTask("", "", "globus-deploy-tomcat", env, sysProps)
@@ -56,8 +59,7 @@ public class DeployGlobusTask extends CaGridAntTask {
 	}
 
 	protected String getBuildFilePath(Map state) {
-		return state.get(Constants.CAGRID_HOME)
-				+ "/projects/installer/deployer/build.xml";
+		return Utils.getScriptsBuildFilePath();
 	}
 
 }

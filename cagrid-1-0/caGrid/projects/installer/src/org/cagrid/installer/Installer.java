@@ -22,23 +22,30 @@ import org.cagrid.installer.steps.CheckSecureContainerStep;
 import org.cagrid.installer.steps.ConfigureCAStep;
 import org.cagrid.installer.steps.ConfigureDorianCAStep;
 import org.cagrid.installer.steps.ConfigureDorianDBStep;
+import org.cagrid.installer.steps.ConfigureGTSDBStep;
 import org.cagrid.installer.steps.ConfigureServiceCertStep;
 import org.cagrid.installer.steps.Constants;
-import org.cagrid.installer.steps.DisplayMessageStep;
+import org.cagrid.installer.steps.DeployPropertiesFileEditorStep;
 import org.cagrid.installer.steps.InstallationCompleteStep;
 import org.cagrid.installer.steps.PropertyConfigurationStep;
+import org.cagrid.installer.steps.AbstractPropertiesFileEditorStep;
 import org.cagrid.installer.steps.RunTasksStep;
 import org.cagrid.installer.steps.SelectComponentStep;
 import org.cagrid.installer.steps.SelectInstallationTypeStep;
+import org.cagrid.installer.steps.ServicePropertiesFileEditorStep;
 import org.cagrid.installer.steps.options.BooleanPropertyConfigurationOption;
 import org.cagrid.installer.steps.options.ListPropertyConfigurationOption;
 import org.cagrid.installer.steps.options.PasswordPropertyConfigurationOption;
 import org.cagrid.installer.steps.options.TextPropertyConfigurationOption;
+import org.cagrid.installer.steps.options.ListPropertyConfigurationOption.LabelValuePair;
 import org.cagrid.installer.tasks.CompileCaGridTask;
 import org.cagrid.installer.tasks.ConditionalTask;
 import org.cagrid.installer.tasks.ConfigureDorianTask;
 import org.cagrid.installer.tasks.ConfigureEnvironmentTask;
+import org.cagrid.installer.tasks.ConfigureGTSTask;
 import org.cagrid.installer.tasks.ConfigureGlobusTask;
+import org.cagrid.installer.tasks.ConfigureTargetGridTask;
+import org.cagrid.installer.tasks.CopySelectedServicesToTempDirTask;
 import org.cagrid.installer.tasks.DeployDorianTask;
 import org.cagrid.installer.tasks.DeployGlobusTask;
 import org.cagrid.installer.tasks.DeployServiceTask;
@@ -305,6 +312,25 @@ public class Installer {
 		this.model.add(selectInstallStep);
 		incrementProgress();
 
+		// Presents list of available target grids
+		String[] targetGrids = ((String) this.model.getState().get(
+				Constants.AVAILABLE_TARGET_GRIDS)).split(",");
+		PropertyConfigurationStep selectTargetGridStep = new PropertyConfigurationStep(
+				this.model.getMessage("select.target.grid.title"), this.model
+						.getMessage("select.target.grid.desc"));
+		LabelValuePair[] targetGridPairs = new LabelValuePair[targetGrids.length];
+		for (int i = 0; i < targetGrids.length; i++) {
+			targetGridPairs[i] = new LabelValuePair(this.model
+					.getMessage("target.grid." + targetGrids[i] + ".label"),
+					targetGrids[i]);
+		}
+		selectTargetGridStep.getOptions().add(
+				new ListPropertyConfigurationOption(Constants.TARGET_GRID,
+						this.model.getMessage("target.grid"), targetGridPairs,
+						true));
+		this.model.add(selectTargetGridStep);
+		incrementProgress();
+
 		// Presents list of services that can be installed
 		SelectComponentStep selectServicesStep = new SelectComponentStep(
 				this.model.getMessage("select.services.title"), this.model
@@ -448,6 +474,74 @@ public class Installer {
 		// });
 		incrementProgress();
 
+		// Downloads and installs the dependencies
+		RunTasksStep installDependenciesStep = new RunTasksStep(this.model
+				.getMessage("install.dependencies.title"), this.model
+				.getMessage("install.dependencies.desc"));
+		addUnzipInstallTask(installDependenciesStep, this.model
+				.getMessage("downloading.ant.title"), this.model
+				.getMessage("installing.ant.title"), "",
+				Constants.ANT_DOWNLOAD_URL, Constants.ANT_TEMP_FILE_NAME,
+				Constants.ANT_INSTALL_DIR_PATH, Constants.ANT_DIR_NAME,
+				Constants.ANT_HOME, Constants.INSTALL_ANT);
+		addUnzipInstallTask(installDependenciesStep, this.model
+				.getMessage("downloading.tomcat.title"), this.model
+				.getMessage("installing.tomcat.title"), "",
+				Constants.TOMCAT_DOWNLOAD_URL, Constants.TOMCAT_TEMP_FILE_NAME,
+				Constants.TOMCAT_INSTALL_DIR_PATH, Constants.TOMCAT_DIR_NAME,
+				Constants.TOMCAT_HOME, Constants.INSTALL_TOMCAT);
+		addUnzipInstallTask(installDependenciesStep, this.model
+				.getMessage("downloading.globus.title"), this.model
+				.getMessage("installing.globus.title"), "",
+				Constants.GLOBUS_DOWNLOAD_URL, Constants.GLOBUS_TEMP_FILE_NAME,
+				Constants.GLOBUS_INSTALL_DIR_PATH, Constants.GLOBUS_DIR_NAME,
+				Constants.GLOBUS_HOME, Constants.INSTALL_GLOBUS);
+		addUnzipInstallTask(installDependenciesStep, this.model
+				.getMessage("downloading.cagrid.title"), this.model
+				.getMessage("installing.cagrid.title"), "",
+				Constants.CAGRID_DOWNLOAD_URL, Constants.CAGRID_TEMP_FILE_NAME,
+				Constants.CAGRID_INSTALL_DIR_PATH, Constants.CAGRID_DIR_NAME,
+				Constants.CAGRID_HOME, Constants.INSTALL_CAGRID);
+
+		installDependenciesStep.getTasks().add(
+				new ConditionalTask(new CompileCaGridTask(this.model
+						.getMessage("compiling.cagrid.title"), ""),
+						new Condition() {
+
+							public boolean evaluate(WizardModel m) {
+								CaGridInstallerModel model = (CaGridInstallerModel) m;
+								return "true".equals(model.getState().get(
+										Constants.INSTALL_CAGRID));
+							}
+
+						}));
+
+		installDependenciesStep.getTasks().add(
+				new ConditionalTask(new ConfigureTargetGridTask(this.model
+						.getMessage("configuring.target.grid"), ""),
+						new Condition() {
+
+							public boolean evaluate(WizardModel m) {
+								CaGridInstallerModel model = (CaGridInstallerModel) m;
+								return "true".equals(model.getState().get(
+										Constants.INSTALL_CAGRID));
+							}
+
+						}));
+
+		installDependenciesStep.getTasks().add(
+				new ConditionalTask(
+						new CopySelectedServicesToTempDirTask(this.model
+								.getMessage("copying.selected.services"), ""),
+						new Condition() {
+							public boolean evaluate(WizardModel m) {
+								CaGridInstallerModel model = (CaGridInstallerModel) m;
+								return "true".equals(model.getState().get(
+										Constants.INSTALL_SERVICES));
+							}
+						}));
+		this.model.add(installDependenciesStep);
+
 		// Checks if globus should be deployed to secure tomcat
 		CheckSecureContainerStep checkDeployGlobusSecureStep = new CheckSecureContainerStep(
 				this.model.getMessage("globus.check.secure.title"), this.model
@@ -514,6 +608,13 @@ public class Installer {
 				new PasswordPropertyConfigurationOption(Constants.CA_KEY_PWD,
 						this.model.getMessage("ca.cert.info.key.pwd"),
 						this.model.getState().get(Constants.CA_KEY_PWD), true));
+		// caCertInfoStep.getValidators().add(new
+		// PathExistsValidator(Constants.CA_CERT_PATH,
+		// this.model.getMessage("error.cert.file.not.found")));
+		// caCertInfoStep.getValidators().add(new
+		// PathExistsValidator(Constants.CA_KEY_PATH,
+		// this.model.getMessage("error.key.file.not.found")));
+
 		// TODO: add validation
 		this.model.add(caCertInfoStep, new Condition() {
 
@@ -593,8 +694,9 @@ public class Installer {
 								Constants.SERVICE_KEY_PATH,
 								"temp/certs/servce.key"), true));
 		newServiceCertInfoStep.getOptions().add(
-				new PasswordPropertyConfigurationOption(Constants.SERVICE_KEY_PWD,
-						this.model.getMessage("service.cert.info.key.pwd"),
+				new PasswordPropertyConfigurationOption(
+						Constants.SERVICE_KEY_PWD, this.model
+								.getMessage("service.cert.info.key.pwd"),
 						this.model.getState().get(Constants.SERVICE_KEY_PWD),
 						true));
 		newServiceCertInfoStep
@@ -637,8 +739,9 @@ public class Installer {
 								Constants.SERVICE_KEY_PATH,
 								"temp/certs/service.key"), true));
 		serviceCertInfoStep.getOptions().add(
-				new PasswordPropertyConfigurationOption(Constants.SERVICE_KEY_PWD,
-						this.model.getMessage("service.cert.info.key.pwd"),
+				new PasswordPropertyConfigurationOption(
+						Constants.SERVICE_KEY_PWD, this.model
+								.getMessage("service.cert.info.key.pwd"),
 						this.model.getState().get(Constants.SERVICE_KEY_PWD),
 						true));
 		// TODO: add validation
@@ -654,44 +757,29 @@ public class Installer {
 		});
 		incrementProgress();
 
+		// Allows user to edit Dorian deploy.properties
+		DeployPropertiesFileEditorStep editDorianDeployPropertiesStep = new DeployPropertiesFileEditorStep(
+				"dorian", this.model
+						.getMessage("dorian.edit.deploy.properties.title"),
+				this.model.getMessage("dorian.edit.deploy.properties.desc"),
+				this.model.getMessage("edit.properties.property.name"),
+				this.model.getMessage("edit.properties.property.value"));
+		this.model.add(editDorianDeployPropertiesStep);
+
+		// ServicePropertiesFileEditorStep editDorianServicePropertiesStep = new
+		// ServicePropertiesFileEditorStep(
+		// "dorian", this.model
+		// .getMessage("dorian.edit.service.properties.title"),
+		// this.model.getMessage("dorian.edit.service.properties.desc"),
+		// this.model.getMessage("edit.properties.property.name"),
+		// this.model.getMessage("edit.properties.property.value"));
+		// this.model.add(editDorianServicePropertiesStep);
+
 		// Allows user to specify Dorian DB information.
 		ConfigureDorianDBStep dorianDbInfoStep = new ConfigureDorianDBStep(
 				this.model.getMessage("dorian.db.config.title"), this.model
 						.getMessage("dorian.db.config.desc"));
-		dorianDbInfoStep.getOptions().add(
-				new TextPropertyConfigurationOption(Constants.DORIAN_DB_HOST,
-						this.model.getMessage("dorian.db.host"), getProperty(
-								this.model.getState(),
-								Constants.DORIAN_DB_HOST, "localhost"), true));
-		dorianDbInfoStep.getOptions().add(
-				new TextPropertyConfigurationOption(Constants.DORIAN_DB_PORT,
-						this.model.getMessage("dorian.db.port"), getProperty(
-								this.model.getState(),
-								Constants.DORIAN_DB_PORT, "3306"), true));
-		dorianDbInfoStep.getOptions().add(
-				new TextPropertyConfigurationOption(Constants.DORIAN_DB_ID,
-						this.model.getMessage("dorian.db.id"), getProperty(
-								this.model.getState(), Constants.DORIAN_DB_ID,
-								"dorian"), true));
-		dorianDbInfoStep.getOptions().add(
-				new TextPropertyConfigurationOption(
-						Constants.DORIAN_DB_USERNAME, this.model
-								.getMessage("dorian.db.username"), getProperty(
-								this.model.getState(),
-								Constants.DORIAN_DB_USERNAME, "root"), true));
-		dorianDbInfoStep.getOptions().add(
-				new PasswordPropertyConfigurationOption(
-						Constants.DORIAN_DB_PASSWORD, this.model
-								.getMessage("dorian.db.password"), this.model
-								.getState().get(Constants.DORIAN_DB_PASSWORD),
-						true));
-		dorianDbInfoStep.getValidators().add(
-				new DBConnectionValidator(Constants.DORIAN_DB_HOST,
-						Constants.DORIAN_DB_PORT, "mysql",
-						Constants.DORIAN_DB_USERNAME,
-						Constants.DORIAN_DB_PASSWORD, "select 1", this.model
-								.getMessage("db.validation.failed")));
-
+		addDBConfigPropertyOptions(dorianDbInfoStep, "dorian.");
 		this.model.add(dorianDbInfoStep, new Condition() {
 
 			public boolean evaluate(WizardModel m) {
@@ -701,6 +789,8 @@ public class Installer {
 			}
 		});
 		incrementProgress();
+
+		// Generate Dorian Service configuration
 
 		// Dorian IdP config
 		PropertyConfigurationStep dorianIdpInfoStep = new PropertyConfigurationStep(
@@ -1098,53 +1188,30 @@ public class Installer {
 		});
 		incrementProgress();
 
+		// Configures the GTS database
+		// ConfigureGTSDBStep gtsDbInfoStep = new ConfigureGTSDBStep(this.model
+		// .getMessage("gts.db.config.title"), this.model
+		// .getMessage("gts.db.config.desc"));
+		// addDBConfigPropertyOptions(gtsDbInfoStep, "gts.");
+		// this.model.add(gtsDbInfoStep, new Condition() {
+		//
+		// public boolean evaluate(WizardModel m) {
+		// CaGridInstallerModel model = (CaGridInstallerModel) m;
+		// return "true".equals(model.getState()
+		// .get(Constants.INSTALL_GTS));
+		// }
+		// });
+		// incrementProgress();
+
 		// Performs the installation
 		RunTasksStep installStep = new RunTasksStep(this.model
 				.getMessage("install.title"), this.model
 				.getMessage("install.desc"));
-		addUnzipInstallTask(installStep, this.model
-				.getMessage("downloading.ant.title"), this.model
-				.getMessage("installing.ant.title"), "",
-				Constants.ANT_DOWNLOAD_URL, Constants.ANT_TEMP_FILE_NAME,
-				Constants.ANT_INSTALL_DIR_PATH, Constants.ANT_DIR_NAME,
-				Constants.ANT_HOME, Constants.INSTALL_ANT);
-		addUnzipInstallTask(installStep, this.model
-				.getMessage("downloading.tomcat.title"), this.model
-				.getMessage("installing.tomcat.title"), "",
-				Constants.TOMCAT_DOWNLOAD_URL, Constants.TOMCAT_TEMP_FILE_NAME,
-				Constants.TOMCAT_INSTALL_DIR_PATH, Constants.TOMCAT_DIR_NAME,
-				Constants.TOMCAT_HOME, Constants.INSTALL_TOMCAT);
-		addUnzipInstallTask(installStep, this.model
-				.getMessage("downloading.globus.title"), this.model
-				.getMessage("installing.globus.title"), "",
-				Constants.GLOBUS_DOWNLOAD_URL, Constants.GLOBUS_TEMP_FILE_NAME,
-				Constants.GLOBUS_INSTALL_DIR_PATH, Constants.GLOBUS_DIR_NAME,
-				Constants.GLOBUS_HOME, Constants.INSTALL_GLOBUS);
-		addUnzipInstallTask(installStep, this.model
-				.getMessage("downloading.cagrid.title"), this.model
-				.getMessage("installing.cagrid.title"), "",
-				Constants.CAGRID_DOWNLOAD_URL, Constants.CAGRID_TEMP_FILE_NAME,
-				Constants.CAGRID_INSTALL_DIR_PATH, Constants.CAGRID_DIR_NAME,
-				Constants.CAGRID_HOME, Constants.INSTALL_CAGRID);
-
-		// TODO: use this task to set OS environment variables
-		installStep.getTasks().add(
-				new ConfigureEnvironmentTask(this.model
-						.getMessage("configuring.environment.title"), ""));
 
 		// if (false) {
 		installStep.getTasks().add(
-				new ConditionalTask(new CompileCaGridTask(this.model
-						.getMessage("compiling.cagrid.title"), ""),
-						new Condition() {
-
-							public boolean evaluate(WizardModel m) {
-								CaGridInstallerModel model = (CaGridInstallerModel) m;
-								return "true".equals(model.getState().get(
-										Constants.INSTALL_CAGRID));
-							}
-
-						}));
+				new ConfigureEnvironmentTask(this.model
+						.getMessage("configuring.environment.title"), ""));
 
 		installStep.getTasks().add(
 				new ConditionalTask(new GenerateCATask(this.model
@@ -1230,8 +1297,31 @@ public class Installer {
 							}
 
 						}));
-		
 
+		// installStep.getTasks().add(
+		// new ConditionalTask(new ConfigureGTSTask(this.model
+		// .getMessage("configuring.gts.title"), ""),
+		// new Condition() {
+		//
+		// public boolean evaluate(WizardModel m) {
+		// CaGridInstallerModel model = (CaGridInstallerModel) m;
+		// return "true".equals(model.getState().get(
+		// Constants.INSTALL_GTS));
+		// }
+		//
+		// }));
+		// installStep.getTasks().add(
+		// new ConditionalTask(new DeployServiceTask(this.model
+		// .getMessage("installing.gts.title"), "", "gts",
+		// this.model), new Condition() {
+		//
+		// public boolean evaluate(WizardModel m) {
+		// CaGridInstallerModel model = (CaGridInstallerModel) m;
+		// return "true".equals(model.getState().get(
+		// Constants.INSTALL_GTS));
+		// }
+		//
+		// }));
 
 		// }
 		installStep.getTasks().add(
@@ -1245,6 +1335,40 @@ public class Installer {
 		this.model.add(new InstallationCompleteStep(this.model
 				.getMessage("installation.complete.title"), ""));
 
+	}
+
+	private void addDBConfigPropertyOptions(PropertyConfigurationStep step,
+			String propPrefix) {
+		step.getOptions().add(
+				new TextPropertyConfigurationOption(propPrefix + "db.host",
+						this.model.getMessage(propPrefix + "db.host"),
+						getProperty(this.model.getState(), propPrefix
+								+ "db.host", "localhost"), true));
+		step.getOptions().add(
+				new TextPropertyConfigurationOption(propPrefix + "db.port",
+						this.model.getMessage(propPrefix + "db.port"),
+						getProperty(this.model.getState(), propPrefix
+								+ "db.port", "3306"), true));
+		step.getOptions().add(
+				new TextPropertyConfigurationOption(propPrefix + "db.id",
+						this.model.getMessage(propPrefix + "db.id"),
+						getProperty(this.model.getState(),
+								propPrefix + "db.id", "dorian"), true));
+		step.getOptions().add(
+				new TextPropertyConfigurationOption(propPrefix + "db.username",
+						this.model.getMessage(propPrefix + "db.username"),
+						getProperty(this.model.getState(), propPrefix
+								+ "db.username", "root"), true));
+		step.getOptions().add(
+				new PasswordPropertyConfigurationOption(propPrefix
+						+ "db.password", this.model.getMessage(propPrefix
+						+ "db.password"), this.model.getState().get(
+						propPrefix + "db.password"), true));
+		step.getValidators().add(
+				new DBConnectionValidator(propPrefix + "db.host", propPrefix
+						+ "db.port", "mysql", propPrefix + "db.username",
+						propPrefix + "db.password", "select 1", this.model
+								.getMessage("db.validation.failed")));
 	}
 
 	private void addCommonDorianCAConfigFields(PropertyConfigurationStep step) {

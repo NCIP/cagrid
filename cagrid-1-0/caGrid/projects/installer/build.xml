@@ -98,10 +98,13 @@
 			<fileset dir="${cagrid.home}">
 				<include name="caGrid/**"/>
 				<exclude name="caGrid/projects/portal*"/>
+				<exclude name="caGrid/installer/**"/>
+				<!--
 				<exclude name="caGrid/projects/installer/installers/**"/>
 				<exclude name="caGrid/projects/installer/deployer/temp/**"/>
 				<exclude name="caGrid/projects/installer/deployer/software/**"/>
 				<exclude name="caGrid/projects/installer/deployer/certs/**"/>
+				-->
 				<exclude name="**/bin/**"/>
 			</fileset>
 		</zip>
@@ -109,6 +112,8 @@
 	
 	<target name="dist-installer" depends="jar">
 		<mkdir dir="build/installer/lib"/>
+		<mkdir dir="build/installer/scripts"/>
+		
 		<copy todir="build/installer" file="${build.jars}/${project.jar.prefix}core.jar" overwrite="true"/>
 		<copy todir="build/installer/lib">
 			<fileset dir="../dorian/lib">
@@ -117,11 +122,14 @@
 			<fileset dir="lib">
 				<include name="commons-logging*.jar"/>
 				<include name="log4j*.jar"/>
+				<include name="xmltask*.jar"/>
 			</fileset>
 			<fileset dir="ext/lib">
 				<include name="caGrid*wizard.jar"/>
 			</fileset>
 		</copy>
+		<copy file="scripts/build.xml" todir="build/installer/scripts"/>
+		
 		<zip destfile="build/installer.zip" basedir="build/installer"/>
 	</target>
 

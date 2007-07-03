@@ -252,5 +252,11 @@ public abstract class Constants {
 
 	public static final String DORIAN_USE_GEN_CA = "dorian.use.gen.ca";
 
+	public static final String AVAILABLE_TARGET_GRIDS = "available.target.grids";
+
+	public static final String TARGET_GRID = "target.grid";
+
+	public static final String SERVICE_DEST_DIR = "service.dest.dir";
+
 	
 }

@@ -89,10 +89,12 @@ public class AntTask extends BasicTask {
 					env.put((String) entry.getKey(), (String) entry.getValue());
 				}
 			}
-			String[] envp = new String[env.size()];
+			Map<String,String> myEnv = new HashMap<String,String>(env);
+//			myEnv.put("ANT_ARGS", "-v");
+			String[] envp = new String[myEnv.size()];
 			int i = 0;
-			for (String key : env.keySet()) {
-				envp[i++] = key + "=" + env.get(key);
+			for (String key : myEnv.keySet()) {
+				envp[i++] = key + "=" + myEnv.get(key);
 			}
 
 			runAnt(state, baseDir, buildFilePath, this.target,
@@ -121,7 +123,6 @@ public class AntTask extends BasicTask {
 		cmd.add(antHome + "/lib/ant-launcher.jar");
 		cmd.add("-Dant.home=" + antHome);
 		
-		// cmd.add("-v");
 
 		// add system properties
 		if (sysProps != null) {
