@@ -81,4 +81,8 @@ public class ConditionalTask implements Condition, Task {
 		this.task.setStepCount(count);
 	}
 
+	public boolean isAbortOnError() {
+		return this.task.isAbortOnError();
+	}
+
 }

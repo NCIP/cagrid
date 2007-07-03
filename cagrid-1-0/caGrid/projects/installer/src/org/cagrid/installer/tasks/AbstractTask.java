@@ -19,6 +19,7 @@ public abstract class AbstractTask implements Task {
 	private String description;
 	private int stepCount = 1;
 	private int lastStep = 0;
+	private boolean abortOnError = true;
 	private PropertyChangeSupport psc;
 	
 	private static final Log logger = LogFactory.getLog(AbstractTask.class);
@@ -70,6 +71,14 @@ public abstract class AbstractTask implements Task {
 	
 	public void addPropertyChangeListener(PropertyChangeListener l){
 		this.psc.addPropertyChangeListener(l);
+	}
+
+	public boolean isAbortOnError() {
+		return abortOnError;
+	}
+
+	public void setAbortOnError(boolean abortOnError) {
+		this.abortOnError = abortOnError;
 	}
 
 }

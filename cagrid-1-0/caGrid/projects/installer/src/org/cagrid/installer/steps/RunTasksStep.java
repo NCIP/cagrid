@@ -133,7 +133,7 @@ public class RunTasksStep extends PanelWizardStep implements
 		taskOutput.setMargin(new Insets(5, 5, 5, 5));
 		taskOutput.setEditable(false);
 		this.out = new PrintStream(new TextAreaOutputStream(taskOutput));
-		
+
 		add(new JScrollPane(taskOutput), gridBagConstraints3);
 	}
 
@@ -309,8 +309,10 @@ public class RunTasksStep extends PanelWizardStep implements
 					try {
 						task.execute(this.model.getState());
 					} catch (Exception ex) {
-						setException(ex);
-						break;
+						if (task.isAbortOnError()) {
+							setException(ex);
+							break;
+						}
 					}
 				} else {
 					logger.info("Skipping task " + task.getName());
@@ -353,16 +355,27 @@ public class RunTasksStep extends PanelWizardStep implements
 	}
 
 	class TextAreaOutputStream extends OutputStream {
+		
 		private JTextArea textControl;
+		private int maxLength = 10000;
 
 		public TextAreaOutputStream(JTextArea control) {
 			textControl = control;
+		}
+		
+		public TextAreaOutputStream(JTextArea control, int maxLength) {
+			textControl = control;
+			this.maxLength = maxLength;
 		}
 
 		public void write(final int b) throws IOException {
 
 			textControl.append(String.valueOf((char) b));
-			textControl.setCaretPosition(textControl.getDocument().getLength());
+			int len = textControl.getDocument().getLength();
+			textControl.setCaretPosition(len);
+			if(len > this.maxLength){
+				textControl.setText("");
+			}
 
 		}
 	}

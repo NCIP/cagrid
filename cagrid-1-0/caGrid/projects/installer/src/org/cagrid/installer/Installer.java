@@ -33,11 +33,13 @@ import org.cagrid.installer.steps.RunTasksStep;
 import org.cagrid.installer.steps.SelectComponentStep;
 import org.cagrid.installer.steps.SelectInstallationTypeStep;
 import org.cagrid.installer.steps.ServicePropertiesFileEditorStep;
+import org.cagrid.installer.steps.SpecifyTomcatPortsStep;
 import org.cagrid.installer.steps.options.BooleanPropertyConfigurationOption;
 import org.cagrid.installer.steps.options.ListPropertyConfigurationOption;
 import org.cagrid.installer.steps.options.PasswordPropertyConfigurationOption;
 import org.cagrid.installer.steps.options.TextPropertyConfigurationOption;
 import org.cagrid.installer.steps.options.ListPropertyConfigurationOption.LabelValuePair;
+import org.cagrid.installer.tasks.CaGridInstallerAntTask;
 import org.cagrid.installer.tasks.CompileCaGridTask;
 import org.cagrid.installer.tasks.ConditionalTask;
 import org.cagrid.installer.tasks.ConfigureDorianTask;
@@ -52,6 +54,7 @@ import org.cagrid.installer.tasks.DeployServiceTask;
 import org.cagrid.installer.tasks.DownloadFileTask;
 import org.cagrid.installer.tasks.GenerateCATask;
 import org.cagrid.installer.tasks.GenerateServiceCredsTask;
+import org.cagrid.installer.tasks.PauseTask;
 import org.cagrid.installer.tasks.SaveSettingsTask;
 import org.cagrid.installer.tasks.UnzipInstallTask;
 import org.cagrid.installer.util.Utils;
@@ -516,6 +519,37 @@ public class Installer {
 
 						}));
 
+//		ConfigureTargetGridTask configTargetGridTask1 = new ConfigureTargetGridTask(
+//				this.model.getMessage("configuring.target.grid"), "");
+//		configTargetGridTask1.setAbortOnError(false);
+//		installDependenciesStep.getTasks().add(
+//				new ConditionalTask(configTargetGridTask1, new Condition() {
+//
+//					public boolean evaluate(WizardModel m) {
+//						CaGridInstallerModel model = (CaGridInstallerModel) m;
+//						return "true".equals(model.getState().get(
+//								Constants.INSTALL_CAGRID));
+//					}
+//
+//				}));
+
+		/**
+		 * JAP: I guess the Progress.waitFor() method doesn't work as advertised. Without
+		 * this pause, the following ConfigureTargetGridTask will sometimes fail, with
+		 * Ant-related exceptions thrown.  
+		 */
+		installDependenciesStep.getTasks().add(
+				new ConditionalTask(new PauseTask("Pausing for 10 seconds...", "", 10000),
+						new Condition() {
+
+							public boolean evaluate(WizardModel m) {
+								CaGridInstallerModel model = (CaGridInstallerModel) m;
+								return "true".equals(model.getState().get(
+										Constants.INSTALL_CAGRID));
+							}
+
+						}));
+
 		installDependenciesStep.getTasks().add(
 				new ConditionalTask(new ConfigureTargetGridTask(this.model
 						.getMessage("configuring.target.grid"), ""),
@@ -528,6 +562,8 @@ public class Installer {
 							}
 
 						}));
+
+
 
 		installDependenciesStep.getTasks().add(
 				new ConditionalTask(
@@ -551,6 +587,36 @@ public class Installer {
 						Constants.USE_SECURE_CONTAINER, this.model
 								.getMessage("yes"), false, false));
 		this.model.add(checkDeployGlobusSecureStep);
+		incrementProgress();
+
+		// Allows user to specify Tomcat ports
+		SpecifyTomcatPortsStep tomcatPortsStep = new SpecifyTomcatPortsStep(
+				this.model.getMessage("tomcat.specify.ports.title"), this.model
+						.getMessage("tomcat.specify.ports.desc"));
+		tomcatPortsStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.TOMCAT_SHUTDOWN_PORT, this.model
+								.getMessage("tomcat.shutdown.port"),
+						getProperty(this.model.getState(),
+								Constants.TOMCAT_SHUTDOWN_PORT, "8005"), true));
+		tomcatPortsStep.getOptions().add(
+				new TextPropertyConfigurationOption(Constants.TOMCAT_HTTP_PORT,
+						this.model.getMessage("tomcat.http.port"), getProperty(
+								this.model.getState(),
+								Constants.TOMCAT_HTTP_PORT, "8080"), true));
+		tomcatPortsStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.TOMCAT_HTTPS_PORT, this.model
+								.getMessage("tomcat.https.port"), getProperty(
+								this.model.getState(),
+								Constants.TOMCAT_HTTPS_PORT, "8443"), true));
+		this.model.add(tomcatPortsStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.getMessage("container.type.tomcat").equals(
+						model.getState().get(Constants.CONTAINER_TYPE));
+			}
+		});
 		incrementProgress();
 
 		// Checks if service cert is present
@@ -779,7 +845,7 @@ public class Installer {
 		ConfigureDorianDBStep dorianDbInfoStep = new ConfigureDorianDBStep(
 				this.model.getMessage("dorian.db.config.title"), this.model
 						.getMessage("dorian.db.config.desc"));
-		addDBConfigPropertyOptions(dorianDbInfoStep, "dorian.");
+		addDBConfigPropertyOptions(dorianDbInfoStep, "dorian.", "dorian");
 		this.model.add(dorianDbInfoStep, new Condition() {
 
 			public boolean evaluate(WizardModel m) {
@@ -1188,20 +1254,51 @@ public class Installer {
 		});
 		incrementProgress();
 
+		DeployPropertiesFileEditorStep editGTSDeployPropertiesStep = new DeployPropertiesFileEditorStep(
+				"gts", this.model
+						.getMessage("gts.edit.deploy.properties.title"),
+				this.model.getMessage("gts.edit.deploy.properties.desc"),
+				this.model.getMessage("edit.properties.property.name"),
+				this.model.getMessage("edit.properties.property.value"));
+		this.model.add(editGTSDeployPropertiesStep);
+
 		// Configures the GTS database
-		// ConfigureGTSDBStep gtsDbInfoStep = new ConfigureGTSDBStep(this.model
-		// .getMessage("gts.db.config.title"), this.model
-		// .getMessage("gts.db.config.desc"));
-		// addDBConfigPropertyOptions(gtsDbInfoStep, "gts.");
-		// this.model.add(gtsDbInfoStep, new Condition() {
-		//
-		// public boolean evaluate(WizardModel m) {
-		// CaGridInstallerModel model = (CaGridInstallerModel) m;
-		// return "true".equals(model.getState()
-		// .get(Constants.INSTALL_GTS));
-		// }
-		// });
-		// incrementProgress();
+		ConfigureGTSDBStep gtsDbInfoStep = new ConfigureGTSDBStep(this.model
+				.getMessage("gts.db.config.title"), this.model
+				.getMessage("gts.db.config.desc"));
+		addDBConfigPropertyOptions(gtsDbInfoStep, "gts.", "gts");
+		this.model.add(gtsDbInfoStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return "true".equals(model.getState()
+						.get(Constants.INSTALL_GTS));
+			}
+		});
+		incrementProgress();
+
+		PropertyConfigurationStep gtsAddAdminStep = new PropertyConfigurationStep(
+				this.model.getMessage("gts.add.admin.title"), this.model
+						.getMessage("gts.add.admin.desc"));
+		gtsAddAdminStep
+				.getOptions()
+				.add(
+						new TextPropertyConfigurationOption(
+								Constants.GTS_ADMIN_IDENT,
+								this.model.getMessage("gts.admin.ident"),
+								getProperty(this.model.getState(),
+										Constants.GTS_ADMIN_IDENT,
+										"/O=org/OU=unit/OU=User Group/OU=Dorian IdP/CN=manager"),
+								true));
+		this.model.add(gtsAddAdminStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return "true".equals(model.getState()
+						.get(Constants.INSTALL_GTS));
+			}
+		});
+		incrementProgress();
 
 		// Performs the installation
 		RunTasksStep installStep = new RunTasksStep(this.model
@@ -1253,6 +1350,7 @@ public class Installer {
 							}
 
 						}));
+
 		installStep.getTasks().add(
 				new ConditionalTask(new ConfigureGlobusTask(this.model
 						.getMessage("configuring.globus.title"), ""),
@@ -1298,30 +1396,30 @@ public class Installer {
 
 						}));
 
-		// installStep.getTasks().add(
-		// new ConditionalTask(new ConfigureGTSTask(this.model
-		// .getMessage("configuring.gts.title"), ""),
-		// new Condition() {
-		//
-		// public boolean evaluate(WizardModel m) {
-		// CaGridInstallerModel model = (CaGridInstallerModel) m;
-		// return "true".equals(model.getState().get(
-		// Constants.INSTALL_GTS));
-		// }
-		//
-		// }));
-		// installStep.getTasks().add(
-		// new ConditionalTask(new DeployServiceTask(this.model
-		// .getMessage("installing.gts.title"), "", "gts",
-		// this.model), new Condition() {
-		//
-		// public boolean evaluate(WizardModel m) {
-		// CaGridInstallerModel model = (CaGridInstallerModel) m;
-		// return "true".equals(model.getState().get(
-		// Constants.INSTALL_GTS));
-		// }
-		//
-		// }));
+		installStep.getTasks().add(
+				new ConditionalTask(new ConfigureGTSTask(this.model
+						.getMessage("configuring.gts.title"), ""),
+						new Condition() {
+
+							public boolean evaluate(WizardModel m) {
+								CaGridInstallerModel model = (CaGridInstallerModel) m;
+								return "true".equals(model.getState().get(
+										Constants.INSTALL_GTS));
+							}
+
+						}));
+		installStep.getTasks().add(
+				new ConditionalTask(new DeployServiceTask(this.model
+						.getMessage("installing.gts.title"), "", "gts",
+						this.model), new Condition() {
+
+					public boolean evaluate(WizardModel m) {
+						CaGridInstallerModel model = (CaGridInstallerModel) m;
+						return "true".equals(model.getState().get(
+								Constants.INSTALL_GTS));
+					}
+
+				}));
 
 		// }
 		installStep.getTasks().add(
@@ -1338,7 +1436,7 @@ public class Installer {
 	}
 
 	private void addDBConfigPropertyOptions(PropertyConfigurationStep step,
-			String propPrefix) {
+			String propPrefix, String dbIdDefault) {
 		step.getOptions().add(
 				new TextPropertyConfigurationOption(propPrefix + "db.host",
 						this.model.getMessage(propPrefix + "db.host"),
@@ -1353,7 +1451,7 @@ public class Installer {
 				new TextPropertyConfigurationOption(propPrefix + "db.id",
 						this.model.getMessage(propPrefix + "db.id"),
 						getProperty(this.model.getState(),
-								propPrefix + "db.id", "dorian"), true));
+								propPrefix + "db.id", dbIdDefault), true));
 		step.getOptions().add(
 				new TextPropertyConfigurationOption(propPrefix + "db.username",
 						this.model.getMessage(propPrefix + "db.username"),

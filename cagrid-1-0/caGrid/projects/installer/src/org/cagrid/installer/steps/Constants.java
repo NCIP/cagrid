@@ -258,5 +258,17 @@ public abstract class Constants {
 
 	public static final String SERVICE_DEST_DIR = "service.dest.dir";
 
+	public static final String GTS_ADMIN_IDENT = "gts.admin.ident";
+
+	public static final String TOMCAT_SHUTDOWN_PORT = "tomcat.shutdown.port";
+
+	public static final String TOMCAT_HTTP_PORT = "tomcat.http.port";
+
+	public static final String TOMCAT_HTTPS_PORT = "tomcat.https.port";
+
+	public static final String TOMCAT_OLD_HTTP_PORT = "tomcat.old.http.port";
+
+	public static final String TOMCAT_OLD_HTTPS_PORT = "tomcat.old.https.port";
+
 	
 }
