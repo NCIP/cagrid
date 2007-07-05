@@ -141,7 +141,7 @@ public class Utils {
 				+ "/CA.0"));
 		String line = null;
 		while ((line = in.readLine()) != null) {
-			out.write(line);
+			out.write(line + "\n");
 		}
 		in.close();
 		out.flush();
