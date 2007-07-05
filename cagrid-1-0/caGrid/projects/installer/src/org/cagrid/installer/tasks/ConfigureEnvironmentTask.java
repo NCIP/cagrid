@@ -30,19 +30,16 @@ public class ConfigureEnvironmentTask extends BasicTask {
 	protected Object internalExecute(Map state) throws Exception {
 		state.put(Constants.GLOBUS_DIR_PATH, state.get(Constants.GLOBUS_HOME));
 		state.put(Constants.TOMCAT_DIR_PATH, state.get(Constants.TOMCAT_HOME));
-		
-//		state.put(Constants.GRIDCA_BUILD_FILE_PATH, state
-//				.get(Constants.CAGRID_HOME)
-//				+ "/projects/gridca/build.xml");
 
-		int caDaysValid = Integer.valueOf((String) state
-				.get(Constants.CA_DAYS_VALID));
-		state.put(Constants.SERVICE_CERT_DAYS_VALID, String
-				.valueOf(caDaysValid - 1));
+		// state.put(Constants.GRIDCA_BUILD_FILE_PATH, state
+		// .get(Constants.CAGRID_HOME)
+		// + "/projects/gridca/build.xml");
 
 		if ("true".equals(state.get(Constants.USE_SECURE_CONTAINER))) {
+
 			if (!"true".equals(state.get(Constants.SERVICE_CERT_PRESENT))) {
 				state.put(Constants.GENERATE_SERVICE_CERT, "true");
+				
 				if (!"true".equals(state.get(Constants.CA_CERT_PRESENT))) {
 					state.put(Constants.GENERATE_CA_CERT, "true");
 				}

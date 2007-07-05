@@ -18,6 +18,7 @@ public class Main {
 		Installer installer = new Installer();
 		installer.initialize();
 		installer.run();
+		
 	}
 
 }

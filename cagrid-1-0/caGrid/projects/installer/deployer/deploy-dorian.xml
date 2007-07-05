@@ -353,5 +353,21 @@
 		</xmltask>
 
 	</target>
+	
+    <target name="deployTomcatEndorsedJars">
+            <copy todir="${tomcat.home}/common/endorsed" overwrite="true">
+                    <fileset dir="${service.dest.dir}/dorian/ext/endorsed/lib">
+                            <include name="*.jar" />
+                    </fileset>
+            </copy>
+    </target>
+
+    <target name="deployGlobusEndorsedJars">
+            <copy todir="${globus.home}/endorsed" overwrite="true">
+                    <fileset dir="${service.dest.dir}/dorian/ext/endorsed/lib">
+                            <include name="*.jar" />
+                    </fileset>
+            </copy>
+    </target>	
 
 </project>

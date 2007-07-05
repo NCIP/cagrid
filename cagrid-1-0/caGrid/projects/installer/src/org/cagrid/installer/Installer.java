@@ -61,6 +61,8 @@ import org.cagrid.installer.util.Utils;
 import org.cagrid.installer.validator.CreateFilePermissionValidator;
 import org.cagrid.installer.validator.DBConnectionValidator;
 import org.cagrid.installer.validator.DorianIdpInfoValidator;
+import org.cagrid.installer.validator.KeyAccessValidator;
+import org.cagrid.installer.validator.PathExistsValidator;
 import org.pietschy.wizard.Wizard;
 import org.pietschy.wizard.WizardModel;
 import org.pietschy.wizard.models.Condition;
@@ -175,7 +177,7 @@ public class Installer {
 				handleException("Error loading default properties", ex);
 			}
 			incrementProgress();
-			
+
 			initSteps(defaultState);
 
 			while (this.initProgress < TOTAL_INIT_STEPS) {
@@ -246,6 +248,8 @@ public class Installer {
 		this.model = new DynamicStatefulWizardModel(defaultState);
 
 		// Clear some flags
+		this.model.getState().remove(Constants.DORIAN_USE_GEN_CA);
+		this.model.getState().remove(Constants.DORIAN_CA_PRESENT);
 		this.model.getState().remove(Constants.GENERATE_CA_CERT);
 		this.model.getState().remove(Constants.GENERATE_SERVICE_CERT);
 		this.model.getState().remove(Constants.INSTALL_AUTHN_SVC);
@@ -519,36 +523,37 @@ public class Installer {
 
 						}));
 
-//		ConfigureTargetGridTask configTargetGridTask1 = new ConfigureTargetGridTask(
-//				this.model.getMessage("configuring.target.grid"), "");
-//		configTargetGridTask1.setAbortOnError(false);
-//		installDependenciesStep.getTasks().add(
-//				new ConditionalTask(configTargetGridTask1, new Condition() {
-//
-//					public boolean evaluate(WizardModel m) {
-//						CaGridInstallerModel model = (CaGridInstallerModel) m;
-//						return "true".equals(model.getState().get(
-//								Constants.INSTALL_CAGRID));
-//					}
-//
-//				}));
+		// ConfigureTargetGridTask configTargetGridTask1 = new
+		// ConfigureTargetGridTask(
+		// this.model.getMessage("configuring.target.grid"), "");
+		// configTargetGridTask1.setAbortOnError(false);
+		// installDependenciesStep.getTasks().add(
+		// new ConditionalTask(configTargetGridTask1, new Condition() {
+		//
+		// public boolean evaluate(WizardModel m) {
+		// CaGridInstallerModel model = (CaGridInstallerModel) m;
+		// return "true".equals(model.getState().get(
+		// Constants.INSTALL_CAGRID));
+		// }
+		//
+		// }));
 
 		/**
-		 * JAP: I guess the Progress.waitFor() method doesn't work as advertised. Without
-		 * this pause, the following ConfigureTargetGridTask will sometimes fail, with
-		 * Ant-related exceptions thrown.  
+		 * JAP: I guess the Progress.waitFor() method doesn't work as
+		 * advertised. Without this pause, the following ConfigureTargetGridTask
+		 * will sometimes fail, with Ant-related exceptions thrown.
 		 */
 		installDependenciesStep.getTasks().add(
-				new ConditionalTask(new PauseTask("Pausing for 10 seconds...", "", 10000),
-						new Condition() {
+				new ConditionalTask(new PauseTask("Pausing for 10 seconds...",
+						"", 10000), new Condition() {
 
-							public boolean evaluate(WizardModel m) {
-								CaGridInstallerModel model = (CaGridInstallerModel) m;
-								return "true".equals(model.getState().get(
-										Constants.INSTALL_CAGRID));
-							}
+					public boolean evaluate(WizardModel m) {
+						CaGridInstallerModel model = (CaGridInstallerModel) m;
+						return "true".equals(model.getState().get(
+								Constants.INSTALL_CAGRID));
+					}
 
-						}));
+				}));
 
 		installDependenciesStep.getTasks().add(
 				new ConditionalTask(new ConfigureTargetGridTask(this.model
@@ -562,8 +567,6 @@ public class Installer {
 							}
 
 						}));
-
-
 
 		installDependenciesStep.getTasks().add(
 				new ConditionalTask(
@@ -610,6 +613,7 @@ public class Installer {
 								.getMessage("tomcat.https.port"), getProperty(
 								this.model.getState(),
 								Constants.TOMCAT_HTTPS_PORT, "8443"), true));
+		//TODO: add validation
 		this.model.add(tomcatPortsStep, new Condition() {
 			public boolean evaluate(WizardModel m) {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
@@ -674,14 +678,16 @@ public class Installer {
 				new PasswordPropertyConfigurationOption(Constants.CA_KEY_PWD,
 						this.model.getMessage("ca.cert.info.key.pwd"),
 						this.model.getState().get(Constants.CA_KEY_PWD), true));
-		// caCertInfoStep.getValidators().add(new
-		// PathExistsValidator(Constants.CA_CERT_PATH,
-		// this.model.getMessage("error.cert.file.not.found")));
-		// caCertInfoStep.getValidators().add(new
-		// PathExistsValidator(Constants.CA_KEY_PATH,
-		// this.model.getMessage("error.key.file.not.found")));
-
-		// TODO: add validation
+		caCertInfoStep.getValidators().add(
+				new PathExistsValidator(Constants.CA_CERT_PATH, this.model
+						.getMessage("error.cert.file.not.found")));
+		caCertInfoStep.getValidators().add(
+				new PathExistsValidator(Constants.CA_KEY_PATH, this.model
+						.getMessage("error.key.file.not.found")));
+		caCertInfoStep.getValidators().add(
+				new KeyAccessValidator(Constants.CA_KEY_PATH,
+						Constants.CA_KEY_PWD, this.model
+								.getMessage("error.key.no.access")));
 		this.model.add(caCertInfoStep, new Condition() {
 
 			public boolean evaluate(WizardModel m) {
@@ -810,7 +816,16 @@ public class Installer {
 								.getMessage("service.cert.info.key.pwd"),
 						this.model.getState().get(Constants.SERVICE_KEY_PWD),
 						true));
-		// TODO: add validation
+		serviceCertInfoStep.getValidators().add(
+				new PathExistsValidator(Constants.SERVICE_CERT_PATH, this.model
+						.getMessage("error.cert.file.not.found")));
+		serviceCertInfoStep.getValidators().add(
+				new PathExistsValidator(Constants.SERVICE_KEY_PATH, this.model
+						.getMessage("error.key.file.not.found")));
+		serviceCertInfoStep.getValidators().add(
+				new KeyAccessValidator(Constants.SERVICE_KEY_PATH,
+						Constants.SERVICE_KEY_PWD, this.model
+								.getMessage("error.key.no.access")));
 		this.model.add(serviceCertInfoStep, new Condition() {
 
 			public boolean evaluate(WizardModel m) {
@@ -1138,7 +1153,16 @@ public class Installer {
 								this.model.getState().get(
 										Constants.DORIAN_CA_KEY_PATH), true));
 		addCommonDorianCAConfigFields(dorianCaCertInfoStep);
-		// TODO: add validator
+		dorianCaCertInfoStep.getValidators().add(
+				new PathExistsValidator(Constants.DORIAN_CA_CERT_PATH, this.model
+						.getMessage("error.cert.file.not.found")));
+		dorianCaCertInfoStep.getValidators().add(
+				new PathExistsValidator(Constants.DORIAN_CA_KEY_PATH, this.model
+						.getMessage("error.key.file.not.found")));
+		dorianCaCertInfoStep.getValidators().add(
+				new KeyAccessValidator(Constants.DORIAN_CA_KEY_PATH,
+						Constants.DORIAN_CA_KEY_PWD, this.model
+								.getMessage("error.key.no.access")));
 		this.model.add(dorianCaCertInfoStep, new Condition() {
 
 			public boolean evaluate(WizardModel m) {

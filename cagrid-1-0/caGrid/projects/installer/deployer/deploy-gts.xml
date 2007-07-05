@@ -26,33 +26,33 @@
 		<xmltask source="${config.file}" dest="${config.file}">
 			<replace path="/gts/resource/gts-config/gts-internal-id">
 				<![CDATA[
-					<gts-internal-id>${db.name}</gts-internal-id>
+					<gts-internal-id>${gts.db.id}</gts-internal-id>
 				]]>
 
 			</replace>
 			<replace path="/gts/resource/gts-config/database/host">
 				<![CDATA[
-					<host>${db.host}</host>
+					<host>${gts.db.host}</host>
 				]]>
 
 			</replace>
 			<replace path="/gts/resource/gts-config/database/port">
 				<![CDATA[
-					<port>${db.port}</port>
+					<port>${gts.db.port}</port>
 				]]>
 
 			</replace>
 			<replace
 				path="/gts/resource/gts-config/database/username">
 				<![CDATA[
-					<username>${db.username}</username>
+					<username>${gts.db.username}</username>
 				]]>
 
 			</replace>
 			<replace
 				path="/gts/resource/gts-config/database/password">
 				<![CDATA[
-					<password>${db.password}</password>
+					<password>${gts.db.password}</password>
 				]]>
 
 			</replace>

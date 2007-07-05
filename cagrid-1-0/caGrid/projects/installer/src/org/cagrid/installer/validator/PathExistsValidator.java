@@ -34,7 +34,7 @@ public class PathExistsValidator implements Validator {
 		if(propertyValue != null){
 			File f = new File(propertyValue);
 			if(!f.exists()){
-				throw new InvalidStateException(this.message);
+				throw new InvalidStateException(this.message + " - " + f.getAbsolutePath());
 			}
 		}
 	}
