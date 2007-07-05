@@ -3,6 +3,7 @@
  */
 package org.cagrid.installer.steps;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.io.File;
@@ -89,6 +90,7 @@ public abstract class AbstractPropertiesFileEditorStep extends PanelWizardStep
 		tablePanel.setLayout(new GridBagLayout());
 		this.add(tablePanel, gridBagConstraints1);
 		this.table = new JTable();
+		this.table.setPreferredScrollableViewportSize(new Dimension(500, 200));		
 		tablePanel.add(new JScrollPane(this.table));
 	}
 

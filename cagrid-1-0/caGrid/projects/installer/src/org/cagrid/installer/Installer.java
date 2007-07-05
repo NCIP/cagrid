@@ -175,7 +175,7 @@ public class Installer {
 				handleException("Error loading default properties", ex);
 			}
 			incrementProgress();
-
+			
 			initSteps(defaultState);
 
 			while (this.initProgress < TOTAL_INIT_STEPS) {

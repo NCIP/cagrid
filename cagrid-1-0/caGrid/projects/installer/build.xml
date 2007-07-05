@@ -123,6 +123,7 @@
 				<include name="commons-logging*.jar"/>
 				<include name="log4j*.jar"/>
 				<include name="xmltask*.jar"/>
+				<include name="tools.jar"/>
 			</fileset>
 			<fileset dir="ext/lib">
 				<include name="caGrid*wizard.jar"/>

@@ -111,16 +111,35 @@ public class AntTask extends BasicTask {
 			String target, Properties sysProps, String[] envp,
 			String propertiesFile) throws IOException, InterruptedException {
 
+		
+		//Check it tools.jar is available
+		File toolsJar = new File(System.getProperty("java.home") + "/lib/tools.jar");
+		if(!toolsJar.exists()){
+			logger.info("tools.jar not found at '" + toolsJar.getAbsolutePath() + "'. Using packaged tools.jar");
+			toolsJar = new File("lib/tools.jar");
+		}
+		
 		// build command
 		ArrayList<String> cmd = new ArrayList<String>();
 		String antHome = (String) state.get(Constants.ANT_HOME);
-		String java = "java";
+		
+		boolean isWindows = false;
 		if (System.getProperty("os.name").toLowerCase().indexOf("windows") != -1) {
+			isWindows = true;
+		}
+		
+		String java = "java";
+		if(isWindows){
 			java += ".exe";
 		}
 		cmd.add(java);
 		cmd.add("-classpath");
-		cmd.add(antHome + "/lib/ant-launcher.jar");
+		if(isWindows){
+			cmd.add(toolsJar.getAbsolutePath() + ";" + antHome + "/lib/ant-launcher.jar");
+		}else{
+			cmd.add(toolsJar.getAbsolutePath() + ":" + antHome + "/lib/ant-launcher.jar");
+		}
+		
 		cmd.add("-Dant.home=" + antHome);
 		
 
