@@ -31,22 +31,18 @@ public class ConfigureEnvironmentTask extends BasicTask {
 		state.put(Constants.GLOBUS_DIR_PATH, state.get(Constants.GLOBUS_HOME));
 		state.put(Constants.TOMCAT_DIR_PATH, state.get(Constants.TOMCAT_HOME));
 
-		// state.put(Constants.GRIDCA_BUILD_FILE_PATH, state
-		// .get(Constants.CAGRID_HOME)
-		// + "/projects/gridca/build.xml");
-
 		if ("true".equals(state.get(Constants.USE_SECURE_CONTAINER))) {
 
-			if (!"true".equals(state.get(Constants.SERVICE_CERT_PRESENT))) {
-				state.put(Constants.GENERATE_SERVICE_CERT, "true");
-				
-				if (!"true".equals(state.get(Constants.CA_CERT_PRESENT))) {
-					state.put(Constants.GENERATE_CA_CERT, "true");
-				}
-			} else {
-				state.put(Constants.GENERATE_SERVICE_CERT, "false");
-				state.put(Constants.GENERATE_CA_CERT, "false");
-			}
+//			if (!"true".equals(state.get(Constants.SERVICE_CERT_PRESENT))) {
+//				state.put(Constants.GENERATE_SERVICE_CERT, "true");
+//				
+//				if (!"true".equals(state.get(Constants.CA_CERT_PRESENT))) {
+//					state.put(Constants.GENERATE_CA_CERT, "true");
+//				}
+//			} else {
+//				state.put(Constants.GENERATE_SERVICE_CERT, "false");
+//				state.put(Constants.GENERATE_CA_CERT, "false");
+//			}
 
 			state.put(Constants.TOMCAT_KEY, state
 					.get(Constants.SERVICE_KEY_PATH));

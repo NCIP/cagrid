@@ -273,6 +273,20 @@ public class RunTasksStep extends PanelWizardStep implements
 	public void setTasks(List<Task> tasks) {
 		this.tasks = tasks;
 	}
+	
+	public int getTasksCount(CaGridInstallerModel model){
+		int count = 0;
+		for(Task t : getTasks()){
+			if(t instanceof Condition){
+				if(((Condition)t).evaluate(model)){
+					count++;
+				}
+			}else{
+				count++;
+			}
+		}
+		return count;
+	}
 
 	class Worker extends Thread {
 

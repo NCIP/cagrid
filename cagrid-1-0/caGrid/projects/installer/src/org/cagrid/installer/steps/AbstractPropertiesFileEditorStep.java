@@ -96,12 +96,7 @@ public abstract class AbstractPropertiesFileEditorStep extends PanelWizardStep
 
 	public void prepare() {
 
-		Properties props = new Properties();
-		try {
-			props.load(new FileInputStream(getPropertyFilePath()));
-		} catch (Exception ex) {
-			throw new RuntimeException("Error loading props", ex);
-		}
+		Properties props = loadProperties();
 		Object[][] data = new Object[props.size()][2];
 		Enumeration propNames = props.propertyNames();
 		int idx = 0;
@@ -131,12 +126,7 @@ public abstract class AbstractPropertiesFileEditorStep extends PanelWizardStep
 			props.setProperty((String) table.getValueAt(i, 0), (String) table
 					.getValueAt(i, 1));
 		}
-		try {
-			props.store(new FileOutputStream(getPropertyFilePath()), "");
-		} catch (Exception ex) {
-			throw new InvalidStateException("Error saving properties to '"
-					+ getPropertyFilePath() + "': " + ex.getMessage(), ex);
-		}
+		storeProperties(props);
 	}
 
 	/*
@@ -146,16 +136,28 @@ public abstract class AbstractPropertiesFileEditorStep extends PanelWizardStep
 	 */
 	public boolean evaluate(WizardModel m) {
 		boolean b = false;
+		Properties props = loadProperties();
+		b = props.size() > 0;
+		if (!b) {
+			logger.debug(this.getName() + " will not be displayed");
+		} else {
+			logger.debug(this.getName() + " will be displayed");
+		}
+		return b;
+	}
+	
+	protected Properties loadProperties(){
+		Properties props = new Properties();
 		String path = getPropertyFilePath();
 		logger.info("Checking if '" + path
 				+ "' exists and contains properties.");
 		File f = new File(getPropertyFilePath());
 		if (f.exists()) {
 			try {
-				Properties p = new Properties();
-				p.load(new FileInputStream(f));
-				logger.info("file contains " + p.size() + " properties");
-				b = p.size() > 0;
+				props = new Properties();
+				props.load(new FileInputStream(f));
+				logger.info("file contains " + props.size() + " properties");
+				
 			} catch (Exception ex) {
 				throw new RuntimeException("Error loading properties file '"
 						+ f.getAbsolutePath() + "': " + ex.getMessage(), ex);
@@ -163,12 +165,16 @@ public abstract class AbstractPropertiesFileEditorStep extends PanelWizardStep
 		} else {
 			logger.info("'" + path + "' does not exist.");
 		}
-		if (!b) {
-			logger.debug(this.getName() + " will not be displayed");
-		} else {
-			logger.debug(this.getName() + " will be displayed");
-		}
-		return b;
+		return props;
+	}
+	
+	protected void storeProperties(Properties props) throws InvalidStateException {
+		try {
+			props.store(new FileOutputStream(getPropertyFilePath()), "");
+		} catch (Exception ex) {
+			throw new InvalidStateException("Error saving properties to '"
+					+ getPropertyFilePath() + "': " + ex.getMessage(), ex);
+		}	
 	}
 
 }

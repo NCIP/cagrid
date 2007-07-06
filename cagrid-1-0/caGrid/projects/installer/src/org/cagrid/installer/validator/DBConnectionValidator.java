@@ -19,23 +19,18 @@ import org.pietschy.wizard.InvalidStateException;
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
  *
  */
-public class DBConnectionValidator implements Validator {
+public abstract class DBConnectionValidator implements Validator {
 	
 	private static final Log logger = LogFactory.getLog(DBConnectionValidator.class);
 	
 	
-	private String hostProp;
-	private String portProp;
-	private String database;
+
 	private String usernameProp;
 	private String passwordProp;
 	private String query;
 	private String message;
 	
-	public DBConnectionValidator(String hostProp, String portProp, String database, String usernameProp, String passwordProp, String query, String message){
-		this.hostProp = hostProp;
-		this.portProp = portProp;
-		this.database = database;
+	public DBConnectionValidator(String usernameProp, String passwordProp, String query, String message){
 		this.usernameProp = usernameProp;
 		this.passwordProp = passwordProp;
 		this.query = query;
@@ -47,38 +42,38 @@ public class DBConnectionValidator implements Validator {
 	 */
 	public void validate(Map state) throws InvalidStateException {
 		
-		String url = System.getProperty("user.dir") + "/" + state.get(Constants.JDBC_DRIVER_PATH);
+		String url = getJdbcDriverJarUrl(state);
 		try {
 			logger.info("Adding " + url + " to classpath.");
 			Utils.addToClassPath(url);
 		} catch (Exception ex) {
 			String msg = "Error loading " + url + ": " + ex.getMessage();
 			logger.error(msg, ex);
-			throw new InvalidStateException(this.message);
+			throw new InvalidStateException(getMessage());
 		}
-		String driverClass = (String)state.get(Constants.JDBC_DRIVER_CLASSNAME);
+		
+		String driverClass = getJdbcDriver(state);
 		try{
 			logger.info("Loading driver: " + driverClass);
 			Class.forName(driverClass);
 		}catch(Exception ex){
 			String msg = "Error loading JDBC driver: " + ex.getMessage(); 
 			logger.error(msg);
-			throw new InvalidStateException(this.message);
+			throw new InvalidStateException(getMessage());
 		}
-		String host = (String)state.get(this.hostProp);
-		String port = (String)state.get(this.portProp);
-		String username = (String)state.get(this.usernameProp);
-		String password = (String)state.get(this.passwordProp);
-		String dbUrl = "jdbc:mysql://" + host + ":" + port +  "/" + this.database;
+
+		String username = (String)state.get(getUsernameProp());
+		String password = (String)state.get(getPasswordProp());
+		String dbUrl = getJdbcUrl(state);
 		
 		Connection conn = null;
 		try{
 			conn = DriverManager.getConnection(dbUrl, username, password);
 			Statement stmt = conn.createStatement();
-			stmt.executeQuery(this.query);
+			stmt.executeQuery(getQuery());
 		}catch(Exception ex){
 			logger.error("Error connecting to " + dbUrl + ": " + ex.getMessage(), ex);
-			throw new InvalidStateException(this.message);
+			throw new InvalidStateException(getMessage());
 		}finally{
 			if(conn != null){
 				try{
@@ -88,6 +83,44 @@ public class DBConnectionValidator implements Validator {
 				}
 			}
 		}
+	}
+	
+	protected abstract String getJdbcUrl(Map state);
+
+	protected abstract String getJdbcDriverJarUrl(Map state);
+	
+	protected abstract String getJdbcDriver(Map state);
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public String getPasswordProp() {
+		return passwordProp;
+	}
+
+	public void setPasswordProp(String passwordProp) {
+		this.passwordProp = passwordProp;
+	}
+
+	public String getQuery() {
+		return query;
+	}
+
+	public void setQuery(String query) {
+		this.query = query;
+	}
+
+	public String getUsernameProp() {
+		return usernameProp;
+	}
+
+	public void setUsernameProp(String usernameProp) {
+		this.usernameProp = usernameProp;
 	}
 
 }

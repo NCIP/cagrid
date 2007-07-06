@@ -12,25 +12,30 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.Icon;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
+import javax.swing.filechooser.FileFilter;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.installer.model.CaGridInstallerModel;
 import org.cagrid.installer.steps.options.BooleanPropertyConfigurationOption;
+import org.cagrid.installer.steps.options.FilePropertyConfigurationOption;
 import org.cagrid.installer.steps.options.ListPropertyConfigurationOption;
 import org.cagrid.installer.steps.options.PasswordPropertyConfigurationOption;
 import org.cagrid.installer.steps.options.PropertyConfigurationOption;
@@ -115,6 +120,8 @@ public class PropertyConfigurationStep extends PanelWizardStep {
 		for (PropertyConfigurationOption option : getOptions()) {
 			if (option instanceof PasswordPropertyConfigurationOption) {
 				addPasswordOption((PasswordPropertyConfigurationOption) option);
+			}else if(option instanceof FilePropertyConfigurationOption){
+				addFileOption((FilePropertyConfigurationOption)option);
 			} else if (option instanceof TextPropertyConfigurationOption) {
 				addTextOption((TextPropertyConfigurationOption) option);
 			} else if (option instanceof ListPropertyConfigurationOption) {
@@ -215,7 +222,31 @@ public class PropertyConfigurationStep extends PanelWizardStep {
 		addOption(option.getName(), option.getDescription(), valueField);
 	}
 
+	protected void addFileOption(final FilePropertyConfigurationOption option) {
+		final JButton control = new JButton(option.getBrowseLabel());
+		final PropertyConfigurationStep window = this;
+		control.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent event) {
+				JFileChooser fc = new JFileChooser();
+				fc.setFileFilter(new ExtensionFilter(option.getExtensions()));
+				int returnVal = fc.showOpenDialog(window);
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					JTextField valueField = (JTextField) window.getOption(option.getName());
+					valueField.setText(fc.getSelectedFile().getAbsolutePath());
+				}
+			}
+
+		});
+		addTextOption(option, control);
+	}
+
 	protected void addTextOption(TextPropertyConfigurationOption option) {
+		addTextOption(option, null);
+	}
+
+	protected void addTextOption(TextPropertyConfigurationOption option,
+			Component control) {
 		String defaultValue = (String) this.model.getState().get(
 				option.getName());
 		if (defaultValue == null) {
@@ -241,7 +272,8 @@ public class PropertyConfigurationStep extends PanelWizardStep {
 
 			});
 		}
-		addOption(option.getName(), option.getDescription(), valueField);
+		addOption(option.getName(), option.getDescription(), valueField,
+				control);
 	}
 
 	protected void addPasswordOption(PasswordPropertyConfigurationOption option) {
@@ -276,12 +308,20 @@ public class PropertyConfigurationStep extends PanelWizardStep {
 
 	protected void addOption(String key, String description,
 			Component valueField) {
+		addOption(key, description, valueField, null);
+	}
+
+	protected void addOption(String key, String description,
+			Component valueField, Component control) {
 		this.optionKeys.add(key);
+
 		JLabel label = new JLabel(description);
 		GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
 		gridBagConstraints1.gridx = 0;
 		gridBagConstraints1.fill = GridBagConstraints.BOTH;
 		gridBagConstraints1.gridy = optionKeys.size() - 1;
+		this.getOptionsPanel().add(label, gridBagConstraints1);
+
 		this.optionValueFields.add(valueField);
 		GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
 		gridBagConstraints2.gridx = 1;
@@ -289,8 +329,17 @@ public class PropertyConfigurationStep extends PanelWizardStep {
 		gridBagConstraints2.gridy = optionKeys.size() - 1;
 		gridBagConstraints2.weightx = 1;
 		gridBagConstraints2.insets = new Insets(2, 5, 2, 2);
-		this.getOptionsPanel().add(label, gridBagConstraints1);
 		this.getOptionsPanel().add(valueField, gridBagConstraints2);
+
+		if (control != null) {
+			GridBagConstraints gridBagConstraints3 = new GridBagConstraints();
+			gridBagConstraints3.gridx = 2;
+			gridBagConstraints3.fill = GridBagConstraints.BOTH;
+			gridBagConstraints3.gridy = optionKeys.size() - 1;
+			gridBagConstraints3.weightx = 1;
+			gridBagConstraints3.insets = new Insets(2, 5, 2, 2);
+			this.getOptionsPanel().add(control, gridBagConstraints3);
+		}
 	}
 
 	public void applyState() throws InvalidStateException {
@@ -360,6 +409,53 @@ public class PropertyConfigurationStep extends PanelWizardStep {
 			option = this.optionValueFields.get(idx);
 		}
 		return option;
+	}
+
+	private static class ExtensionFilter extends FileFilter {
+
+		private String description = "*";
+
+		private String[] extensions;
+
+		ExtensionFilter() {
+			this(new String[0]);
+		}
+
+		ExtensionFilter(String[] extensions) {
+			this.extensions = extensions;
+			if(this.extensions.length > 0){
+				StringBuilder sb = new StringBuilder();
+				for(int i = 0; i < this.extensions.length; i++){
+					sb.append("*");
+					sb.append(this.extensions[i]);
+					if(i + 1 < this.extensions.length){
+						sb.append(",");
+					}
+				}
+				this.description = sb.toString();
+			}
+		}
+
+		@Override
+		public boolean accept(File file) {
+			boolean accept = true;
+			if (this.extensions.length > 0) {
+				accept = false;
+				for (String ext : this.extensions) {
+					if (file.getAbsolutePath().endsWith(ext)) {
+						accept = true;
+						break;
+					}
+				}
+			}
+			return accept;
+		}
+
+		@Override
+		public String getDescription() {
+			return this.description;
+		}
+
 	}
 
 }

@@ -18,7 +18,9 @@ import org.apache.commons.logging.LogFactory;
 import org.cagrid.installer.model.CaGridInstallerModel;
 import org.cagrid.installer.model.DynamicStatefulWizardModel;
 import org.cagrid.installer.steps.AndCondition;
+import org.cagrid.installer.steps.AuthnSvcDeployPropertiesFileEditorStep;
 import org.cagrid.installer.steps.CheckSecureContainerStep;
+import org.cagrid.installer.steps.ConfigureAuthnCAStep;
 import org.cagrid.installer.steps.ConfigureCAStep;
 import org.cagrid.installer.steps.ConfigureDorianCAStep;
 import org.cagrid.installer.steps.ConfigureDorianDBStep;
@@ -28,18 +30,16 @@ import org.cagrid.installer.steps.Constants;
 import org.cagrid.installer.steps.DeployPropertiesFileEditorStep;
 import org.cagrid.installer.steps.InstallationCompleteStep;
 import org.cagrid.installer.steps.PropertyConfigurationStep;
-import org.cagrid.installer.steps.AbstractPropertiesFileEditorStep;
 import org.cagrid.installer.steps.RunTasksStep;
 import org.cagrid.installer.steps.SelectComponentStep;
 import org.cagrid.installer.steps.SelectInstallationTypeStep;
-import org.cagrid.installer.steps.ServicePropertiesFileEditorStep;
 import org.cagrid.installer.steps.SpecifyTomcatPortsStep;
 import org.cagrid.installer.steps.options.BooleanPropertyConfigurationOption;
+import org.cagrid.installer.steps.options.FilePropertyConfigurationOption;
 import org.cagrid.installer.steps.options.ListPropertyConfigurationOption;
 import org.cagrid.installer.steps.options.PasswordPropertyConfigurationOption;
 import org.cagrid.installer.steps.options.TextPropertyConfigurationOption;
 import org.cagrid.installer.steps.options.ListPropertyConfigurationOption.LabelValuePair;
-import org.cagrid.installer.tasks.CaGridInstallerAntTask;
 import org.cagrid.installer.tasks.CompileCaGridTask;
 import org.cagrid.installer.tasks.ConditionalTask;
 import org.cagrid.installer.tasks.ConfigureDorianTask;
@@ -61,7 +61,9 @@ import org.cagrid.installer.util.Utils;
 import org.cagrid.installer.validator.CreateFilePermissionValidator;
 import org.cagrid.installer.validator.DBConnectionValidator;
 import org.cagrid.installer.validator.DorianIdpInfoValidator;
+import org.cagrid.installer.validator.GenericDBConnectionValidator;
 import org.cagrid.installer.validator.KeyAccessValidator;
+import org.cagrid.installer.validator.MySqlDBConnectionValidator;
 import org.cagrid.installer.validator.PathExistsValidator;
 import org.pietschy.wizard.Wizard;
 import org.pietschy.wizard.WizardModel;
@@ -250,8 +252,8 @@ public class Installer {
 		// Clear some flags
 		this.model.getState().remove(Constants.DORIAN_USE_GEN_CA);
 		this.model.getState().remove(Constants.DORIAN_CA_PRESENT);
-		this.model.getState().remove(Constants.GENERATE_CA_CERT);
-		this.model.getState().remove(Constants.GENERATE_SERVICE_CERT);
+		// this.model.getState().remove(Constants.GENERATE_CA_CERT);
+		// this.model.getState().remove(Constants.GENERATE_SERVICE_CERT);
 		this.model.getState().remove(Constants.INSTALL_AUTHN_SVC);
 		this.model.getState().remove(Constants.INSTALL_CADSR);
 		this.model.getState().remove(Constants.INSTALL_DORIAN);
@@ -613,7 +615,7 @@ public class Installer {
 								.getMessage("tomcat.https.port"), getProperty(
 								this.model.getState(),
 								Constants.TOMCAT_HTTPS_PORT, "8443"), true));
-		//TODO: add validation
+		// TODO: add validation
 		this.model.add(tomcatPortsStep, new Condition() {
 			public boolean evaluate(WizardModel m) {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
@@ -662,32 +664,8 @@ public class Installer {
 		ConfigureCAStep caCertInfoStep = new ConfigureCAStep(this.model
 				.getMessage("ca.cert.info.title"), this.model
 				.getMessage("ca.cert.info.desc"));
-		caCertInfoStep.getOptions().add(
-				new TextPropertyConfigurationOption(Constants.CA_CERT_PATH,
-						this.model.getMessage("ca.cert.info.cert.path"),
-						getProperty(this.model.getState(),
-								Constants.CA_CERT_PATH, "temp/certs/ca.cert"),
-						true));
-		caCertInfoStep.getOptions().add(
-				new TextPropertyConfigurationOption(Constants.CA_KEY_PATH,
-						this.model.getMessage("ca.cert.info.key.path"),
-						getProperty(this.model.getState(),
-								Constants.CA_KEY_PATH, "temp/certs/ca.key"),
-						true));
-		caCertInfoStep.getOptions().add(
-				new PasswordPropertyConfigurationOption(Constants.CA_KEY_PWD,
-						this.model.getMessage("ca.cert.info.key.pwd"),
-						this.model.getState().get(Constants.CA_KEY_PWD), true));
-		caCertInfoStep.getValidators().add(
-				new PathExistsValidator(Constants.CA_CERT_PATH, this.model
-						.getMessage("error.cert.file.not.found")));
-		caCertInfoStep.getValidators().add(
-				new PathExistsValidator(Constants.CA_KEY_PATH, this.model
-						.getMessage("error.key.file.not.found")));
-		caCertInfoStep.getValidators().add(
-				new KeyAccessValidator(Constants.CA_KEY_PATH,
-						Constants.CA_KEY_PWD, this.model
-								.getMessage("error.key.no.access")));
+		addCommonCACertFields(caCertInfoStep, Constants.CA_CERT_PATH,
+				Constants.CA_KEY_PATH, Constants.CA_KEY_PWD, true);
 		this.model.add(caCertInfoStep, new Condition() {
 
 			public boolean evaluate(WizardModel m) {
@@ -706,34 +684,9 @@ public class Installer {
 		ConfigureCAStep newCaCertInfoStep = new ConfigureCAStep(this.model
 				.getMessage("ca.cert.new.info.title"), this.model
 				.getMessage("ca.cert.new.info.desc"));
-		newCaCertInfoStep.getOptions().add(
-				new TextPropertyConfigurationOption(Constants.CA_CERT_PATH,
-						this.model.getMessage("ca.cert.info.cert.path"),
-						getProperty(this.model.getState(),
-								Constants.CA_CERT_PATH, "temp/certs/ca.cert"),
-						true));
-		newCaCertInfoStep.getOptions().add(
-				new TextPropertyConfigurationOption(Constants.CA_KEY_PATH,
-						this.model.getMessage("ca.cert.info.key.path"),
-						getProperty(this.model.getState(),
-								Constants.CA_KEY_PATH, "temp/certs/ca.key"),
-						true));
-		newCaCertInfoStep.getOptions().add(
-				new PasswordPropertyConfigurationOption(Constants.CA_KEY_PWD,
-						this.model.getMessage("ca.cert.info.key.pwd"),
-						this.model.getState().get(Constants.CA_KEY_PWD), true));
-		newCaCertInfoStep.getOptions().add(
-				new TextPropertyConfigurationOption(Constants.CA_DN, this.model
-						.getMessage("ca.cert.info.dn"), getProperty(this.model
-						.getState(), Constants.CA_DN, "O=org,OU=unit,CN=name"),
-						true));
-		newCaCertInfoStep.getOptions().add(
-				new TextPropertyConfigurationOption(Constants.CA_DAYS_VALID,
-						this.model.getMessage("ca.cert.info.days.valid"),
-						getProperty(this.model.getState(),
-								Constants.CA_DAYS_VALID, "1000"), true));
-
-		// TODO: add validation
+		addCommonNewCACertFields(newCaCertInfoStep, Constants.CA_CERT_PATH,
+				Constants.CA_KEY_PATH, Constants.CA_KEY_PWD, Constants.CA_DN,
+				Constants.CA_DAYS_VALID);
 		this.model.add(newCaCertInfoStep, new Condition() {
 
 			public boolean evaluate(WizardModel m) {
@@ -838,6 +791,54 @@ public class Installer {
 		});
 		incrementProgress();
 
+		// Generate credentials, if necessary
+		final RunTasksStep generateCredsStep = new RunTasksStep(this.model
+				.getMessage("generate.credentials.title"), this.model
+				.getMessage("generate.credentials.desc"));
+
+		generateCredsStep.getTasks().add(
+				new ConditionalTask(new GenerateCATask(this.model
+						.getMessage("generating.ca.cert.title"), ""),
+						new Condition() {
+
+							public boolean evaluate(WizardModel m) {
+								CaGridInstallerModel model = (CaGridInstallerModel) m;
+								return "true".equals(model.getState().get(
+										Constants.USE_SECURE_CONTAINER))
+										&& !"true"
+												.equals(model
+														.getState()
+														.get(
+																Constants.SERVICE_CERT_PRESENT))
+										&& !"true".equals(model.getState().get(
+												Constants.CA_CERT_PRESENT));
+							}
+						}));
+		generateCredsStep.getTasks().add(
+				new ConditionalTask(new GenerateServiceCredsTask(this.model
+						.getMessage("generating.service.cert.title"), ""),
+						new Condition() {
+
+							public boolean evaluate(WizardModel m) {
+								CaGridInstallerModel model = (CaGridInstallerModel) m;
+								return "true".equals(model.getState().get(
+										Constants.USE_SECURE_CONTAINER))
+										&& !"true"
+												.equals(model
+														.getState()
+														.get(
+																Constants.SERVICE_CERT_PRESENT));
+							}
+						}));
+		this.model.add(generateCredsStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return generateCredsStep.getTasksCount(model) > 0;
+			}
+		});
+		incrementProgress();
+
 		// Allows user to edit Dorian deploy.properties
 		DeployPropertiesFileEditorStep editDorianDeployPropertiesStep = new DeployPropertiesFileEditorStep(
 				"dorian", this.model
@@ -845,16 +846,13 @@ public class Installer {
 				this.model.getMessage("dorian.edit.deploy.properties.desc"),
 				this.model.getMessage("edit.properties.property.name"),
 				this.model.getMessage("edit.properties.property.value"));
-		this.model.add(editDorianDeployPropertiesStep);
-
-		// ServicePropertiesFileEditorStep editDorianServicePropertiesStep = new
-		// ServicePropertiesFileEditorStep(
-		// "dorian", this.model
-		// .getMessage("dorian.edit.service.properties.title"),
-		// this.model.getMessage("dorian.edit.service.properties.desc"),
-		// this.model.getMessage("edit.properties.property.name"),
-		// this.model.getMessage("edit.properties.property.value"));
-		// this.model.add(editDorianServicePropertiesStep);
+		this.model.add(editDorianDeployPropertiesStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return "true".equals(model.getState().get(
+						Constants.INSTALL_DORIAN));
+			}
+		});
 
 		// Allows user to specify Dorian DB information.
 		ConfigureDorianDBStep dorianDbInfoStep = new ConfigureDorianDBStep(
@@ -870,8 +868,6 @@ public class Installer {
 			}
 		});
 		incrementProgress();
-
-		// Generate Dorian Service configuration
 
 		// Dorian IdP config
 		PropertyConfigurationStep dorianIdpInfoStep = new PropertyConfigurationStep(
@@ -1154,11 +1150,11 @@ public class Installer {
 										Constants.DORIAN_CA_KEY_PATH), true));
 		addCommonDorianCAConfigFields(dorianCaCertInfoStep);
 		dorianCaCertInfoStep.getValidators().add(
-				new PathExistsValidator(Constants.DORIAN_CA_CERT_PATH, this.model
-						.getMessage("error.cert.file.not.found")));
+				new PathExistsValidator(Constants.DORIAN_CA_CERT_PATH,
+						this.model.getMessage("error.cert.file.not.found")));
 		dorianCaCertInfoStep.getValidators().add(
-				new PathExistsValidator(Constants.DORIAN_CA_KEY_PATH, this.model
-						.getMessage("error.key.file.not.found")));
+				new PathExistsValidator(Constants.DORIAN_CA_KEY_PATH,
+						this.model.getMessage("error.key.file.not.found")));
 		dorianCaCertInfoStep.getValidators().add(
 				new KeyAccessValidator(Constants.DORIAN_CA_KEY_PATH,
 						Constants.DORIAN_CA_KEY_PWD, this.model
@@ -1324,38 +1320,343 @@ public class Installer {
 		});
 		incrementProgress();
 
+		PropertyConfigurationStep checkAuthnUseGeneratedCAStep = new PropertyConfigurationStep(
+				this.model.getMessage("authn.svc.check.use.gen.ca.title"),
+				this.model.getMessage("authn.svc.check.use.gen.ca.desc"));
+		checkAuthnUseGeneratedCAStep.getOptions().add(
+				new BooleanPropertyConfigurationOption(
+						Constants.AUTHN_SVC_USE_GEN_CA, this.model
+								.getMessage("yes"), false, false));
+		this.model.add(checkAuthnUseGeneratedCAStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+
+				return (Utils.checkGenerateCA(model) || "true".equals(model
+						.getState().get(Constants.CA_CERT_PRESENT)))
+						&& "true".equals(model.getState().get(
+								Constants.INSTALL_AUTHN_SVC));
+			}
+
+		});
+		incrementProgress();
+
+		// Checks if user will supply Authn Svc CA
+		PropertyConfigurationStep checkAuthnCAPresentStep = new PropertyConfigurationStep(
+				this.model.getMessage("authn.svc.check.ca.present.title"),
+				this.model.getMessage("authn.svc.check.ca.present.desc"));
+		checkAuthnCAPresentStep.getOptions().add(
+				new BooleanPropertyConfigurationOption(
+						Constants.AUTHN_SVC_CA_PRESENT, this.model
+								.getMessage("yes"), false, false));
+		this.model.add(checkAuthnCAPresentStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+
+				return "true".equals(model.getState().get(
+						Constants.INSTALL_AUTHN_SVC))
+						&& !"true".equals(model.getState().get(
+								Constants.AUTHN_SVC_USE_GEN_CA));
+			}
+
+		});
+		incrementProgress();
+
+		// Authentication Service Existing CA Config
+		ConfigureAuthnCAStep authnCaCertInfoStep = new ConfigureAuthnCAStep(
+				this.model.getMessage("authn.svc.ca.cert.info.title"),
+				this.model.getMessage("authn.svc.ca.cert.info.desc"));
+		addCommonCACertFields(authnCaCertInfoStep,
+				Constants.AUTHN_SVC_CA_CERT_PATH,
+				Constants.AUTHN_SVC_CA_KEY_PATH,
+				Constants.AUTHN_SVC_CA_KEY_PWD, true);
+		this.model.add(authnCaCertInfoStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return "true".equals(model.getState().get(
+						Constants.INSTALL_AUTHN_SVC))
+						&& ("true".equals(model.getState().get(
+								Constants.AUTHN_SVC_CA_PRESENT)) || "true"
+								.equals(model.getState().get(
+										Constants.AUTHN_SVC_USE_GEN_CA)));
+			}
+		});
+		incrementProgress();
+
+		// AuthenticationService New CA
+		PropertyConfigurationStep authnCaNewCertInfoStep = new PropertyConfigurationStep(
+				this.model.getMessage("authn.svc.ca.new.cert.info.title"),
+				this.model.getMessage("authn.svc.ca.new.cert.info.desc"));
+		addCommonNewCACertFields(authnCaNewCertInfoStep,
+				Constants.AUTHN_SVC_CA_CERT_PATH,
+				Constants.AUTHN_SVC_CA_KEY_PATH,
+				Constants.AUTHN_SVC_CA_KEY_PWD, Constants.AUTHN_SVC_CA_DN,
+				Constants.AUTHN_SVC_CA_DAYS_VALID);
+		this.model.add(authnCaNewCertInfoStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return "true".equals(model.getState().get(
+						Constants.INSTALL_AUTHN_SVC))
+						&& !"true".equals(model.getState().get(
+								Constants.AUTHN_SVC_CA_PRESENT))
+						&& !"true".equals(model.getState().get(
+								Constants.AUTHN_SVC_USE_GEN_CA));
+			}
+		});
+		incrementProgress();
+
+		// Let's user select the type of credential provider
+		PropertyConfigurationStep selectCredentialProviderStep = new PropertyConfigurationStep(
+				this.model
+						.getMessage("authn.svc.select.cred.provider.type.title"),
+				this.model
+						.getMessage("authn.svc.select.cred.provider.type.desc"));
+		selectCredentialProviderStep
+				.getOptions()
+				.add(
+						new ListPropertyConfigurationOption(
+								Constants.AUTHN_SVC_CRED_PROVIDER_TYPE,
+								this.model
+										.getMessage("authn.svc.cred.provider.type"),
+								new LabelValuePair[] {
+										new LabelValuePair(
+												this.model
+														.getMessage("authn.svc.cred.provider.type.rdbms"),
+												Constants.AUTHN_SVC_CRED_PROVIDER_TYPE_RDBMS),
+										new LabelValuePair(
+												this.model
+														.getMessage("authn.svc.cred.provider.type.ldap"),
+												Constants.AUTHN_SVC_CRED_PROVIDER_TYPE_LDAP) }));
+		this.model.add(selectCredentialProviderStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return "true".equals(model.getState().get(
+						Constants.INSTALL_AUTHN_SVC));
+			}
+
+		});
+
+		// AuthenticationService RDBMS step
+		PropertyConfigurationStep authnSvcRdbmsStep = new PropertyConfigurationStep(
+				this.model.getMessage("authn.svc.rdbms.title"), this.model
+						.getMessage("authn.svc.rdbms.desc"));
+		authnSvcRdbmsStep
+				.getOptions()
+				.add(
+						new TextPropertyConfigurationOption(
+								Constants.AUTHN_SVC_CSM_CTX,
+								this.model.getMessage("authn.svc.csm.ctx"),
+								getProperty(this.model.getState(),
+										Constants.AUTHN_SVC_CSM_CTX, "AUTHNSVC"),
+								true));
+		authnSvcRdbmsStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.AUTHN_SVC_RDBMS_URL, this.model
+								.getMessage("authn.svc.rdbms.url"),
+						getProperty(this.model.getState(),
+								Constants.AUTHN_SVC_RDBMS_URL,
+								"jdbc:mysql://localhost:3306/authnsvc"), true));
+
+		FilePropertyConfigurationOption driverJar = new FilePropertyConfigurationOption(
+				Constants.AUTHN_SVC_RDBMS_DRIVER_JAR,
+				this.model.getMessage("authn.svc.rdbms.driver.jar"),
+				getProperty(this.model.getState(),
+						Constants.AUTHN_SVC_RDBMS_DRIVER_JAR, System
+								.getProperty("user.dir")
+								+ "/lib/mysql-connector-java-3.0.16-ga-bin.jar"),
+				true);
+		driverJar.setBrowseLabel(this.model.getMessage("browse"));
+		driverJar.setExtensions(new String[] { ".jar" });
+		authnSvcRdbmsStep.getOptions().add(driverJar);
+
+		authnSvcRdbmsStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.AUTHN_SVC_RDBMS_DRIVER, this.model
+								.getMessage("authn.svc.rdbms.driver"),
+						getProperty(this.model.getState(),
+								Constants.AUTHN_SVC_RDBMS_DRIVER,
+								"org.gjt.mm.mysql.Driver"), true));
+		authnSvcRdbmsStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.AUTHN_SVC_RDBMS_USERNAME, this.model
+								.getMessage("authn.svc.rdbms.username"),
+						getProperty(this.model.getState(),
+								Constants.AUTHN_SVC_RDBMS_USERNAME, "root"),
+						true));
+		authnSvcRdbmsStep.getOptions().add(
+				new PasswordPropertyConfigurationOption(
+						Constants.AUTHN_SVC_RDBMS_PASSWORD, this.model
+								.getMessage("authn.svc.rdbms.password"),
+						getProperty(this.model.getState(),
+								Constants.AUTHN_SVC_RDBMS_PASSWORD, ""), true));
+		authnSvcRdbmsStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.AUTHN_SVC_RDBMS_TABLE_NAME, this.model
+								.getMessage("authn.svc.rdbms.table.name"),
+						getProperty(this.model.getState(),
+								Constants.AUTHN_SVC_RDBMS_TABLE_NAME,
+								"CSM_USER"), true));
+		authnSvcRdbmsStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.AUTHN_SVC_RDBMS_LOGIN_ID_COLUMN, this.model
+								.getMessage("authn.svc.rdbms.login.id.column"),
+						getProperty(this.model.getState(),
+								Constants.AUTHN_SVC_RDBMS_LOGIN_ID_COLUMN,
+								"LOGIN_NAME"), true));
+		authnSvcRdbmsStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.AUTHN_SVC_RDBMS_PASSWORD_COLUMN, this.model
+								.getMessage("authn.svc.rdbms.password.column"),
+						getProperty(this.model.getState(),
+								Constants.AUTHN_SVC_RDBMS_PASSWORD_COLUMN,
+								"PASSWORD"), true));
+		authnSvcRdbmsStep
+				.getOptions()
+				.add(
+						new TextPropertyConfigurationOption(
+								Constants.AUTHN_SVC_RDBMS_FIRST_NAME_COLUMN,
+								this.model
+										.getMessage("authn.svc.rdbms.first.name.column"),
+								getProperty(
+										this.model.getState(),
+										Constants.AUTHN_SVC_RDBMS_FIRST_NAME_COLUMN,
+										"FIRST_NAME"), true));
+		authnSvcRdbmsStep
+				.getOptions()
+				.add(
+						new TextPropertyConfigurationOption(
+								Constants.AUTHN_SVC_RDBMS_LAST_NAME_COLUMN,
+								this.model
+										.getMessage("authn.svc.rdbms.last.name.column"),
+								getProperty(
+										this.model.getState(),
+										Constants.AUTHN_SVC_RDBMS_LAST_NAME_COLUMN,
+										"LAST_NAME"), true));
+
+		authnSvcRdbmsStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.AUTHN_SVC_RDBMS_EMAIL_ID_COLUMN, this.model
+								.getMessage("authn.svc.rdbms.email.id.column"),
+						getProperty(this.model.getState(),
+								Constants.AUTHN_SVC_RDBMS_EMAIL_ID_COLUMN,
+								"EMAIL_ID"), true));
+		authnSvcRdbmsStep
+				.getValidators()
+				.add(
+						new PathExistsValidator(
+								Constants.AUTHN_SVC_RDBMS_DRIVER_JAR,
+								this.model
+										.getMessage("authn.svc.rdbms.driver.jar.not.found")));
+		authnSvcRdbmsStep.getValidators().add(
+				new GenericDBConnectionValidator(
+						Constants.AUTHN_SVC_RDBMS_USERNAME,
+						Constants.AUTHN_SVC_RDBMS_PASSWORD, "select 1",
+						this.model.getMessage("db.validation.failed"),
+						Constants.AUTHN_SVC_RDBMS_DRIVER_JAR,
+						Constants.AUTHN_SVC_RDBMS_URL,
+						Constants.AUTHN_SVC_RDBMS_DRIVER));
+		this.model.add(authnSvcRdbmsStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return "true".equals(model.getState().get(
+						Constants.INSTALL_AUTHN_SVC))
+						&& Constants.AUTHN_SVC_CRED_PROVIDER_TYPE_RDBMS
+								.equals(model.getState().get(
+										Constants.AUTHN_SVC_CRED_PROVIDER_TYPE));
+			}
+		});
+		incrementProgress();
+
+		// AuthenticationService LDAP Setup
+		PropertyConfigurationStep authnSvcLdapStep = new PropertyConfigurationStep(
+				this.model.getMessage("authn.svc.ldap.title"), this.model
+						.getMessage("authn.svc.ldap.desc"));
+		authnSvcLdapStep
+				.getOptions()
+				.add(
+						new TextPropertyConfigurationOption(
+								Constants.AUTHN_SVC_CSM_CTX,
+								this.model.getMessage("authn.svc.csm.ctx"),
+								getProperty(this.model.getState(),
+										Constants.AUTHN_SVC_CSM_CTX, "AUTHNSVC"),
+								true));
+		authnSvcLdapStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.AUTHN_SVC_LDAP_HOSTNAME, this.model
+								.getMessage("authn.svc.ldap.hostname"),
+						getProperty(this.model.getState(),
+								Constants.AUTHN_SVC_LDAP_HOSTNAME,
+								"ldaps://cbioweb.nci.nih.gov:636"), true));
+		authnSvcLdapStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.AUTHN_SVC_LDAP_SEARCH_BASE, this.model
+								.getMessage("authn.svc.ldap.search.base"),
+						getProperty(this.model.getState(),
+								Constants.AUTHN_SVC_LDAP_SEARCH_BASE,
+								"ou=nci,o=nih"), true));
+		authnSvcLdapStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.AUTHN_SVC_LDAP_LOGIN_ID_ATTRIBUTE, this.model
+								.getMessage("authn.svc.ldap.login.id.attribute"),
+						getProperty(this.model.getState(),
+								Constants.AUTHN_SVC_LDAP_LOGIN_ID_ATTRIBUTE,
+								"cn"), true));
+		authnSvcLdapStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.AUTHN_SVC_LDAP_FIRST_NAME_ATTRIBUTE, this.model
+								.getMessage("authn.svc.ldap.first.name.attribute"),
+						getProperty(this.model.getState(),
+								Constants.AUTHN_SVC_LDAP_FIRST_NAME_ATTRIBUTE,
+								"givenName"), true));
+		authnSvcLdapStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.AUTHN_SVC_LDAP_LAST_NAME_ATTRIBUTE, this.model
+								.getMessage("authn.svc.ldap.last.name.attribute"),
+						getProperty(this.model.getState(),
+								Constants.AUTHN_SVC_LDAP_LAST_NAME_ATTRIBUTE,
+								"sn"), true));
+		//TODO: add validation
+		this.model.add(authnSvcLdapStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return "true".equals(model.getState().get(
+						Constants.INSTALL_AUTHN_SVC))
+						&& Constants.AUTHN_SVC_CRED_PROVIDER_TYPE_LDAP
+								.equals(model.getState().get(
+										Constants.AUTHN_SVC_CRED_PROVIDER_TYPE));
+			}
+		});
+		incrementProgress();
+		
+		//Configure AuthenticationService deploy.properties
+		AuthnSvcDeployPropertiesFileEditorStep editAuthnDeployPropertiesStep = new AuthnSvcDeployPropertiesFileEditorStep(
+				"authentication-service", this.model
+						.getMessage("authn.svc.edit.deploy.properties.title"),
+				this.model.getMessage("authn.svc.edit.deploy.properties.desc"),
+				this.model.getMessage("edit.properties.property.name"),
+				this.model.getMessage("edit.properties.property.value"));
+		this.model.add(editAuthnDeployPropertiesStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return "true".equals(model.getState().get(
+						Constants.INSTALL_AUTHN_SVC));
+			}
+		});
+
 		// Performs the installation
 		RunTasksStep installStep = new RunTasksStep(this.model
 				.getMessage("install.title"), this.model
 				.getMessage("install.desc"));
 
-		// if (false) {
 		installStep.getTasks().add(
 				new ConfigureEnvironmentTask(this.model
 						.getMessage("configuring.environment.title"), ""));
-
-		installStep.getTasks().add(
-				new ConditionalTask(new GenerateCATask(this.model
-						.getMessage("generating.ca.cert.title"), ""),
-						new Condition() {
-
-							public boolean evaluate(WizardModel m) {
-								CaGridInstallerModel model = (CaGridInstallerModel) m;
-								return "true".equals(model.getState().get(
-										Constants.GENERATE_CA_CERT));
-							}
-						}));
-		installStep.getTasks().add(
-				new ConditionalTask(new GenerateServiceCredsTask(this.model
-						.getMessage("generating.service.cert.title"), ""),
-						new Condition() {
-
-							public boolean evaluate(WizardModel m) {
-								CaGridInstallerModel model = (CaGridInstallerModel) m;
-								return "true".equals(model.getState().get(
-										Constants.GENERATE_SERVICE_CERT));
-							}
-						}));
 
 		installStep.getTasks().add(
 				new ConditionalTask(new DeployGlobusTask(this.model
@@ -1445,7 +1746,6 @@ public class Installer {
 
 				}));
 
-		// }
 		installStep.getTasks().add(
 				new SaveSettingsTask(this.model
 						.getMessage("saving.settings.title"), ""));
@@ -1457,6 +1757,55 @@ public class Installer {
 		this.model.add(new InstallationCompleteStep(this.model
 				.getMessage("installation.complete.title"), ""));
 
+	}
+
+	private void addCommonNewCACertFields(PropertyConfigurationStep step,
+			String caCertPathProp, String caKeyPathProp, String caKeyPwdProp,
+			String caDnProp, String caDaysValidProp) {
+
+		addCommonCACertFields(step, caCertPathProp, caKeyPathProp,
+				caKeyPwdProp, false);
+
+		step.getOptions().add(
+				new TextPropertyConfigurationOption(caDnProp, this.model
+						.getMessage("ca.cert.info.dn"), getProperty(this.model
+						.getState(), caDnProp, "O=org,OU=unit,CN=name"), true));
+		step.getOptions().add(
+				new TextPropertyConfigurationOption(caDaysValidProp, this.model
+						.getMessage("ca.cert.info.days.valid"), getProperty(
+						this.model.getState(), caDaysValidProp, "1000"), true));
+	}
+
+	private void addCommonCACertFields(PropertyConfigurationStep step,
+			String caCertPathProp, String caKeyPathProp, String caKeyPwdProp,
+			boolean validate) {
+
+		step.getOptions().add(
+				new TextPropertyConfigurationOption(caCertPathProp, this.model
+						.getMessage("ca.cert.info.cert.path"), getProperty(
+						this.model.getState(), caCertPathProp,
+						"temp/certs/ca.cert"), true));
+		step.getOptions().add(
+				new TextPropertyConfigurationOption(caKeyPathProp, this.model
+						.getMessage("ca.cert.info.key.path"), getProperty(
+						this.model.getState(), caKeyPathProp,
+						"temp/certs/ca.key"), true));
+		step.getOptions().add(
+				new PasswordPropertyConfigurationOption(caKeyPwdProp,
+						this.model.getMessage("ca.cert.info.key.pwd"),
+						this.model.getState().get(caKeyPwdProp), true));
+
+		if (validate) {
+			step.getValidators().add(
+					new PathExistsValidator(caCertPathProp, this.model
+							.getMessage("error.cert.file.not.found")));
+			step.getValidators().add(
+					new PathExistsValidator(caKeyPathProp, this.model
+							.getMessage("error.key.file.not.found")));
+			step.getValidators().add(
+					new KeyAccessValidator(caKeyPathProp, caKeyPwdProp,
+							this.model.getMessage("error.key.no.access")));
+		}
 	}
 
 	private void addDBConfigPropertyOptions(PropertyConfigurationStep step,
@@ -1487,8 +1836,8 @@ public class Installer {
 						+ "db.password"), this.model.getState().get(
 						propPrefix + "db.password"), true));
 		step.getValidators().add(
-				new DBConnectionValidator(propPrefix + "db.host", propPrefix
-						+ "db.port", "mysql", propPrefix + "db.username",
+				new MySqlDBConnectionValidator(propPrefix + "db.host",
+						propPrefix + "db.port", propPrefix + "db.username",
 						propPrefix + "db.password", "select 1", this.model
 								.getMessage("db.validation.failed")));
 	}

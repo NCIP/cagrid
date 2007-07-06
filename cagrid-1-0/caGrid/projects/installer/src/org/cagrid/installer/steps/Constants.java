@@ -130,9 +130,9 @@ public abstract class Constants {
 
 	public static final String CA_CERT_PRESENT = "ca.cert.present";
 
-	public static final String GENERATE_SERVICE_CERT = "gen.service.cert";
+//	public static final String GENERATE_SERVICE_CERT = "gen.service.cert";
 
-	public static final String GENERATE_CA_CERT = "gen.ca.cert";
+//	public static final String GENERATE_CA_CERT = "gen.ca.cert";
 
 	public static final String SERVICE_HOSTNAME = "service.hostname";
 
@@ -269,6 +269,60 @@ public abstract class Constants {
 	public static final String TOMCAT_OLD_HTTP_PORT = "tomcat.old.http.port";
 
 	public static final String TOMCAT_OLD_HTTPS_PORT = "tomcat.old.https.port";
+
+	public static final String AUTHN_SVC_USE_GEN_CA = "authn.svc.use.gen.ca";
+
+	public static final String AUTHN_SVC_CA_PRESENT = "authn.svc.ca.present";
+
+	public static final String AUTHN_SVC_CA_CERT_PATH = "authn.svc.ca.cert.path";
+
+	public static final String AUTHN_SVC_CA_KEY_PATH = "authn.svc.ca.key.path";
+
+	public static final String AUTHN_SVC_CA_KEY_PWD = "authn.svc.ca.key.pwd";
+
+	public static final String AUTHN_SVC_CA_DN = "authn.svc.ca.dn";
+
+	public static final String AUTHN_SVC_CA_DAYS_VALID = "authn.svc.ca.days.valid";
+
+	public static final String AUTHN_SVC_CRED_PROVIDER_TYPE = "authn.svc.cred.provider.type";
+
+	public static final String AUTHN_SVC_CRED_PROVIDER_TYPE_RDBMS = "authn.svc.cred.provider.type.rdbms";
+
+	public static final String AUTHN_SVC_CRED_PROVIDER_TYPE_LDAP = "authn.svc.cred.provider.type.ldap";
+
+	public static final String AUTHN_SVC_CSM_CTX = "authn.svc.csm.ctx";
+
+	public static final String AUTHN_SVC_RDBMS_URL = "authn.svc.rdbms.url";
+
+	public static final String AUTHN_SVC_RDBMS_DRIVER_JAR = "authn.svc.rdbms.driver.jar";
+
+	public static final String AUTHN_SVC_RDBMS_DRIVER = "authn.svc.rdbms.driver";
+
+	public static final String AUTHN_SVC_RDBMS_USERNAME = "authn.svc.rdbms.username";
+
+	public static final String AUTHN_SVC_RDBMS_PASSWORD = "authn.svc.rdbms.password";
+
+	public static final String AUTHN_SVC_RDBMS_TABLE_NAME = "authn.svc.rdbms.table.name";
+
+	public static final String AUTHN_SVC_RDBMS_LOGIN_ID_COLUMN = "authn.svc.rdbms.login.id.column";
+
+	public static final String AUTHN_SVC_RDBMS_PASSWORD_COLUMN = "authn.svc.rdbms.password.column";
+
+	public static final String AUTHN_SVC_RDBMS_FIRST_NAME_COLUMN = "authn.svc.rdbms.first.name.column";
+
+	public static final String AUTHN_SVC_RDBMS_LAST_NAME_COLUMN = "authn.svc.rdbms.last.name.column";
+
+	public static final String AUTHN_SVC_RDBMS_EMAIL_ID_COLUMN = "authn.svc.rdbms.email.id.column";
+
+	public static final String AUTHN_SVC_LDAP_HOSTNAME = "authn.svc.ldap.hostname";
+
+	public static final String AUTHN_SVC_LDAP_SEARCH_BASE = "authn.svc.ldap.search.base";
+
+	public static final String AUTHN_SVC_LDAP_LOGIN_ID_ATTRIBUTE = "authn.svc.ldap.login.id.attribute";
+
+	public static final String AUTHN_SVC_LDAP_FIRST_NAME_ATTRIBUTE = "authn.svc.ldap.first.name.attribute";
+
+	public static final String AUTHN_SVC_LDAP_LAST_NAME_ATTRIBUTE = "authn.svc.ldap.last.name.attribute";
 
 	
 }
