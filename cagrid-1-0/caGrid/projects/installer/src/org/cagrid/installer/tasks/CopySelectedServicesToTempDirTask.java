@@ -43,8 +43,17 @@ public class CopySelectedServicesToTempDirTask extends CaGridAntTask {
 		if("true".equals(state.get(Constants.INSTALL_GRID_GROUPER))){
 			selectedServices.add("gridgrouper");
 		}
+		if("true".equals(state.get(Constants.INSTALL_INDEX_SVC))){
+			selectedServices.add("index");
+		}
 		if("true".equals(state.get(Constants.INSTALL_GME))){
 			selectedServices.add("gme");
+		}
+		if("true".equals(state.get(Constants.INSTALL_EVS))){
+			selectedServices.add("evs");
+		}
+		if("true".equals(state.get(Constants.INSTALL_FQP))){
+			selectedServices.add("fqp");
 		}
 		if("true".equals(state.get(Constants.INSTALL_CADSR))){
 			selectedServices.add("cadsr");
