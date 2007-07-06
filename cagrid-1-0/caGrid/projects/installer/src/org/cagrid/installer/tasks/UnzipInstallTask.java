@@ -96,13 +96,17 @@ public class UnzipInstallTask extends BasicTask {
 
 				InputStream in = zipFile.getInputStream(entry);
 				String fileName = baseOut + entry.getName();
+				File file = new File(fileName);
+				if(!file.getParentFile().exists()){
+					file.getParentFile().mkdirs();
+				}
 				numFiles++;
 				if(numFiles > nextLog){
 					nextLog += logAfterSize;
 					System.out.println("Extracting: " + fileName);
 				}
 				BufferedOutputStream out = new BufferedOutputStream(
-						new FileOutputStream(fileName));
+						new FileOutputStream(file));
 				byte[] buffer = new byte[BUFFER_SIZE];
 				int len = -1;
 				while ((len = in.read(buffer)) > 0) {
