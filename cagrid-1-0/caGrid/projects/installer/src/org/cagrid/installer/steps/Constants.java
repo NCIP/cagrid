@@ -324,5 +324,13 @@ public abstract class Constants {
 
 	public static final String AUTHN_SVC_LDAP_LAST_NAME_ATTRIBUTE = "authn.svc.ldap.last.name.attribute";
 
+	public static final String AUTHN_SVC_RDBMS_ENCRYPTION_ENABLED = "authn.svc.rdbms.encryption.enabled";
+
+	public static final String AUTHN_SVC_OVERWRITE_JAAS = "authn.svc.overwrite.jaas";
+
+	public static final String AUTHN_SVC_OVERWRITE_JAAS_YES = "authn.svc.overwrite.jaas.yes";
+
+	public static final String AUTHN_SVC_OVERWRITE_JAAS_NO = "authn.svc.overwrite.jaas.no";
+
 	
 }

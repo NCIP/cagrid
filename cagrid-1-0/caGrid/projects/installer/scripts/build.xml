@@ -596,4 +596,88 @@
 		</xmltask>
 	</target>
 
+	<target name="copy-jdbc-driver-to-tomcat">
+		<copy file="${authn.svc.rdbms.jdbc.driver.jar}"
+			todir="${tomcat.home}/webapps/wsrf/WEB-INF/lib" overwrite="true" />
+	</target>
+
+	<target name="copy-jdbc-driver-to-globus">
+		<copy file="${authn.svc.rdbms.jdbc.driver.jar}"
+			todir="${globus.home}/lib" overwrite="true" />
+	</target>
+
+
+	<target name="create-jaas-config">
+
+
+		<if>
+			<equals arg1="${authn.svc.overwrite.jaas}"
+				arg2="${authn.svc.overwrite.jaas.yes}" trim="true" />
+			<then>
+				<delete file="${jaas.config.path}" />
+			</then>
+		</if>
+
+		<if>
+			<equals arg1="authn.svc.cred.provider.type"
+				arg2="authn.svc.cred.provider.type.ldap" trim="true" />
+			<then>
+				<concat destfile="${jaas.config.path}">
+					<![CDATA[
+${authn.svc.csm.ctx}{
+	gov.nih.nci.security.authentication.loginmodules.LDAPLoginModule
+	required ldapHost="${authn.svc.ldap.hostname}"
+	ldapSearchableBase="${authn.svc.ldap.search.base}"
+	ldapUserIdLabel="${authn.svc.ldap.login.id.attribute}"
+	USER_FIRST_NAME="${authn.svc.ldap.first.name.attribute}"
+	USER_LAST_NAME="${authn.svc.ldap.last.name.attribute}"
+	USER_EMAIL_ID="${authn.svc.ldap.email.id.attribute}";
+};
+					]]>
+				</concat>
+			</then>
+			<else>
+				<concat destfile="${jaas.config.path}">
+					<![CDATA[
+${authn.svc.csm.ctx}{ 
+    gov.nih.nci.security.authentication.loginmodules.RDBMSLoginModule required 
+	driver="${authn.svc.rdbms.jdbc.driver}" 
+	url="${authn.svc.rdbms.jdbc.url}" 
+	user="${authn.svc.rdbms.username}" 
+	passwd="${authn.svc.rdbms.password}" 
+	TABLE_NAME="${authn.svc.rdbms.table.name}"
+	USER_LOGIN_ID="${authn.svc.rdbms.login.id.column}"
+	USER_PASSWORD="${authn.svc.rdbms.password.column}"
+	USER_FIRST_NAME="${authn.svc.rdbms.first.name.column}"
+	USER_LAST_NAME="${authn.svc.rdbms.last.name.column}"
+	USER_EMAIL_ID="${authn.svc.rdbms.email.id.column}";
+	encryption-enabled="${authn.svc.rdbms.encryption.enabled}"
+};
+					]]>
+				</concat>
+			</else>
+		</if>
+	</target>
+
+	<target name="set-authn-service-deploy-properties">
+		<propertyfile
+			file="${service.dest.dir}/authentication-service/deploy.properties">
+			<entry key="csm.app.context" value="${authn.svc.csm.ctx}" />
+			<entry key="saml.provider.crt"
+				value="${authn.svc.ca.cert.path}" />
+			<entry key="saml.provider.key"
+				value="${authn.svc.ca.key.path}" />
+			<entry key="saml.provider.pwd"
+				value="${authn.svc.ca.key.pwd}" />
+		</propertyfile>
+	</target>
+
+	<!-- 
+		<target name="set-catalina-csm-properties">
+		<propertyfile file="${tomcat.home}/conf/catalina.properties">
+		<entry key="java.security.auth.login.config"
+		value="${jaas.config.path}" />
+		</propertyfile>
+		</target>
+	-->
 </project>

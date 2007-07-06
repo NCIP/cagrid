@@ -34,20 +34,24 @@ public class DeployServiceTask extends CaGridAntTask {
 	protected Object runAntTask(Map state, String target, Map env,
 			Properties sysProps) throws Exception {
 		String antTarget = getDeployTomcatTarget();
-		if (this.model.getMessage("container.type.globus").equals(
-				this.model.getState().get(Constants.CONTAINER_TYPE))) {
+		if (!isDeployTomcat()) {
 			antTarget = getDeployGlobusTarget();
 		}
 		new AntTask("", "", antTarget, env, sysProps).execute(state);
 
 		return null;
 	}
-	
-	protected String getDeployTomcatTarget(){
+
+	protected boolean isDeployTomcat() {
+		return this.model.getMessage("container.type.tomcat").equals(
+				this.model.getState().get(Constants.CONTAINER_TYPE));
+	}
+
+	protected String getDeployTomcatTarget() {
 		return "deployTomcat";
 	}
-	
-	protected String getDeployGlobusTarget(){
+
+	protected String getDeployGlobusTarget() {
 		return "deployGlobus";
 	}
 
