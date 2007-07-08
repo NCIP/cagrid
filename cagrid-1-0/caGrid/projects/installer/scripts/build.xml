@@ -597,12 +597,12 @@
 	</target>
 
 	<target name="copy-jdbc-driver-to-tomcat">
-		<copy file="${authn.svc.rdbms.jdbc.driver.jar}"
+		<copy file="${authn.svc.rdbms.driver.jar}"
 			todir="${tomcat.home}/webapps/wsrf/WEB-INF/lib" overwrite="true" />
 	</target>
 
 	<target name="copy-jdbc-driver-to-globus">
-		<copy file="${authn.svc.rdbms.jdbc.driver.jar}"
+		<copy file="${authn.svc.rdbms.driver.jar}"
 			todir="${globus.home}/lib" overwrite="true" />
 	</target>
 
@@ -641,8 +641,8 @@ ${authn.svc.csm.ctx}{
 					<![CDATA[
 ${authn.svc.csm.ctx}{ 
     gov.nih.nci.security.authentication.loginmodules.RDBMSLoginModule required 
-	driver="${authn.svc.rdbms.jdbc.driver}" 
-	url="${authn.svc.rdbms.jdbc.url}" 
+	driver="${authn.svc.rdbms.driver}" 
+	url="${authn.svc.rdbms.url}" 
 	user="${authn.svc.rdbms.username}" 
 	passwd="${authn.svc.rdbms.password}" 
 	TABLE_NAME="${authn.svc.rdbms.table.name}"
@@ -671,13 +671,16 @@ ${authn.svc.csm.ctx}{
 				value="${authn.svc.ca.key.pwd}" />
 		</propertyfile>
 	</target>
-
-	<!-- 
-		<target name="set-catalina-csm-properties">
-		<propertyfile file="${tomcat.home}/conf/catalina.properties">
-		<entry key="java.security.auth.login.config"
-		value="${jaas.config.path}" />
+	
+	<target name="configure-gridgrouper-hibernate">
+		<propertyfile
+			file="${service.dest.dir}/gridgrouper/resources/conf/grouper.hibernate.properties">
+			<entry key="hibernate.connection.url"
+				value="${grid.grouper.db.url}" />
+			<entry key="hibernate.connection.username"
+				value="${grid.grouper.db.username}" />
+			<entry key="hibernate.connection.password"
+				value="${grid.grouper.db.password}" />
 		</propertyfile>
-		</target>
-	-->
+	</target>
 </project>

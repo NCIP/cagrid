@@ -46,6 +46,7 @@ import org.cagrid.installer.tasks.ConfigureDorianTask;
 import org.cagrid.installer.tasks.ConfigureEnvironmentTask;
 import org.cagrid.installer.tasks.ConfigureGTSTask;
 import org.cagrid.installer.tasks.ConfigureGlobusTask;
+import org.cagrid.installer.tasks.ConfigureGridGrouperTask;
 import org.cagrid.installer.tasks.ConfigureTargetGridTask;
 import org.cagrid.installer.tasks.CopySelectedServicesToTempDirTask;
 import org.cagrid.installer.tasks.DeployAuthenticationServiceTask;
@@ -526,12 +527,14 @@ public class Installer {
 
 						}));
 
-		// ConfigureTargetGridTask configTargetGridTask1 = new
-		// ConfigureTargetGridTask(
-		// this.model.getMessage("configuring.target.grid"), "");
-		// configTargetGridTask1.setAbortOnError(false);
+		/**
+		 * JAP: I guess the Progress.waitFor() method doesn't work as
+		 * advertised. Without this pause, the following ConfigureTargetGridTask
+		 * will sometimes fail, with Ant-related exceptions thrown.
+		 */
 		// installDependenciesStep.getTasks().add(
-		// new ConditionalTask(configTargetGridTask1, new Condition() {
+		// new ConditionalTask(new PauseTask("Pausing for 10 seconds...",
+		// "", 10000), new Condition() {
 		//
 		// public boolean evaluate(WizardModel m) {
 		// CaGridInstallerModel model = (CaGridInstallerModel) m;
@@ -540,15 +543,12 @@ public class Installer {
 		// }
 		//
 		// }));
-
-		/**
-		 * JAP: I guess the Progress.waitFor() method doesn't work as
-		 * advertised. Without this pause, the following ConfigureTargetGridTask
-		 * will sometimes fail, with Ant-related exceptions thrown.
-		 */
+		// TODO: figure out why this fails on Mac sometimes
+		ConfigureTargetGridTask configTargetGridTask = new ConfigureTargetGridTask(
+				this.model.getMessage("configuring.target.grid"), "");
+		configTargetGridTask.setAbortOnError(false);
 		installDependenciesStep.getTasks().add(
-				new ConditionalTask(new PauseTask("Pausing for 10 seconds...",
-						"", 10000), new Condition() {
+				new ConditionalTask(configTargetGridTask, new Condition() {
 
 					public boolean evaluate(WizardModel m) {
 						CaGridInstallerModel model = (CaGridInstallerModel) m;
@@ -557,19 +557,6 @@ public class Installer {
 					}
 
 				}));
-
-		installDependenciesStep.getTasks().add(
-				new ConditionalTask(new ConfigureTargetGridTask(this.model
-						.getMessage("configuring.target.grid"), ""),
-						new Condition() {
-
-							public boolean evaluate(WizardModel m) {
-								CaGridInstallerModel model = (CaGridInstallerModel) m;
-								return "true".equals(model.getState().get(
-										Constants.INSTALL_CAGRID));
-							}
-
-						}));
 
 		installDependenciesStep.getTasks().add(
 				new ConditionalTask(
@@ -1413,25 +1400,29 @@ public class Installer {
 				this.model.getMessage("authn.svc.overwrite.jaas.title"),
 				this.model.getMessage("authn.svc.overwrite.jaas.desc"));
 		overwriteJaasStep
-		.getOptions()
-		.add(
-				new ListPropertyConfigurationOption(
-						Constants.AUTHN_SVC_OVERWRITE_JAAS,
-						this.model
-								.getMessage("authn.svc.overwrite.jaas"),
-						new LabelValuePair[] {
-								new LabelValuePair(
-										this.model
-												.getMessage("authn.svc.overwrite.jaas.yes"),
-										Constants.AUTHN_SVC_OVERWRITE_JAAS_YES),
-								new LabelValuePair(
-										this.model
-												.getMessage("authn.svc.overwrite.jaas.no"),
-										Constants.AUTHN_SVC_OVERWRITE_JAAS_NO) }));
+				.getOptions()
+				.add(
+						new ListPropertyConfigurationOption(
+								Constants.AUTHN_SVC_OVERWRITE_JAAS,
+								this.model
+										.getMessage("authn.svc.overwrite.jaas"),
+								new LabelValuePair[] {
+										new LabelValuePair(
+												this.model
+														.getMessage("authn.svc.overwrite.jaas.yes"),
+												Constants.AUTHN_SVC_OVERWRITE_JAAS_YES),
+										new LabelValuePair(
+												this.model
+														.getMessage("authn.svc.overwrite.jaas.no"),
+												Constants.AUTHN_SVC_OVERWRITE_JAAS_NO) }));
 		this.model.add(overwriteJaasStep, new Condition() {
 
 			public boolean evaluate(WizardModel m) {
-				return new File(System.getProperty("user.home") + "/.java.login.config").exists();
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return new File(System.getProperty("user.home")
+						+ "/.java.login.config").exists()
+						&& "true".equals(model.getState().get(
+								Constants.INSTALL_AUTHN_SVC));
 			}
 
 		});
@@ -1572,10 +1563,14 @@ public class Installer {
 						getProperty(this.model.getState(),
 								Constants.AUTHN_SVC_RDBMS_EMAIL_ID_COLUMN,
 								"EMAIL_ID"), true));
-		authnSvcRdbmsStep.getOptions().add(
-				new BooleanPropertyConfigurationOption(
-						Constants.AUTHN_SVC_RDBMS_ENCRYPTION_ENABLED,
-						this.model.getMessage("yes"), false, false));
+		authnSvcRdbmsStep
+				.getOptions()
+				.add(
+						new BooleanPropertyConfigurationOption(
+								Constants.AUTHN_SVC_RDBMS_ENCRYPTION_ENABLED,
+								this.model
+										.getMessage("authn.svc.rdbms.encryption.enabled"),
+								false, false));
 		authnSvcRdbmsStep
 				.getValidators()
 				.add(
@@ -1693,6 +1688,64 @@ public class Installer {
 			}
 		});
 
+		PropertyConfigurationStep gridGrouperConfigStep = new PropertyConfigurationStep(
+				this.model.getMessage("grid.grouper.config.title"), this.model
+						.getMessage("grid.grouper.config.desc"));
+		gridGrouperConfigStep
+				.getOptions()
+				.add(
+						new TextPropertyConfigurationOption(
+								Constants.GRID_GROUPER_ADMIN_IDENT,
+								this.model
+										.getMessage("grid.grouper.admin.ident"),
+								getProperty(this.model.getState(),
+										Constants.GRID_GROUPER_ADMIN_IDENT,
+										"/O=org/OU=unit/OU=User Group/OU=Dorian IdP/CN=manager"),
+								true));
+		gridGrouperConfigStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.GRID_GROUPER_DB_URL, this.model
+								.getMessage("grid.grouper.db.url"),
+						getProperty(this.model.getState(),
+								Constants.GRID_GROUPER_DB_URL,
+								"jdbc:mysql://localhost:3306/grouper"), true));
+		gridGrouperConfigStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.GRID_GROUPER_DB_USERNAME, this.model
+								.getMessage("grid.grouper.db.username"),
+						getProperty(this.model.getState(),
+								Constants.GRID_GROUPER_DB_USERNAME, "root"),
+						true));
+		gridGrouperConfigStep.getOptions().add(
+				new PasswordPropertyConfigurationOption(
+						Constants.GRID_GROUPER_DB_PASSWORD, this.model
+								.getMessage("grid.grouper.db.password"),
+						getProperty(this.model.getState(),
+								Constants.GRID_GROUPER_DB_PASSWORD, ""), true));
+		this.model.add(gridGrouperConfigStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return "true".equals(model.getState().get(
+						Constants.INSTALL_GRID_GROUPER));
+			}
+		});
+
+		DeployPropertiesFileEditorStep editGridGrouperDeployPropertiesStep = new DeployPropertiesFileEditorStep(
+				"gridgrouper",
+				this.model
+						.getMessage("grid.grouper.edit.deploy.properties.title"),
+				this.model
+						.getMessage("grid.grouper.edit.deploy.properties.desc"),
+				this.model.getMessage("edit.properties.property.name"),
+				this.model.getMessage("edit.properties.property.value"));
+		this.model.add(editGridGrouperDeployPropertiesStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return "true".equals(model.getState().get(
+						Constants.INSTALL_GRID_GROUPER));
+			}
+		});
+
 		// Performs the installation
 		RunTasksStep installStep = new RunTasksStep(this.model
 				.getMessage("install.title"), this.model
@@ -1789,21 +1842,44 @@ public class Installer {
 					}
 
 				}));
-		
+
 		installStep.getTasks().add(
-				new ConditionalTask(
-						new DeployAuthenticationServiceTask(this.model
-								.getMessage("deploying.authn.svc.title"), "",
-								this.model), new Condition() {
+				new ConditionalTask(new DeployAuthenticationServiceTask(
+						this.model.getMessage("deploying.authn.svc.title"), "",
+						this.model), new Condition() {
+
+					public boolean evaluate(WizardModel m) {
+						CaGridInstallerModel model = (CaGridInstallerModel) m;
+						return "true".equals(model.getState().get(
+								Constants.INSTALL_AUTHN_SVC));
+					}
+
+				}));
+
+		installStep.getTasks().add(
+				new ConditionalTask(new ConfigureGridGrouperTask(this.model
+						.getMessage("configuring.grid.grouper.title"), ""),
+						new Condition() {
 
 							public boolean evaluate(WizardModel m) {
 								CaGridInstallerModel model = (CaGridInstallerModel) m;
 								return "true".equals(model.getState().get(
-										Constants.INSTALL_AUTHN_SVC));
+										Constants.INSTALL_GRID_GROUPER));
 							}
 
 						}));
-		
+		installStep.getTasks().add(
+				new ConditionalTask(new DeployServiceTask(this.model
+						.getMessage("deploying.grid.grouper.title"), "",
+						"gridgrouper", this.model), new Condition() {
+
+					public boolean evaluate(WizardModel m) {
+						CaGridInstallerModel model = (CaGridInstallerModel) m;
+						return "true".equals(model.getState().get(
+								Constants.INSTALL_GRID_GROUPER));
+					}
+
+				}));
 
 		installStep.getTasks().add(
 				new SaveSettingsTask(this.model

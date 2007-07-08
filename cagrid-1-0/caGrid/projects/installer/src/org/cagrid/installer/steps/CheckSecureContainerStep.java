@@ -41,8 +41,10 @@ public class CheckSecureContainerStep extends PropertyConfigurationStep {
 				|| "true".equals(this.model.getState().get(
 						Constants.INSTALL_GTS))
 				|| "true".equals(this.model.getState().get(
-						Constants.INSTALL_AUTHN_SVC))) {
-			
+						Constants.INSTALL_AUTHN_SVC))
+				|| "true".equals(this.model.getState().get(
+						Constants.INSTALL_GRID_GROUPER))) {
+
 			JCheckBox checkBox = (JCheckBox) getOption(Constants.USE_SECURE_CONTAINER);
 			checkBox.setSelected(true);
 			checkBox.setEnabled(false);

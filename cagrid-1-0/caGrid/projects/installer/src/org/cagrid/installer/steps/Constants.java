@@ -332,5 +332,13 @@ public abstract class Constants {
 
 	public static final String AUTHN_SVC_OVERWRITE_JAAS_NO = "authn.svc.overwrite.jaas.no";
 
+	public static final String GRID_GROUPER_ADMIN_IDENT = "grid.grouper.admin.ident";
+
+	public static final String GRID_GROUPER_DB_URL = "grid.grouper.db.url";
+
+	public static final String GRID_GROUPER_DB_USERNAME = "grid.grouper.db.username";
+
+	public static final String GRID_GROUPER_DB_PASSWORD = "grid.grouper.db.password";
+
 	
 }
