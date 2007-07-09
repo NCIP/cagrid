@@ -68,11 +68,36 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 
 	private static final Log logger = LogFactory
 			.getLog(ConfigureSyncGTSStep.class);
-	
+
 	private static final String SYNC_GTS_NS = "http://cagrid.nci.nih.gov/12/SyncGTS";
+
 	private static final String SYNC_GTS_NS_PREFIX = "sync";
+
 	private static final String GTS_NS = "http://cagrid.nci.nih.gov/8/gts";
+
 	private static final String GTS_NS_PREFIX = "gts";
+
+	private static final String XSI_NS_PREFIX = "xsi";
+
+	private static final String XSI_NS = "http://www.w3.org/2001/XMLSchema-instance";
+
+	private static final int NAME_COL = 0;
+
+	private static final int CERT_DN_COL = 1;
+
+	private static final int TRUST_LEVELS_COL = 2;
+
+	private static final int LIFETIME_COL = 3;
+
+	private static final int STATUS_COL = 4;
+
+	private static final int IS_AUTH_COL = 5;
+
+	private static final int AUTH_GTS_COL = 6;
+
+	private static final int SOURCE_GTS_COL = 7;
+
+	private static final String EMPTY_CHOICE = "----";
 
 	private CaGridInstallerModel model;
 
@@ -271,21 +296,21 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 			col.setCellRenderer(r);
 		}
 		JComboBox lifetimeChoices = new JComboBox();
-		lifetimeChoices.addItem("----");
+		lifetimeChoices.addItem(EMPTY_CHOICE);
 		lifetimeChoices.addItem("Valid");
 		lifetimeChoices.addItem("Expired");
 		this.tafTable.getColumnModel().getColumn(3).setCellEditor(
 				new DefaultCellEditor(lifetimeChoices));
 
 		JComboBox statusChoices = new JComboBox();
-		statusChoices.addItem("----");
+		statusChoices.addItem(EMPTY_CHOICE);
 		statusChoices.addItem("Trusted");
 		statusChoices.addItem("Suspended");
 		this.tafTable.getColumnModel().getColumn(4).setCellEditor(
 				new DefaultCellEditor(statusChoices));
 
 		JComboBox isAuthChoices = new JComboBox();
-		isAuthChoices.addItem("----");
+		isAuthChoices.addItem(EMPTY_CHOICE);
 		isAuthChoices.addItem("true");
 		isAuthChoices.addItem("false");
 		this.tafTable.getColumnModel().getColumn(5).setCellEditor(
@@ -571,34 +596,173 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 
 	public void applyState() throws InvalidStateException {
 		try {
-//			File syncDescFile = new File(getSyncDescriptionFileName());
-//			if (syncDescFile.exists()) {
-//				Utils.copyFile(syncDescFile, new File(syncDescFile
-//						.getAbsolutePath()
-//						+ "-bak"));
-//				syncDescFile.delete();
-//			}
-//			
-//			DocumentBuilderFactory fact = DocumentBuilderFactory.newInstance();
-//			fact.setValidating(false);
-//			fact.setNamespaceAware(true);
-//			DocumentBuilder builder = fact.newDocumentBuilder();
-//			Document doc = builder.newDocument();
-//			
-//			Element root = doc.createElementNS(SYNC_GTS_NS, SYNC_GTS_NS_PREFIX + ":SyncDescription");
-//
-//			
-//			//Write to file
-//			String xml = toString(doc);
-//			FileWriter w = new FileWriter(syncDescFile);
-//			w.write(xml);
-//			w.flush();
-//			w.close();
+			File syncDescFile = new File(getSyncDescriptionFileName());
+			if (syncDescFile.exists()) {
+				// String bakFile = syncDescFile.getAbsolutePath() + ".bak";
+				// logger.info(syncDescFile + " exists. Copying to " + bakFile);
+				// Utils.copyFile(syncDescFile, new File(bakFile));
+				logger.info("Deleting " + syncDescFile.getAbsolutePath());
+				syncDescFile.delete();
+			}
+
+			DocumentBuilderFactory fact = DocumentBuilderFactory.newInstance();
+			fact.setValidating(false);
+			fact.setNamespaceAware(true);
+			DocumentBuilder builder = fact.newDocumentBuilder();
+			Document doc = builder.newDocument();
+
+			Element root = doc.createElementNS(SYNC_GTS_NS, SYNC_GTS_NS_PREFIX
+					+ ":SyncDescription");
+			doc.appendChild(root);
+
+			Element syncDescEl = doc.createElementNS(SYNC_GTS_NS,
+					SYNC_GTS_NS_PREFIX + ":SyncDescriptor");
+			root.appendChild(syncDescEl);
+
+			logger.info("1");
+			Element gtsServiceURIEl = doc.createElementNS(SYNC_GTS_NS,
+					SYNC_GTS_NS_PREFIX + ":gtsServiceURI");
+			syncDescEl.appendChild(gtsServiceURIEl);
+			gtsServiceURIEl.setTextContent(this.gtsServiceURIField.getText());
+
+			logger.info("2");
+			Element expirationEl = doc.createElementNS(SYNC_GTS_NS,
+					SYNC_GTS_NS_PREFIX + ":Expiration");
+			syncDescEl.appendChild(expirationEl);
+			expirationEl.setAttribute("hours", this.expirationHoursField
+					.getText());
+			expirationEl.setAttribute("minutes", this.expirationMinutesField
+					.getText());
+			expirationEl.setAttribute("seconds", this.expirationSecondsField
+					.getText());
+
+			logger.info("3");
+			int tafRowCount = this.tafTableModel.getRowCount();
+			for (int row = 0; row < tafRowCount; row++) {
+
+				Element filterEl = doc.createElementNS(SYNC_GTS_NS,
+						SYNC_GTS_NS_PREFIX + ":TrustedAuthorityFilter");
+				filterEl.setAttributeNS(XSI_NS, XSI_NS_PREFIX + ":type",
+						GTS_NS_PREFIX + ":TrustedAuthorityFilter");
+
+				addFilterChildEl(doc, filterEl, row, NAME_COL, "Name");
+				addFilterChildEl(doc, filterEl, row, CERT_DN_COL,
+						"CertificateDN");
+				addFilterChildEl(doc, filterEl, row, TRUST_LEVELS_COL,
+						"TrustLevels");
+				addFilterChildEl(doc, filterEl, row, LIFETIME_COL, "Lifetime");
+				addFilterChildEl(doc, filterEl, row, STATUS_COL, "Status");
+				addFilterChildEl(doc, filterEl, row, IS_AUTH_COL, "IsAuthority");
+				addFilterChildEl(doc, filterEl, row, AUTH_GTS_COL,
+						"AuthorityGTS");
+				addFilterChildEl(doc, filterEl, row, SOURCE_GTS_COL,
+						"SourceGTS");
+
+				// Add only if there is at least one filter criterion
+				if (filterEl.getChildNodes().getLength() > 0) {
+					syncDescEl.appendChild(filterEl);
+				}
+			}
+
+			logger.info("4");
+			String performAuth = getValue(this.performAuthzField.getText(),
+					"false");
+			Element performAuthEl = doc.createElementNS(SYNC_GTS_NS,
+					SYNC_GTS_NS_PREFIX + ":PerformAuthorization");
+			syncDescEl.appendChild(performAuthEl);
+			performAuthEl.setTextContent(performAuth);
+
+			logger.info("5");
+			if ("true".equals(performAuth)) {
+				Element gtsIdentEl = doc.createElementNS(SYNC_GTS_NS,
+						SYNC_GTS_NS_PREFIX + ":GTSIdentity");
+				syncDescEl.appendChild(gtsIdentEl);
+				gtsIdentEl.setTextContent(this.gtsIdentField.getText());
+			}
+
+			logger.info("6");
+			int ecRowCount = this.ecTableModel.getRowCount();
+			Element excludedCAsEl = doc.createElementNS(SYNC_GTS_NS,
+					SYNC_GTS_NS_PREFIX + ":ExcludedCAs");
+			for (int row = 0; row < ecRowCount; row++) {
+				String caSubj = (String) this.ecTableModel.getValueAt(row, 0);
+				if (!isEmpty(caSubj)) {
+					Element caSubjEl = doc.createElementNS(SYNC_GTS_NS,
+							SYNC_GTS_NS_PREFIX + ":CASubject");
+					excludedCAsEl.appendChild(caSubjEl);
+					caSubjEl.setTextContent(caSubj);
+				}
+			}
+
+			// Append only if has child nodes
+			if (excludedCAsEl.getChildNodes().getLength() > 0) {
+				root.appendChild(excludedCAsEl);
+			}
+			logger.info("7");
+
+			String deleteInvalid = getValue(this.deleteInvalidField.getText(),
+					"false");
+			Element deleteInvalidEl = doc.createElementNS(SYNC_GTS_NS,
+					SYNC_GTS_NS_PREFIX + ":DeleteInvalidFiles");
+			syncDescEl.appendChild(deleteInvalidEl);
+			deleteInvalidEl.setTextContent(deleteInvalid);
+
+			logger.info("8");
+			Element cacheSizeEl = doc.createElementNS(SYNC_GTS_NS,
+					SYNC_GTS_NS_PREFIX + ":CacheSize");
+			root.appendChild(cacheSizeEl);
+			Element cacheSizeYearEl = doc.createElementNS(SYNC_GTS_NS,
+					SYNC_GTS_NS_PREFIX + ":year");
+			cacheSizeEl.appendChild(cacheSizeYearEl);
+			cacheSizeYearEl.setTextContent("0");
+			Element cacheSizeMonthEl = doc.createElementNS(SYNC_GTS_NS,
+					SYNC_GTS_NS_PREFIX + ":month");
+			cacheSizeEl.appendChild(cacheSizeMonthEl);
+			cacheSizeMonthEl.setTextContent("1");
+			Element cacheSizeDayEl = doc.createElementNS(SYNC_GTS_NS,
+					SYNC_GTS_NS_PREFIX + ":day");
+			cacheSizeEl.appendChild(cacheSizeDayEl);
+			cacheSizeDayEl.setTextContent("0");
+
+			logger.info("9");
+			String nextSync = getValue(this.nextSyncField.getText(), "600");
+			Element nextSyncEl = doc.createElementNS(SYNC_GTS_NS,
+					SYNC_GTS_NS_PREFIX + ":NextSync");
+			root.appendChild(nextSyncEl);
+			nextSyncEl.setTextContent(nextSync);
+
+			logger.info("10");
+			// Write to file
+			String xml = toString(doc);
+			FileWriter w = new FileWriter(syncDescFile);
+			w.write(xml);
+			w.flush();
+			w.close();
+			logger.info("11");
 		} catch (Exception ex) {
+			logger.error(ex);
 			throw new InvalidStateException(
 					"Error configuring sync-description.xml file: "
 							+ ex.getMessage(), ex);
 		}
+	}
+
+	private void addFilterChildEl(Document doc, Element filterEl, int row,
+			int col, String elName) {
+		String value = (String) this.tafTableModel.getValueAt(row, col);
+		if (!isEmpty(value)) {
+			Element el = doc.createElementNS(GTS_NS, GTS_NS_PREFIX + ":"
+					+ elName);
+			filterEl.appendChild(el);
+			el.setAttributeNS(XSI_NS, XSI_NS_PREFIX + ":type", GTS_NS_PREFIX
+					+ ":" + elName);
+			el.setTextContent(value);
+		}
+	}
+
+	private boolean isEmpty(String value) {
+		return value == null || value.trim().length() == 0
+				|| EMPTY_CHOICE.equals(value);
 	}
 
 	private static String toString(Node node) throws Exception {
