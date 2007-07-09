@@ -32,12 +32,14 @@ import org.cagrid.installer.steps.ConfigureSyncGTSStep;
 import org.cagrid.installer.steps.Constants;
 import org.cagrid.installer.steps.DeployPropertiesFileEditorStep;
 import org.cagrid.installer.steps.DeployPropertiesGMEFileEditorStep;
+import org.cagrid.installer.steps.DeployPropertiesWorkflowFileEditorStep;
 import org.cagrid.installer.steps.InstallationCompleteStep;
 import org.cagrid.installer.steps.PropertyConfigurationStep;
 import org.cagrid.installer.steps.RunTasksStep;
 import org.cagrid.installer.steps.SelectComponentStep;
 import org.cagrid.installer.steps.SelectInstallationTypeStep;
 import org.cagrid.installer.steps.ServicePropertiesFileEditorStep;
+import org.cagrid.installer.steps.ServicePropertiesWorkflowFileEditorStep;
 import org.cagrid.installer.steps.SpecifyTomcatPortsStep;
 import org.cagrid.installer.steps.options.BooleanPropertyConfigurationOption;
 import org.cagrid.installer.steps.options.FilePropertyConfigurationOption;
@@ -60,6 +62,7 @@ import org.cagrid.installer.tasks.DeployDorianTask;
 import org.cagrid.installer.tasks.DeployGlobusTask;
 import org.cagrid.installer.tasks.DeployIndexServiceTask;
 import org.cagrid.installer.tasks.DeployServiceTask;
+import org.cagrid.installer.tasks.DeployWorkflowServiceTask;
 import org.cagrid.installer.tasks.DownloadFileTask;
 import org.cagrid.installer.tasks.GenerateCATask;
 import org.cagrid.installer.tasks.GenerateServiceCredsTask;
@@ -404,8 +407,9 @@ public class Installer {
 				new BooleanPropertyConfigurationOption(Constants.INSTALL_FQP,
 						"FQP", false, true));
 		selectServicesStep.getOptions().add(
-				new BooleanPropertyConfigurationOption(
-						Constants.INSTALL_WORKFLOW, "Workflow", false, true));
+				new BooleanPropertyConfigurationOption(Constants.INSTALL_WORKFLOW,
+						"Workflow", false, true));
+		
 		this.model.add(selectServicesStep, new Condition() {
 
 			public boolean evaluate(WizardModel m) {
@@ -1377,6 +1381,33 @@ public class Installer {
 			}
 		});
 
+		ServicePropertiesWorkflowFileEditorStep editWorkflowServicePropertiesStep = new ServicePropertiesWorkflowFileEditorStep(
+				"workflow", this.model
+						.getMessage("workflow.edit.service.properties.title"),
+				this.model.getMessage("workflow.edit.service.properties.desc"),
+				this.model.getMessage("edit.properties.property.name"),
+				this.model.getMessage("edit.properties.property.value"));
+		this.model.add(editWorkflowServicePropertiesStep,new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return "true".equals(model.getState().get(
+						Constants.INSTALL_WORKFLOW));
+			}
+		});
+		
+		DeployPropertiesWorkflowFileEditorStep editWorkflowDeployPropertiesStep = new DeployPropertiesWorkflowFileEditorStep(
+				"workflow", this.model
+						.getMessage("workflow.edit.deploy.properties.title"),
+				this.model.getMessage("workflow.edit.deploy.properties.desc"),
+				this.model.getMessage("edit.properties.property.name"),
+				this.model.getMessage("edit.properties.property.value"));
+		this.model.add(editWorkflowDeployPropertiesStep,new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return "true".equals(model.getState().get(
+						Constants.INSTALL_WORKFLOW));
+			}
+		});
 
 		DeployPropertiesFileEditorStep editGTSDeployPropertiesStep = new DeployPropertiesFileEditorStep(
 				"gts", this.model
@@ -1983,6 +2014,19 @@ public class Installer {
 
 						}));
 
+		installStep.getTasks().add(
+				new ConditionalTask(
+						new DeployWorkflowServiceTask(this.model.getMessage("installing.workflow.title"), "","workflow", this.model), new Condition() {
+
+							public boolean evaluate(WizardModel m) {
+								CaGridInstallerModel model = (CaGridInstallerModel) m;
+								return "true".equals(model.getState().get(
+										Constants.INSTALL_WORKFLOW));
+							}
+
+						}));
+
+		
 		installStep.getTasks().add(
 				new ConditionalTask(
 						new DeployIndexServiceTask(this.model.getMessage("installing.index.title"), "","index", this.model), new Condition() {
