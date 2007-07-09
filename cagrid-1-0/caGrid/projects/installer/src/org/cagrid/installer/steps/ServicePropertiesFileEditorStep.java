@@ -5,6 +5,8 @@ package org.cagrid.installer.steps;
 
 import javax.swing.Icon;
 
+import org.cagrid.installer.util.Utils;
+
 /**
  * @author <a href="joshua.phillips@semanticbits.com">Joshua Phillips</a>
  *
@@ -57,7 +59,7 @@ public class ServicePropertiesFileEditorStep extends
 	 */
 	@Override
 	protected String getPropertyFilePath() {
-		return this.model.getState().get(Constants.TEMP_DIR_PATH) + "/"
+		return Utils.getServiceDestDir(this.model.getState()) + "/"
 				+ this.serviceName + "/service.properties";
 	}
 
