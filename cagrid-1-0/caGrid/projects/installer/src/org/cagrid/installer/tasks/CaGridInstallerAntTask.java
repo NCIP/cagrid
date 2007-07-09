@@ -5,7 +5,7 @@ package org.cagrid.installer.tasks;
 
 import java.util.Map;
 
-import org.cagrid.installer.util.Utils;
+import org.cagrid.installer.util.InstallerUtils;
 
 /**
  * @author <a href="joshua.phillips@semanticbits.com">Joshua Phillips</a>
@@ -25,6 +25,6 @@ public class CaGridInstallerAntTask extends CaGridAntTask {
 
 	
 	protected String getBuildFilePath(Map state){
-		return Utils.getScriptsBuildFilePath();
+		return InstallerUtils.getScriptsBuildFilePath();
 	}
 }

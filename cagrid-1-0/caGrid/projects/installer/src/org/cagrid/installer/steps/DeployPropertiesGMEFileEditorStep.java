@@ -22,7 +22,7 @@ import javax.swing.table.DefaultTableModel;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.installer.model.CaGridInstallerModel;
-import org.cagrid.installer.util.Utils;
+import org.cagrid.installer.util.InstallerUtils;
 import org.pietschy.wizard.InvalidStateException;
 import org.pietschy.wizard.PanelWizardStep;
 import org.pietschy.wizard.WizardModel;
@@ -153,7 +153,7 @@ public class DeployPropertiesGMEFileEditorStep extends PanelWizardStep
 	}
 
 	protected  String getPropertyFilePath(){
-		return Utils.getServiceDestDir(this.model.getState()) + "/"
+		return InstallerUtils.getServiceDestDir(this.model.getState()) + "/"
 		+ this.serviceName + "/deploy.properties";
 	}
 

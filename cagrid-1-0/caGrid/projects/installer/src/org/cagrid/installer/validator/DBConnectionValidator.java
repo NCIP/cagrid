@@ -12,7 +12,7 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.installer.steps.Constants;
-import org.cagrid.installer.util.Utils;
+import org.cagrid.installer.util.InstallerUtils;
 import org.pietschy.wizard.InvalidStateException;
 
 /**
@@ -45,7 +45,7 @@ public abstract class DBConnectionValidator implements Validator {
 		String url = getJdbcDriverJarUrl(state);
 		try {
 			logger.info("Adding " + url + " to classpath.");
-			Utils.addToClassPath(url);
+			InstallerUtils.addToClassPath(url);
 		} catch (Exception ex) {
 			String msg = "Error loading " + url + ": " + ex.getMessage();
 			logger.error(msg, ex);

@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.cagrid.installer.steps.Constants;
-import org.cagrid.installer.util.Utils;
+import org.cagrid.installer.util.InstallerUtils;
 
 /**
  * @author <a href="joshua.phillips@semanticbits.com">Joshua Phillips</a>
@@ -30,12 +30,12 @@ public class ConfigureGTSTask extends CaGridAntTask {
 
 		Map m = new HashMap(state);
 
-		m.put(Constants.BUILD_FILE_PATH, Utils.getScriptsBuildFilePath());
+		m.put(Constants.BUILD_FILE_PATH, InstallerUtils.getScriptsBuildFilePath());
 		new AntTask("", "", "configure-gts-conf", env, sysProps).execute(m);
 		
-		Utils.copyCACertToTrustStore((String) state.get(Constants.CA_CERT_PATH));
+		InstallerUtils.copyCACertToTrustStore((String) state.get(Constants.CA_CERT_PATH));
 		
-		m.put(Constants.BUILD_FILE_PATH, Utils.getServiceDestDir(m) + "/gts/build.xml");
+		m.put(Constants.BUILD_FILE_PATH, InstallerUtils.getServiceDestDir(m) + "/gts/build.xml");
 		sysProps.setProperty("gridId.input", (String)state.get(Constants.GTS_ADMIN_IDENT));
 		new AntTask("", "", "addAdmin", env, sysProps).execute(m);
 		

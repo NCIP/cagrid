@@ -6,6 +6,8 @@ package org.cagrid.installer.steps;
 import javax.swing.Icon;
 import javax.swing.JCheckBox;
 
+import org.cagrid.installer.util.InstallerUtils;
+
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
  * 
@@ -37,13 +39,7 @@ public class CheckSecureContainerStep extends PropertyConfigurationStep {
 	}
 
 	public void prepare() {
-		if ("true".equals(this.model.getState().get(Constants.INSTALL_DORIAN))
-				|| "true".equals(this.model.getState().get(
-						Constants.INSTALL_GTS))
-				|| "true".equals(this.model.getState().get(
-						Constants.INSTALL_AUTHN_SVC))
-				|| "true".equals(this.model.getState().get(
-						Constants.INSTALL_GRID_GROUPER))) {
+		if (InstallerUtils.isSecureContainerRequired(this.model.getState())) {
 
 			JCheckBox checkBox = (JCheckBox) getOption(Constants.USE_SECURE_CONTAINER);
 			checkBox.setSelected(true);

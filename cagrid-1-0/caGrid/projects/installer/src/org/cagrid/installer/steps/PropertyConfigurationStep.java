@@ -4,6 +4,7 @@
 package org.cagrid.installer.steps;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -26,10 +27,13 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.table.TableModel;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -39,6 +43,7 @@ import org.cagrid.installer.steps.options.FilePropertyConfigurationOption;
 import org.cagrid.installer.steps.options.ListPropertyConfigurationOption;
 import org.cagrid.installer.steps.options.PasswordPropertyConfigurationOption;
 import org.cagrid.installer.steps.options.PropertyConfigurationOption;
+import org.cagrid.installer.steps.options.TablePropertyConfigurationOption;
 import org.cagrid.installer.steps.options.TextPropertyConfigurationOption;
 import org.cagrid.installer.steps.options.ListPropertyConfigurationOption.LabelValuePair;
 import org.cagrid.installer.validator.Validator;
@@ -68,6 +73,10 @@ public class PropertyConfigurationStep extends PanelWizardStep {
 	protected CaGridInstallerModel model;
 
 	private List<Validator> validators = new ArrayList<Validator>();
+	
+	private Map<String,TableModel> tableModels = new HashMap<String,TableModel>();
+
+	private int lastY;
 
 	public List<Validator> getValidators() {
 		return validators;
@@ -120,14 +129,16 @@ public class PropertyConfigurationStep extends PanelWizardStep {
 		for (PropertyConfigurationOption option : getOptions()) {
 			if (option instanceof PasswordPropertyConfigurationOption) {
 				addPasswordOption((PasswordPropertyConfigurationOption) option);
-			}else if(option instanceof FilePropertyConfigurationOption){
-				addFileOption((FilePropertyConfigurationOption)option);
+			} else if (option instanceof FilePropertyConfigurationOption) {
+				addFileOption((FilePropertyConfigurationOption) option);
 			} else if (option instanceof TextPropertyConfigurationOption) {
 				addTextOption((TextPropertyConfigurationOption) option);
 			} else if (option instanceof ListPropertyConfigurationOption) {
 				addListOption((ListPropertyConfigurationOption) option);
 			} else if (option instanceof BooleanPropertyConfigurationOption) {
 				addBooleanOption((BooleanPropertyConfigurationOption) option);
+			} else if (option instanceof TablePropertyConfigurationOption) {
+				addTableOption((TablePropertyConfigurationOption) option);
 			} else {
 				throw new IllegalStateException(
 						"Unknown PropertyConfigurationOption type: "
@@ -135,6 +146,15 @@ public class PropertyConfigurationStep extends PanelWizardStep {
 			}
 		}
 		checkComplete();
+	}
+
+	protected void addTableOption(TablePropertyConfigurationOption option) {
+		JTable table = new JTable(option.getTableModel());
+		table.setPreferredScrollableViewportSize(new Dimension(100, 25));
+		JScrollPane scrollPane = new JScrollPane(table);
+
+		this.tableModels.put(option.getName(), option.getTableModel());
+		addOption(option.getName(), option.getDescription(), scrollPane);
 	}
 
 	public void prepare() {
@@ -232,7 +252,8 @@ public class PropertyConfigurationStep extends PanelWizardStep {
 				fc.setFileFilter(new ExtensionFilter(option.getExtensions()));
 				int returnVal = fc.showOpenDialog(window);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
-					JTextField valueField = (JTextField) window.getOption(option.getName());
+					JTextField valueField = (JTextField) window
+							.getOption(option.getName());
 					valueField.setText(fc.getSelectedFile().getAbsolutePath());
 				}
 			}
@@ -319,14 +340,14 @@ public class PropertyConfigurationStep extends PanelWizardStep {
 		GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
 		gridBagConstraints1.gridx = 0;
 		gridBagConstraints1.fill = GridBagConstraints.BOTH;
-		gridBagConstraints1.gridy = optionKeys.size() - 1;
+		gridBagConstraints1.gridy = this.optionKeys.size() - 1;
 		this.getOptionsPanel().add(label, gridBagConstraints1);
 
 		this.optionValueFields.add(valueField);
 		GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
 		gridBagConstraints2.gridx = 1;
 		gridBagConstraints2.fill = GridBagConstraints.BOTH;
-		gridBagConstraints2.gridy = optionKeys.size() - 1;
+		gridBagConstraints2.gridy = this.optionKeys.size() - 1;
 		gridBagConstraints2.weightx = 1;
 		gridBagConstraints2.insets = new Insets(2, 5, 2, 2);
 		this.getOptionsPanel().add(valueField, gridBagConstraints2);
@@ -335,7 +356,7 @@ public class PropertyConfigurationStep extends PanelWizardStep {
 			GridBagConstraints gridBagConstraints3 = new GridBagConstraints();
 			gridBagConstraints3.gridx = 2;
 			gridBagConstraints3.fill = GridBagConstraints.BOTH;
-			gridBagConstraints3.gridy = optionKeys.size() - 1;
+			gridBagConstraints3.gridy = this.optionKeys.size() - 1;
 			gridBagConstraints3.weightx = 1;
 			gridBagConstraints3.insets = new Insets(2, 5, 2, 2);
 			this.getOptionsPanel().add(control, gridBagConstraints3);
@@ -344,25 +365,26 @@ public class PropertyConfigurationStep extends PanelWizardStep {
 
 	public void applyState() throws InvalidStateException {
 
-		Map<String, String> tempState = new HashMap<String, String>();
+		Map tempState = new HashMap();
 		try {
 			for (int i = 0; i < optionKeys.size(); i++) {
 				String key = optionKeys.get(i);
-				String value = null;
-				if (optionValueFields.get(i) instanceof JPasswordField) {
-					value = String.valueOf(((JPasswordField) optionValueFields
-							.get(i)).getPassword());
-				} else if (optionValueFields.get(i) instanceof JTextField) {
-					value = ((JTextField) optionValueFields.get(i)).getText();
-				} else if (optionValueFields.get(i) instanceof JCheckBox) {
-					value = String.valueOf(((JCheckBox) optionValueFields
-							.get(i)).isSelected());
-				} else if (optionValueFields.get(i) instanceof JComboBox) {
-					LabelValuePair pair = (LabelValuePair) ((JComboBox) optionValueFields
-							.get(i)).getSelectedItem();
+				Component c = optionValueFields.get(i);
+				Object value = null;
+				if (c instanceof JPasswordField) {
+					value = String.valueOf(((JPasswordField) c).getPassword());
+				} else if (c instanceof JTextField) {
+					value = ((JTextField) c).getText();
+				} else if (c instanceof JCheckBox) {
+					value = String.valueOf(((JCheckBox) c).isSelected());
+				} else if (c instanceof JComboBox) {
+					LabelValuePair pair = (LabelValuePair) ((JComboBox) c)
+							.getSelectedItem();
 					value = pair.getValue();
+				} else if (c instanceof JScrollPane) {
+					JScrollPane scrollPane = (JScrollPane) c;
+					value = this.tableModels.get(key);
 				}
-				// logger.debug("Setting " + key + " = " + value);
 				tempState.put(key, value);
 			}
 		} catch (Exception ex) {
@@ -423,12 +445,12 @@ public class PropertyConfigurationStep extends PanelWizardStep {
 
 		ExtensionFilter(String[] extensions) {
 			this.extensions = extensions;
-			if(this.extensions.length > 0){
+			if (this.extensions.length > 0) {
 				StringBuilder sb = new StringBuilder();
-				for(int i = 0; i < this.extensions.length; i++){
+				for (int i = 0; i < this.extensions.length; i++) {
 					sb.append("*");
 					sb.append(this.extensions[i]);
-					if(i + 1 < this.extensions.length){
+					if (i + 1 < this.extensions.length) {
 						sb.append(",");
 					}
 				}

@@ -10,7 +10,7 @@ import java.util.Properties;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.installer.steps.Constants;
-import org.cagrid.installer.util.Utils;
+import org.cagrid.installer.util.InstallerUtils;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
@@ -33,8 +33,8 @@ public class ConfigureDorianTask extends CaGridAntTask {
 			Properties sysProps) throws Exception {
 
 		Map m = new HashMap(state);
-		m.put(Constants.BUILD_FILE_PATH, Utils.getScriptsBuildFilePath());
-		String serviceDestDir = Utils.getServiceDestDir(state);
+		m.put(Constants.BUILD_FILE_PATH, InstallerUtils.getScriptsBuildFilePath());
+		String serviceDestDir = InstallerUtils.getServiceDestDir(state);
 		new AntTask("", "", "configure-dorian-conf", env, sysProps).execute(m);
 
 		if ("true".equals(state.get(Constants.DORIAN_CA_PRESENT))
@@ -51,7 +51,7 @@ public class ConfigureDorianTask extends CaGridAntTask {
 		} else {
 			// Have to copy CA cert to HOME/.globus/certificates
 			logger.debug("Copying CA cert to trust store");
-			Utils.copyCACertToTrustStore((String) state
+			InstallerUtils.copyCACertToTrustStore((String) state
 					.get(Constants.CA_CERT_PATH));
 
 		}

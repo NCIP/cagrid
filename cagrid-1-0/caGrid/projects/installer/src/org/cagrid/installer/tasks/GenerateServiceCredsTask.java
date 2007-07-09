@@ -31,22 +31,24 @@ public class GenerateServiceCredsTask extends CaGridInstallerAntTask {
 			Properties sysProps) throws Exception {
 
 		// Need to ensure that we have a valid value for days valid.
-		if (!state.containsKey(Constants.CA_DAYS_VALID)) {
-			
-			//Then we need to load it from the certificate
-			File f = new File((String) state.get(Constants.CA_CERT_PATH));
-			if(!f.exists()){
-				throw new RuntimeException("Certificate at '" + f.getAbsolutePath() + "' not found.");
-			}
-			X509Certificate cert = X509Certificate.getInstance(new FileInputStream(f));
-			Date now = new Date();
-			Date notAfter = cert.getNotAfter();
-			if(notAfter.before(now)){
-				throw new RuntimeException("The certificate is already expired.");
-			}
-			int diffInDays = (int) ((notAfter.getTime() - now.getTime())/(1000*60*60*24));
-			state.put(Constants.SERVICE_CERT_DAYS_VALID, String.valueOf(diffInDays));
+
+		// Then we need to load it from the certificate
+		File f = new File((String) state.get(Constants.CA_CERT_PATH));
+		if (!f.exists()) {
+			throw new RuntimeException("Certificate at '" + f.getAbsolutePath()
+					+ "' not found.");
 		}
+		X509Certificate cert = X509Certificate.getInstance(new FileInputStream(
+				f));
+		Date now = new Date();
+		Date notAfter = cert.getNotAfter();
+		if (notAfter.before(now)) {
+			throw new RuntimeException("The certificate is already expired.");
+		}
+		int diffInDays = (int) ((notAfter.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+		state
+				.put(Constants.SERVICE_CERT_DAYS_VALID, String
+						.valueOf(diffInDays));
 
 		new AntTask("", "", target, env, sysProps).execute(state);
 

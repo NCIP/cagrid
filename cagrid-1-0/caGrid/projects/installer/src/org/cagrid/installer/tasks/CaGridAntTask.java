@@ -10,7 +10,7 @@ import java.util.Properties;
 import java.util.Map.Entry;
 
 import org.cagrid.installer.steps.Constants;
-import org.cagrid.installer.util.Utils;
+import org.cagrid.installer.util.InstallerUtils;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
@@ -48,7 +48,7 @@ public class CaGridAntTask extends BasicTask {
 						.getValue());
 			}
 		}
-		sysProps.setProperty(Constants.SERVICE_DEST_DIR, Utils
+		sysProps.setProperty(Constants.SERVICE_DEST_DIR, InstallerUtils
 				.getServiceDestDir(state));
 		sysProps.setProperty(Constants.GRIDCA_BUILD_FILE_PATH, (String) state
 				.get(Constants.CAGRID_HOME)

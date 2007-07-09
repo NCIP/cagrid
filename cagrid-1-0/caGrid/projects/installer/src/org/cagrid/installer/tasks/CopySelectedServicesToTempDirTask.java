@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.cagrid.installer.steps.Constants;
-import org.cagrid.installer.util.Utils;
+import org.cagrid.installer.util.InstallerUtils;
 
 /**
  * @author <a href="joshua.phillips@semanticbits.com">Joshua Phillips</a>
@@ -61,6 +61,9 @@ public class CopySelectedServicesToTempDirTask extends CaGridAntTask {
 		if("true".equals(state.get(Constants.INSTALL_WORKFLOW))){
 			selectedServices.add("workflow");
 		}
+		if(InstallerUtils.isSecureContainerRequired(state)){
+			selectedServices.add("syncgts");
+		}
 		
 		StringBuilder sb = new StringBuilder();
 		for(Iterator i = selectedServices.iterator(); i.hasNext();){
@@ -77,7 +80,7 @@ public class CopySelectedServicesToTempDirTask extends CaGridAntTask {
 	}
 
 	protected String getBuildFilePath(Map state) {
-		return Utils.getScriptsBuildFilePath();
+		return InstallerUtils.getScriptsBuildFilePath();
 	}
 
 }

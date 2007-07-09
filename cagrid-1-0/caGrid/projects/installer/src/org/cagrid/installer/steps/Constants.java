@@ -340,5 +340,26 @@ public abstract class Constants {
 
 	public static final String GRID_GROUPER_DB_PASSWORD = "grid.grouper.db.password";
 
+	public static final String SYNC_GTS_GTS_URI = "sync.gts.gts.uri";
+
+	public static final String SYNC_GTS_EXPIRATION_HOURS = "sync.gts.expiration.hours";
+
+	public static final String SYNC_GTS_EXPIRATION_MINUTES = "sync.gts.expiration.minutes";
+
+	public static final String SYNC_GTS_EXPIRATION_SECONDS = "sync.gts.expiration.seconds";
+
+	public static final String SYNC_GTS_FILTER_LIFETIME = "sync.gts.filter.lifetime";
+
+	public static final String SYNC_GTS_AUTH_FILTER = "sync.gts.auth.filter";
+
+	public static final String SYNC_GTS_PERFORM_AUTHZ = "sync.gts.perform.authz";
+
+	public static final String SYNC_GTS_GTS_IDENT = "sync.gts.gts.ident";
+
+	public static final String SYNC_GTS_DELETE_INVALID = "sync.gts.delete.invalid";
+
+	public static final String SYNC_GTS_NEXT_SYNC = "sync.gts.next.sync";
+	
+
 	
 }

@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.cagrid.installer.steps.Constants;
-import org.cagrid.installer.util.Utils;
+import org.cagrid.installer.util.InstallerUtils;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
@@ -24,6 +24,6 @@ public class GenerateCATask extends CaGridAntTask {
 	}
 
 	protected String getBuildFilePath(Map state) {
-		return Utils.getScriptsBuildFilePath();
+		return InstallerUtils.getScriptsBuildFilePath();
 	}
 }

@@ -28,12 +28,12 @@ import org.cagrid.installer.steps.Constants;
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
  * 
  */
-public class Utils {
+public class InstallerUtils {
 
 	/**
 	 * 
 	 */
-	public Utils() {
+	public InstallerUtils() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -128,7 +128,8 @@ public class Utils {
 						Constants.CA_CERT_PRESENT));
 	}
 
-	public static void copyCACertToTrustStore(String certPath) throws IOException {
+	public static void copyCACertToTrustStore(String certPath)
+			throws IOException {
 
 		BufferedReader in = new BufferedReader(new FileReader(certPath));
 		File trustDir = new File(System.getProperty("user.home")
@@ -154,5 +155,13 @@ public class Utils {
 
 	public static String getScriptsBuildFilePath() {
 		return new File("scripts/build.xml").getAbsolutePath();
+	}
+
+	public static boolean isSecureContainerRequired(Map state) {
+		return "true".equals(state.get(Constants.INSTALL_DORIAN))
+				|| "true".equals(state.get(Constants.INSTALL_GTS))
+				|| "true".equals(state.get(Constants.INSTALL_AUTHN_SVC))
+				|| "true".equals(state.get(Constants.INSTALL_GRID_GROUPER))
+				|| "true".equals(state.get(Constants.INSTALL_INDEX_SVC));
 	}
 }

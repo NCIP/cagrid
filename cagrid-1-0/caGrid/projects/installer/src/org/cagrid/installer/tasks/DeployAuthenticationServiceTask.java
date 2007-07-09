@@ -8,7 +8,7 @@ import java.util.Properties;
 
 import org.cagrid.installer.model.CaGridInstallerModel;
 import org.cagrid.installer.steps.Constants;
-import org.cagrid.installer.util.Utils;
+import org.cagrid.installer.util.InstallerUtils;
 
 /**
  * @author <a href="joshua.phillips@semanticbits.com">Joshua Phillips</a>
@@ -31,7 +31,7 @@ public class DeployAuthenticationServiceTask extends DeployServiceTask {
 			Properties sysProps) throws Exception {
 
 		String svcBuildFilePath = getBuildFilePath(state);
-		String installerBuildFilePath = Utils.getScriptsBuildFilePath();
+		String installerBuildFilePath = InstallerUtils.getScriptsBuildFilePath();
 
 		// Modify deploy.properties
 		state.put(Constants.BUILD_FILE_PATH, installerBuildFilePath);

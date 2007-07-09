@@ -9,7 +9,7 @@ import java.util.Properties;
 
 import org.cagrid.installer.model.CaGridInstallerModel;
 import org.cagrid.installer.steps.Constants;
-import org.cagrid.installer.util.Utils;
+import org.cagrid.installer.util.InstallerUtils;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
@@ -39,7 +39,7 @@ public class DeployDorianTask extends DeployServiceTask {
 			antTarget = "deployGlobusEndorsedJars";
 		}
 		Map m = new HashMap(state);
-		m.put(Constants.BUILD_FILE_PATH, Utils.getScriptsBuildFilePath());
+		m.put(Constants.BUILD_FILE_PATH, InstallerUtils.getScriptsBuildFilePath());
 		new AntTask("", "", antTarget, env, sysProps).execute(m);
 
 		return null;

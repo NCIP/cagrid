@@ -12,6 +12,8 @@ import java.util.Properties;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -26,6 +28,7 @@ import org.cagrid.installer.steps.ConfigureDorianCAStep;
 import org.cagrid.installer.steps.ConfigureDorianDBStep;
 import org.cagrid.installer.steps.ConfigureGTSDBStep;
 import org.cagrid.installer.steps.ConfigureServiceCertStep;
+import org.cagrid.installer.steps.ConfigureSyncGTSStep;
 import org.cagrid.installer.steps.Constants;
 import org.cagrid.installer.steps.DeployPropertiesFileEditorStep;
 import org.cagrid.installer.steps.DeployPropertiesGMEFileEditorStep;
@@ -40,6 +43,7 @@ import org.cagrid.installer.steps.options.BooleanPropertyConfigurationOption;
 import org.cagrid.installer.steps.options.FilePropertyConfigurationOption;
 import org.cagrid.installer.steps.options.ListPropertyConfigurationOption;
 import org.cagrid.installer.steps.options.PasswordPropertyConfigurationOption;
+import org.cagrid.installer.steps.options.TablePropertyConfigurationOption;
 import org.cagrid.installer.steps.options.TextPropertyConfigurationOption;
 import org.cagrid.installer.steps.options.ListPropertyConfigurationOption.LabelValuePair;
 import org.cagrid.installer.tasks.CompileCaGridTask;
@@ -62,7 +66,7 @@ import org.cagrid.installer.tasks.GenerateServiceCredsTask;
 import org.cagrid.installer.tasks.PauseTask;
 import org.cagrid.installer.tasks.SaveSettingsTask;
 import org.cagrid.installer.tasks.UnzipInstallTask;
-import org.cagrid.installer.util.Utils;
+import org.cagrid.installer.util.InstallerUtils;
 import org.cagrid.installer.validator.CreateFilePermissionValidator;
 import org.cagrid.installer.validator.DBConnectionValidator;
 import org.cagrid.installer.validator.DorianIdpInfoValidator;
@@ -307,6 +311,27 @@ public class Installer {
 		incrementProgress();
 
 		// Initialize steps
+
+		// PropertyConfigurationStep configureSyncGTSStep = new
+		// PropertyConfigurationStep(
+		// this.model.getMessage("sync.gts.config.title"), this.model
+		// .getMessage("sync.gts.config.desc"));
+		//
+		// String[] colNames = new String[] { "Name", "CertificateDN",
+		// "TrustLevels", "Lifetime", "Status", "IsAuthority",
+		// "AuthorityGTS", "SourceGTS" };
+		// Object[][] data = new Object[3][colNames.length];
+		// data[0][3] = "Valid";
+		// data[0][4] = "Trusted";
+		// TableModel tableModel = new DefaultTableModel(data, colNames);
+		//
+		// configureSyncGTSStep.getOptions().add(
+		// new TablePropertyConfigurationOption(
+		// Constants.SYNC_GTS_AUTH_FILTER, this.model
+		// .getMessage("sync.gts.auth.filter"), tableModel));
+		//
+		// this.model.add(configureSyncGTSStep);
+		
 
 		// Gives user choice to install caGrid, or one or more services, or
 		// both.
@@ -832,6 +857,17 @@ public class Installer {
 			}
 		});
 		incrementProgress();
+		
+		ConfigureSyncGTSStep configureSyncGTSStep = new ConfigureSyncGTSStep(
+				this.model.getMessage("sync.gts.config.title"), this.model
+						.getMessage("sync.gts.config.desc"));
+		this.model.add(configureSyncGTSStep, new Condition(){
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return InstallerUtils.isSecureContainerRequired(model.getState());
+			}
+		});
+		incrementProgress();
 
 		// Allows user to edit Dorian deploy.properties
 		DeployPropertiesFileEditorStep editDorianDeployPropertiesStep = new DeployPropertiesFileEditorStep(
@@ -1092,7 +1128,7 @@ public class Installer {
 			public boolean evaluate(WizardModel m) {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
 
-				return (Utils.checkGenerateCA(model) || "true".equals(model
+				return (InstallerUtils.checkGenerateCA(model) || "true".equals(model
 						.getState().get(Constants.CA_CERT_PRESENT)))
 						&& "true".equals(model.getState().get(
 								Constants.INSTALL_DORIAN));
@@ -1400,7 +1436,7 @@ public class Installer {
 			public boolean evaluate(WizardModel m) {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
 
-				return (Utils.checkGenerateCA(model) || "true".equals(model
+				return (InstallerUtils.checkGenerateCA(model) || "true".equals(model
 						.getState().get(Constants.CA_CERT_PRESENT)))
 						&& "true".equals(model.getState().get(
 								Constants.INSTALL_AUTHN_SVC));
@@ -2384,7 +2420,7 @@ public class Installer {
 			try {
 				File to = new File(this.toFile);
 				URL from = new URL(this.fromUrl);
-				Utils.downloadFile(from, to);
+				InstallerUtils.downloadFile(from, to);
 
 			} catch (Exception ex) {
 				this.ex = ex;

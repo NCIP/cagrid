@@ -8,7 +8,7 @@ import java.util.Properties;
 
 import org.cagrid.installer.model.CaGridInstallerModel;
 import org.cagrid.installer.steps.Constants;
-import org.cagrid.installer.util.Utils;
+import org.cagrid.installer.util.InstallerUtils;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
@@ -56,7 +56,7 @@ public class DeployServiceTask extends CaGridAntTask {
 	}
 
 	protected String getBuildFilePath(Map state) {
-		return Utils.getServiceDestDir(state) + "/" + this.serviceName
+		return InstallerUtils.getServiceDestDir(state) + "/" + this.serviceName
 				+ "/build.xml";
 	}
 
