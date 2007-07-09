@@ -28,11 +28,13 @@ import org.cagrid.installer.steps.ConfigureGTSDBStep;
 import org.cagrid.installer.steps.ConfigureServiceCertStep;
 import org.cagrid.installer.steps.Constants;
 import org.cagrid.installer.steps.DeployPropertiesFileEditorStep;
+import org.cagrid.installer.steps.DeployPropertiesGMEFileEditorStep;
 import org.cagrid.installer.steps.InstallationCompleteStep;
 import org.cagrid.installer.steps.PropertyConfigurationStep;
 import org.cagrid.installer.steps.RunTasksStep;
 import org.cagrid.installer.steps.SelectComponentStep;
 import org.cagrid.installer.steps.SelectInstallationTypeStep;
+import org.cagrid.installer.steps.ServicePropertiesFileEditorStep;
 import org.cagrid.installer.steps.SpecifyTomcatPortsStep;
 import org.cagrid.installer.steps.options.BooleanPropertyConfigurationOption;
 import org.cagrid.installer.steps.options.FilePropertyConfigurationOption;
@@ -52,6 +54,7 @@ import org.cagrid.installer.tasks.CopySelectedServicesToTempDirTask;
 import org.cagrid.installer.tasks.DeployAuthenticationServiceTask;
 import org.cagrid.installer.tasks.DeployDorianTask;
 import org.cagrid.installer.tasks.DeployGlobusTask;
+import org.cagrid.installer.tasks.DeployIndexServiceTask;
 import org.cagrid.installer.tasks.DeployServiceTask;
 import org.cagrid.installer.tasks.DownloadFileTask;
 import org.cagrid.installer.tasks.GenerateCATask;
@@ -371,7 +374,7 @@ public class Installer {
 						"caDSR", false, true));
 		selectServicesStep.getOptions().add(
 				new BooleanPropertyConfigurationOption(Constants.INSTALL_FQP,
-						"FederatedQueryProcessor", false, true));
+						"FQP", false, true));
 		selectServicesStep.getOptions().add(
 				new BooleanPropertyConfigurationOption(
 						Constants.INSTALL_WORKFLOW, "Workflow", false, true));
@@ -1261,6 +1264,51 @@ public class Installer {
 			}
 		});
 		incrementProgress();
+		
+		
+		DeployPropertiesGMEFileEditorStep editGMEDeployPropertiesStep = new DeployPropertiesGMEFileEditorStep(
+				"gme", this.model
+						.getMessage("gme.edit.deploy.properties.title"),
+				this.model.getMessage("gme.edit.deploy.properties.desc"),
+				this.model.getMessage("edit.properties.property.name"),
+				this.model.getMessage("edit.properties.property.value"));
+		this.model.add(editGMEDeployPropertiesStep);
+
+		incrementProgress();
+		
+		DeployPropertiesFileEditorStep editEVSDeployPropertiesStep = new DeployPropertiesFileEditorStep(
+				"evs", this.model
+						.getMessage("evs.edit.deploy.properties.title"),
+				this.model.getMessage("evs.edit.deploy.properties.desc"),
+				this.model.getMessage("edit.properties.property.name"),
+				this.model.getMessage("edit.properties.property.value"));
+		this.model.add(editEVSDeployPropertiesStep);
+
+		
+		DeployPropertiesFileEditorStep editcaDSRDeployPropertiesStep = new DeployPropertiesFileEditorStep(
+				"caDSR", this.model
+						.getMessage("caDSR.edit.deploy.properties.title"),
+				this.model.getMessage("caDSR.edit.deploy.properties.desc"),
+				this.model.getMessage("edit.properties.property.name"),
+				this.model.getMessage("edit.properties.property.value"));
+		this.model.add(editcaDSRDeployPropertiesStep);
+		
+		ServicePropertiesFileEditorStep editFQPServicePropertiesStep = new ServicePropertiesFileEditorStep(
+				"fqpService", this.model
+						.getMessage("fqp.edit.service.properties.title"),
+				this.model.getMessage("fqp.edit.service.properties.desc"),
+				this.model.getMessage("edit.properties.property.name"),
+				this.model.getMessage("edit.properties.property.value"));
+		this.model.add(editFQPServicePropertiesStep);
+		
+		DeployPropertiesFileEditorStep editFQPDeployPropertiesStep = new DeployPropertiesFileEditorStep(
+				"fqpDeploy", this.model
+						.getMessage("fqp.edit.deploy.properties.title"),
+				this.model.getMessage("fqp.edit.deploy.properties.desc"),
+				this.model.getMessage("edit.properties.property.name"),
+				this.model.getMessage("edit.properties.property.value"));
+		this.model.add(editFQPDeployPropertiesStep);
+
 
 		DeployPropertiesFileEditorStep editGTSDeployPropertiesStep = new DeployPropertiesFileEditorStep(
 				"gts", this.model
@@ -1814,6 +1862,67 @@ public class Installer {
 								CaGridInstallerModel model = (CaGridInstallerModel) m;
 								return "true".equals(model.getState().get(
 										Constants.INSTALL_DORIAN));
+							}
+
+						}));
+		
+		
+		installStep.getTasks().add(
+				new ConditionalTask(
+						new DeployServiceTask(this.model.getMessage("installing.gme.title"), "","gme", this.model), new Condition() {
+
+							public boolean evaluate(WizardModel m) {
+								CaGridInstallerModel model = (CaGridInstallerModel) m;
+								return "true".equals(model.getState().get(
+										Constants.INSTALL_GME));
+							}
+
+						}));
+		
+		installStep.getTasks().add(
+				new ConditionalTask(
+						new DeployServiceTask(this.model.getMessage("installing.evs.title"), "","evs", this.model), new Condition() {
+
+							public boolean evaluate(WizardModel m) {
+								CaGridInstallerModel model = (CaGridInstallerModel) m;
+								return "true".equals(model.getState().get(
+										Constants.INSTALL_EVS));
+							}
+
+						}));
+
+		installStep.getTasks().add(
+				new ConditionalTask(
+						new DeployServiceTask(this.model.getMessage("installing.caDSR.title"), "","caDSR", this.model), new Condition() {
+
+							public boolean evaluate(WizardModel m) {
+								CaGridInstallerModel model = (CaGridInstallerModel) m;
+								return "true".equals(model.getState().get(
+										Constants.INSTALL_CADSR));
+							}
+
+						}));
+
+		installStep.getTasks().add(
+				new ConditionalTask(
+						new DeployServiceTask(this.model.getMessage("installing.fqp.title"), "","fqp", this.model), new Condition() {
+
+							public boolean evaluate(WizardModel m) {
+								CaGridInstallerModel model = (CaGridInstallerModel) m;
+								return "true".equals(model.getState().get(
+										Constants.INSTALL_FQP));
+							}
+
+						}));
+
+		installStep.getTasks().add(
+				new ConditionalTask(
+						new DeployIndexServiceTask(this.model.getMessage("installing.index.title"), "","index", this.model), new Condition() {
+
+							public boolean evaluate(WizardModel m) {
+								CaGridInstallerModel model = (CaGridInstallerModel) m;
+								return "true".equals(model.getState().get(
+										Constants.INSTALL_INDEX_SVC));
 							}
 
 						}));
