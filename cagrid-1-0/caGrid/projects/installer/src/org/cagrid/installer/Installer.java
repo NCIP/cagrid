@@ -2515,7 +2515,7 @@ public class Installer {
 
 			String antHome = System.getenv("CATALINA_HOME");
 			String executable = "version.sh";
-			if (System.getProperty("os.name").toLowerCase().indexOf("windows") != -1) {
+			if (InstallerUtils.isWindows()) {
 				executable = "version.bat";
 			}
 			String[] cmd = new String[] { antHome + "/bin/" + executable };
@@ -2541,7 +2541,7 @@ public class Installer {
 
 			String antHome = System.getenv("ANT_HOME");
 			String executable = "ant";
-			if (System.getProperty("os.name").toLowerCase().indexOf("windows") != -1) {
+			if (InstallerUtils.isWindows()) {
 				executable += ".exe";
 			}
 			String[] cmd = new String[] { antHome + "/bin/" + executable,

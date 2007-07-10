@@ -8,7 +8,7 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.cagrid.installer.util.PropertyUtils;
+import org.cagrid.installer.util.InstallerUtils;
 import org.pietschy.wizard.InvalidStateException;
 
 /**
@@ -34,7 +34,7 @@ public class FindDirectoryNameTask extends BasicTask {
 
 	protected Object internalExecute(Map state) throws Exception {
 		
-		String parentDirPath = PropertyUtils.getRequiredProperty(state, this.parentDirPathProperty);
+		String parentDirPath = InstallerUtils.getRequiredProperty(state, this.parentDirPathProperty);
 		File dir = new File(parentDirPath);
 		if(!dir.exists()){
 			throw new InvalidStateException(parentDirPath + " does not exist");

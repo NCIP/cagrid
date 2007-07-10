@@ -45,6 +45,18 @@ public class InstallerUtils {
 	public InstallerUtils() {
 		// TODO Auto-generated constructor stub
 	}
+	
+	public static boolean isWindows(){
+		return System.getProperty("os.name").toLowerCase().indexOf("windows") != -1;
+	}
+	
+	public static String getRequiredProperty(Map state, String name) {
+		String value = (String) state.get(name);
+		if(value == null){
+			throw new IllegalStateException("Required property '" + name + "' not found in state.");
+		}
+		return value;
+	}
 
 	public static void downloadFile(URL fromUrl, File toFile) throws Exception {
 

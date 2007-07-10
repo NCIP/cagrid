@@ -18,8 +18,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.installer.steps.Constants;
 import org.cagrid.installer.util.IOThread;
-import org.cagrid.installer.util.OSUtils;
-import org.cagrid.installer.util.PropertyUtils;
+import org.cagrid.installer.util.InstallerUtils;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
@@ -49,9 +48,9 @@ public class AntTask extends BasicTask {
 	}
 
 	protected Object internalExecute(Map state) throws Exception {
-		String buildFilePath = PropertyUtils.getRequiredProperty(state,
+		String buildFilePath = InstallerUtils.getRequiredProperty(state,
 				Constants.BUILD_FILE_PATH);
-		String tempDirPath = PropertyUtils.getRequiredProperty(state,
+		String tempDirPath = InstallerUtils.getRequiredProperty(state,
 				Constants.TEMP_DIR_PATH);
 
 		try {
@@ -149,7 +148,7 @@ public class AntTask extends BasicTask {
 			while (keys.hasMoreElements()) {
 				String name = (String) keys.nextElement();
 				String value = (String) sysProps.getProperty(name);
-				if (!OSUtils.isWindows()) {
+				if (!InstallerUtils.isWindows()) {
 					value = value.replaceAll(" ", "\\\\ ");
 				}
 				cmd.add("-D" + name + "=" + value + "");
