@@ -3,13 +3,11 @@
  */
 package org.cagrid.installer.tasks;
 
-import java.io.File;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.installer.steps.Constants;
-import org.pietschy.wizard.InvalidStateException;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
@@ -32,17 +30,6 @@ public class ConfigureEnvironmentTask extends BasicTask {
 		state.put(Constants.TOMCAT_DIR_PATH, state.get(Constants.TOMCAT_HOME));
 
 		if ("true".equals(state.get(Constants.USE_SECURE_CONTAINER))) {
-
-//			if (!"true".equals(state.get(Constants.SERVICE_CERT_PRESENT))) {
-//				state.put(Constants.GENERATE_SERVICE_CERT, "true");
-//				
-//				if (!"true".equals(state.get(Constants.CA_CERT_PRESENT))) {
-//					state.put(Constants.GENERATE_CA_CERT, "true");
-//				}
-//			} else {
-//				state.put(Constants.GENERATE_SERVICE_CERT, "false");
-//				state.put(Constants.GENERATE_CA_CERT, "false");
-//			}
 
 			state.put(Constants.TOMCAT_KEY, state
 					.get(Constants.SERVICE_KEY_PATH));

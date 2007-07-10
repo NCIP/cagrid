@@ -239,6 +239,13 @@
 			-->
 
 			<replace
+				path="/*[local-name()='DorianConfiguration']/*[local-name()='DorianCAConfiguration']/*[local-name()='CertificateAuthorityType']">
+				<![CDATA[
+						<CertificateAuthorityType xmlns="${dorian.config.ns}">${dorian.ca.type}</CertificateAuthorityType>
+					]]>
+			</replace>
+
+			<replace
 				path="/*[local-name()='DorianConfiguration']/*[local-name()='DorianCAConfiguration']/*[local-name()='CertificateAuthorityPassword']">
 				<![CDATA[
 						<CertificateAuthorityPassword xmlns="${dorian.config.ns}">${dorian.ca.key.pwd}</CertificateAuthorityPassword>
@@ -333,6 +340,28 @@
 				path="/*[local-name()='DorianConfiguration']/*[local-name()='DorianCAConfiguration']/*[local-name()='AutoRenewal']"
 				value="${dorian.ca.autorenew.seconds}" />
 		</xmltask>
+
+		<if>
+			<not>
+				<equals arg1="${dorian.ca.type}" arg2="DBCA"
+					trim="true" />
+			</not>
+			<then>
+				<xmltask source="${config.file}"
+					dest="${config.file}">
+					<remove
+						path="/*[local-name()='DorianConfiguration']/*[local-name()='DorianCAConfiguration']/*[local-name()='Properties']" />
+					<insert position="after"
+						path="/*[local-name()='DorianConfiguration']/*[local-name()='DorianCAConfiguration']/*[local-name()='AutoRenewal']">
+						<![CDATA[
+<Properties xmlns="${dorian.config.ns}">
+	<Property xmlns="${dorian.config.ns}" name="slot" value="${dorian.ca.eracom.slot}"/>
+</Properties>
+						]]>
+					</insert>
+				</xmltask>
+			</then>
+		</if>
 
 	</target>
 
@@ -671,7 +700,7 @@ ${authn.svc.csm.ctx}{
 				value="${authn.svc.ca.key.pwd}" />
 		</propertyfile>
 	</target>
-	
+
 	<target name="configure-gridgrouper-hibernate">
 		<propertyfile
 			file="${service.dest.dir}/gridgrouper/resources/conf/grouper.hibernate.properties">

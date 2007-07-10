@@ -387,9 +387,9 @@ public class RunTasksStep extends PanelWizardStep implements
 			textControl.append(String.valueOf((char) b));
 			int len = textControl.getDocument().getLength();
 			textControl.setCaretPosition(len);
-			if(len > this.maxLength){
-				textControl.setText("");
-			}
+//			if(len > this.maxLength){
+//				textControl.setText("");
+//			}
 
 		}
 	}

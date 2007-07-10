@@ -4,7 +4,6 @@
 package org.cagrid.installer.steps;
 
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -27,8 +26,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
@@ -43,7 +40,6 @@ import org.cagrid.installer.steps.options.FilePropertyConfigurationOption;
 import org.cagrid.installer.steps.options.ListPropertyConfigurationOption;
 import org.cagrid.installer.steps.options.PasswordPropertyConfigurationOption;
 import org.cagrid.installer.steps.options.PropertyConfigurationOption;
-import org.cagrid.installer.steps.options.TablePropertyConfigurationOption;
 import org.cagrid.installer.steps.options.TextPropertyConfigurationOption;
 import org.cagrid.installer.steps.options.ListPropertyConfigurationOption.LabelValuePair;
 import org.cagrid.installer.validator.Validator;
@@ -73,10 +69,10 @@ public class PropertyConfigurationStep extends PanelWizardStep {
 	protected CaGridInstallerModel model;
 
 	private List<Validator> validators = new ArrayList<Validator>();
-	
-	private Map<String,TableModel> tableModels = new HashMap<String,TableModel>();
 
-	private int lastY;
+	private Map<String, TableModel> tableModels = new HashMap<String, TableModel>();
+
+	private List<JLabel> optionLabels = new ArrayList<JLabel>();
 
 	public List<Validator> getValidators() {
 		return validators;
@@ -137,8 +133,6 @@ public class PropertyConfigurationStep extends PanelWizardStep {
 				addListOption((ListPropertyConfigurationOption) option);
 			} else if (option instanceof BooleanPropertyConfigurationOption) {
 				addBooleanOption((BooleanPropertyConfigurationOption) option);
-			} else if (option instanceof TablePropertyConfigurationOption) {
-				addTableOption((TablePropertyConfigurationOption) option);
 			} else {
 				throw new IllegalStateException(
 						"Unknown PropertyConfigurationOption type: "
@@ -146,15 +140,6 @@ public class PropertyConfigurationStep extends PanelWizardStep {
 			}
 		}
 		checkComplete();
-	}
-
-	protected void addTableOption(TablePropertyConfigurationOption option) {
-		JTable table = new JTable(option.getTableModel());
-		table.setPreferredScrollableViewportSize(new Dimension(100, 25));
-		JScrollPane scrollPane = new JScrollPane(table);
-
-		this.tableModels.put(option.getName(), option.getTableModel());
-		addOption(option.getName(), option.getDescription(), scrollPane);
 	}
 
 	public void prepare() {
@@ -249,7 +234,18 @@ public class PropertyConfigurationStep extends PanelWizardStep {
 
 			public void actionPerformed(ActionEvent event) {
 				JFileChooser fc = new JFileChooser();
-				fc.setFileFilter(new ExtensionFilter(option.getExtensions()));
+				String[] extensions = option.getExtensions();
+				if (extensions != null && extensions.length > 0) {
+					fc
+							.setFileFilter(new ExtensionFilter(option
+									.getExtensions()));
+				} else {
+					fc.setAcceptAllFileFilterUsed(true);
+				}
+				if (option.isDirectoriesOnly()) {
+					fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+				}
+
 				int returnVal = fc.showOpenDialog(window);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					JTextField valueField = (JTextField) window
@@ -340,9 +336,11 @@ public class PropertyConfigurationStep extends PanelWizardStep {
 		GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
 		gridBagConstraints1.gridx = 0;
 		gridBagConstraints1.fill = GridBagConstraints.BOTH;
+		gridBagConstraints1.anchor = GridBagConstraints.WEST;
 		gridBagConstraints1.gridy = this.optionKeys.size() - 1;
 		this.getOptionsPanel().add(label, gridBagConstraints1);
 
+		this.optionLabels.add(label);
 		this.optionValueFields.add(valueField);
 		GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
 		gridBagConstraints2.gridx = 1;
@@ -355,7 +353,8 @@ public class PropertyConfigurationStep extends PanelWizardStep {
 		if (control != null) {
 			GridBagConstraints gridBagConstraints3 = new GridBagConstraints();
 			gridBagConstraints3.gridx = 2;
-			gridBagConstraints3.fill = GridBagConstraints.BOTH;
+			gridBagConstraints1.fill = GridBagConstraints.BOTH;
+			gridBagConstraints1.anchor = GridBagConstraints.EAST;
 			gridBagConstraints3.gridy = this.optionKeys.size() - 1;
 			gridBagConstraints3.weightx = 1;
 			gridBagConstraints3.insets = new Insets(2, 5, 2, 2);
@@ -381,9 +380,6 @@ public class PropertyConfigurationStep extends PanelWizardStep {
 					LabelValuePair pair = (LabelValuePair) ((JComboBox) c)
 							.getSelectedItem();
 					value = pair.getValue();
-				} else if (c instanceof JScrollPane) {
-					JScrollPane scrollPane = (JScrollPane) c;
-					value = this.tableModels.get(key);
 				}
 				tempState.put(key, value);
 			}
@@ -431,6 +427,15 @@ public class PropertyConfigurationStep extends PanelWizardStep {
 			option = this.optionValueFields.get(idx);
 		}
 		return option;
+	}
+
+	protected JLabel getLabel(String key) {
+		JLabel label = null;
+		int idx = this.optionKeys.indexOf(key);
+		if (idx != -1) {
+			label = this.optionLabels.get(idx);
+		}
+		return label;
 	}
 
 	private static class ExtensionFilter extends FileFilter {

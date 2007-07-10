@@ -61,7 +61,10 @@ public class CopySelectedServicesToTempDirTask extends CaGridAntTask {
 		if("true".equals(state.get(Constants.INSTALL_WORKFLOW))){
 			selectedServices.add("workflow");
 		}
-		if(InstallerUtils.isSecureContainerRequired(state)){
+//		if(InstallerUtils.isSecureContainerRequired(state)){
+//			selectedServices.add("syncgts");
+//		}
+		if("true".equals(state.get(Constants.INSTALL_SYNC_GTS))){
 			selectedServices.add("syncgts");
 		}
 		

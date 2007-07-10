@@ -64,6 +64,9 @@ public abstract class DBConnectionValidator implements Validator {
 
 		String username = (String)state.get(getUsernameProp());
 		String password = (String)state.get(getPasswordProp());
+		if(password == null || password.trim().length() == 0){
+			password = "";
+		}
 		String dbUrl = getJdbcUrl(state);
 		
 		Connection conn = null;

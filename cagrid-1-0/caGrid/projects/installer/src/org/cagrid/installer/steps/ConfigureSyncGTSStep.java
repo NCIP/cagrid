@@ -502,13 +502,13 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 						String trustLevels = sb.toString();
 
 						String lifetime = getValue(getChildElementText(filter,
-								"Lifetime"), "----");
+								"Lifetime"), EMPTY_CHOICE);
 
 						String status = getValue(getChildElementText(filter,
-								"Status"), "----");
+								"Status"), EMPTY_CHOICE);
 
 						String isAuth = getValue(getChildElementText(filter,
-								"IsAuthority"), "----");
+								"IsAuthority"), EMPTY_CHOICE);
 
 						String authGTS = getValue(getChildElementText(filter,
 								"AuthorityGTS"), "");
@@ -619,13 +619,11 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 					SYNC_GTS_NS_PREFIX + ":SyncDescriptor");
 			root.appendChild(syncDescEl);
 
-			logger.info("1");
 			Element gtsServiceURIEl = doc.createElementNS(SYNC_GTS_NS,
 					SYNC_GTS_NS_PREFIX + ":gtsServiceURI");
 			syncDescEl.appendChild(gtsServiceURIEl);
 			gtsServiceURIEl.setTextContent(this.gtsServiceURIField.getText());
 
-			logger.info("2");
 			Element expirationEl = doc.createElementNS(SYNC_GTS_NS,
 					SYNC_GTS_NS_PREFIX + ":Expiration");
 			syncDescEl.appendChild(expirationEl);
@@ -636,7 +634,6 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 			expirationEl.setAttribute("seconds", this.expirationSecondsField
 					.getText());
 
-			logger.info("3");
 			int tafRowCount = this.tafTableModel.getRowCount();
 			for (int row = 0; row < tafRowCount; row++) {
 
@@ -664,7 +661,6 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 				}
 			}
 
-			logger.info("4");
 			String performAuth = getValue(this.performAuthzField.getText(),
 					"false");
 			Element performAuthEl = doc.createElementNS(SYNC_GTS_NS,
@@ -672,7 +668,7 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 			syncDescEl.appendChild(performAuthEl);
 			performAuthEl.setTextContent(performAuth);
 
-			logger.info("5");
+
 			if ("true".equals(performAuth)) {
 				Element gtsIdentEl = doc.createElementNS(SYNC_GTS_NS,
 						SYNC_GTS_NS_PREFIX + ":GTSIdentity");
@@ -680,7 +676,6 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 				gtsIdentEl.setTextContent(this.gtsIdentField.getText());
 			}
 
-			logger.info("6");
 			int ecRowCount = this.ecTableModel.getRowCount();
 			Element excludedCAsEl = doc.createElementNS(SYNC_GTS_NS,
 					SYNC_GTS_NS_PREFIX + ":ExcludedCAs");
@@ -698,7 +693,6 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 			if (excludedCAsEl.getChildNodes().getLength() > 0) {
 				root.appendChild(excludedCAsEl);
 			}
-			logger.info("7");
 
 			String deleteInvalid = getValue(this.deleteInvalidField.getText(),
 					"false");
@@ -707,7 +701,6 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 			syncDescEl.appendChild(deleteInvalidEl);
 			deleteInvalidEl.setTextContent(deleteInvalid);
 
-			logger.info("8");
 			Element cacheSizeEl = doc.createElementNS(SYNC_GTS_NS,
 					SYNC_GTS_NS_PREFIX + ":CacheSize");
 			root.appendChild(cacheSizeEl);
@@ -724,21 +717,18 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 			cacheSizeEl.appendChild(cacheSizeDayEl);
 			cacheSizeDayEl.setTextContent("0");
 
-			logger.info("9");
 			String nextSync = getValue(this.nextSyncField.getText(), "600");
 			Element nextSyncEl = doc.createElementNS(SYNC_GTS_NS,
 					SYNC_GTS_NS_PREFIX + ":NextSync");
 			root.appendChild(nextSyncEl);
 			nextSyncEl.setTextContent(nextSync);
 
-			logger.info("10");
 			// Write to file
-			String xml = toString(doc);
+			String xml = InstallerUtils.toString(doc);
 			FileWriter w = new FileWriter(syncDescFile);
 			w.write(xml);
 			w.flush();
 			w.close();
-			logger.info("11");
 		} catch (Exception ex) {
 			logger.error(ex);
 			throw new InvalidStateException(
@@ -765,16 +755,7 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 				|| EMPTY_CHOICE.equals(value);
 	}
 
-	private static String toString(Node node) throws Exception {
-		StringWriter w = new StringWriter();
-		Source s = new DOMSource(node);
-		Result r = new StreamResult(w);
-		Transformer t = TransformerFactory.newInstance().newTransformer();
-		t.setOutputProperty("omit-xml-declaration", "yes");
-		t.setOutputProperty("indent", "yes");
-		t.transform(s, r);
-		return w.getBuffer().toString();
-	}
+
 
 	public void actionPerformed(ActionEvent evt) {
 		Object source = evt.getSource();

@@ -359,6 +359,20 @@ public abstract class Constants {
 	public static final String SYNC_GTS_DELETE_INVALID = "sync.gts.delete.invalid";
 
 	public static final String SYNC_GTS_NEXT_SYNC = "sync.gts.next.sync";
+
+	public static final String INSTALL_SYNC_GTS = "install.sync.gts";
+
+	public static final String DORIAN_CA_TYPE = "dorian.ca.type";
+
+	public static final String DORIAN_CA_TYPE_DBCA = "DBCA";
+
+	public static final String DORIAN_CA_TYPE_ERACOM = "Eracom";
+
+	public static final String DORIAN_CA_TYPE_ERACOM_HYBRID = "EracomHybrid";
+
+	public static final String DORIAN_CA_ERACOM_SLOT = "dorian.ca.eracom.slot";
+
+	public static final String DORIAN_HOST_CRED_DIR = "dorian.host.cred.dir";
 	
 
 	

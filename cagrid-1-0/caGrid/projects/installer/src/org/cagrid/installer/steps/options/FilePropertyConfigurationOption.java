@@ -12,7 +12,16 @@ public class FilePropertyConfigurationOption extends
 
 	private String[] extensions = new String[0];
 	private String browseLabel;
+	private boolean directoriesOnly;
 	
+	public boolean isDirectoriesOnly() {
+		return directoriesOnly;
+	}
+
+	public void setDirectoriesOnly(boolean directoriesOnly) {
+		this.directoriesOnly = directoriesOnly;
+	}
+
 	/**
 	 * 
 	 */

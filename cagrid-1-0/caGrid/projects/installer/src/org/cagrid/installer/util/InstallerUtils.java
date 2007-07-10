@@ -13,6 +13,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -21,8 +22,16 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
 import org.cagrid.installer.model.CaGridInstallerModel;
 import org.cagrid.installer.steps.Constants;
+import org.w3c.dom.Node;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
@@ -163,5 +172,16 @@ public class InstallerUtils {
 				|| "true".equals(state.get(Constants.INSTALL_AUTHN_SVC))
 				|| "true".equals(state.get(Constants.INSTALL_GRID_GROUPER))
 				|| "true".equals(state.get(Constants.INSTALL_INDEX_SVC));
+	}
+	
+	public static String toString(Node node) throws Exception {
+		StringWriter w = new StringWriter();
+		Source s = new DOMSource(node);
+		Result r = new StreamResult(w);
+		Transformer t = TransformerFactory.newInstance().newTransformer();
+//		t.setOutputProperty("omit-xml-declaration", "yes");
+		t.setOutputProperty("indent", "yes");
+		t.transform(s, r);
+		return w.getBuffer().toString();
 	}
 }
