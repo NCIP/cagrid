@@ -65,6 +65,7 @@ public class SpecifyTomcatPortsStep extends PropertyConfigurationStep {
 	public void prepare() {
 		JTextField httpsPortField = (JTextField) getOption(Constants.TOMCAT_HTTPS_PORT);
 		JLabel httpsPortLabel = getLabel(Constants.TOMCAT_HTTPS_PORT);
+		
 		JTextField httpPortField = (JTextField) getOption(Constants.TOMCAT_HTTP_PORT);
 		JLabel httpPortLabel = getLabel(Constants.TOMCAT_HTTP_PORT);
 		if (!"true".equals(this.model.getState().get(
@@ -72,7 +73,7 @@ public class SpecifyTomcatPortsStep extends PropertyConfigurationStep {
 			httpPortField.setVisible(true);
 			httpPortLabel.setVisible(true);
 			httpsPortField.setVisible(false);
-			httpPortLabel.setVisible(false);
+			httpsPortLabel.setVisible(false);
 		} else {
 			httpPortField.setVisible(false);
 			httpPortLabel.setVisible(false);

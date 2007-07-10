@@ -373,6 +373,8 @@ public abstract class Constants {
 	public static final String DORIAN_CA_ERACOM_SLOT = "dorian.ca.eracom.slot";
 
 	public static final String DORIAN_HOST_CRED_DIR = "dorian.host.cred.dir";
+
+	public static final String SYNC_GTS_PERFORM_FIRST_SYNC = "sync.gts.perform.first.sync";
 	
 
 	

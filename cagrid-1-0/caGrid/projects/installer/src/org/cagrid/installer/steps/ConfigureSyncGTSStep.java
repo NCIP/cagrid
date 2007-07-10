@@ -16,9 +16,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.StringWriter;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
@@ -134,6 +137,8 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 	private JTable ecTable;
 
 	private XPathFactory xpFact;
+
+	private JCheckBox performFirstSyncField;
 
 	/**
 	 * 
@@ -262,6 +267,15 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 		JLabel nextSyncLabel = new JLabel(this.model
 				.getMessage("sync.gts.next.sync"));
 		addOption(optionsPanel, nextSyncLabel, this.nextSyncField, 7);
+
+		String performFirstSync = getProperty(this.model.getState(),
+				Constants.SYNC_GTS_PERFORM_FIRST_SYNC, "true");
+		this.performFirstSyncField = new JCheckBox();
+		this.performFirstSyncField.setSelected("true".equals(performFirstSync));
+		JLabel performFirstSyncLabel = new JLabel(this.model
+				.getMessage("sync.gts.perform.first.sync"));
+		addOption(optionsPanel, performFirstSyncLabel,
+				this.performFirstSyncField, 8);
 
 		JPanel trustedAuthFilterPanel = new JPanel();
 		trustedAuthFilterPanel.setLayout(new BorderLayout());
@@ -668,7 +682,6 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 			syncDescEl.appendChild(performAuthEl);
 			performAuthEl.setTextContent(performAuth);
 
-
 			if ("true".equals(performAuth)) {
 				Element gtsIdentEl = doc.createElementNS(SYNC_GTS_NS,
 						SYNC_GTS_NS_PREFIX + ":GTSIdentity");
@@ -729,11 +742,29 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 			w.write(xml);
 			w.flush();
 			w.close();
+
 		} catch (Exception ex) {
 			logger.error(ex);
 			throw new InvalidStateException(
 					"Error configuring sync-description.xml file: "
 							+ ex.getMessage(), ex);
+		}
+
+		// Also, edit the service.propeties file
+		String servicePropsFile = InstallerUtils.getServiceDestDir(this.model.getState())
+				+ "/syncgts/service.properties";
+		try {
+			String performFirstSync = (String) this.model.getState().get(
+					Constants.SYNC_GTS_PERFORM_FIRST_SYNC);
+			Properties props = new Properties();
+			props.load(new FileInputStream(servicePropsFile));
+			props.setProperty("performFirstSync", String.valueOf("true"
+					.equals(performFirstSync)));
+			props.store(new FileOutputStream(servicePropsFile), "");
+		} catch (Exception ex) {
+			logger.error(ex);
+			throw new InvalidStateException("Error configuring "
+					+ servicePropsFile + ": " + ex.getMessage(), ex);
 		}
 	}
 
@@ -754,8 +785,6 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 		return value == null || value.trim().length() == 0
 				|| EMPTY_CHOICE.equals(value);
 	}
-
-
 
 	public void actionPerformed(ActionEvent evt) {
 		Object source = evt.getSource();

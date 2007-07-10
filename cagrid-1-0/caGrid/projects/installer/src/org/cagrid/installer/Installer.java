@@ -834,6 +834,20 @@ public class Installer {
 			}
 		});
 		incrementProgress();
+		
+		DeployPropertiesFileEditorStep editSyncGTSDeployPropertiesStep = new DeployPropertiesFileEditorStep(
+				"syncgts", this.model
+						.getMessage("sync.gts.edit.deploy.properties.title"),
+				this.model.getMessage("sync.gts.edit.deploy.properties.desc"),
+				this.model.getMessage("edit.properties.property.name"),
+				this.model.getMessage("edit.properties.property.value"));
+		this.model.add(editSyncGTSDeployPropertiesStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return "true".equals(model.getState().get(
+						Constants.INSTALL_SYNC_GTS));
+			}
+		});
 
 		// Allows user to edit Dorian deploy.properties
 		DeployPropertiesFileEditorStep editDorianDeployPropertiesStep = new DeployPropertiesFileEditorStep(
@@ -2096,6 +2110,19 @@ public class Installer {
 						CaGridInstallerModel model = (CaGridInstallerModel) m;
 						return "true".equals(model.getState().get(
 								Constants.INSTALL_GTS));
+					}
+
+				}));
+		
+		installStep.getTasks().add(
+				new ConditionalTask(new DeployServiceTask(this.model
+						.getMessage("installing.sync.gts.title"), "", "syncgts",
+						this.model), new Condition() {
+
+					public boolean evaluate(WizardModel m) {
+						CaGridInstallerModel model = (CaGridInstallerModel) m;
+						return "true".equals(model.getState().get(
+								Constants.INSTALL_SYNC_GTS));
 					}
 
 				}));
