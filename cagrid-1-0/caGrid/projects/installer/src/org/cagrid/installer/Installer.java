@@ -57,6 +57,7 @@ import org.cagrid.installer.tasks.ConfigureGridGrouperTask;
 import org.cagrid.installer.tasks.ConfigureTargetGridTask;
 import org.cagrid.installer.tasks.ConfigureTomcatTask;
 import org.cagrid.installer.tasks.CopySelectedServicesToTempDirTask;
+import org.cagrid.installer.tasks.DeployActiveBPELTask;
 import org.cagrid.installer.tasks.DeployAuthenticationServiceTask;
 import org.cagrid.installer.tasks.DeployDorianTask;
 import org.cagrid.installer.tasks.DeployGlobusToTomcatTask;
@@ -66,6 +67,7 @@ import org.cagrid.installer.tasks.DownloadFileTask;
 import org.cagrid.installer.tasks.GenerateCATask;
 import org.cagrid.installer.tasks.GenerateServiceCredsTask;
 import org.cagrid.installer.tasks.SaveSettingsTask;
+import org.cagrid.installer.tasks.UnTarInstallTask;
 import org.cagrid.installer.tasks.UnzipInstallTask;
 import org.cagrid.installer.util.IOThread;
 import org.cagrid.installer.util.InstallerUtils;
@@ -278,6 +280,7 @@ public class Installer {
 		this.model.getState().remove(Constants.INSTALL_SERVICES);
 		this.model.getState().remove(Constants.INSTALL_WORKFLOW);
 		this.model.getState().remove(Constants.USE_SECURE_CONTAINER);
+		this.model.getState().remove(Constants.INSTALL_ACTIVEBPEL);
 
 		incrementProgress();
 
@@ -308,6 +311,14 @@ public class Installer {
 				this.model.getState());
 		incrementProgress();
 		// TODO: check caGrid version
+		
+		// Check for presence of ActiveBPEL
+		checkInstalled("ActiveBPEL", null, Constants.ACTIVEBPEL_HOME,
+				Constants.ACTIVEBPEL_INSTALLED, Constants.INSTALL_ACTIVEBPEL,
+				this.model.getState());
+		// TODO: check ActiveBpel version
+
+
 
 		checkGlobusDeployed(this.model.getState());
 		incrementProgress();
@@ -479,6 +490,27 @@ public class Installer {
 				"cagrid.home.title", "cagrid.home.desc",
 				Constants.CAGRID_INSTALL_DIR_PATH, Constants.INSTALL_CAGRID);
 		incrementProgress();
+		
+//		 Asks user if ActiveBPEL should be installed
+		addCheckInstallStep(this.model, "activebpel.check.reinstall.title",
+				"activebpel.check.reinstall.desc", Constants.INSTALL_ACTIVEBPEL,
+				Constants.ACTIVEBPEL_INSTALLED, new Condition() {
+
+					public boolean evaluate(WizardModel m) {
+						CaGridInstallerModel model = (CaGridInstallerModel) m;
+						return "true".equals(model.getState().get(
+								Constants.INSTALL_WORKFLOW));
+					}
+
+				});
+		incrementProgress();
+		
+		//Allows user to specify where ActiveBpel should be installed
+		addInstallInfoStep(this.model, Constants.ACTIVEBPEL_HOME, "activebpel",
+				"activebpel.home.title", "activebpel.home.desc",
+				Constants.ACTIVEBPEL_INSTALL_DIR_PATH, Constants.INSTALL_ACTIVEBPEL);
+		incrementProgress();
+
 
 		// Downloads and installs the dependencies
 		RunTasksStep installDependenciesStep = new RunTasksStep(this.model
@@ -502,12 +534,34 @@ public class Installer {
 				Constants.GLOBUS_DOWNLOAD_URL, Constants.GLOBUS_TEMP_FILE_NAME,
 				Constants.GLOBUS_INSTALL_DIR_PATH, Constants.GLOBUS_DIR_NAME,
 				Constants.GLOBUS_HOME, Constants.INSTALL_GLOBUS);
+		
+		addUnTarInstallTask(installDependenciesStep, this.model
+				.getMessage("downloading.activebpel.title"), this.model
+				.getMessage("installing.activebpel.title"), "",
+				Constants.ACTIVEBPEL_DOWNLOAD_URL, Constants.ACTIVEBPEL_TEMP_FILE_NAME,
+				Constants.ACTIVEBPEL_INSTALL_DIR_PATH, Constants.ACTIVEBPEL_DIR_NAME,
+				Constants.ACTIVEBPEL_HOME, Constants.INSTALL_ACTIVEBPEL);
+		
+		installDependenciesStep.getTasks().add(
+				new ConditionalTask(
+						new DeployActiveBPELTask(this.model
+								.getMessage("installing.activebpel.title"), ""), new Condition() {
+
+							public boolean evaluate(WizardModel m) {
+								CaGridInstallerModel model = (CaGridInstallerModel) m;
+								return "true".equals(model.getState().get(
+										Constants.INSTALL_ACTIVEBPEL));
+							}
+
+						}));
+
 		addUnzipInstallTask(installDependenciesStep, this.model
 				.getMessage("downloading.cagrid.title"), this.model
 				.getMessage("installing.cagrid.title"), "",
 				Constants.CAGRID_DOWNLOAD_URL, Constants.CAGRID_TEMP_FILE_NAME,
 				Constants.CAGRID_INSTALL_DIR_PATH, Constants.CAGRID_DIR_NAME,
 				Constants.CAGRID_HOME, Constants.INSTALL_CAGRID);
+		
 
 		installDependenciesStep.getTasks().add(
 				new ConditionalTask(new CompileCaGridTask(this.model
@@ -2388,6 +2442,28 @@ public class Installer {
 						Constants.CONNECT_TIMEOUT), c));
 		installStep.getTasks().add(
 				new ConditionalTask(new UnzipInstallTask(installMsg, desc,
+						tempFileNameProp, installDirPathProp, dirNameProp,
+						homeProp), c));
+	}
+	
+	private void addUnTarInstallTask(RunTasksStep installStep,
+			String downloadMsg, String installMsg, String desc,
+			String downloadUrlProp, String tempFileNameProp,
+			String installDirPathProp, String dirNameProp, String homeProp,
+			final String installProp) {
+
+		Condition c = new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return "true".equals(model.getState().get(installProp));
+			}
+		};
+		installStep.getTasks().add(
+				new ConditionalTask(new DownloadFileTask(downloadMsg, desc,
+						downloadUrlProp, tempFileNameProp,
+						Constants.CONNECT_TIMEOUT), c));
+		installStep.getTasks().add(
+				new ConditionalTask(new UnTarInstallTask(installMsg, desc,
 						tempFileNameProp, installDirPathProp, dirNameProp,
 						homeProp), c));
 	}
