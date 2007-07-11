@@ -58,11 +58,18 @@ public class DeployActiveBPELTask extends BasicTask {
 			isWindows = true;
 		}
 		//build command
-		String cmd = "install";
+		String[] cmd = new String[4];
+		//
+		
 		if(isWindows){
-			cmd += ".bat";
+			cmd[0]="cmd.exe" ;
+			
+			cmd[1]="/C";
+			cmd[2]="start";
+			cmd[3]="install.bat";
+			
 		}else{
-			cmd = "./"+cmd+".sh";
+			cmd[0] = "./"+cmd+".sh";
 		}
 
 		logger.debug("########## Executing: " + cmd);
