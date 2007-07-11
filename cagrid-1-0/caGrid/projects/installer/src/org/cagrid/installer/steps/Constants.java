@@ -49,6 +49,8 @@ public abstract class Constants {
 	public static final String GLOBUS_HOME = "globus.home";
 
 	public static final String CAGRID_HOME = "cagrid.home";
+	
+	public static final String ACTIVEBPEL_HOME = "activebpel.home";
 
 	public static final String ANT_INSTALLED = "ant.installed";
 
@@ -57,6 +59,8 @@ public abstract class Constants {
 	public static final String GLOBUS_INSTALLED = "globus.installed";
 
 	public static final String CAGRID_INSTALLED = "cagrid.installed";
+	
+	public static final String ACTIVEBPEL_INSTALLED = "activebpel.installed";
 
 	public static final String MESSAGES = "CaGridInstallerMessages";
 
@@ -65,6 +69,8 @@ public abstract class Constants {
 	public static final String INSTALL_SERVICES = "install.services";
 
 	public static final String INSTALL_ANT = "install.ant";
+	
+	public static final String INSTALL_ACTIVEBPEL = "install.activebpel";
 
 	public static final String ANT_DOWNLOAD_URL = "ant.download.url";
 
@@ -102,6 +108,15 @@ public abstract class Constants {
 
 	public static final String CAGRID_DIR_NAME = "cagrid.dir.name";
 
+	public static final String ACTIVEBPEL_INSTALL_DIR_PATH = "activebpel.install.dir.path";
+
+	public static final String ACTIVEBPEL_DOWNLOAD_URL = "activebpel.download.url";
+
+	public static final String ACTIVEBPEL_TEMP_FILE_NAME = "activebpel.temp.file.name";
+
+	public static final String ACTIVEBPEL_DIR_NAME = "activebpel.dir.name";
+
+	
 	public static final String GLOBUS_DEPLOYED = "globus.deployed";
 
 	public static final String DEPLOY_GLOBUS = "deploy.globus";
