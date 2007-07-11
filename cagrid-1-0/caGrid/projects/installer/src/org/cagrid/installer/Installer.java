@@ -2583,6 +2583,8 @@ public class Installer {
 				installed = checkGlobusVersion(home);
 			} else if ("caGrid".equals(progName)) {
 				installed = true;
+			} else if ("ActiveBPEL".equals(progName)) {
+				installed = true;
 			} else {
 				throw new RuntimeException("Unknown program: " + progName);
 			}
@@ -2645,7 +2647,7 @@ public class Installer {
 			String antHome = System.getenv("ANT_HOME");
 			String executable = "ant";
 			if (InstallerUtils.isWindows()) {
-				executable += ".exe";
+				executable += ".bat";
 			}
 			String[] cmd = new String[] { antHome + "/bin/" + executable,
 					"-version" };
