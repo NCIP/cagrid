@@ -491,7 +491,7 @@ public class Installer {
 				Constants.CAGRID_INSTALL_DIR_PATH, Constants.INSTALL_CAGRID);
 		incrementProgress();
 		
-//		 Asks user if ActiveBPEL should be installed
+		
 		addCheckInstallStep(this.model, "activebpel.check.reinstall.title",
 				"activebpel.check.reinstall.desc", Constants.INSTALL_ACTIVEBPEL,
 				Constants.ACTIVEBPEL_INSTALLED, new Condition() {
@@ -499,17 +499,18 @@ public class Installer {
 					public boolean evaluate(WizardModel m) {
 						CaGridInstallerModel model = (CaGridInstallerModel) m;
 						return "true".equals(model.getState().get(
-								Constants.INSTALL_WORKFLOW));
+										Constants.INSTALL_ACTIVEBPEL));
 					}
 
 				});
 		incrementProgress();
 		
 		//Allows user to specify where ActiveBpel should be installed
-		addInstallInfoStep(this.model, Constants.ACTIVEBPEL_HOME, "activebpel",
-				"activebpel.home.title", "activebpel.home.desc",
-				Constants.ACTIVEBPEL_INSTALL_DIR_PATH, Constants.INSTALL_ACTIVEBPEL);
-		incrementProgress();
+		addInstallActiveBPELInfoStep(this.model, Constants.ACTIVEBPEL_HOME, "activebpel",
+					"activebpel.home.title", "activebpel.home.desc",
+					Constants.ACTIVEBPEL_INSTALL_DIR_PATH);
+			incrementProgress();
+		
 
 
 		// Downloads and installs the dependencies
@@ -550,7 +551,9 @@ public class Installer {
 							public boolean evaluate(WizardModel m) {
 								CaGridInstallerModel model = (CaGridInstallerModel) m;
 								return "true".equals(model.getState().get(
-										Constants.INSTALL_ACTIVEBPEL));
+										Constants.INSTALL_ACTIVEBPEL))
+										&& "true".equals(model.getState().get(
+												Constants.INSTALL_WORKFLOW));
 							}
 
 						}));
@@ -2455,7 +2458,7 @@ public class Installer {
 		Condition c = new Condition() {
 			public boolean evaluate(WizardModel m) {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return "true".equals(model.getState().get(installProp));
+				return "true".equals(model.getState().get(installProp)) && "true".equals(model.getState().get(Constants.INSTALL_WORKFLOW));
 			}
 		};
 		installStep.getTasks().add(
@@ -2468,6 +2471,40 @@ public class Installer {
 						homeProp), c));
 	}
 
+	
+	private void addInstallActiveBPELInfoStep(DynamicStatefulWizardModel m,
+			String homeProp, String defaultDirName, String titleProp,
+			String descProp, String installDirPath) {
+
+		File homeFile = null;
+		String home = (String) m.getState().get(homeProp);
+		if (home != null) {
+			homeFile = new File(home);
+		} else {
+			homeFile = new File(System.getProperty("user.home")
+					+ File.separator + "packages" + File.separator
+					+ defaultDirName);
+		}
+		PropertyConfigurationStep installInfoStep = new PropertyConfigurationStep(
+				m.getMessage(titleProp), m.getMessage(descProp));
+		installInfoStep.getOptions().add(
+				new TextPropertyConfigurationOption(installDirPath, m
+						.getMessage("directory"), homeFile.getParentFile()
+						.getAbsolutePath(), true));
+		installInfoStep.getValidators().add(
+				new CreateFilePermissionValidator(homeProp, m
+						.getMessage("error.permission.directory.create")));
+		m.add(installInfoStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return "true".equals(model.getState().get(Constants.INSTALL_WORKFLOW)) && "true".equals(model.getState().get(Constants.INSTALL_ACTIVEBPEL));
+			}
+
+		});
+	}
+
+	
 	private void addInstallInfoStep(DynamicStatefulWizardModel m,
 			String homeProp, String defaultDirName, String titleProp,
 			String descProp, String installDirPath, final String installProp) {
