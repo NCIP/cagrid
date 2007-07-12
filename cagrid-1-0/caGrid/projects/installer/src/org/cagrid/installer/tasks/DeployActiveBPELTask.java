@@ -35,7 +35,9 @@ public class DeployActiveBPELTask extends BasicTask {
 		
 		String baseDir = InstallerUtils.getRequiredProperty(state,Constants.ACTIVEBPEL_HOME);
 		try {
-	
+			if(baseDir==null){
+				throw new RuntimeException("ACTIVEBPEL_HOME not set...");
+			}
 			File activebpelHome = new File(baseDir);
 			if (!activebpelHome.exists()) {
 				throw new RuntimeException("ActiveBPEL directory doesnt exist."
