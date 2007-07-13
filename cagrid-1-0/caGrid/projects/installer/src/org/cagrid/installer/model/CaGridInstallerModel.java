@@ -18,5 +18,13 @@ public interface CaGridInstallerModel extends WizardModel {
 	
 	String getMessage(String key);
 
+	boolean isTomcatConfigurationRequired();
+
+	boolean isSecurityConfigurationRequired();
+
+	boolean isTrue(String install_dorian);
+
+	boolean isTomcatContainer();
+
 	
 }

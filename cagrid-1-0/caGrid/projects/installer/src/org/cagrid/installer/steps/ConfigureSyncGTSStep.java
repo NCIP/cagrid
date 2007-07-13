@@ -675,8 +675,7 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 				}
 			}
 
-			String performAuth = getValue(this.performAuthzField.getText(),
-					"false");
+			String performAuth = String.valueOf(this.performAuthzField.isSelected());
 			Element performAuthEl = doc.createElementNS(SYNC_GTS_NS,
 					SYNC_GTS_NS_PREFIX + ":PerformAuthorization");
 			syncDescEl.appendChild(performAuthEl);
@@ -707,11 +706,10 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 				root.appendChild(excludedCAsEl);
 			}
 
-			String deleteInvalid = getValue(this.deleteInvalidField.getText(),
-					"false");
+			String deleteInvalid = String.valueOf(this.deleteInvalidField.isSelected());
 			Element deleteInvalidEl = doc.createElementNS(SYNC_GTS_NS,
 					SYNC_GTS_NS_PREFIX + ":DeleteInvalidFiles");
-			syncDescEl.appendChild(deleteInvalidEl);
+			root.appendChild(deleteInvalidEl);
 			deleteInvalidEl.setTextContent(deleteInvalid);
 
 			Element cacheSizeEl = doc.createElementNS(SYNC_GTS_NS,

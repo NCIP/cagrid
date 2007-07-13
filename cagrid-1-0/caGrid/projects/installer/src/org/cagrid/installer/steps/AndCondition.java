@@ -11,6 +11,7 @@ import org.pietschy.wizard.models.Condition;
  *
  */
 public class AndCondition implements Condition {
+	
 
 	private Condition[] conditions;
 	

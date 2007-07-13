@@ -45,15 +45,16 @@ public class InstallerUtils {
 	public InstallerUtils() {
 		// TODO Auto-generated constructor stub
 	}
-	
-	public static boolean isWindows(){
+
+	public static boolean isWindows() {
 		return System.getProperty("os.name").toLowerCase().indexOf("windows") != -1;
 	}
-	
+
 	public static String getRequiredProperty(Map state, String name) {
 		String value = (String) state.get(name);
-		if(value == null){
-			throw new IllegalStateException("Required property '" + name + "' not found in state.");
+		if (value == null) {
+			throw new IllegalStateException("Required property '" + name
+					+ "' not found in state.");
 		}
 		return value;
 	}
@@ -182,18 +183,45 @@ public class InstallerUtils {
 		return "true".equals(state.get(Constants.INSTALL_DORIAN))
 				|| "true".equals(state.get(Constants.INSTALL_GTS))
 				|| "true".equals(state.get(Constants.INSTALL_AUTHN_SVC))
-				|| "true".equals(state.get(Constants.INSTALL_GRID_GROUPER))
-				|| "true".equals(state.get(Constants.INSTALL_INDEX_SVC));
+				|| "true".equals(state.get(Constants.INSTALL_GRID_GROUPER));
 	}
-	
+
 	public static String toString(Node node) throws Exception {
 		StringWriter w = new StringWriter();
 		Source s = new DOMSource(node);
 		Result r = new StreamResult(w);
 		Transformer t = TransformerFactory.newInstance().newTransformer();
-//		t.setOutputProperty("omit-xml-declaration", "yes");
+		// t.setOutputProperty("omit-xml-declaration", "yes");
 		t.setOutputProperty("indent", "yes");
 		t.transform(s, r);
 		return w.getBuffer().toString();
+	}
+
+	public static boolean isSecurityConfigurationNeeded(
+			CaGridInstallerModel model) {
+		Map state = model.getState();
+		return 
+		isTrue(state, Constants.USE_SECURE_CONTAINER) && 
+		!isTrue(state, Constants.INSTALL_DORIAN) &&
+			(
+				   isTrue(state, Constants.RECONFIGURE_GLOBUS)
+				|| isTrue(state, Constants.REDEPLOY_GLOBUS)
+				|| InstallerUtils.isTomcatContainer(model)
+						&& !InstallerUtils.isTrue(state,
+								Constants.GLOBUS_DEPLOYED) 
+				|| !InstallerUtils
+						.isTomcatContainer(model)
+						&& !InstallerUtils.isTrue(state,
+								Constants.GLOBUS_CONFIGURED)
+			);
+	}
+
+	public static boolean isTrue(Map state, String propName) {
+		return "true".equals(state.get(propName));
+	}
+
+	public static boolean isTomcatContainer(CaGridInstallerModel model) {
+		return model.getMessage("container.type.tomcat").equals(
+				model.getState().get(Constants.CONTAINER_TYPE));
 	}
 }

@@ -14,6 +14,7 @@ import java.util.ResourceBundle;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.installer.steps.Constants;
+import org.cagrid.installer.util.InstallerUtils;
 import org.pietschy.wizard.models.DynamicModel;
 
 /**
@@ -22,9 +23,10 @@ import org.pietschy.wizard.models.DynamicModel;
  */
 public class DynamicStatefulWizardModel extends DynamicModel implements
 
-		CaGridInstallerModel {
-	
-	private static final Log logger = LogFactory.getLog(DynamicStatefulWizardModel.class);
+CaGridInstallerModel {
+
+	private static final Log logger = LogFactory
+			.getLog(DynamicStatefulWizardModel.class);
 
 	private PropertyChangeEventProviderMap state;
 
@@ -42,10 +44,10 @@ public class DynamicStatefulWizardModel extends DynamicModel implements
 	}
 
 	public DynamicStatefulWizardModel(Map state, ResourceBundle messages) {
-		
+
 		if (state == null) {
 			this.state = new PropertyChangeEventProviderMap(new HashMap());
-		}else{
+		} else {
 			this.state = new PropertyChangeEventProviderMap(state);
 		}
 		this.messages = messages;
@@ -60,8 +62,8 @@ public class DynamicStatefulWizardModel extends DynamicModel implements
 			}
 		}
 	}
-	
-	public void addPropertyChangeListener(PropertyChangeListener l){
+
+	public void addPropertyChangeListener(PropertyChangeListener l) {
 		super.addPropertyChangeListener(l);
 		this.state.addPropertyChangeListener(l);
 	}
@@ -100,12 +102,43 @@ public class DynamicStatefulWizardModel extends DynamicModel implements
 			super.put(key, newValue);
 			return oldValue;
 		}
-		public void putAll(Map m){
-			for(Iterator i = m.entrySet().iterator(); i.hasNext();){
-				Map.Entry entry = (Map.Entry)i.next();
+
+		public void putAll(Map m) {
+			for (Iterator i = m.entrySet().iterator(); i.hasNext();) {
+				Map.Entry entry = (Map.Entry) i.next();
 				put(entry.getKey(), entry.getValue());
 			}
 		}
 	}
+
+	public boolean isTomcatConfigurationRequired() {
+		return isTomcatContainer()
+				&& (isTrue(Constants.REDEPLOY_GLOBUS) || !isTrue(Constants.GLOBUS_DEPLOYED));
+
+	}
+
+	public boolean isTrue(String propName) {
+		return "true".equals(getProperty(propName));
+	}
+
+	public boolean isTomcatContainer() {
+		return getMessage("container.type.tomcat").equals(
+				getProperty(Constants.CONTAINER_TYPE));
+	}
+
+	private String getProperty(String propName) {
+		return (String) getState().get(propName);
+	}
+
+	public boolean isSecurityConfigurationRequired() {
+		return isTrue(Constants.USE_SECURE_CONTAINER)
+				&& (
+						   isTrue(Constants.RECONFIGURE_GLOBUS)
+						|| isTrue(Constants.REDEPLOY_GLOBUS)
+						|| isTomcatContainer() && !isTrue(Constants.GLOBUS_DEPLOYED)
+						|| !isTomcatContainer()	&& !isTrue(Constants.GLOBUS_CONFIGURED)
+				);
+	}
+	
 
 }

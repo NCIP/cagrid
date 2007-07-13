@@ -7,6 +7,8 @@ import javax.swing.Icon;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.cagrid.installer.util.InstallerUtils;
+import org.pietschy.wizard.InvalidStateException;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
@@ -54,6 +56,13 @@ public class SelectComponentStep extends PropertyConfigurationStep {
 		}
 		logger.debug("oneChecked = " + oneChecked);
 		setComplete(oneChecked);
+	}
+	
+	public void applyState() throws InvalidStateException {
+		super.applyState();
+		if(InstallerUtils.isSecureContainerRequired(this.model.getState())){
+			this.model.getState().put(Constants.USE_SECURE_CONTAINER, "true");
+		}
 	}
 
 }

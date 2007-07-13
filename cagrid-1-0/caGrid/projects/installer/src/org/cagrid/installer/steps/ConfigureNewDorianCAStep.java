@@ -4,6 +4,7 @@
 package org.cagrid.installer.steps;
 
 import javax.swing.Icon;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
@@ -49,7 +50,7 @@ public class ConfigureNewDorianCAStep extends PropertyConfigurationStep {
 					Constants.DORIAN_CA_TYPE))) {
 				JLabel label = getLabel(Constants.DORIAN_CA_ERACOM_SLOT);
 				label.setVisible(false);
-				JTextField field = (JTextField) getOption(Constants.DORIAN_CA_ERACOM_SLOT);
+				JComboBox field = (JComboBox) getOption(Constants.DORIAN_CA_ERACOM_SLOT);
 				field.setVisible(false);
 			}
 		} catch (Exception ex) {

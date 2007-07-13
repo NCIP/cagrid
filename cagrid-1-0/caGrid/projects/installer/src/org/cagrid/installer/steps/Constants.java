@@ -119,7 +119,7 @@ public abstract class Constants {
 	
 	public static final String GLOBUS_DEPLOYED = "globus.deployed";
 
-	public static final String DEPLOY_GLOBUS = "deploy.globus";
+	public static final String REDEPLOY_GLOBUS = "redeploy.globus";
 
 	public static final String USE_SECURE_CONTAINER = "use.secure.container";
 
@@ -390,6 +390,10 @@ public abstract class Constants {
 	public static final String DORIAN_HOST_CRED_DIR = "dorian.host.cred.dir";
 
 	public static final String SYNC_GTS_PERFORM_FIRST_SYNC = "sync.gts.perform.first.sync";
+
+	public static final String RECONFIGURE_GLOBUS = "reconfigure.globus";
+
+	public static final String GLOBUS_CONFIGURED = "globus.configured";
 	
 
 	
