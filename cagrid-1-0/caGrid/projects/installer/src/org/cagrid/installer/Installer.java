@@ -2529,18 +2529,18 @@ public class Installer {
 
 	private void addInstallInfoStep(DynamicStatefulWizardModel m,
 			String homeProp, String defaultDirName, String titleProp,
-			String descProp, String installDirPath, final String installProp) {
+			String descProp, String installDirPathProp, final String installProp) {
 
 		PropertyConfigurationStep installInfoStep = new PropertyConfigurationStep(
 				m.getMessage(titleProp), m.getMessage(descProp));
 		FilePropertyConfigurationOption fpo = new FilePropertyConfigurationOption(
-				installDirPath, m.getMessage("directory"), System
+				installDirPathProp, m.getMessage("directory"), System
 						.getProperty("user.home"), true);
 		fpo.setDirectoriesOnly(true);
 		fpo.setBrowseLabel(m.getMessage("browse"));
 		installInfoStep.getOptions().add(fpo);
 		installInfoStep.getValidators().add(
-				new CreateFilePermissionValidator(homeProp, m
+				new CreateFilePermissionValidator(installDirPathProp, m
 						.getMessage("error.permission.directory.create")));
 		m.add(installInfoStep, new Condition() {
 
