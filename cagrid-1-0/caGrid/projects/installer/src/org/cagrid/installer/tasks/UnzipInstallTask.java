@@ -80,6 +80,12 @@ public class UnzipInstallTask extends BasicTask {
 			ZipEntry entry = (ZipEntry) entries.nextElement();
 			String fileName = baseOut + entry.getName();
 			File file = new File(fileName);
+			
+			if(file.isDirectory()){
+				file.mkdirs();
+				continue;
+			}
+			
 			if (!file.isDirectory() && !file.getParentFile().exists()) {
 				boolean created = false;
 				try {
