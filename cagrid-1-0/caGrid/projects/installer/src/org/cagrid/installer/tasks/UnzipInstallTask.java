@@ -44,7 +44,6 @@ public class UnzipInstallTask extends BasicTask {
 		this.homeProp = homeProp;
 	}
 
-
 	protected Object internalExecute(Map state) throws Exception {
 
 		ZipFile zipFile = null;
@@ -58,25 +57,18 @@ public class UnzipInstallTask extends BasicTask {
 			throw new RuntimeException("Error instantiating zip file: "
 					+ ex.getMessage(), ex);
 		}
-//		setStepCount(zipFile.size());
+		// setStepCount(zipFile.size());
 
 		File installDir = new File((String) state.get(this.installDirPathProp));
 		File home = new File(installDir.getAbsolutePath() + "/"
 				+ state.get(this.dirNameProp));
+
+		// TODO: change this. this strays from the norm. usually steps modify
+		// state
+		// while tasks do not.
 		state.put(this.homeProp, home.getAbsolutePath());
 
 		home.delete();
-
-		try {
-			String path = state.get(Constants.TEMP_DIR_PATH) + "/"
-					+ state.get(this.tempFileNameProp);
-
-			logger.info("Trying to open ZipFile for " + path);
-			zipFile = new ZipFile(new File(path));
-		} catch (Exception ex) {
-			throw new RuntimeException("Error instantiating zip file: "
-					+ ex.getMessage(), ex);
-		}
 
 		String baseOut = installDir.getAbsolutePath() + "/";
 		Enumeration entries = zipFile.entries();
@@ -97,11 +89,17 @@ public class UnzipInstallTask extends BasicTask {
 				InputStream in = zipFile.getInputStream(entry);
 				String fileName = baseOut + entry.getName();
 				File file = new File(fileName);
-				if(!file.getParentFile().exists()){
-					file.getParentFile().mkdirs();
+				if (!file.getParentFile().exists()) {
+					try {
+						file.getParentFile().mkdirs();
+					} catch (Exception ex) {
+						logger.error("Error creating directory '"
+								+ file.getParentFile().getAbsolutePath()
+								+ "': " + ex.getMessage(), ex);
+					}
 				}
 				numFiles++;
-				if(numFiles > nextLog){
+				if (numFiles > nextLog) {
 					nextLog += logAfterSize;
 					System.out.println("Extracting: " + fileName);
 				}
@@ -117,7 +115,7 @@ public class UnzipInstallTask extends BasicTask {
 				out.close();
 				in.close();
 			}
-//			setLastStep(getLastStep() + 1);
+			// setLastStep(getLastStep() + 1);
 		}
 		zipFile.close();
 
