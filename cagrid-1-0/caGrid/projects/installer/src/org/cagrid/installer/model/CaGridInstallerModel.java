@@ -22,9 +22,23 @@ public interface CaGridInstallerModel extends WizardModel {
 
 	boolean isSecurityConfigurationRequired();
 
-	boolean isTrue(String install_dorian);
+	boolean isTrue(String propName);
 
 	boolean isTomcatContainer();
+
+	boolean isSet(String propName);
+
+	void setPreviousActive(boolean b);
+
+	boolean isCAGenerationRequired();
+
+	boolean isServiceCertGenerationRequired();
+
+	boolean isAuthnSvcCAGenerationRequired();
+
+	String getProperty(String propName);
+
+	boolean isEqual(String value, String propName2);
 
 	
 }

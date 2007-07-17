@@ -369,7 +369,7 @@
 	<target name="deployTomcatEndorsedJars">
 		<copy todir="${tomcat.home}/common/endorsed" overwrite="true">
 			<fileset
-				dir="${service.dest.dir}/dorian/ext/endorsed/lib">
+				dir="${service.dest.dir}/${service.name}/ext/endorsed/lib">
 				<include name="*.jar" />
 			</fileset>
 		</copy>
@@ -378,7 +378,7 @@
 	<target name="deployGlobusEndorsedJars">
 		<copy todir="${globus.home}/endorsed" overwrite="true">
 			<fileset
-				dir="${service.dest.dir}/dorian/ext/endorsed/lib">
+				dir="${service.dest.dir}/${service.name}/ext/endorsed/lib">
 				<include name="*.jar" />
 			</fileset>
 		</copy>
@@ -398,6 +398,21 @@
 			<property name="cert.input" value="${ca.cert.path}" />
 		</ant>
 	</target>
+	
+	<target name="generate-authn-service-ca">
+
+		<touch mkdirs="true" file="${authn.svc.ca.key.path}" />
+		<touch mkdirs="true" file="${authn.svc.ca.cert.path}" />
+
+		<ant inheritAll="false" inheritRefs="false"
+			antfile="${gridca.build.file.path}" target="generateCA">
+			<property name="dn.input" value="${authn.svc.ca.dn}" />
+			<property name="days.input" value="${authn.svc.ca.days.valid}" />
+			<property name="password.input" value="${authn.svc.ca.key.pwd}" />
+			<property name="key.input" value="${authn.svc.ca.key.path}" />
+			<property name="cert.input" value="${authn.svc.ca.cert.path}" />
+		</ant>
+	</target>	
 
 	<target name="generate-host-creds">
 
@@ -423,21 +438,21 @@
 		<property name="target.name" value="deployTomcat" />
 
 		<property name="old.tomcat.build.file"
-			value="${globus.dir.path}/share/globus_wsrf_common/tomcat/tomcat.xml" />
+			value="${globus.home}/share/globus_wsrf_common/tomcat/tomcat.xml" />
 		<property name="new.tomcat.build.file"
-			value="${globus.dir.path}/share/globus_wsrf_common/tomcat/tomcat-fixed.xml" />
+			value="${globus.home}/share/globus_wsrf_common/tomcat/tomcat-fixed.xml" />
 
 		<xmltask source="${old.tomcat.build.file}"
 			dest="${new.tomcat.build.file}">
 			<attr
 				path="/project/target[@name='_baseTomcatDeploy']/copy[contains(@file, 'web.xml')]"
 				attr="file"
-				value="${globus.dir.path}/share/globus_wsrf_common/tomcat/web.xml" />
+				value="${globus.home}/share/globus_wsrf_common/tomcat/web.xml" />
 		</xmltask>
 
 		<ant antfile="${new.tomcat.build.file}" dir="."
 			target="${target.name}">
-			<property name="tomcat.dir" value="${tomcat.dir.path}" />
+			<property name="tomcat.dir" value="${tomcat.home}" />
 		</ant>
 	</target>
 
@@ -458,7 +473,7 @@
 		<property name="scheme" value="http" />
 		<property name="tomcat.port" value="8080" />
 		<property name="web.xml.file"
-			value="${tomcat.dir.path}/webapps/wsrf/WEB-INF/web.xml" />
+			value="${tomcat.home}/webapps/wsrf/WEB-INF/web.xml" />
 		<xmltask source="${web.xml.file}" dest="${web.xml.file}">
 			<remove
 				path="/web-app/servlet[servlet-name='WSRFServlet']/init-param[param-name='defaultProtocol']" />
@@ -482,8 +497,8 @@
 	</target>
 
 	<target name="insert-secure-connector">
-		<xmltask source="${tomcat.dir.path}/conf/server.xml"
-			dest="${tomcat.dir.path}/conf/server.xml">
+		<xmltask source="${tomcat.home}/conf/server.xml"
+			dest="${tomcat.home}/conf/server.xml">
 			<remove
 				path="/Server/Service[@name='Catalina']/Connector[@port='${tomcat.old.https.port}']" />
 			<insert path="/Server/Service[@name='Catalina']">
@@ -494,8 +509,8 @@
 				  autoFlush="true"
 				  disableUploadTimeout="true" scheme="https"
 				  enableLookups="true" acceptCount="10" debug="0" 
-				   cert="${tomcat.cert.path}"
-				   key="${tomcat.key.path}"/>
+				   cert="${service.cert.path}"
+				   key="${service.key.path}"/>
 				]]>
 			</insert>
 		</xmltask>
@@ -503,8 +518,8 @@
 
 	<target name="insert-valve">
 
-		<xmltask source="${tomcat.dir.path}/conf/server.xml"
-			dest="${tomcat.dir.path}/conf/server.xml">
+		<xmltask source="${tomcat.home}/conf/server.xml"
+			dest="${tomcat.home}/conf/server.xml">
 			<remove
 				path="/Server/Service[@name='Catalina']/Engine[@name='Catalina']/Valve[@className='org.globus.tomcat.coyote.valves.HTTPSValve']" />
 			<insert
@@ -518,30 +533,70 @@
 
 	<target name="set-global-cert-and-key-paths">
 		<property name="secdesc.file"
-			value="${tomcat.dir.path}/webapps/wsrf/WEB-INF/etc/globus_wsrf_core/global_security_descriptor.xml" />
+			value="${tomcat.home}/webapps/wsrf/WEB-INF/etc/globus_wsrf_core/global_security_descriptor.xml" />
 		<xmltask source="${secdesc.file}" dest="${secdesc.file}">
 			<attr
 				path="/*[local-name()='securityConfig']/*[local-name()='credential']/*[local-name()='key-file']"
-				attr="value" value="${tomcat.key.path}" />
+				attr="value" value="${service.key.path}" />
 			<attr
 				path="/*[local-name()='securityConfig']/*[local-name()='credential']/*[local-name()='cert-file']"
-				attr="value" value="${tomcat.cert.path}" />
+				attr="value" value="${service.cert.path}" />
 		</xmltask>
+
 	</target>
 
-	<target name="copy-global-cert-and-key">
-		<property name="tomcat.cert.dest"
-			value="${tomcat.dir.path}/${tomcat.cert.path}" />
-		<property name="tomcat.key.dest"
-			value="${tomcat.dir.path}/${tomcat.key.path}" />
+	<target name="configure-tomcat-server-config">
+		<property name="secdesc.file"
+			value="${tomcat.home}/webapps/wsrf/WEB-INF/etc/globus_wsrf_core/server-config.wsdd" />
+		<xmltask source="${secdesc.file}" dest="${secdesc.file}">
+			<remove
+				path="/*[local-name()='deployment']/*[local-name()='globalConfiguration']/*[local-name()='parameter' and @name='logicalHost']" />
+			<remove
+				path="/*[local-name()='deployment']/*[local-name()='globalConfiguration']/*[local-name()='parameter' and @name='publishHostName']" />
+			<insert
+				path="/*[local-name()='deployment']/*[local-name()='globalConfiguration']">
+				<![CDATA[
+<parameter xmlns="http://xml.apache.org/axis/wsdd/" name="logicalHost" value="${service.hostname}"/>
+<parameter xmlns="http://xml.apache.org/axis/wsdd/" name="publishHostName" value="true"/>
+			]]>
+			</insert>
+		</xmltask>
+		<if>
+			<equals arg1="${use.secure.container}" arg2="true"
+				trim="true" />
+			<then>
+				<xmltask source="${secdesc.file}"
+					dest="${secdesc.file}">
+					<remove
+						path="/*[local-name()='deployment']/*[local-name()='globalConfiguration']/*[local-name()='parameter' and @name='containerSecDesc']" />
+					<insert
+						path="/*[local-name()='deployment']/*[local-name()='globalConfiguration']">
+						<![CDATA[
+<parameter xmlns="http://xml.apache.org/axis/wsdd/" name="containerSecDesc" value="${tomcat.home}/webapps/wsrf/WEB-INF/etc/globus_wsrf_core/global_security_descriptor.xml"/>
+			]]>
+					</insert>
+				</xmltask>
+			</then>
+		</if>
 
-		<touch mkdirs="true" file="${tomcat.cert.dest}" />
-		<touch mkdirs="true" file="${tomcat.key.dest}" />
+	</target>
 
-		<copy file="${tomcat.cert}" tofile="${tomcat.cert.dest}"
-			overwrite="true" />
-		<copy file="${tomcat.key}" tofile="${tomcat.key.dest}"
-			overwrite="true" />
+	<target name="configure-globus-server-config">
+		<property name="secdesc.file"
+			value="${globus.home}/etc/globus_wsrf_core/server-config.wsdd" />
+
+		<remove
+			path="/*[local-name()='deployment']/*[local-name()='globalConfiguration']/*[local-name()='parameter' and @name='logicalHost']" />
+		<remove
+			path="/*[local-name()='deployment']/*[local-name()='globalConfiguration']/*[local-name()='parameter' and @name='publishHostName']" />
+		<insert
+			path="/*[local-name()='deployment']/*[local-name()='globalConfiguration']">
+			<![CDATA[
+<parameter xmlns="http://xml.apache.org/axis/wsdd/" name="logicalHost" value="${service.hostname}"/>
+<parameter xmlns="http://xml.apache.org/axis/wsdd/" name="publishHostName" value="true"/>
+			]]>
+		</insert>
+
 	</target>
 
 	<target name="configure-security-descriptor">
@@ -564,8 +619,8 @@
 
 	<target name="configure-tomcat-ports">
 
-		<xmltask source="${tomcat.dir.path}/conf/server.xml"
-			dest="${tomcat.dir.path}/conf/server.xml">
+		<xmltask source="${tomcat.home}/conf/server.xml"
+			dest="${tomcat.home}/conf/server.xml">
 
 			<attr path="/Server" attr="port"
 				value="${tomcat.shutdown.port}" />
@@ -679,8 +734,8 @@ ${authn.svc.csm.ctx}{
 	USER_PASSWORD="${authn.svc.rdbms.password.column}"
 	USER_FIRST_NAME="${authn.svc.rdbms.first.name.column}"
 	USER_LAST_NAME="${authn.svc.rdbms.last.name.column}"
-	USER_EMAIL_ID="${authn.svc.rdbms.email.id.column}";
-	encryption-enabled="${authn.svc.rdbms.encryption.enabled}"
+	USER_EMAIL_ID="${authn.svc.rdbms.email.id.column}"
+	encryption-enabled="${authn.svc.rdbms.encryption.enabled}";
 };
 					]]>
 				</concat>
@@ -700,6 +755,7 @@ ${authn.svc.csm.ctx}{
 				value="${authn.svc.ca.key.pwd}" />
 		</propertyfile>
 	</target>
+
 
 	<target name="configure-gridgrouper-hibernate">
 		<propertyfile

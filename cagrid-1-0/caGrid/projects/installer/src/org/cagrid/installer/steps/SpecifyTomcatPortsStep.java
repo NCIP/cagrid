@@ -65,7 +65,7 @@ public class SpecifyTomcatPortsStep extends PropertyConfigurationStep {
 	public void prepare() {
 		JTextField httpsPortField = (JTextField) getOption(Constants.TOMCAT_HTTPS_PORT);
 		JLabel httpsPortLabel = getLabel(Constants.TOMCAT_HTTPS_PORT);
-		
+
 		JTextField httpPortField = (JTextField) getOption(Constants.TOMCAT_HTTP_PORT);
 		JLabel httpPortLabel = getLabel(Constants.TOMCAT_HTTP_PORT);
 		if (!"true".equals(this.model.getState().get(
@@ -86,6 +86,7 @@ public class SpecifyTomcatPortsStep extends PropertyConfigurationStep {
 		String httpsPort = "8443";
 		String shutdownPort = null;
 		String serverConfigPath = getServerConfigPath();
+
 		try {
 			this.doc = DocumentBuilderFactory.newInstance()
 					.newDocumentBuilder().parse(

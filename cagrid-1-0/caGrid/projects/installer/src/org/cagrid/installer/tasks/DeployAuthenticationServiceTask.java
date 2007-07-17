@@ -3,6 +3,7 @@
  */
 package org.cagrid.installer.tasks;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
@@ -31,19 +32,51 @@ public class DeployAuthenticationServiceTask extends DeployServiceTask {
 			Properties sysProps) throws Exception {
 
 		String svcBuildFilePath = getBuildFilePath(state);
-		String installerBuildFilePath = InstallerUtils.getScriptsBuildFilePath();
+		String installerBuildFilePath = InstallerUtils
+				.getScriptsBuildFilePath();
+
+		state.put(Constants.BUILD_FILE_PATH, installerBuildFilePath);
+
+		// Generate the AuthnSvc CA
+		if (this.model.isAuthnSvcCAGenerationRequired()) {
+			new AntTask("", "", "generate-authn-service-ca", env, sysProps)
+					.execute(state);
+			InstallerUtils.copyCACertToTrustStore(this.model
+					.getProperty(Constants.AUTHN_SVC_CA_CERT_PATH),
+					"AUTHNSVC_CA.0");
+		}
 
 		// Modify deploy.properties
-		state.put(Constants.BUILD_FILE_PATH, installerBuildFilePath);
 		new AntTask("", "", "set-authn-service-deploy-properties", env,
 				sysProps).execute(state);
 
 		// Deploy the service
+		// TODO: setting these properties shouldn't be necessary, but the build
+		// file
+		// is not including deploy.properties at the right time.
+		sysProps.setProperty("csm.app.context", (String) state
+				.get(Constants.AUTHN_SVC_CSM_CTX));
+		sysProps.setProperty("saml.provider.crt", (String) state
+				.get(Constants.AUTHN_SVC_CA_CERT_PATH));
+		sysProps.setProperty("saml.provider.key", (String) state
+				.get(Constants.AUTHN_SVC_CA_KEY_PATH));
+		sysProps.setProperty("saml.provider.pwd", (String) state
+				.get(Constants.AUTHN_SVC_CA_KEY_PWD));
 		state.put(Constants.BUILD_FILE_PATH, svcBuildFilePath);
 		super.runAntTask(state, target, env, sysProps);
+		
+
+		state.put(Constants.BUILD_FILE_PATH, installerBuildFilePath);
+		
+		String antTarget = "deployTomcatEndorsedJars";
+		if (this.model.getMessage("container.type.globus").equals(
+				this.model.getState().get(Constants.CONTAINER_TYPE))) {
+			antTarget = "deployGlobusEndorsedJars";
+		}
+		sysProps.setProperty("service.name", "authentication-service");
+		new AntTask("", "", antTarget, env, sysProps).execute(state);
 
 		// Copy driver
-		state.put(Constants.BUILD_FILE_PATH, installerBuildFilePath);
 		if (isDeployTomcat()) {
 			new AntTask("", "", "copy-jdbc-driver-to-tomcat", env, sysProps)
 					.execute(state);
@@ -56,13 +89,9 @@ public class DeployAuthenticationServiceTask extends DeployServiceTask {
 		sysProps.setProperty("jaas.config.path", System
 				.getProperty("user.home")
 				+ "/.java.login.config");
-		sysProps
-				.getProperty(
-						"authn.svc.rdbms.encryption.enabled",
-						"true"
-								.equals(state
-										.get(Constants.AUTHN_SVC_RDBMS_ENCRYPTION_ENABLED)) ? "YES"
-								: "NO");
+		state.put("authn.svc.rdbms.encryption.enabled", this.model
+				.isTrue(Constants.AUTHN_SVC_RDBMS_ENCRYPTION_ENABLED) ? "YES"
+				: "NO");
 		new AntTask("", "", "create-jaas-config", env, sysProps).execute(state);
 
 		return null;

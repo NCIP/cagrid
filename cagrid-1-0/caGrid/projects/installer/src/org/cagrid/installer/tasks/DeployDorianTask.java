@@ -40,6 +40,7 @@ public class DeployDorianTask extends DeployServiceTask {
 		}
 		Map m = new HashMap(state);
 		m.put(Constants.BUILD_FILE_PATH, InstallerUtils.getScriptsBuildFilePath());
+		sysProps.setProperty("service.name", "dorian");
 		new AntTask("", "", antTarget, env, sysProps).execute(m);
 
 		return null;

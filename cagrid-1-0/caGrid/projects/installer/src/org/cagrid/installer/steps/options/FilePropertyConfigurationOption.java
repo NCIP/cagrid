@@ -36,7 +36,7 @@ public class FilePropertyConfigurationOption extends
 	 */
 	public FilePropertyConfigurationOption(String name, String description,
 			String defaultValue) {
-		super(name, description, defaultValue);
+		this(name, description, defaultValue, false);
 
 	}
 

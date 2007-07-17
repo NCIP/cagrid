@@ -31,6 +31,7 @@ public class ConfigureGridGrouperTask extends CaGridAntTask {
 
 		//Configure grouper.hibernate.properties
 		state.put(Constants.BUILD_FILE_PATH, InstallerUtils.getScriptsBuildFilePath());
+		
 		new AntTask("", "", "configure-gridgrouper-hibernate", env, sysProps).execute(state);
 		
 		
@@ -40,7 +41,7 @@ public class ConfigureGridGrouperTask extends CaGridAntTask {
 		new AntTask("", "", "grouperInit", env, sysProps).execute(state);
 		
 		//Run addAdmin
-		sysProps.setProperty("gridId.input", (String)state.get(Constants.GRID_GROUPER_ADMIN_IDENT));
+		state.put("gridId.input", (String)state.get(Constants.GRID_GROUPER_ADMIN_IDENT));
 		new AntTask("", "", "addAdmin", env, sysProps).execute(state);
 
 		return null;

@@ -40,14 +40,14 @@ public class CaGridAntTask extends BasicTask {
 		env.put("GLOBUS_LOCATION", state.get(Constants.GLOBUS_HOME));
 		env.put("CATALINA_HOME", state.get(Constants.TOMCAT_HOME));
 		Properties sysProps = new Properties();
-		for (Iterator i = state.entrySet().iterator(); i.hasNext();) {
-			Entry entry = (Entry) i.next();
-			if (entry.getKey() instanceof String
-					&& entry.getValue() instanceof String) {
-				sysProps.setProperty((String) entry.getKey(), (String) entry
-						.getValue());
-			}
-		}
+//		for (Iterator i = state.entrySet().iterator(); i.hasNext();) {
+//			Entry entry = (Entry) i.next();
+//			if (entry.getKey() instanceof String
+//					&& entry.getValue() instanceof String) {
+//				sysProps.setProperty((String) entry.getKey(), (String) entry
+//						.getValue());
+//			}
+//		}
 		sysProps.setProperty(Constants.SERVICE_DEST_DIR, InstallerUtils
 				.getServiceDestDir(state));
 		sysProps.setProperty(Constants.GRIDCA_BUILD_FILE_PATH, (String) state

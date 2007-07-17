@@ -33,10 +33,9 @@ public class ConfigureGTSTask extends CaGridAntTask {
 		m.put(Constants.BUILD_FILE_PATH, InstallerUtils.getScriptsBuildFilePath());
 		new AntTask("", "", "configure-gts-conf", env, sysProps).execute(m);
 		
-		InstallerUtils.copyCACertToTrustStore((String) state.get(Constants.CA_CERT_PATH));
-		
+
 		m.put(Constants.BUILD_FILE_PATH, InstallerUtils.getServiceDestDir(m) + "/gts/build.xml");
-		sysProps.setProperty("gridId.input", (String)state.get(Constants.GTS_ADMIN_IDENT));
+		m.put("gridId.input", state.get(Constants.GTS_ADMIN_IDENT));
 		new AntTask("", "", "addAdmin", env, sysProps).execute(m);
 		
 		return null;

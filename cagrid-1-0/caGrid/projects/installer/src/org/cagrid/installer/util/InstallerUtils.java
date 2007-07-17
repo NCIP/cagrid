@@ -74,15 +74,6 @@ public class InstallerUtils {
 		in.close();
 	}
 
-	public static void main(String[] args) throws Exception {
-
-		URL url = new URL(
-				"file:/Users/joshua/downloads/apache-ant-1.6.5-bin.zip");
-		File file = new File("/Users/joshua/temp/ant.zip");
-		downloadFile(url, file);
-
-	}
-
 	public static void unzipFile(File toFile, File toDir) throws Exception {
 		String baseOut = toDir.getAbsolutePath() + "/";
 		ZipFile zipFile = new ZipFile(toFile);
@@ -149,8 +140,13 @@ public class InstallerUtils {
 				&& !"true".equals(model.getState().get(
 						Constants.CA_CERT_PRESENT));
 	}
-
+	
 	public static void copyCACertToTrustStore(String certPath)
+	throws IOException {
+		copyCACertToTrustStore(certPath, "CA.0");
+	}
+
+	public static void copyCACertToTrustStore(String certPath, String caFileName)
 			throws IOException {
 
 		BufferedReader in = new BufferedReader(new FileReader(certPath));
@@ -161,7 +157,7 @@ public class InstallerUtils {
 		}
 		BufferedWriter out = new BufferedWriter(new FileWriter(trustDir
 				.getAbsolutePath()
-				+ "/CA.0"));
+				+ "/" + caFileName));
 		String line = null;
 		while ((line = in.readLine()) != null) {
 			out.write(line + "\n");
@@ -200,20 +196,16 @@ public class InstallerUtils {
 	public static boolean isSecurityConfigurationNeeded(
 			CaGridInstallerModel model) {
 		Map state = model.getState();
-		return 
-		isTrue(state, Constants.USE_SECURE_CONTAINER) && 
-		!isTrue(state, Constants.INSTALL_DORIAN) &&
-			(
-				   isTrue(state, Constants.RECONFIGURE_GLOBUS)
-				|| isTrue(state, Constants.REDEPLOY_GLOBUS)
-				|| InstallerUtils.isTomcatContainer(model)
+		return isTrue(state, Constants.USE_SECURE_CONTAINER)
+				&& !isTrue(state, Constants.INSTALL_DORIAN)
+				&& (isTrue(state, Constants.RECONFIGURE_GLOBUS)
+						|| isTrue(state, Constants.REDEPLOY_GLOBUS)
+						|| InstallerUtils.isTomcatContainer(model)
 						&& !InstallerUtils.isTrue(state,
-								Constants.GLOBUS_DEPLOYED) 
-				|| !InstallerUtils
+								Constants.GLOBUS_DEPLOYED) || !InstallerUtils
 						.isTomcatContainer(model)
 						&& !InstallerUtils.isTrue(state,
-								Constants.GLOBUS_CONFIGURED)
-			);
+								Constants.GLOBUS_CONFIGURED));
 	}
 
 	public static boolean isTrue(Map state, String propName) {
@@ -223,5 +215,18 @@ public class InstallerUtils {
 	public static boolean isTomcatContainer(CaGridInstallerModel model) {
 		return model.getMessage("container.type.tomcat").equals(
 				model.getState().get(Constants.CONTAINER_TYPE));
+	}
+
+	public static String getInstallerTempDir() {
+		return getInstallerDir() + "/tmp";
+
+	}
+
+	public static String getInstallerDir() {
+		return System.getProperty("user.home") + "/.cagrid/installer";
+	}
+
+	public static boolean isEmpty(String pwd) {
+		return pwd == null || pwd.trim().length() == 0;
 	}
 }

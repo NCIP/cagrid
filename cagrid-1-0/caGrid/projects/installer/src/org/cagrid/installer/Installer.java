@@ -30,6 +30,7 @@ import org.cagrid.installer.steps.ConfigureDorianCAStep;
 import org.cagrid.installer.steps.ConfigureDorianDBStep;
 import org.cagrid.installer.steps.ConfigureDorianHostCredentialsStep;
 import org.cagrid.installer.steps.ConfigureGTSDBStep;
+import org.cagrid.installer.steps.ConfigureGridGrouperStep;
 import org.cagrid.installer.steps.ConfigureNewDorianCAStep;
 import org.cagrid.installer.steps.ConfigureServiceCertStep;
 import org.cagrid.installer.steps.ConfigureSyncGTSStep;
@@ -54,7 +55,6 @@ import org.cagrid.installer.steps.options.ListPropertyConfigurationOption.LabelV
 import org.cagrid.installer.tasks.CompileCaGridTask;
 import org.cagrid.installer.tasks.ConditionalTask;
 import org.cagrid.installer.tasks.ConfigureDorianTask;
-import org.cagrid.installer.tasks.ConfigureEnvironmentTask;
 import org.cagrid.installer.tasks.ConfigureGTSTask;
 import org.cagrid.installer.tasks.ConfigureGlobusTask;
 import org.cagrid.installer.tasks.ConfigureGridGrouperTask;
@@ -140,8 +140,7 @@ public class Installer {
 			Map defaultState = new HashMap();
 
 			// Set up temp dir
-			String tempDir = System.getProperty("user.home")
-					+ "/.cagrid/installer/tmp";
+			String tempDir = InstallerUtils.getInstallerTempDir();
 			defaultState.put(Constants.TEMP_DIR_PATH, tempDir);
 			File tempDirFile = new File(tempDir);
 			if (tempDirFile.exists()) {
@@ -242,8 +241,7 @@ public class Installer {
 			logger.info("Custom installer properties file specified: '"
 					+ cagridInstallerFileName + "'");
 		} else {
-			cagridInstallerFileName = System.getProperty("user.home")
-					+ "/.cagrid/installer/"
+			cagridInstallerFileName = InstallerUtils.getInstallerDir() + "/"
 					+ Constants.CAGRID_INSTALLER_PROPERTIES;
 			logger.info("Using default properties file: '"
 					+ cagridInstallerFileName + "'");
@@ -292,6 +290,7 @@ public class Installer {
 		this.model.getState().remove(Constants.INSTALL_WORKFLOW);
 		this.model.getState().remove(Constants.USE_SECURE_CONTAINER);
 		this.model.getState().remove(Constants.INSTALL_ACTIVEBPEL);
+		this.model.getState().remove(Constants.RECONFIGURE_CAGRID);
 
 		incrementProgress();
 
@@ -355,6 +354,21 @@ public class Installer {
 		this.model.add(selectInstallStep);
 		incrementProgress();
 
+		// Check if caGrid should be reconfigured
+		PropertyConfigurationStep checkReconfigureCaGridStep = new PropertyConfigurationStep(
+				this.model.getMessage("check.reconfigure.cagrid.title"),
+				this.model.getMessage("check.reconfigure.cagrid.desc"));
+		checkReconfigureCaGridStep.getOptions().add(
+				new BooleanPropertyConfigurationOption(
+						Constants.RECONFIGURE_CAGRID, this.model
+								.getMessage("yes"), false, false));
+		this.model.add(checkReconfigureCaGridStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isSet(Constants.TARGET_GRID);
+			}
+		});
+
 		// Presents list of available target grids
 		String[] targetGrids = ((String) this.model.getState().get(
 				Constants.AVAILABLE_TARGET_GRIDS)).split(",");
@@ -371,7 +385,13 @@ public class Installer {
 				new ListPropertyConfigurationOption(Constants.TARGET_GRID,
 						this.model.getMessage("target.grid"), targetGridPairs,
 						true));
-		this.model.add(selectTargetGridStep);
+		this.model.add(selectTargetGridStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return !model.isSet(Constants.TARGET_GRID)
+						|| model.isTrue(Constants.RECONFIGURE_CAGRID);
+			}
+		});
 		incrementProgress();
 
 		// Presents list of services that can be installed
@@ -519,9 +539,9 @@ public class Installer {
 		incrementProgress();
 
 		// Downloads and installs the dependencies
-		RunTasksStep installDependenciesStep = new RunTasksStep(this.model
-				.getMessage("install.dependencies.title"), this.model
-				.getMessage("install.dependencies.desc"));
+		final RunTasksStep installDependenciesStep = new RunTasksStep(
+				this.model.getMessage("install.dependencies.title"), this.model
+						.getMessage("install.dependencies.desc"));
 		addUnzipInstallTask(installDependenciesStep, this.model
 				.getMessage("downloading.ant.title"), this.model
 				.getMessage("installing.ant.title"), "",
@@ -588,7 +608,15 @@ public class Installer {
 		ConfigureTargetGridTask configTargetGridTask = new ConfigureTargetGridTask(
 				this.model.getMessage("configuring.target.grid"), "");
 		configTargetGridTask.setAbortOnError(false);
-		installDependenciesStep.getTasks().add(configTargetGridTask);
+		installDependenciesStep.getTasks().add(
+				new ConditionalTask(configTargetGridTask, new Condition() {
+					public boolean evaluate(WizardModel m) {
+						CaGridInstallerModel model = (CaGridInstallerModel) m;
+						return !model.isSet(Constants.TARGET_GRID)
+								|| model.isTrue(Constants.RECONFIGURE_CAGRID)
+								|| model.isTrue(Constants.INSTALL_CAGRID);
+					}
+				}));
 
 		installDependenciesStep.getTasks().add(
 				new ConditionalTask(
@@ -600,7 +628,12 @@ public class Installer {
 								return model.isTrue(Constants.INSTALL_SERVICES);
 							}
 						}));
-		this.model.add(installDependenciesStep);
+		this.model.add(installDependenciesStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return installDependenciesStep.getTasksCount(model) > 0;
+			}
+		});
 
 		// If globus has already been deployed, see if it should be redeployed
 		PropertyConfigurationStep checkDeployGlobusStep = new PropertyConfigurationStep(
@@ -743,19 +776,24 @@ public class Installer {
 		ConfigureServiceCertStep newServiceCertInfoStep = new ConfigureServiceCertStep(
 				this.model.getMessage("service.cert.new.info.title"),
 				this.model.getMessage("service.cert.new.info.desc"));
-		newServiceCertInfoStep.getOptions().add(
-				new TextPropertyConfigurationOption(
-						Constants.SERVICE_CERT_PATH, this.model
-								.getMessage("service.cert.info.cert.path"),
-						getProperty(this.model.getState(),
-								Constants.SERVICE_CERT_PATH,
-								"temp/certs/service.cert"), true));
-		newServiceCertInfoStep.getOptions().add(
-				new TextPropertyConfigurationOption(Constants.SERVICE_KEY_PATH,
-						this.model.getMessage("service.cert.info.key.path"),
-						getProperty(this.model.getState(),
-								Constants.SERVICE_KEY_PATH,
-								"temp/certs/servce.key"), true));
+		FilePropertyConfigurationOption nscPathOption = new FilePropertyConfigurationOption(
+				Constants.SERVICE_CERT_PATH, this.model
+						.getMessage("service.cert.info.cert.path"),
+				getProperty(this.model.getState(), Constants.SERVICE_CERT_PATH,
+						InstallerUtils.getInstallerDir()
+								+ "/certs/service.cert"), true);
+		nscPathOption.setDirectoriesOnly(false);
+		nscPathOption.setBrowseLabel(this.model.getMessage("browse"));
+		newServiceCertInfoStep.getOptions().add(nscPathOption);
+		FilePropertyConfigurationOption nskPathOption = new FilePropertyConfigurationOption(
+				Constants.SERVICE_KEY_PATH,
+				this.model.getMessage("service.cert.info.key.path"),
+				getProperty(this.model.getState(), Constants.SERVICE_KEY_PATH,
+						InstallerUtils.getInstallerDir() + "/certs/service.key"),
+				true);
+		nskPathOption.setDirectoriesOnly(false);
+		nskPathOption.setBrowseLabel(this.model.getMessage("browse"));
+		newServiceCertInfoStep.getOptions().add(nskPathOption);
 		newServiceCertInfoStep
 				.getOptions()
 				.add(
@@ -786,14 +824,16 @@ public class Installer {
 						Constants.SERVICE_CERT_PATH, this.model
 								.getMessage("service.cert.info.cert.path"),
 						getProperty(this.model.getState(),
-								Constants.SERVICE_CERT_PATH,
-								"temp/certs/service.cert"), true));
+								Constants.SERVICE_CERT_PATH, InstallerUtils
+										.getInstallerDir()
+										+ "/certs/service.cert"), true));
 		serviceCertInfoStep.getOptions().add(
 				new TextPropertyConfigurationOption(Constants.SERVICE_KEY_PATH,
 						this.model.getMessage("service.cert.info.key.path"),
 						getProperty(this.model.getState(),
-								Constants.SERVICE_KEY_PATH,
-								"temp/certs/service.key"), true));
+								Constants.SERVICE_KEY_PATH, InstallerUtils
+										.getInstallerDir()
+										+ "/certs/service.key"), true));
 		serviceCertInfoStep.getValidators().add(
 				new PathExistsValidator(Constants.SERVICE_CERT_PATH, this.model
 						.getMessage("error.cert.file.not.found")));
@@ -826,13 +866,8 @@ public class Installer {
 
 							public boolean evaluate(WizardModel m) {
 								CaGridInstallerModel model = (CaGridInstallerModel) m;
-								return model.isSecurityConfigurationRequired()
-										&& !model
-												.isTrue(Constants.INSTALL_DORIAN)
-										&& !model
-												.isTrue(Constants.SERVICE_CERT_PRESENT)
-										&& !model
-												.isTrue(Constants.CA_CERT_PRESENT);
+								return model.isCAGenerationRequired();
+
 							}
 						}));
 		generateCredsStep.getTasks().add(
@@ -842,11 +877,8 @@ public class Installer {
 
 							public boolean evaluate(WizardModel m) {
 								CaGridInstallerModel model = (CaGridInstallerModel) m;
-								return model.isSecurityConfigurationRequired()
-										&& !model
-												.isTrue(Constants.INSTALL_DORIAN)
-										&& !model
-												.isTrue(Constants.SERVICE_CERT_PRESENT);
+								return model.isServiceCertGenerationRequired();
+
 							}
 						}));
 		this.model.add(generateCredsStep, new Condition() {
@@ -1367,7 +1399,7 @@ public class Installer {
 				Constants.DORIAN_HOST_CRED_DIR, this.model
 						.getMessage("dorian.host.cred.dir"), getProperty(
 						this.model.getState(), Constants.DORIAN_HOST_CRED_DIR,
-						"temp/certs"), true);
+						InstallerUtils.getInstallerDir() + "/certs"), true);
 		dorianHostCredDir.setBrowseLabel(this.model.getMessage("browse"));
 		dorianHostCredDir.setDirectoriesOnly(true);
 		configDorianSvcCertStep.getOptions().add(dorianHostCredDir);
@@ -1539,10 +1571,9 @@ public class Installer {
 			public boolean evaluate(WizardModel m) {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
 
-				return (InstallerUtils.checkGenerateCA(model) || "true"
-						.equals(model.getState().get(Constants.CA_CERT_PRESENT)))
-						&& "true".equals(model.getState().get(
-								Constants.INSTALL_AUTHN_SVC));
+				return (model.isCAGenerationRequired() || model
+						.isTrue(Constants.CA_CERT_PRESENT))
+						&& model.isTrue(Constants.INSTALL_AUTHN_SVC);
 			}
 
 		});
@@ -1561,10 +1592,8 @@ public class Installer {
 			public boolean evaluate(WizardModel m) {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
 
-				return "true".equals(model.getState().get(
-						Constants.INSTALL_AUTHN_SVC))
-						&& !"true".equals(model.getState().get(
-								Constants.AUTHN_SVC_USE_GEN_CA));
+				return model.isTrue(Constants.INSTALL_AUTHN_SVC)
+						&& !model.isTrue(Constants.AUTHN_SVC_USE_GEN_CA);
 			}
 
 		});
@@ -1582,12 +1611,9 @@ public class Installer {
 
 			public boolean evaluate(WizardModel m) {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return "true".equals(model.getState().get(
-						Constants.INSTALL_AUTHN_SVC))
-						&& ("true".equals(model.getState().get(
-								Constants.AUTHN_SVC_CA_PRESENT)) || "true"
-								.equals(model.getState().get(
-										Constants.AUTHN_SVC_USE_GEN_CA)));
+				return !model.isAuthnSvcCAGenerationRequired()
+						&& model.isTrue(Constants.INSTALL_AUTHN_SVC);
+
 			}
 		});
 		incrementProgress();
@@ -1605,12 +1631,8 @@ public class Installer {
 
 			public boolean evaluate(WizardModel m) {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return "true".equals(model.getState().get(
-						Constants.INSTALL_AUTHN_SVC))
-						&& !"true".equals(model.getState().get(
-								Constants.AUTHN_SVC_CA_PRESENT))
-						&& !"true".equals(model.getState().get(
-								Constants.AUTHN_SVC_USE_GEN_CA));
+				return model.isAuthnSvcCAGenerationRequired()
+						&& model.isTrue(Constants.INSTALL_AUTHN_SVC);
 			}
 		});
 		incrementProgress();
@@ -1640,8 +1662,7 @@ public class Installer {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
 				return new File(System.getProperty("user.home")
 						+ "/.java.login.config").exists()
-						&& "true".equals(model.getState().get(
-								Constants.INSTALL_AUTHN_SVC));
+						&& model.isTrue(Constants.INSTALL_AUTHN_SVC);
 			}
 
 		});
@@ -1672,8 +1693,7 @@ public class Installer {
 
 			public boolean evaluate(WizardModel m) {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return "true".equals(model.getState().get(
-						Constants.INSTALL_AUTHN_SVC));
+				return model.isTrue(Constants.INSTALL_AUTHN_SVC);
 			}
 
 		});
@@ -1809,11 +1829,10 @@ public class Installer {
 
 			public boolean evaluate(WizardModel m) {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return "true".equals(model.getState().get(
-						Constants.INSTALL_AUTHN_SVC))
-						&& Constants.AUTHN_SVC_CRED_PROVIDER_TYPE_RDBMS
-								.equals(model.getState().get(
-										Constants.AUTHN_SVC_CRED_PROVIDER_TYPE));
+				return model.isTrue(Constants.INSTALL_AUTHN_SVC)
+						&& model.isEqual(
+								Constants.AUTHN_SVC_CRED_PROVIDER_TYPE_RDBMS,
+								Constants.AUTHN_SVC_CRED_PROVIDER_TYPE);
 			}
 		});
 		incrementProgress();
@@ -1883,11 +1902,10 @@ public class Installer {
 
 			public boolean evaluate(WizardModel m) {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return "true".equals(model.getState().get(
-						Constants.INSTALL_AUTHN_SVC))
-						&& Constants.AUTHN_SVC_CRED_PROVIDER_TYPE_LDAP
-								.equals(model.getState().get(
-										Constants.AUTHN_SVC_CRED_PROVIDER_TYPE));
+				return model.isTrue(Constants.INSTALL_AUTHN_SVC)
+						&& model.isEqual(
+								Constants.AUTHN_SVC_CRED_PROVIDER_TYPE_LDAP,
+								Constants.AUTHN_SVC_CRED_PROVIDER_TYPE);
 			}
 		});
 		incrementProgress();
@@ -1902,12 +1920,11 @@ public class Installer {
 		this.model.add(editAuthnDeployPropertiesStep, new Condition() {
 			public boolean evaluate(WizardModel m) {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return "true".equals(model.getState().get(
-						Constants.INSTALL_AUTHN_SVC));
+				return model.isTrue(Constants.INSTALL_AUTHN_SVC);
 			}
 		});
 
-		PropertyConfigurationStep gridGrouperConfigStep = new PropertyConfigurationStep(
+		ConfigureGridGrouperStep gridGrouperConfigStep = new ConfigureGridGrouperStep(
 				this.model.getMessage("grid.grouper.config.title"), this.model
 						.getMessage("grid.grouper.config.desc"));
 		gridGrouperConfigStep
@@ -1973,10 +1990,6 @@ public class Installer {
 		RunTasksStep installStep = new RunTasksStep(this.model
 				.getMessage("install.title"), this.model
 				.getMessage("install.desc"));
-
-		installStep.getTasks().add(
-				new ConfigureEnvironmentTask(this.model
-						.getMessage("configuring.environment.title"), ""));
 
 		installStep.getTasks().add(
 				new ConditionalTask(new DeployGlobusToTomcatTask(this.model
@@ -2161,7 +2174,8 @@ public class Installer {
 
 							public boolean evaluate(WizardModel m) {
 								CaGridInstallerModel model = (CaGridInstallerModel) m;
-								return model.isTrue(Constants.INSTALL_GRID_GROUPER);
+								return model
+										.isTrue(Constants.INSTALL_GRID_GROUPER);
 							}
 
 						}));
@@ -2255,16 +2269,25 @@ public class Installer {
 			String caCertPathProp, String caKeyPathProp, String caKeyPwdProp,
 			boolean validate) {
 
-		step.getOptions().add(
-				new TextPropertyConfigurationOption(caCertPathProp, this.model
-						.getMessage("ca.cert.info.cert.path"), getProperty(
-						this.model.getState(), caCertPathProp,
-						"temp/certs/ca.cert"), true));
-		step.getOptions().add(
-				new TextPropertyConfigurationOption(caKeyPathProp, this.model
-						.getMessage("ca.cert.info.key.path"), getProperty(
-						this.model.getState(), caKeyPathProp,
-						"temp/certs/ca.key"), true));
+		FilePropertyConfigurationOption caCertPathOption = new FilePropertyConfigurationOption(
+				caCertPathProp,
+				this.model.getMessage("ca.cert.info.cert.path"), getProperty(
+						this.model.getState(), caCertPathProp, InstallerUtils
+								.getInstallerDir()
+								+ "/certs/ca.cert"), true);
+		caCertPathOption.setDirectoriesOnly(false);
+		caCertPathOption.setBrowseLabel(this.model.getMessage("browse"));
+		step.getOptions().add(caCertPathOption);
+
+		FilePropertyConfigurationOption caKeyPathOption = new FilePropertyConfigurationOption(
+				caKeyPathProp, this.model.getMessage("ca.cert.info.key.path"),
+				getProperty(this.model.getState(), caKeyPathProp,
+						InstallerUtils.getInstallerDir() + "/certs/ca.key"),
+				true);
+		caKeyPathOption.setDirectoriesOnly(false);
+		caKeyPathOption.setBrowseLabel(this.model.getMessage("browse"));
+		step.getOptions().add(caKeyPathOption);
+
 		step.getOptions().add(
 				new PasswordPropertyConfigurationOption(caKeyPwdProp,
 						this.model.getMessage("ca.cert.info.key.pwd"),
@@ -2508,21 +2531,14 @@ public class Installer {
 			String homeProp, String defaultDirName, String titleProp,
 			String descProp, String installDirPath, final String installProp) {
 
-		File homeFile = null;
-		String home = (String) m.getState().get(homeProp);
-		if (home != null) {
-			homeFile = new File(home);
-		} else {
-			homeFile = new File(System.getProperty("user.home")
-					+ File.separator + "packages" + File.separator
-					+ defaultDirName);
-		}
 		PropertyConfigurationStep installInfoStep = new PropertyConfigurationStep(
 				m.getMessage(titleProp), m.getMessage(descProp));
-		installInfoStep.getOptions().add(
-				new TextPropertyConfigurationOption(installDirPath, m
-						.getMessage("directory"), homeFile.getParentFile()
-						.getAbsolutePath(), true));
+		FilePropertyConfigurationOption fpo = new FilePropertyConfigurationOption(
+				installDirPath, m.getMessage("directory"), System
+						.getProperty("user.home"), true);
+		fpo.setDirectoriesOnly(true);
+		fpo.setBrowseLabel(m.getMessage("browse"));
+		installInfoStep.getOptions().add(fpo);
 		installInfoStep.getValidators().add(
 				new CreateFilePermissionValidator(homeProp, m
 						.getMessage("error.permission.directory.create")));

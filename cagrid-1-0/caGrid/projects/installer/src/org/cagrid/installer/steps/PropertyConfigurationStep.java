@@ -335,7 +335,6 @@ public class PropertyConfigurationStep extends PanelWizardStep {
 		JLabel label = new JLabel(description);
 		GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
 		gridBagConstraints1.gridx = 0;
-		gridBagConstraints1.fill = GridBagConstraints.BOTH;
 		gridBagConstraints1.anchor = GridBagConstraints.WEST;
 		gridBagConstraints1.gridy = this.optionKeys.size() - 1;
 		this.getOptionsPanel().add(label, gridBagConstraints1);
@@ -344,7 +343,7 @@ public class PropertyConfigurationStep extends PanelWizardStep {
 		this.optionValueFields.add(valueField);
 		GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
 		gridBagConstraints2.gridx = 1;
-		gridBagConstraints2.fill = GridBagConstraints.BOTH;
+		gridBagConstraints2.fill = GridBagConstraints.HORIZONTAL;
 		gridBagConstraints2.gridy = this.optionKeys.size() - 1;
 		gridBagConstraints2.weightx = 1;
 		gridBagConstraints2.insets = new Insets(2, 5, 2, 2);
@@ -353,8 +352,7 @@ public class PropertyConfigurationStep extends PanelWizardStep {
 		if (control != null) {
 			GridBagConstraints gridBagConstraints3 = new GridBagConstraints();
 			gridBagConstraints3.gridx = 2;
-			gridBagConstraints1.fill = GridBagConstraints.BOTH;
-			gridBagConstraints1.anchor = GridBagConstraints.EAST;
+			gridBagConstraints3.anchor = GridBagConstraints.WEST;
 			gridBagConstraints3.gridy = this.optionKeys.size() - 1;
 			gridBagConstraints3.weightx = 1;
 			gridBagConstraints3.insets = new Insets(2, 5, 2, 2);

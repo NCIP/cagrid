@@ -67,6 +67,8 @@ public class RunTasksStep extends PanelWizardStep implements
 	private ProgressBarTaskMonitor monitor;
 
 	private PrintStream out;
+	
+	private boolean deactivePrevious = true;
 
 	/**
 	 * 
@@ -147,6 +149,13 @@ public class RunTasksStep extends PanelWizardStep implements
 	}
 
 	public void prepare() {
+		
+		if(isDeactivePrevious()){
+			this.model.setPreviousActive(false);
+		}else{
+			this.model.setPreviousActive(true);
+		}
+		
 		getStartButton().setEnabled(true);
 		for (Task t : getTasks()) {
 			if (t instanceof Condition && !((Condition) t).evaluate(this.model)) {
@@ -157,6 +166,7 @@ public class RunTasksStep extends PanelWizardStep implements
 		this.monitor.reset();
 		System.setOut(this.out);
 		System.setErr(this.out);
+
 	}
 
 	private JPanel getDescriptionPanel() {
@@ -392,6 +402,14 @@ public class RunTasksStep extends PanelWizardStep implements
 //			}
 
 		}
+	}
+
+	public boolean isDeactivePrevious() {
+		return deactivePrevious;
+	}
+
+	public void setDeactivePrevious(boolean deactivePrevious) {
+		this.deactivePrevious = deactivePrevious;
 	}
 
 }

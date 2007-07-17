@@ -98,7 +98,7 @@ public class AntTask extends BasicTask {
 
 			runAnt(state, baseDir, buildFilePath, this.target,
 					this.systemProperties, envp, propsFile.getAbsolutePath());
-			propsFile.delete();
+//			propsFile.delete();
 		} catch (Exception ex) {
 			throw new RuntimeException("Error encountered: " + ex.getMessage(),
 					ex);

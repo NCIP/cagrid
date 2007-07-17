@@ -24,11 +24,7 @@ public abstract class Constants {
 	public static final String GLOBUS_ZIP_PATH = "globus.zip.path";
 	public static final String TEMP_DIR_PATH = "temp.dir.path";
 	public static final String BUILD_FILE_PATH = "build.file.path";
-	public static final String TOMCAT_DIR_PATH = "tomcat.dir.path";
-	public static final String GLOBUS_DIR_PATH = "globus.dir.path";
 	public static final Object TOMCAT_SECURE_PORT = "tomcat.secure.port";
-	public static final Object TOMCAT_KEY_PATH = "tomcat.key.path";
-	public static final Object TOMCAT_CERT_PATH = "tomcat.cert.path";
 	public static final String CA_PRESENT = "ca.present";
 	public static final String CA_CERT_PATH = "ca.cert.path";
 	public static final String CA_KEY_PATH = "ca.key.path";
@@ -152,14 +148,6 @@ public abstract class Constants {
 	public static final String SERVICE_HOSTNAME = "service.hostname";
 
 	public static final String INSTALL_INDEX_SVC = "install.index.svc";
-
-	public static final String TOMCAT_KEY = "tomcat.key";
-	
-	public static final String TOMCAT_CERT = "tomcat.cert";
-
-	public static final String TOMCAT_KEY_DEST = "tomcat.key.dest";
-
-	public static final String TOMCAT_CERT_DEST = "tomcat.cert.dest";
 
 	public static final String DOWNLOAD_URL = "download.url";
 
@@ -394,6 +382,8 @@ public abstract class Constants {
 	public static final String RECONFIGURE_GLOBUS = "reconfigure.globus";
 
 	public static final String GLOBUS_CONFIGURED = "globus.configured";
+
+	public static final String RECONFIGURE_CAGRID = "reconfigure.cagrid";
 	
 
 	

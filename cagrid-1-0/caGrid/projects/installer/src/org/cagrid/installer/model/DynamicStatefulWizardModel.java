@@ -126,19 +126,53 @@ CaGridInstallerModel {
 				getProperty(Constants.CONTAINER_TYPE));
 	}
 
-	private String getProperty(String propName) {
+	public String getProperty(String propName) {
 		return (String) getState().get(propName);
 	}
 
 	public boolean isSecurityConfigurationRequired() {
 		return isTrue(Constants.USE_SECURE_CONTAINER)
-				&& (
-						   isTrue(Constants.RECONFIGURE_GLOBUS)
+				&& (isTrue(Constants.RECONFIGURE_GLOBUS)
 						|| isTrue(Constants.REDEPLOY_GLOBUS)
-						|| isTomcatContainer() && !isTrue(Constants.GLOBUS_DEPLOYED)
-						|| !isTomcatContainer()	&& !isTrue(Constants.GLOBUS_CONFIGURED)
-				);
+						|| isTomcatContainer()
+						&& !isTrue(Constants.GLOBUS_DEPLOYED) || !isTomcatContainer()
+						&& !isTrue(Constants.GLOBUS_CONFIGURED));
 	}
-	
+
+	public boolean isSet(String propName) {
+		return !isEmpty(getProperty(propName));
+	}
+
+	public boolean isEmpty(String value) {
+		return value == null || value.trim().length() == 0;
+	}
+
+	public void setPreviousActive(boolean b) {
+		setPreviousAvailable(b);
+	}
+
+	public boolean isCAGenerationRequired() {
+		return isSecurityConfigurationRequired()
+				&& !isTrue(Constants.INSTALL_DORIAN)
+				&& !isTrue(Constants.SERVICE_CERT_PRESENT)
+				&& !isTrue(Constants.CA_CERT_PRESENT);
+	}
+
+	public boolean isServiceCertGenerationRequired() {
+		return isSecurityConfigurationRequired()
+				&& !isTrue(Constants.INSTALL_DORIAN)
+				&& !isTrue(Constants.SERVICE_CERT_PRESENT);
+
+	}
+
+	public boolean isAuthnSvcCAGenerationRequired() {
+		return !isTrue(Constants.AUTHN_SVC_CA_PRESENT)
+				&& !isTrue(Constants.AUTHN_SVC_USE_GEN_CA);
+
+	}
+
+	public boolean isEqual(String value, String propName) {
+		return value.equals(getProperty(propName));
+	}
 
 }

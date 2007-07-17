@@ -43,9 +43,10 @@ public class ConfigureTomcatTask extends CaGridInstallerAntTask {
 			new AntTask("", "", "set-global-cert-and-key-paths", env, sysProps)
 					.execute(state);
 			setLastStep(3);
-			new AntTask("", "", "copy-global-cert-and-key").execute(state);
-			setLastStep(4);
 			new AntTask("", "", "fix-secure-web-xml", env, sysProps)
+					.execute(state);
+			setLastStep(4);
+			new AntTask("", "", "configure-tomcat-server-config", env, sysProps)
 					.execute(state);
 		}
 		
