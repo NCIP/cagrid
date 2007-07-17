@@ -78,43 +78,40 @@ public class UnzipInstallTask extends BasicTask {
 		int numFiles = 0;
 		while (entries.hasMoreElements()) {
 			ZipEntry entry = (ZipEntry) entries.nextElement();
-			if (entry.isDirectory()) {
-				File dir = new File(baseOut + entry.getName());
-				if (!dir.exists()) {
-					dir.mkdirs();
+			String fileName = baseOut + entry.getName();
+			File file = new File(fileName);
+			if (!file.isDirectory() && !file.getParentFile().exists()) {
+				boolean created = false;
+				try {
+					logger.debug("Creating directory '" + file.getParentFile().getAbsolutePath() + "'");
+					created = file.getParentFile().mkdirs();
+				} catch (Exception ex) {
+					logger.error("Error creating directory '"
+							+ file.getParentFile().getAbsolutePath() + "': "
+							+ ex.getMessage(), ex);
 				}
-
-			} else {
-
-				InputStream in = zipFile.getInputStream(entry);
-				String fileName = baseOut + entry.getName();
-				File file = new File(fileName);
-				if (!file.getParentFile().exists()) {
-					try {
-						file.getParentFile().mkdirs();
-					} catch (Exception ex) {
-						logger.error("Error creating directory '"
-								+ file.getParentFile().getAbsolutePath()
-								+ "': " + ex.getMessage(), ex);
-					}
+				if(!created){
+					logger.warn("Didn't create directory '" + file.getParentFile().getAbsolutePath() + "'");
 				}
-				numFiles++;
-				if (numFiles > nextLog) {
-					nextLog += logAfterSize;
-					System.out.println("Extracting: " + fileName);
-				}
-				BufferedOutputStream out = new BufferedOutputStream(
-						new FileOutputStream(file));
-				byte[] buffer = new byte[BUFFER_SIZE];
-				int len = -1;
-				while ((len = in.read(buffer)) > 0) {
-					out.write(buffer, 0, len);
-					buffer = new byte[BUFFER_SIZE];
-				}
-				out.flush();
-				out.close();
-				in.close();
 			}
+			numFiles++;
+			if (numFiles > nextLog) {
+				nextLog += logAfterSize;
+				System.out.println("Extracting: " + fileName);
+			}
+			BufferedOutputStream out = new BufferedOutputStream(
+					new FileOutputStream(file));
+			InputStream in = zipFile.getInputStream(entry);			
+			byte[] buffer = new byte[BUFFER_SIZE];
+			int len = -1;
+			while ((len = in.read(buffer)) > 0) {
+				out.write(buffer, 0, len);
+				buffer = new byte[BUFFER_SIZE];
+			}
+			out.flush();
+			out.close();
+			in.close();
+
 			// setLastStep(getLastStep() + 1);
 		}
 		zipFile.close();
