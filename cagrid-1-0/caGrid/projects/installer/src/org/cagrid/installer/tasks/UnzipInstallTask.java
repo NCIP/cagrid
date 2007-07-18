@@ -90,7 +90,7 @@ public class UnzipInstallTask extends BasicTask {
 					System.out.println("Extracting: " + fileName);
 				}
 				if(!file.getParentFile().exists()){
-					file.getParentFile().mkdirs();
+					createDir(file.getParentFile());
 				}
 				file.createNewFile();
 				BufferedOutputStream out = new BufferedOutputStream(
@@ -112,5 +112,19 @@ public class UnzipInstallTask extends BasicTask {
 
 		return null;
 	}
+
+	private void createDir(File dir) {
+		if(dir == null){
+			throw new IllegalArgumentException("dir is null");
+		}
+		logger.debug("Checking if " + dir.getAbsolutePath() + " exists");
+		if(!dir.exists()){
+			logger.debug("It doesn't. Recursing.");
+			createDir(dir.getParentFile());
+		}
+		logger.debug("Creating " + dir.getAbsolutePath());
+		dir.mkdir();
+	}
+
 
 }
