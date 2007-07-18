@@ -89,13 +89,22 @@ public class UnzipInstallTask extends BasicTask {
 					nextLog += logAfterSize;
 					System.out.println("Extracting: " + fileName);
 				}
-				if(!file.getParentFile().exists()){
-					createDir(file.getParentFile());
-				}
-				file.createNewFile();
-				BufferedOutputStream out = new BufferedOutputStream(
-						new FileOutputStream(file));
+				BufferedOutputStream out = null;
 				InputStream in = zipFile.getInputStream(entry);
+				try {
+					if (!file.getParentFile().exists()) {
+						// createDir(file.getParentFile());
+						file.getParentFile().mkdirs();
+					}
+					file.createNewFile();
+					out = new BufferedOutputStream(new FileOutputStream(file));
+
+				} catch (Exception ex) {
+					String msg = "Error creating output stream for '"
+							+ file.getAbsolutePath() + "': " + ex.getMessage();
+					logger.error(msg, ex);
+					throw new RuntimeException(msg, ex);
+				}
 				byte[] buffer = new byte[BUFFER_SIZE];
 				int len = -1;
 				while ((len = in.read(buffer)) > 0) {
@@ -114,17 +123,16 @@ public class UnzipInstallTask extends BasicTask {
 	}
 
 	private void createDir(File dir) {
-		if(dir == null){
+		if (dir == null) {
 			throw new IllegalArgumentException("dir is null");
 		}
 		logger.debug("Checking if " + dir.getAbsolutePath() + " exists");
-		if(!dir.exists()){
+		if (!dir.exists()) {
 			logger.debug("It doesn't. Recursing.");
 			createDir(dir.getParentFile());
 		}
 		logger.debug("Creating " + dir.getAbsolutePath());
 		dir.mkdir();
 	}
-
 
 }
