@@ -384,6 +384,10 @@ public abstract class Constants {
 	public static final String GLOBUS_CONFIGURED = "globus.configured";
 
 	public static final String RECONFIGURE_CAGRID = "reconfigure.cagrid";
+
+	public static final String INSTALL_MY_SERVICE = "install.my.service";
+
+	public static final String MY_SERVICE_DIR = "my.service.dir";
 	
 
 	
