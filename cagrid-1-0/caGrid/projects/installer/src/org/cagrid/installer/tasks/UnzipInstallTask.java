@@ -82,7 +82,10 @@ public class UnzipInstallTask extends BasicTask {
 			File file = new File(fileName);
 
 			if (entry.isDirectory()) {
-				file.mkdirs();
+				logger.debug("entry '" + entry.getName() + " is a directory");
+				boolean created = file.mkdirs();
+				logger.debug("succeeding in creating directory? " + created);
+				
 			} else {
 				numFiles++;
 				if (numFiles > nextLog) {
@@ -92,9 +95,14 @@ public class UnzipInstallTask extends BasicTask {
 				BufferedOutputStream out = null;
 				InputStream in = zipFile.getInputStream(entry);
 				try {
+					logger.debug("Checking if parent file for '" + file.getAbsolutePath() + "' exists...");
 					if (!file.getParentFile().exists()) {
+						logger.debug("no");
 						// createDir(file.getParentFile());
-						file.getParentFile().mkdirs();
+						boolean created = file.getParentFile().mkdirs();
+						logger.debug("mkdirs succeeded? " + created);
+					}else{
+						logger.debug("yes");
 					}
 					file.createNewFile();
 					out = new BufferedOutputStream(new FileOutputStream(file));
