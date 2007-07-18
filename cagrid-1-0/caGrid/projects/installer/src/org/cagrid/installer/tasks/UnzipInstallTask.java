@@ -115,6 +115,7 @@ public class UnzipInstallTask extends BasicTask {
 					// logger.debug("yes");
 					// }
 					// file.createNewFile();
+					file.createNewFile();
 					out = new BufferedOutputStream(new FileOutputStream(file));
 
 				} catch (Exception ex) {
