@@ -14,6 +14,7 @@ import java.util.ResourceBundle;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.installer.steps.Constants;
+import org.cagrid.installer.steps.RunTasksStep;
 import org.cagrid.installer.util.InstallerUtils;
 import org.pietschy.wizard.models.DynamicModel;
 
@@ -147,10 +148,6 @@ CaGridInstallerModel {
 		return value == null || value.trim().length() == 0;
 	}
 
-	public void setPreviousActive(boolean b) {
-		setPreviousAvailable(b);
-	}
-
 	public boolean isCAGenerationRequired() {
 		return isSecurityConfigurationRequired()
 				&& !isTrue(Constants.INSTALL_DORIAN)
@@ -173,6 +170,14 @@ CaGridInstallerModel {
 
 	public boolean isEqual(String value, String propName) {
 		return value.equals(getProperty(propName));
+	}
+
+	public void refreshModelState() {
+		super.refreshModelState();
+		if(getActiveStep() instanceof RunTasksStep){
+			RunTasksStep rts = (RunTasksStep)getActiveStep();
+			setPreviousAvailable(rts.isDeactivePrevious());
+		}
 	}
 
 }

@@ -28,8 +28,6 @@ public interface CaGridInstallerModel extends WizardModel {
 
 	boolean isSet(String propName);
 
-	void setPreviousActive(boolean b);
-
 	boolean isCAGenerationRequired();
 
 	boolean isServiceCertGenerationRequired();

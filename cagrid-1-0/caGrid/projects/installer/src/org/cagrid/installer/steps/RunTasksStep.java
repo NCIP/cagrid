@@ -150,12 +150,6 @@ public class RunTasksStep extends PanelWizardStep implements
 
 	public void prepare() {
 		
-		if(isDeactivePrevious()){
-			this.model.setPreviousActive(false);
-		}else{
-			this.model.setPreviousActive(true);
-		}
-		
 		getStartButton().setEnabled(true);
 		for (Task t : getTasks()) {
 			if (t instanceof Condition && !((Condition) t).evaluate(this.model)) {
