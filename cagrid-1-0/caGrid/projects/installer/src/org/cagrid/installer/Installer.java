@@ -1316,7 +1316,14 @@ public class Installer {
 				this.model.getMessage("gts.edit.deploy.properties.desc"),
 				this.model.getMessage("edit.properties.property.name"),
 				this.model.getMessage("edit.properties.property.value"));
-		this.model.add(editGTSDeployPropertiesStep);
+		this.model.add(editGTSDeployPropertiesStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return "true".equals(model.getState()
+						.get(Constants.INSTALL_GTS));
+			}
+		});
 
 		// Configures the GTS database
 		ConfigureGTSDBStep gtsDbInfoStep = new ConfigureGTSDBStep(this.model
