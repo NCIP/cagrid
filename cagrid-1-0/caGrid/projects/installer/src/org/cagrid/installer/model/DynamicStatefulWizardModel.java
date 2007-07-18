@@ -176,7 +176,7 @@ CaGridInstallerModel {
 		super.refreshModelState();
 		if (getActiveStep() instanceof RunTasksStep) {
 			RunTasksStep rts = (RunTasksStep) getActiveStep();
-			setPreviousAvailable(rts.isDeactivePrevious());
+			setPreviousAvailable(!rts.isDeactivePrevious());
 		}
 	}
 

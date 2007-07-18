@@ -648,7 +648,8 @@ public class Installer {
 			public boolean evaluate(WizardModel m) {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
 				return model.isTomcatContainer()
-						&& model.isTrue(Constants.GLOBUS_DEPLOYED);
+						&& model.isTrue(Constants.GLOBUS_DEPLOYED)
+						&& model.isTrue(Constants.INSTALL_SERVICES);
 			}
 
 		});
@@ -665,7 +666,8 @@ public class Installer {
 
 			public boolean evaluate(WizardModel m) {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return !model.isTrue(Constants.USE_SECURE_CONTAINER);
+				return !model.isTrue(Constants.USE_SECURE_CONTAINER) &&
+				model.isTrue(Constants.INSTALL_SERVICES);
 			}
 
 		});
@@ -684,7 +686,8 @@ public class Installer {
 
 			public boolean evaluate(WizardModel m) {
 				CaGridInstallerModel model = (CaGridInstallerModel)m;
-				return model.isDeployGlobusRequired() || model.isConfigureGlobusRequired();
+				return (model.isDeployGlobusRequired() || model.isConfigureGlobusRequired()) &&
+				model.isTrue(Constants.INSTALL_SERVICES);
 			}
 			
 		});
@@ -714,7 +717,8 @@ public class Installer {
 		this.model.add(tomcatPortsStep, new Condition() {
 			public boolean evaluate(WizardModel m) {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTomcatConfigurationRequired();
+				return model.isTomcatConfigurationRequired() &&
+				model.isTrue(Constants.INSTALL_SERVICES);
 			}
 		});
 		incrementProgress();
@@ -731,7 +735,8 @@ public class Installer {
 			public boolean evaluate(WizardModel m) {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
 				return model.isSecurityConfigurationRequired()
-						&& !model.isTrue(Constants.INSTALL_DORIAN);
+						&& !model.isTrue(Constants.INSTALL_DORIAN) &&
+						model.isTrue(Constants.INSTALL_SERVICES);
 			}
 		});
 		incrementProgress();
@@ -749,7 +754,8 @@ public class Installer {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
 				return model.isSecurityConfigurationRequired()
 						&& !model.isTrue(Constants.INSTALL_DORIAN)
-						&& !model.isTrue(Constants.SERVICE_CERT_PRESENT);
+						&& !model.isTrue(Constants.SERVICE_CERT_PRESENT) &&
+						model.isTrue(Constants.INSTALL_SERVICES);
 			}
 		});
 
@@ -766,7 +772,8 @@ public class Installer {
 				return model.isSecurityConfigurationRequired()
 						&& !model.isTrue(Constants.INSTALL_DORIAN)
 						&& !model.isTrue(Constants.SERVICE_CERT_PRESENT)
-						&& model.isTrue(Constants.CA_CERT_PRESENT);
+						&& model.isTrue(Constants.CA_CERT_PRESENT) &&
+						model.isTrue(Constants.INSTALL_SERVICES);
 			}
 		});
 		incrementProgress();
@@ -785,7 +792,8 @@ public class Installer {
 				return model.isSecurityConfigurationRequired()
 						&& !model.isTrue(Constants.INSTALL_DORIAN)
 						&& !model.isTrue(Constants.SERVICE_CERT_PRESENT)
-						&& !model.isTrue(Constants.CA_CERT_PRESENT);
+						&& !model.isTrue(Constants.CA_CERT_PRESENT) &&
+						model.isTrue(Constants.INSTALL_SERVICES);
 			}
 		});
 		incrementProgress();
@@ -829,7 +837,8 @@ public class Installer {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
 				return model.isSecurityConfigurationRequired()
 						&& !model.isTrue(Constants.INSTALL_DORIAN)
-						&& !model.isTrue(Constants.SERVICE_CERT_PRESENT);
+						&& !model.isTrue(Constants.SERVICE_CERT_PRESENT) &&
+						model.isTrue(Constants.INSTALL_SERVICES);
 			}
 		});
 		incrementProgress();
@@ -870,7 +879,8 @@ public class Installer {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
 				return model.isSecurityConfigurationRequired()
 						&& !model.isTrue(Constants.INSTALL_DORIAN)
-						&& model.isTrue(Constants.SERVICE_CERT_PRESENT);
+						&& model.isTrue(Constants.SERVICE_CERT_PRESENT) &&
+						model.isTrue(Constants.INSTALL_SERVICES);
 			}
 		});
 		incrementProgress();
@@ -906,7 +916,8 @@ public class Installer {
 
 			public boolean evaluate(WizardModel m) {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return generateCredsStep.getTasksCount(model) > 0;
+				return generateCredsStep.getTasksCount(model) > 0 &&
+				model.isTrue(Constants.INSTALL_SERVICES);
 			}
 		});
 		incrementProgress();
