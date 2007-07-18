@@ -671,6 +671,24 @@ public class Installer {
 		});
 		incrementProgress();
 
+		PropertyConfigurationStep getHostnameStep = new PropertyConfigurationStep(
+				this.model.getMessage("specify.service.hostname.title"), this.model
+						.getMessage("specify.service.hostname.desc"));
+		getHostnameStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.SERVICE_HOSTNAME, this.model
+								.getMessage("service.hostname"),
+						getProperty(this.model.getState(),
+								Constants.SERVICE_HOSTNAME, "localhost"), true));
+		this.model.add(getHostnameStep, new Condition(){
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel)m;
+				return model.isDeployGlobusRequired() || model.isConfigureGlobusRequired();
+			}
+			
+		});
+
 		// Allows user to specify Tomcat ports
 		SpecifyTomcatPortsStep tomcatPortsStep = new SpecifyTomcatPortsStep(
 				this.model.getMessage("tomcat.specify.ports.title"), this.model
@@ -821,20 +839,19 @@ public class Installer {
 						.getMessage("service.cert.info.desc"));
 		FilePropertyConfigurationOption escpOption = new FilePropertyConfigurationOption(
 				Constants.SERVICE_CERT_PATH, this.model
-				.getMessage("service.cert.info.cert.path"),
-		getProperty(this.model.getState(),
-				Constants.SERVICE_CERT_PATH, InstallerUtils
-						.getInstallerDir()
-						+ "/certs/service.cert"), true); 
+						.getMessage("service.cert.info.cert.path"),
+				getProperty(this.model.getState(), Constants.SERVICE_CERT_PATH,
+						InstallerUtils.getInstallerDir()
+								+ "/certs/service.cert"), true);
 		escpOption.setDirectoriesOnly(false);
 		escpOption.setBrowseLabel(this.model.getMessage("browse"));
 		serviceCertInfoStep.getOptions().add(escpOption);
-		FilePropertyConfigurationOption eskpOption = new FilePropertyConfigurationOption(Constants.SERVICE_KEY_PATH,
+		FilePropertyConfigurationOption eskpOption = new FilePropertyConfigurationOption(
+				Constants.SERVICE_KEY_PATH,
 				this.model.getMessage("service.cert.info.key.path"),
-				getProperty(this.model.getState(),
-						Constants.SERVICE_KEY_PATH, InstallerUtils
-								.getInstallerDir()
-								+ "/certs/service.key"), true);
+				getProperty(this.model.getState(), Constants.SERVICE_KEY_PATH,
+						InstallerUtils.getInstallerDir() + "/certs/service.key"),
+				true);
 		eskpOption.setDirectoriesOnly(false);
 		eskpOption.setBrowseLabel(this.model.getMessage("browse"));
 		serviceCertInfoStep.getOptions().add(eskpOption);
@@ -2002,10 +2019,8 @@ public class Installer {
 
 							public boolean evaluate(WizardModel m) {
 								CaGridInstallerModel model = (CaGridInstallerModel) m;
-								return model.isTomcatContainer()
-										&& (model
-												.isTrue(Constants.REDEPLOY_GLOBUS) || !model
-												.isTrue(Constants.GLOBUS_DEPLOYED));
+								return model.isDeployGlobusRequired();
+
 							}
 
 						}));
@@ -2017,12 +2032,8 @@ public class Installer {
 
 							public boolean evaluate(WizardModel m) {
 								CaGridInstallerModel model = (CaGridInstallerModel) m;
-								return !model.isTomcatContainer()
-										&& model
-												.isTrue(Constants.USE_SECURE_CONTAINER)
-										&& (model
-												.isTrue(Constants.RECONFIGURE_GLOBUS) || !model
-												.isTrue(Constants.GLOBUS_CONFIGURED));
+								return model.isConfigureGlobusRequired();
+
 							}
 
 						}));

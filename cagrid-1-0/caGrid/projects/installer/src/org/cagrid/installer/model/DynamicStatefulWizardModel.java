@@ -174,10 +174,21 @@ CaGridInstallerModel {
 
 	public void refreshModelState() {
 		super.refreshModelState();
-		if(getActiveStep() instanceof RunTasksStep){
-			RunTasksStep rts = (RunTasksStep)getActiveStep();
+		if (getActiveStep() instanceof RunTasksStep) {
+			RunTasksStep rts = (RunTasksStep) getActiveStep();
 			setPreviousAvailable(rts.isDeactivePrevious());
 		}
+	}
+
+	public boolean isConfigureGlobusRequired() {
+		return !isTomcatContainer()
+				&& isTrue(Constants.USE_SECURE_CONTAINER)
+				&& (isTrue(Constants.RECONFIGURE_GLOBUS) || !isTrue(Constants.GLOBUS_CONFIGURED));
+	}
+
+	public boolean isDeployGlobusRequired() {
+		return isTomcatContainer()
+				&& (isTrue(Constants.REDEPLOY_GLOBUS) || !isTrue(Constants.GLOBUS_DEPLOYED));
 	}
 
 }
