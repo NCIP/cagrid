@@ -84,7 +84,7 @@ public class UnzipInstallTask extends BasicTask {
 			if (entry.isDirectory()) {
 				logger.debug("entry '" + entry.getName() + " is a directory");
 				boolean created = file.mkdirs();
-				logger.debug("succeeding in creating directory? " + created);
+				logger.debug("succeeding in creating directory '" + file.getAbsolutePath() + "'? " + created);
 				
 			} else {
 				numFiles++;
