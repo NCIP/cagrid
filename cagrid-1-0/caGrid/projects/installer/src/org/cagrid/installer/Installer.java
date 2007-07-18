@@ -643,18 +643,299 @@ public class Installer {
 				return installDependenciesStep.getTasksCount(model) > 0;
 			}
 		});
+		
+		// If globus has already been deployed, see if it should be redeployed
+		PropertyConfigurationStep checkDeployGlobusStep = new PropertyConfigurationStep(
+				this.model.getMessage("globus.check.redeploy.title"),
+				this.model.getMessage("globus.check.redeploy.desc"));
+		checkDeployGlobusStep.getOptions().add(
+				new BooleanPropertyConfigurationOption(
+						Constants.REDEPLOY_GLOBUS,
+						this.model.getMessage("yes"), false, false));
+		this.model.add(checkDeployGlobusStep, new Condition() {
 
-		ConfigureSyncGTSStep configureSyncGTSStep = new ConfigureSyncGTSStep(
-				this.model.getMessage("sync.gts.config.title"), this.model
-						.getMessage("sync.gts.config.desc"));
-		this.model.add(configureSyncGTSStep, new Condition() {
 			public boolean evaluate(WizardModel m) {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return "true".equals(model.getState().get(
-						Constants.INSTALL_SYNC_GTS));
+				return model.isTomcatContainer()
+						&& model.isTrue(Constants.GLOBUS_DEPLOYED)
+						&& model.isTrue(Constants.INSTALL_SERVICES);
+			}
+
+		});
+
+		// Checks if secure container should be used
+		CheckSecureContainerStep checkDeployGlobusSecureStep = new CheckSecureContainerStep(
+				this.model.getMessage("globus.check.secure.title"), this.model
+						.getMessage("globus.check.secure.desc"));
+		checkDeployGlobusSecureStep.getOptions().add(
+				new BooleanPropertyConfigurationOption(
+						Constants.USE_SECURE_CONTAINER, this.model
+								.getMessage("yes"), false, false));
+		this.model.add(checkDeployGlobusSecureStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return !model.isTrue(Constants.USE_SECURE_CONTAINER)
+						&& model.isTrue(Constants.INSTALL_SERVICES);
+			}
+
+		});
+		incrementProgress();
+
+		PropertyConfigurationStep getHostnameStep = new PropertyConfigurationStep(
+				this.model.getMessage("specify.service.hostname.title"),
+				this.model.getMessage("specify.service.hostname.desc"));
+		getHostnameStep
+				.getOptions()
+				.add(
+						new TextPropertyConfigurationOption(
+								Constants.SERVICE_HOSTNAME,
+								this.model.getMessage("service.hostname"),
+								getProperty(this.model.getState(),
+										Constants.SERVICE_HOSTNAME, "localhost"),
+								true));
+		this.model.add(getHostnameStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return (model.isDeployGlobusRequired() || model
+						.isConfigureGlobusRequired())
+						&& model.isTrue(Constants.INSTALL_SERVICES);
+			}
+
+		});
+
+		// Allows user to specify Tomcat ports
+		SpecifyTomcatPortsStep tomcatPortsStep = new SpecifyTomcatPortsStep(
+				this.model.getMessage("tomcat.specify.ports.title"), this.model
+						.getMessage("tomcat.specify.ports.desc"));
+		tomcatPortsStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.TOMCAT_SHUTDOWN_PORT, this.model
+								.getMessage("tomcat.shutdown.port"),
+						getProperty(this.model.getState(),
+								Constants.TOMCAT_SHUTDOWN_PORT, "8005"), true));
+		tomcatPortsStep.getOptions().add(
+				new TextPropertyConfigurationOption(Constants.TOMCAT_HTTP_PORT,
+						this.model.getMessage("tomcat.http.port"), getProperty(
+								this.model.getState(),
+								Constants.TOMCAT_HTTP_PORT, "8080"), true));
+		tomcatPortsStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.TOMCAT_HTTPS_PORT, this.model
+								.getMessage("tomcat.https.port"), getProperty(
+								this.model.getState(),
+								Constants.TOMCAT_HTTPS_PORT, "8443"), true));
+		// TODO: add validation
+		this.model.add(tomcatPortsStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTomcatConfigurationRequired()
+						&& model.isTrue(Constants.INSTALL_SERVICES);
 			}
 		});
 		incrementProgress();
+
+		// Checks if service cert is present
+		PropertyConfigurationStep checkServiceCertPresentStep = new PropertyConfigurationStep(
+				this.model.getMessage("svc.cert.check.present.title"),
+				this.model.getMessage("svc.cert.check.present.desc"));
+		checkServiceCertPresentStep.getOptions().add(
+				new BooleanPropertyConfigurationOption(
+						Constants.SERVICE_CERT_PRESENT, this.model
+								.getMessage("yes"), false, false));
+		this.model.add(checkServiceCertPresentStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isSecurityConfigurationRequired()
+						&& !model.isTrue(Constants.INSTALL_DORIAN)
+						&& model.isTrue(Constants.INSTALL_SERVICES);
+			}
+		});
+		incrementProgress();
+
+		// Checks if CA cert is present
+		PropertyConfigurationStep checkCAPresentStep = new PropertyConfigurationStep(
+				this.model.getMessage("ca.cert.check.present.title"),
+				this.model.getMessage("ca.cert.check.present.desc"));
+		checkCAPresentStep.getOptions().add(
+				new BooleanPropertyConfigurationOption(
+						Constants.CA_CERT_PRESENT,
+						this.model.getMessage("yes"), false, false));
+		this.model.add(checkCAPresentStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isSecurityConfigurationRequired()
+						&& !model.isTrue(Constants.INSTALL_DORIAN)
+						&& !model.isTrue(Constants.SERVICE_CERT_PRESENT)
+						&& model.isTrue(Constants.INSTALL_SERVICES);
+			}
+		});
+
+		// Allows user to enter existing CA cert info
+		ConfigureCAStep caCertInfoStep = new ConfigureCAStep(this.model
+				.getMessage("ca.cert.info.title"), this.model
+				.getMessage("ca.cert.info.desc"));
+		addCommonCACertFields(caCertInfoStep, Constants.CA_CERT_PATH,
+				Constants.CA_KEY_PATH, Constants.CA_KEY_PWD, true);
+		this.model.add(caCertInfoStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isSecurityConfigurationRequired()
+						&& !model.isTrue(Constants.INSTALL_DORIAN)
+						&& !model.isTrue(Constants.SERVICE_CERT_PRESENT)
+						&& model.isTrue(Constants.CA_CERT_PRESENT)
+						&& model.isTrue(Constants.INSTALL_SERVICES);
+			}
+		});
+		incrementProgress();
+
+		// Allows user to enter info necessary to gen new CA cert
+		ConfigureCAStep newCaCertInfoStep = new ConfigureCAStep(this.model
+				.getMessage("ca.cert.new.info.title"), this.model
+				.getMessage("ca.cert.new.info.desc"));
+		addCommonNewCACertFields(newCaCertInfoStep, Constants.CA_CERT_PATH,
+				Constants.CA_KEY_PATH, Constants.CA_KEY_PWD, Constants.CA_DN,
+				Constants.CA_DAYS_VALID);
+		this.model.add(newCaCertInfoStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isSecurityConfigurationRequired()
+						&& !model.isTrue(Constants.INSTALL_DORIAN)
+						&& !model.isTrue(Constants.SERVICE_CERT_PRESENT)
+						&& !model.isTrue(Constants.CA_CERT_PRESENT)
+						&& model.isTrue(Constants.INSTALL_SERVICES);
+			}
+		});
+		incrementProgress();
+
+		// Allows user to enter info necessary to gen new service cert
+		ConfigureServiceCertStep newServiceCertInfoStep = new ConfigureServiceCertStep(
+				this.model.getMessage("service.cert.new.info.title"),
+				this.model.getMessage("service.cert.new.info.desc"));
+		FilePropertyConfigurationOption nscPathOption = new FilePropertyConfigurationOption(
+				Constants.SERVICE_CERT_PATH, this.model
+						.getMessage("service.cert.info.cert.path"),
+				getProperty(this.model.getState(), Constants.SERVICE_CERT_PATH,
+						InstallerUtils.getInstallerDir()
+								+ "/certs/service.cert"), true);
+		nscPathOption.setDirectoriesOnly(false);
+		nscPathOption.setBrowseLabel(this.model.getMessage("browse"));
+		newServiceCertInfoStep.getOptions().add(nscPathOption);
+		FilePropertyConfigurationOption nskPathOption = new FilePropertyConfigurationOption(
+				Constants.SERVICE_KEY_PATH,
+				this.model.getMessage("service.cert.info.key.path"),
+				getProperty(this.model.getState(), Constants.SERVICE_KEY_PATH,
+						InstallerUtils.getInstallerDir() + "/certs/service.key"),
+				true);
+		nskPathOption.setDirectoriesOnly(false);
+		nskPathOption.setBrowseLabel(this.model.getMessage("browse"));
+		newServiceCertInfoStep.getOptions().add(nskPathOption);
+		newServiceCertInfoStep
+				.getOptions()
+				.add(
+						new TextPropertyConfigurationOption(
+								Constants.SERVICE_HOSTNAME,
+								this.model
+										.getMessage("service.cert.info.hostname"),
+								getProperty(this.model.getState(),
+										Constants.SERVICE_HOSTNAME, "localhost"),
+								true));
+		// TODO: add validation
+		this.model.add(newServiceCertInfoStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isSecurityConfigurationRequired()
+						&& !model.isTrue(Constants.INSTALL_DORIAN)
+						&& !model.isTrue(Constants.SERVICE_CERT_PRESENT)
+						&& model.isTrue(Constants.INSTALL_SERVICES);
+			}
+		});
+		incrementProgress();
+
+		ConfigureServiceCertStep serviceCertInfoStep = new ConfigureServiceCertStep(
+				this.model.getMessage("service.cert.info.title"), this.model
+						.getMessage("service.cert.info.desc"));
+		FilePropertyConfigurationOption escpOption = new FilePropertyConfigurationOption(
+				Constants.SERVICE_CERT_PATH, this.model
+						.getMessage("service.cert.info.cert.path"),
+				getProperty(this.model.getState(), Constants.SERVICE_CERT_PATH,
+						InstallerUtils.getInstallerDir()
+								+ "/certs/service.cert"), true);
+		escpOption.setDirectoriesOnly(false);
+		escpOption.setBrowseLabel(this.model.getMessage("browse"));
+		serviceCertInfoStep.getOptions().add(escpOption);
+		FilePropertyConfigurationOption eskpOption = new FilePropertyConfigurationOption(
+				Constants.SERVICE_KEY_PATH,
+				this.model.getMessage("service.cert.info.key.path"),
+				getProperty(this.model.getState(), Constants.SERVICE_KEY_PATH,
+						InstallerUtils.getInstallerDir() + "/certs/service.key"),
+				true);
+		eskpOption.setDirectoriesOnly(false);
+		eskpOption.setBrowseLabel(this.model.getMessage("browse"));
+		serviceCertInfoStep.getOptions().add(eskpOption);
+		serviceCertInfoStep.getValidators().add(
+				new PathExistsValidator(Constants.SERVICE_CERT_PATH, this.model
+						.getMessage("error.cert.file.not.found")));
+		serviceCertInfoStep.getValidators().add(
+				new PathExistsValidator(Constants.SERVICE_KEY_PATH, this.model
+						.getMessage("error.key.file.not.found")));
+		serviceCertInfoStep.getValidators().add(
+				new KeyAccessValidator(Constants.SERVICE_KEY_PATH, null,
+						this.model.getMessage("error.key.no.access")));
+		this.model.add(serviceCertInfoStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isSecurityConfigurationRequired()
+						&& !model.isTrue(Constants.INSTALL_DORIAN)
+						&& model.isTrue(Constants.SERVICE_CERT_PRESENT)
+						&& model.isTrue(Constants.INSTALL_SERVICES);
+			}
+		});
+		incrementProgress();
+
+		// Generate credentials, if necessary
+		final RunTasksStep generateCredsStep = new RunTasksStep(this.model
+				.getMessage("generate.credentials.title"), this.model
+				.getMessage("generate.credentials.desc"));
+
+		generateCredsStep.getTasks().add(
+				new ConditionalTask(new GenerateCATask(this.model
+						.getMessage("generating.ca.cert.title"), ""),
+						new Condition() {
+
+							public boolean evaluate(WizardModel m) {
+								CaGridInstallerModel model = (CaGridInstallerModel) m;
+								return model.isCAGenerationRequired();
+
+							}
+						}));
+		generateCredsStep.getTasks().add(
+				new ConditionalTask(new GenerateServiceCredsTask(this.model
+						.getMessage("generating.service.cert.title"), ""),
+						new Condition() {
+
+							public boolean evaluate(WizardModel m) {
+								CaGridInstallerModel model = (CaGridInstallerModel) m;
+								return model.isServiceCertGenerationRequired();
+
+							}
+						}));
+		this.model.add(generateCredsStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return generateCredsStep.getTasksCount(model) > 0
+						&& model.isTrue(Constants.INSTALL_SERVICES);
+			}
+		});
+		incrementProgress();
+
+		
 
 		PropertyConfigurationStep selectMyServiceStep = new PropertyConfigurationStep(
 				this.model.getMessage("select.my.service.title"), this.model
@@ -698,6 +979,18 @@ public class Installer {
 				return model.isTrue(Constants.INSTALL_MY_SERVICE);
 			}
 		});
+		
+		ConfigureSyncGTSStep configureSyncGTSStep = new ConfigureSyncGTSStep(
+				this.model.getMessage("sync.gts.config.title"), this.model
+						.getMessage("sync.gts.config.desc"));
+		this.model.add(configureSyncGTSStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return "true".equals(model.getState().get(
+						Constants.INSTALL_SYNC_GTS));
+			}
+		});
+		incrementProgress();
 
 		DeployPropertiesFileEditorStep editSyncGTSDeployPropertiesStep = new DeployPropertiesFileEditorStep(
 				"syncgts", this.model
