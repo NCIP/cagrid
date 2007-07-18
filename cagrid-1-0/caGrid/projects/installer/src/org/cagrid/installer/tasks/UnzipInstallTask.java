@@ -96,7 +96,7 @@ public class UnzipInstallTask extends BasicTask {
 					if (!file.getParentFile().exists()) {
 						file.getParentFile().mkdirs();
 					}
-//					file.createNewFile();
+					file.createNewFile();
 					out = new BufferedOutputStream(new FileOutputStream(file));
 
 				} catch (Exception ex) {

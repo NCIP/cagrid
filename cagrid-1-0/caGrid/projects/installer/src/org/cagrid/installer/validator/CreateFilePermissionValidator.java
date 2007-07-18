@@ -46,7 +46,10 @@ public class CreateFilePermissionValidator implements Validator {
 						if (!parentFile.exists()) {
 							parentFile.mkdirs();
 						}
-						f.createNewFile();
+						boolean created = f.createNewFile();
+						if(created){
+							f.delete();
+						}
 					}
 				} catch (Exception ex) {
 					logger
