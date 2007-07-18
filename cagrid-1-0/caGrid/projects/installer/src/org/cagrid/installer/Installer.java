@@ -819,21 +819,25 @@ public class Installer {
 		ConfigureServiceCertStep serviceCertInfoStep = new ConfigureServiceCertStep(
 				this.model.getMessage("service.cert.info.title"), this.model
 						.getMessage("service.cert.info.desc"));
-		serviceCertInfoStep.getOptions().add(
-				new TextPropertyConfigurationOption(
-						Constants.SERVICE_CERT_PATH, this.model
-								.getMessage("service.cert.info.cert.path"),
-						getProperty(this.model.getState(),
-								Constants.SERVICE_CERT_PATH, InstallerUtils
-										.getInstallerDir()
-										+ "/certs/service.cert"), true));
-		serviceCertInfoStep.getOptions().add(
-				new TextPropertyConfigurationOption(Constants.SERVICE_KEY_PATH,
-						this.model.getMessage("service.cert.info.key.path"),
-						getProperty(this.model.getState(),
-								Constants.SERVICE_KEY_PATH, InstallerUtils
-										.getInstallerDir()
-										+ "/certs/service.key"), true));
+		FilePropertyConfigurationOption escpOption = new FilePropertyConfigurationOption(
+				Constants.SERVICE_CERT_PATH, this.model
+				.getMessage("service.cert.info.cert.path"),
+		getProperty(this.model.getState(),
+				Constants.SERVICE_CERT_PATH, InstallerUtils
+						.getInstallerDir()
+						+ "/certs/service.cert"), true); 
+		escpOption.setDirectoriesOnly(false);
+		escpOption.setBrowseLabel(this.model.getMessage("browse"));
+		serviceCertInfoStep.getOptions().add(escpOption);
+		FilePropertyConfigurationOption eskpOption = new FilePropertyConfigurationOption(Constants.SERVICE_KEY_PATH,
+				this.model.getMessage("service.cert.info.key.path"),
+				getProperty(this.model.getState(),
+						Constants.SERVICE_KEY_PATH, InstallerUtils
+								.getInstallerDir()
+								+ "/certs/service.key"), true);
+		eskpOption.setDirectoriesOnly(false);
+		eskpOption.setBrowseLabel(this.model.getMessage("browse"));
+		serviceCertInfoStep.getOptions().add(eskpOption);
 		serviceCertInfoStep.getValidators().add(
 				new PathExistsValidator(Constants.SERVICE_CERT_PATH, this.model
 						.getMessage("error.cert.file.not.found")));
