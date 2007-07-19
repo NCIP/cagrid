@@ -118,8 +118,10 @@ public class Installer {
 	}
 
 	private void splashScreenDestruct() {
-		screen.setScreenVisible(false);
-		screen.dispose();
+		if (screen != null) {
+			screen.setScreenVisible(false);
+			screen.dispose();
+		}
 	}
 
 	private void splashScreenInit() {
@@ -217,6 +219,9 @@ public class Installer {
 				}
 			}
 
+		} catch (Exception ex) {
+			throw new RuntimeException(
+					"Error initializing: " + ex.getMessage(), ex);
 		} finally {
 
 			splashScreenDestruct();
@@ -1016,7 +1021,7 @@ public class Installer {
 		checkReplaceDefaultGTSCAStep.getOptions().add(
 				new BooleanPropertyConfigurationOption(
 						Constants.REPLACE_DEFAULT_GTS_CA, this.model
-								.getMessage("yes"), true, false));
+								.getMessage("yes"), false, false));
 		this.model.add(checkReplaceDefaultGTSCAStep, new Condition() {
 			public boolean evaluate(WizardModel m) {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
@@ -1030,8 +1035,9 @@ public class Installer {
 				this.model.getMessage("specify.default.gts.ca.desc"));
 		FilePropertyConfigurationOption repCaPath = new FilePropertyConfigurationOption(
 				Constants.REPLACEMENT_GTS_CA_CERT_PATH, this.model
-						.getMessage("replacement.gts.ca.cert.path"), getProperty(this.model
-						.getState(), Constants.REPLACEMENT_GTS_CA_CERT_PATH, ""), true);
+						.getMessage("replacement.gts.ca.cert.path"),
+				getProperty(this.model.getState(),
+						Constants.REPLACEMENT_GTS_CA_CERT_PATH, ""), true);
 		repCaPath.setBrowseLabel(this.model.getMessage("browse"));
 		repCaPath.setDirectoriesOnly(false);
 		specifyDefaultGTSCAStep.getOptions().add(repCaPath);
