@@ -2037,6 +2037,17 @@ public class Installer {
 										this.model.getState(),
 										Constants.AUTHN_SVC_LDAP_LAST_NAME_ATTRIBUTE,
 										"sn"), true));
+		authnSvcLdapStep
+		.getOptions()
+		.add(
+				new TextPropertyConfigurationOption(
+						Constants.AUTHN_SVC_LDAP_EMAIL_ID_ATTRIBUTE,
+						this.model
+								.getMessage("authn.svc.ldap.email.id.attribute"),
+						getProperty(
+								this.model.getState(),
+								Constants.AUTHN_SVC_LDAP_EMAIL_ID_ATTRIBUTE,
+								"mail"), true));
 		// TODO: add validation
 		this.model.add(authnSvcLdapStep, new Condition() {
 
