@@ -703,7 +703,7 @@
 		</if>
 
 		<if>
-			<equals arg1="authn.svc.cred.provider.type"
+			<equals arg1="${authn.svc.cred.provider.type}"
 				arg2="authn.svc.cred.provider.type.ldap" trim="true" />
 			<then>
 				<concat destfile="${jaas.config.path}">
