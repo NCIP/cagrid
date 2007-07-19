@@ -46,27 +46,29 @@ public class ReplaceDefaultGTSCAStep extends PropertyConfigurationStep {
 
 	public void applyState() throws InvalidStateException {
 
-		File certsDir = new File(InstallerUtils.getServiceDestDir(this.model
-				.getState())
-				+ "/syngts/ext/resources/certificates");
-		File[] files = certsDir.listFiles();
-		for (File file : files) {
-			logger.info("Deleting '" + file.getAbsolutePath() + "'");
-			file.delete();
-		}
-
-		File f = new File(this.model
-				.getProperty(Constants.REPLACEMENT_GTS_CA_CERT_PATH));
-		String fileName = f.getName();
-		if (!fileName.matches(".+\\.[0-9]$")) {
-			fileName += ".0";
-		}
+		super.applyState();
 		try {
+			File certsDir = new File(InstallerUtils
+					.getServiceDestDir(this.model.getState())
+					+ "/syngts/ext/resources/certificates");
+			File[] files = certsDir.listFiles();
+			for (File file : files) {
+				logger.info("Deleting '" + file.getAbsolutePath() + "'");
+				file.delete();
+			}
+
+			File f = new File(this.model
+					.getProperty(Constants.REPLACEMENT_GTS_CA_CERT_PATH));
+			String fileName = f.getName();
+			if (!fileName.matches(".+\\.[0-9]$")) {
+				fileName += ".0";
+			}
+
 			InstallerUtils.copyFile(f.getAbsolutePath(), certsDir
 					.getAbsolutePath()
 					+ "/" + fileName);
 		} catch (Exception ex) {
-			String msg = "Error copying replacement certificate: "
+			String msg = "Error replacing certificate: "
 					+ ex.getMessage();
 			logger.error(msg, ex);
 			throw new InvalidStateException(msg, ex);
