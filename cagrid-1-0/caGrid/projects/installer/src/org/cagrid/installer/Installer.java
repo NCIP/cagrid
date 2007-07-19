@@ -41,6 +41,7 @@ import org.cagrid.installer.steps.DeployPropertiesWorkflowFileEditorStep;
 import org.cagrid.installer.steps.InstallationCompleteStep;
 import org.cagrid.installer.steps.IntroduceServicePropertiesFileEditorStep;
 import org.cagrid.installer.steps.PropertyConfigurationStep;
+import org.cagrid.installer.steps.ReplaceDefaultGTSCAStep;
 import org.cagrid.installer.steps.RunTasksStep;
 import org.cagrid.installer.steps.SelectComponentStep;
 import org.cagrid.installer.steps.SelectInstallationTypeStep;
@@ -643,7 +644,7 @@ public class Installer {
 				return installDependenciesStep.getTasksCount(model) > 0;
 			}
 		});
-		
+
 		// If globus has already been deployed, see if it should be redeployed
 		PropertyConfigurationStep checkDeployGlobusStep = new PropertyConfigurationStep(
 				this.model.getMessage("globus.check.redeploy.title"),
@@ -935,8 +936,6 @@ public class Installer {
 		});
 		incrementProgress();
 
-		
-
 		PropertyConfigurationStep selectMyServiceStep = new PropertyConfigurationStep(
 				this.model.getMessage("select.my.service.title"), this.model
 						.getMessage("select.my.service.desc"));
@@ -955,7 +954,9 @@ public class Installer {
 		});
 
 		IntroduceServicePropertiesFileEditorStep mySvcDeployPropsStep = new IntroduceServicePropertiesFileEditorStep(
-				Constants.MY_SERVICE_DIR, "deploy.properties", this.model
+				Constants.MY_SERVICE_DIR,
+				"deploy.properties",
+				this.model
 						.getMessage("my.service.edit.deploy.properties.title"),
 				this.model.getMessage("my.service.edit.deploy.properties.desc"),
 				this.model.getMessage("edit.properties.property.name"),
@@ -966,11 +967,14 @@ public class Installer {
 				return model.isTrue(Constants.INSTALL_MY_SERVICE);
 			}
 		});
-		
+
 		IntroduceServicePropertiesFileEditorStep mySvcServicePropsStep = new IntroduceServicePropertiesFileEditorStep(
-				Constants.MY_SERVICE_DIR, "service.properties", this.model
+				Constants.MY_SERVICE_DIR,
+				"service.properties",
+				this.model
 						.getMessage("my.service.edit.service.properties.title"),
-				this.model.getMessage("my.service.edit.service.properties.desc"),
+				this.model
+						.getMessage("my.service.edit.service.properties.desc"),
 				this.model.getMessage("edit.properties.property.name"),
 				this.model.getMessage("edit.properties.property.value"));
 		this.model.add(mySvcServicePropsStep, new Condition() {
@@ -979,7 +983,7 @@ public class Installer {
 				return model.isTrue(Constants.INSTALL_MY_SERVICE);
 			}
 		});
-		
+
 		ConfigureSyncGTSStep configureSyncGTSStep = new ConfigureSyncGTSStep(
 				this.model.getMessage("sync.gts.config.title"), this.model
 						.getMessage("sync.gts.config.desc"));
@@ -1003,6 +1007,32 @@ public class Installer {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
 				return "true".equals(model.getState().get(
 						Constants.INSTALL_SYNC_GTS));
+			}
+		});
+
+		PropertyConfigurationStep checkReplaceDefaultGTSCAStep = new PropertyConfigurationStep(
+				this.model.getMessage("check.replace.default.gts.ca.title"),
+				this.model.getMessage("check.replace.default.gts.ca.desc"));
+		checkReplaceDefaultGTSCAStep.getOptions().add(
+				new BooleanPropertyConfigurationOption(
+						Constants.REPLACE_DEFAULT_GTS_CA, this.model
+								.getMessage("yes"), true, false));
+		this.model.add(checkReplaceDefaultGTSCAStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return "true".equals(model.getState().get(
+						Constants.INSTALL_SYNC_GTS));
+			}
+		});
+
+		ReplaceDefaultGTSCAStep specifyDefaultGTSCAStep = new ReplaceDefaultGTSCAStep(
+				this.model.getMessage("specify.default.gts.ca.title"),
+				this.model.getMessage("specify.default.gts.ca.desc"));
+		this.model.add(specifyDefaultGTSCAStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_SYNC_GTS)
+						&& model.isTrue(Constants.REPLACE_DEFAULT_GTS_CA);
 			}
 		});
 
@@ -2117,7 +2147,7 @@ public class Installer {
 							}
 
 						}));
-		
+
 		installStep.getTasks().add(
 				new ConditionalTask(new DeployServiceTask(this.model
 						.getMessage("installing.my.service.title"), "", "",

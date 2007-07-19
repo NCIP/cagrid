@@ -149,15 +149,19 @@ public class InstallerUtils {
 	public static void copyCACertToTrustStore(String certPath, String caFileName)
 			throws IOException {
 
-		BufferedReader in = new BufferedReader(new FileReader(certPath));
 		File trustDir = new File(System.getProperty("user.home")
 				+ "/.globus/certificates");
-		if (!trustDir.exists()) {
-			trustDir.mkdirs();
+		copyFile(certPath, trustDir.getAbsolutePath() + "/" + caFileName);
+		
+	}
+	
+	public static void copyFile(String from, String to) throws IOException {
+		BufferedReader in = new BufferedReader(new FileReader(from));
+		File toFile = new File(to);
+		if(!toFile.getParentFile().exists()){
+			toFile.getParentFile().mkdirs();
 		}
-		BufferedWriter out = new BufferedWriter(new FileWriter(trustDir
-				.getAbsolutePath()
-				+ "/" + caFileName));
+		BufferedWriter out = new BufferedWriter(new FileWriter(toFile));
 		String line = null;
 		while ((line = in.readLine()) != null) {
 			out.write(line + "\n");
