@@ -599,22 +599,18 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 				String servicePropsFile = InstallerUtils
 						.getServiceDestDir(this.model.getState())
 						+ "/syncgts/service.properties";
-				try {
-					Properties props = new Properties();
-					props.load(new FileInputStream(servicePropsFile));
-					this.performFirstSyncField.setSelected("true".equals(props
-							.getProperty("performFirstSync")));
-				} catch (Exception ex) {
-					logger.error(ex);
-					throw new InvalidStateException("Error configuring "
-							+ servicePropsFile + ": " + ex.getMessage(), ex);
-				}
+
+				Properties props = new Properties();
+				props.load(new FileInputStream(servicePropsFile));
+				this.performFirstSyncField.setSelected("true".equals(props
+						.getProperty("performFirstSync")));
 
 			}
 			checkComplete();
 		} catch (Exception ex) {
-			throw new RuntimeException("Error preparing editor: "
-					+ ex.getMessage(), ex);
+			String msg = "Error preparing syncgts editor: " + ex.getMessage();
+			logger.error(msg, ex);
+			throw new RuntimeException(msg, ex);
 		}
 	}
 
@@ -695,22 +691,26 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 				addFilterChildEl(doc, filterEl, row, CERT_DN_COL,
 						"CertificateDN");
 
-				//Do the trust levels
-				String trustLevelsStr = (String) this.tafTableModel.getValueAt(row, TRUST_LEVELS_COL);
+				// Do the trust levels
+				String trustLevelsStr = (String) this.tafTableModel.getValueAt(
+						row, TRUST_LEVELS_COL);
 				if (!isEmpty(trustLevelsStr)) {
-					Element trustLevelsEl = doc.createElementNS(GTS_NS, GTS_NS_PREFIX + ":TrustLevels");
+					Element trustLevelsEl = doc.createElementNS(GTS_NS,
+							GTS_NS_PREFIX + ":TrustLevels");
 					filterEl.appendChild(trustLevelsEl);
-					trustLevelsEl.setAttributeNS(XSI_NS, XSI_NS_PREFIX + ":type", GTS_NS_PREFIX
-							+ ":TrustLevels");
+					trustLevelsEl.setAttributeNS(XSI_NS, XSI_NS_PREFIX
+							+ ":type", GTS_NS_PREFIX + ":TrustLevels");
 					String[] trustLevels = trustLevelsStr.split(",");
-					for(int i = 0; i < trustLevels.length; i++){
-						Element trustLevelEl = doc.createElementNS(GTS_NS, GTS_NS_PREFIX + "TrustLevel");
+					for (int i = 0; i < trustLevels.length; i++) {
+						Element trustLevelEl = doc.createElementNS(GTS_NS,
+								GTS_NS_PREFIX + "TrustLevel");
 						trustLevelsEl.appendChild(trustLevelEl);
-						trustLevelEl.setAttributeNS(XSI_NS, XSI_NS_PREFIX + ":type", GTS_NS_PREFIX + ":TrustLevel");
+						trustLevelEl.setAttributeNS(XSI_NS, XSI_NS_PREFIX
+								+ ":type", GTS_NS_PREFIX + ":TrustLevel");
 						trustLevelEl.setTextContent(trustLevels[i].trim());
 					}
 				}
-				
+
 				addFilterChildEl(doc, filterEl, row, LIFETIME_COL, "Lifetime");
 				addFilterChildEl(doc, filterEl, row, STATUS_COL, "Status");
 				addFilterChildEl(doc, filterEl, row, IS_AUTH_COL, "IsAuthority");
