@@ -64,10 +64,9 @@ public class DeployAuthenticationServiceTask extends DeployServiceTask {
 				.get(Constants.AUTHN_SVC_CA_KEY_PWD));
 		state.put(Constants.BUILD_FILE_PATH, svcBuildFilePath);
 		super.runAntTask(state, target, env, sysProps);
-		
 
 		state.put(Constants.BUILD_FILE_PATH, installerBuildFilePath);
-		
+
 		String antTarget = "deployTomcatEndorsedJars";
 		if (this.model.getMessage("container.type.globus").equals(
 				this.model.getState().get(Constants.CONTAINER_TYPE))) {
@@ -76,13 +75,16 @@ public class DeployAuthenticationServiceTask extends DeployServiceTask {
 		sysProps.setProperty("service.name", "authentication-service");
 		new AntTask("", "", antTarget, env, sysProps).execute(state);
 
-		// Copy driver
-		if (isDeployTomcat()) {
-			new AntTask("", "", "copy-jdbc-driver-to-tomcat", env, sysProps)
-					.execute(state);
-		} else {
-			new AntTask("", "", "copy-jdbc-driver-to-globus", env, sysProps)
-					.execute(state);
+		if (this.model.isEqual(Constants.AUTHN_SVC_CRED_PROVIDER_TYPE_RDBMS,
+				Constants.AUTHN_SVC_CRED_PROVIDER_TYPE)) {
+			// Copy driver
+			if (isDeployTomcat()) {
+				new AntTask("", "", "copy-jdbc-driver-to-tomcat", env, sysProps)
+						.execute(state);
+			} else {
+				new AntTask("", "", "copy-jdbc-driver-to-globus", env, sysProps)
+						.execute(state);
+			}
 		}
 
 		// Generate JAAS config
