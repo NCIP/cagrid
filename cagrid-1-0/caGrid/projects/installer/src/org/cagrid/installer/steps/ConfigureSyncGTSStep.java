@@ -484,6 +484,27 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 						this.expirationSecondsField.setText(seconds);
 					}
 
+					// Perform authorization
+					Element performAuthzEl = (Element) xpFact
+							.newXPath()
+							.compile("./*[local-name()='PerformAuthorization']");
+					if (performAuthzEl != null) {
+						this.performAuthzField.setSelected("true"
+								.equals(performAuthzEl.getTextContent()));
+					}
+
+					// GTS Identity
+					Element gtsIdentEl = (Element) xpFact.newXPath().compile(
+							"./*[local-name()='GTSIdentity']");
+					if (gtsIdentEl != null) {
+						String gtsIdent = gtsIdentEl.getTextContent();
+						if (!InstallerUtils.isEmpty(gtsIdent)) {
+							this.gtsIdentField.setText(gtsIdent);
+						}
+					}
+
+					// Perform first sync
+
 					// Get TrustedAuthorityFilter elements
 					NodeList filters = (NodeList) xpFact.newXPath().compile(
 							"./*[local-name()='TrustedAuthorityFilter']")
@@ -575,6 +596,20 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 				logger.debug("Setting NextSync = " + nextSync);
 				this.nextSyncField.setText(nextSync);
 
+				String servicePropsFile = InstallerUtils
+						.getServiceDestDir(this.model.getState())
+						+ "/syncgts/service.properties";
+				try {
+					Properties props = new Properties();
+					props.load(new FileInputStream(servicePropsFile));
+					this.performFirstSyncField.setSelected("true".equals(props
+							.getProperty("performFirstSync")));
+				} catch (Exception ex) {
+					logger.error(ex);
+					throw new InvalidStateException("Error configuring "
+							+ servicePropsFile + ": " + ex.getMessage(), ex);
+				}
+
 			}
 			checkComplete();
 		} catch (Exception ex) {
@@ -659,8 +694,23 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 				addFilterChildEl(doc, filterEl, row, NAME_COL, "Name");
 				addFilterChildEl(doc, filterEl, row, CERT_DN_COL,
 						"CertificateDN");
-				addFilterChildEl(doc, filterEl, row, TRUST_LEVELS_COL,
-						"TrustLevels");
+
+				//Do the trust levels
+				String trustLevelsStr = (String) this.tafTableModel.getValueAt(row, TRUST_LEVELS_COL);
+				if (!isEmpty(trustLevelsStr)) {
+					Element trustLevelsEl = doc.createElementNS(GTS_NS, GTS_NS_PREFIX + ":TrustLevels");
+					filterEl.appendChild(trustLevelsEl);
+					trustLevelsEl.setAttributeNS(XSI_NS, XSI_NS_PREFIX + ":type", GTS_NS_PREFIX
+							+ ":TrustLevels");
+					String[] trustLevels = trustLevelsStr.split(",");
+					for(int i = 0; i < trustLevels.length; i++){
+						Element trustLevelEl = doc.createElementNS(GTS_NS, GTS_NS_PREFIX + "TrustLevel");
+						trustLevelsEl.appendChild(trustLevelEl);
+						trustLevelEl.setAttributeNS(XSI_NS, XSI_NS_PREFIX + ":type", GTS_NS_PREFIX + ":TrustLevel");
+						trustLevelEl.setTextContent(trustLevels[i].trim());
+					}
+				}
+				
 				addFilterChildEl(doc, filterEl, row, LIFETIME_COL, "Lifetime");
 				addFilterChildEl(doc, filterEl, row, STATUS_COL, "Status");
 				addFilterChildEl(doc, filterEl, row, IS_AUTH_COL, "IsAuthority");
@@ -675,7 +725,8 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 				}
 			}
 
-			String performAuth = String.valueOf(this.performAuthzField.isSelected());
+			String performAuth = String.valueOf(this.performAuthzField
+					.isSelected());
 			Element performAuthEl = doc.createElementNS(SYNC_GTS_NS,
 					SYNC_GTS_NS_PREFIX + ":PerformAuthorization");
 			syncDescEl.appendChild(performAuthEl);
@@ -706,7 +757,8 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 				root.appendChild(excludedCAsEl);
 			}
 
-			String deleteInvalid = String.valueOf(this.deleteInvalidField.isSelected());
+			String deleteInvalid = String.valueOf(this.deleteInvalidField
+					.isSelected());
 			Element deleteInvalidEl = doc.createElementNS(SYNC_GTS_NS,
 					SYNC_GTS_NS_PREFIX + ":DeleteInvalidFiles");
 			root.appendChild(deleteInvalidEl);
@@ -749,15 +801,14 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 		}
 
 		// Also, edit the service.propeties file
-		String servicePropsFile = InstallerUtils.getServiceDestDir(this.model.getState())
+		String servicePropsFile = InstallerUtils.getServiceDestDir(this.model
+				.getState())
 				+ "/syncgts/service.properties";
 		try {
-			String performFirstSync = (String) this.model.getState().get(
-					Constants.SYNC_GTS_PERFORM_FIRST_SYNC);
 			Properties props = new Properties();
 			props.load(new FileInputStream(servicePropsFile));
-			props.setProperty("performFirstSync", String.valueOf("true"
-					.equals(performFirstSync)));
+			props.setProperty("performFirstSync", String
+					.valueOf(this.performFirstSyncField.isSelected()));
 			props.store(new FileOutputStream(servicePropsFile), "");
 		} catch (Exception ex) {
 			logger.error(ex);
