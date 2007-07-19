@@ -487,7 +487,7 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 					// Perform authorization
 					Element performAuthzEl = (Element) xpFact
 							.newXPath()
-							.compile("./*[local-name()='PerformAuthorization']");
+							.compile("./*[local-name()='PerformAuthorization']").evaluate(syncDescEl, XPathConstants.NODE);
 					if (performAuthzEl != null) {
 						this.performAuthzField.setSelected("true"
 								.equals(performAuthzEl.getTextContent()));
@@ -495,7 +495,7 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 
 					// GTS Identity
 					Element gtsIdentEl = (Element) xpFact.newXPath().compile(
-							"./*[local-name()='GTSIdentity']");
+							"./*[local-name()='GTSIdentity']").evaluate(syncDescEl, XPathConstants.NODE);
 					if (gtsIdentEl != null) {
 						String gtsIdent = gtsIdentEl.getTextContent();
 						if (!InstallerUtils.isEmpty(gtsIdent)) {
