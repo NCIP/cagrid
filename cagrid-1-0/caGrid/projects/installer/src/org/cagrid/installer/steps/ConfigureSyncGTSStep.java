@@ -703,7 +703,7 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 					String[] trustLevels = trustLevelsStr.split(",");
 					for (int i = 0; i < trustLevels.length; i++) {
 						Element trustLevelEl = doc.createElementNS(GTS_NS,
-								GTS_NS_PREFIX + "TrustLevel");
+								GTS_NS_PREFIX + ":TrustLevel");
 						trustLevelsEl.appendChild(trustLevelEl);
 						trustLevelEl.setAttributeNS(XSI_NS, XSI_NS_PREFIX
 								+ ":type", GTS_NS_PREFIX + ":TrustLevel");
