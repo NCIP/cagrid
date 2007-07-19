@@ -1028,6 +1028,13 @@ public class Installer {
 		ReplaceDefaultGTSCAStep specifyDefaultGTSCAStep = new ReplaceDefaultGTSCAStep(
 				this.model.getMessage("specify.default.gts.ca.title"),
 				this.model.getMessage("specify.default.gts.ca.desc"));
+		FilePropertyConfigurationOption repCaPath = new FilePropertyConfigurationOption(
+				Constants.REPLACEMENT_GTS_CA_CERT_PATH, this.model
+						.getMessage("replacement.gts.ca.cert.path"), getProperty(this.model
+						.getState(), Constants.REPLACEMENT_GTS_CA_CERT_PATH, ""), true);
+		repCaPath.setBrowseLabel(this.model.getMessage("browse"));
+		repCaPath.setDirectoriesOnly(false);
+		specifyDefaultGTSCAStep.getOptions().add(repCaPath);
 		this.model.add(specifyDefaultGTSCAStep, new Condition() {
 			public boolean evaluate(WizardModel m) {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
