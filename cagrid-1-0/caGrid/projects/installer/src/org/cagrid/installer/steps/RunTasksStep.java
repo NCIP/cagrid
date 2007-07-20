@@ -149,7 +149,7 @@ public class RunTasksStep extends PanelWizardStep implements
 	}
 
 	public void prepare() {
-		
+		busyLabel.setText(this.model.getMessage("press.start"));
 		getStartButton().setEnabled(true);
 		for (Task t : getTasks()) {
 			if (t instanceof Condition && !((Condition) t).evaluate(this.model)) {
@@ -169,7 +169,7 @@ public class RunTasksStep extends PanelWizardStep implements
 			gridBagConstraints3.gridx = 0;
 			gridBagConstraints3.gridy = 0;
 			busyLabel = new JLabel();
-			busyLabel.setText("Press Start to begin.");
+			
 			descriptionPanel = new JPanel();
 			descriptionPanel.setLayout(new GridBagLayout());
 			descriptionPanel.setFont(new Font("Dialog", Font.PLAIN, 12));
@@ -233,10 +233,12 @@ public class RunTasksStep extends PanelWizardStep implements
 			startButton.setText("Start");
 			startButton.setPreferredSize(new Dimension(57, 16));
 			startButton.setFont(new Font("Dialog", Font.BOLD, 10));
-			final Worker w = new Worker(getTasks(), this.model);
-			w.addPropertyChangeListener(this);
+			final String workingLabel = this.model.getMessage("working");
 			startButton.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
+					RunTasksStep.this.setBusyLabel(workingLabel);
+					Worker w = new Worker(RunTasksStep.this.getTasks(), RunTasksStep.this.model);
+					w.addPropertyChangeListener(RunTasksStep.this);
 					getStartButton().setEnabled(false);
 					w.start();
 				}
@@ -253,7 +255,7 @@ public class RunTasksStep extends PanelWizardStep implements
 			if (progress == getTasks().size()) {
 				getBusyProgressBar()
 						.setValue(getBusyProgressBar().getMaximum());
-				setBusyLabel("Finished.");
+				setBusyLabel(this.model.getMessage("finished"));
 				setComplete(true);
 			}
 		} else if ("currentTask" == evt.getPropertyName()) {
@@ -261,11 +263,11 @@ public class RunTasksStep extends PanelWizardStep implements
 			setBusyLabel(currentTask.getName());
 		} else if ("exception" == evt.getPropertyName()) {
 			this.exception = (Exception) evt.getNewValue();
-			setBusyLabel("Error occurred.");
+			setBusyLabel(this.model.getMessage("error"));
 			String msg = this.exception.getMessage();
 			logger.error(msg, this.exception);
 			setComplete(false);
-			JOptionPane.showMessageDialog(null, msg, "Error",
+			JOptionPane.showMessageDialog(null, msg, this.model.getMessage("error"),
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
