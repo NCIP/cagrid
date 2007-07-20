@@ -99,12 +99,11 @@ public class DownloadFileTask extends BasicTask {
 			out.write(buffer, 0, len);
 			stepNum += 1;
 			bytesRead += len;
+			
 			if (bytesRead > nextLog) {
 				nextLog += LOGAFTER_SIZE;
-				// System.out.println(bytesRead + " bytes read...");
-				System.out.println(Math
-						.round((bytesRead / (double)this.totalBytes) * 100)
-						+ " complete");
+				double percent = ((double) bytesRead) / this.totalBytes;
+				System.out.println(Math.round(percent * 100) + " complete");
 			}
 			setLastStep(stepNum);
 		}
@@ -149,7 +148,5 @@ public class DownloadFileTask extends BasicTask {
 			return this.in;
 		}
 	}
-
-
 
 }
