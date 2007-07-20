@@ -28,6 +28,8 @@ public class ProgressBarTaskMonitor implements PropertyChangeListener {
 
 	private int scale;
 
+	private double actualProgress;
+
 	/**
 	 * 
 	 */
@@ -53,35 +55,34 @@ public class ProgressBarTaskMonitor implements PropertyChangeListener {
 			reset();
 		} else if ("lastStep".equals(evt.getPropertyName())) {
 			Task t = (Task) evt.getSource();
-			int progress = this.progressBar.getValue()
-					+ calcAdditionalProgress(t);
-			updateProgress(progress);
+			this.actualProgress += calcAdditionalProgress(t);
+			updateProgress((int)Math.round(this.actualProgress));
 		}
 	}
 
 	public void reset() {
-		int progress = 0;
+		this.actualProgress = (double)0;
 		for (Task t : this.tasks) {
-			progress += calcAdditionalProgress(t);
+			this.actualProgress += calcAdditionalProgress(t);
 		}
-		updateProgress(progress);
+		updateProgress((int)Math.round(this.actualProgress));
 	}
 
 	private void updateProgress(int progress) {
 		this.progressBar.setValue(progress);
 	}
 
-	private int calcAdditionalProgress(Task t) {
-		int additionalProgress = 0;
+	private double calcAdditionalProgress(Task t) {
+		double additionalProgress = 0;
 		int numSteps = t.getStepCount();
 		double taskWeight = this.scale / this.tasks.size();
 		double stepWeight = taskWeight / numSteps;
-		additionalProgress = (int) stepWeight * t.getLastStep();
-		String msg = "Additional progress for " + t.getName() + " is "
-				+ additionalProgress + ". numSteps = " + numSteps
-				+ ", taskWeight = " + taskWeight + ", stepWeight = "
-				+ stepWeight + ", lastStep = " + t.getLastStep();
-		logger.debug(msg);
+		additionalProgress = stepWeight * t.getLastStep();
+//		String msg = "Additional progress for " + t.getName() + " is "
+//				+ additionalProgress + ". numSteps = " + numSteps
+//				+ ", taskWeight = " + taskWeight + ", stepWeight = "
+//				+ stepWeight + ", lastStep = " + t.getLastStep();
+//		logger.debug(msg);
 
 		return additionalProgress;
 	}
