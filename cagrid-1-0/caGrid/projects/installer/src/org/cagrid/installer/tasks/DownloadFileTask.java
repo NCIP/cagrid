@@ -53,12 +53,6 @@ public class DownloadFileTask extends BasicTask {
 
 	protected Object internalExecute(Map state) throws Exception {
 
-		int stepCount = this.totalBytes / BUFFER_SIZE;
-		if (this.totalBytes % BUFFER_SIZE > 0) {
-			stepCount++;
-		}
-		this.setStepCount(stepCount);
-
 		String fromUrl = (String) state.get(this.fromUrlProp);
 
 		URL url = null;
@@ -92,21 +86,18 @@ public class DownloadFileTask extends BasicTask {
 				new FileOutputStream(toFile));
 		byte[] buffer = new byte[BUFFER_SIZE];
 		int len = -1;
-		int stepNum = 0;
 		int bytesRead = 0;
 		int nextLog = -1;
 		while ((len = inputStream.read(buffer)) > 0) {
 			out.write(buffer, 0, len);
-			stepNum += 1;
 			bytesRead += len;
 			
 			if (bytesRead > nextLog) {
 				nextLog += LOGAFTER_SIZE;
 				double percent = bytesRead / (double)this.totalBytes;
-				logger.debug("bytesRead=" + bytesRead + ", totalBytes=" + this.totalBytes + ", percent=" + percent);
 				System.out.println(Math.round(percent * 100) + " complete");
 			}
-			setLastStep(stepNum);
+
 		}
 		out.flush();
 		out.close();

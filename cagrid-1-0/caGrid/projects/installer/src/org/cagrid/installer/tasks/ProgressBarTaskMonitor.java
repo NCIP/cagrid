@@ -75,7 +75,7 @@ public class ProgressBarTaskMonitor implements PropertyChangeListener {
 	private double calcAdditionalProgress(Task t) {
 		double additionalProgress = 0;
 		int numSteps = t.getStepCount();
-		double taskWeight = this.scale / this.tasks.size();
+		double taskWeight = this.scale / (double)this.tasks.size();
 		double stepWeight = taskWeight / numSteps;
 		additionalProgress = stepWeight * t.getLastStep();
 //		String msg = "Additional progress for " + t.getName() + " is "
@@ -86,4 +86,6 @@ public class ProgressBarTaskMonitor implements PropertyChangeListener {
 
 		return additionalProgress;
 	}
+	
+	
 }
