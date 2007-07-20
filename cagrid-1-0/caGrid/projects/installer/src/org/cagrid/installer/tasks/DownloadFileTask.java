@@ -103,7 +103,7 @@ public class DownloadFileTask extends BasicTask {
 			if(bytesRead > nextLog){
 				nextLog += LOGAFTER_SIZE;
 //				System.out.println(bytesRead + " bytes read...");
-				System.out.println(Math.round((double)bytesRead / this.totalBytes) + " complete");
+				System.out.println(Math.round(((double)bytesRead / this.totalBytes) * 100) + " complete");
 			}
 			setLastStep(stepNum);
 		}
