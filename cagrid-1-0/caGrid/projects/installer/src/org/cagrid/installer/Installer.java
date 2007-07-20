@@ -3,6 +3,7 @@
  */
 package org.cagrid.installer;
 
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.net.URL;
@@ -54,6 +55,7 @@ import org.cagrid.installer.steps.options.ListPropertyConfigurationOption;
 import org.cagrid.installer.steps.options.PasswordPropertyConfigurationOption;
 import org.cagrid.installer.steps.options.TextPropertyConfigurationOption;
 import org.cagrid.installer.steps.options.ListPropertyConfigurationOption.LabelValuePair;
+import org.cagrid.installer.tasks.AbstractTask;
 import org.cagrid.installer.tasks.CaGridInstallerAntTask;
 import org.cagrid.installer.tasks.CompileCaGridTask;
 import org.cagrid.installer.tasks.ConditionalTask;
@@ -74,6 +76,7 @@ import org.cagrid.installer.tasks.DownloadFileTask;
 import org.cagrid.installer.tasks.GenerateCATask;
 import org.cagrid.installer.tasks.GenerateServiceCredsTask;
 import org.cagrid.installer.tasks.SaveSettingsTask;
+import org.cagrid.installer.tasks.Task;
 import org.cagrid.installer.tasks.UnTarInstallTask;
 import org.cagrid.installer.tasks.UnzipInstallTask;
 import org.cagrid.installer.util.IOThread;
@@ -641,9 +644,23 @@ public class Installer {
 								return model.isTrue(Constants.INSTALL_SERVICES);
 							}
 						}));
+		
+		installDependenciesStep.getTasks().add(new AbstractTask("", "") {
+
+			public Object execute(Map state) throws Exception {
+				if("true".equals(Constants.INSTALL_TOMCAT)){
+					state.put(Constants.GLOBUS_DEPLOYED, "false");
+					state.put(Constants.GLOBUS_CONFIGURED, "false");
+				}
+				return null;
+			}
+
+			
+		});
 		installDependenciesStep.getTasks().add(
 				new SaveSettingsTask(this.model
 						.getMessage("saving.settings.title"), ""));
+		
 		this.model.add(installDependenciesStep, new Condition() {
 			public boolean evaluate(WizardModel m) {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
