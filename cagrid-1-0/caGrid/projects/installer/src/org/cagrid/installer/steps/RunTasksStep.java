@@ -67,7 +67,7 @@ public class RunTasksStep extends PanelWizardStep implements
 	private ProgressBarTaskMonitor monitor;
 
 	private PrintStream out;
-	
+
 	private boolean deactivePrevious = true;
 
 	/**
@@ -169,7 +169,7 @@ public class RunTasksStep extends PanelWizardStep implements
 			gridBagConstraints3.gridx = 0;
 			gridBagConstraints3.gridy = 0;
 			busyLabel = new JLabel();
-			
+
 			descriptionPanel = new JPanel();
 			descriptionPanel.setLayout(new GridBagLayout());
 			descriptionPanel.setFont(new Font("Dialog", Font.PLAIN, 12));
@@ -237,7 +237,8 @@ public class RunTasksStep extends PanelWizardStep implements
 			startButton.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					RunTasksStep.this.setBusyLabel(workingLabel);
-					Worker w = new Worker(RunTasksStep.this.getTasks(), RunTasksStep.this.model);
+					Worker w = new Worker(RunTasksStep.this.getTasks(),
+							RunTasksStep.this.model);
 					w.addPropertyChangeListener(RunTasksStep.this);
 					getStartButton().setEnabled(false);
 					w.start();
@@ -267,8 +268,8 @@ public class RunTasksStep extends PanelWizardStep implements
 			String msg = this.exception.getMessage();
 			logger.error(msg, this.exception);
 			setComplete(false);
-			JOptionPane.showMessageDialog(null, msg, this.model.getMessage("error"),
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, msg, this.model
+					.getMessage("error"), JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -279,15 +280,15 @@ public class RunTasksStep extends PanelWizardStep implements
 	public void setTasks(List<Task> tasks) {
 		this.tasks = tasks;
 	}
-	
-	public int getTasksCount(CaGridInstallerModel model){
+
+	public int getTasksCount(CaGridInstallerModel model) {
 		int count = 0;
-		for(Task t : getTasks()){
-			if(t instanceof Condition){
-				if(((Condition)t).evaluate(model)){
+		for (Task t : getTasks()) {
+			if (t instanceof Condition) {
+				if (((Condition) t).evaluate(model)) {
 					count++;
 				}
-			}else{
+			} else {
 				count++;
 			}
 		}
@@ -375,17 +376,13 @@ public class RunTasksStep extends PanelWizardStep implements
 	}
 
 	class TextAreaOutputStream extends OutputStream {
-		
+
 		private JTextArea textControl;
-		private int maxLength = 10000;
+
+		private StringBuilder buf = new StringBuilder();
 
 		public TextAreaOutputStream(JTextArea control) {
 			textControl = control;
-		}
-		
-		public TextAreaOutputStream(JTextArea control, int maxLength) {
-			textControl = control;
-			this.maxLength = maxLength;
 		}
 
 		public void write(final int b) throws IOException {
@@ -393,10 +390,13 @@ public class RunTasksStep extends PanelWizardStep implements
 			textControl.append(String.valueOf((char) b));
 			int len = textControl.getDocument().getLength();
 			textControl.setCaretPosition(len);
-//			if(len > this.maxLength){
-//				textControl.setText("");
-//			}
 
+			if ('\n' == (char) b) {
+				logger.info(buf.toString());
+				buf = new StringBuilder();
+			} else {
+				buf.append((char) b);
+			}
 		}
 	}
 
