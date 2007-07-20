@@ -564,19 +564,19 @@ public class Installer {
 				.getMessage("installing.ant.title"), "",
 				Constants.ANT_DOWNLOAD_URL, Constants.ANT_TEMP_FILE_NAME,
 				Constants.ANT_INSTALL_DIR_PATH, Constants.ANT_DIR_NAME,
-				Constants.ANT_HOME, Constants.INSTALL_ANT);
+				Constants.ANT_HOME, Constants.INSTALL_ANT, 10070771);
 		addUnzipInstallTask(installDependenciesStep, this.model
 				.getMessage("downloading.tomcat.title"), this.model
 				.getMessage("installing.tomcat.title"), "",
 				Constants.TOMCAT_DOWNLOAD_URL, Constants.TOMCAT_TEMP_FILE_NAME,
 				Constants.TOMCAT_INSTALL_DIR_PATH, Constants.TOMCAT_DIR_NAME,
-				Constants.TOMCAT_HOME, Constants.INSTALL_TOMCAT);
+				Constants.TOMCAT_HOME, Constants.INSTALL_TOMCAT, 12959200);
 		addUnzipInstallTask(installDependenciesStep, this.model
 				.getMessage("downloading.globus.title"), this.model
 				.getMessage("installing.globus.title"), "",
 				Constants.GLOBUS_DOWNLOAD_URL, Constants.GLOBUS_TEMP_FILE_NAME,
 				Constants.GLOBUS_INSTALL_DIR_PATH, Constants.GLOBUS_DIR_NAME,
-				Constants.GLOBUS_HOME, Constants.INSTALL_GLOBUS);
+				Constants.GLOBUS_HOME, Constants.INSTALL_GLOBUS, 66444666);
 
 		addUnTarInstallTask(installDependenciesStep, this.model
 				.getMessage("downloading.activebpel.title"), this.model
@@ -585,7 +585,7 @@ public class Installer {
 				Constants.ACTIVEBPEL_TEMP_FILE_NAME,
 				Constants.ACTIVEBPEL_INSTALL_DIR_PATH,
 				Constants.ACTIVEBPEL_DIR_NAME, Constants.ACTIVEBPEL_HOME,
-				Constants.INSTALL_ACTIVEBPEL);
+				Constants.INSTALL_ACTIVEBPEL, 23422012);
 
 		installDependenciesStep.getTasks().add(
 				new ConditionalTask(new DeployActiveBPELTask(this.model
@@ -607,7 +607,7 @@ public class Installer {
 				.getMessage("installing.cagrid.title"), "",
 				Constants.CAGRID_DOWNLOAD_URL, Constants.CAGRID_TEMP_FILE_NAME,
 				Constants.CAGRID_INSTALL_DIR_PATH, Constants.CAGRID_DIR_NAME,
-				Constants.CAGRID_HOME, Constants.INSTALL_CAGRID);
+				Constants.CAGRID_HOME, Constants.INSTALL_CAGRID, 397957544);
 
 		installDependenciesStep.getTasks().add(
 				new ConditionalTask(new CompileCaGridTask(this.model
@@ -2695,7 +2695,7 @@ public class Installer {
 			String downloadMsg, String installMsg, String desc,
 			String downloadUrlProp, String tempFileNameProp,
 			String installDirPathProp, String dirNameProp, String homeProp,
-			final String installProp) {
+			final String installProp, int totalBytes) {
 
 		Condition c = new Condition() {
 			public boolean evaluate(WizardModel m) {
@@ -2706,7 +2706,7 @@ public class Installer {
 		installStep.getTasks().add(
 				new ConditionalTask(new DownloadFileTask(downloadMsg, desc,
 						downloadUrlProp, tempFileNameProp,
-						Constants.CONNECT_TIMEOUT), c));
+						Constants.CONNECT_TIMEOUT, totalBytes), c));
 		installStep.getTasks().add(
 				new ConditionalTask(new UnzipInstallTask(installMsg, desc,
 						tempFileNameProp, installDirPathProp, dirNameProp,
@@ -2717,7 +2717,7 @@ public class Installer {
 			String downloadMsg, String installMsg, String desc,
 			String downloadUrlProp, String tempFileNameProp,
 			String installDirPathProp, String dirNameProp, String homeProp,
-			final String installProp) {
+			final String installProp, int totalBytes) {
 
 		Condition c = new Condition() {
 			public boolean evaluate(WizardModel m) {
@@ -2730,7 +2730,7 @@ public class Installer {
 		installStep.getTasks().add(
 				new ConditionalTask(new DownloadFileTask(downloadMsg, desc,
 						downloadUrlProp, tempFileNameProp,
-						Constants.CONNECT_TIMEOUT), c));
+						Constants.CONNECT_TIMEOUT, totalBytes), c));
 		installStep.getTasks().add(
 				new ConditionalTask(new UnTarInstallTask(installMsg, desc,
 						tempFileNameProp, installDirPathProp, dirNameProp,

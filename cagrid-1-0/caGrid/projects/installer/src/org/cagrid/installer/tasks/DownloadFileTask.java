@@ -35,21 +35,30 @@ public class DownloadFileTask extends BasicTask {
 
 	// Max time to wait for connection
 	private long connectTimeout;
+	
+	private int totalBytes;
 
 	/**
 	 * @param name
 	 * @param description
 	 */
 	public DownloadFileTask(String name, String description,
-			String fromUrlProp, String toFileProp, long timeout) {
+			String fromUrlProp, String toFileProp, long timeout, int totalBytes) {
 		super(name, description);
 		this.fromUrlProp = fromUrlProp;
 		this.toFileProp = toFileProp;
 		this.connectTimeout = timeout;
+		this.totalBytes = totalBytes;
 	}
 
 	protected Object internalExecute(Map state) throws Exception {
 
+		int stepCount = this.totalBytes / BUFFER_SIZE;
+		if(this.totalBytes % BUFFER_SIZE > 0){
+			stepCount++;
+		}
+		this.setStepCount(stepCount);
+		
 		String fromUrl = (String) state.get(this.fromUrlProp);
 
 		URL url = null;
@@ -76,7 +85,7 @@ public class DownloadFileTask extends BasicTask {
 					+ " timed out.");
 		}
 		InputStream inputStream = t.getIn();
-//		updateStepCount(inputStream);
+
 
 		String toFile = state.get(Constants.TEMP_DIR_PATH) + "/"
 				+ state.get(this.toFileProp);
@@ -93,36 +102,16 @@ public class DownloadFileTask extends BasicTask {
 			bytesRead += len;
 			if(bytesRead > nextLog){
 				nextLog += LOGAFTER_SIZE;
-				System.out.println(bytesRead + " bytes read...");
+//				System.out.println(bytesRead + " bytes read...");
+				System.out.println(Math.round((double)bytesRead / this.totalBytes) + " complete");
 			}
-//			if (stepNum >= getStepCount()) {
-//				updateStepCount(inputStream);
-//
-//			}
-//			setLastStep(stepNum);
+			setLastStep(stepNum);
 		}
 		out.flush();
 		out.close();
 		inputStream.close();
 
 		return null;
-	}
-
-	private void updateStepCount(InputStream inputStream) {
-		int bytesRead = getLastStep() * BUFFER_SIZE;
-		int available = 0;
-		try {
-			available = inputStream.available();
-		} catch (IOException ex) {
-			throw new RuntimeException("Error getting available bytes: "
-					+ ex.getMessage(), ex);
-		}
-		int totalBytes = available + bytesRead;
-		int count = totalBytes / BUFFER_SIZE;
-		if (totalBytes % BUFFER_SIZE > 0) {
-			count += 1;
-		}
-		setStepCount(count);
 	}
 
 	private class ConnectThread extends Thread {
