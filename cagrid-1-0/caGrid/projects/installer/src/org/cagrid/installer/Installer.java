@@ -72,6 +72,7 @@ import org.cagrid.installer.tasks.DeployDorianTask;
 import org.cagrid.installer.tasks.DeployGlobusToTomcatTask;
 import org.cagrid.installer.tasks.DeployIndexServiceTask;
 import org.cagrid.installer.tasks.DeployServiceTask;
+import org.cagrid.installer.tasks.DeployWorkflowServiceTask;
 import org.cagrid.installer.tasks.DownloadFileTask;
 import org.cagrid.installer.tasks.GenerateCATask;
 import org.cagrid.installer.tasks.GenerateServiceCredsTask;
@@ -2408,6 +2409,18 @@ public class Installer {
 					public boolean evaluate(WizardModel m) {
 						CaGridInstallerModel model = (CaGridInstallerModel) m;
 						return model.isTrue(Constants.INSTALL_GRID_GROUPER);
+					}
+
+				}));
+		
+		installStep.getTasks().add(
+				new ConditionalTask(new DeployWorkflowServiceTask(this.model
+						.getMessage("installing.workflow.title"), "", "workflow",
+						this.model), new Condition() {
+
+					public boolean evaluate(WizardModel m) {
+						CaGridInstallerModel model = (CaGridInstallerModel) m;
+						return model.isTrue(Constants.INSTALL_WORKFLOW);
 					}
 
 				}));
