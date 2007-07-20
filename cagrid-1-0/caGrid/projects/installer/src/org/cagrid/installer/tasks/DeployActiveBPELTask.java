@@ -99,14 +99,14 @@ public class DeployActiveBPELTask extends BasicTask {
 			
 		}else{
 			cmd = new String[1];
-			cmd[0] = "./"+cmd+".sh";
+			cmd[0] = "./install.sh";
 		}
 
 		StringBuilder sb = new StringBuilder();
 		for(String s : cmd){
-			sb.append(cmd).append(" ");
+			sb.append(s).append(" ");
 		}
-		logger.debug("######### Executing: " + dir.getAbsolutePath() + "/" + sb);
+		logger.debug("######### Executing: '" + sb + "' in '" + dir.getAbsolutePath() + "'");
 
 		// run ant
 		Process p = Runtime.getRuntime().exec(cmd, envp,dir);
