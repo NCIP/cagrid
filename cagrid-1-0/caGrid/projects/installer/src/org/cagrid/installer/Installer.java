@@ -7,6 +7,7 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.net.URL;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -269,7 +270,14 @@ public class Installer {
 				logger.info("Loading '" + cagridInstallerFileName + "'");
 				Properties props = new Properties();
 				props.load(new FileInputStream(cagridInstallerFile));
-				defaultState.putAll(props);
+//				defaultState.putAll(props);
+				Enumeration e = props.propertyNames();
+				while(e.hasMoreElements()){
+					String propName = (String)e.nextElement();
+					if(!defaultState.containsKey(propName)){
+						defaultState.put(propName, props.getProperty(propName));
+					}
+				}
 			} catch (Exception ex) {
 				String msg = "Could not load '" + cagridInstallerFileName
 						+ "': " + ex.getMessage();
