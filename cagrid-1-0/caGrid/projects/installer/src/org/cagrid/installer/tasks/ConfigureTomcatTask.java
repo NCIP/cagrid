@@ -30,9 +30,11 @@ public class ConfigureTomcatTask extends CaGridInstallerAntTask {
 				.get(Constants.USE_SECURE_CONTAINER));
 
 		if (!secure) {
-			setStepCount(2);
+			setStepCount(3);
 			new AntTask("", "", "fix-web-xml", env, sysProps).execute(state);
 			setLastStep(1);
+			new AntTask("", "", "configure-tomcat-server-config", env, sysProps)
+			.execute(state);
 		} else {
 			setStepCount(5);
 			new AntTask("", "", "insert-secure-connector", env, sysProps)
