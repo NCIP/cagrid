@@ -26,7 +26,7 @@ public class DownloadFileTask extends BasicTask {
 	private static final Log logger = LogFactory.getLog(DownloadFileTask.class);
 
 	private static final int BUFFER_SIZE = 1024;
-	
+
 	private static final int LOGAFTER_SIZE = BUFFER_SIZE * 1000;
 
 	private String fromUrlProp;
@@ -35,7 +35,7 @@ public class DownloadFileTask extends BasicTask {
 
 	// Max time to wait for connection
 	private long connectTimeout;
-	
+
 	private int totalBytes;
 
 	/**
@@ -54,11 +54,11 @@ public class DownloadFileTask extends BasicTask {
 	protected Object internalExecute(Map state) throws Exception {
 
 		int stepCount = this.totalBytes / BUFFER_SIZE;
-		if(this.totalBytes % BUFFER_SIZE > 0){
+		if (this.totalBytes % BUFFER_SIZE > 0) {
 			stepCount++;
 		}
 		this.setStepCount(stepCount);
-		
+
 		String fromUrl = (String) state.get(this.fromUrlProp);
 
 		URL url = null;
@@ -86,7 +86,6 @@ public class DownloadFileTask extends BasicTask {
 		}
 		InputStream inputStream = t.getIn();
 
-
 		String toFile = state.get(Constants.TEMP_DIR_PATH) + "/"
 				+ state.get(this.toFileProp);
 		BufferedOutputStream out = new BufferedOutputStream(
@@ -100,10 +99,12 @@ public class DownloadFileTask extends BasicTask {
 			out.write(buffer, 0, len);
 			stepNum += 1;
 			bytesRead += len;
-			if(bytesRead > nextLog){
+			if (bytesRead > nextLog) {
 				nextLog += LOGAFTER_SIZE;
-//				System.out.println(bytesRead + " bytes read...");
-				System.out.println(Math.round(((double)bytesRead / this.totalBytes) * 100) + " complete");
+				// System.out.println(bytesRead + " bytes read...");
+				System.out.println(Math
+						.round((bytesRead / (double)this.totalBytes) * 100)
+						+ " complete");
 			}
 			setLastStep(stepNum);
 		}
@@ -148,5 +149,7 @@ public class DownloadFileTask extends BasicTask {
 			return this.in;
 		}
 	}
+
+
 
 }
