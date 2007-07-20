@@ -2896,11 +2896,12 @@ public class Installer {
 					+ System.getProperty("java.home") };
 
 			String antHome = System.getenv("CATALINA_HOME");
-			String executable = "version.sh";
+			String[] cmd = null;
 			if (InstallerUtils.isWindows()) {
-				executable = "version.bat";
+				cmd = new String[] { antHome + "/bin/version.bat"};
+			}else{
+				cmd = new String[]{"sh", antHome + "/bin/version.sh"};
 			}
-			String[] cmd = new String[] { antHome + "/bin/" + executable };
 			Process p = Runtime.getRuntime().exec(cmd, envp);
 			StringBuffer stdout = new StringBuffer();
 			new IOThread(p.getInputStream(), System.out, stdout).start();
@@ -2922,12 +2923,14 @@ public class Installer {
 					+ System.getProperty("java.home") };
 
 			String antHome = System.getenv("ANT_HOME");
-			String executable = "ant";
+
+			String[] cmd = null;
 			if (InstallerUtils.isWindows()) {
-				executable += ".bat";
+				cmd = new String[] { antHome + "/bin/ant.bat", "-version" };
+			}else{
+				cmd = new String[] { "sh", antHome + "/bin/ant", "-version" };
 			}
-			String[] cmd = new String[] { antHome + "/bin/" + executable,
-					"-version" };
+					
 			Process p = Runtime.getRuntime().exec(cmd, envp);
 			StringBuffer stdout = new StringBuffer();
 			new IOThread(p.getInputStream(), System.out, stdout).start();
