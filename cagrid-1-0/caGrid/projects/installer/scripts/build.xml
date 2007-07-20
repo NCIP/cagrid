@@ -768,4 +768,43 @@ ${authn.svc.csm.ctx}{
 				value="${grid.grouper.db.password}" />
 		</propertyfile>
 	</target>
+	
+	
+	<target name="configure-gme-globus-config">
+		<property name="config.file"
+			value="${service.dest.dir}/gme/etc/gme-globus-config.xml" />
+		<xmltask source="${config.file}" dest="${config.file}">
+			<attr
+				path="/mobius/resource[@name='gmeConfig']/gmeConfiguration-configuration/root-database"
+				attr="id" value="${gme.db.id}" />
+			<replace
+				path="/mobius/resource[@name='gmeConfig']/gmeConfiguration-configuration/root-database/host">
+				<![CDATA[
+		<host>${gme.db.host}</host>
+		]]>
+
+			</replace>
+			<replace
+				path="/mobius/resource[@name='gmeConfig']/gmeConfiguration-configuration/root-database/port">
+				<![CDATA[
+		<port>${gme.db.port}</port>
+		]]>
+
+			</replace>
+			<replace
+				path="/mobius/resource[@name='gmeConfig']/gmeConfiguration-configuration/root-database/username">
+				<![CDATA[
+		<username>${gme.db.username}</username>
+		]]>
+
+			</replace>
+			<replace
+				path="/mobius/resource[@name='gmeConfig']/gmeConfiguration-configuration/root-database/password">
+				<![CDATA[
+		<password>${gme.db.password}</password>
+		]]>
+			</replace>
+		</xmltask>
+	</target>	
+	
 </project>

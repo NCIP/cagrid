@@ -54,6 +54,7 @@ import org.cagrid.installer.steps.options.ListPropertyConfigurationOption;
 import org.cagrid.installer.steps.options.PasswordPropertyConfigurationOption;
 import org.cagrid.installer.steps.options.TextPropertyConfigurationOption;
 import org.cagrid.installer.steps.options.ListPropertyConfigurationOption.LabelValuePair;
+import org.cagrid.installer.tasks.CaGridInstallerAntTask;
 import org.cagrid.installer.tasks.CompileCaGridTask;
 import org.cagrid.installer.tasks.ConditionalTask;
 import org.cagrid.installer.tasks.ConfigureDorianTask;
@@ -1546,6 +1547,20 @@ public class Installer {
 		});
 		incrementProgress();
 
+		PropertyConfigurationStep gmeDbInfoStep = new PropertyConfigurationStep(
+				this.model.getMessage("gme.db.config.title"), this.model
+						.getMessage("gme.db.config.desc"));
+		addDBConfigPropertyOptions(gmeDbInfoStep, "gme.", "gme");
+		this.model.add(gmeDbInfoStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return "true".equals(model.getState()
+						.get(Constants.INSTALL_GME));
+			}
+		});
+		incrementProgress();
+
 		DeployPropertiesGMEFileEditorStep editGMEDeployPropertiesStep = new DeployPropertiesGMEFileEditorStep(
 				"gme", this.model
 						.getMessage("gme.edit.deploy.properties.title"),
@@ -2038,16 +2053,16 @@ public class Installer {
 										Constants.AUTHN_SVC_LDAP_LAST_NAME_ATTRIBUTE,
 										"sn"), true));
 		authnSvcLdapStep
-		.getOptions()
-		.add(
-				new TextPropertyConfigurationOption(
-						Constants.AUTHN_SVC_LDAP_EMAIL_ID_ATTRIBUTE,
-						this.model
-								.getMessage("authn.svc.ldap.email.id.attribute"),
-						getProperty(
-								this.model.getState(),
+				.getOptions()
+				.add(
+						new TextPropertyConfigurationOption(
 								Constants.AUTHN_SVC_LDAP_EMAIL_ID_ATTRIBUTE,
-								"mail"), true));
+								this.model
+										.getMessage("authn.svc.ldap.email.id.attribute"),
+								getProperty(
+										this.model.getState(),
+										Constants.AUTHN_SVC_LDAP_EMAIL_ID_ATTRIBUTE,
+										"mail"), true));
 		// TODO: add validation
 		this.model.add(authnSvcLdapStep, new Condition() {
 
@@ -2222,6 +2237,18 @@ public class Installer {
 							}
 
 						}));
+
+		installStep.getTasks().add(
+				new ConditionalTask(new CaGridInstallerAntTask(this.model
+						.getMessage("configuring.gme.title"), "",
+						"configure-gme-globus-config"), new Condition() {
+
+					public boolean evaluate(WizardModel m) {
+						CaGridInstallerModel model = (CaGridInstallerModel) m;
+						return model.isTrue(Constants.INSTALL_GME);
+					}
+
+				}));
 
 		installStep.getTasks().add(
 				new ConditionalTask(new DeployServiceTask(this.model
