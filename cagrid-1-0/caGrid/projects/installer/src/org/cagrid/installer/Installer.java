@@ -1592,9 +1592,9 @@ public class Installer {
 		});
 
 		DeployPropertiesFileEditorStep editcaDSRDeployPropertiesStep = new DeployPropertiesFileEditorStep(
-				"caDSR", this.model
-						.getMessage("caDSR.edit.deploy.properties.title"),
-				this.model.getMessage("caDSR.edit.deploy.properties.desc"),
+				"cadsr", this.model
+						.getMessage("cadsr.edit.deploy.properties.title"),
+				this.model.getMessage("cadsr.edit.deploy.properties.desc"),
 				this.model.getMessage("edit.properties.property.name"),
 				this.model.getMessage("edit.properties.property.value"));
 		this.model.add(editcaDSRDeployPropertiesStep, new Condition() {
@@ -1602,6 +1602,20 @@ public class Installer {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
 				return "true".equals(model.getState().get(
 						Constants.INSTALL_CADSR));
+			}
+		});
+		
+		ServicePropertiesFileEditorStep editCaDSRServicePropertiesStep = new ServicePropertiesFileEditorStep(
+				"cadsr", this.model
+						.getMessage("cadsr.edit.service.properties.title"),
+				this.model.getMessage("cadsr.edit.service.properties.desc"),
+				this.model.getMessage("edit.properties.property.name"),
+				this.model.getMessage("edit.properties.property.value"));
+		this.model.add(editCaDSRServicePropertiesStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return "true".equals(model.getState()
+						.get(Constants.INSTALL_CADSR));
 			}
 		});
 
@@ -2276,7 +2290,7 @@ public class Installer {
 
 		installStep.getTasks().add(
 				new ConditionalTask(new DeployServiceTask(this.model
-						.getMessage("installing.caDSR.title"), "", "caDSR",
+						.getMessage("installing.cadsr.title"), "", "cadsr",
 						this.model), new Condition() {
 
 					public boolean evaluate(WizardModel m) {
