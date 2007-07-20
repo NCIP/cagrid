@@ -2726,25 +2726,18 @@ public class Installer {
 
 	private void addInstallActiveBPELInfoStep(DynamicStatefulWizardModel m,
 			String homeProp, String defaultDirName, String titleProp,
-			String descProp, String installDirPath) {
+			String descProp, String installDirPathProp) {
 
-		File homeFile = null;
-		String home = (String) m.getState().get(homeProp);
-		if (home != null) {
-			homeFile = new File(home);
-		} else {
-			homeFile = new File(System.getProperty("user.home")
-					+ File.separator + "packages" + File.separator
-					+ defaultDirName);
-		}
 		PropertyConfigurationStep installInfoStep = new PropertyConfigurationStep(
 				m.getMessage(titleProp), m.getMessage(descProp));
-		installInfoStep.getOptions().add(
-				new TextPropertyConfigurationOption(installDirPath, m
-						.getMessage("directory"), homeFile.getParentFile()
-						.getAbsolutePath(), true));
+		FilePropertyConfigurationOption fpo = new FilePropertyConfigurationOption(
+				installDirPathProp, m.getMessage("directory"), System
+						.getProperty("user.home"), true);
+		fpo.setDirectoriesOnly(true);
+		fpo.setBrowseLabel(m.getMessage("browse"));
+		installInfoStep.getOptions().add(fpo);
 		installInfoStep.getValidators().add(
-				new CreateFilePermissionValidator(homeProp, m
+				new CreateFilePermissionValidator(installDirPathProp, m
 						.getMessage("error.permission.directory.create")));
 		m.add(installInfoStep, new Condition() {
 

@@ -86,9 +86,11 @@ public class DeployActiveBPELTask extends BasicTask {
 			isWindows = true;
 		}
 		//build command
-		String[] cmd = new String[4];
+		String[] cmd = null;
 		
 		if(isWindows){
+			cmd = new String[4];
+			
 			cmd[0]="cmd.exe" ;
 			
 			cmd[1]="/C";
@@ -96,10 +98,15 @@ public class DeployActiveBPELTask extends BasicTask {
 			cmd[3]="install.bat";
 			
 		}else{
+			cmd = new String[1];
 			cmd[0] = "./"+cmd+".sh";
 		}
 
-		logger.debug("########## Executing: " + cmd);
+		StringBuilder sb = new StringBuilder();
+		for(String s : cmd){
+			sb.append(cmd).append(" ");
+		}
+		logger.debug("######### Executing: " + dir.getAbsolutePath() + "/" + sb);
 
 		// run ant
 		Process p = Runtime.getRuntime().exec(cmd, envp,dir);

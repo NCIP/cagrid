@@ -197,20 +197,7 @@ public class InstallerUtils {
 		return w.getBuffer().toString();
 	}
 
-	public static boolean isSecurityConfigurationNeeded(
-			CaGridInstallerModel model) {
-		Map state = model.getState();
-		return isTrue(state, Constants.USE_SECURE_CONTAINER)
-				&& !isTrue(state, Constants.INSTALL_DORIAN)
-				&& (isTrue(state, Constants.RECONFIGURE_GLOBUS)
-						|| isTrue(state, Constants.REDEPLOY_GLOBUS)
-						|| InstallerUtils.isTomcatContainer(model)
-						&& !InstallerUtils.isTrue(state,
-								Constants.GLOBUS_DEPLOYED) || !InstallerUtils
-						.isTomcatContainer(model)
-						&& !InstallerUtils.isTrue(state,
-								Constants.GLOBUS_CONFIGURED));
-	}
+	
 
 	public static boolean isTrue(Map state, String propName) {
 		return "true".equals(state.get(propName));
