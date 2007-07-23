@@ -34,6 +34,7 @@ import org.cagrid.installer.steps.ConfigureGTSDBStep;
 import org.cagrid.installer.steps.ConfigureGridGrouperStep;
 import org.cagrid.installer.steps.ConfigureNewDorianCAStep;
 import org.cagrid.installer.steps.ConfigureServiceCertStep;
+import org.cagrid.installer.steps.ConfigureServiceMetadataStep;
 import org.cagrid.installer.steps.ConfigureSyncGTSStep;
 import org.cagrid.installer.steps.Constants;
 import org.cagrid.installer.steps.DeployPropertiesFileEditorStep;
@@ -41,6 +42,7 @@ import org.cagrid.installer.steps.DeployPropertiesGMEFileEditorStep;
 import org.cagrid.installer.steps.DeployPropertiesWorkflowFileEditorStep;
 import org.cagrid.installer.steps.InstallationCompleteStep;
 import org.cagrid.installer.steps.IntroduceServicePropertiesFileEditorStep;
+import org.cagrid.installer.steps.PresentLicenseStep;
 import org.cagrid.installer.steps.PropertyConfigurationStep;
 import org.cagrid.installer.steps.ReplaceDefaultGTSCAStep;
 import org.cagrid.installer.steps.RunTasksStep;
@@ -268,11 +270,11 @@ public class Installer {
 				logger.info("Loading '" + cagridInstallerFileName + "'");
 				Properties props = new Properties();
 				props.load(new FileInputStream(cagridInstallerFile));
-//				defaultState.putAll(props);
+				// defaultState.putAll(props);
 				Enumeration e = props.propertyNames();
-				while(e.hasMoreElements()){
-					String propName = (String)e.nextElement();
-					if(!defaultState.containsKey(propName)){
+				while (e.hasMoreElements()) {
+					String propName = (String) e.nextElement();
+					if (!defaultState.containsKey(propName)) {
 						defaultState.put(propName, props.getProperty(propName));
 					}
 				}
@@ -287,8 +289,8 @@ public class Installer {
 		}
 
 		incrementProgress();
-		
-		//TODO: provide some factory method here
+
+		// TODO: provide some factory method here
 		this.model = new CaGridInstallerModelImpl(defaultState);
 
 		// Clear some flags
@@ -355,6 +357,11 @@ public class Installer {
 		incrementProgress();
 
 		// Initialize steps
+
+		PresentLicenseStep licenseStep = new PresentLicenseStep(this.model
+				.getMessage("accept.license.title"), this.model
+				.getMessage("accept.license.desc"));
+		this.model.add(licenseStep);
 
 		// Gives user choice to install caGrid, or one or more services, or
 		// both.
@@ -652,23 +659,22 @@ public class Installer {
 								return model.isTrue(Constants.INSTALL_SERVICES);
 							}
 						}));
-		
+
 		installDependenciesStep.getTasks().add(new AbstractTask("", "") {
 
 			public Object execute(Map state) throws Exception {
-				if("true".equals(Constants.INSTALL_TOMCAT)){
+				if ("true".equals(Constants.INSTALL_TOMCAT)) {
 					state.put(Constants.GLOBUS_DEPLOYED, "false");
 					state.put(Constants.GLOBUS_CONFIGURED, "false");
 				}
 				return null;
 			}
 
-			
 		});
 		installDependenciesStep.getTasks().add(
 				new SaveSettingsTask(this.model
 						.getMessage("saving.settings.title"), ""));
-		
+
 		this.model.add(installDependenciesStep, new Condition() {
 			public boolean evaluate(WizardModel m) {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
@@ -984,6 +990,18 @@ public class Installer {
 			}
 		});
 
+		ConfigureServiceMetadataStep editMySvcMetaStep = new ConfigureServiceMetadataStep(
+				Constants.MY_SERVICE_DIR, this.model
+						.getMessage("my.service.edit.service.metadata.title"),
+				this.model.getMessage("my.service.edit.service.metadata.desc"));
+		this.model.add(editMySvcMetaStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return "true".equals(model.getState().get(
+						Constants.INSTALL_MY_SERVICE));
+			}
+		});
+
 		IntroduceServicePropertiesFileEditorStep mySvcDeployPropsStep = new IntroduceServicePropertiesFileEditorStep(
 				Constants.MY_SERVICE_DIR,
 				"deploy.properties",
@@ -1072,6 +1090,23 @@ public class Installer {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
 				return model.isTrue(Constants.INSTALL_SYNC_GTS)
 						&& model.isTrue(Constants.REPLACE_DEFAULT_GTS_CA);
+			}
+		});
+
+		ConfigureServiceMetadataStep editDorianSvcMetaStep = new ConfigureServiceMetadataStep(
+				"",
+				this.model.getMessage("dorian.edit.service.metadata.title"),
+				this.model.getMessage("dorian.edit.service.metadata.desc")) {
+			protected String getServiceMetadataPath() {
+				return InstallerUtils.getServiceDestDir(this.model.getState())
+						+ "/dorian/etc/serviceMetadata.xml";
+			}
+		};
+		this.model.add(editDorianSvcMetaStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return "true".equals(model.getState().get(
+						Constants.INSTALL_DORIAN));
 			}
 		});
 
@@ -1572,6 +1607,22 @@ public class Installer {
 		});
 		incrementProgress();
 
+		ConfigureServiceMetadataStep editGMESvcMetaStep = new ConfigureServiceMetadataStep(
+				"", this.model.getMessage("gme.edit.service.metadata.title"),
+				this.model.getMessage("gme.edit.service.metadata.desc")) {
+			protected String getServiceMetadataPath() {
+				return InstallerUtils.getServiceDestDir(this.model.getState())
+						+ "/gme/etc/serviceMetadata.xml";
+			}
+		};
+		this.model.add(editGMESvcMetaStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return "true".equals(model.getState()
+						.get(Constants.INSTALL_GME));
+			}
+		});
+
 		PropertyConfigurationStep gmeDbInfoStep = new PropertyConfigurationStep(
 				this.model.getMessage("gme.db.config.title"), this.model
 						.getMessage("gme.db.config.desc"));
@@ -1602,6 +1653,22 @@ public class Installer {
 
 		incrementProgress();
 
+		ConfigureServiceMetadataStep editEVSSvcMetaStep = new ConfigureServiceMetadataStep(
+				"", this.model.getMessage("evs.edit.service.metadata.title"),
+				this.model.getMessage("evs.edit.service.metadata.desc")) {
+			protected String getServiceMetadataPath() {
+				return InstallerUtils.getServiceDestDir(this.model.getState())
+						+ "/evs/etc/serviceMetadata.xml";
+			}
+		};
+		this.model.add(editEVSSvcMetaStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return "true".equals(model.getState()
+						.get(Constants.INSTALL_EVS));
+			}
+		});
+
 		DeployPropertiesFileEditorStep editEVSDeployPropertiesStep = new DeployPropertiesFileEditorStep(
 				"evs", this.model
 						.getMessage("evs.edit.deploy.properties.title"),
@@ -1613,6 +1680,22 @@ public class Installer {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
 				return "true".equals(model.getState()
 						.get(Constants.INSTALL_EVS));
+			}
+		});
+
+		ConfigureServiceMetadataStep editCaDSRSvcMetaStep = new ConfigureServiceMetadataStep(
+				"", this.model.getMessage("cadsr.edit.service.metadata.title"),
+				this.model.getMessage("cadsr.edit.service.metadata.desc")) {
+			protected String getServiceMetadataPath() {
+				return InstallerUtils.getServiceDestDir(this.model.getState())
+						+ "/cadsr/etc/serviceMetadata.xml";
+			}
+		};
+		this.model.add(editCaDSRSvcMetaStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return "true".equals(model.getState().get(
+						Constants.INSTALL_CADSR));
 			}
 		});
 
@@ -1629,7 +1712,7 @@ public class Installer {
 						Constants.INSTALL_CADSR));
 			}
 		});
-		
+
 		ServicePropertiesFileEditorStep editCaDSRServicePropertiesStep = new ServicePropertiesFileEditorStep(
 				"cadsr", this.model
 						.getMessage("cadsr.edit.service.properties.title"),
@@ -1639,8 +1722,24 @@ public class Installer {
 		this.model.add(editCaDSRServicePropertiesStep, new Condition() {
 			public boolean evaluate(WizardModel m) {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return "true".equals(model.getState().get(
+						Constants.INSTALL_CADSR));
+			}
+		});
+
+		ConfigureServiceMetadataStep editFQPSvcMetaStep = new ConfigureServiceMetadataStep(
+				"", this.model.getMessage("fqp.edit.service.metadata.title"),
+				this.model.getMessage("fqp.edit.service.metadata.desc")) {
+			protected String getServiceMetadataPath() {
+				return InstallerUtils.getServiceDestDir(this.model.getState())
+						+ "/fqp/etc/serviceMetadata.xml";
+			}
+		};
+		this.model.add(editFQPSvcMetaStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
 				return "true".equals(model.getState()
-						.get(Constants.INSTALL_CADSR));
+						.get(Constants.INSTALL_FQP));
 			}
 		});
 
@@ -1672,6 +1771,23 @@ public class Installer {
 			}
 		});
 
+		ConfigureServiceMetadataStep editWorkflowSvcMetaStep = new ConfigureServiceMetadataStep(
+				"", this.model
+						.getMessage("workflow.edit.service.metadata.title"),
+				this.model.getMessage("workflow.edit.service.metadata.desc")) {
+			protected String getServiceMetadataPath() {
+				return InstallerUtils.getServiceDestDir(this.model.getState())
+						+ "/workflow/etc/serviceMetadata.xml";
+			}
+		};
+		this.model.add(editWorkflowSvcMetaStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return "true".equals(model.getState().get(
+						Constants.INSTALL_WORKFLOW));
+			}
+		});
+
 		ServicePropertiesWorkflowFileEditorStep editWorkflowServicePropertiesStep = new ServicePropertiesWorkflowFileEditorStep(
 				"workflow", this.model
 						.getMessage("workflow.edit.service.properties.title"),
@@ -1697,6 +1813,22 @@ public class Installer {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
 				return "true".equals(model.getState().get(
 						Constants.INSTALL_WORKFLOW));
+			}
+		});
+
+		ConfigureServiceMetadataStep editGTSSvcMetaStep = new ConfigureServiceMetadataStep(
+				"", this.model.getMessage("gts.edit.service.metadata.title"),
+				this.model.getMessage("gts.edit.service.metadata.desc")) {
+			protected String getServiceMetadataPath() {
+				return InstallerUtils.getServiceDestDir(this.model.getState())
+						+ "/gts/etc/serviceMetadata.xml";
+			}
+		};
+		this.model.add(editGTSSvcMetaStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return "true".equals(model.getState()
+						.get(Constants.INSTALL_GTS));
 			}
 		});
 
@@ -1752,6 +1884,23 @@ public class Installer {
 			}
 		});
 		incrementProgress();
+
+		ConfigureServiceMetadataStep editAuthnSvcMetaStep = new ConfigureServiceMetadataStep(
+				"", this.model
+						.getMessage("authn.svc.edit.service.metadata.title"),
+				this.model.getMessage("authn.svc.edit.service.metadata.desc")) {
+			protected String getServiceMetadataPath() {
+				return InstallerUtils.getServiceDestDir(this.model.getState())
+						+ "/authentication-service/etc/serviceMetadata.xml";
+			}
+		};
+		this.model.add(editAuthnSvcMetaStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return "true".equals(model.getState().get(
+						Constants.INSTALL_AUTHN_SVC));
+			}
+		});
 
 		PropertyConfigurationStep checkAuthnUseGeneratedCAStep = new PropertyConfigurationStep(
 				this.model.getMessage("authn.svc.check.use.gen.ca.title"),
@@ -2129,6 +2278,25 @@ public class Installer {
 			}
 		});
 
+		ConfigureServiceMetadataStep editGridGrouperSvcMetaStep = new ConfigureServiceMetadataStep(
+				"",
+				this.model
+						.getMessage("grid.grouper.edit.service.metadata.title"),
+				this.model
+						.getMessage("grid.grouper.edit.service.metadata.desc")) {
+			protected String getServiceMetadataPath() {
+				return InstallerUtils.getServiceDestDir(this.model.getState())
+						+ "/gridgrouper/etc/serviceMetadata.xml";
+			}
+		};
+		this.model.add(editGridGrouperSvcMetaStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return "true".equals(model.getState().get(
+						Constants.INSTALL_GRID_GROUPER));
+			}
+		});
+
 		ConfigureGridGrouperStep gridGrouperConfigStep = new ConfigureGridGrouperStep(
 				this.model.getMessage("grid.grouper.config.title"), this.model
 						.getMessage("grid.grouper.config.desc"));
@@ -2419,11 +2587,11 @@ public class Installer {
 					}
 
 				}));
-		
+
 		installStep.getTasks().add(
 				new ConditionalTask(new DeployWorkflowServiceTask(this.model
-						.getMessage("installing.workflow.title"), "", "workflow",
-						this.model), new Condition() {
+						.getMessage("installing.workflow.title"), "",
+						"workflow", this.model), new Condition() {
 
 					public boolean evaluate(WizardModel m) {
 						CaGridInstallerModel model = (CaGridInstallerModel) m;
@@ -2918,9 +3086,9 @@ public class Installer {
 			String antHome = System.getenv("CATALINA_HOME");
 			String[] cmd = null;
 			if (InstallerUtils.isWindows()) {
-				cmd = new String[] { antHome + "/bin/version.bat"};
-			}else{
-				cmd = new String[]{"sh", antHome + "/bin/version.sh"};
+				cmd = new String[] { antHome + "/bin/version.bat" };
+			} else {
+				cmd = new String[] { "sh", antHome + "/bin/version.sh" };
 			}
 			Process p = Runtime.getRuntime().exec(cmd, envp);
 			StringBuffer stdout = new StringBuffer();
@@ -2947,10 +3115,10 @@ public class Installer {
 			String[] cmd = null;
 			if (InstallerUtils.isWindows()) {
 				cmd = new String[] { antHome + "/bin/ant.bat", "-version" };
-			}else{
+			} else {
 				cmd = new String[] { "sh", antHome + "/bin/ant", "-version" };
 			}
-					
+
 			Process p = Runtime.getRuntime().exec(cmd, envp);
 			StringBuffer stdout = new StringBuffer();
 			new IOThread(p.getInputStream(), System.out, stdout).start();

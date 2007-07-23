@@ -59,9 +59,25 @@
 	</target>
 
 	<target name="jar" depends="compile">
+		
+		<copy file="src/download.properties" todir="build/classes" overwrite="true">
+			<filterset>
+				<filter token="DOWNLOAD_PROPERTIES_URL" value="${download.properties.url}"/>
+			</filterset>
+		</copy>				
+		
+		<copy todir="build/classes" overwrite="true">
+			<fileset dir="src">
+				<include name="images/installer.gif"/>
+				<include name="*.properties"/>
+				<include name="*.txt"/>
+				<exclude name="download.properties"/>
+			</fileset>
+		</copy>		
+		
 		<jar destfile="${build.jars}/${project.jar.prefix}.jar"
 			basedir="${build.classes}"
-			includes="org/cagrid/**/*.class"
+			includes="org/cagrid/**/*.class **/*.properties **/*.txt images/**"
 			manifest="manifest.txt"/>
 	</target>
 
@@ -70,8 +86,11 @@
 	
 
 	<target name="dist-cagrid">
+		
 		<mkdir dir="build"/>
+		
 		<property name="cagrid.home" value="../../.."/>
+		
 		<zip destfile="build/${cagrid.master.jar.prefix}src.zip">
 			<fileset dir="${cagrid.home}">
 				<include name="caGrid/**"/>
@@ -79,6 +98,7 @@
 				<exclude name="**/bin/**"/>
 			</fileset>
 		</zip>
+		
 	</target>
 	
 	<target name="dist-installer" depends="jar">
@@ -93,6 +113,7 @@
 			<fileset dir="../dorian/lib">
 				<include name="mysql-connector*.jar"/>
 			</fileset>
+
 			<fileset dir="lib">
 				<include name="commons-logging*.jar"/>
 				<include name="log4j*.jar"/>
@@ -106,27 +127,12 @@
 			<fileset dir="ext/lib">
 				<include name="caGrid*wizard.jar"/>
 			</fileset>
+			
 		</copy>
 		
 		<copy file="scripts/build.xml" todir="build/installer/scripts"/>
 		
-		<copy todir="build/installer" overwrite="true">
-			<fileset dir="src">
-				<include name="images/installer.gif"/>
-				<include name="*.properties"/>
-				<exclude name="download.properties"/>
-			</fileset>
-		</copy>
-		
-		<copy file="src/download.properties" todir="build/classes" overwrite="true">
-			<filterset>
-				<filter token="DOWNLOAD_PROPERTIES_URL" value="${download.properties.url}"/>
-			</filterset>
-		</copy>		
-		
 		<zip destfile="build/${project.jar.prefix}.zip" basedir="build/installer"/>
-		
-
 		
 		<copy file="cagrid.installer.properties" todir="build" overwrite="true">
 			<filterset>

@@ -3,8 +3,6 @@
  */
 package org.cagrid.installer.steps;
 
-import gov.nih.nci.cagrid.common.Utils;
-
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -19,11 +17,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
-import java.io.StringWriter;
 import java.util.Map;
 import java.util.Properties;
 
-import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
 import javax.swing.Icon;
 import javax.swing.JButton;
@@ -36,17 +32,9 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
@@ -59,7 +47,6 @@ import org.pietschy.wizard.PanelWizardStep;
 import org.pietschy.wizard.WizardModel;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
@@ -179,7 +166,7 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 
 		JPanel optionsPanel = new JPanel();
 		optionsPanel.setLayout(new GridBagLayout());
-		add(optionsPanel, getGridBagConstraints(0, 0));
+		add(optionsPanel, InstallerUtils.getGridBagConstraints(0, 0));
 
 		// Add gtsServiceURI field
 		String gtsServiceURI = getProperty(this.model.getState(),
@@ -280,7 +267,7 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 		JPanel trustedAuthFilterPanel = new JPanel();
 		trustedAuthFilterPanel.setLayout(new BorderLayout());
 		trustedAuthFilterPanel.setPreferredSize(new Dimension(500, 125));
-		add(trustedAuthFilterPanel, getGridBagConstraints(0, 1));
+		add(trustedAuthFilterPanel, InstallerUtils.getGridBagConstraints(0, 1));
 
 		JPanel buttonPanel = new JPanel();
 		this.tafCmdAdd = new JButton(this.model.getMessage("add"));
@@ -295,20 +282,8 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 				"AuthorityGTS", "SourceGTS" };
 		this.tafTableModel = new DefaultTableModel(new Object[0][0], colNames);
 		this.tafTable = new JTable(this.tafTableModel);
-		DefaultTableCellRenderer r = new DefaultTableCellRenderer() {
-			public Component getTableCellRendererComponent(JTable table,
-					Object value, boolean isSelected, boolean hasFocus,
-					int row, int column) {
-				Component renderer = super.getTableCellRendererComponent(table,
-						value, isSelected, hasFocus, row, column);
-				setBorder(BorderFactory.createEtchedBorder());
-				return renderer;
-			}
-		};
-		for (int i = 0; i < 8; i++) {
-			TableColumn col = this.tafTable.getColumnModel().getColumn(i);
-			col.setCellRenderer(r);
-		}
+		InstallerUtils.setUpCellRenderer(this.tafTable);
+
 		JComboBox lifetimeChoices = new JComboBox();
 		lifetimeChoices.addItem(EMPTY_CHOICE);
 		lifetimeChoices.addItem("Valid");
@@ -332,7 +307,7 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 
 		this.tafTable
 				.setPreferredScrollableViewportSize(new Dimension(400, 100));
-		JScrollPane scrollPane = new JScrollPane(tafTable);
+		JScrollPane scrollPane = new JScrollPane(this.tafTable);
 		trustedAuthFilterPanel.add(BorderLayout.NORTH, new JLabel(this.model
 				.getMessage("sync.gts.auth.filter")));
 		trustedAuthFilterPanel.add(BorderLayout.CENTER, scrollPane);
@@ -341,7 +316,7 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 		JPanel excludedCAsPanel = new JPanel();
 		excludedCAsPanel.setLayout(new BorderLayout());
 		excludedCAsPanel.setPreferredSize(new Dimension(500, 125));
-		add(excludedCAsPanel, getGridBagConstraints(0, 2));
+		add(excludedCAsPanel, InstallerUtils.getGridBagConstraints(0, 2));
 
 		JPanel ecButtonPanel = new JPanel();
 		this.ecCmdAdd = new JButton(this.model.getMessage("add"));
@@ -352,12 +327,9 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 		ecButtonPanel.add(this.ecCmdDelete);
 
 		String[] ecColNames = new String[] { "ExcludedCAs" };
-		// Object[][] ecData = new Object[1][1];
-		// ecData[0][0] = "O=OSU,OU=BMI,OU=caGrid,OU=Trust Fabric,CN=caGrid
-		// Trust Fabric CA";
 		this.ecTableModel = new DefaultTableModel(new Object[0][0], ecColNames);
 		this.ecTable = new JTable(this.ecTableModel);
-		this.ecTable.getColumnModel().getColumn(0).setCellRenderer(r);
+		InstallerUtils.setUpCellRenderer(this.ecTable);
 		this.ecTable
 				.setPreferredScrollableViewportSize(new Dimension(400, 100));
 		excludedCAsPanel.add(BorderLayout.NORTH, new JLabel(this.model
@@ -419,14 +391,6 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 		return field.getText() == null || field.getText().trim().length() == 0;
 	}
 
-	private Object getGridBagConstraints(int x, int y) {
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.gridx = x;
-		gbc.fill = GridBagConstraints.BOTH;
-		gbc.weightx = 1;
-		gbc.gridy = y;
-		return gbc;
-	}
 
 	public void prepare() {
 		try {

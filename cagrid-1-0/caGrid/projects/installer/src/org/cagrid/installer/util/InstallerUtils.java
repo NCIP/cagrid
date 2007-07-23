@@ -3,6 +3,8 @@
  */
 package org.cagrid.installer.util;
 
+import java.awt.Component;
+import java.awt.GridBagConstraints;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -22,6 +24,10 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import javax.swing.BorderFactory;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumn;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -217,7 +223,34 @@ public class InstallerUtils {
 		return System.getProperty("user.home") + "/.cagrid/installer";
 	}
 
-	public static boolean isEmpty(String pwd) {
-		return pwd == null || pwd.trim().length() == 0;
+	public static boolean isEmpty(String value) {
+		return value == null || value.trim().length() == 0;
+	}
+
+	public static void setUpCellRenderer(JTable table) {
+		DefaultTableCellRenderer r = new DefaultTableCellRenderer() {
+			public Component getTableCellRendererComponent(JTable table,
+					Object value, boolean isSelected, boolean hasFocus,
+					int row, int column) {
+				Component renderer = super.getTableCellRendererComponent(table,
+						value, isSelected, hasFocus, row, column);
+				setBorder(BorderFactory.createEtchedBorder());
+				return renderer;
+			}
+		};
+		int colCount = table.getColumnCount();
+		for (int i = 0; i < colCount; i++) {
+			TableColumn col = table.getColumnModel().getColumn(i);
+			col.setCellRenderer(r);
+		}
+	}
+
+	public static Object getGridBagConstraints(int x, int y) {
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.gridx = x;
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.weightx = 1;
+		gbc.gridy = y;
+		return gbc;		
 	}
 }
