@@ -76,7 +76,6 @@
 			<fileset dir="${cagrid.home}">
 				<include name="caGrid/**"/>
 				<exclude name="caGrid/projects/portal*"/>
-				<exclude name="caGrid/installer/deployer/**"/>
 				<exclude name="**/bin/**"/>
 			</fileset>
 		</zip>
