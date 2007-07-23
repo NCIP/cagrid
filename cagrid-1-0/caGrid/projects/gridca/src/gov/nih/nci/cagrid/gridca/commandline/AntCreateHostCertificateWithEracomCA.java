@@ -61,7 +61,7 @@ public class AntCreateHostCertificateWithEracomCA {
 			String rootSub = cacert.getSubjectDN().toString();
 			int index = rootSub.lastIndexOf(",");
 			String subject = rootSub.substring(0, index)
-					+ ",OU=Services,CN=host/" + host;
+					+ ",CN=host/" + host;
 
 			GregorianCalendar date = new GregorianCalendar(TimeZone
 					.getTimeZone("GMT"));
