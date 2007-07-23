@@ -3,7 +3,6 @@
  */
 package org.cagrid.installer;
 
-import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.net.URL;
@@ -22,7 +21,7 @@ import javax.xml.xpath.XPathFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.installer.model.CaGridInstallerModel;
-import org.cagrid.installer.model.DynamicStatefulWizardModel;
+import org.cagrid.installer.model.CaGridInstallerModelImpl;
 import org.cagrid.installer.steps.AndCondition;
 import org.cagrid.installer.steps.AuthnSvcDeployPropertiesFileEditorStep;
 import org.cagrid.installer.steps.CheckSecureContainerStep;
@@ -78,7 +77,6 @@ import org.cagrid.installer.tasks.DownloadFileTask;
 import org.cagrid.installer.tasks.GenerateCATask;
 import org.cagrid.installer.tasks.GenerateServiceCredsTask;
 import org.cagrid.installer.tasks.SaveSettingsTask;
-import org.cagrid.installer.tasks.Task;
 import org.cagrid.installer.tasks.UnTarInstallTask;
 import org.cagrid.installer.tasks.UnzipInstallTask;
 import org.cagrid.installer.util.IOThread;
@@ -105,7 +103,7 @@ public class Installer {
 
 	private static final int NUM_ERACOM_SLOTS = 16;
 
-	private DynamicStatefulWizardModel model;
+	private CaGridInstallerModelImpl model;
 
 	private SplashScreen screen;
 
@@ -289,8 +287,9 @@ public class Installer {
 		}
 
 		incrementProgress();
-
-		this.model = new DynamicStatefulWizardModel(defaultState);
+		
+		//TODO: provide some factory method here
+		this.model = new CaGridInstallerModelImpl(defaultState);
 
 		// Clear some flags
 		this.model.getState().remove(Constants.DORIAN_USE_GEN_CA);
@@ -2745,7 +2744,7 @@ public class Installer {
 						homeProp), c));
 	}
 
-	private void addInstallActiveBPELInfoStep(DynamicStatefulWizardModel m,
+	private void addInstallActiveBPELInfoStep(CaGridInstallerModelImpl m,
 			String homeProp, String defaultDirName, String titleProp,
 			String descProp, String installDirPathProp) {
 
@@ -2773,7 +2772,7 @@ public class Installer {
 		});
 	}
 
-	private void addInstallInfoStep(DynamicStatefulWizardModel m,
+	private void addInstallInfoStep(CaGridInstallerModelImpl m,
 			String homeProp, String defaultDirName, String titleProp,
 			String descProp, String installDirPathProp, final String installProp) {
 
@@ -2798,7 +2797,7 @@ public class Installer {
 		});
 	}
 
-	private void addCheckInstallStep(DynamicStatefulWizardModel m,
+	private void addCheckInstallStep(CaGridInstallerModelImpl m,
 			String titleProp, String descProp, String configProp,
 			final String installedProp) {
 
@@ -2811,7 +2810,7 @@ public class Installer {
 				c);
 	}
 
-	private void addCheckInstallStep(DynamicStatefulWizardModel m,
+	private void addCheckInstallStep(CaGridInstallerModelImpl m,
 			String titleProp, String descProp, String configProp,
 			final String installedProp, Condition c1) {
 
@@ -2826,7 +2825,7 @@ public class Installer {
 				new AndCondition(c, c1));
 	}
 
-	private void addCheckInstallStep(DynamicStatefulWizardModel m,
+	private void addCheckInstallStep(CaGridInstallerModelImpl m,
 			String titleProp, String descProp, String configProp, Condition c) {
 		PropertyConfigurationStep checkInstallStep = new PropertyConfigurationStep(
 				m.getMessage(titleProp), m.getMessage(descProp));

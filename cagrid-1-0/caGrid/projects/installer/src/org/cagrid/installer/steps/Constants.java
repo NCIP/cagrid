@@ -394,7 +394,6 @@ public abstract class Constants {
 	public static final String REPLACEMENT_GTS_CA_CERT_PATH = "replacement.gts.ca.cert.path";
 
 	public static final String AUTHN_SVC_LDAP_EMAIL_ID_ATTRIBUTE = "authn.svc.ldap.email.id.attribute";
-	
 
 	
 }

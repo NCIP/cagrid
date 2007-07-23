@@ -22,12 +22,12 @@ import org.pietschy.wizard.models.DynamicModel;
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
  * 
  */
-public class DynamicStatefulWizardModel extends DynamicModel implements
+public class CaGridInstallerModelImpl extends DynamicModel implements
 
 CaGridInstallerModel {
 
 	private static final Log logger = LogFactory
-			.getLog(DynamicStatefulWizardModel.class);
+			.getLog(CaGridInstallerModelImpl.class);
 
 	private PropertyChangeEventProviderMap state;
 
@@ -36,15 +36,15 @@ CaGridInstallerModel {
 	/**
 	 * 
 	 */
-	public DynamicStatefulWizardModel() {
+	public CaGridInstallerModelImpl() {
 		this(null, null);
 	}
 
-	public DynamicStatefulWizardModel(Map state) {
+	public CaGridInstallerModelImpl(Map state) {
 		this(state, null);
 	}
 
-	public DynamicStatefulWizardModel(Map state, ResourceBundle messages) {
+	public CaGridInstallerModelImpl(Map state, ResourceBundle messages) {
 
 		if (state == null) {
 			this.state = new PropertyChangeEventProviderMap(new HashMap());
@@ -55,6 +55,7 @@ CaGridInstallerModel {
 		if (this.messages == null) {
 			// Load messages
 			try {
+				//TODO: support international messages
 				this.messages = ResourceBundle.getBundle(Constants.MESSAGES,
 						Locale.US);
 			} catch (Exception ex) {
@@ -83,7 +84,7 @@ CaGridInstallerModel {
 
 	private class PropertyChangeEventProviderMap extends HashMap {
 		private PropertyChangeSupport pcs = new PropertyChangeSupport(
-				DynamicStatefulWizardModel.this);
+				CaGridInstallerModelImpl.this);
 
 		PropertyChangeEventProviderMap(Map map) {
 			super(map);
