@@ -95,7 +95,7 @@ public class DownloadFileTask extends BasicTask {
 			if (bytesRead > nextLog) {
 				nextLog += LOGAFTER_SIZE;
 				double percent = bytesRead / (double)this.totalBytes;
-				System.out.println(Math.round(percent * 100) + " complete");
+				System.out.println(Math.round(percent * 100) + " % complete");
 			}
 
 		}
