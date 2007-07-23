@@ -10,7 +10,7 @@
 		<ns1:GTSIdentity>/O=caBIG/OU=caGrid/OU=Training Trust Fabric/CN=host/training04.cagrid.org</ns1:GTSIdentity>	
 	</ns1:SyncDescriptor>
 	<ns1:ExcludedCAs>
-		<ns1:CASubject>O=caBIG,OU=caGrid,OU=Training Trust Fabric,CN=caGrid Trust Fabric CA</ns1:CASubject>
+		<ns1:CASubject>O=caBIG,OU=caGrid,OU=Training Trust Fabric,CN=caGrid Training Trust Fabric CA</ns1:CASubject>
 	</ns1:ExcludedCAs>
 	<ns1:DeleteInvalidFiles>false</ns1:DeleteInvalidFiles>
 	<ns1:CacheSize>
