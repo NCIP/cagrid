@@ -11,9 +11,12 @@
 	<!-- Place any other properties you will need here                  -->
 	<!-- ============================================================== -->
 	<property file="${basedir}/ext/resources/cagrid.properties" />
+	<property file="deploy.properties"/>
 	<property name="jar.prefix" value="${cagrid.master.jar.prefix}authentication-service" />
+	
 	<property name="ext.lib" value="${basedir}/ext/lib" />
 	<property name="ext.test.lib" value="${basedir}/ext/test/lib" />
+	<property name="ext.endorsed.dir" value="ext/endorsed/lib" />
 
 	<!--need to preset these-->
 	<property name="build.dir" location="build" />
