@@ -101,7 +101,7 @@
 		
 	</target>
 	
-	<target name="dist-installer" depends="jar">
+	<target name="dist-installer" depends="jar" description="Generates an installer release.">
 
 		<mkdir dir="build/installer/lib"/>
 		<mkdir dir="build/installer/scripts"/>
