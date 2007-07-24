@@ -10,7 +10,7 @@
         <password></password>
     </database>
     <IdentityProviderConfiguration>
-        <IdentityProviderName>Dorian IdP</IdentityProviderName>
+        <IdentityProviderName>Dorian</IdentityProviderName>
         <UIDLength min="4" max="10"/>
         <PasswordLength min="6" max="10"/>
         <RegistrationPolicy>gov.nih.nci.cagrid.dorian.service.idp.ManualRegistrationPolicy</RegistrationPolicy>
