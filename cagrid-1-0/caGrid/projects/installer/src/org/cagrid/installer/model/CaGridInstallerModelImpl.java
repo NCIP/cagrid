@@ -192,4 +192,8 @@ CaGridInstallerModel {
 				&& (isTrue(Constants.REDEPLOY_GLOBUS) || !isTrue(Constants.GLOBUS_DEPLOYED));
 	}
 
+	public void setDeactivatePrevious(boolean b) {
+		setPreviousAvailable(!b);
+	}
+
 }

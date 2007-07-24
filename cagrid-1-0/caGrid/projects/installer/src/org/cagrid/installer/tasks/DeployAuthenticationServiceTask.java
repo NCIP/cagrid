@@ -47,7 +47,7 @@ public class DeployAuthenticationServiceTask extends DeployServiceTask {
 		}
 
 		// Modify deploy.properties
-		new AntTask("", "", "set-authn-service-deploy-properties", env,
+		new AntTask("", "", "set-authn-service-idp-properties", env,
 				sysProps).execute(state);
 
 		// Deploy the service

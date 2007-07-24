@@ -88,14 +88,19 @@ public class DownloadFileTask extends BasicTask {
 		int len = -1;
 		int bytesRead = 0;
 		int nextLog = -1;
+		String lastMsg = null;
 		while ((len = inputStream.read(buffer)) > 0) {
 			out.write(buffer, 0, len);
 			bytesRead += len;
-			
+
 			if (bytesRead > nextLog) {
 				nextLog += LOGAFTER_SIZE;
-				double percent = bytesRead / (double)this.totalBytes;
-				System.out.println(Math.round(percent * 100) + " % complete");
+				double percent = bytesRead / (double) this.totalBytes;
+				String currMsg = Math.round(percent * 100) + " % complete";
+				if (!currMsg.equals(lastMsg)) {
+					System.out.println(currMsg);
+				}
+				lastMsg = currMsg;
 			}
 
 		}

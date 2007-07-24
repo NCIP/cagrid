@@ -68,7 +68,7 @@ public class RunTasksStep extends PanelWizardStep implements
 
 	private PrintStream out;
 
-	private boolean deactivePrevious = true;
+	private boolean deactivePrevious = false;
 
 	/**
 	 * 
@@ -241,6 +241,8 @@ public class RunTasksStep extends PanelWizardStep implements
 							RunTasksStep.this.model);
 					w.addPropertyChangeListener(RunTasksStep.this);
 					getStartButton().setEnabled(false);
+					RunTasksStep.this.setDeactivePrevious(true);
+					RunTasksStep.this.model.setDeactivatePrevious(true);
 					w.start();
 				}
 			});

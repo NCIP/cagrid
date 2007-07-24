@@ -227,16 +227,16 @@
 			<remove
 				path="/*[local-name()='DorianConfiguration']/*[local-name()='IdentityFederationConfiguration']/*[local-name()='CRLPublish']" />
 
-			<!-- TODO: figure out why this causes an error
-				<insert
+
+			<insert
 				path="/*[local-name()='DorianConfiguration']/*[local-name()='IdentityFederationConfiguration']">
 				<![CDATA[
 				<CRLPublish xmlns="${dorian.config.ns}">
-				<gts xmlns="${dorian.config.ns}">${dorian.ifs.gts.url}</gts>
+					<gts xmlns="${dorian.config.ns}">${dorian.ifs.gts.url}</gts>
 				</CRLPublish>
 				]]>
-				</insert>
-			-->
+			</insert>
+
 
 			<replace
 				path="/*[local-name()='DorianConfiguration']/*[local-name()='DorianCAConfiguration']/*[local-name()='CertificateAuthorityType']">
@@ -743,9 +743,9 @@ ${authn.svc.csm.ctx}{
 		</if>
 	</target>
 
-	<target name="set-authn-service-deploy-properties">
+	<target name="set-authn-service-idp-properties">
 		<propertyfile
-			file="${service.dest.dir}/authentication-service/deploy.properties">
+			file="${service.dest.dir}/authentication-service/idp.properties">
 			<entry key="csm.app.context" value="${authn.svc.csm.ctx}" />
 			<entry key="saml.provider.crt"
 				value="${authn.svc.ca.cert.path}" />

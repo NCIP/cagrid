@@ -14,7 +14,6 @@ import org.pietschy.wizard.WizardModel;
 public interface CaGridInstallerModel extends WizardModel {
 
 	Map getState();
-//	void setState(Map state);
 	
 	String getMessage(String key);
 
@@ -41,6 +40,8 @@ public interface CaGridInstallerModel extends WizardModel {
 	boolean isConfigureGlobusRequired();
 
 	boolean isDeployGlobusRequired();
+
+	void setDeactivatePrevious(boolean b);
 
 	
 }

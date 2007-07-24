@@ -23,7 +23,6 @@ import org.apache.commons.logging.LogFactory;
 import org.cagrid.installer.model.CaGridInstallerModel;
 import org.cagrid.installer.model.CaGridInstallerModelImpl;
 import org.cagrid.installer.steps.AndCondition;
-import org.cagrid.installer.steps.AuthnSvcDeployPropertiesFileEditorStep;
 import org.cagrid.installer.steps.CheckSecureContainerStep;
 import org.cagrid.installer.steps.ConfigureAuthnCAStep;
 import org.cagrid.installer.steps.ConfigureCAStep;
@@ -1341,7 +1340,7 @@ public class Installer {
 								this.model.getMessage("dorian.ifs.gts.url"),
 								getProperty(this.model.getState(),
 										Constants.DORIAN_IFS_GTS_URL,
-										"https://cagrid01.bmi.ohio-state.edu:8442/wsrf/services/cagrid/GTS"),
+										""),
 								false));
 		// TODO: figure out why this hangs
 		// dorianIfsInfoStep.getValidators().add(
@@ -2265,7 +2264,7 @@ public class Installer {
 		incrementProgress();
 
 		// Configure AuthenticationService deploy.properties
-		AuthnSvcDeployPropertiesFileEditorStep editAuthnDeployPropertiesStep = new AuthnSvcDeployPropertiesFileEditorStep(
+		DeployPropertiesFileEditorStep editAuthnDeployPropertiesStep = new DeployPropertiesFileEditorStep(
 				"authentication-service", this.model
 						.getMessage("authn.svc.edit.deploy.properties.title"),
 				this.model.getMessage("authn.svc.edit.deploy.properties.desc"),
@@ -2397,7 +2396,13 @@ public class Installer {
 		installStep.getTasks().add(
 				new ConditionalTask(new DeployServiceTask(this.model
 						.getMessage("installing.my.service.title"), "", "",
-						this.model), new Condition() {
+						this.model){
+				
+					protected String getBuildFilePath(Map state){
+						return state.get(Constants.MY_SERVICE_DIR) + "/build.xml";
+					}
+					
+				}, new Condition() {
 
 					public boolean evaluate(WizardModel m) {
 						CaGridInstallerModel model = (CaGridInstallerModel) m;

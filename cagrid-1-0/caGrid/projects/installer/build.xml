@@ -18,7 +18,7 @@
 	
 	
 	<property name="download.properties.url" value="http://localhost:8080/downloads/cagrid.installer.properties"/>
-	<property name="cagrid.download.url" value="http://localhost:8080/downloads/${project.jar.prefix}"/>
+	<property name="cagrid.download.url" value="http://localhost:8080/downloads/${cagrid.master.jar.prefix}src.zip"/>
 	
 
 	<path id="build.classpath">

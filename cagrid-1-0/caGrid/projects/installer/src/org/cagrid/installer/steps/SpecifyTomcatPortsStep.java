@@ -82,8 +82,8 @@ public class SpecifyTomcatPortsStep extends PropertyConfigurationStep {
 		}
 
 		// Pull the tomcat ports from server.xml
-		String httpPort = "8080";
-		String httpsPort = "8443";
+		String httpPort = httpPortField.getText();
+		String httpsPort = httpsPortField.getText();
 		String shutdownPort = null;
 		String serverConfigPath = getServerConfigPath();
 
