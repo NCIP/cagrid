@@ -11,7 +11,7 @@
 	<!-- Place any other properties you will need here                  -->
 	<!-- ============================================================== -->
 	<property file="${basedir}/ext/resources/cagrid.properties" />
-	<property file="deploy.properties"/>
+	<property file="idp.properties"/>
 	<property name="jar.prefix" value="${cagrid.master.jar.prefix}authentication-service" />
 	
 	<property name="ext.lib" value="${basedir}/ext/lib" />
