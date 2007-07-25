@@ -535,6 +535,8 @@
 		<property name="secdesc.file"
 			value="${tomcat.home}/webapps/wsrf/WEB-INF/etc/globus_wsrf_core/global_security_descriptor.xml" />
 		<xmltask source="${secdesc.file}" dest="${secdesc.file}">
+			<remove
+				path="/*[local-name()='securityConfig']/*[local-name()='gridmap']" />
 			<attr
 				path="/*[local-name()='securityConfig']/*[local-name()='credential']/*[local-name()='key-file']"
 				attr="value" value="${service.key.path}" />
