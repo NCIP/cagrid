@@ -2285,7 +2285,7 @@ public class Installer {
 						.getMessage("grid.grouper.edit.service.metadata.desc")) {
 			protected String getServiceMetadataPath() {
 				return InstallerUtils.getServiceDestDir(this.model.getState())
-						+ "/gridgrouper/etc/serviceMetadata.xml";
+						+ "/gridgrouper/etc/GridGrouper_serviceMetadata.xml";
 			}
 		};
 		this.model.add(editGridGrouperSvcMetaStep, new Condition() {
