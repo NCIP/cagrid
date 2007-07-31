@@ -54,11 +54,12 @@ public class UpdateManager {
                     for (int fileI = 0; fileI < files.length; fileI++) {
                         File f = files[fileI];
                         if (f.isDirectory() && !f.getName().equals("updates")) {
-                            deleteDir(f);
-                        } else {
-                            f.delete();
+                            delete(f);
+                        } else if (!f.isDirectory()) {
+                            delete(f);
                         }
                     }
+                    delete(new File("." + File.separator + "updates" + File.separator + "lib"));
 
                     System.out.println("Installing new version of Introduce.");
                     File updateFile = new File("." + File.separator + "updates" + File.separator + "introduce"
@@ -72,7 +73,7 @@ public class UpdateManager {
                     }
                 }
 
-                if (update.getIntroduceRev(0) != null) {
+                if (update.getIntroduceRev() != null && update.getIntroduceRev(0) != null) {
                     // just a patch, unzip overtop
                     System.out.println("Installing updates for current version of Introduce.");
                     File updateFile = new File("." + File.separator + "updates" + File.separator + "introduce"
@@ -93,7 +94,26 @@ public class UpdateManager {
                         props.load(new FileInputStream(engineProps));
                         props.setProperty("introduce.patch.version", String.valueOf(update.getIntroduceRev(0)
                             .getPatchVersion()));
-                        props.store(new FileOutputStream(engineProps), "Introduce Engine Properties");
+                        FileOutputStream fos = new FileOutputStream(engineProps);
+                        props.store(fos, "Introduce Engine Properties");
+                        fos.close();
+                    } catch (FileNotFoundException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    File enginePropsT = new File("." + File.separator + "conf" + File.separator + "introduce"
+                        + File.separator + "introduce.engine.properties.template");
+                    Properties propsT = new Properties();
+                    try {
+                        propsT.load(new FileInputStream(enginePropsT));
+                        propsT.setProperty("introduce.patch.version", String.valueOf(update.getIntroduceRev(0)
+                            .getPatchVersion()));
+                        FileOutputStream fos = new FileOutputStream(enginePropsT);
+                        propsT.store(fos, "Introduce Engine Properties");
+                        fos.close();
                     } catch (FileNotFoundException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
@@ -125,18 +145,23 @@ public class UpdateManager {
     }
 
 
-    public static boolean deleteDir(File dir) {
+    public static void delete(File dir) {
         if (dir.isDirectory()) {
             String[] children = dir.list();
             for (int i = 0; i < children.length; i++) {
-                boolean success = deleteDir(new File(dir, children[i]));
-                if (!success) {
-                    System.err.println("could not remove directory: " + dir.getAbsolutePath());
-                    return false;
-                }
+                delete(new File(dir, children[i]));
+            }
+            boolean success = dir.delete();
+            if (!success) {
+                System.err.println("unable to delete directory: " + dir.getAbsolutePath());
+            }
+        } else {
+            boolean success = dir.delete();
+            if (!success) {
+                System.err.println("unable to delete file: " + dir.getAbsolutePath());
             }
         }
-        return dir.delete();
+
     }
 
 
@@ -176,6 +201,7 @@ public class UpdateManager {
         File file = new File(new File(baseDir).getAbsolutePath() + File.separator + s);
         file.getParentFile().mkdirs();
         FileOutputStream out = new FileOutputStream(file);
+        System.out.print(".");
         byte[] b = new byte[512];
         int len = 0;
         while ((len = zin.read(b)) != -1) {
