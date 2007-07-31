@@ -3009,8 +3009,10 @@ public class Installer {
 	}
 
 	public void run() {
+	    ImageIcon myImage = new ImageIcon(Thread.currentThread()
+            .getContextClassLoader().getResource("images/caGrid_small.png"));
 		Wizard wizard = new Wizard(this.model);
-		wizard.showInFrame("caGrid Installation Wizard");
+		wizard.showInFrame("caGrid Installation Wizard",myImage.getImage());
 	}
 
 	public static boolean checkInstalled(String progName, String envName,
