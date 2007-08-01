@@ -1776,7 +1776,7 @@ public class Installer {
 				this.model.getMessage("workflow.edit.service.metadata.desc")) {
 			protected String getServiceMetadataPath() {
 				return InstallerUtils.getServiceDestDir(this.model.getState())
-						+ "/workflow/etc/serviceMetadata.xml";
+						+ "/workflow/WorkflowFactoryService/etc/serviceMetadata.xml";
 			}
 		};
 		this.model.add(editWorkflowSvcMetaStep, new Condition() {
