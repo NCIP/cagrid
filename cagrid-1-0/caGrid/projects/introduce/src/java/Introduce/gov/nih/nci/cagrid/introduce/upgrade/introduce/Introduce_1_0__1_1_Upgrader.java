@@ -382,7 +382,7 @@ public class Introduce_1_0__1_1_Upgrader extends IntroduceUpgraderBase {
             try {
                 fileContent = Utils.fileToStringBuffer(new File(serviceClient));
                 int startOfMethod = SyncHelper.startOfSignature(fileContent,
-                    "private CaGridTutorialServicePortType createPortType()");
+                    "private " + service.getName() + "PortType createPortType()");
                 if (startOfMethod >= 0) {
                     int endOfMethod = SyncHelper.bracketMatch(fileContent, startOfMethod);
                     String subString = fileContent.substring(startOfMethod, endOfMethod);
