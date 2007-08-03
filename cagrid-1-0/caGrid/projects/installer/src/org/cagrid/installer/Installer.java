@@ -2670,7 +2670,7 @@ public class Installer {
 				}
 			}
 		}
-		state.put(Constants.GLOBUS_CONFIGURED, globusConfigured);
+		state.put(Constants.GLOBUS_CONFIGURED, String.valueOf(globusConfigured));
 	}
 
 	private void addCommonNewCACertFields(PropertyConfigurationStep step,
