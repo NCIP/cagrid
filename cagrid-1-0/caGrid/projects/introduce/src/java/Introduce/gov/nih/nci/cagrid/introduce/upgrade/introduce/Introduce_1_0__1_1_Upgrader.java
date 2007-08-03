@@ -401,7 +401,7 @@ public class Introduce_1_0__1_1_Upgrader extends IntroduceUpgraderBase {
                         getStatus()
                             .addIssue(
                                 "unable to fix client load of wsdd: " + serviceClient,
-                                "please repace the line:\n\tInputStream resourceAsStream = ClassUtils.getResourceAsStream(getClass(), \"client-config.wsdd\"); \nwith:\n\tInputStream resourceAsStream = getClass().getResourceAsStream(\"client-config.wsdd\");\nin the createPort() method of the "
+                                "please replace the line:\n\tInputStream resourceAsStream = ClassUtils.getResourceAsStream(getClass(), \"client-config.wsdd\"); \nwith:\n\tInputStream resourceAsStream = getClass().getResourceAsStream(\"client-config.wsdd\");\nin the createPortType() method of the "
                                     + serviceClient + " client java class");
                     }
                 } else {
@@ -409,15 +409,15 @@ public class Introduce_1_0__1_1_Upgrader extends IntroduceUpgraderBase {
                     getStatus()
                         .addIssue(
                             "unable to fix client load of wsdd: " + serviceClient,
-                            "please repace the line:\n\tInputStream resourceAsStream = ClassUtils.getResourceAsStream(getClass(), \"client-config.wsdd\"); \nwith:\n\tInputStream resourceAsStream = getClass().getResourceAsStream(\"client-config.wsdd\");\nin the createPort() method of the "
+                            "please replace the line:\n\tInputStream resourceAsStream = ClassUtils.getResourceAsStream(getClass(), \"client-config.wsdd\"); \nwith:\n\tInputStream resourceAsStream = getClass().getResourceAsStream(\"client-config.wsdd\");\nin the createPortType() method of the "
                                 + serviceClient + " client java class");
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 getStatus().addDescriptionLine("unable to fix client load of wsdd: " + serviceClient);
                 getStatus()
                     .addIssue(
                         "unable to fix client load of wsdd: " + serviceClient,
-                        "please repace the line:\n\tInputStream resourceAsStream = ClassUtils.getResourceAsStream(getClass(), \"client-config.wsdd\"); \nwith:\n\tInputStream resourceAsStream = getClass().getResourceAsStream(\"client-config.wsdd\");\nin the createPort() method of the "
+                        "please replace the line:\n\tInputStream resourceAsStream = ClassUtils.getResourceAsStream(getClass(), \"client-config.wsdd\"); \nwith:\n\tInputStream resourceAsStream = getClass().getResourceAsStream(\"client-config.wsdd\");\nin the createPortType() method of the "
                             + serviceClient + " client java class");
             }
         }
