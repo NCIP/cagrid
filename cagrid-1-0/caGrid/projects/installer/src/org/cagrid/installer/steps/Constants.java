@@ -395,5 +395,7 @@ public abstract class Constants {
 
 	public static final String AUTHN_SVC_LDAP_EMAIL_ID_ATTRIBUTE = "authn.svc.ldap.email.id.attribute";
 
-	
+	public static final String CONFIGURE_CONTAINER = "configure.container";
+
+
 }

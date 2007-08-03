@@ -60,7 +60,7 @@ public class ServicePropertiesFileEditorStep extends
 	 */
 	@Override
 	protected String getPropertyFilePath() {
-		return InstallerUtils.getServiceDestDir(this.model.getState()) + "/"
+		return this.model.getServiceDestDir() + "/"
 				+ this.serviceName + "/service.properties";
 	}
 

@@ -20,6 +20,8 @@ import org.pietschy.wizard.models.DynamicModel;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
+ * @param <V>
+ * @param <K>
  * 
  */
 public class CaGridInstallerModelImpl extends DynamicModel implements
@@ -40,14 +42,14 @@ CaGridInstallerModel {
 		this(null, null);
 	}
 
-	public CaGridInstallerModelImpl(Map state) {
+	public CaGridInstallerModelImpl(Map<String,String> state) {
 		this(state, null);
 	}
 
-	public CaGridInstallerModelImpl(Map state, ResourceBundle messages) {
+	public CaGridInstallerModelImpl(Map<String,String> state, ResourceBundle messages) {
 
 		if (state == null) {
-			this.state = new PropertyChangeEventProviderMap(new HashMap());
+			this.state = new PropertyChangeEventProviderMap(new HashMap<String,String>());
 		} else {
 			this.state = new PropertyChangeEventProviderMap(state);
 		}
@@ -70,9 +72,9 @@ CaGridInstallerModel {
 		this.state.addPropertyChangeListener(l);
 	}
 
-	public Map<String, String> getState() {
-		return state;
-	}
+//	public Map<String, String> getState() {
+//		return state;
+//	}
 
 	public String getMessage(String key) {
 		String message = null;
@@ -86,7 +88,7 @@ CaGridInstallerModel {
 		private PropertyChangeSupport pcs = new PropertyChangeSupport(
 				CaGridInstallerModelImpl.this);
 
-		PropertyChangeEventProviderMap(Map map) {
+		PropertyChangeEventProviderMap(Map<String,String> map) {
 			super(map);
 		}
 
@@ -95,6 +97,7 @@ CaGridInstallerModel {
 		}
 
 		public Object put(Object key, Object newValue) {
+			
 			Object oldValue = get(key);
 			if (oldValue != null) {
 				this.pcs.firePropertyChange((String) oldValue, oldValue,
@@ -129,7 +132,7 @@ CaGridInstallerModel {
 	}
 
 	public String getProperty(String propName) {
-		return (String) getState().get(propName);
+		return (String) this.state.get(propName);
 	}
 
 	public boolean isSecurityConfigurationRequired() {
@@ -195,5 +198,36 @@ CaGridInstallerModel {
 	public void setDeactivatePrevious(boolean b) {
 		setPreviousAvailable(!b);
 	}
+	
+	public void unsetProperty(String propName){
+		this.state.remove(propName);
+	}
+	
+	public void setProperty(String propName, String propValue){
+		this.state.put(propName, propValue);
+	}
+	
+	public String getProperty(String propName, String defaultValue){
+		String value = (String)this.state.get(propName);
+		return InstallerUtils.isEmpty(value) ? defaultValue : value;
+	}
+	
+	public String getServiceDestDir(){
+		return getProperty(Constants.TEMP_DIR_PATH) + "/services";
+	}
 
+	public boolean isSecureContainerRequired() {
+		return isTrue(Constants.INSTALL_DORIAN)
+				|| isTrue(Constants.INSTALL_GTS)
+				|| isTrue(Constants.INSTALL_AUTHN_SVC)
+				|| isTrue(Constants.INSTALL_GRID_GROUPER);
+	}
+	
+	public Map<String,String> getStateMap(){
+		return new HashMap<String,String>(this.state);
+	}
+	
+	public boolean isConfigureContainerSelected(){
+		return isTrue(Constants.CONFIGURE_CONTAINER) || isTrue(Constants.INSTALL_SERVICES);
+	}
 }

@@ -37,14 +37,17 @@ public class SelectInstallationTypeStep extends PropertyConfigurationStep {
 
 	protected void checkComplete() {
 
-		if (this.requiredFields.containsKey(Constants.INSTALL_CAGRID)
-				&& this.requiredFields.get(Constants.INSTALL_CAGRID)
-				|| this.requiredFields.containsKey(Constants.INSTALL_SERVICES)
-				&& this.requiredFields.get(Constants.INSTALL_SERVICES)) {
+		if (isSelected(Constants.INSTALL_CAGRID)
+				|| isSelected(Constants.CONFIGURE_CONTAINER)
+				|| isSelected(Constants.INSTALL_SERVICES)) {
 			setComplete(true);
 		} else {
 			setComplete(false);
 		}
+	}
+	
+	private boolean isSelected(String fieldName){
+		return this.requiredFields.containsKey(fieldName) && this.requiredFields.get(fieldName);
 	}
 
 }

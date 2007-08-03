@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.cagrid.installer.model.CaGridInstallerModel;
 import org.cagrid.installer.steps.Constants;
 import org.cagrid.installer.util.InstallerUtils;
 
@@ -16,7 +17,7 @@ import org.cagrid.installer.util.InstallerUtils;
  * @author <a href="joshua.phillips@semanticbits.com">Joshua Phillips</a>
  * 
  */
-public class CopySelectedServicesToTempDirTask extends CaGridAntTask {
+public class CopySelectedServicesToTempDirTask extends CaGridInstallerAntTask {
 
 	/**
 	 * @param name
@@ -27,44 +28,41 @@ public class CopySelectedServicesToTempDirTask extends CaGridAntTask {
 		super(name, description, "copy-selected-services");
 	}
 
-	protected Object runAntTask(Map state, String target, Map env,
+	protected Object runAntTask(CaGridInstallerModel model, String target, Map<String,String> env,
 			Properties sysProps) throws Exception {
 		List<String> selectedServices = new ArrayList<String>();
 		
-		if("true".equals(state.get(Constants.INSTALL_DORIAN))){
+		if(model.isTrue(Constants.INSTALL_DORIAN)){
 			selectedServices.add("dorian");
 		}
-		if("true".equals(state.get(Constants.INSTALL_GTS))){
+		if(model.isTrue(Constants.INSTALL_GTS)){
 			selectedServices.add("gts");
 		}
-		if("true".equals(state.get(Constants.INSTALL_AUTHN_SVC))){
+		if(model.isTrue(Constants.INSTALL_AUTHN_SVC)){
 			selectedServices.add("authentication-service");
 		}
-		if("true".equals(state.get(Constants.INSTALL_GRID_GROUPER))){
+		if(model.isTrue(Constants.INSTALL_GRID_GROUPER)){
 			selectedServices.add("gridgrouper");
 		}
-		if("true".equals(state.get(Constants.INSTALL_INDEX_SVC))){
+		if(model.isTrue(Constants.INSTALL_INDEX_SVC)){
 			selectedServices.add("index");
 		}
-		if("true".equals(state.get(Constants.INSTALL_GME))){
+		if(model.isTrue(Constants.INSTALL_GME)){
 			selectedServices.add("gme");
 		}
-		if("true".equals(state.get(Constants.INSTALL_EVS))){
+		if(model.isTrue(Constants.INSTALL_EVS)){
 			selectedServices.add("evs");
 		}
-		if("true".equals(state.get(Constants.INSTALL_FQP))){
+		if(model.isTrue(Constants.INSTALL_FQP)){
 			selectedServices.add("fqp");
 		}
-		if("true".equals(state.get(Constants.INSTALL_CADSR))){
+		if(model.isTrue(Constants.INSTALL_CADSR)){
 			selectedServices.add("cadsr");
 		}
-		if("true".equals(state.get(Constants.INSTALL_WORKFLOW))){
+		if(model.isTrue(Constants.INSTALL_WORKFLOW)){
 			selectedServices.add("workflow");
 		}
-//		if(InstallerUtils.isSecureContainerRequired(state)){
-//			selectedServices.add("syncgts");
-//		}
-		if("true".equals(state.get(Constants.INSTALL_SYNC_GTS))){
+		if(model.isTrue(Constants.INSTALL_SYNC_GTS)){
 			selectedServices.add("syncgts");
 		}
 		
@@ -77,13 +75,8 @@ public class CopySelectedServicesToTempDirTask extends CaGridAntTask {
 		}
 		sysProps.setProperty("selected.services", sb.toString());
 
-		new AntTask("", "", target, env, sysProps).execute(state);
+		return new AntTask("", "", target, env, sysProps).execute(model);
 
-		return null;
-	}
-
-	protected String getBuildFilePath(Map state) {
-		return InstallerUtils.getScriptsBuildFilePath();
 	}
 
 }

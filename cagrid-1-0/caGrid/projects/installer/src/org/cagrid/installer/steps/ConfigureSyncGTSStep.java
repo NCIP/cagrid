@@ -169,8 +169,7 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 		add(optionsPanel, InstallerUtils.getGridBagConstraints(0, 0));
 
 		// Add gtsServiceURI field
-		String gtsServiceURI = getProperty(this.model.getState(),
-				Constants.SYNC_GTS_GTS_URI,
+		String gtsServiceURI = this.model.getProperty(Constants.SYNC_GTS_GTS_URI,
 				"https://cagrid02.bmi.ohio-state.edu:8442/wsrf/services/cagrid/GTS");
 		this.gtsServiceURIField = new JTextField(gtsServiceURI);
 		addRequiredListener(this.gtsServiceURIField);
@@ -179,8 +178,7 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 		addOption(optionsPanel, gtsServiceURILabel, this.gtsServiceURIField, 0);
 
 		// Expiration hours
-		String hours = getProperty(this.model.getState(),
-				Constants.SYNC_GTS_EXPIRATION_HOURS, "1");
+		String hours = this.model.getProperty(Constants.SYNC_GTS_EXPIRATION_HOURS, "1");
 		this.expirationHoursField = new JTextField(hours);
 		addRequiredListener(this.expirationHoursField);
 		JLabel expirationHoursLabel = new JLabel(this.model
@@ -188,8 +186,7 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 		addOption(optionsPanel, expirationHoursLabel,
 				this.expirationHoursField, 1);
 
-		String minutes = getProperty(this.model.getState(),
-				Constants.SYNC_GTS_EXPIRATION_MINUTES, "0");
+		String minutes = this.model.getProperty(Constants.SYNC_GTS_EXPIRATION_MINUTES, "0");
 		this.expirationMinutesField = new JTextField(minutes);
 		addRequiredListener(this.expirationMinutesField);
 		JLabel expirationMinutesLabel = new JLabel(this.model
@@ -197,8 +194,7 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 		addOption(optionsPanel, expirationMinutesLabel,
 				this.expirationMinutesField, 2);
 
-		String seconds = getProperty(this.model.getState(),
-				Constants.SYNC_GTS_EXPIRATION_SECONDS, "0");
+		String seconds = this.model.getProperty(Constants.SYNC_GTS_EXPIRATION_SECONDS, "0");
 		this.expirationSecondsField = new JTextField(seconds);
 		addRequiredListener(this.expirationSecondsField);
 		JLabel expirationSecondsLabel = new JLabel(this.model
@@ -206,8 +202,7 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 		addOption(optionsPanel, expirationSecondsLabel,
 				this.expirationSecondsField, 3);
 
-		String performAuthz = getProperty(this.model.getState(),
-				Constants.SYNC_GTS_PERFORM_AUTHZ, "true");
+		String performAuthz = this.model.getProperty(Constants.SYNC_GTS_PERFORM_AUTHZ, "true");
 		this.performAuthzField = new JCheckBox();
 		this.performAuthzField.setSelected("true".equals(performAuthz));
 		JLabel performAuthzLabel = new JLabel(this.model
@@ -223,8 +218,7 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 
 		});
 
-		String gtsIdent = getProperty(this.model.getState(),
-				Constants.SYNC_GTS_GTS_IDENT,
+		String gtsIdent = this.model.getProperty(Constants.SYNC_GTS_GTS_IDENT,
 				"/O=OSU/OU=BMI/OU=caGrid/OU=Trust Fabric/CN=host/cagrid02.bmi.ohio-state.edu");
 		this.gtsIdentField = new JTextField(gtsIdent);
 		JLabel gtsIdentLabel = new JLabel(this.model
@@ -232,8 +226,7 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 		addOption(optionsPanel, gtsIdentLabel, this.gtsIdentField, 5);
 		this.gtsIdentField.setEnabled(this.performAuthzField.isSelected());
 
-		String deleteInvalid = getProperty(this.model.getState(),
-				Constants.SYNC_GTS_DELETE_INVALID, "false");
+		String deleteInvalid = this.model.getProperty(Constants.SYNC_GTS_DELETE_INVALID, "false");
 		this.deleteInvalidField = new JCheckBox();
 		this.deleteInvalidField.setSelected("true".equals(deleteInvalid));
 		JLabel deleteInvalidLabel = new JLabel(this.model
@@ -247,16 +240,14 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 
 		});
 
-		String nextSync = getProperty(this.model.getState(),
-				Constants.SYNC_GTS_NEXT_SYNC, "600");
+		String nextSync = this.model.getProperty(Constants.SYNC_GTS_NEXT_SYNC, "600");
 		this.nextSyncField = new JTextField(nextSync);
 		addRequiredListener(this.nextSyncField);
 		JLabel nextSyncLabel = new JLabel(this.model
 				.getMessage("sync.gts.next.sync"));
 		addOption(optionsPanel, nextSyncLabel, this.nextSyncField, 7);
 
-		String performFirstSync = getProperty(this.model.getState(),
-				Constants.SYNC_GTS_PERFORM_FIRST_SYNC, "true");
+		String performFirstSync = this.model.getProperty(Constants.SYNC_GTS_PERFORM_FIRST_SYNC, "true");
 		this.performFirstSyncField = new JCheckBox();
 		this.performFirstSyncField.setSelected("true".equals(performFirstSync));
 		JLabel performFirstSyncLabel = new JLabel(this.model
@@ -367,14 +358,6 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 		});
 	}
 
-	private String getProperty(Map state, String propName, String defaultValue) {
-		String value = (String) state.get(propName);
-		if (value == null || value.trim().length() == 0) {
-			value = defaultValue;
-		}
-		return value;
-	}
-
 	protected void checkComplete() {
 		if (!isEmpty(this.gtsServiceURIField)
 				&& !isEmpty(this.expirationHoursField)
@@ -475,6 +458,13 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 							.evaluate(syncDescEl, XPathConstants.NODESET);
 					logger.debug("Found " + filters.getLength()
 							+ " TrustedAuthorityFilter elments.");
+					
+					//Remove existing rows
+					while(this.tafTableModel.getRowCount() > 0){
+						this.tafTableModel.removeRow(0);
+					}
+					
+					//Create new rows
 					for (int i = 0; i < filters.getLength(); i++) {
 						Element filter = (Element) filters.item(i);
 						String name = getValue(getChildElementText(filter,
@@ -538,6 +528,14 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 						.evaluate(root, XPathConstants.NODESET);
 				logger.debug("Found " + caSubjEls.getLength()
 						+ " excluded CAs.");
+				
+				
+				//Remove existing rows
+				while(this.ecTableModel.getRowCount() > 0){
+					this.ecTableModel.removeRow(0);
+				}
+				
+				//Create new rows
 				for (int i = 0; i < caSubjEls.getLength(); i++) {
 					Element caSubjEl = (Element) caSubjEls.item(i);
 					String text = caSubjEl.getTextContent();
@@ -560,8 +558,7 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 				logger.debug("Setting NextSync = " + nextSync);
 				this.nextSyncField.setText(nextSync);
 
-				String servicePropsFile = InstallerUtils
-						.getServiceDestDir(this.model.getState())
+				String servicePropsFile = this.model.getServiceDestDir()
 						+ "/syncgts/service.properties";
 
 				Properties props = new Properties();
@@ -579,7 +576,7 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 	}
 
 	private String getSyncDescriptionFileName() {
-		return InstallerUtils.getServiceDestDir(this.model.getState())
+		return this.model.getServiceDestDir()
 				+ "/syncgts/ext/resources/sync-description.xml";
 	}
 
@@ -765,8 +762,7 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 		}
 
 		// Also, edit the service.propeties file
-		String servicePropsFile = InstallerUtils.getServiceDestDir(this.model
-				.getState())
+		String servicePropsFile = this.model.getServiceDestDir()
 				+ "/syncgts/service.properties";
 		try {
 			Properties props = new Properties();

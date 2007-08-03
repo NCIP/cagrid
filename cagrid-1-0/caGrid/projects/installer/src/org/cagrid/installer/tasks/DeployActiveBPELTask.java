@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.cagrid.installer.model.CaGridInstallerModel;
 import org.cagrid.installer.steps.Constants;
 import org.cagrid.installer.util.IOThread;
 import org.cagrid.installer.util.InstallerUtils;
@@ -33,7 +34,7 @@ public class DeployActiveBPELTask extends BasicTask {
 
 	}
 
-	protected Object internalExecute(Map state) throws Exception {
+	protected Object internalExecute(CaGridInstallerModel model) throws Exception {
 
 		Map<String, String> env = new HashMap<String, String>(System.getenv());
 		for (Iterator i = this.environment.entrySet().iterator(); i.hasNext();) {
@@ -43,10 +44,8 @@ public class DeployActiveBPELTask extends BasicTask {
 				env.put((String) entry.getKey(), (String) entry.getValue());
 			}
 		}
-		env.put((String) "GLOBUS_LOCATION", (String) state
-				.get(Constants.GLOBUS_HOME));
-		env.put((String) "CATALINA_HOME", (String) state
-				.get(Constants.TOMCAT_HOME));
+		env.put((String) "GLOBUS_LOCATION", model.getProperty(Constants.GLOBUS_HOME));
+		env.put((String) "CATALINA_HOME", model.getProperty(Constants.TOMCAT_HOME));
 		Map<String, String> myEnv = new HashMap<String, String>(env);
 
 		String[] envp = new String[myEnv.size()];
@@ -55,8 +54,7 @@ public class DeployActiveBPELTask extends BasicTask {
 			envp[i++] = key + "=" + myEnv.get(key);
 		}
 
-		String baseDir = InstallerUtils.getRequiredProperty(state,
-				Constants.ACTIVEBPEL_HOME);
+		String baseDir = model.getProperty(Constants.ACTIVEBPEL_HOME);
 		try {
 			if (baseDir == null) {
 				throw new RuntimeException("ACTIVEBPEL_HOME not set...");

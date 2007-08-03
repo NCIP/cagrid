@@ -46,8 +46,7 @@ public class ConfigureNewDorianCAStep extends PropertyConfigurationStep {
 
 	public void prepare() {
 		try {
-			if (Constants.DORIAN_CA_TYPE_DBCA.equals(this.model.getState().get(
-					Constants.DORIAN_CA_TYPE))) {
+			if (this.model.isEqual(Constants.DORIAN_CA_TYPE_DBCA, Constants.DORIAN_CA_TYPE)) {
 				JLabel label = getLabel(Constants.DORIAN_CA_ERACOM_SLOT);
 				label.setVisible(false);
 				JComboBox field = (JComboBox) getOption(Constants.DORIAN_CA_ERACOM_SLOT);

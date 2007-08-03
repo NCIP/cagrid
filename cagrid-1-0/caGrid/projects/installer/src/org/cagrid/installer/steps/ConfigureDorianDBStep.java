@@ -42,8 +42,8 @@ public class ConfigureDorianDBStep extends PropertyConfigurationStep {
 	public void applyState() throws InvalidStateException {
 		super.applyState();
 		
-		if("true".equals(this.model.getState().get(Constants.INSTALL_DORIAN))){
-			this.model.getState().put(Constants.USE_SECURE_CONTAINER, "true");
+		if(this.model.isTrue(Constants.INSTALL_DORIAN)){
+			this.model.setProperty(Constants.USE_SECURE_CONTAINER, "true");
 		}
 		
 	}

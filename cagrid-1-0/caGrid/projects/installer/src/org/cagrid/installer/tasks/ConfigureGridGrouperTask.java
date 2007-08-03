@@ -6,6 +6,7 @@ package org.cagrid.installer.tasks;
 import java.util.Map;
 import java.util.Properties;
 
+import org.cagrid.installer.model.CaGridInstallerModel;
 import org.cagrid.installer.steps.Constants;
 import org.cagrid.installer.util.InstallerUtils;
 
@@ -13,7 +14,7 @@ import org.cagrid.installer.util.InstallerUtils;
  * @author <a href="joshua.phillips@semanticbits.com">Joshua Phillips</a>
  *
  */
-public class ConfigureGridGrouperTask extends CaGridAntTask {
+public class ConfigureGridGrouperTask extends CaGridInstallerAntTask {
 
 	/**
 	 * @param name
@@ -26,23 +27,23 @@ public class ConfigureGridGrouperTask extends CaGridAntTask {
 
 	}
 	
-	protected Object runAntTask(Map state, String target, Map env,
+	protected Object runAntTask(CaGridInstallerModel model, String target, Map<String,String> env,
 			Properties sysProps) throws Exception {
 
 		//Configure grouper.hibernate.properties
-		state.put(Constants.BUILD_FILE_PATH, InstallerUtils.getScriptsBuildFilePath());
+		model.setProperty(Constants.BUILD_FILE_PATH, getBuildFilePath(model));
 		
-		new AntTask("", "", "configure-gridgrouper-hibernate", env, sysProps).execute(state);
+		new AntTask("", "", "configure-gridgrouper-hibernate", env, sysProps).execute(model);
 		
 		
-		state.put(Constants.BUILD_FILE_PATH, InstallerUtils.getServiceDestDir(state) + "/gridgrouper/build.xml");
+		model.setProperty(Constants.BUILD_FILE_PATH, model.getServiceDestDir() + "/gridgrouper/build.xml");
 		
 		//Run grouperInit
-		new AntTask("", "", "grouperInit", env, sysProps).execute(state);
+		new AntTask("", "", "grouperInit", env, sysProps).execute(model);
 		
 		//Run addAdmin
-		state.put("gridId.input", (String)state.get(Constants.GRID_GROUPER_ADMIN_IDENT));
-		new AntTask("", "", "addAdmin", env, sysProps).execute(state);
+		model.setProperty("gridId.input", model.getProperty(Constants.GRID_GROUPER_ADMIN_IDENT));
+		new AntTask("", "", "addAdmin", env, sysProps).execute(model);
 
 		return null;
 	}

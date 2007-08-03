@@ -14,6 +14,7 @@ import java.util.zip.ZipFile;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.cagrid.installer.model.CaGridInstallerModel;
 import org.cagrid.installer.steps.Constants;
 
 /**
@@ -44,12 +45,12 @@ public class UnzipInstallTask extends BasicTask {
 		this.homeProp = homeProp;
 	}
 
-	protected Object internalExecute(Map state) throws Exception {
+	protected Object internalExecute(CaGridInstallerModel model) throws Exception {
 
 		ZipFile zipFile = null;
 		try {
-			String path = state.get(Constants.TEMP_DIR_PATH) + "/"
-					+ state.get(this.tempFileNameProp);
+			String path = model.getProperty(Constants.TEMP_DIR_PATH) + "/"
+					+ model.getProperty(this.tempFileNameProp);
 
 			logger.info("Trying to open ZipFile for " + path);
 			zipFile = new ZipFile(new File(path));
@@ -59,20 +60,19 @@ public class UnzipInstallTask extends BasicTask {
 		}
 		// setStepCount(zipFile.size());
 
-		File installDir = new File((String) state.get(this.installDirPathProp));
+		File installDir = new File(model.getProperty(this.installDirPathProp));
 		File home = new File(installDir.getAbsolutePath() + "/"
-				+ state.get(this.dirNameProp));
+				+ model.getProperty(this.dirNameProp));
 
 		// TODO: change this. this strays from the norm. usually steps modify
 		// state
 		// while tasks do not.
-		state.put(this.homeProp, home.getAbsolutePath());
+		model.setProperty(this.homeProp, home.getAbsolutePath());
 
 //		home.delete();
 
 		String baseOut = installDir.getAbsolutePath() + "/";
 		Enumeration entries = zipFile.entries();
-		int subTaskNum = 0;
 		int logAfterSize = 100;
 		int nextLog = -1;
 		int numFiles = 0;
@@ -121,18 +121,4 @@ public class UnzipInstallTask extends BasicTask {
 
 		return null;
 	}
-
-	private void createDir(File dir) {
-		if (dir == null) {
-			throw new IllegalArgumentException("dir is null");
-		}
-		logger.debug("Checking if " + dir.getAbsolutePath() + " exists");
-		if (!dir.exists()) {
-			logger.debug("It doesn't. Recursing.");
-			createDir(dir.getParentFile());
-		}
-		logger.debug("Creating " + dir.getAbsolutePath());
-		dir.mkdir();
-	}
-
 }

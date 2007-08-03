@@ -4,7 +4,9 @@
 package org.cagrid.installer.tasks;
 
 import java.util.Map;
+import java.util.Properties;
 
+import org.cagrid.installer.model.CaGridInstallerModel;
 import org.cagrid.installer.steps.Constants;
 
 /**
@@ -22,8 +24,13 @@ public class ConfigureTargetGridTask extends CaGridAntTask {
 		super(name, description, "configure");
 	}
 	
-	protected String getBuildFilePath(Map state){
-		return (String)state.get(Constants.CAGRID_HOME) + "/build.xml";
+	protected String getBuildFilePath(CaGridInstallerModel model){
+		return model.getProperty(Constants.CAGRID_HOME) + "/build.xml";
+	}
+
+	@Override
+	protected Object runAntTask(CaGridInstallerModel model, String target, Map<String, String> env, Properties sysProps) throws Exception {
+		return new AntTask("", "", target, env, sysProps).execute(model);
 	}
 
 }

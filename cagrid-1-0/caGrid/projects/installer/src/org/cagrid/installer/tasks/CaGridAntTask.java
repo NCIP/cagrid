@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Map.Entry;
 
+import org.cagrid.installer.model.CaGridInstallerModel;
 import org.cagrid.installer.steps.Constants;
 import org.cagrid.installer.util.InstallerUtils;
 
@@ -16,7 +17,7 @@ import org.cagrid.installer.util.InstallerUtils;
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
  * 
  */
-public class CaGridAntTask extends BasicTask {
+public abstract class CaGridAntTask extends BasicTask {
 
 	private String targetName;
 
@@ -35,41 +36,25 @@ public class CaGridAntTask extends BasicTask {
 	 * @see org.cagrid.installer.tasks.BasicTask#internalExecute(java.util.Map)
 	 */
 	@Override
-	protected Object internalExecute(Map state) throws Exception {
-		Map env = new HashMap();
-		env.put("GLOBUS_LOCATION", state.get(Constants.GLOBUS_HOME));
-		env.put("CATALINA_HOME", state.get(Constants.TOMCAT_HOME));
+	protected Object internalExecute(CaGridInstallerModel model) throws Exception {
+		Map<String,String> env = new HashMap<String,String>();
+		env.put("GLOBUS_LOCATION", model.getProperty(Constants.GLOBUS_HOME));
+		env.put("CATALINA_HOME", model.getProperty(Constants.TOMCAT_HOME));
 		Properties sysProps = new Properties();
-//		for (Iterator i = state.entrySet().iterator(); i.hasNext();) {
-//			Entry entry = (Entry) i.next();
-//			if (entry.getKey() instanceof String
-//					&& entry.getValue() instanceof String) {
-//				sysProps.setProperty((String) entry.getKey(), (String) entry
-//						.getValue());
-//			}
-//		}
-		sysProps.setProperty(Constants.SERVICE_DEST_DIR, InstallerUtils
-				.getServiceDestDir(state));
-		sysProps.setProperty(Constants.GRIDCA_BUILD_FILE_PATH, (String) state
-				.get(Constants.CAGRID_HOME)
+		sysProps.setProperty(Constants.SERVICE_DEST_DIR, model.getServiceDestDir());
+		sysProps.setProperty(Constants.GRIDCA_BUILD_FILE_PATH, model.getProperty(Constants.CAGRID_HOME)
 				+ "/projects/gridca/build.xml");
-		sysProps.setProperty("env.GLOBUS_LOCATION", (String) state
-				.get(Constants.GLOBUS_HOME));
-		Map m = new HashMap(state);
-		m.put(Constants.BUILD_FILE_PATH, getBuildFilePath(state));
-		return runAntTask(m, this.targetName, env, sysProps);
+		sysProps.setProperty("env.GLOBUS_LOCATION", model.getProperty(Constants.GLOBUS_HOME));
+		
+		model.setProperty(Constants.BUILD_FILE_PATH, getBuildFilePath(model));
+		
+		return runAntTask(model, this.targetName, env, sysProps);
+
 	}
-
-	protected Object runAntTask(Map state, String target, Map env,
-			Properties sysProps) throws Exception {
-
-		new AntTask("", "", target, env, sysProps).execute(state);
-
-		return null;
-	}
-
-	protected String getBuildFilePath(Map state) {
-		return (String) state.get(Constants.BUILD_FILE_PATH);
-	}
+	
+	protected abstract Object runAntTask(CaGridInstallerModel model, String target, Map<String,String> env,
+			Properties sysProps) throws Exception;
+	
+	protected abstract String getBuildFilePath(CaGridInstallerModel model);
 
 }

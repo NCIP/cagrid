@@ -53,7 +53,7 @@ public class ConfigureGridGrouperStep extends PropertyConfigurationStep {
 		//Fix the manager grid identity
 		String gridIdent = this.model.getProperty(Constants.GRID_GROUPER_ADMIN_IDENT);
 		gridIdent = gridIdent.replaceAll("\\\\", "");
-		this.model.getState().put(Constants.GRID_GROUPER_ADMIN_IDENT, gridIdent);
+		this.model.setProperty(Constants.GRID_GROUPER_ADMIN_IDENT, gridIdent);
 		
 		String driverUrl = System.getProperty("user.dir") + "/"
 				+ this.model.getProperty(Constants.JDBC_DRIVER_PATH);

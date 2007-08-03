@@ -16,6 +16,7 @@ import java.util.Map.Entry;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.cagrid.installer.model.CaGridInstallerModel;
 import org.cagrid.installer.steps.Constants;
 import org.cagrid.installer.util.IOThread;
 import org.cagrid.installer.util.InstallerUtils;
@@ -27,7 +28,7 @@ import org.cagrid.installer.util.InstallerUtils;
 public class AntTask extends BasicTask {
 
 	private static final Log logger = LogFactory.getLog(AntTask.class);
-	
+
 	private String target;
 
 	private Map<String, String> environment;
@@ -47,11 +48,10 @@ public class AntTask extends BasicTask {
 		this.systemProperties = systemProperties;
 	}
 
-	protected Object internalExecute(Map state) throws Exception {
-		String buildFilePath = InstallerUtils.getRequiredProperty(state,
-				Constants.BUILD_FILE_PATH);
-		String tempDirPath = InstallerUtils.getRequiredProperty(state,
-				Constants.TEMP_DIR_PATH);
+	protected Object internalExecute(CaGridInstallerModel model)
+			throws Exception {
+		String buildFilePath = model.getProperty(Constants.BUILD_FILE_PATH);
+		String tempDirPath = model.getProperty(Constants.TEMP_DIR_PATH);
 
 		try {
 			File tempDir = new File(tempDirPath);
@@ -59,15 +59,7 @@ public class AntTask extends BasicTask {
 			File propsFile = new File(tempDir.getAbsolutePath() + "/"
 					+ Math.random() + ".properties");
 			Properties props = new Properties();
-			// props.putAll(state);
-			for (Iterator i = state.entrySet().iterator(); i.hasNext();) {
-				Entry entry = (Entry) i.next();
-				if (entry.getKey() instanceof String
-						&& entry.getValue() instanceof String) {
-					props.setProperty((String) entry.getKey(), (String) entry
-							.getValue());
-				}
-			}
+			props.putAll(model.getStateMap());
 			props.store(new FileOutputStream(propsFile),
 					"Temporary Properties File");
 
@@ -88,17 +80,17 @@ public class AntTask extends BasicTask {
 					env.put((String) entry.getKey(), (String) entry.getValue());
 				}
 			}
-			Map<String,String> myEnv = new HashMap<String,String>(env);
-//			myEnv.put("ANT_ARGS", "-v");
+			Map<String, String> myEnv = new HashMap<String, String>(env);
+			// myEnv.put("ANT_ARGS", "-v");
 			String[] envp = new String[myEnv.size()];
 			int i = 0;
 			for (String key : myEnv.keySet()) {
 				envp[i++] = key + "=" + myEnv.get(key);
 			}
 
-			runAnt(state, baseDir, buildFilePath, this.target,
+			runAnt(model, baseDir, buildFilePath, this.target,
 					this.systemProperties, envp, propsFile.getAbsolutePath());
-//			propsFile.delete();
+			// propsFile.delete();
 		} catch (Exception ex) {
 			throw new RuntimeException("Error encountered: " + ex.getMessage(),
 					ex);
@@ -106,41 +98,43 @@ public class AntTask extends BasicTask {
 		return null;
 	}
 
-	protected void runAnt(Map state, File dir, String buildFile,
+	protected void runAnt(CaGridInstallerModel model, File dir, String buildFile,
 			String target, Properties sysProps, String[] envp,
 			String propertiesFile) throws IOException, InterruptedException {
 
-		
-		//Check it tools.jar is available
-		File toolsJar = new File(System.getProperty("java.home") + "/lib/tools.jar");
-		if(!toolsJar.exists()){
-			logger.info("tools.jar not found at '" + toolsJar.getAbsolutePath() + "'. Using packaged tools.jar");
+		// Check it tools.jar is available
+		File toolsJar = new File(System.getProperty("java.home")
+				+ "/lib/tools.jar");
+		if (!toolsJar.exists()) {
+			logger.info("tools.jar not found at '" + toolsJar.getAbsolutePath()
+					+ "'. Using packaged tools.jar");
 			toolsJar = new File("lib/tools.jar");
 		}
-		
+
 		// build command
 		ArrayList<String> cmd = new ArrayList<String>();
-		String antHome = (String) state.get(Constants.ANT_HOME);
-		
+		String antHome = model.getProperty(Constants.ANT_HOME);
+
 		boolean isWindows = false;
 		if (System.getProperty("os.name").toLowerCase().indexOf("windows") != -1) {
 			isWindows = true;
 		}
-		
+
 		String java = "java";
-		if(isWindows){
+		if (isWindows) {
 			java += ".exe";
 		}
 		cmd.add(java);
 		cmd.add("-classpath");
-		if(isWindows){
-			cmd.add(toolsJar.getAbsolutePath() + ";" + antHome + "/lib/ant-launcher.jar");
-		}else{
-			cmd.add(toolsJar.getAbsolutePath() + ":" + antHome + "/lib/ant-launcher.jar");
+		if (isWindows) {
+			cmd.add(toolsJar.getAbsolutePath() + ";" + antHome
+					+ "/lib/ant-launcher.jar");
+		} else {
+			cmd.add(toolsJar.getAbsolutePath() + ":" + antHome
+					+ "/lib/ant-launcher.jar");
 		}
-		
+
 		cmd.add("-Dant.home=" + antHome);
-		
 
 		// add system properties
 		if (sysProps != null) {
@@ -154,7 +148,7 @@ public class AntTask extends BasicTask {
 				cmd.add("-D" + name + "=" + value + "");
 			}
 		}
-		
+
 		cmd.add("org.apache.tools.ant.launch.Launcher");
 
 		// add build file
@@ -162,7 +156,7 @@ public class AntTask extends BasicTask {
 			cmd.add("-buildfile");
 			cmd.add(buildFile);
 		}
-		
+
 		if (propertiesFile != null) {
 			cmd.add("-propertyfile");
 			cmd.add(propertiesFile);
@@ -172,10 +166,9 @@ public class AntTask extends BasicTask {
 		if (target != null) {
 			cmd.add(target);
 		}
-		
-		
+
 		StringBuilder sb = new StringBuilder();
-		for(String s : cmd){
+		for (String s : cmd) {
 			sb.append(s).append(" ");
 		}
 		logger.debug("########## Executing: " + sb);

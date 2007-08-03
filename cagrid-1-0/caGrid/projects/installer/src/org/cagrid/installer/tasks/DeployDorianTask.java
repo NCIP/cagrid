@@ -3,7 +3,6 @@
  */
 package org.cagrid.installer.tasks;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
@@ -25,23 +24,23 @@ public class DeployDorianTask extends DeployServiceTask {
 	 */
 	public DeployDorianTask(String name, String description,
 			CaGridInstallerModel model) {
-		super(name, description, "dorian", model);
+		super(name, description, "dorian");
 
 	}
 
-	protected Object runAntTask(Map state, String target, Map env,
+	protected Object runAntTask(CaGridInstallerModel model, String target, Map<String,String> env,
 			Properties sysProps) throws Exception {
-		super.runAntTask(state, target, env, sysProps);
+		super.runAntTask(model, target, env, sysProps);
 
 		String antTarget = "deployTomcatEndorsedJars";
-		if (this.model.getMessage("container.type.globus").equals(
-				this.model.getState().get(Constants.CONTAINER_TYPE))) {
+		if (model.getMessage("container.type.globus").equals(
+				model.getProperty(Constants.CONTAINER_TYPE))) {
 			antTarget = "deployGlobusEndorsedJars";
 		}
-		Map m = new HashMap(state);
-		m.put(Constants.BUILD_FILE_PATH, InstallerUtils.getScriptsBuildFilePath());
+		
+		model.setProperty(Constants.BUILD_FILE_PATH, InstallerUtils.getScriptsBuildFilePath());
 		sysProps.setProperty("service.name", "dorian");
-		new AntTask("", "", antTarget, env, sysProps).execute(m);
+		new AntTask("", "", antTarget, env, sysProps).execute(model);
 
 		return null;
 	}

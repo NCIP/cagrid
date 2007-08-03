@@ -7,8 +7,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.cagrid.installer.model.CaGridInstallerModel;
-import org.cagrid.installer.steps.Constants;
-import org.cagrid.installer.util.InstallerUtils;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
@@ -16,35 +14,27 @@ import org.cagrid.installer.util.InstallerUtils;
  */
 public class DeployServiceTask extends CaGridAntTask {
 
-	private String serviceName;
-
-	protected CaGridInstallerModel model;
+	protected String serviceName;
 
 	/**
 	 * @param name
 	 * @param description
 	 */
 	public DeployServiceTask(String name, String description,
-			String serviceName, CaGridInstallerModel model) {
+			String serviceName) {
 		super(name, description, null);
-		this.model = model;
 		this.serviceName = serviceName;
 	}
 
-	protected Object runAntTask(Map state, String target, Map env,
+	protected Object runAntTask(CaGridInstallerModel model, String target, Map<String,String> env,
 			Properties sysProps) throws Exception {
 		String antTarget = getDeployTomcatTarget();
-		if (!isDeployTomcat()) {
+		if (!model.isTomcatContainer()) {
 			antTarget = getDeployGlobusTarget();
 		}
-		new AntTask("", "", antTarget, env, sysProps).execute(state);
+		new AntTask("", "", antTarget, env, sysProps).execute(model);
 
 		return null;
-	}
-
-	protected boolean isDeployTomcat() {
-		return this.model.getMessage("container.type.tomcat").equals(
-				this.model.getState().get(Constants.CONTAINER_TYPE));
 	}
 
 	protected String getDeployTomcatTarget() {
@@ -55,8 +45,8 @@ public class DeployServiceTask extends CaGridAntTask {
 		return "deployGlobus";
 	}
 
-	protected String getBuildFilePath(Map state) {
-		return InstallerUtils.getServiceDestDir(state) + "/" + this.serviceName
+	protected String getBuildFilePath(CaGridInstallerModel model) {
+		return model.getServiceDestDir() + "/" + this.serviceName
 				+ "/build.xml";
 	}
 

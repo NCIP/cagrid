@@ -39,7 +39,7 @@ public class CheckSecureContainerStep extends PropertyConfigurationStep {
 	}
 
 	public void prepare() {
-		if (InstallerUtils.isSecureContainerRequired(this.model.getState())) {
+		if (this.model.isSecureContainerRequired()) {
 
 			JCheckBox checkBox = (JCheckBox) getOption(Constants.USE_SECURE_CONTAINER);
 			checkBox.setSelected(true);

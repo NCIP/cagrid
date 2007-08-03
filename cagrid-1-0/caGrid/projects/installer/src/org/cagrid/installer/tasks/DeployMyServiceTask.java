@@ -3,8 +3,6 @@
  */
 package org.cagrid.installer.tasks;
 
-import java.util.Map;
-
 import org.cagrid.installer.model.CaGridInstallerModel;
 import org.cagrid.installer.steps.Constants;
 
@@ -21,12 +19,12 @@ public class DeployMyServiceTask extends DeployServiceTask {
 	 * @param model
 	 */
 	public DeployMyServiceTask(String name, String description,
-			String serviceName, CaGridInstallerModel model) {
-		super(name, description, serviceName, model);
+			String serviceName) {
+		super(name, description, serviceName);
 	}
 
-	protected String getBuildFilePath(Map state) {
-		return this.model.getProperty(Constants.MY_SERVICE_DIR) + "/build.xml";
+	protected String getBuildFilePath(CaGridInstallerModel model) {
+		return model.getProperty(Constants.MY_SERVICE_DIR) + "/build.xml";
 	}
 
 }

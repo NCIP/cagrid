@@ -45,17 +45,17 @@ public class ConfigureDorianHostCredentialsStep extends
 
 	public void applyState() throws InvalidStateException {
 		super.applyState();
-		String hostname = (String) this.model.getState().get(
+		String hostname = this.model.getProperty(
 				Constants.SERVICE_HOSTNAME);
-		String dorianHostCredsDir = (String) this.model.getState().get(
+		String dorianHostCredsDir = this.model.getProperty(
 				Constants.DORIAN_HOST_CRED_DIR);
 		File serviceCertPath = new File(dorianHostCredsDir + "/" + hostname
 				+ "-cert.pem");
 		File serviceKeyPath = new File(dorianHostCredsDir + "/" + hostname
 				+ "-key.pem");
-		this.model.getState().put(Constants.SERVICE_CERT_PATH,
+		this.model.setProperty(Constants.SERVICE_CERT_PATH,
 				serviceCertPath.getAbsolutePath());
-		this.model.getState().put(Constants.SERVICE_KEY_PATH,
+		this.model.setProperty(Constants.SERVICE_KEY_PATH,
 				serviceKeyPath.getAbsolutePath());
 	}
 

@@ -6,6 +6,7 @@ package org.cagrid.installer.tasks;
 import java.beans.PropertyChangeListener;
 import java.util.Map;
 
+import org.cagrid.installer.model.CaGridInstallerModel;
 import org.pietschy.wizard.WizardModel;
 import org.pietschy.wizard.models.Condition;
 
@@ -43,8 +44,8 @@ public class ConditionalTask implements Condition, Task {
 	/* (non-Javadoc)
 	 * @see org.cagrid.installer.tasks.Task#execute(java.util.Map)
 	 */
-	public Object execute(Map state) throws Exception {
-		return this.task.execute(state);
+	public Object execute(CaGridInstallerModel model) throws Exception {
+		return this.task.execute(model);
 	}
 
 	/* (non-Javadoc)

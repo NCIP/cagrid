@@ -6,6 +6,7 @@ package org.cagrid.installer.tasks;
 import java.util.Map;
 import java.util.Properties;
 
+import org.cagrid.installer.model.CaGridInstallerModel;
 import org.cagrid.installer.steps.Constants;
 
 /**
@@ -23,33 +24,32 @@ public class ConfigureTomcatTask extends CaGridInstallerAntTask {
 		super(name, description, null);
 	}
 	
-	protected Object runAntTask(Map state, String target, Map env,
+	protected Object runAntTask(CaGridInstallerModel model, String target, Map<String,String> env,
 			Properties sysProps) throws Exception {
 
-		boolean secure = "true".equals(state
-				.get(Constants.USE_SECURE_CONTAINER));
+		boolean secure = model.isTrue(Constants.USE_SECURE_CONTAINER);
 
 		if (!secure) {
 			setStepCount(3);
-			new AntTask("", "", "fix-web-xml", env, sysProps).execute(state);
+			new AntTask("", "", "fix-web-xml", env, sysProps).execute(model);
 			setLastStep(1);
 			new AntTask("", "", "configure-tomcat-server-config", env, sysProps)
-			.execute(state);
+			.execute(model);
 		} else {
 			setStepCount(5);
 			new AntTask("", "", "insert-secure-connector", env, sysProps)
-					.execute(state);
+					.execute(model);
 			setLastStep(1);
-			new AntTask("", "", "insert-valve", env, sysProps).execute(state);
+			new AntTask("", "", "insert-valve", env, sysProps).execute(model);
 			setLastStep(2);
 			new AntTask("", "", "set-global-cert-and-key-paths", env, sysProps)
-					.execute(state);
+					.execute(model);
 			setLastStep(3);
 			new AntTask("", "", "fix-secure-web-xml", env, sysProps)
-					.execute(state);
+					.execute(model);
 			setLastStep(4);
 			new AntTask("", "", "configure-tomcat-server-config", env, sysProps)
-					.execute(state);
+					.execute(model);
 		}
 		
 		return null;

@@ -330,7 +330,7 @@ public class RunTasksStep extends PanelWizardStep implements
 					logger.info("Running task " + task.getName());
 					setCurrentTask(task);
 					try {
-						task.execute(this.model.getState());
+						task.execute(this.model);
 					} catch (Exception ex) {
 						if (task.isAbortOnError()) {
 							setException(ex);

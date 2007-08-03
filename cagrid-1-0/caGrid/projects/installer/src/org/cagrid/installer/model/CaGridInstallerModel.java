@@ -13,7 +13,17 @@ import org.pietschy.wizard.WizardModel;
  */
 public interface CaGridInstallerModel extends WizardModel {
 
-	Map getState();
+//	Map getState();
+	
+	Map<String,String> getStateMap();
+	
+	void unsetProperty(String propName);
+	
+	void setProperty(String propName, String propValue);
+	
+	String getProperty(String propName);
+	
+	String getProperty(String propName, String defaultValue);	
 	
 	String getMessage(String key);
 
@@ -33,7 +43,7 @@ public interface CaGridInstallerModel extends WizardModel {
 
 	boolean isAuthnSvcCAGenerationRequired();
 
-	String getProperty(String propName);
+
 
 	boolean isEqual(String value, String propName2);
 
@@ -42,6 +52,10 @@ public interface CaGridInstallerModel extends WizardModel {
 	boolean isDeployGlobusRequired();
 
 	void setDeactivatePrevious(boolean b);
-
 	
+	String getServiceDestDir();
+
+	boolean isSecureContainerRequired();
+
+	boolean isConfigureContainerSelected();
 }

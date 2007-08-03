@@ -25,6 +25,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
@@ -45,41 +46,20 @@ import org.w3c.dom.Node;
  */
 public class InstallerUtils {
 
-	/**
-	 * 
-	 */
 	public InstallerUtils() {
-		// TODO Auto-generated constructor stub
+
 	}
 
 	public static boolean isWindows() {
 		return System.getProperty("os.name").toLowerCase().indexOf("windows") != -1;
 	}
 
-	public static String getRequiredProperty(Map state, String name) {
-		String value = (String) state.get(name);
-		if (value == null) {
-			throw new IllegalStateException("Required property '" + name
-					+ "' not found in state.");
-		}
-		return value;
+
+	public static void showError(String msg){
+		JOptionPane.showMessageDialog(null, msg, "Error",
+				JOptionPane.ERROR_MESSAGE);
 	}
-
-	public static void downloadFile(URL fromUrl, File toFile) throws Exception {
-
-		BufferedOutputStream out = new BufferedOutputStream(
-				new FileOutputStream(toFile));
-		InputStream in = fromUrl.openStream();
-		byte[] buffer = new byte[1024];
-		int len = -1;
-		while ((len = in.read(buffer)) > 0) {
-			out.write(buffer, 0, len);
-		}
-		out.flush();
-		out.close();
-		in.close();
-	}
-
+	
 	public static void unzipFile(File toFile, File toDir) throws Exception {
 		String baseOut = toDir.getAbsolutePath() + "/";
 		ZipFile zipFile = new ZipFile(toFile);
@@ -139,12 +119,9 @@ public class InstallerUtils {
 	}
 
 	public static boolean checkGenerateCA(CaGridInstallerModel model) {
-		return "true".equals(model.getState().get(
-				Constants.USE_SECURE_CONTAINER))
-				&& !"true".equals(model.getState().get(
-						Constants.SERVICE_CERT_PRESENT))
-				&& !"true".equals(model.getState().get(
-						Constants.CA_CERT_PRESENT));
+		return model.isTrue(Constants.USE_SECURE_CONTAINER)
+				&& !model.isTrue(Constants.SERVICE_CERT_PRESENT)
+				&& !model.isTrue(Constants.CA_CERT_PRESENT);
 	}
 	
 	public static void copyCACertToTrustStore(String certPath)
@@ -177,19 +154,9 @@ public class InstallerUtils {
 		out.close();
 	}
 
-	public static String getServiceDestDir(Map state) {
-		return state.get(Constants.TEMP_DIR_PATH) + "/services";
-	}
 
 	public static String getScriptsBuildFilePath() {
 		return new File("scripts/build.xml").getAbsolutePath();
-	}
-
-	public static boolean isSecureContainerRequired(Map state) {
-		return "true".equals(state.get(Constants.INSTALL_DORIAN))
-				|| "true".equals(state.get(Constants.INSTALL_GTS))
-				|| "true".equals(state.get(Constants.INSTALL_AUTHN_SVC))
-				|| "true".equals(state.get(Constants.INSTALL_GRID_GROUPER));
 	}
 
 	public static String toString(Node node) throws Exception {
@@ -204,15 +171,6 @@ public class InstallerUtils {
 	}
 
 	
-
-	public static boolean isTrue(Map state, String propName) {
-		return "true".equals(state.get(propName));
-	}
-
-	public static boolean isTomcatContainer(CaGridInstallerModel model) {
-		return model.getMessage("container.type.tomcat").equals(
-				model.getState().get(Constants.CONTAINER_TYPE));
-	}
 
 	public static String getInstallerTempDir() {
 		return getInstallerDir() + "/tmp";

@@ -81,13 +81,13 @@ public class InstallationCompleteStep extends PanelWizardStep {
 		sb
 				.append("Please remember to set the following environment variables:\n\n");
 		sb.append("\t").append("ANT_HOME=").append(
-				this.model.getState().get(Constants.ANT_HOME)).append("\n");
+				this.model.getProperty(Constants.ANT_HOME)).append("\n");
 		sb.append("\t").append("GLOBUS_LOCATION=").append(
-				this.model.getState().get(Constants.GLOBUS_HOME)).append("\n");
+				this.model.getProperty(Constants.GLOBUS_HOME)).append("\n");
 		if (this.model.getMessage("container.type.tomcat").equals(
-				this.model.getState().get(Constants.CONTAINER_TYPE))) {
+				this.model.getProperty(Constants.CONTAINER_TYPE))) {
 			sb.append("\t").append("CATALINA_HOME=").append(
-					this.model.getState().get(Constants.TOMCAT_HOME)).append(
+					this.model.getProperty(Constants.TOMCAT_HOME)).append(
 					"\n");
 		}
 

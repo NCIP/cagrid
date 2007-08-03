@@ -44,14 +44,14 @@ public class ConfigureServiceCertStep extends PropertyConfigurationStep {
 	public void applyState() throws InvalidStateException {
 		super.applyState();
 		try{
-			File f = new File((String)this.model.getState().get(Constants.SERVICE_CERT_PATH));
-			this.model.getState().put(Constants.SERVICE_CERT_PATH, f.getAbsolutePath());
+			File f = new File(this.model.getProperty(Constants.SERVICE_CERT_PATH));
+			this.model.setProperty(Constants.SERVICE_CERT_PATH, f.getAbsolutePath());
 		}catch(Exception ex){
 			throw new InvalidStateException("Could not set certificate path: " + ex.getMessage(), ex);
 		}
 		try{
-			File f = new File((String)this.model.getState().get(Constants.SERVICE_KEY_PATH));
-			this.model.getState().put(Constants.SERVICE_KEY_PATH, f.getAbsolutePath());
+			File f = new File(this.model.getProperty(Constants.SERVICE_KEY_PATH));
+			this.model.setProperty(Constants.SERVICE_KEY_PATH, f.getAbsolutePath());
 		}catch(Exception ex){
 			throw new InvalidStateException("Could not set key path: " + ex.getMessage(), ex);
 		}

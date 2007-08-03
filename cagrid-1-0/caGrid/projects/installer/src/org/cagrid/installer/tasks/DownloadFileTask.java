@@ -15,6 +15,7 @@ import javax.swing.SwingUtilities;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.cagrid.installer.model.CaGridInstallerModel;
 import org.cagrid.installer.steps.Constants;
 
 /**
@@ -51,9 +52,9 @@ public class DownloadFileTask extends BasicTask {
 		this.totalBytes = totalBytes;
 	}
 
-	protected Object internalExecute(Map state) throws Exception {
+	protected Object internalExecute(CaGridInstallerModel model) throws Exception {
 
-		String fromUrl = (String) state.get(this.fromUrlProp);
+		String fromUrl = model.getProperty(this.fromUrlProp);
 
 		URL url = null;
 		try {
@@ -80,8 +81,8 @@ public class DownloadFileTask extends BasicTask {
 		}
 		InputStream inputStream = t.getIn();
 
-		String toFile = state.get(Constants.TEMP_DIR_PATH) + "/"
-				+ state.get(this.toFileProp);
+		String toFile = model.getProperty(Constants.TEMP_DIR_PATH) + "/"
+				+ model.getProperty(this.toFileProp);
 		BufferedOutputStream out = new BufferedOutputStream(
 				new FileOutputStream(toFile));
 		byte[] buffer = new byte[BUFFER_SIZE];

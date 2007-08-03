@@ -14,6 +14,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tools.tar.TarEntry;
 import org.apache.tools.tar.TarInputStream;
+import org.cagrid.installer.model.CaGridInstallerModel;
 import org.cagrid.installer.steps.Constants;
 
 /**
@@ -21,8 +22,6 @@ import org.cagrid.installer.steps.Constants;
  * 
  */
 public class UnTarInstallTask extends BasicTask {
-
-	private static final int BUFFER_SIZE = 1024;
 
 	private String tempFileNameProp;
 
@@ -44,19 +43,19 @@ public class UnTarInstallTask extends BasicTask {
 		this.homeProp = homeProp;
 	}
 
-	protected Object internalExecute(Map state) throws Exception {
+	protected Object internalExecute(CaGridInstallerModel model) throws Exception {
 
 		
-		File installDir = new File((String) state.get(this.installDirPathProp));
+		File installDir = new File(model.getProperty(this.installDirPathProp));
 		File home = new File(installDir.getAbsolutePath() + "/"
-				+ state.get(this.dirNameProp));
-		state.put(this.homeProp, home.getAbsolutePath());
+				+ model.getProperty(this.dirNameProp));
+		model.setProperty(this.homeProp, home.getAbsolutePath());
 
 		home.delete();
 
 		try {
-			String path = state.get(Constants.TEMP_DIR_PATH) + "/"
-					+ state.get(this.tempFileNameProp);
+			String path = model.getProperty(Constants.TEMP_DIR_PATH) + "/"
+					+ model.getProperty(this.tempFileNameProp);
 
 			logger.info("Trying to extract Tar File for " + path);
 

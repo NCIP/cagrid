@@ -48,14 +48,14 @@ public class ConfigureCAStep extends PropertyConfigurationStep {
 	
 	protected void ensureAbsolutePaths(String caCertPathProp, String caKeyPathProp) throws InvalidStateException {
 		try{
-			File f = new File((String)this.model.getState().get(caCertPathProp));
-			this.model.getState().put(caCertPathProp, f.getAbsolutePath());
+			File f = new File(this.model.getProperty(caCertPathProp));
+			this.model.setProperty(caCertPathProp, f.getAbsolutePath());
 		}catch(Exception ex){
 			throw new InvalidStateException("Could not set certificate path: " + ex.getMessage(), ex);
 		}
 		try{
-			File f = new File((String)this.model.getState().get(caKeyPathProp));
-			this.model.getState().put(caKeyPathProp, f.getAbsolutePath());
+			File f = new File(this.model.getProperty(caKeyPathProp));
+			this.model.setProperty(caKeyPathProp, f.getAbsolutePath());
 		}catch(Exception ex){
 			throw new InvalidStateException("Could not set key path: " + ex.getMessage(), ex);
 		}

@@ -6,6 +6,7 @@ package org.cagrid.installer.tasks;
 import java.util.Map;
 import java.util.Properties;
 
+import org.cagrid.installer.model.CaGridInstallerModel;
 import org.cagrid.installer.steps.Constants;
 import org.cagrid.installer.util.InstallerUtils;
 
@@ -13,7 +14,7 @@ import org.cagrid.installer.util.InstallerUtils;
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
  * 
  */
-public class ConfigureGlobusTask extends CaGridAntTask {
+public class ConfigureGlobusTask extends CaGridInstallerAntTask {
 
 	/**
 	 * @param name
@@ -24,18 +25,14 @@ public class ConfigureGlobusTask extends CaGridAntTask {
 		super(name, description, "configure-security-descriptor");
 	}
 
-	protected Object runAntTask(Map state, String target, Map env,
+	protected Object runAntTask(CaGridInstallerModel model, String target, Map<String,String> env,
 			Properties sysProps) throws Exception {
 		new AntTask("", "", "configure-security-descriptor", env, sysProps)
-				.execute(state);
+				.execute(model);
 		new AntTask("", "", "configure-globus-server-config", env, sysProps)
-				.execute(state);
+				.execute(model);
 
 		return null;
-	}
-
-	protected String getBuildFilePath(Map state) {
-		return InstallerUtils.getScriptsBuildFilePath();
 	}
 
 }

@@ -68,8 +68,7 @@ public class SpecifyTomcatPortsStep extends PropertyConfigurationStep {
 
 		JTextField httpPortField = (JTextField) getOption(Constants.TOMCAT_HTTP_PORT);
 		JLabel httpPortLabel = getLabel(Constants.TOMCAT_HTTP_PORT);
-		if (!"true".equals(this.model.getState().get(
-				Constants.USE_SECURE_CONTAINER))) {
+		if (!this.model.isTrue(Constants.USE_SECURE_CONTAINER)) {
 			httpPortField.setVisible(true);
 			httpPortLabel.setVisible(true);
 			httpsPortField.setVisible(false);
@@ -160,20 +159,20 @@ public class SpecifyTomcatPortsStep extends PropertyConfigurationStep {
 
 	public void applyState() throws InvalidStateException {
 
-		String oldTomcatHttpPort = (String) this.model.getState().get(
+		String oldTomcatHttpPort = this.model.getProperty(
 				Constants.TOMCAT_HTTP_PORT);
 		if (oldTomcatHttpPort == null) {
 			oldTomcatHttpPort = "8080";
 		}
-		this.model.getState().put(Constants.TOMCAT_OLD_HTTP_PORT,
+		this.model.setProperty(Constants.TOMCAT_OLD_HTTP_PORT,
 				oldTomcatHttpPort);
 
-		String oldTomcatHttpsPort = (String) this.model.getState().get(
+		String oldTomcatHttpsPort = this.model.getProperty(
 				Constants.TOMCAT_HTTPS_PORT);
 		if (oldTomcatHttpsPort == null) {
 			oldTomcatHttpsPort = "8443";
 		}
-		this.model.getState().put(Constants.TOMCAT_OLD_HTTPS_PORT,
+		this.model.setProperty(Constants.TOMCAT_OLD_HTTPS_PORT,
 				oldTomcatHttpsPort);
 
 		JTextField shutdownPortField = (JTextField) getOption(Constants.TOMCAT_SHUTDOWN_PORT);
@@ -182,8 +181,8 @@ public class SpecifyTomcatPortsStep extends PropertyConfigurationStep {
 
 		assertIsInteger(shutdownPortField.getText(),
 				"Tomcat Shutdown Port must be an integer.");
-		boolean isSecure = "true".equals(this.model.getState().get(
-				Constants.USE_SECURE_CONTAINER));
+		boolean isSecure = this.model.isTrue(
+				Constants.USE_SECURE_CONTAINER);
 		if (isSecure) {
 			assertIsInteger(httpsPortField.getText(),
 					"Tomcat HTTPS Port must be an integer.");
@@ -253,7 +252,7 @@ public class SpecifyTomcatPortsStep extends PropertyConfigurationStep {
 	}
 
 	private String getServerConfigPath() {
-		return (String) this.model.getState().get(Constants.TOMCAT_HOME)
+		return (String) this.model.getProperty(Constants.TOMCAT_HOME)
 				+ "/conf/server.xml";
 	}
 

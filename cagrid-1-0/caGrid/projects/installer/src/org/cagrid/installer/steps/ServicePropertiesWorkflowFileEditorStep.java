@@ -60,7 +60,7 @@ public class ServicePropertiesWorkflowFileEditorStep extends
 	 */
 	@Override
 	protected String getPropertyFilePath() {
-		return InstallerUtils.getServiceDestDir(this.model.getState()) + "/"
+		return this.model.getServiceDestDir() + "/"
 				+ this.serviceName + "/WorkflowFactoryService" +"/service.properties";
 	}
 

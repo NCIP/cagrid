@@ -5,6 +5,8 @@ package org.cagrid.installer.tasks;
 
 import java.util.Map;
 
+import org.cagrid.installer.model.CaGridInstallerModel;
+
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
  *
@@ -23,11 +25,11 @@ public abstract class BasicTask extends AbstractTask {
 	/* (non-Javadoc)
 	 * @see org.cagrid.installer.tasks.Task#execute(java.util.Map)
 	 */
-	public Object execute(Map state) throws Exception {
-		Object result = internalExecute(state);
+	public Object execute(CaGridInstallerModel model) throws Exception {
+		Object result = internalExecute(model);
 		setLastStep(getStepCount());
 		return result;
 	}
 	
-	protected abstract Object internalExecute(Map state) throws Exception;
+	protected abstract Object internalExecute(CaGridInstallerModel model) throws Exception;
 }

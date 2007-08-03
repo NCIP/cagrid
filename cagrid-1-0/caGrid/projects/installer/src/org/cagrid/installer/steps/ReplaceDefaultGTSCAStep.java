@@ -48,8 +48,7 @@ public class ReplaceDefaultGTSCAStep extends PropertyConfigurationStep {
 
 		super.applyState();
 		try {
-			File certsDir = new File(InstallerUtils
-					.getServiceDestDir(this.model.getState())
+			File certsDir = new File(this.model.getServiceDestDir()
 					+ "/syncgts/ext/resources/certificates");
 			File[] files = certsDir.listFiles();
 			for (File file : files) {

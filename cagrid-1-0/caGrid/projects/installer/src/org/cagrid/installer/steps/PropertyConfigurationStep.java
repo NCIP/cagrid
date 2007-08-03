@@ -144,7 +144,7 @@ public class PropertyConfigurationStep extends PanelWizardStep {
 
 	public void prepare() {
 		for (String key : this.requiredFields.keySet()) {
-			if (this.model.getState().containsKey(key)) {
+			if (this.model.isSet(key)) {
 				this.requiredFields.put(key, true);
 			}
 		}
@@ -165,7 +165,7 @@ public class PropertyConfigurationStep extends PanelWizardStep {
 	}
 
 	protected void addBooleanOption(BooleanPropertyConfigurationOption option) {
-		String defaultValue = (String) this.model.getState().get(
+		String defaultValue = this.model.getProperty(
 				option.getName());
 		try {
 			Boolean.valueOf(defaultValue);
@@ -199,7 +199,7 @@ public class PropertyConfigurationStep extends PanelWizardStep {
 	}
 
 	protected void addListOption(ListPropertyConfigurationOption option) {
-		String defaultValue = (String) this.model.getState().get(
+		String defaultValue = this.model.getProperty(
 				option.getName());
 		if (defaultValue != null) {
 			boolean foundIt = false;
@@ -264,7 +264,7 @@ public class PropertyConfigurationStep extends PanelWizardStep {
 
 	protected void addTextOption(TextPropertyConfigurationOption option,
 			Component control) {
-		String defaultValue = (String) this.model.getState().get(
+		String defaultValue = this.model.getProperty(
 				option.getName());
 		if (defaultValue == null) {
 			defaultValue = option.getDefaultValue();
@@ -294,7 +294,7 @@ public class PropertyConfigurationStep extends PanelWizardStep {
 	}
 
 	protected void addPasswordOption(PasswordPropertyConfigurationOption option) {
-		String defaultValue = (String) this.model.getState().get(
+		String defaultValue = this.model.getProperty(
 				option.getName());
 		if (defaultValue == null) {
 			defaultValue = option.getDefaultValue();
@@ -362,12 +362,12 @@ public class PropertyConfigurationStep extends PanelWizardStep {
 
 	public void applyState() throws InvalidStateException {
 
-		Map tempState = new HashMap();
+		Map<String,String> tempState = new HashMap<String,String>();
 		try {
 			for (int i = 0; i < optionKeys.size(); i++) {
 				String key = optionKeys.get(i);
 				Component c = optionValueFields.get(i);
-				Object value = null;
+				String value = null;
 				if (c instanceof JPasswordField) {
 					value = String.valueOf(((JPasswordField) c).getPassword());
 				} else if (c instanceof JTextField) {
@@ -386,13 +386,14 @@ public class PropertyConfigurationStep extends PanelWizardStep {
 					+ ex.getMessage(), ex);
 		}
 
-		Map m = new HashMap();
-		m.putAll(this.model.getState());
+		Map<String,String> m = new HashMap<String,String>();
+		m.putAll(this.model.getStateMap());
 		m.putAll(tempState);
 		validate(m);
 
-		this.model.getState().putAll(tempState);
-
+		for(String key : tempState.keySet()){
+			this.model.setProperty(key, tempState.get(key));
+		}
 	}
 
 	protected void validate(Map<String, String> state)
