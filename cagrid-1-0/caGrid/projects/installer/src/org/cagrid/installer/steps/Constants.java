@@ -3,7 +3,6 @@
  */
 package org.cagrid.installer.steps;
 
-import java.util.Properties;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>

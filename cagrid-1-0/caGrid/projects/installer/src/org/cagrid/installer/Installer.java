@@ -33,7 +33,6 @@ import org.cagrid.installer.steps.ConfigureDorianCAStep;
 import org.cagrid.installer.steps.ConfigureDorianDBStep;
 import org.cagrid.installer.steps.ConfigureDorianHostCredentialsStep;
 import org.cagrid.installer.steps.ConfigureGTSDBStep;
-import org.cagrid.installer.steps.ConfigureGridGrouperStep;
 import org.cagrid.installer.steps.ConfigureNewDorianCAStep;
 import org.cagrid.installer.steps.ConfigureServiceCertStep;
 import org.cagrid.installer.steps.ConfigureServiceMetadataStep;
@@ -71,6 +70,7 @@ import org.cagrid.installer.tasks.ConfigureGridGrouperTask;
 import org.cagrid.installer.tasks.ConfigureTargetGridTask;
 import org.cagrid.installer.tasks.ConfigureTomcatTask;
 import org.cagrid.installer.tasks.CopySelectedServicesToTempDirTask;
+import org.cagrid.installer.tasks.CreateGridGrouperDatabaseTask;
 import org.cagrid.installer.tasks.DeployActiveBPELTask;
 import org.cagrid.installer.tasks.DeployAuthenticationServiceTask;
 import org.cagrid.installer.tasks.DeployDorianTask;
@@ -172,52 +172,58 @@ public class Installer {
 			incrementProgress();
 
 			// Load default properties
-			String downloadUrl = null;
-			try {
-				Properties props = new Properties();
-				props.load(Thread.currentThread().getContextClassLoader()
-						.getResourceAsStream("download.properties"));
-				downloadUrl = props.getProperty(Constants.DOWNLOAD_URL);
-			} catch (Exception ex) {
-				handleException("Error getting default properties", ex);
-			}
-			incrementProgress();
-			logger.info("Downloading default properties from: " + downloadUrl);
-
-			String toFile = tempDir + "/downloaded.properties";
-			DownloadPropsThread dpt = new DownloadPropsThread(downloadUrl,
-					toFile);
-			dpt.start();
-			try {
-				dpt.join(5000);
-			} catch (InterruptedException ex) {
-				handleException("Download thread interrupted", ex);
-			}
-
-			if (dpt.getException() != null) {
-				Exception ex = dpt.getException();
-				String msg = "Error loading default properties: "
-						+ ex.getMessage();
-				handleException(msg, ex);
-			}
-
-			if (!dpt.isFinished()) {
-				String msg = "Download of default properties timed out.";
-				handleException(msg, new Exception(msg));
-			}
-
+			Properties downloadedProps = getDownloadedProps(tempDir);
 			incrementProgress();
 
-			try {
-				Properties props = new Properties();
-				props.load(new FileInputStream(toFile));
-				Enumeration e = props.propertyNames();
-				while (e.hasMoreElements()) {
-					String propName = (String) e.nextElement();
-					defaultState.put(propName, props.getProperty(propName));
+			Enumeration e = downloadedProps.propertyNames();
+			while (e.hasMoreElements()) {
+				String propName = (String) e.nextElement();
+				defaultState.put(propName, downloadedProps
+						.getProperty(propName));
+			}
+			incrementProgress();
+
+			// Check for presence of cagrid.installer.properties file
+			String cagridInstallerFileName = System
+					.getProperty(Constants.CAGRID_INSTALLER_PROPERTIES);
+			if (cagridInstallerFileName != null) {
+				logger.info("Custom installer properties file specified: '"
+						+ cagridInstallerFileName + "'");
+			} else {
+				cagridInstallerFileName = InstallerUtils.getInstallerDir()
+						+ "/" + Constants.CAGRID_INSTALLER_PROPERTIES;
+				logger.info("Using default properties file: '"
+						+ cagridInstallerFileName + "'");
+			}
+			defaultState.put(Constants.CAGRID_INSTALLER_PROPERTIES,
+					cagridInstallerFileName);
+			File cagridInstallerFile = new File(cagridInstallerFileName);
+
+			// If cagrid.installer.properties found, load properties.
+			logger.info("Looking for '" + cagridInstallerFileName + "'");
+			if (cagridInstallerFile.exists()) {
+				try {
+					logger.info("Loading '" + cagridInstallerFileName + "'");
+					Properties props = new Properties();
+					props.load(new FileInputStream(cagridInstallerFile));
+
+					// Downloaded properties have precedence
+					Enumeration e2 = props.propertyNames();
+					while (e2.hasMoreElements()) {
+						String propName = (String) e2.nextElement();
+						if (!defaultState.containsKey(propName)) {
+							defaultState.put(propName, props
+									.getProperty(propName));
+						}
+					}
+				} catch (Exception ex) {
+					String msg = "Could not load '" + cagridInstallerFileName
+							+ "': " + ex.getMessage();
+					logger.error(msg, ex);
+					throw new RuntimeException(msg, ex);
 				}
-			} catch (Exception ex) {
-				handleException("Error loading default properties", ex);
+			} else {
+				logger.info("Did not find '" + cagridInstallerFileName + "'");
 			}
 			incrementProgress();
 
@@ -236,9 +242,77 @@ public class Installer {
 			throw new RuntimeException(
 					"Error initializing: " + ex.getMessage(), ex);
 		} finally {
-
 			splashScreenDestruct();
 		}
+	}
+
+	private Properties getDownloadedProps(String tempDir) {
+
+		Properties defaultProps = null;
+
+		InputStream propsIn = null;
+		String downloadPropsFileName = System
+				.getProperty("download.properties");
+		if (downloadPropsFileName != null) {
+			try {
+				propsIn = new FileInputStream(downloadPropsFileName);
+			} catch (Exception ex) {
+				handleException("Couldn't load download.properties file '"
+						+ downloadPropsFileName + "': " + ex.getMessage(), ex);
+			}
+		} else {
+			try {
+				propsIn = Thread.currentThread().getContextClassLoader()
+						.getResourceAsStream("download.properties");
+			} catch (Exception ex) {
+				handleException(
+						"Error loading default download.properties resource: "
+								+ ex.getMessage(), ex);
+			}
+			if (propsIn == null) {
+				handleException("Couldn't find download.properties resource.",
+						null);
+			}
+		}
+		String downloadUrl = null;
+
+		Properties downloadProps = new Properties();
+		try {
+			downloadProps.load(propsIn);
+			downloadUrl = downloadProps.getProperty(Constants.DOWNLOAD_URL);
+		} catch (Exception ex) {
+			handleException("Error loading download.properties", ex);
+		}
+		logger.info("Downloading default properties from: " + downloadUrl);
+
+		String toFile = tempDir + "/downloaded.properties";
+		DownloadPropsThread dpt = new DownloadPropsThread(downloadUrl, toFile);
+		dpt.start();
+		try {
+			dpt.join(5000);
+		} catch (InterruptedException ex) {
+			handleException("Download thread interrupted", ex);
+		}
+
+		if (dpt.getException() != null) {
+			Exception ex = dpt.getException();
+			String msg = "Error loading default properties: " + ex.getMessage();
+			handleException(msg, ex);
+		}
+
+		if (!dpt.isFinished()) {
+			String msg = "Download of default properties timed out.";
+			handleException(msg, new Exception(msg));
+		}
+		try {
+			defaultProps = new Properties();
+			defaultProps.load(new FileInputStream(toFile));
+		} catch (Exception ex) {
+			handleException("Error loading default properties: "
+					+ ex.getMessage(), ex);
+		}
+
+		return defaultProps;
 	}
 
 	private void incrementProgress() {
@@ -246,56 +320,18 @@ public class Installer {
 	}
 
 	private void handleException(String msg, Exception ex) {
-		logger.error(msg, ex);
 		JOptionPane.showMessageDialog(null, msg, "Error",
 				JOptionPane.ERROR_MESSAGE);
-		throw new RuntimeException(msg, ex);
+		if (ex != null) {
+			logger.error(msg, ex);
+			throw new RuntimeException(msg, ex);
+		} else {
+			logger.error(msg);
+			throw new RuntimeException(msg);
+		}
 	}
 
 	private void initSteps(Map<String, String> defaultState) {
-
-		// Check for presence of .cagrid.installer file
-		String cagridInstallerFileName = System
-				.getProperty(Constants.CAGRID_INSTALLER_PROPERTIES);
-		if (cagridInstallerFileName != null) {
-			logger.info("Custom installer properties file specified: '"
-					+ cagridInstallerFileName + "'");
-		} else {
-			cagridInstallerFileName = InstallerUtils.getInstallerDir() + "/"
-					+ Constants.CAGRID_INSTALLER_PROPERTIES;
-			logger.info("Using default properties file: '"
-					+ cagridInstallerFileName + "'");
-		}
-		defaultState.put(Constants.CAGRID_INSTALLER_PROPERTIES,
-				cagridInstallerFileName);
-		File cagridInstallerFile = new File(cagridInstallerFileName);
-
-		// If .cagrid.installer found, load properties.
-		logger.info("Looking for '" + cagridInstallerFileName + "'");
-		if (cagridInstallerFile.exists()) {
-			try {
-				logger.info("Loading '" + cagridInstallerFileName + "'");
-				Properties props = new Properties();
-				props.load(new FileInputStream(cagridInstallerFile));
-				// defaultState.putAll(props);
-				Enumeration e = props.propertyNames();
-				while (e.hasMoreElements()) {
-					String propName = (String) e.nextElement();
-					if (!defaultState.containsKey(propName)) {
-						defaultState.put(propName, props.getProperty(propName));
-					}
-				}
-			} catch (Exception ex) {
-				String msg = "Could not load '" + cagridInstallerFileName
-						+ "': " + ex.getMessage();
-				logger.error(msg, ex);
-				throw new RuntimeException(msg, ex);
-			}
-		} else {
-			logger.info("Did not find '" + cagridInstallerFileName + "'");
-		}
-
-		incrementProgress();
 
 		// TODO: provide some factory method here
 		this.model = new CaGridInstallerModelImpl(defaultState);
@@ -328,19 +364,16 @@ public class Installer {
 		checkInstalled("Ant", "ANT_HOME", Constants.ANT_HOME,
 				Constants.ANT_INSTALLED, Constants.INSTALL_ANT);
 		incrementProgress();
-		// TODO: check Ant version
 
 		// Check for presence of Tomcat
 		checkInstalled("Tomcat", "CATALINA_HOME", Constants.TOMCAT_HOME,
 				Constants.TOMCAT_INSTALLED, Constants.INSTALL_TOMCAT);
 		incrementProgress();
-		// TODO: check Tomcat version
 
 		// Check for presence of Globus
 		checkInstalled("Globus", "GLOBUS_LOCATION", Constants.GLOBUS_HOME,
 				Constants.GLOBUS_INSTALLED, Constants.INSTALL_GLOBUS);
 		incrementProgress();
-		// TODO: check Globus version
 
 		// Check for presence of caGrid
 		checkInstalled("caGrid", null, Constants.CAGRID_HOME,
@@ -2250,7 +2283,7 @@ public class Installer {
 			}
 		});
 
-		ConfigureGridGrouperStep gridGrouperConfigStep = new ConfigureGridGrouperStep(
+		PropertyConfigurationStep gridGrouperConfigStep = new PropertyConfigurationStep(
 				this.model.getMessage("grid.grouper.config.title"), this.model
 						.getMessage("grid.grouper.config.desc"));
 		gridGrouperConfigStep
@@ -2289,13 +2322,46 @@ public class Installer {
 								this.model.getProperty(
 										Constants.GRID_GROUPER_DB_PASSWORD, ""),
 								false));
+		gridGrouperConfigStep.getValidators().add(
+				new MySqlDBConnectionValidator("", "",
+						Constants.GRID_GROUPER_DB_USERNAME,
+						Constants.GRID_GROUPER_DB_PASSWORD, "select 1",
+						this.model.getMessage("db.validation.failed")) {
+
+					protected String getJdbcUrl(Map state){
+						String url = (String)state.get(Constants.GRID_GROUPER_DB_URL);
+						return InstallerUtils.getJdbcBaseFromJdbcUrl(url) + "/mysql";
+					}
+					
+				});
 		this.model.add(gridGrouperConfigStep, new Condition() {
 			public boolean evaluate(WizardModel m) {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
 				return model.isTrue(Constants.INSTALL_GRID_GROUPER);
 			}
 		});
-		
+
+		final DropServiceDatabaseStep dropGridGrouperDbStep = new DropServiceDatabaseStep(
+				this.model.getMessage("grid.grouper.db.drop.title"), this.model
+						.getMessage("grid.grouper.db.drop.desc"),
+				"grid.grouper.", "drop.grid.grouper.db") {
+			protected String getJdbcUrl(CaGridInstallerModel model) {
+				return model.getProperty(Constants.GRID_GROUPER_DB_URL);
+			}
+
+			protected String getDatabase(CaGridInstallerModel model) {
+				return InstallerUtils.getDbNameFromJdbcUrl(getJdbcUrl(model));
+			}
+		};
+		this.model.add(dropGridGrouperDbStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_GRID_GROUPER)
+						&& dropGridGrouperDbStep.databaseExists(model);
+			}
+		});
+
 		DeployPropertiesFileEditorStep editGridGrouperDeployPropertiesStep = new DeployPropertiesFileEditorStep(
 				"gridgrouper",
 				this.model
@@ -2523,7 +2589,18 @@ public class Installer {
 							}
 
 						}));
+		installStep.getTasks().add(
+				new ConditionalTask(new CreateGridGrouperDatabaseTask(this.model
+						.getMessage("creating.grid.grouper.db.title"), ""),
+						new Condition() {
 
+							public boolean evaluate(WizardModel m) {
+								CaGridInstallerModel model = (CaGridInstallerModel) m;
+								return model
+										.isTrue(Constants.INSTALL_GRID_GROUPER);
+							}
+
+						}));
 		installStep.getTasks().add(
 				new ConditionalTask(new ConfigureGridGrouperTask(this.model
 						.getMessage("configuring.grid.grouper.title"), ""),

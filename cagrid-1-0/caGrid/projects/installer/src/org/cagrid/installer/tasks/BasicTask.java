@@ -3,8 +3,6 @@
  */
 package org.cagrid.installer.tasks;
 
-import java.util.Map;
-
 import org.cagrid.installer.model.CaGridInstallerModel;
 
 /**

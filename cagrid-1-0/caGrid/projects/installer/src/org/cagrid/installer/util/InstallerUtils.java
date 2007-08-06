@@ -211,4 +211,12 @@ public class InstallerUtils {
 		gbc.gridy = y;
 		return gbc;		
 	}
+	
+	public static String getDbNameFromJdbcUrl(String jdbcUrl){
+		return jdbcUrl.substring(jdbcUrl.lastIndexOf("/") + 1);
+	}
+	
+	public static String getJdbcBaseFromJdbcUrl(String jdbcUrl){
+		return jdbcUrl.substring(0, jdbcUrl.lastIndexOf("/"));
+	}
 }
