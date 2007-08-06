@@ -426,6 +426,25 @@ public class Installer {
 		this.model.add(selectInstallStep);
 		incrementProgress();
 
+		// If user has NOT selected to install caGrid, and installer
+		// has not located it, ask where it is.
+		FilePropertyConfigurationOption browseToCaGridOpt = new FilePropertyConfigurationOption(Constants.CAGRID_HOME,
+				this.model.getMessage("directory"), "", true);
+		browseToCaGridOpt.setBrowseLabel(this.model.getMessage("browse"));
+		browseToCaGridOpt.setDirectoriesOnly(true);
+		PropertyConfigurationStep checkCaGridInstalledStep = new PropertyConfigurationStep(
+				this.model.getMessage("check.cagrid.installed.title"),
+				this.model.getMessage("check.cagrid.installed.desc"));
+		checkCaGridInstalledStep.getOptions().add(
+				browseToCaGridOpt);
+		this.model.add(checkCaGridInstalledStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return !model.isTrue(Constants.INSTALL_CAGRID)
+						&& !model.isTrue(Constants.CAGRID_INSTALLED);
+			}
+		});
+
 		// Check if caGrid should be reconfigured
 		PropertyConfigurationStep checkReconfigureCaGridStep = new PropertyConfigurationStep(
 				this.model.getMessage("check.reconfigure.cagrid.title"),
@@ -2328,11 +2347,13 @@ public class Installer {
 						Constants.GRID_GROUPER_DB_PASSWORD, "select 1",
 						this.model.getMessage("db.validation.failed")) {
 
-					protected String getJdbcUrl(Map state){
-						String url = (String)state.get(Constants.GRID_GROUPER_DB_URL);
-						return InstallerUtils.getJdbcBaseFromJdbcUrl(url) + "/mysql";
+					protected String getJdbcUrl(Map state) {
+						String url = (String) state
+								.get(Constants.GRID_GROUPER_DB_URL);
+						return InstallerUtils.getJdbcBaseFromJdbcUrl(url)
+								+ "/mysql";
 					}
-					
+
 				});
 		this.model.add(gridGrouperConfigStep, new Condition() {
 			public boolean evaluate(WizardModel m) {
@@ -2590,9 +2611,10 @@ public class Installer {
 
 						}));
 		installStep.getTasks().add(
-				new ConditionalTask(new CreateGridGrouperDatabaseTask(this.model
-						.getMessage("creating.grid.grouper.db.title"), ""),
-						new Condition() {
+				new ConditionalTask(
+						new CreateGridGrouperDatabaseTask(this.model
+								.getMessage("creating.grid.grouper.db.title"),
+								""), new Condition() {
 
 							public boolean evaluate(WizardModel m) {
 								CaGridInstallerModel model = (CaGridInstallerModel) m;
