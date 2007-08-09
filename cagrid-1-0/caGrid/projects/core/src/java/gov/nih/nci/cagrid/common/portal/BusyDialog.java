@@ -8,6 +8,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.WindowConstants;
 
 
 public class BusyDialog extends JDialog {
@@ -39,6 +40,8 @@ public class BusyDialog extends JDialog {
      * This method initializes this
      */
     private void initialize() {
+        this.setModal(true);
+        this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         this.setContentPane(getMainPanel());
         this.setSize(new java.awt.Dimension(400, 100));
         // this.pack();

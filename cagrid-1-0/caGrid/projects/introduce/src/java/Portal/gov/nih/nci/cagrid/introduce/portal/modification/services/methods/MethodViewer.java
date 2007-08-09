@@ -37,6 +37,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -49,6 +52,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -75,6 +79,9 @@ import org.jdom.Namespace;
 import org.projectmobius.common.MobiusException;
 import org.projectmobius.common.XMLUtilities;
 import org.projectmobius.portal.GridPortalBaseFrame;
+import org.projectmobius.portal.PortalResourceManager;
+
+import sun.awt.WindowClosingListener;
 
 import com.jgoodies.validation.Severity;
 import com.jgoodies.validation.Validatable;
@@ -96,7 +103,7 @@ import com.sun.xml.xsom.parser.XSOMParser;
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella </A>
  */
-public class MethodViewer extends GridPortalBaseFrame {
+public class MethodViewer extends javax.swing.JDialog {
 	private static final Logger logger = Logger.getLogger(MethodViewer.class);
 
 	public class ElementHolder {
@@ -351,30 +358,54 @@ public class MethodViewer extends GridPortalBaseFrame {
 	private static final String METHOD_IMPORT_PORT_TYPE = "Method import port type";
 
 	private static final String METHOD_IMPORT_WSDL_FILE = "Method import wsdl file";
+	
+	private boolean windowClosed = false;
 
 	// @jve:decl-index=0:
 
 	public MethodViewer(MethodType method, SpecificServiceInformation info) {
+	    super(PortalResourceManager.getInstance().getGridPortal());
+	    this.setModal(true);
 		this.info = info;
 		this.method = method;
 		this.setTitle("Modify Method");
 		initialize();
 	}
+	
+	public boolean wasClosed(){
+	    return this.windowClosed;
+	}
 
 	private void initialize() {
+
+	    this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+	    this.addWindowListener(new WindowAdapter() {
+
+            public void windowClosing(WindowEvent e) {
+                super.windowClosed(e);
+                windowClosed = true;
+                setVisible(false);
+                dispose();
+            }
+        
+        });
+	    
+	 
 		this.setContentPane(getMainPanel());
 		this.setTitle("Build/Modify Operation");
 		this.setSize(new Dimension(683, 539));
 		this.setContentPane(getMainPanel());
-		this.setFrameIcon(IntroduceLookAndFeel.getModifyIcon());
-
+		//this.setFrameIcon(IntroduceLookAndFeel.getModifyIcon());
+		
 		initMethodNameValidation();
 		initMethodDescriptionValidation();
 		initNewFaultValidation();
 		initProviderValidation();
 		initImportValidation();
-	}
+		PortalUtils.centerComponent(this);
 
+	}
+	
 	private void updateDoneButton() {
 		if (methodNameValidationModel.hasErrors()
 				|| methodDescriptionValidationModel.hasErrors()
@@ -2117,36 +2148,36 @@ public class MethodViewer extends GridPortalBaseFrame {
 					.setToolTipText("Check this if you want to import the the WSDL operation from another service");
 			isImportedCheckBox.setText("Imported");
 			isImportedCheckBox.setSelected(method.isIsImported());
-			if (!method.isIsImported()) {
-				if (isImportedCheckBox.isSelected()) {
-					getTabbedPanel().setEnabledAt(3, true);
-					getTabbedPanel().setEnabledAt(0, false);
-					getTabbedPanel().setSelectedIndex(3);
-				} else {
-					getTabbedPanel().setEnabledAt(3, false);
-					if (getTabbedPanel().getSelectedIndex() == 3) {
-						getTabbedPanel().setEnabledAt(0, true);
-						getTabbedPanel().setSelectedIndex(0);
-					}
+			if (isImportedCheckBox.isSelected()) {
+				getTabbedPanel().setEnabledAt(3, true);
+				getTabbedPanel().setEnabledAt(0, false);
+				getTabbedPanel().setSelectedIndex(3);
+			} else {
+				getTabbedPanel().setEnabledAt(3, false);
+				getTabbedPanel().setEnabledAt(0, true);
+				if (getTabbedPanel().getSelectedIndex() == 3) {
+					getTabbedPanel().setSelectedIndex(0);
 				}
-				isImportedCheckBox.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						if (isImportedCheckBox.isSelected()) {
-							getTabbedPanel().setEnabledAt(3, true);
-							getTabbedPanel().setEnabledAt(0, false);
-							getTabbedPanel().setSelectedIndex(3);
-						} else {
-							getTabbedPanel().setEnabledAt(3, false);
-							if (getTabbedPanel().getSelectedIndex() == 3) {
-								getTabbedPanel().setEnabledAt(0, true);
-								getTabbedPanel().setSelectedIndex(0);
-							}
-						}
-						validateImportInput();
-					}
-
-				});
 			}
+
+			isImportedCheckBox.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (isImportedCheckBox.isSelected()) {
+						getTabbedPanel().setEnabledAt(3, true);
+						getTabbedPanel().setEnabledAt(0, false);
+						getTabbedPanel().setSelectedIndex(3);
+					} else {
+						getTabbedPanel().setEnabledAt(3, false);
+						getTabbedPanel().setEnabledAt(0, true);
+						if (getTabbedPanel().getSelectedIndex() == 3) {
+							getTabbedPanel().setSelectedIndex(0);
+						}
+					}
+					validateImportInput();
+				}
+
+			});
+
 		}
 		return isImportedCheckBox;
 	}
@@ -2167,6 +2198,12 @@ public class MethodViewer extends GridPortalBaseFrame {
 				getTabbedPanel().setEnabledAt(2, true);
 			} else {
 				getTabbedPanel().setEnabledAt(2, false);
+				if (getTabbedPanel().getSelectedIndex() == 2
+						&& !getIsImportedCheckBox().isSelected()) {
+					getTabbedPanel().setSelectedIndex(0);
+				} else {
+					getTabbedPanel().setSelectedIndex(1);
+				}
 			}
 			isProvidedCheckBox.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -2174,6 +2211,12 @@ public class MethodViewer extends GridPortalBaseFrame {
 						getTabbedPanel().setEnabledAt(2, true);
 					} else {
 						getTabbedPanel().setEnabledAt(2, false);
+						if (getTabbedPanel().getSelectedIndex() == 2
+								&& !getIsImportedCheckBox().isSelected()) {
+							getTabbedPanel().setSelectedIndex(0);
+						} else {
+							getTabbedPanel().setSelectedIndex(1);
+						}
 					}
 					validateProviderInput();
 				}
