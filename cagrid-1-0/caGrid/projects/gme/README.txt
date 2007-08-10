@@ -15,7 +15,7 @@ backup caches of the GME databases.
 
 If it is desired to move a GME's database from one machine to another or from one service
 URL to another.  Scripts for doing so can be found in the tools/move directory.  The gmeExportDB
-script will save the database data to a zip file.  The gmeImportDB script will import the data
-into the new database.  The gmeChangeURL script will enable changing the service URL of the gme
-so that references stored in the GME database can be resolved.
+script will save the databases data to three zip files.  The gmeImportDB script will import the data
+into the new database from the three zip files.  The gmeChangeURL script will enable changing the service URL of the gme
+so that local references stored in the GME registry database can be resolved.
 

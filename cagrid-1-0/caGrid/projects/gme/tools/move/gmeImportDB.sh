@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #
-# This script is designed to work when there is no password on database.  If there is
+# This script is designed to work when there is no password on  the database.  If there is
 #   a password on the database just add a "-p <password>" after the "-u root" line
 #   of the mysqldump call.  The "root" username for the database can also be changed.  The filenames for the imports are assumed to be the <databasename>.sql.gz.
 #
