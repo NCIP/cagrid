@@ -19,9 +19,7 @@ database="GlobusGME_GME_REGISTRY"
 
 echo changing hostname to ${newservicename}
 
-echo use ${database}; update namespaces set service_ID='${newservicename}' where service_id='${oldservicename}'; | mysql -u root
-
-done
+echo "use ${database}; update namespaces set service_ID='${newservicename}' where service_id='${oldservicename}';" | mysql -u root
 
 echo Finished Importing databases
 

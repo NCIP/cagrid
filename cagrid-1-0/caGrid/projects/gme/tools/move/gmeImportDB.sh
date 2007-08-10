@@ -8,7 +8,7 @@
 
 importFileName=$1
 
-gunzip importFileName
+tar -xvf ${importFileName}
 
 databases="GlobusGME_GME_REGISTRY GlobusGME_GME_SCHEMA_STORE GlobusGME_GME_SCHEMA_CACHE"
 
