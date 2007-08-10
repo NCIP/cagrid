@@ -1,10 +1,9 @@
 #!/bin/sh
 
 #
-# The argument to this script is the basefile name. 
 # This script is designed to work when there is no password on database.  If there is
 #   a password on the database just add a "-p <password>" after the "-u root" line
-#   of the mysqldump call.  The "root" username for the database can also be changed.
+#   of the mysqldump call.  The "root" username for the database can also be changed.  The filenames for the imports are assumed to be the <databasename>.sql.gz.
 #
 
 
@@ -17,9 +16,9 @@ echo Importing database ${database}
 
 gunzip ${database}.sql.gz
 
-mysql -u root ${database} < ${backupdir}/${database}.sql
+mysql -u root ${database} < ${database}.sql
 
-rm -fr ${backupdir}/${database}.sql
+rm -fr ${database}.sql
 
 done
 
