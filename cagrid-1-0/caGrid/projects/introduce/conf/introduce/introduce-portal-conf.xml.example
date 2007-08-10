@@ -15,18 +15,8 @@
       </application>
       <components>
         <component>
-          <title>Create Service Skeleton</title>
-          <description>Create Service Skeleton</description>
-          <class>gov.nih.nci.cagrid.introduce.portal.creation.CreationViewer</class>
-          <icon>/cog_add.png</icon>
-          <dimensions>
-            <width>600</width>
-            <height>450</height>
-          </dimensions>
-        </component>
-         <component>
-          <title>Create caGrid Service Skeleton</title>
-          <description>Create caGrid Service Skeleton</description>
+          <title>Create caGrid Service</title>
+          <description>Create caGrid Service</description>
           <class>gov.nih.nci.cagrid.introduce.portal.creation.CaBIGCreationViewer</class>
           <icon>/caGrid_small.png</icon>
           <dimensions>
