@@ -202,9 +202,9 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 		addOption(optionsPanel, expirationSecondsLabel,
 				this.expirationSecondsField, 3);
 
-		String performAuthz = this.model.getProperty(Constants.SYNC_GTS_PERFORM_AUTHZ, "true");
+		String performAuthz = this.model.getProperty(Constants.SYNC_GTS_PERFORM_AUTHZ, Constants.TRUE);
 		this.performAuthzField = new JCheckBox();
-		this.performAuthzField.setSelected("true".equals(performAuthz));
+		this.performAuthzField.setSelected(Constants.TRUE.equals(performAuthz));
 		JLabel performAuthzLabel = new JLabel(this.model
 				.getMessage("sync.gts.perform.authz"));
 		addOption(optionsPanel, performAuthzLabel, this.performAuthzField, 4);
@@ -226,9 +226,9 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 		addOption(optionsPanel, gtsIdentLabel, this.gtsIdentField, 5);
 		this.gtsIdentField.setEnabled(this.performAuthzField.isSelected());
 
-		String deleteInvalid = this.model.getProperty(Constants.SYNC_GTS_DELETE_INVALID, "false");
+		String deleteInvalid = this.model.getProperty(Constants.SYNC_GTS_DELETE_INVALID, Constants.FALSE);
 		this.deleteInvalidField = new JCheckBox();
-		this.deleteInvalidField.setSelected("true".equals(deleteInvalid));
+		this.deleteInvalidField.setSelected(Constants.TRUE.equals(deleteInvalid));
 		JLabel deleteInvalidLabel = new JLabel(this.model
 				.getMessage("sync.gts.delete.invalid"));
 		addOption(optionsPanel, deleteInvalidLabel, this.deleteInvalidField, 6);
@@ -247,9 +247,9 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 				.getMessage("sync.gts.next.sync"));
 		addOption(optionsPanel, nextSyncLabel, this.nextSyncField, 7);
 
-		String performFirstSync = this.model.getProperty(Constants.SYNC_GTS_PERFORM_FIRST_SYNC, "true");
+		String performFirstSync = this.model.getProperty(Constants.SYNC_GTS_PERFORM_FIRST_SYNC, Constants.TRUE);
 		this.performFirstSyncField = new JCheckBox();
-		this.performFirstSyncField.setSelected("true".equals(performFirstSync));
+		this.performFirstSyncField.setSelected(Constants.TRUE.equals(performFirstSync));
 		JLabel performFirstSyncLabel = new JLabel(this.model
 				.getMessage("sync.gts.perform.first.sync"));
 		addOption(optionsPanel, performFirstSyncLabel,
@@ -291,8 +291,8 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 
 		JComboBox isAuthChoices = new JComboBox();
 		isAuthChoices.addItem(EMPTY_CHOICE);
-		isAuthChoices.addItem("true");
-		isAuthChoices.addItem("false");
+		isAuthChoices.addItem(Constants.TRUE);
+		isAuthChoices.addItem(Constants.FALSE);
 		this.tafTable.getColumnModel().getColumn(5).setCellEditor(
 				new DefaultCellEditor(isAuthChoices));
 
@@ -436,7 +436,7 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 							.newXPath()
 							.compile("./*[local-name()='PerformAuthorization']").evaluate(syncDescEl, XPathConstants.NODE);
 					if (performAuthzEl != null) {
-						this.performAuthzField.setSelected("true"
+						this.performAuthzField.setSelected(Constants.TRUE
 								.equals(performAuthzEl.getTextContent()));
 					}
 
@@ -547,10 +547,10 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 				}
 
 				String deleteInvalidFiles = getValue(getChildElementText(root,
-						"DeleteInvalidFiles"), "true");
+						"DeleteInvalidFiles"), Constants.TRUE);
 				logger.debug("Setting DeleteInvalidFiles = "
 						+ deleteInvalidFiles);
-				this.deleteInvalidField.setSelected("true"
+				this.deleteInvalidField.setSelected(Constants.TRUE
 						.equals(deleteInvalidFiles));
 
 				String nextSync = getValue(
@@ -563,7 +563,7 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 
 				Properties props = new Properties();
 				props.load(new FileInputStream(servicePropsFile));
-				this.performFirstSyncField.setSelected("true".equals(props
+				this.performFirstSyncField.setSelected(Constants.TRUE.equals(props
 						.getProperty("performFirstSync")));
 
 			}
@@ -693,7 +693,7 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 			syncDescEl.appendChild(performAuthEl);
 			performAuthEl.setTextContent(performAuth);
 
-			if ("true".equals(performAuth)) {
+			if (Constants.TRUE.equals(performAuth)) {
 				Element gtsIdentEl = doc.createElementNS(SYNC_GTS_NS,
 						SYNC_GTS_NS_PREFIX + ":GTSIdentity");
 				syncDescEl.appendChild(gtsIdentEl);

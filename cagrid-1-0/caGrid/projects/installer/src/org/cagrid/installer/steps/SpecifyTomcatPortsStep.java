@@ -217,8 +217,8 @@ public class SpecifyTomcatPortsStep extends PropertyConfigurationStep {
 					httpEl.setAttribute("acceptCount", "100");
 					httpEl.setAttribute("connectionTimeout", "20000");
 					httpEl.setAttribute("debug", "0");
-					httpEl.setAttribute("disableUploadTimeout", "true");
-					httpEl.setAttribute("enableLookups", "false");
+					httpEl.setAttribute("disableUploadTimeout", Constants.TRUE);
+					httpEl.setAttribute("enableLookups", Constants.FALSE);
 					httpEl.setAttribute("maxSpareThreads", "75");
 					httpEl.setAttribute("minSpareThreads", "25");
 					httpEl.setAttribute("port", httpPortField.getText().trim());

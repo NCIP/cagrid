@@ -43,7 +43,7 @@ public class ConfigureGTSDBStep extends PropertyConfigurationStep {
 		super.applyState();
 		
 		if(this.model.isTrue(Constants.INSTALL_GTS)){
-			this.model.setProperty(Constants.USE_SECURE_CONTAINER, "true");
+			this.model.setProperty(Constants.USE_SECURE_CONTAINER, Constants.TRUE);
 		}
 		
 	}

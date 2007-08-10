@@ -43,17 +43,17 @@ public class CheckCACertPresentStep extends PropertyConfigurationStep implements
 
 	public void applyState() throws InvalidStateException {
 		super.applyState();
-//		if (!"true"
+//		if (!Constants.TRUE
 //				.equals(this.model.getState().get(Constants.CA_CERT_PRESENT))) {
-//			this.model.getState().put(Constants.GENERATE_CA_CERT, "true");
+//			this.model.getState().put(Constants.GENERATE_CA_CERT, Constants.TRUE);
 //		} else {
-//			this.model.getState().put(Constants.GENERATE_CA_CERT, "false");
+//			this.model.getState().put(Constants.GENERATE_CA_CERT, Constants.FALSE);
 //		}
 	}
 
 	public void propertyChange(PropertyChangeEvent evt) {
 //		if (Constants.GENERATE_SERVICE_CERT.equals(evt.getPropertyName())) {
-//			this.model.getState().put(Constants.CA_CERT_PRESENT, "false");
+//			this.model.getState().put(Constants.CA_CERT_PRESENT, Constants.FALSE);
 //		}
 	}
 

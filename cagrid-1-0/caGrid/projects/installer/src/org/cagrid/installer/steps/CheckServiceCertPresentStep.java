@@ -41,10 +41,10 @@ public class CheckServiceCertPresentStep extends PropertyConfigurationStep {
 	
 	public void applyState() throws InvalidStateException{
 		super.applyState();
-//		if(!"true".equals(this.model.getState().get(Constants.SERVICE_CERT_PRESENT))){
-//			this.model.getState().put(Constants.GENERATE_SERVICE_CERT, "true");
+//		if(!Constants.TRUE.equals(this.model.getState().get(Constants.SERVICE_CERT_PRESENT))){
+//			this.model.getState().put(Constants.GENERATE_SERVICE_CERT, Constants.TRUE);
 //		}else{
-//			this.model.getState().put(Constants.GENERATE_SERVICE_CERT, "false");
+//			this.model.getState().put(Constants.GENERATE_SERVICE_CERT, Constants.FALSE);
 //		}
 	}
 

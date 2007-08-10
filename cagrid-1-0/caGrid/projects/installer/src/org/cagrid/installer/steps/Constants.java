@@ -396,5 +396,13 @@ public abstract class Constants {
 
 	public static final String CONFIGURE_CONTAINER = "configure.container";
 
+	public static final String FALSE = "false";
+
+	public static final String TRUE = "true";
+
+	public static final String INSTALL_PORTAL = "install.portal";
+
+	public static final String INSTALL_BROWSER = "install.browser";
+
 
 }

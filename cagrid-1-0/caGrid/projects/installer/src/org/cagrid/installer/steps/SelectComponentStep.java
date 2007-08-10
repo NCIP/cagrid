@@ -61,7 +61,7 @@ public class SelectComponentStep extends PropertyConfigurationStep {
 	public void applyState() throws InvalidStateException {
 		super.applyState();
 		if(this.model.isSecureContainerRequired()){
-			this.model.setProperty(Constants.USE_SECURE_CONTAINER, "true");
+			this.model.setProperty(Constants.USE_SECURE_CONTAINER, Constants.TRUE);
 		}
 	}
 

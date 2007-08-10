@@ -123,7 +123,7 @@ CaGridInstallerModel {
 	}
 
 	public boolean isTrue(String propName) {
-		return "true".equals(getProperty(propName));
+		return Constants.TRUE.equals(getProperty(propName));
 	}
 
 	public boolean isTomcatContainer() {

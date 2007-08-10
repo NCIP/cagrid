@@ -26,6 +26,7 @@ import org.apache.commons.logging.LogFactory;
 import org.cagrid.installer.model.CaGridInstallerModel;
 import org.cagrid.installer.model.CaGridInstallerModelImpl;
 import org.cagrid.installer.steps.AndCondition;
+import org.cagrid.installer.steps.CheckReInstallStep;
 import org.cagrid.installer.steps.CheckSecureContainerStep;
 import org.cagrid.installer.steps.ConfigureAuthnCAStep;
 import org.cagrid.installer.steps.ConfigureCAStep;
@@ -336,64 +337,11 @@ public class Installer {
 		// TODO: provide some factory method here
 		this.model = new CaGridInstallerModelImpl(defaultState);
 
-		// Clear some flags
-		this.model.unsetProperty(Constants.CONFIGURE_CONTAINER);
-		this.model.unsetProperty(Constants.DORIAN_USE_GEN_CA);
-		this.model.unsetProperty(Constants.DORIAN_CA_PRESENT);
-		this.model.unsetProperty(Constants.INSTALL_ACTIVEBPEL);
-		this.model.unsetProperty(Constants.INSTALL_AUTHN_SVC);
-		this.model.unsetProperty(Constants.INSTALL_CADSR);
-		this.model.unsetProperty(Constants.INSTALL_DORIAN);
-		this.model.unsetProperty(Constants.INSTALL_EVS);
-		this.model.unsetProperty(Constants.INSTALL_FQP);
-		this.model.unsetProperty(Constants.INSTALL_GME);
-		this.model.unsetProperty(Constants.INSTALL_GRID_GROUPER);
-		this.model.unsetProperty(Constants.INSTALL_GTS);
-		this.model.unsetProperty(Constants.INSTALL_SYNC_GTS);
-		this.model.unsetProperty(Constants.INSTALL_IDENT_SVC);
-		this.model.unsetProperty(Constants.INSTALL_INDEX_SVC);
-		this.model.unsetProperty(Constants.INSTALL_MY_SERVICE);
-		this.model.unsetProperty(Constants.INSTALL_SERVICES);
-		this.model.unsetProperty(Constants.INSTALL_WORKFLOW);
-		this.model.unsetProperty(Constants.RECONFIGURE_CAGRID);
-		this.model.unsetProperty(Constants.USE_SECURE_CONTAINER);
+		clearFlags();
 
-		incrementProgress();
-
-		// Check for the presence of Ant
-		checkInstalled("Ant", "ANT_HOME", Constants.ANT_HOME,
-				Constants.ANT_INSTALLED, Constants.INSTALL_ANT);
-		incrementProgress();
-
-		// Check for presence of Tomcat
-		checkInstalled("Tomcat", "CATALINA_HOME", Constants.TOMCAT_HOME,
-				Constants.TOMCAT_INSTALLED, Constants.INSTALL_TOMCAT);
-		incrementProgress();
-
-		// Check for presence of Globus
-		checkInstalled("Globus", "GLOBUS_LOCATION", Constants.GLOBUS_HOME,
-				Constants.GLOBUS_INSTALLED, Constants.INSTALL_GLOBUS);
-		incrementProgress();
-
-		// Check for presence of caGrid
-		checkInstalled("caGrid", null, Constants.CAGRID_HOME,
-				Constants.CAGRID_INSTALLED, Constants.INSTALL_CAGRID);
-		incrementProgress();
-		// TODO: check caGrid version
-
-		// Check for presence of ActiveBPEL
-		checkInstalled("ActiveBPEL", null, Constants.ACTIVEBPEL_HOME,
-				Constants.ACTIVEBPEL_INSTALLED, Constants.INSTALL_ACTIVEBPEL);
-		// TODO: check ActiveBpel version
-
-		checkGlobusDeployed();
-		incrementProgress();
-
-		checkGlobusConfigured();
-		incrementProgress();
-
+		checkEnvironment();
+		
 		// Initialize steps
-
 		PresentLicenseStep licenseStep = new PresentLicenseStep(this.model
 				.getMessage("accept.license.title"), this.model
 				.getMessage("accept.license.desc"));
@@ -428,15 +376,15 @@ public class Installer {
 
 		// If user has NOT selected to install caGrid, and installer
 		// has not located it, ask where it is.
-		FilePropertyConfigurationOption browseToCaGridOpt = new FilePropertyConfigurationOption(Constants.CAGRID_HOME,
-				this.model.getMessage("directory"), "", true);
+		FilePropertyConfigurationOption browseToCaGridOpt = new FilePropertyConfigurationOption(
+				Constants.CAGRID_HOME, this.model.getMessage("directory"), "",
+				true);
 		browseToCaGridOpt.setBrowseLabel(this.model.getMessage("browse"));
 		browseToCaGridOpt.setDirectoriesOnly(true);
 		PropertyConfigurationStep checkCaGridInstalledStep = new PropertyConfigurationStep(
 				this.model.getMessage("check.cagrid.installed.title"),
 				this.model.getMessage("check.cagrid.installed.desc"));
-		checkCaGridInstalledStep.getOptions().add(
-				browseToCaGridOpt);
+		checkCaGridInstalledStep.getOptions().add(browseToCaGridOpt);
 		this.model.add(checkCaGridInstalledStep, new Condition() {
 			public boolean evaluate(WizardModel m) {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
@@ -529,6 +477,12 @@ public class Installer {
 		selectServicesStep.getOptions().add(
 				new BooleanPropertyConfigurationOption(
 						Constants.INSTALL_WORKFLOW, "Workflow", false, true));
+		selectServicesStep.getOptions().add(
+				new BooleanPropertyConfigurationOption(
+						Constants.INSTALL_PORTAL, "Portal", false, true));
+		selectServicesStep.getOptions().add(
+				new BooleanPropertyConfigurationOption(
+						Constants.INSTALL_BROWSER, "Browser", false, true));
 
 		this.model.add(selectServicesStep, new Condition() {
 
@@ -556,440 +510,25 @@ public class Installer {
 										this.model
 												.getMessage("container.type.globus") },
 								true));
-		this.model.add(selectContainerStep);
-		incrementProgress();
-
-		// Asks user if Ant should be installed.
-		addCheckInstallStep(this.model, "ant.check.reinstall.title",
-				"ant.check.reinstall.desc", Constants.INSTALL_ANT,
-				Constants.ANT_INSTALLED);
-		incrementProgress();
-
-		// Allows user to specify where Ant should be installed
-		addInstallInfoStep(this.model, Constants.ANT_HOME, "ant",
-				"ant.home.title", "ant.home.desc",
-				Constants.ANT_INSTALL_DIR_PATH, Constants.INSTALL_ANT);
-		incrementProgress();
-
-		// Asks user if Tomcat should be installed
-		addCheckInstallStep(this.model, "tomcat.check.reinstall.title",
-				"tomcat.check.reinstall.desc", Constants.INSTALL_TOMCAT,
-				Constants.TOMCAT_INSTALLED, new Condition() {
-
-					public boolean evaluate(WizardModel m) {
-						CaGridInstallerModel model = (CaGridInstallerModel) m;
-						return model.isTomcatContainer();
-					}
-
-				});
-		incrementProgress();
-
-		// Allows user to specify where Tomcat should be installed
-		addInstallInfoStep(this.model, Constants.TOMCAT_HOME, "tomcat",
-				"tomcat.home.title", "tomcat.home.desc",
-				Constants.TOMCAT_INSTALL_DIR_PATH, Constants.INSTALL_TOMCAT);
-		incrementProgress();
-
-		// Asks user if Globus should be installed
-		addCheckInstallStep(this.model, "globus.check.reinstall.title",
-				"globus.check.reinstall.desc", Constants.INSTALL_GLOBUS,
-				Constants.GLOBUS_INSTALLED);
-		incrementProgress();
-
-		// Allows user to specify where Globus should be installed
-		addInstallInfoStep(this.model, Constants.GLOBUS_HOME, "globus",
-				"globus.home.title", "globus.home.desc",
-				Constants.GLOBUS_INSTALL_DIR_PATH, Constants.INSTALL_GLOBUS);
-		incrementProgress();
-
-		// Asks user if caGrid should be installed
-		addCheckInstallStep(this.model, "cagrid.check.reinstall.title",
-				"cagrid.check.reinstall.desc", Constants.INSTALL_CAGRID,
-				Constants.CAGRID_INSTALLED);
-		incrementProgress();
-
-		// Allows user to specify where caGrid should be installed
-		addInstallInfoStep(this.model, Constants.CAGRID_HOME, "cagrid",
-				"cagrid.home.title", "cagrid.home.desc",
-				Constants.CAGRID_INSTALL_DIR_PATH, Constants.INSTALL_CAGRID);
-		incrementProgress();
-
-		addCheckInstallStep(this.model, "activebpel.check.reinstall.title",
-				"activebpel.check.reinstall.desc",
-				Constants.INSTALL_ACTIVEBPEL, Constants.ACTIVEBPEL_INSTALLED,
-				new Condition() {
-
-					public boolean evaluate(WizardModel m) {
-						CaGridInstallerModel model = (CaGridInstallerModel) m;
-						return model.isTrue(Constants.INSTALL_ACTIVEBPEL);
-					}
-
-				});
-		incrementProgress();
-
-		// Allows user to specify where ActiveBpel should be installed
-		addInstallActiveBPELInfoStep(this.model, Constants.ACTIVEBPEL_HOME,
-				"activebpel", "activebpel.home.title", "activebpel.home.desc",
-				Constants.ACTIVEBPEL_INSTALL_DIR_PATH);
-		incrementProgress();
-
-		// Downloads and installs the dependencies
-		final RunTasksStep installDependenciesStep = new RunTasksStep(
-				this.model.getMessage("install.dependencies.title"), this.model
-						.getMessage("install.dependencies.desc"));
-		addUnzipInstallTask(installDependenciesStep, this.model
-				.getMessage("downloading.ant.title"), this.model
-				.getMessage("installing.ant.title"), "",
-				Constants.ANT_DOWNLOAD_URL, Constants.ANT_TEMP_FILE_NAME,
-				Constants.ANT_INSTALL_DIR_PATH, Constants.ANT_DIR_NAME,
-				Constants.ANT_HOME, Constants.INSTALL_ANT, 10070771);
-		addUnzipInstallTask(installDependenciesStep, this.model
-				.getMessage("downloading.tomcat.title"), this.model
-				.getMessage("installing.tomcat.title"), "",
-				Constants.TOMCAT_DOWNLOAD_URL, Constants.TOMCAT_TEMP_FILE_NAME,
-				Constants.TOMCAT_INSTALL_DIR_PATH, Constants.TOMCAT_DIR_NAME,
-				Constants.TOMCAT_HOME, Constants.INSTALL_TOMCAT, 12959200);
-		addUnzipInstallTask(installDependenciesStep, this.model
-				.getMessage("downloading.globus.title"), this.model
-				.getMessage("installing.globus.title"), "",
-				Constants.GLOBUS_DOWNLOAD_URL, Constants.GLOBUS_TEMP_FILE_NAME,
-				Constants.GLOBUS_INSTALL_DIR_PATH, Constants.GLOBUS_DIR_NAME,
-				Constants.GLOBUS_HOME, Constants.INSTALL_GLOBUS, 66444666);
-
-		addUnTarInstallTask(installDependenciesStep, this.model
-				.getMessage("downloading.activebpel.title"), this.model
-				.getMessage("installing.activebpel.title"), "",
-				Constants.ACTIVEBPEL_DOWNLOAD_URL,
-				Constants.ACTIVEBPEL_TEMP_FILE_NAME,
-				Constants.ACTIVEBPEL_INSTALL_DIR_PATH,
-				Constants.ACTIVEBPEL_DIR_NAME, Constants.ACTIVEBPEL_HOME,
-				Constants.INSTALL_ACTIVEBPEL, 23422012);
-
-		installDependenciesStep.getTasks().add(
-				new ConditionalTask(new DeployActiveBPELTask(this.model
-						.getMessage("installing.activebpel.title"), ""),
-						new Condition() {
-
-							public boolean evaluate(WizardModel m) {
-								CaGridInstallerModel model = (CaGridInstallerModel) m;
-								return model
-										.isTrue(Constants.INSTALL_ACTIVEBPEL)
-										&& model
-												.isTrue(Constants.INSTALL_WORKFLOW);
-							}
-
-						}));
-
-		addUnzipInstallTask(installDependenciesStep, this.model
-				.getMessage("downloading.cagrid.title"), this.model
-				.getMessage("installing.cagrid.title"), "",
-				Constants.CAGRID_DOWNLOAD_URL, Constants.CAGRID_TEMP_FILE_NAME,
-				Constants.CAGRID_INSTALL_DIR_PATH, Constants.CAGRID_DIR_NAME,
-				Constants.CAGRID_HOME, Constants.INSTALL_CAGRID, 397957544);
-
-		installDependenciesStep.getTasks().add(
-				new ConditionalTask(new CompileCaGridTask(this.model
-						.getMessage("compiling.cagrid.title"), ""),
-						new Condition() {
-
-							public boolean evaluate(WizardModel m) {
-								CaGridInstallerModel model = (CaGridInstallerModel) m;
-								return model.isTrue(Constants.INSTALL_CAGRID);
-							}
-
-						}));
-
-		// TODO: figure out why this fails on Mac sometimes
-		ConfigureTargetGridTask configTargetGridTask = new ConfigureTargetGridTask(
-				this.model.getMessage("configuring.target.grid"), "");
-		configTargetGridTask.setAbortOnError(false);
-		installDependenciesStep.getTasks().add(
-				new ConditionalTask(configTargetGridTask, new Condition() {
-					public boolean evaluate(WizardModel m) {
-						CaGridInstallerModel model = (CaGridInstallerModel) m;
-						return !model.isSet(Constants.TARGET_GRID)
-								|| model.isTrue(Constants.RECONFIGURE_CAGRID)
-								|| model.isTrue(Constants.INSTALL_CAGRID);
-					}
-				}));
-
-		installDependenciesStep.getTasks().add(
-				new ConditionalTask(
-						new CopySelectedServicesToTempDirTask(this.model
-								.getMessage("copying.selected.services"), ""),
-						new Condition() {
-							public boolean evaluate(WizardModel m) {
-								CaGridInstallerModel model = (CaGridInstallerModel) m;
-								return model.isTrue(Constants.INSTALL_SERVICES);
-							}
-						}));
-
-		installDependenciesStep.getTasks().add(new AbstractTask("", "") {
-
-			public Object execute(CaGridInstallerModel model) throws Exception {
-				if (model.isTrue(Constants.INSTALL_TOMCAT)) {
-					model.setProperty(Constants.GLOBUS_DEPLOYED, "false");
-					model.setProperty(Constants.GLOBUS_CONFIGURED, "false");
-				}
-				return null;
-			}
-
-		});
-		installDependenciesStep.getTasks().add(
-				new SaveSettingsTask(this.model
-						.getMessage("saving.settings.title"), ""));
-
-		this.model.add(installDependenciesStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return installDependenciesStep.getTasksCount(model) > 0;
-			}
-		});
-
-		// If globus has already been deployed, see if it should be redeployed
-		PropertyConfigurationStep checkDeployGlobusStep = new PropertyConfigurationStep(
-				this.model.getMessage("globus.check.redeploy.title"),
-				this.model.getMessage("globus.check.redeploy.desc"));
-		checkDeployGlobusStep.getOptions().add(
-				new BooleanPropertyConfigurationOption(
-						Constants.REDEPLOY_GLOBUS,
-						this.model.getMessage("yes"), false, false));
-		this.model.add(checkDeployGlobusStep, new Condition() {
+		this.model.add(selectContainerStep, new Condition() {
 
 			public boolean evaluate(WizardModel m) {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTomcatContainer()
-						&& model.isTrue(Constants.GLOBUS_DEPLOYED)
-						&& model.isConfigureContainerSelected();
-			}
-
-		});
-
-		// Checks if secure container should be used
-		CheckSecureContainerStep checkDeployGlobusSecureStep = new CheckSecureContainerStep(
-				this.model.getMessage("globus.check.secure.title"), this.model
-						.getMessage("globus.check.secure.desc"));
-		checkDeployGlobusSecureStep.getOptions().add(
-				new BooleanPropertyConfigurationOption(
-						Constants.USE_SECURE_CONTAINER, this.model
-								.getMessage("yes"), false, false));
-		this.model.add(checkDeployGlobusSecureStep, new Condition() {
-
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return !model.isTrue(Constants.USE_SECURE_CONTAINER)
-						&& model.isConfigureContainerSelected();
+				return model.isConfigureContainerSelected();
 			}
 
 		});
 		incrementProgress();
-
-		PropertyConfigurationStep getHostnameStep = new PropertyConfigurationStep(
-				this.model.getMessage("specify.service.hostname.title"),
-				this.model.getMessage("specify.service.hostname.desc"));
-		getHostnameStep.getOptions().add(
-				new TextPropertyConfigurationOption(Constants.SERVICE_HOSTNAME,
-						this.model.getMessage("service.hostname"), this.model
-								.getProperty(Constants.SERVICE_HOSTNAME,
-										"localhost"), true));
-		this.model.add(getHostnameStep, new Condition() {
-
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return (model.isDeployGlobusRequired() || model
-						.isConfigureGlobusRequired())
-						&& model.isConfigureContainerSelected();
-			}
-
-		});
-
-		// Allows user to specify Tomcat ports
-		SpecifyTomcatPortsStep tomcatPortsStep = new SpecifyTomcatPortsStep(
-				this.model.getMessage("tomcat.specify.ports.title"), this.model
-						.getMessage("tomcat.specify.ports.desc"));
-		tomcatPortsStep.getOptions().add(
-				new TextPropertyConfigurationOption(
-						Constants.TOMCAT_SHUTDOWN_PORT, this.model
-								.getMessage("tomcat.shutdown.port"), this.model
-								.getProperty(Constants.TOMCAT_SHUTDOWN_PORT,
-										"8005"), true));
-		tomcatPortsStep.getOptions().add(
-				new TextPropertyConfigurationOption(Constants.TOMCAT_HTTP_PORT,
-						this.model.getMessage("tomcat.http.port"),
-						this.model.getProperty(Constants.TOMCAT_HTTP_PORT,
-								"8080"), true));
-		tomcatPortsStep.getOptions().add(
-				new TextPropertyConfigurationOption(
-						Constants.TOMCAT_HTTPS_PORT, this.model
-								.getMessage("tomcat.https.port"), this.model
-								.getProperty(Constants.TOMCAT_HTTPS_PORT,
-										"8443"), true));
-		// TODO: add validation
-		this.model.add(tomcatPortsStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTomcatConfigurationRequired()
-						&& model.isConfigureContainerSelected();
-			}
-		});
+		
+		addCheckReInstallSteps();
 		incrementProgress();
 
-		// Checks if service cert is present
-		PropertyConfigurationStep checkServiceCertPresentStep = new PropertyConfigurationStep(
-				this.model.getMessage("svc.cert.check.present.title"),
-				this.model.getMessage("svc.cert.check.present.desc"));
-		checkServiceCertPresentStep.getOptions().add(
-				new BooleanPropertyConfigurationOption(
-						Constants.SERVICE_CERT_PRESENT, this.model
-								.getMessage("yes"), false, false));
-		this.model.add(checkServiceCertPresentStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isSecurityConfigurationRequired()
-						&& !model.isTrue(Constants.INSTALL_DORIAN)
-						&& model.isConfigureContainerSelected();
-			}
-		});
+		addInstallDependenciesStep();
+		incrementProgress();
+		
+		addConfigureContainerSteps();
 		incrementProgress();
 
-		// Checks if CA cert is present
-		PropertyConfigurationStep checkCAPresentStep = new PropertyConfigurationStep(
-				this.model.getMessage("ca.cert.check.present.title"),
-				this.model.getMessage("ca.cert.check.present.desc"));
-		checkCAPresentStep.getOptions().add(
-				new BooleanPropertyConfigurationOption(
-						Constants.CA_CERT_PRESENT,
-						this.model.getMessage("yes"), false, false));
-		this.model.add(checkCAPresentStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isSecurityConfigurationRequired()
-						&& !model.isTrue(Constants.INSTALL_DORIAN)
-						&& !model.isTrue(Constants.SERVICE_CERT_PRESENT)
-						&& model.isConfigureContainerSelected();
-			}
-		});
-
-		// Allows user to enter existing CA cert info
-		ConfigureCAStep caCertInfoStep = new ConfigureCAStep(this.model
-				.getMessage("ca.cert.info.title"), this.model
-				.getMessage("ca.cert.info.desc"));
-		addCommonCACertFields(caCertInfoStep, Constants.CA_CERT_PATH,
-				Constants.CA_KEY_PATH, Constants.CA_KEY_PWD, true);
-		this.model.add(caCertInfoStep, new Condition() {
-
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isSecurityConfigurationRequired()
-						&& !model.isTrue(Constants.INSTALL_DORIAN)
-						&& !model.isTrue(Constants.SERVICE_CERT_PRESENT)
-						&& model.isTrue(Constants.CA_CERT_PRESENT)
-						&& model.isConfigureContainerSelected();
-			}
-		});
-		incrementProgress();
-
-		// Allows user to enter info necessary to gen new CA cert
-		ConfigureCAStep newCaCertInfoStep = new ConfigureCAStep(this.model
-				.getMessage("ca.cert.new.info.title"), this.model
-				.getMessage("ca.cert.new.info.desc"));
-		addCommonNewCACertFields(newCaCertInfoStep, Constants.CA_CERT_PATH,
-				Constants.CA_KEY_PATH, Constants.CA_KEY_PWD, Constants.CA_DN,
-				Constants.CA_DAYS_VALID);
-		this.model.add(newCaCertInfoStep, new Condition() {
-
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isSecurityConfigurationRequired()
-						&& !model.isTrue(Constants.INSTALL_DORIAN)
-						&& !model.isTrue(Constants.SERVICE_CERT_PRESENT)
-						&& !model.isTrue(Constants.CA_CERT_PRESENT)
-						&& model.isConfigureContainerSelected();
-			}
-		});
-		incrementProgress();
-
-		// Allows user to enter info necessary to gen new service cert
-		ConfigureServiceCertStep newServiceCertInfoStep = new ConfigureServiceCertStep(
-				this.model.getMessage("service.cert.new.info.title"),
-				this.model.getMessage("service.cert.new.info.desc"));
-		FilePropertyConfigurationOption nscPathOption = new FilePropertyConfigurationOption(
-				Constants.SERVICE_CERT_PATH, this.model
-						.getMessage("service.cert.info.cert.path"), this.model
-						.getProperty(Constants.SERVICE_CERT_PATH,
-								InstallerUtils.getInstallerDir()
-										+ "/certs/service.cert"), true);
-		nscPathOption.setDirectoriesOnly(false);
-		nscPathOption.setBrowseLabel(this.model.getMessage("browse"));
-		newServiceCertInfoStep.getOptions().add(nscPathOption);
-		FilePropertyConfigurationOption nskPathOption = new FilePropertyConfigurationOption(
-				Constants.SERVICE_KEY_PATH, this.model
-						.getMessage("service.cert.info.key.path"), this.model
-						.getProperty(Constants.SERVICE_KEY_PATH, InstallerUtils
-								.getInstallerDir()
-								+ "/certs/service.key"), true);
-		nskPathOption.setDirectoriesOnly(false);
-		nskPathOption.setBrowseLabel(this.model.getMessage("browse"));
-		newServiceCertInfoStep.getOptions().add(nskPathOption);
-		newServiceCertInfoStep.getOptions().add(
-				new TextPropertyConfigurationOption(Constants.SERVICE_HOSTNAME,
-						this.model.getMessage("service.cert.info.hostname"),
-						this.model.getProperty(Constants.SERVICE_HOSTNAME,
-								"localhost"), true));
-		// TODO: add validation
-		this.model.add(newServiceCertInfoStep, new Condition() {
-
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isSecurityConfigurationRequired()
-						&& !model.isTrue(Constants.INSTALL_DORIAN)
-						&& !model.isTrue(Constants.SERVICE_CERT_PRESENT)
-						&& model.isConfigureContainerSelected();
-			}
-		});
-		incrementProgress();
-
-		ConfigureServiceCertStep serviceCertInfoStep = new ConfigureServiceCertStep(
-				this.model.getMessage("service.cert.info.title"), this.model
-						.getMessage("service.cert.info.desc"));
-		FilePropertyConfigurationOption escpOption = new FilePropertyConfigurationOption(
-				Constants.SERVICE_CERT_PATH, this.model
-						.getMessage("service.cert.info.cert.path"), this.model
-						.getProperty(Constants.SERVICE_CERT_PATH,
-								InstallerUtils.getInstallerDir()
-										+ "/certs/service.cert"), true);
-		escpOption.setDirectoriesOnly(false);
-		escpOption.setBrowseLabel(this.model.getMessage("browse"));
-		serviceCertInfoStep.getOptions().add(escpOption);
-		FilePropertyConfigurationOption eskpOption = new FilePropertyConfigurationOption(
-				Constants.SERVICE_KEY_PATH, this.model
-						.getMessage("service.cert.info.key.path"), this.model
-						.getProperty(Constants.SERVICE_KEY_PATH, InstallerUtils
-								.getInstallerDir()
-								+ "/certs/service.key"), true);
-		eskpOption.setDirectoriesOnly(false);
-		eskpOption.setBrowseLabel(this.model.getMessage("browse"));
-		serviceCertInfoStep.getOptions().add(eskpOption);
-		serviceCertInfoStep.getValidators().add(
-				new PathExistsValidator(Constants.SERVICE_CERT_PATH, this.model
-						.getMessage("error.cert.file.not.found")));
-		serviceCertInfoStep.getValidators().add(
-				new PathExistsValidator(Constants.SERVICE_KEY_PATH, this.model
-						.getMessage("error.key.file.not.found")));
-		serviceCertInfoStep.getValidators().add(
-				new KeyAccessValidator(Constants.SERVICE_KEY_PATH, null,
-						this.model.getMessage("error.key.no.access")));
-		this.model.add(serviceCertInfoStep, new Condition() {
-
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isSecurityConfigurationRequired()
-						&& !model.isTrue(Constants.INSTALL_DORIAN)
-						&& model.isTrue(Constants.SERVICE_CERT_PRESENT)
-						&& model.isConfigureContainerSelected();
-			}
-		});
-		incrementProgress();
 
 		// Generate credentials, if necessary
 		final RunTasksStep generateCredsStep = new RunTasksStep(this.model
@@ -1028,1376 +567,54 @@ public class Installer {
 		});
 		incrementProgress();
 
-		PropertyConfigurationStep selectMyServiceStep = new PropertyConfigurationStep(
-				this.model.getMessage("select.my.service.title"), this.model
-						.getMessage("select.my.service.desc"));
-		FilePropertyConfigurationOption mySvcDir = new FilePropertyConfigurationOption(
-				Constants.MY_SERVICE_DIR, this.model
-						.getMessage("my.service.dir"), this.model.getProperty(
-						Constants.MY_SERVICE_DIR, ""), true);
-		mySvcDir.setBrowseLabel(this.model.getMessage("browse"));
-		mySvcDir.setDirectoriesOnly(true);
-		selectMyServiceStep.getOptions().add(mySvcDir);
-		this.model.add(selectMyServiceStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_MY_SERVICE);
-			}
-		});
-
-		ConfigureServiceMetadataStep editMySvcMetaStep = new ConfigureServiceMetadataStep(
-				Constants.MY_SERVICE_DIR, this.model
-						.getMessage("my.service.edit.service.metadata.title"),
-				this.model.getMessage("my.service.edit.service.metadata.desc"));
-		this.model.add(editMySvcMetaStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_MY_SERVICE);
-			}
-		});
-
-		IntroduceServicePropertiesFileEditorStep mySvcDeployPropsStep = new IntroduceServicePropertiesFileEditorStep(
-				Constants.MY_SERVICE_DIR,
-				"deploy.properties",
-				this.model
-						.getMessage("my.service.edit.deploy.properties.title"),
-				this.model.getMessage("my.service.edit.deploy.properties.desc"),
-				this.model.getMessage("edit.properties.property.name"),
-				this.model.getMessage("edit.properties.property.value"));
-		this.model.add(mySvcDeployPropsStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_MY_SERVICE);
-			}
-		});
-
-		IntroduceServicePropertiesFileEditorStep mySvcServicePropsStep = new IntroduceServicePropertiesFileEditorStep(
-				Constants.MY_SERVICE_DIR,
-				"service.properties",
-				this.model
-						.getMessage("my.service.edit.service.properties.title"),
-				this.model
-						.getMessage("my.service.edit.service.properties.desc"),
-				this.model.getMessage("edit.properties.property.name"),
-				this.model.getMessage("edit.properties.property.value"));
-		this.model.add(mySvcServicePropsStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_MY_SERVICE);
-			}
-		});
-
-		ConfigureSyncGTSStep configureSyncGTSStep = new ConfigureSyncGTSStep(
-				this.model.getMessage("sync.gts.config.title"), this.model
-						.getMessage("sync.gts.config.desc"));
-		this.model.add(configureSyncGTSStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_SYNC_GTS);
-			}
-		});
+		addMyServiceSteps();
 		incrementProgress();
 
-		DeployPropertiesFileEditorStep editSyncGTSDeployPropertiesStep = new DeployPropertiesFileEditorStep(
-				"syncgts", this.model
-						.getMessage("sync.gts.edit.deploy.properties.title"),
-				this.model.getMessage("sync.gts.edit.deploy.properties.desc"),
-				this.model.getMessage("edit.properties.property.name"),
-				this.model.getMessage("edit.properties.property.value"));
-		this.model.add(editSyncGTSDeployPropertiesStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_SYNC_GTS);
-			}
-		});
 
-		PropertyConfigurationStep checkReplaceDefaultGTSCAStep = new PropertyConfigurationStep(
-				this.model.getMessage("check.replace.default.gts.ca.title"),
-				this.model.getMessage("check.replace.default.gts.ca.desc"));
-		checkReplaceDefaultGTSCAStep.getOptions().add(
-				new BooleanPropertyConfigurationOption(
-						Constants.REPLACE_DEFAULT_GTS_CA, this.model
-								.getMessage("yes"), false, false));
-		this.model.add(checkReplaceDefaultGTSCAStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_SYNC_GTS);
-			}
-		});
+		addSyncGTSSteps();
+		incrementProgress();
+		
 
-		ReplaceDefaultGTSCAStep specifyDefaultGTSCAStep = new ReplaceDefaultGTSCAStep(
-				this.model.getMessage("specify.default.gts.ca.title"),
-				this.model.getMessage("specify.default.gts.ca.desc"));
-		FilePropertyConfigurationOption repCaPath = new FilePropertyConfigurationOption(
-				Constants.REPLACEMENT_GTS_CA_CERT_PATH, this.model
-						.getMessage("replacement.gts.ca.cert.path"),
-				this.model.getProperty(Constants.REPLACEMENT_GTS_CA_CERT_PATH,
-						""), true);
-		repCaPath.setBrowseLabel(this.model.getMessage("browse"));
-		repCaPath.setDirectoriesOnly(false);
-		specifyDefaultGTSCAStep.getOptions().add(repCaPath);
-		this.model.add(specifyDefaultGTSCAStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_SYNC_GTS)
-						&& model.isTrue(Constants.REPLACE_DEFAULT_GTS_CA);
-			}
-		});
-
-		ConfigureServiceMetadataStep editDorianSvcMetaStep = new ConfigureServiceMetadataStep(
-				"",
-				this.model.getMessage("dorian.edit.service.metadata.title"),
-				this.model.getMessage("dorian.edit.service.metadata.desc")) {
-			protected String getServiceMetadataPath() {
-				return this.model.getServiceDestDir()
-						+ "/dorian/etc/serviceMetadata.xml";
-			}
-		};
-		this.model.add(editDorianSvcMetaStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_DORIAN);
-			}
-		});
-
-		// Allows user to edit Dorian deploy.properties
-		DeployPropertiesFileEditorStep editDorianDeployPropertiesStep = new DeployPropertiesFileEditorStep(
-				"dorian", this.model
-						.getMessage("dorian.edit.deploy.properties.title"),
-				this.model.getMessage("dorian.edit.deploy.properties.desc"),
-				this.model.getMessage("edit.properties.property.name"),
-				this.model.getMessage("edit.properties.property.value"));
-		this.model.add(editDorianDeployPropertiesStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_DORIAN);
-			}
-		});
-
-		// Allows user to specify Dorian DB information.
-		ConfigureDorianDBStep dorianDbInfoStep = new ConfigureDorianDBStep(
-				this.model.getMessage("dorian.db.config.title"), this.model
-						.getMessage("dorian.db.config.desc"));
-		addDBConfigPropertyOptions(dorianDbInfoStep, "dorian.", "dorian");
-		this.model.add(dorianDbInfoStep, new Condition() {
-
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_DORIAN);
-			}
-		});
+		addDorianSteps();
+		incrementProgress();
+		
+		addGMESteps();
 		incrementProgress();
 
-		final DropServiceDatabaseStep dropDorianDbStep = new DropServiceDatabaseStep(
-				this.model.getMessage("dorian.db.drop.title"), this.model
-						.getMessage("dorian.db.drop.desc"), "dorian.",
-				"dorian.db.drop");
-		this.model.add(dropDorianDbStep, new Condition() {
 
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_DORIAN)
-						&& dropDorianDbStep.databaseExists(model);
-			}
-		});
+		addEVSSteps();
 		incrementProgress();
 
-		// Dorian IdP config
-		PropertyConfigurationStep dorianIdpInfoStep = new PropertyConfigurationStep(
-				this.model.getMessage("dorian.idp.config.title"), this.model
-						.getMessage("dorian.idp.config.desc"));
-		dorianIdpInfoStep.getOptions().add(
-				new TextPropertyConfigurationOption(Constants.DORIAN_IDP_NAME,
-						this.model.getMessage("dorian.idp.name"), this.model
-								.getProperty(Constants.DORIAN_IDP_NAME,
-										"Dorian IdP"), true));
-		dorianIdpInfoStep.getOptions().add(
-				new TextPropertyConfigurationOption(
-						Constants.DORIAN_IDP_UID_MIN, this.model
-								.getMessage("dorian.idp.uid.min"),
-						this.model.getProperty(Constants.DORIAN_IDP_UID_MIN,
-								"4"), true));
-		dorianIdpInfoStep.getOptions().add(
-				new TextPropertyConfigurationOption(
-						Constants.DORIAN_IDP_UID_MAX, this.model
-								.getMessage("dorian.idp.uid.max"),
-						this.model.getProperty(Constants.DORIAN_IDP_UID_MAX,
-								"10"), true));
-		dorianIdpInfoStep.getOptions().add(
-				new TextPropertyConfigurationOption(
-						Constants.DORIAN_IDP_PWD_MIN, this.model
-								.getMessage("dorian.idp.pwd.min"),
-						this.model.getProperty(Constants.DORIAN_IDP_PWD_MIN,
-								"6"), true));
-		dorianIdpInfoStep.getOptions().add(
-				new TextPropertyConfigurationOption(
-						Constants.DORIAN_IDP_PWD_MAX, this.model
-								.getMessage("dorian.idp.pwd.max"),
-						this.model.getProperty(Constants.DORIAN_IDP_PWD_MAX,
-								"10"), true));
-		dorianIdpInfoStep
-				.getOptions()
-				.add(
-						new ListPropertyConfigurationOption(
-								Constants.DORIAN_IDP_REGPOLICY,
-								this.model.getMessage("dorian.idp.regpolicy"),
-								new String[] {
-										this.model
-												.getMessage("dorian.idp.regpolicy.manual"),
-										this.model
-												.getMessage("dorian.idp.regpolicy.auto") },
-								true));
-		dorianIdpInfoStep.getOptions().add(
-				new BooleanPropertyConfigurationOption(
-						Constants.DORIAN_IDP_SAML_AUTORENEW, this.model
-								.getMessage("dorian.idp.saml.autorenew"), true,
-						false));
-		dorianIdpInfoStep.getOptions().add(
-				new PasswordPropertyConfigurationOption(
-						Constants.DORIAN_IDP_SAML_KEYPWD, this.model
-								.getMessage("dorian.idp.saml.keypwd"),
-						this.model.getProperty(
-								Constants.DORIAN_IDP_SAML_KEYPWD, "idpkey"),
-						true));
-		dorianIdpInfoStep.getValidators().add(
-				new DorianIdpInfoValidator(this.model, this.model
-						.getMessage("error.nan")));
-
-		this.model.add(dorianIdpInfoStep, new Condition() {
-
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_DORIAN);
-			}
-		});
+		addCaDSRSteps();
 		incrementProgress();
 
-		// Dorian Ifs Config
-		PropertyConfigurationStep dorianIfsInfoStep = new PropertyConfigurationStep(
-				this.model.getMessage("dorian.ifs.config.title"), this.model
-						.getMessage("dorian.ifs.config.desc"));
-		dorianIfsInfoStep.getOptions().add(
-				new TextPropertyConfigurationOption(
-						Constants.DORIAN_IFS_IDPNAME_MIN, this.model
-								.getMessage("dorian.ifs.idpname.min"),
-						this.model.getProperty(
-								Constants.DORIAN_IFS_IDPNAME_MIN, "3"), true));
-		dorianIfsInfoStep.getOptions().add(
-				new TextPropertyConfigurationOption(
-						Constants.DORIAN_IFS_IDPNAME_MAX, this.model
-								.getMessage("dorian.ifs.idpname.max"),
-						this.model.getProperty(
-								Constants.DORIAN_IFS_IDPNAME_MAX, "50"), true));
-		dorianIfsInfoStep
-				.getOptions()
-				.add(
-						new ListPropertyConfigurationOption(
-								Constants.DORIAN_IFS_IDPOLICY,
-								this.model.getMessage("dorian.ifs.idpolicy"),
-								new String[] {
-										this.model
-												.getMessage("dorian.ifs.idpolicy.name"),
-										this.model
-												.getMessage("dorian.ifs.idpolicy.id") },
-								true));
-		dorianIfsInfoStep.getOptions().add(
-				new TextPropertyConfigurationOption(
-						Constants.DORIAN_IFS_CREDLIFETIME_YEARS, this.model
-								.getMessage("dorian.ifs.credlifetime.years"),
-						this.model.getProperty(
-								Constants.DORIAN_IFS_CREDLIFETIME_YEARS, "1"),
-						true));
-		dorianIfsInfoStep.getOptions().add(
-				new TextPropertyConfigurationOption(
-						Constants.DORIAN_IFS_CREDLIFETIME_MONTHS, this.model
-								.getMessage("dorian.ifs.credlifetime.months"),
-						this.model.getProperty(
-								Constants.DORIAN_IFS_CREDLIFETIME_MONTHS, "0"),
-						true));
-		dorianIfsInfoStep.getOptions().add(
-				new TextPropertyConfigurationOption(
-						Constants.DORIAN_IFS_CREDLIFETIME_DAYS, this.model
-								.getMessage("dorian.ifs.credlifetime.days"),
-						this.model.getProperty(
-								Constants.DORIAN_IFS_CREDLIFETIME_DAYS, "0"),
-						true));
-		dorianIfsInfoStep.getOptions().add(
-				new TextPropertyConfigurationOption(
-						Constants.DORIAN_IFS_CREDLIFETIME_HOURS, this.model
-								.getMessage("dorian.ifs.credlifetime.hours"),
-						this.model.getProperty(
-								Constants.DORIAN_IFS_CREDLIFETIME_HOURS, "0"),
-						true));
-		dorianIfsInfoStep
-				.getOptions()
-				.add(
-						new TextPropertyConfigurationOption(
-								Constants.DORIAN_IFS_CREDLIFETIME_MINUTES,
-								this.model
-										.getMessage("dorian.ifs.credlifetime.minutes"),
-								this.model
-										.getProperty(
-												Constants.DORIAN_IFS_CREDLIFETIME_MINUTES,
-												"0"), true));
-		dorianIfsInfoStep
-				.getOptions()
-				.add(
-						new TextPropertyConfigurationOption(
-								Constants.DORIAN_IFS_CREDLIFETIME_SECONDS,
-								this.model
-										.getMessage("dorian.ifs.credlifetime.seconds"),
-								this.model
-										.getProperty(
-												Constants.DORIAN_IFS_CREDLIFETIME_SECONDS,
-												"0"), true));
-		dorianIfsInfoStep.getOptions().add(
-				new BooleanPropertyConfigurationOption(
-						Constants.DORIAN_IFS_HOSTCERT_AUTOAPPROVE, this.model
-								.getMessage("dorian.ifs.hostcert.autoapprove"),
-						true, false));
-
-		dorianIfsInfoStep
-				.getOptions()
-				.add(
-						new TextPropertyConfigurationOption(
-								Constants.DORIAN_IFS_PROXYLIFETIME_HOURS,
-								this.model
-										.getMessage("dorian.ifs.proxylifetime.hours"),
-								this.model
-										.getProperty(
-												Constants.DORIAN_IFS_PROXYLIFETIME_HOURS,
-												"12"), true));
-		dorianIfsInfoStep
-				.getOptions()
-				.add(
-						new TextPropertyConfigurationOption(
-								Constants.DORIAN_IFS_PROXYLIFETIME_MINUTES,
-								this.model
-										.getMessage("dorian.ifs.proxylifetime.minutes"),
-								this.model
-										.getProperty(
-												Constants.DORIAN_IFS_PROXYLIFETIME_MINUTES,
-												"0"), true));
-		dorianIfsInfoStep
-				.getOptions()
-				.add(
-						new TextPropertyConfigurationOption(
-								Constants.DORIAN_IFS_PROXYLIFETIME_SECONDS,
-								this.model
-										.getMessage("dorian.ifs.proxylifetime.seconds"),
-								this.model
-										.getProperty(
-												Constants.DORIAN_IFS_PROXYLIFETIME_SECONDS,
-												"0"), true));
-
-		dorianIfsInfoStep.getOptions().add(
-				new TextPropertyConfigurationOption(
-						Constants.DORIAN_IFS_GTS_URL, this.model
-								.getMessage("dorian.ifs.gts.url"), this.model
-								.getProperty(Constants.DORIAN_IFS_GTS_URL, ""),
-						false));
-		// TODO: figure out why this hangs
-		// dorianIfsInfoStep.getValidators().add(
-		// new DorianIfsInfoValidator(this.model, this.model
-		// .getMessage("error.nan"), this.model
-		// .getMessage("error.bad.url")));
-		this.model.add(dorianIfsInfoStep, new Condition() {
-
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_DORIAN);
-			}
-		});
+		addFQPSteps();
 		incrementProgress();
 
-		// Set the Dorian CA type
-		PropertyConfigurationStep selectDorianCATypeStep = new PropertyConfigurationStep(
-				this.model.getMessage("dorian.ca.type.title"), this.model
-						.getMessage("dorian.ca.type.desc"));
-		selectDorianCATypeStep
-				.getOptions()
-				.add(
-						new ListPropertyConfigurationOption(
-								Constants.DORIAN_CA_TYPE,
-								this.model.getMessage("dorian.ca.type"),
-								new String[] { Constants.DORIAN_CA_TYPE_DBCA,
-										Constants.DORIAN_CA_TYPE_ERACOM,
-										Constants.DORIAN_CA_TYPE_ERACOM_HYBRID },
-								true));
-		this.model.add(selectDorianCATypeStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_DORIAN);
-			}
-		});
+		addWorkflowSteps();
 		incrementProgress();
 
-		// Checks if user will supply Dorian CA
-		PropertyConfigurationStep checkDorianCAPresentStep = new PropertyConfigurationStep(
-				this.model.getMessage("dorian.check.ca.present.title"),
-				this.model.getMessage("dorian.check.ca.present.desc"));
-		checkDorianCAPresentStep.getOptions().add(
-				new BooleanPropertyConfigurationOption(
-						Constants.DORIAN_CA_PRESENT, this.model
-								.getMessage("yes"), false, false));
-		this.model.add(checkDorianCAPresentStep, new Condition() {
-
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-
-				return model.isTrue(Constants.INSTALL_DORIAN)
-						&& model.isEqual(Constants.DORIAN_CA_TYPE_DBCA,
-								Constants.DORIAN_CA_TYPE);
-			}
-
-		});
+		addGTSSteps();
 		incrementProgress();
 
-		// Configure existing Dorian CA
-		ConfigureDorianCAStep dorianCaCertInfoStep = new ConfigureDorianCAStep(
-				this.model.getMessage("dorian.ca.cert.info.title"), this.model
-						.getMessage("dorian.ca.cert.info.desc"));
-		dorianCaCertInfoStep.getOptions().add(
-				new TextPropertyConfigurationOption(
-						Constants.DORIAN_CA_CERT_PATH, this.model
-								.getMessage("dorian.ca.cert.info.cert.path"),
-						this.model.getProperty(Constants.DORIAN_CA_CERT_PATH),
-						true));
-		dorianCaCertInfoStep.getOptions().add(
-				new TextPropertyConfigurationOption(
-						Constants.DORIAN_CA_KEY_PATH, this.model
-								.getMessage("dorian.ca.cert.info.key.path"),
-						this.model.getProperty(Constants.DORIAN_CA_KEY_PATH),
-						true));
-		addCommonDorianCAConfigFields(dorianCaCertInfoStep);
-		dorianCaCertInfoStep.getValidators().add(
-				new PathExistsValidator(Constants.DORIAN_CA_CERT_PATH,
-						this.model.getMessage("error.cert.file.not.found")));
-		dorianCaCertInfoStep.getValidators().add(
-				new PathExistsValidator(Constants.DORIAN_CA_KEY_PATH,
-						this.model.getMessage("error.key.file.not.found")));
-		dorianCaCertInfoStep.getValidators().add(
-				new KeyAccessValidator(Constants.DORIAN_CA_KEY_PATH,
-						Constants.DORIAN_CA_KEY_PWD, this.model
-								.getMessage("error.key.no.access")));
-		this.model.add(dorianCaCertInfoStep, new Condition() {
-
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_DORIAN)
-						&& model.isTrue(Constants.DORIAN_CA_PRESENT);
-			}
-		});
+		addAuthnSvcSteps();
 		incrementProgress();
 
-		// Configure new Dorian CA
-		ConfigureNewDorianCAStep dorianCaNewCertInfoStep = new ConfigureNewDorianCAStep(
-				this.model.getMessage("dorian.ca.new.cert.info.title"),
-				this.model.getMessage("dorian.ca.new.cert.info.desc"));
-
-		addCommonDorianCAConfigFields(dorianCaNewCertInfoStep);
-
-		dorianCaNewCertInfoStep
-				.getOptions()
-				.add(
-						new TextPropertyConfigurationOption(
-								Constants.DORIAN_CA_SUBJECT,
-								this.model
-										.getMessage("dorian.ca.cert.info.subject"),
-								this.model
-										.getProperty(
-												Constants.DORIAN_CA_SUBJECT,
-												"C=US,O=abc,OU=xyz,OU=caGrid,OU=Users,CN=caGrid Dorian CA"),
-								true));
-
-		dorianCaNewCertInfoStep.getOptions().add(
-				new ListPropertyConfigurationOption(
-						Constants.DORIAN_CA_CAKEY_SIZE, this.model
-								.getMessage("dorian.ca.cert.info.cakey.size"),
-						new String[] { String.valueOf(2048),
-								String.valueOf(1024), String.valueOf(512) },
-						true));
-		dorianCaNewCertInfoStep
-				.getOptions()
-				.add(
-						new TextPropertyConfigurationOption(
-								Constants.DORIAN_CA_LIFETIME_YEARS,
-								this.model
-										.getMessage("dorian.ca.cert.info.lifetime.years"),
-								this.model.getProperty(
-										Constants.DORIAN_CA_LIFETIME_YEARS,
-										"10"), true));
-		dorianCaNewCertInfoStep
-				.getOptions()
-				.add(
-						new TextPropertyConfigurationOption(
-								Constants.DORIAN_CA_LIFETIME_MONTHS,
-								this.model
-										.getMessage("dorian.ca.cert.info.lifetime.months"),
-								this.model.getProperty(
-										Constants.DORIAN_CA_LIFETIME_MONTHS,
-										"0"), true));
-		dorianCaNewCertInfoStep
-				.getOptions()
-				.add(
-						new TextPropertyConfigurationOption(
-								Constants.DORIAN_CA_LIFETIME_DAYS,
-								this.model
-										.getMessage("dorian.ca.cert.info.lifetime.days"),
-								this.model.getProperty(
-										Constants.DORIAN_CA_LIFETIME_DAYS, "0"),
-								true));
-		dorianCaNewCertInfoStep
-				.getOptions()
-				.add(
-						new TextPropertyConfigurationOption(
-								Constants.DORIAN_CA_LIFETIME_HOURS,
-								this.model
-										.getMessage("dorian.ca.cert.info.lifetime.hours"),
-								this.model
-										.getProperty(
-												Constants.DORIAN_CA_LIFETIME_HOURS,
-												"0"), true));
-		dorianCaNewCertInfoStep
-				.getOptions()
-				.add(
-						new TextPropertyConfigurationOption(
-								Constants.DORIAN_CA_LIFETIME_MINUTES,
-								this.model
-										.getMessage("dorian.ca.cert.info.lifetime.minutes"),
-								this.model.getProperty(
-										Constants.DORIAN_CA_LIFETIME_MINUTES,
-										"0"), true));
-		dorianCaNewCertInfoStep
-				.getOptions()
-				.add(
-						new TextPropertyConfigurationOption(
-								Constants.DORIAN_CA_LIFETIME_SECONDS,
-								this.model
-										.getMessage("dorian.ca.cert.info.lifetime.seconds"),
-								this.model.getProperty(
-										Constants.DORIAN_CA_LIFETIME_SECONDS,
-										"0"), true));
-
-		String[] slots = new String[NUM_ERACOM_SLOTS];
-		for (int i = 0; i < slots.length; i++) {
-			slots[i] = String.valueOf(i);
-		}
-		dorianCaNewCertInfoStep.getOptions().add(
-				new ListPropertyConfigurationOption(
-						Constants.DORIAN_CA_ERACOM_SLOT, this.model
-								.getMessage("dorian.ca.eracom.slot"), slots,
-						false));
-		// TODO: add more validation
-		this.model.add(dorianCaNewCertInfoStep, new Condition() {
-
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_DORIAN)
-						&& !model.isTrue(Constants.DORIAN_CA_PRESENT);
-			}
-		});
+		addGridGrouperSteps();
 		incrementProgress();
+		
 
-		ConfigureDorianHostCredentialsStep configDorianSvcCertStep = new ConfigureDorianHostCredentialsStep(
-				this.model.getMessage("dorian.host.cred.title"), this.model
-						.getMessage("dorian.host.cred.desc"));
-		configDorianSvcCertStep.getOptions().add(
-				new TextPropertyConfigurationOption(Constants.SERVICE_HOSTNAME,
-						this.model.getMessage("service.cert.info.hostname"),
-						this.model.getProperty(Constants.SERVICE_HOSTNAME,
-								"localhost"), true));
-		FilePropertyConfigurationOption dorianHostCredDir = new FilePropertyConfigurationOption(
-				Constants.DORIAN_HOST_CRED_DIR, this.model
-						.getMessage("dorian.host.cred.dir"), this.model
-						.getProperty(Constants.DORIAN_HOST_CRED_DIR,
-								InstallerUtils.getInstallerDir() + "/certs"),
-				true);
-		dorianHostCredDir.setBrowseLabel(this.model.getMessage("browse"));
-		dorianHostCredDir.setDirectoriesOnly(true);
-		configDorianSvcCertStep.getOptions().add(dorianHostCredDir);
-		this.model.add(configDorianSvcCertStep, new Condition() {
-
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_DORIAN);
-			}
-		});
+		addInstallStep();
 		incrementProgress();
+		
+		
 
-		ConfigureServiceMetadataStep editGMESvcMetaStep = new ConfigureServiceMetadataStep(
-				"", this.model.getMessage("gme.edit.service.metadata.title"),
-				this.model.getMessage("gme.edit.service.metadata.desc")) {
-			protected String getServiceMetadataPath() {
-				return model.getServiceDestDir()
-						+ "/gme/etc/serviceMetadata.xml";
-			}
-		};
-		this.model.add(editGMESvcMetaStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_GME);
-			}
-		});
+		this.model.add(new InstallationCompleteStep(this.model
+				.getMessage("installation.complete.title"), ""));
 
-		PropertyConfigurationStep gmeDbInfoStep = new PropertyConfigurationStep(
-				this.model.getMessage("gme.db.config.title"), this.model
-						.getMessage("gme.db.config.desc"));
-		addDBConfigPropertyOptions(gmeDbInfoStep, "gme.", "gme");
-		this.model.add(gmeDbInfoStep, new Condition() {
+	}
 
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_GME);
-			}
-		});
-		incrementProgress();
-
-		DeployPropertiesGMEFileEditorStep editGMEDeployPropertiesStep = new DeployPropertiesGMEFileEditorStep(
-				"gme", this.model
-						.getMessage("gme.edit.deploy.properties.title"),
-				this.model.getMessage("gme.edit.deploy.properties.desc"),
-				this.model.getMessage("edit.properties.property.name"),
-				this.model.getMessage("edit.properties.property.value"));
-		this.model.add(editGMEDeployPropertiesStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_GME);
-			}
-		});
-
-		incrementProgress();
-
-		ConfigureServiceMetadataStep editEVSSvcMetaStep = new ConfigureServiceMetadataStep(
-				"", this.model.getMessage("evs.edit.service.metadata.title"),
-				this.model.getMessage("evs.edit.service.metadata.desc")) {
-			protected String getServiceMetadataPath() {
-				return model.getServiceDestDir()
-						+ "/evs/etc/serviceMetadata.xml";
-			}
-		};
-		this.model.add(editEVSSvcMetaStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_EVS);
-			}
-		});
-
-		DeployPropertiesFileEditorStep editEVSDeployPropertiesStep = new DeployPropertiesFileEditorStep(
-				"evs", this.model
-						.getMessage("evs.edit.deploy.properties.title"),
-				this.model.getMessage("evs.edit.deploy.properties.desc"),
-				this.model.getMessage("edit.properties.property.name"),
-				this.model.getMessage("edit.properties.property.value"));
-		this.model.add(editEVSDeployPropertiesStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_EVS);
-			}
-		});
-
-		ConfigureServiceMetadataStep editCaDSRSvcMetaStep = new ConfigureServiceMetadataStep(
-				"", this.model.getMessage("cadsr.edit.service.metadata.title"),
-				this.model.getMessage("cadsr.edit.service.metadata.desc")) {
-			protected String getServiceMetadataPath() {
-				return model.getServiceDestDir()
-						+ "/cadsr/etc/serviceMetadata.xml";
-			}
-		};
-		this.model.add(editCaDSRSvcMetaStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_CADSR);
-			}
-		});
-
-		DeployPropertiesFileEditorStep editcaDSRDeployPropertiesStep = new DeployPropertiesFileEditorStep(
-				"cadsr", this.model
-						.getMessage("cadsr.edit.deploy.properties.title"),
-				this.model.getMessage("cadsr.edit.deploy.properties.desc"),
-				this.model.getMessage("edit.properties.property.name"),
-				this.model.getMessage("edit.properties.property.value"));
-		this.model.add(editcaDSRDeployPropertiesStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_CADSR);
-			}
-		});
-
-		ServicePropertiesFileEditorStep editCaDSRServicePropertiesStep = new ServicePropertiesFileEditorStep(
-				"cadsr", this.model
-						.getMessage("cadsr.edit.service.properties.title"),
-				this.model.getMessage("cadsr.edit.service.properties.desc"),
-				this.model.getMessage("edit.properties.property.name"),
-				this.model.getMessage("edit.properties.property.value"));
-		this.model.add(editCaDSRServicePropertiesStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_CADSR);
-			}
-		});
-
-		ConfigureServiceMetadataStep editFQPSvcMetaStep = new ConfigureServiceMetadataStep(
-				"", this.model.getMessage("fqp.edit.service.metadata.title"),
-				this.model.getMessage("fqp.edit.service.metadata.desc")) {
-			protected String getServiceMetadataPath() {
-				return model.getServiceDestDir()
-						+ "/fqp/etc/serviceMetadata.xml";
-			}
-		};
-		this.model.add(editFQPSvcMetaStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_FQP);
-			}
-		});
-
-		ServicePropertiesFileEditorStep editFQPServicePropertiesStep = new ServicePropertiesFileEditorStep(
-				"fqp", this.model
-						.getMessage("fqp.edit.service.properties.title"),
-				this.model.getMessage("fqp.edit.service.properties.desc"),
-				this.model.getMessage("edit.properties.property.name"),
-				this.model.getMessage("edit.properties.property.value"));
-		this.model.add(editFQPServicePropertiesStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_FQP);
-			}
-		});
-
-		DeployPropertiesFileEditorStep editFQPDeployPropertiesStep = new DeployPropertiesFileEditorStep(
-				"fqp", this.model
-						.getMessage("fqp.edit.deploy.properties.title"),
-				this.model.getMessage("fqp.edit.deploy.properties.desc"),
-				this.model.getMessage("edit.properties.property.name"),
-				this.model.getMessage("edit.properties.property.value"));
-		this.model.add(editFQPDeployPropertiesStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_FQP);
-			}
-		});
-
-		ConfigureServiceMetadataStep editWorkflowSvcMetaStep = new ConfigureServiceMetadataStep(
-				"", this.model
-						.getMessage("workflow.edit.service.metadata.title"),
-				this.model.getMessage("workflow.edit.service.metadata.desc")) {
-			protected String getServiceMetadataPath() {
-				return model.getServiceDestDir()
-						+ "/workflow/WorkflowFactoryService/etc/serviceMetadata.xml";
-			}
-		};
-		this.model.add(editWorkflowSvcMetaStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_WORKFLOW);
-			}
-		});
-
-		ServicePropertiesWorkflowFileEditorStep editWorkflowServicePropertiesStep = new ServicePropertiesWorkflowFileEditorStep(
-				"workflow", this.model
-						.getMessage("workflow.edit.service.properties.title"),
-				this.model.getMessage("workflow.edit.service.properties.desc"),
-				this.model.getMessage("edit.properties.property.name"),
-				this.model.getMessage("edit.properties.property.value"));
-		this.model.add(editWorkflowServicePropertiesStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_WORKFLOW);
-			}
-		});
-
-		DeployPropertiesWorkflowFileEditorStep editWorkflowDeployPropertiesStep = new DeployPropertiesWorkflowFileEditorStep(
-				"workflow", this.model
-						.getMessage("workflow.edit.deploy.properties.title"),
-				this.model.getMessage("workflow.edit.deploy.properties.desc"),
-				this.model.getMessage("edit.properties.property.name"),
-				this.model.getMessage("edit.properties.property.value"));
-		this.model.add(editWorkflowDeployPropertiesStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_WORKFLOW);
-			}
-		});
-
-		ConfigureServiceMetadataStep editGTSSvcMetaStep = new ConfigureServiceMetadataStep(
-				"", this.model.getMessage("gts.edit.service.metadata.title"),
-				this.model.getMessage("gts.edit.service.metadata.desc")) {
-			protected String getServiceMetadataPath() {
-				return model.getServiceDestDir()
-						+ "/gts/etc/serviceMetadata.xml";
-			}
-		};
-		this.model.add(editGTSSvcMetaStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_GTS);
-			}
-		});
-
-		DeployPropertiesFileEditorStep editGTSDeployPropertiesStep = new DeployPropertiesFileEditorStep(
-				"gts", this.model
-						.getMessage("gts.edit.deploy.properties.title"),
-				this.model.getMessage("gts.edit.deploy.properties.desc"),
-				this.model.getMessage("edit.properties.property.name"),
-				this.model.getMessage("edit.properties.property.value"));
-		this.model.add(editGTSDeployPropertiesStep, new Condition() {
-
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_GTS);
-			}
-		});
-
-		// Configures the GTS database
-		ConfigureGTSDBStep gtsDbInfoStep = new ConfigureGTSDBStep(this.model
-				.getMessage("gts.db.config.title"), this.model
-				.getMessage("gts.db.config.desc"));
-		addDBConfigPropertyOptions(gtsDbInfoStep, "gts.", "gts");
-		this.model.add(gtsDbInfoStep, new Condition() {
-
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_GTS);
-			}
-		});
-		incrementProgress();
-
-		final DropServiceDatabaseStep dropGtsDbStep = new DropServiceDatabaseStep(
-				this.model.getMessage("gts.db.drop.title"), this.model
-						.getMessage("gts.db.drop.desc"), "gts.", "gts.db.drop");
-		this.model.add(dropGtsDbStep, new Condition() {
-
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_GTS)
-						&& dropGtsDbStep.databaseExists(model);
-			}
-		});
-		incrementProgress();
-
-		PropertyConfigurationStep gtsAddAdminStep = new PropertyConfigurationStep(
-				this.model.getMessage("gts.add.admin.title"), this.model
-						.getMessage("gts.add.admin.desc"));
-		gtsAddAdminStep
-				.getOptions()
-				.add(
-						new TextPropertyConfigurationOption(
-								Constants.GTS_ADMIN_IDENT,
-								this.model.getMessage("gts.admin.ident"),
-								this.model
-										.getProperty(Constants.GTS_ADMIN_IDENT,
-												"/O=org/OU=unit/OU=User Group/OU=Dorian IdP/CN=manager"),
-								true));
-		this.model.add(gtsAddAdminStep, new Condition() {
-
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_GTS);
-			}
-		});
-		incrementProgress();
-
-		ConfigureServiceMetadataStep editAuthnSvcMetaStep = new ConfigureServiceMetadataStep(
-				"", this.model
-						.getMessage("authn.svc.edit.service.metadata.title"),
-				this.model.getMessage("authn.svc.edit.service.metadata.desc")) {
-			protected String getServiceMetadataPath() {
-				return model.getServiceDestDir()
-						+ "/authentication-service/etc/serviceMetadata.xml";
-			}
-		};
-		this.model.add(editAuthnSvcMetaStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_AUTHN_SVC);
-			}
-		});
-
-		PropertyConfigurationStep checkAuthnUseGeneratedCAStep = new PropertyConfigurationStep(
-				this.model.getMessage("authn.svc.check.use.gen.ca.title"),
-				this.model.getMessage("authn.svc.check.use.gen.ca.desc"));
-		checkAuthnUseGeneratedCAStep.getOptions().add(
-				new BooleanPropertyConfigurationOption(
-						Constants.AUTHN_SVC_USE_GEN_CA, this.model
-								.getMessage("yes"), false, false));
-		this.model.add(checkAuthnUseGeneratedCAStep, new Condition() {
-
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-
-				return (model.isCAGenerationRequired() || model
-						.isTrue(Constants.CA_CERT_PRESENT))
-						&& model.isTrue(Constants.INSTALL_AUTHN_SVC);
-			}
-
-		});
-		incrementProgress();
-
-		// Checks if user will supply Authn Svc CA
-		PropertyConfigurationStep checkAuthnCAPresentStep = new PropertyConfigurationStep(
-				this.model.getMessage("authn.svc.check.ca.present.title"),
-				this.model.getMessage("authn.svc.check.ca.present.desc"));
-		checkAuthnCAPresentStep.getOptions().add(
-				new BooleanPropertyConfigurationOption(
-						Constants.AUTHN_SVC_CA_PRESENT, this.model
-								.getMessage("yes"), false, false));
-		this.model.add(checkAuthnCAPresentStep, new Condition() {
-
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-
-				return model.isTrue(Constants.INSTALL_AUTHN_SVC)
-						&& !model.isTrue(Constants.AUTHN_SVC_USE_GEN_CA);
-			}
-
-		});
-		incrementProgress();
-
-		// Authentication Service Existing CA Config
-		ConfigureAuthnCAStep authnCaCertInfoStep = new ConfigureAuthnCAStep(
-				this.model.getMessage("authn.svc.ca.cert.info.title"),
-				this.model.getMessage("authn.svc.ca.cert.info.desc"));
-		addCommonCACertFields(authnCaCertInfoStep,
-				Constants.AUTHN_SVC_CA_CERT_PATH,
-				Constants.AUTHN_SVC_CA_KEY_PATH,
-				Constants.AUTHN_SVC_CA_KEY_PWD, true);
-		this.model.add(authnCaCertInfoStep, new Condition() {
-
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return !model.isAuthnSvcCAGenerationRequired()
-						&& model.isTrue(Constants.INSTALL_AUTHN_SVC);
-
-			}
-		});
-		incrementProgress();
-
-		// AuthenticationService New CA
-		PropertyConfigurationStep authnCaNewCertInfoStep = new PropertyConfigurationStep(
-				this.model.getMessage("authn.svc.ca.new.cert.info.title"),
-				this.model.getMessage("authn.svc.ca.new.cert.info.desc"));
-		addCommonNewCACertFields(authnCaNewCertInfoStep,
-				Constants.AUTHN_SVC_CA_CERT_PATH,
-				Constants.AUTHN_SVC_CA_KEY_PATH,
-				Constants.AUTHN_SVC_CA_KEY_PWD, Constants.AUTHN_SVC_CA_DN,
-				Constants.AUTHN_SVC_CA_DAYS_VALID);
-		this.model.add(authnCaNewCertInfoStep, new Condition() {
-
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isAuthnSvcCAGenerationRequired()
-						&& model.isTrue(Constants.INSTALL_AUTHN_SVC);
-			}
-		});
-		incrementProgress();
-
-		PropertyConfigurationStep overwriteJaasStep = new PropertyConfigurationStep(
-				this.model.getMessage("authn.svc.overwrite.jaas.title"),
-				this.model.getMessage("authn.svc.overwrite.jaas.desc"));
-		overwriteJaasStep
-				.getOptions()
-				.add(
-						new ListPropertyConfigurationOption(
-								Constants.AUTHN_SVC_OVERWRITE_JAAS,
-								this.model
-										.getMessage("authn.svc.overwrite.jaas"),
-								new LabelValuePair[] {
-										new LabelValuePair(
-												this.model
-														.getMessage("authn.svc.overwrite.jaas.yes"),
-												Constants.AUTHN_SVC_OVERWRITE_JAAS_YES),
-										new LabelValuePair(
-												this.model
-														.getMessage("authn.svc.overwrite.jaas.no"),
-												Constants.AUTHN_SVC_OVERWRITE_JAAS_NO) }));
-		this.model.add(overwriteJaasStep, new Condition() {
-
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return new File(System.getProperty("user.home")
-						+ "/.java.login.config").exists()
-						&& model.isTrue(Constants.INSTALL_AUTHN_SVC);
-			}
-
-		});
-
-		// Let's user select the type of credential provider
-		PropertyConfigurationStep selectCredentialProviderStep = new PropertyConfigurationStep(
-				this.model
-						.getMessage("authn.svc.select.cred.provider.type.title"),
-				this.model
-						.getMessage("authn.svc.select.cred.provider.type.desc"));
-		selectCredentialProviderStep
-				.getOptions()
-				.add(
-						new ListPropertyConfigurationOption(
-								Constants.AUTHN_SVC_CRED_PROVIDER_TYPE,
-								this.model
-										.getMessage("authn.svc.cred.provider.type"),
-								new LabelValuePair[] {
-										new LabelValuePair(
-												this.model
-														.getMessage("authn.svc.cred.provider.type.rdbms"),
-												Constants.AUTHN_SVC_CRED_PROVIDER_TYPE_RDBMS),
-										new LabelValuePair(
-												this.model
-														.getMessage("authn.svc.cred.provider.type.ldap"),
-												Constants.AUTHN_SVC_CRED_PROVIDER_TYPE_LDAP) }));
-		this.model.add(selectCredentialProviderStep, new Condition() {
-
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_AUTHN_SVC);
-			}
-
-		});
-
-		// AuthenticationService RDBMS step
-		PropertyConfigurationStep authnSvcRdbmsStep = new PropertyConfigurationStep(
-				this.model.getMessage("authn.svc.rdbms.title"), this.model
-						.getMessage("authn.svc.rdbms.desc"));
-		authnSvcRdbmsStep.getOptions().add(
-				new TextPropertyConfigurationOption(
-						Constants.AUTHN_SVC_CSM_CTX, this.model
-								.getMessage("authn.svc.csm.ctx"), this.model
-								.getProperty(Constants.AUTHN_SVC_CSM_CTX,
-										"AUTHNSVC"), true));
-		authnSvcRdbmsStep.getOptions().add(
-				new TextPropertyConfigurationOption(
-						Constants.AUTHN_SVC_RDBMS_URL, this.model
-								.getMessage("authn.svc.rdbms.url"),
-						this.model.getProperty(Constants.AUTHN_SVC_RDBMS_URL,
-								"jdbc:mysql://localhost:3306/authnsvc"), true));
-
-		FilePropertyConfigurationOption driverJar = new FilePropertyConfigurationOption(
-				Constants.AUTHN_SVC_RDBMS_DRIVER_JAR,
-				this.model.getMessage("authn.svc.rdbms.driver.jar"),
-				this.model
-						.getProperty(
-								Constants.AUTHN_SVC_RDBMS_DRIVER_JAR,
-								System.getProperty("user.dir")
-										+ "/lib/mysql-connector-java-3.0.16-ga-bin.jar"),
-				true);
-		driverJar.setBrowseLabel(this.model.getMessage("browse"));
-		driverJar.setExtensions(new String[] { ".jar" });
-		authnSvcRdbmsStep.getOptions().add(driverJar);
-
-		authnSvcRdbmsStep.getOptions().add(
-				new TextPropertyConfigurationOption(
-						Constants.AUTHN_SVC_RDBMS_DRIVER, this.model
-								.getMessage("authn.svc.rdbms.driver"),
-						this.model.getProperty(
-								Constants.AUTHN_SVC_RDBMS_DRIVER,
-								"org.gjt.mm.mysql.Driver"), true));
-		authnSvcRdbmsStep.getOptions().add(
-				new TextPropertyConfigurationOption(
-						Constants.AUTHN_SVC_RDBMS_USERNAME, this.model
-								.getMessage("authn.svc.rdbms.username"),
-						this.model.getProperty(
-								Constants.AUTHN_SVC_RDBMS_USERNAME, "root"),
-						true));
-		authnSvcRdbmsStep.getOptions().add(
-				new PasswordPropertyConfigurationOption(
-						Constants.AUTHN_SVC_RDBMS_PASSWORD, this.model
-								.getMessage("authn.svc.rdbms.password"),
-						this.model.getProperty(
-								Constants.AUTHN_SVC_RDBMS_PASSWORD, ""), true));
-		authnSvcRdbmsStep.getOptions().add(
-				new TextPropertyConfigurationOption(
-						Constants.AUTHN_SVC_RDBMS_TABLE_NAME, this.model
-								.getMessage("authn.svc.rdbms.table.name"),
-						this.model.getProperty(
-								Constants.AUTHN_SVC_RDBMS_TABLE_NAME,
-								"CSM_USER"), true));
-		authnSvcRdbmsStep.getOptions().add(
-				new TextPropertyConfigurationOption(
-						Constants.AUTHN_SVC_RDBMS_LOGIN_ID_COLUMN, this.model
-								.getMessage("authn.svc.rdbms.login.id.column"),
-						this.model.getProperty(
-								Constants.AUTHN_SVC_RDBMS_LOGIN_ID_COLUMN,
-								"LOGIN_NAME"), true));
-		authnSvcRdbmsStep.getOptions().add(
-				new TextPropertyConfigurationOption(
-						Constants.AUTHN_SVC_RDBMS_PASSWORD_COLUMN, this.model
-								.getMessage("authn.svc.rdbms.password.column"),
-						this.model.getProperty(
-								Constants.AUTHN_SVC_RDBMS_PASSWORD_COLUMN,
-								"PASSWORD"), true));
-		authnSvcRdbmsStep
-				.getOptions()
-				.add(
-						new TextPropertyConfigurationOption(
-								Constants.AUTHN_SVC_RDBMS_FIRST_NAME_COLUMN,
-								this.model
-										.getMessage("authn.svc.rdbms.first.name.column"),
-								this.model
-										.getProperty(
-												Constants.AUTHN_SVC_RDBMS_FIRST_NAME_COLUMN,
-												"FIRST_NAME"), true));
-		authnSvcRdbmsStep
-				.getOptions()
-				.add(
-						new TextPropertyConfigurationOption(
-								Constants.AUTHN_SVC_RDBMS_LAST_NAME_COLUMN,
-								this.model
-										.getMessage("authn.svc.rdbms.last.name.column"),
-								this.model
-										.getProperty(
-												Constants.AUTHN_SVC_RDBMS_LAST_NAME_COLUMN,
-												"LAST_NAME"), true));
-
-		authnSvcRdbmsStep.getOptions().add(
-				new TextPropertyConfigurationOption(
-						Constants.AUTHN_SVC_RDBMS_EMAIL_ID_COLUMN, this.model
-								.getMessage("authn.svc.rdbms.email.id.column"),
-						this.model.getProperty(
-								Constants.AUTHN_SVC_RDBMS_EMAIL_ID_COLUMN,
-								"EMAIL_ID"), true));
-		authnSvcRdbmsStep
-				.getOptions()
-				.add(
-						new BooleanPropertyConfigurationOption(
-								Constants.AUTHN_SVC_RDBMS_ENCRYPTION_ENABLED,
-								this.model
-										.getMessage("authn.svc.rdbms.encryption.enabled"),
-								false, false));
-		authnSvcRdbmsStep
-				.getValidators()
-				.add(
-						new PathExistsValidator(
-								Constants.AUTHN_SVC_RDBMS_DRIVER_JAR,
-								this.model
-										.getMessage("authn.svc.rdbms.driver.jar.not.found")));
-		authnSvcRdbmsStep.getValidators().add(
-				new GenericDBConnectionValidator(
-						Constants.AUTHN_SVC_RDBMS_USERNAME,
-						Constants.AUTHN_SVC_RDBMS_PASSWORD, "select 1",
-						this.model.getMessage("db.validation.failed"),
-						Constants.AUTHN_SVC_RDBMS_DRIVER_JAR,
-						Constants.AUTHN_SVC_RDBMS_URL,
-						Constants.AUTHN_SVC_RDBMS_DRIVER));
-		this.model.add(authnSvcRdbmsStep, new Condition() {
-
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_AUTHN_SVC)
-						&& model.isEqual(
-								Constants.AUTHN_SVC_CRED_PROVIDER_TYPE_RDBMS,
-								Constants.AUTHN_SVC_CRED_PROVIDER_TYPE);
-			}
-		});
-		incrementProgress();
-
-		// AuthenticationService LDAP Setup
-		PropertyConfigurationStep authnSvcLdapStep = new PropertyConfigurationStep(
-				this.model.getMessage("authn.svc.ldap.title"), this.model
-						.getMessage("authn.svc.ldap.desc"));
-		authnSvcLdapStep.getOptions().add(
-				new TextPropertyConfigurationOption(
-						Constants.AUTHN_SVC_CSM_CTX, this.model
-								.getMessage("authn.svc.csm.ctx"), this.model
-								.getProperty(Constants.AUTHN_SVC_CSM_CTX,
-										"AUTHNSVC"), true));
-		authnSvcLdapStep.getOptions().add(
-				new TextPropertyConfigurationOption(
-						Constants.AUTHN_SVC_LDAP_HOSTNAME, this.model
-								.getMessage("authn.svc.ldap.hostname"),
-						this.model.getProperty(
-								Constants.AUTHN_SVC_LDAP_HOSTNAME,
-								"ldaps://cbioweb.nci.nih.gov:636"), true));
-		authnSvcLdapStep.getOptions().add(
-				new TextPropertyConfigurationOption(
-						Constants.AUTHN_SVC_LDAP_SEARCH_BASE, this.model
-								.getMessage("authn.svc.ldap.search.base"),
-						this.model.getProperty(
-								Constants.AUTHN_SVC_LDAP_SEARCH_BASE,
-								"ou=nci,o=nih"), true));
-		authnSvcLdapStep
-				.getOptions()
-				.add(
-						new TextPropertyConfigurationOption(
-								Constants.AUTHN_SVC_LDAP_LOGIN_ID_ATTRIBUTE,
-								this.model
-										.getMessage("authn.svc.ldap.login.id.attribute"),
-								this.model
-										.getProperty(
-												Constants.AUTHN_SVC_LDAP_LOGIN_ID_ATTRIBUTE,
-												"cn"), true));
-		authnSvcLdapStep
-				.getOptions()
-				.add(
-						new TextPropertyConfigurationOption(
-								Constants.AUTHN_SVC_LDAP_FIRST_NAME_ATTRIBUTE,
-								this.model
-										.getMessage("authn.svc.ldap.first.name.attribute"),
-								this.model
-										.getProperty(
-												Constants.AUTHN_SVC_LDAP_FIRST_NAME_ATTRIBUTE,
-												"givenName"), true));
-		authnSvcLdapStep
-				.getOptions()
-				.add(
-						new TextPropertyConfigurationOption(
-								Constants.AUTHN_SVC_LDAP_LAST_NAME_ATTRIBUTE,
-								this.model
-										.getMessage("authn.svc.ldap.last.name.attribute"),
-								this.model
-										.getProperty(
-												Constants.AUTHN_SVC_LDAP_LAST_NAME_ATTRIBUTE,
-												"sn"), true));
-		authnSvcLdapStep
-				.getOptions()
-				.add(
-						new TextPropertyConfigurationOption(
-								Constants.AUTHN_SVC_LDAP_EMAIL_ID_ATTRIBUTE,
-								this.model
-										.getMessage("authn.svc.ldap.email.id.attribute"),
-								this.model
-										.getProperty(
-												Constants.AUTHN_SVC_LDAP_EMAIL_ID_ATTRIBUTE,
-												"mail"), true));
-		// TODO: add validation
-		this.model.add(authnSvcLdapStep, new Condition() {
-
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_AUTHN_SVC)
-						&& model.isEqual(
-								Constants.AUTHN_SVC_CRED_PROVIDER_TYPE_LDAP,
-								Constants.AUTHN_SVC_CRED_PROVIDER_TYPE);
-			}
-		});
-		incrementProgress();
-
-		// Configure AuthenticationService deploy.properties
-		DeployPropertiesFileEditorStep editAuthnDeployPropertiesStep = new DeployPropertiesFileEditorStep(
-				"authentication-service", this.model
-						.getMessage("authn.svc.edit.deploy.properties.title"),
-				this.model.getMessage("authn.svc.edit.deploy.properties.desc"),
-				this.model.getMessage("edit.properties.property.name"),
-				this.model.getMessage("edit.properties.property.value"));
-		this.model.add(editAuthnDeployPropertiesStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_AUTHN_SVC);
-			}
-		});
-
-		ConfigureServiceMetadataStep editGridGrouperSvcMetaStep = new ConfigureServiceMetadataStep(
-				"",
-				this.model
-						.getMessage("grid.grouper.edit.service.metadata.title"),
-				this.model
-						.getMessage("grid.grouper.edit.service.metadata.desc")) {
-			protected String getServiceMetadataPath() {
-				return model.getServiceDestDir()
-						+ "/gridgrouper/etc/GridGrouper_serviceMetadata.xml";
-			}
-		};
-		this.model.add(editGridGrouperSvcMetaStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_GRID_GROUPER);
-			}
-		});
-
-		PropertyConfigurationStep gridGrouperConfigStep = new PropertyConfigurationStep(
-				this.model.getMessage("grid.grouper.config.title"), this.model
-						.getMessage("grid.grouper.config.desc"));
-		gridGrouperConfigStep
-				.getOptions()
-				.add(
-						new TextPropertyConfigurationOption(
-								Constants.GRID_GROUPER_ADMIN_IDENT,
-								this.model
-										.getMessage("grid.grouper.admin.ident"),
-								this.model
-										.getProperty(
-												Constants.GRID_GROUPER_ADMIN_IDENT,
-												"/O=org/OU=unit/OU=User Group/OU=Dorian IdP/CN=manager"),
-								true));
-		gridGrouperConfigStep.getOptions().add(
-				new TextPropertyConfigurationOption(
-						Constants.GRID_GROUPER_DB_URL, this.model
-								.getMessage("grid.grouper.db.url"), this.model
-								.getProperty(Constants.GRID_GROUPER_DB_URL,
-										"jdbc:mysql://localhost:3306/grouper"),
-						true));
-		gridGrouperConfigStep.getOptions().add(
-				new TextPropertyConfigurationOption(
-						Constants.GRID_GROUPER_DB_USERNAME, this.model
-								.getMessage("grid.grouper.db.username"),
-						this.model.getProperty(
-								Constants.GRID_GROUPER_DB_USERNAME, "root"),
-						true));
-		gridGrouperConfigStep
-				.getOptions()
-				.add(
-						new PasswordPropertyConfigurationOption(
-								Constants.GRID_GROUPER_DB_PASSWORD,
-								this.model
-										.getMessage("grid.grouper.db.password"),
-								this.model.getProperty(
-										Constants.GRID_GROUPER_DB_PASSWORD, ""),
-								false));
-		gridGrouperConfigStep.getValidators().add(
-				new MySqlDBConnectionValidator("", "",
-						Constants.GRID_GROUPER_DB_USERNAME,
-						Constants.GRID_GROUPER_DB_PASSWORD, "select 1",
-						this.model.getMessage("db.validation.failed")) {
-
-					protected String getJdbcUrl(Map state) {
-						String url = (String) state
-								.get(Constants.GRID_GROUPER_DB_URL);
-						return InstallerUtils.getJdbcBaseFromJdbcUrl(url)
-								+ "/mysql";
-					}
-
-				});
-		this.model.add(gridGrouperConfigStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_GRID_GROUPER);
-			}
-		});
-
-		final DropServiceDatabaseStep dropGridGrouperDbStep = new DropServiceDatabaseStep(
-				this.model.getMessage("grid.grouper.db.drop.title"), this.model
-						.getMessage("grid.grouper.db.drop.desc"),
-				"grid.grouper.", "drop.grid.grouper.db") {
-			protected String getJdbcUrl(CaGridInstallerModel model) {
-				return model.getProperty(Constants.GRID_GROUPER_DB_URL);
-			}
-
-			protected String getDatabase(CaGridInstallerModel model) {
-				return InstallerUtils.getDbNameFromJdbcUrl(getJdbcUrl(model));
-			}
-		};
-		this.model.add(dropGridGrouperDbStep, new Condition() {
-
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_GRID_GROUPER)
-						&& dropGridGrouperDbStep.databaseExists(model);
-			}
-		});
-
-		DeployPropertiesFileEditorStep editGridGrouperDeployPropertiesStep = new DeployPropertiesFileEditorStep(
-				"gridgrouper",
-				this.model
-						.getMessage("grid.grouper.edit.deploy.properties.title"),
-				this.model
-						.getMessage("grid.grouper.edit.deploy.properties.desc"),
-				this.model.getMessage("edit.properties.property.name"),
-				this.model.getMessage("edit.properties.property.value"));
-		this.model.add(editGridGrouperDeployPropertiesStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_GRID_GROUPER);
-			}
-		});
-
+	private void addInstallStep() {
 		// Performs the installation
 		final RunTasksStep installStep = new RunTasksStep(this.model
 				.getMessage("install.title"), this.model
@@ -2669,7 +886,7 @@ public class Installer {
 							}
 						}));
 
-		incrementProgress();
+
 
 		this.model.add(installStep, new Condition() {
 			public boolean evaluate(WizardModel m) {
@@ -2677,10 +894,1889 @@ public class Installer {
 				return installStep.getTasksCount(model) > 0;
 			}
 		});
+		
+	}
 
-		this.model.add(new InstallationCompleteStep(this.model
-				.getMessage("installation.complete.title"), ""));
+	private void addGridGrouperSteps() {
+		ConfigureServiceMetadataStep editGridGrouperSvcMetaStep = new ConfigureServiceMetadataStep(
+				"",
+				this.model
+						.getMessage("grid.grouper.edit.service.metadata.title"),
+				this.model
+						.getMessage("grid.grouper.edit.service.metadata.desc")) {
+			protected String getServiceMetadataPath() {
+				return model.getServiceDestDir()
+						+ "/gridgrouper/etc/GridGrouper_serviceMetadata.xml";
+			}
+		};
+		this.model.add(editGridGrouperSvcMetaStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_GRID_GROUPER);
+			}
+		});
 
+		PropertyConfigurationStep gridGrouperConfigStep = new PropertyConfigurationStep(
+				this.model.getMessage("grid.grouper.config.title"), this.model
+						.getMessage("grid.grouper.config.desc"));
+		gridGrouperConfigStep
+				.getOptions()
+				.add(
+						new TextPropertyConfigurationOption(
+								Constants.GRID_GROUPER_ADMIN_IDENT,
+								this.model
+										.getMessage("grid.grouper.admin.ident"),
+								this.model
+										.getProperty(
+												Constants.GRID_GROUPER_ADMIN_IDENT,
+												"/O=org/OU=unit/OU=User Group/OU=Dorian IdP/CN=manager"),
+								true));
+		gridGrouperConfigStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.GRID_GROUPER_DB_URL, this.model
+								.getMessage("grid.grouper.db.url"), this.model
+								.getProperty(Constants.GRID_GROUPER_DB_URL,
+										"jdbc:mysql://localhost:3306/grouper"),
+						true));
+		gridGrouperConfigStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.GRID_GROUPER_DB_USERNAME, this.model
+								.getMessage("grid.grouper.db.username"),
+						this.model.getProperty(
+								Constants.GRID_GROUPER_DB_USERNAME, "root"),
+						true));
+		gridGrouperConfigStep
+				.getOptions()
+				.add(
+						new PasswordPropertyConfigurationOption(
+								Constants.GRID_GROUPER_DB_PASSWORD,
+								this.model
+										.getMessage("grid.grouper.db.password"),
+								this.model.getProperty(
+										Constants.GRID_GROUPER_DB_PASSWORD, ""),
+								false));
+		gridGrouperConfigStep.getValidators().add(
+				new MySqlDBConnectionValidator("", "",
+						Constants.GRID_GROUPER_DB_USERNAME,
+						Constants.GRID_GROUPER_DB_PASSWORD, "select 1",
+						this.model.getMessage("db.validation.failed")) {
+
+					protected String getJdbcUrl(Map state) {
+						String url = (String) state
+								.get(Constants.GRID_GROUPER_DB_URL);
+						return InstallerUtils.getJdbcBaseFromJdbcUrl(url)
+								+ "/mysql";
+					}
+
+				});
+		this.model.add(gridGrouperConfigStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_GRID_GROUPER);
+			}
+		});
+
+		final DropServiceDatabaseStep dropGridGrouperDbStep = new DropServiceDatabaseStep(
+				this.model.getMessage("grid.grouper.db.drop.title"), this.model
+						.getMessage("grid.grouper.db.drop.desc"),
+				"grid.grouper.", "drop.grid.grouper.db") {
+			protected String getJdbcUrl(CaGridInstallerModel model) {
+				return model.getProperty(Constants.GRID_GROUPER_DB_URL);
+			}
+
+			protected String getDatabase(CaGridInstallerModel model) {
+				return InstallerUtils.getDbNameFromJdbcUrl(getJdbcUrl(model));
+			}
+		};
+		this.model.add(dropGridGrouperDbStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_GRID_GROUPER)
+						&& dropGridGrouperDbStep.databaseExists(model);
+			}
+		});
+
+		DeployPropertiesFileEditorStep editGridGrouperDeployPropertiesStep = new DeployPropertiesFileEditorStep(
+				"gridgrouper",
+				this.model
+						.getMessage("grid.grouper.edit.deploy.properties.title"),
+				this.model
+						.getMessage("grid.grouper.edit.deploy.properties.desc"),
+				this.model.getMessage("edit.properties.property.name"),
+				this.model.getMessage("edit.properties.property.value"));
+		this.model.add(editGridGrouperDeployPropertiesStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_GRID_GROUPER);
+			}
+		});
+		
+	}
+
+	private void addAuthnSvcSteps() {
+		ConfigureServiceMetadataStep editAuthnSvcMetaStep = new ConfigureServiceMetadataStep(
+				"", this.model
+						.getMessage("authn.svc.edit.service.metadata.title"),
+				this.model.getMessage("authn.svc.edit.service.metadata.desc")) {
+			protected String getServiceMetadataPath() {
+				return model.getServiceDestDir()
+						+ "/authentication-service/etc/serviceMetadata.xml";
+			}
+		};
+		this.model.add(editAuthnSvcMetaStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_AUTHN_SVC);
+			}
+		});
+
+		PropertyConfigurationStep checkAuthnUseGeneratedCAStep = new PropertyConfigurationStep(
+				this.model.getMessage("authn.svc.check.use.gen.ca.title"),
+				this.model.getMessage("authn.svc.check.use.gen.ca.desc"));
+		checkAuthnUseGeneratedCAStep.getOptions().add(
+				new BooleanPropertyConfigurationOption(
+						Constants.AUTHN_SVC_USE_GEN_CA, this.model
+								.getMessage("yes"), false, false));
+		this.model.add(checkAuthnUseGeneratedCAStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+
+				return (model.isCAGenerationRequired() || model
+						.isTrue(Constants.CA_CERT_PRESENT))
+						&& model.isTrue(Constants.INSTALL_AUTHN_SVC);
+			}
+
+		});
+
+
+		// Checks if user will supply Authn Svc CA
+		PropertyConfigurationStep checkAuthnCAPresentStep = new PropertyConfigurationStep(
+				this.model.getMessage("authn.svc.check.ca.present.title"),
+				this.model.getMessage("authn.svc.check.ca.present.desc"));
+		checkAuthnCAPresentStep.getOptions().add(
+				new BooleanPropertyConfigurationOption(
+						Constants.AUTHN_SVC_CA_PRESENT, this.model
+								.getMessage("yes"), false, false));
+		this.model.add(checkAuthnCAPresentStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+
+				return model.isTrue(Constants.INSTALL_AUTHN_SVC)
+						&& !model.isTrue(Constants.AUTHN_SVC_USE_GEN_CA);
+			}
+
+		});
+
+
+		// Authentication Service Existing CA Config
+		ConfigureAuthnCAStep authnCaCertInfoStep = new ConfigureAuthnCAStep(
+				this.model.getMessage("authn.svc.ca.cert.info.title"),
+				this.model.getMessage("authn.svc.ca.cert.info.desc"));
+		addCommonCACertFields(authnCaCertInfoStep,
+				Constants.AUTHN_SVC_CA_CERT_PATH,
+				Constants.AUTHN_SVC_CA_KEY_PATH,
+				Constants.AUTHN_SVC_CA_KEY_PWD, true);
+		this.model.add(authnCaCertInfoStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return !model.isAuthnSvcCAGenerationRequired()
+						&& model.isTrue(Constants.INSTALL_AUTHN_SVC);
+
+			}
+		});
+
+
+		// AuthenticationService New CA
+		PropertyConfigurationStep authnCaNewCertInfoStep = new PropertyConfigurationStep(
+				this.model.getMessage("authn.svc.ca.new.cert.info.title"),
+				this.model.getMessage("authn.svc.ca.new.cert.info.desc"));
+		addCommonNewCACertFields(authnCaNewCertInfoStep,
+				Constants.AUTHN_SVC_CA_CERT_PATH,
+				Constants.AUTHN_SVC_CA_KEY_PATH,
+				Constants.AUTHN_SVC_CA_KEY_PWD, Constants.AUTHN_SVC_CA_DN,
+				Constants.AUTHN_SVC_CA_DAYS_VALID);
+		this.model.add(authnCaNewCertInfoStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isAuthnSvcCAGenerationRequired()
+						&& model.isTrue(Constants.INSTALL_AUTHN_SVC);
+			}
+		});
+
+
+		PropertyConfigurationStep overwriteJaasStep = new PropertyConfigurationStep(
+				this.model.getMessage("authn.svc.overwrite.jaas.title"),
+				this.model.getMessage("authn.svc.overwrite.jaas.desc"));
+		overwriteJaasStep
+				.getOptions()
+				.add(
+						new ListPropertyConfigurationOption(
+								Constants.AUTHN_SVC_OVERWRITE_JAAS,
+								this.model
+										.getMessage("authn.svc.overwrite.jaas"),
+								new LabelValuePair[] {
+										new LabelValuePair(
+												this.model
+														.getMessage("authn.svc.overwrite.jaas.yes"),
+												Constants.AUTHN_SVC_OVERWRITE_JAAS_YES),
+										new LabelValuePair(
+												this.model
+														.getMessage("authn.svc.overwrite.jaas.no"),
+												Constants.AUTHN_SVC_OVERWRITE_JAAS_NO) }));
+		this.model.add(overwriteJaasStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return new File(System.getProperty("user.home")
+						+ "/.java.login.config").exists()
+						&& model.isTrue(Constants.INSTALL_AUTHN_SVC);
+			}
+
+		});
+
+		// Let's user select the type of credential provider
+		PropertyConfigurationStep selectCredentialProviderStep = new PropertyConfigurationStep(
+				this.model
+						.getMessage("authn.svc.select.cred.provider.type.title"),
+				this.model
+						.getMessage("authn.svc.select.cred.provider.type.desc"));
+		selectCredentialProviderStep
+				.getOptions()
+				.add(
+						new ListPropertyConfigurationOption(
+								Constants.AUTHN_SVC_CRED_PROVIDER_TYPE,
+								this.model
+										.getMessage("authn.svc.cred.provider.type"),
+								new LabelValuePair[] {
+										new LabelValuePair(
+												this.model
+														.getMessage("authn.svc.cred.provider.type.rdbms"),
+												Constants.AUTHN_SVC_CRED_PROVIDER_TYPE_RDBMS),
+										new LabelValuePair(
+												this.model
+														.getMessage("authn.svc.cred.provider.type.ldap"),
+												Constants.AUTHN_SVC_CRED_PROVIDER_TYPE_LDAP) }));
+		this.model.add(selectCredentialProviderStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_AUTHN_SVC);
+			}
+
+		});
+
+		// AuthenticationService RDBMS step
+		PropertyConfigurationStep authnSvcRdbmsStep = new PropertyConfigurationStep(
+				this.model.getMessage("authn.svc.rdbms.title"), this.model
+						.getMessage("authn.svc.rdbms.desc"));
+		authnSvcRdbmsStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.AUTHN_SVC_CSM_CTX, this.model
+								.getMessage("authn.svc.csm.ctx"), this.model
+								.getProperty(Constants.AUTHN_SVC_CSM_CTX,
+										"AUTHNSVC"), true));
+		authnSvcRdbmsStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.AUTHN_SVC_RDBMS_URL, this.model
+								.getMessage("authn.svc.rdbms.url"),
+						this.model.getProperty(Constants.AUTHN_SVC_RDBMS_URL,
+								"jdbc:mysql://localhost:3306/authnsvc"), true));
+
+		FilePropertyConfigurationOption driverJar = new FilePropertyConfigurationOption(
+				Constants.AUTHN_SVC_RDBMS_DRIVER_JAR,
+				this.model.getMessage("authn.svc.rdbms.driver.jar"),
+				this.model
+						.getProperty(
+								Constants.AUTHN_SVC_RDBMS_DRIVER_JAR,
+								System.getProperty("user.dir")
+										+ "/lib/mysql-connector-java-3.0.16-ga-bin.jar"),
+				true);
+		driverJar.setBrowseLabel(this.model.getMessage("browse"));
+		driverJar.setExtensions(new String[] { ".jar" });
+		authnSvcRdbmsStep.getOptions().add(driverJar);
+
+		authnSvcRdbmsStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.AUTHN_SVC_RDBMS_DRIVER, this.model
+								.getMessage("authn.svc.rdbms.driver"),
+						this.model.getProperty(
+								Constants.AUTHN_SVC_RDBMS_DRIVER,
+								"org.gjt.mm.mysql.Driver"), true));
+		authnSvcRdbmsStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.AUTHN_SVC_RDBMS_USERNAME, this.model
+								.getMessage("authn.svc.rdbms.username"),
+						this.model.getProperty(
+								Constants.AUTHN_SVC_RDBMS_USERNAME, "root"),
+						true));
+		authnSvcRdbmsStep.getOptions().add(
+				new PasswordPropertyConfigurationOption(
+						Constants.AUTHN_SVC_RDBMS_PASSWORD, this.model
+								.getMessage("authn.svc.rdbms.password"),
+						this.model.getProperty(
+								Constants.AUTHN_SVC_RDBMS_PASSWORD, ""), true));
+		authnSvcRdbmsStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.AUTHN_SVC_RDBMS_TABLE_NAME, this.model
+								.getMessage("authn.svc.rdbms.table.name"),
+						this.model.getProperty(
+								Constants.AUTHN_SVC_RDBMS_TABLE_NAME,
+								"CSM_USER"), true));
+		authnSvcRdbmsStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.AUTHN_SVC_RDBMS_LOGIN_ID_COLUMN, this.model
+								.getMessage("authn.svc.rdbms.login.id.column"),
+						this.model.getProperty(
+								Constants.AUTHN_SVC_RDBMS_LOGIN_ID_COLUMN,
+								"LOGIN_NAME"), true));
+		authnSvcRdbmsStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.AUTHN_SVC_RDBMS_PASSWORD_COLUMN, this.model
+								.getMessage("authn.svc.rdbms.password.column"),
+						this.model.getProperty(
+								Constants.AUTHN_SVC_RDBMS_PASSWORD_COLUMN,
+								"PASSWORD"), true));
+		authnSvcRdbmsStep
+				.getOptions()
+				.add(
+						new TextPropertyConfigurationOption(
+								Constants.AUTHN_SVC_RDBMS_FIRST_NAME_COLUMN,
+								this.model
+										.getMessage("authn.svc.rdbms.first.name.column"),
+								this.model
+										.getProperty(
+												Constants.AUTHN_SVC_RDBMS_FIRST_NAME_COLUMN,
+												"FIRST_NAME"), true));
+		authnSvcRdbmsStep
+				.getOptions()
+				.add(
+						new TextPropertyConfigurationOption(
+								Constants.AUTHN_SVC_RDBMS_LAST_NAME_COLUMN,
+								this.model
+										.getMessage("authn.svc.rdbms.last.name.column"),
+								this.model
+										.getProperty(
+												Constants.AUTHN_SVC_RDBMS_LAST_NAME_COLUMN,
+												"LAST_NAME"), true));
+
+		authnSvcRdbmsStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.AUTHN_SVC_RDBMS_EMAIL_ID_COLUMN, this.model
+								.getMessage("authn.svc.rdbms.email.id.column"),
+						this.model.getProperty(
+								Constants.AUTHN_SVC_RDBMS_EMAIL_ID_COLUMN,
+								"EMAIL_ID"), true));
+		authnSvcRdbmsStep
+				.getOptions()
+				.add(
+						new BooleanPropertyConfigurationOption(
+								Constants.AUTHN_SVC_RDBMS_ENCRYPTION_ENABLED,
+								this.model
+										.getMessage("authn.svc.rdbms.encryption.enabled"),
+								false, false));
+		authnSvcRdbmsStep
+				.getValidators()
+				.add(
+						new PathExistsValidator(
+								Constants.AUTHN_SVC_RDBMS_DRIVER_JAR,
+								this.model
+										.getMessage("authn.svc.rdbms.driver.jar.not.found")));
+		authnSvcRdbmsStep.getValidators().add(
+				new GenericDBConnectionValidator(
+						Constants.AUTHN_SVC_RDBMS_USERNAME,
+						Constants.AUTHN_SVC_RDBMS_PASSWORD, "select 1",
+						this.model.getMessage("db.validation.failed"),
+						Constants.AUTHN_SVC_RDBMS_DRIVER_JAR,
+						Constants.AUTHN_SVC_RDBMS_URL,
+						Constants.AUTHN_SVC_RDBMS_DRIVER));
+		this.model.add(authnSvcRdbmsStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_AUTHN_SVC)
+						&& model.isEqual(
+								Constants.AUTHN_SVC_CRED_PROVIDER_TYPE_RDBMS,
+								Constants.AUTHN_SVC_CRED_PROVIDER_TYPE);
+			}
+		});
+
+
+		// AuthenticationService LDAP Setup
+		PropertyConfigurationStep authnSvcLdapStep = new PropertyConfigurationStep(
+				this.model.getMessage("authn.svc.ldap.title"), this.model
+						.getMessage("authn.svc.ldap.desc"));
+		authnSvcLdapStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.AUTHN_SVC_CSM_CTX, this.model
+								.getMessage("authn.svc.csm.ctx"), this.model
+								.getProperty(Constants.AUTHN_SVC_CSM_CTX,
+										"AUTHNSVC"), true));
+		authnSvcLdapStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.AUTHN_SVC_LDAP_HOSTNAME, this.model
+								.getMessage("authn.svc.ldap.hostname"),
+						this.model.getProperty(
+								Constants.AUTHN_SVC_LDAP_HOSTNAME,
+								"ldaps://cbioweb.nci.nih.gov:636"), true));
+		authnSvcLdapStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.AUTHN_SVC_LDAP_SEARCH_BASE, this.model
+								.getMessage("authn.svc.ldap.search.base"),
+						this.model.getProperty(
+								Constants.AUTHN_SVC_LDAP_SEARCH_BASE,
+								"ou=nci,o=nih"), true));
+		authnSvcLdapStep
+				.getOptions()
+				.add(
+						new TextPropertyConfigurationOption(
+								Constants.AUTHN_SVC_LDAP_LOGIN_ID_ATTRIBUTE,
+								this.model
+										.getMessage("authn.svc.ldap.login.id.attribute"),
+								this.model
+										.getProperty(
+												Constants.AUTHN_SVC_LDAP_LOGIN_ID_ATTRIBUTE,
+												"cn"), true));
+		authnSvcLdapStep
+				.getOptions()
+				.add(
+						new TextPropertyConfigurationOption(
+								Constants.AUTHN_SVC_LDAP_FIRST_NAME_ATTRIBUTE,
+								this.model
+										.getMessage("authn.svc.ldap.first.name.attribute"),
+								this.model
+										.getProperty(
+												Constants.AUTHN_SVC_LDAP_FIRST_NAME_ATTRIBUTE,
+												"givenName"), true));
+		authnSvcLdapStep
+				.getOptions()
+				.add(
+						new TextPropertyConfigurationOption(
+								Constants.AUTHN_SVC_LDAP_LAST_NAME_ATTRIBUTE,
+								this.model
+										.getMessage("authn.svc.ldap.last.name.attribute"),
+								this.model
+										.getProperty(
+												Constants.AUTHN_SVC_LDAP_LAST_NAME_ATTRIBUTE,
+												"sn"), true));
+		authnSvcLdapStep
+				.getOptions()
+				.add(
+						new TextPropertyConfigurationOption(
+								Constants.AUTHN_SVC_LDAP_EMAIL_ID_ATTRIBUTE,
+								this.model
+										.getMessage("authn.svc.ldap.email.id.attribute"),
+								this.model
+										.getProperty(
+												Constants.AUTHN_SVC_LDAP_EMAIL_ID_ATTRIBUTE,
+												"mail"), true));
+		// TODO: add validation
+		this.model.add(authnSvcLdapStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_AUTHN_SVC)
+						&& model.isEqual(
+								Constants.AUTHN_SVC_CRED_PROVIDER_TYPE_LDAP,
+								Constants.AUTHN_SVC_CRED_PROVIDER_TYPE);
+			}
+		});
+
+
+		// Configure AuthenticationService deploy.properties
+		DeployPropertiesFileEditorStep editAuthnDeployPropertiesStep = new DeployPropertiesFileEditorStep(
+				"authentication-service", this.model
+						.getMessage("authn.svc.edit.deploy.properties.title"),
+				this.model.getMessage("authn.svc.edit.deploy.properties.desc"),
+				this.model.getMessage("edit.properties.property.name"),
+				this.model.getMessage("edit.properties.property.value"));
+		this.model.add(editAuthnDeployPropertiesStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_AUTHN_SVC);
+			}
+		});
+		
+	}
+
+	private void addGTSSteps() {
+		ConfigureServiceMetadataStep editGTSSvcMetaStep = new ConfigureServiceMetadataStep(
+				"", this.model.getMessage("gts.edit.service.metadata.title"),
+				this.model.getMessage("gts.edit.service.metadata.desc")) {
+			protected String getServiceMetadataPath() {
+				return model.getServiceDestDir()
+						+ "/gts/etc/serviceMetadata.xml";
+			}
+		};
+		this.model.add(editGTSSvcMetaStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_GTS);
+			}
+		});
+
+		DeployPropertiesFileEditorStep editGTSDeployPropertiesStep = new DeployPropertiesFileEditorStep(
+				"gts", this.model
+						.getMessage("gts.edit.deploy.properties.title"),
+				this.model.getMessage("gts.edit.deploy.properties.desc"),
+				this.model.getMessage("edit.properties.property.name"),
+				this.model.getMessage("edit.properties.property.value"));
+		this.model.add(editGTSDeployPropertiesStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_GTS);
+			}
+		});
+
+		// Configures the GTS database
+		ConfigureGTSDBStep gtsDbInfoStep = new ConfigureGTSDBStep(this.model
+				.getMessage("gts.db.config.title"), this.model
+				.getMessage("gts.db.config.desc"));
+		addDBConfigPropertyOptions(gtsDbInfoStep, "gts.", "gts");
+		this.model.add(gtsDbInfoStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_GTS);
+			}
+		});
+
+
+		final DropServiceDatabaseStep dropGtsDbStep = new DropServiceDatabaseStep(
+				this.model.getMessage("gts.db.drop.title"), this.model
+						.getMessage("gts.db.drop.desc"), "gts.", "gts.db.drop");
+		this.model.add(dropGtsDbStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_GTS)
+						&& dropGtsDbStep.databaseExists(model);
+			}
+		});
+
+
+		PropertyConfigurationStep gtsAddAdminStep = new PropertyConfigurationStep(
+				this.model.getMessage("gts.add.admin.title"), this.model
+						.getMessage("gts.add.admin.desc"));
+		gtsAddAdminStep
+				.getOptions()
+				.add(
+						new TextPropertyConfigurationOption(
+								Constants.GTS_ADMIN_IDENT,
+								this.model.getMessage("gts.admin.ident"),
+								this.model
+										.getProperty(Constants.GTS_ADMIN_IDENT,
+												"/O=org/OU=unit/OU=User Group/OU=Dorian IdP/CN=manager"),
+								true));
+		this.model.add(gtsAddAdminStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_GTS);
+			}
+		});
+		
+	}
+
+	private void addWorkflowSteps() {
+		ConfigureServiceMetadataStep editWorkflowSvcMetaStep = new ConfigureServiceMetadataStep(
+				"", this.model
+						.getMessage("workflow.edit.service.metadata.title"),
+				this.model.getMessage("workflow.edit.service.metadata.desc")) {
+			protected String getServiceMetadataPath() {
+				return model.getServiceDestDir()
+						+ "/workflow/WorkflowFactoryService/etc/serviceMetadata.xml";
+			}
+		};
+		this.model.add(editWorkflowSvcMetaStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_WORKFLOW);
+			}
+		});
+
+		ServicePropertiesWorkflowFileEditorStep editWorkflowServicePropertiesStep = new ServicePropertiesWorkflowFileEditorStep(
+				"workflow", this.model
+						.getMessage("workflow.edit.service.properties.title"),
+				this.model.getMessage("workflow.edit.service.properties.desc"),
+				this.model.getMessage("edit.properties.property.name"),
+				this.model.getMessage("edit.properties.property.value"));
+		this.model.add(editWorkflowServicePropertiesStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_WORKFLOW);
+			}
+		});
+
+		DeployPropertiesWorkflowFileEditorStep editWorkflowDeployPropertiesStep = new DeployPropertiesWorkflowFileEditorStep(
+				"workflow", this.model
+						.getMessage("workflow.edit.deploy.properties.title"),
+				this.model.getMessage("workflow.edit.deploy.properties.desc"),
+				this.model.getMessage("edit.properties.property.name"),
+				this.model.getMessage("edit.properties.property.value"));
+		this.model.add(editWorkflowDeployPropertiesStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_WORKFLOW);
+			}
+		});
+		
+	}
+
+	private void addFQPSteps() {
+		ConfigureServiceMetadataStep editFQPSvcMetaStep = new ConfigureServiceMetadataStep(
+				"", this.model.getMessage("fqp.edit.service.metadata.title"),
+				this.model.getMessage("fqp.edit.service.metadata.desc")) {
+			protected String getServiceMetadataPath() {
+				return model.getServiceDestDir()
+						+ "/fqp/etc/serviceMetadata.xml";
+			}
+		};
+		this.model.add(editFQPSvcMetaStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_FQP);
+			}
+		});
+
+		ServicePropertiesFileEditorStep editFQPServicePropertiesStep = new ServicePropertiesFileEditorStep(
+				"fqp", this.model
+						.getMessage("fqp.edit.service.properties.title"),
+				this.model.getMessage("fqp.edit.service.properties.desc"),
+				this.model.getMessage("edit.properties.property.name"),
+				this.model.getMessage("edit.properties.property.value"));
+		this.model.add(editFQPServicePropertiesStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_FQP);
+			}
+		});
+
+		DeployPropertiesFileEditorStep editFQPDeployPropertiesStep = new DeployPropertiesFileEditorStep(
+				"fqp", this.model
+						.getMessage("fqp.edit.deploy.properties.title"),
+				this.model.getMessage("fqp.edit.deploy.properties.desc"),
+				this.model.getMessage("edit.properties.property.name"),
+				this.model.getMessage("edit.properties.property.value"));
+		this.model.add(editFQPDeployPropertiesStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_FQP);
+			}
+		});
+		
+	}
+
+	private void addCaDSRSteps() {
+		ConfigureServiceMetadataStep editCaDSRSvcMetaStep = new ConfigureServiceMetadataStep(
+				"", this.model.getMessage("cadsr.edit.service.metadata.title"),
+				this.model.getMessage("cadsr.edit.service.metadata.desc")) {
+			protected String getServiceMetadataPath() {
+				return model.getServiceDestDir()
+						+ "/cadsr/etc/serviceMetadata.xml";
+			}
+		};
+		this.model.add(editCaDSRSvcMetaStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_CADSR);
+			}
+		});
+
+		DeployPropertiesFileEditorStep editcaDSRDeployPropertiesStep = new DeployPropertiesFileEditorStep(
+				"cadsr", this.model
+						.getMessage("cadsr.edit.deploy.properties.title"),
+				this.model.getMessage("cadsr.edit.deploy.properties.desc"),
+				this.model.getMessage("edit.properties.property.name"),
+				this.model.getMessage("edit.properties.property.value"));
+		this.model.add(editcaDSRDeployPropertiesStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_CADSR);
+			}
+		});
+
+		ServicePropertiesFileEditorStep editCaDSRServicePropertiesStep = new ServicePropertiesFileEditorStep(
+				"cadsr", this.model
+						.getMessage("cadsr.edit.service.properties.title"),
+				this.model.getMessage("cadsr.edit.service.properties.desc"),
+				this.model.getMessage("edit.properties.property.name"),
+				this.model.getMessage("edit.properties.property.value"));
+		this.model.add(editCaDSRServicePropertiesStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_CADSR);
+			}
+		});
+		
+	}
+
+	private void addEVSSteps() {
+		ConfigureServiceMetadataStep editEVSSvcMetaStep = new ConfigureServiceMetadataStep(
+				"", this.model.getMessage("evs.edit.service.metadata.title"),
+				this.model.getMessage("evs.edit.service.metadata.desc")) {
+			protected String getServiceMetadataPath() {
+				return model.getServiceDestDir()
+						+ "/evs/etc/serviceMetadata.xml";
+			}
+		};
+		this.model.add(editEVSSvcMetaStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_EVS);
+			}
+		});
+
+		DeployPropertiesFileEditorStep editEVSDeployPropertiesStep = new DeployPropertiesFileEditorStep(
+				"evs", this.model
+						.getMessage("evs.edit.deploy.properties.title"),
+				this.model.getMessage("evs.edit.deploy.properties.desc"),
+				this.model.getMessage("edit.properties.property.name"),
+				this.model.getMessage("edit.properties.property.value"));
+		this.model.add(editEVSDeployPropertiesStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_EVS);
+			}
+		});		
+	}
+
+	private void addGMESteps() {
+		ConfigureServiceMetadataStep editGMESvcMetaStep = new ConfigureServiceMetadataStep(
+				"", this.model.getMessage("gme.edit.service.metadata.title"),
+				this.model.getMessage("gme.edit.service.metadata.desc")) {
+			protected String getServiceMetadataPath() {
+				return model.getServiceDestDir()
+						+ "/gme/etc/serviceMetadata.xml";
+			}
+		};
+		this.model.add(editGMESvcMetaStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_GME);
+			}
+		});
+
+		PropertyConfigurationStep gmeDbInfoStep = new PropertyConfigurationStep(
+				this.model.getMessage("gme.db.config.title"), this.model
+						.getMessage("gme.db.config.desc"));
+		addDBConfigPropertyOptions(gmeDbInfoStep, "gme.", "gme");
+		this.model.add(gmeDbInfoStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_GME);
+			}
+		});
+
+
+		DeployPropertiesGMEFileEditorStep editGMEDeployPropertiesStep = new DeployPropertiesGMEFileEditorStep(
+				"gme", this.model
+						.getMessage("gme.edit.deploy.properties.title"),
+				this.model.getMessage("gme.edit.deploy.properties.desc"),
+				this.model.getMessage("edit.properties.property.name"),
+				this.model.getMessage("edit.properties.property.value"));
+		this.model.add(editGMEDeployPropertiesStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_GME);
+			}
+		});
+		
+	}
+
+	private void addDorianSteps() {
+
+		ConfigureServiceMetadataStep editDorianSvcMetaStep = new ConfigureServiceMetadataStep(
+				"",
+				this.model.getMessage("dorian.edit.service.metadata.title"),
+				this.model.getMessage("dorian.edit.service.metadata.desc")) {
+			protected String getServiceMetadataPath() {
+				return this.model.getServiceDestDir()
+						+ "/dorian/etc/serviceMetadata.xml";
+			}
+		};
+		this.model.add(editDorianSvcMetaStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_DORIAN);
+			}
+		});
+
+		// Allows user to edit Dorian deploy.properties
+		DeployPropertiesFileEditorStep editDorianDeployPropertiesStep = new DeployPropertiesFileEditorStep(
+				"dorian", this.model
+						.getMessage("dorian.edit.deploy.properties.title"),
+				this.model.getMessage("dorian.edit.deploy.properties.desc"),
+				this.model.getMessage("edit.properties.property.name"),
+				this.model.getMessage("edit.properties.property.value"));
+		this.model.add(editDorianDeployPropertiesStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_DORIAN);
+			}
+		});
+
+		// Allows user to specify Dorian DB information.
+		ConfigureDorianDBStep dorianDbInfoStep = new ConfigureDorianDBStep(
+				this.model.getMessage("dorian.db.config.title"), this.model
+						.getMessage("dorian.db.config.desc"));
+		addDBConfigPropertyOptions(dorianDbInfoStep, "dorian.", "dorian");
+		this.model.add(dorianDbInfoStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_DORIAN);
+			}
+		});
+
+
+		final DropServiceDatabaseStep dropDorianDbStep = new DropServiceDatabaseStep(
+				this.model.getMessage("dorian.db.drop.title"), this.model
+						.getMessage("dorian.db.drop.desc"), "dorian.",
+				"dorian.db.drop");
+		this.model.add(dropDorianDbStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_DORIAN)
+						&& dropDorianDbStep.databaseExists(model);
+			}
+		});
+
+
+		// Dorian IdP config
+		PropertyConfigurationStep dorianIdpInfoStep = new PropertyConfigurationStep(
+				this.model.getMessage("dorian.idp.config.title"), this.model
+						.getMessage("dorian.idp.config.desc"));
+		dorianIdpInfoStep.getOptions().add(
+				new TextPropertyConfigurationOption(Constants.DORIAN_IDP_NAME,
+						this.model.getMessage("dorian.idp.name"), this.model
+								.getProperty(Constants.DORIAN_IDP_NAME,
+										"Dorian IdP"), true));
+		dorianIdpInfoStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.DORIAN_IDP_UID_MIN, this.model
+								.getMessage("dorian.idp.uid.min"),
+						this.model.getProperty(Constants.DORIAN_IDP_UID_MIN,
+								"4"), true));
+		dorianIdpInfoStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.DORIAN_IDP_UID_MAX, this.model
+								.getMessage("dorian.idp.uid.max"),
+						this.model.getProperty(Constants.DORIAN_IDP_UID_MAX,
+								"10"), true));
+		dorianIdpInfoStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.DORIAN_IDP_PWD_MIN, this.model
+								.getMessage("dorian.idp.pwd.min"),
+						this.model.getProperty(Constants.DORIAN_IDP_PWD_MIN,
+								"6"), true));
+		dorianIdpInfoStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.DORIAN_IDP_PWD_MAX, this.model
+								.getMessage("dorian.idp.pwd.max"),
+						this.model.getProperty(Constants.DORIAN_IDP_PWD_MAX,
+								"10"), true));
+		dorianIdpInfoStep
+				.getOptions()
+				.add(
+						new ListPropertyConfigurationOption(
+								Constants.DORIAN_IDP_REGPOLICY,
+								this.model.getMessage("dorian.idp.regpolicy"),
+								new String[] {
+										this.model
+												.getMessage("dorian.idp.regpolicy.manual"),
+										this.model
+												.getMessage("dorian.idp.regpolicy.auto") },
+								true));
+		dorianIdpInfoStep.getOptions().add(
+				new BooleanPropertyConfigurationOption(
+						Constants.DORIAN_IDP_SAML_AUTORENEW, this.model
+								.getMessage("dorian.idp.saml.autorenew"), true,
+						false));
+		dorianIdpInfoStep.getOptions().add(
+				new PasswordPropertyConfigurationOption(
+						Constants.DORIAN_IDP_SAML_KEYPWD, this.model
+								.getMessage("dorian.idp.saml.keypwd"),
+						this.model.getProperty(
+								Constants.DORIAN_IDP_SAML_KEYPWD, "idpkey"),
+						true));
+		dorianIdpInfoStep.getValidators().add(
+				new DorianIdpInfoValidator(this.model, this.model
+						.getMessage("error.nan")));
+
+		this.model.add(dorianIdpInfoStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_DORIAN);
+			}
+		});
+
+
+		// Dorian Ifs Config
+		PropertyConfigurationStep dorianIfsInfoStep = new PropertyConfigurationStep(
+				this.model.getMessage("dorian.ifs.config.title"), this.model
+						.getMessage("dorian.ifs.config.desc"));
+		dorianIfsInfoStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.DORIAN_IFS_IDPNAME_MIN, this.model
+								.getMessage("dorian.ifs.idpname.min"),
+						this.model.getProperty(
+								Constants.DORIAN_IFS_IDPNAME_MIN, "3"), true));
+		dorianIfsInfoStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.DORIAN_IFS_IDPNAME_MAX, this.model
+								.getMessage("dorian.ifs.idpname.max"),
+						this.model.getProperty(
+								Constants.DORIAN_IFS_IDPNAME_MAX, "50"), true));
+		dorianIfsInfoStep
+				.getOptions()
+				.add(
+						new ListPropertyConfigurationOption(
+								Constants.DORIAN_IFS_IDPOLICY,
+								this.model.getMessage("dorian.ifs.idpolicy"),
+								new String[] {
+										this.model
+												.getMessage("dorian.ifs.idpolicy.name"),
+										this.model
+												.getMessage("dorian.ifs.idpolicy.id") },
+								true));
+		dorianIfsInfoStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.DORIAN_IFS_CREDLIFETIME_YEARS, this.model
+								.getMessage("dorian.ifs.credlifetime.years"),
+						this.model.getProperty(
+								Constants.DORIAN_IFS_CREDLIFETIME_YEARS, "1"),
+						true));
+		dorianIfsInfoStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.DORIAN_IFS_CREDLIFETIME_MONTHS, this.model
+								.getMessage("dorian.ifs.credlifetime.months"),
+						this.model.getProperty(
+								Constants.DORIAN_IFS_CREDLIFETIME_MONTHS, "0"),
+						true));
+		dorianIfsInfoStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.DORIAN_IFS_CREDLIFETIME_DAYS, this.model
+								.getMessage("dorian.ifs.credlifetime.days"),
+						this.model.getProperty(
+								Constants.DORIAN_IFS_CREDLIFETIME_DAYS, "0"),
+						true));
+		dorianIfsInfoStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.DORIAN_IFS_CREDLIFETIME_HOURS, this.model
+								.getMessage("dorian.ifs.credlifetime.hours"),
+						this.model.getProperty(
+								Constants.DORIAN_IFS_CREDLIFETIME_HOURS, "0"),
+						true));
+		dorianIfsInfoStep
+				.getOptions()
+				.add(
+						new TextPropertyConfigurationOption(
+								Constants.DORIAN_IFS_CREDLIFETIME_MINUTES,
+								this.model
+										.getMessage("dorian.ifs.credlifetime.minutes"),
+								this.model
+										.getProperty(
+												Constants.DORIAN_IFS_CREDLIFETIME_MINUTES,
+												"0"), true));
+		dorianIfsInfoStep
+				.getOptions()
+				.add(
+						new TextPropertyConfigurationOption(
+								Constants.DORIAN_IFS_CREDLIFETIME_SECONDS,
+								this.model
+										.getMessage("dorian.ifs.credlifetime.seconds"),
+								this.model
+										.getProperty(
+												Constants.DORIAN_IFS_CREDLIFETIME_SECONDS,
+												"0"), true));
+		dorianIfsInfoStep.getOptions().add(
+				new BooleanPropertyConfigurationOption(
+						Constants.DORIAN_IFS_HOSTCERT_AUTOAPPROVE, this.model
+								.getMessage("dorian.ifs.hostcert.autoapprove"),
+						true, false));
+
+		dorianIfsInfoStep
+				.getOptions()
+				.add(
+						new TextPropertyConfigurationOption(
+								Constants.DORIAN_IFS_PROXYLIFETIME_HOURS,
+								this.model
+										.getMessage("dorian.ifs.proxylifetime.hours"),
+								this.model
+										.getProperty(
+												Constants.DORIAN_IFS_PROXYLIFETIME_HOURS,
+												"12"), true));
+		dorianIfsInfoStep
+				.getOptions()
+				.add(
+						new TextPropertyConfigurationOption(
+								Constants.DORIAN_IFS_PROXYLIFETIME_MINUTES,
+								this.model
+										.getMessage("dorian.ifs.proxylifetime.minutes"),
+								this.model
+										.getProperty(
+												Constants.DORIAN_IFS_PROXYLIFETIME_MINUTES,
+												"0"), true));
+		dorianIfsInfoStep
+				.getOptions()
+				.add(
+						new TextPropertyConfigurationOption(
+								Constants.DORIAN_IFS_PROXYLIFETIME_SECONDS,
+								this.model
+										.getMessage("dorian.ifs.proxylifetime.seconds"),
+								this.model
+										.getProperty(
+												Constants.DORIAN_IFS_PROXYLIFETIME_SECONDS,
+												"0"), true));
+
+		dorianIfsInfoStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.DORIAN_IFS_GTS_URL, this.model
+								.getMessage("dorian.ifs.gts.url"), this.model
+								.getProperty(Constants.DORIAN_IFS_GTS_URL, ""),
+						false));
+		// TODO: figure out why this hangs
+		// dorianIfsInfoStep.getValidators().add(
+		// new DorianIfsInfoValidator(this.model, this.model
+		// .getMessage("error.nan"), this.model
+		// .getMessage("error.bad.url")));
+		this.model.add(dorianIfsInfoStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_DORIAN);
+			}
+		});
+
+
+		// Set the Dorian CA type
+		PropertyConfigurationStep selectDorianCATypeStep = new PropertyConfigurationStep(
+				this.model.getMessage("dorian.ca.type.title"), this.model
+						.getMessage("dorian.ca.type.desc"));
+		selectDorianCATypeStep
+				.getOptions()
+				.add(
+						new ListPropertyConfigurationOption(
+								Constants.DORIAN_CA_TYPE,
+								this.model.getMessage("dorian.ca.type"),
+								new String[] { Constants.DORIAN_CA_TYPE_DBCA,
+										Constants.DORIAN_CA_TYPE_ERACOM,
+										Constants.DORIAN_CA_TYPE_ERACOM_HYBRID },
+								true));
+		this.model.add(selectDorianCATypeStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_DORIAN);
+			}
+		});
+
+
+		// Checks if user will supply Dorian CA
+		PropertyConfigurationStep checkDorianCAPresentStep = new PropertyConfigurationStep(
+				this.model.getMessage("dorian.check.ca.present.title"),
+				this.model.getMessage("dorian.check.ca.present.desc"));
+		checkDorianCAPresentStep.getOptions().add(
+				new BooleanPropertyConfigurationOption(
+						Constants.DORIAN_CA_PRESENT, this.model
+								.getMessage("yes"), false, false));
+		this.model.add(checkDorianCAPresentStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+
+				return model.isTrue(Constants.INSTALL_DORIAN)
+						&& model.isEqual(Constants.DORIAN_CA_TYPE_DBCA,
+								Constants.DORIAN_CA_TYPE);
+			}
+
+		});
+
+
+		// Configure existing Dorian CA
+		ConfigureDorianCAStep dorianCaCertInfoStep = new ConfigureDorianCAStep(
+				this.model.getMessage("dorian.ca.cert.info.title"), this.model
+						.getMessage("dorian.ca.cert.info.desc"));
+		dorianCaCertInfoStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.DORIAN_CA_CERT_PATH, this.model
+								.getMessage("dorian.ca.cert.info.cert.path"),
+						this.model.getProperty(Constants.DORIAN_CA_CERT_PATH),
+						true));
+		dorianCaCertInfoStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.DORIAN_CA_KEY_PATH, this.model
+								.getMessage("dorian.ca.cert.info.key.path"),
+						this.model.getProperty(Constants.DORIAN_CA_KEY_PATH),
+						true));
+		addCommonDorianCAConfigFields(dorianCaCertInfoStep);
+		dorianCaCertInfoStep.getValidators().add(
+				new PathExistsValidator(Constants.DORIAN_CA_CERT_PATH,
+						this.model.getMessage("error.cert.file.not.found")));
+		dorianCaCertInfoStep.getValidators().add(
+				new PathExistsValidator(Constants.DORIAN_CA_KEY_PATH,
+						this.model.getMessage("error.key.file.not.found")));
+		dorianCaCertInfoStep.getValidators().add(
+				new KeyAccessValidator(Constants.DORIAN_CA_KEY_PATH,
+						Constants.DORIAN_CA_KEY_PWD, this.model
+								.getMessage("error.key.no.access")));
+		this.model.add(dorianCaCertInfoStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_DORIAN)
+						&& model.isTrue(Constants.DORIAN_CA_PRESENT);
+			}
+		});
+
+
+		// Configure new Dorian CA
+		ConfigureNewDorianCAStep dorianCaNewCertInfoStep = new ConfigureNewDorianCAStep(
+				this.model.getMessage("dorian.ca.new.cert.info.title"),
+				this.model.getMessage("dorian.ca.new.cert.info.desc"));
+
+		addCommonDorianCAConfigFields(dorianCaNewCertInfoStep);
+
+		dorianCaNewCertInfoStep
+				.getOptions()
+				.add(
+						new TextPropertyConfigurationOption(
+								Constants.DORIAN_CA_SUBJECT,
+								this.model
+										.getMessage("dorian.ca.cert.info.subject"),
+								this.model
+										.getProperty(
+												Constants.DORIAN_CA_SUBJECT,
+												"C=US,O=abc,OU=xyz,OU=caGrid,OU=Users,CN=caGrid Dorian CA"),
+								true));
+
+		dorianCaNewCertInfoStep.getOptions().add(
+				new ListPropertyConfigurationOption(
+						Constants.DORIAN_CA_CAKEY_SIZE, this.model
+								.getMessage("dorian.ca.cert.info.cakey.size"),
+						new String[] { String.valueOf(2048),
+								String.valueOf(1024), String.valueOf(512) },
+						true));
+		dorianCaNewCertInfoStep
+				.getOptions()
+				.add(
+						new TextPropertyConfigurationOption(
+								Constants.DORIAN_CA_LIFETIME_YEARS,
+								this.model
+										.getMessage("dorian.ca.cert.info.lifetime.years"),
+								this.model.getProperty(
+										Constants.DORIAN_CA_LIFETIME_YEARS,
+										"10"), true));
+		dorianCaNewCertInfoStep
+				.getOptions()
+				.add(
+						new TextPropertyConfigurationOption(
+								Constants.DORIAN_CA_LIFETIME_MONTHS,
+								this.model
+										.getMessage("dorian.ca.cert.info.lifetime.months"),
+								this.model.getProperty(
+										Constants.DORIAN_CA_LIFETIME_MONTHS,
+										"0"), true));
+		dorianCaNewCertInfoStep
+				.getOptions()
+				.add(
+						new TextPropertyConfigurationOption(
+								Constants.DORIAN_CA_LIFETIME_DAYS,
+								this.model
+										.getMessage("dorian.ca.cert.info.lifetime.days"),
+								this.model.getProperty(
+										Constants.DORIAN_CA_LIFETIME_DAYS, "0"),
+								true));
+		dorianCaNewCertInfoStep
+				.getOptions()
+				.add(
+						new TextPropertyConfigurationOption(
+								Constants.DORIAN_CA_LIFETIME_HOURS,
+								this.model
+										.getMessage("dorian.ca.cert.info.lifetime.hours"),
+								this.model
+										.getProperty(
+												Constants.DORIAN_CA_LIFETIME_HOURS,
+												"0"), true));
+		dorianCaNewCertInfoStep
+				.getOptions()
+				.add(
+						new TextPropertyConfigurationOption(
+								Constants.DORIAN_CA_LIFETIME_MINUTES,
+								this.model
+										.getMessage("dorian.ca.cert.info.lifetime.minutes"),
+								this.model.getProperty(
+										Constants.DORIAN_CA_LIFETIME_MINUTES,
+										"0"), true));
+		dorianCaNewCertInfoStep
+				.getOptions()
+				.add(
+						new TextPropertyConfigurationOption(
+								Constants.DORIAN_CA_LIFETIME_SECONDS,
+								this.model
+										.getMessage("dorian.ca.cert.info.lifetime.seconds"),
+								this.model.getProperty(
+										Constants.DORIAN_CA_LIFETIME_SECONDS,
+										"0"), true));
+
+		String[] slots = new String[NUM_ERACOM_SLOTS];
+		for (int i = 0; i < slots.length; i++) {
+			slots[i] = String.valueOf(i);
+		}
+		dorianCaNewCertInfoStep.getOptions().add(
+				new ListPropertyConfigurationOption(
+						Constants.DORIAN_CA_ERACOM_SLOT, this.model
+								.getMessage("dorian.ca.eracom.slot"), slots,
+						false));
+		// TODO: add more validation
+		this.model.add(dorianCaNewCertInfoStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_DORIAN)
+						&& !model.isTrue(Constants.DORIAN_CA_PRESENT);
+			}
+		});
+
+
+		ConfigureDorianHostCredentialsStep configDorianSvcCertStep = new ConfigureDorianHostCredentialsStep(
+				this.model.getMessage("dorian.host.cred.title"), this.model
+						.getMessage("dorian.host.cred.desc"));
+		configDorianSvcCertStep.getOptions().add(
+				new TextPropertyConfigurationOption(Constants.SERVICE_HOSTNAME,
+						this.model.getMessage("service.cert.info.hostname"),
+						this.model.getProperty(Constants.SERVICE_HOSTNAME,
+								"localhost"), true));
+		FilePropertyConfigurationOption dorianHostCredDir = new FilePropertyConfigurationOption(
+				Constants.DORIAN_HOST_CRED_DIR, this.model
+						.getMessage("dorian.host.cred.dir"), this.model
+						.getProperty(Constants.DORIAN_HOST_CRED_DIR,
+								InstallerUtils.getInstallerDir() + "/certs"),
+				true);
+		dorianHostCredDir.setBrowseLabel(this.model.getMessage("browse"));
+		dorianHostCredDir.setDirectoriesOnly(true);
+		configDorianSvcCertStep.getOptions().add(dorianHostCredDir);
+		this.model.add(configDorianSvcCertStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_DORIAN);
+			}
+		});		
+	}
+
+	private void addSyncGTSSteps() {
+		ConfigureSyncGTSStep configureSyncGTSStep = new ConfigureSyncGTSStep(
+				this.model.getMessage("sync.gts.config.title"), this.model
+						.getMessage("sync.gts.config.desc"));
+		this.model.add(configureSyncGTSStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_SYNC_GTS);
+			}
+		});
+		incrementProgress();
+
+		DeployPropertiesFileEditorStep editSyncGTSDeployPropertiesStep = new DeployPropertiesFileEditorStep(
+				"syncgts", this.model
+						.getMessage("sync.gts.edit.deploy.properties.title"),
+				this.model.getMessage("sync.gts.edit.deploy.properties.desc"),
+				this.model.getMessage("edit.properties.property.name"),
+				this.model.getMessage("edit.properties.property.value"));
+		this.model.add(editSyncGTSDeployPropertiesStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_SYNC_GTS);
+			}
+		});
+
+		PropertyConfigurationStep checkReplaceDefaultGTSCAStep = new PropertyConfigurationStep(
+				this.model.getMessage("check.replace.default.gts.ca.title"),
+				this.model.getMessage("check.replace.default.gts.ca.desc"));
+		checkReplaceDefaultGTSCAStep.getOptions().add(
+				new BooleanPropertyConfigurationOption(
+						Constants.REPLACE_DEFAULT_GTS_CA, this.model
+								.getMessage("yes"), false, false));
+		this.model.add(checkReplaceDefaultGTSCAStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_SYNC_GTS);
+			}
+		});
+
+		ReplaceDefaultGTSCAStep specifyDefaultGTSCAStep = new ReplaceDefaultGTSCAStep(
+				this.model.getMessage("specify.default.gts.ca.title"),
+				this.model.getMessage("specify.default.gts.ca.desc"));
+		FilePropertyConfigurationOption repCaPath = new FilePropertyConfigurationOption(
+				Constants.REPLACEMENT_GTS_CA_CERT_PATH, this.model
+						.getMessage("replacement.gts.ca.cert.path"),
+				this.model.getProperty(Constants.REPLACEMENT_GTS_CA_CERT_PATH,
+						""), true);
+		repCaPath.setBrowseLabel(this.model.getMessage("browse"));
+		repCaPath.setDirectoriesOnly(false);
+		specifyDefaultGTSCAStep.getOptions().add(repCaPath);
+		this.model.add(specifyDefaultGTSCAStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_SYNC_GTS)
+						&& model.isTrue(Constants.REPLACE_DEFAULT_GTS_CA);
+			}
+		});		
+	}
+
+	private void addMyServiceSteps() {
+
+		PropertyConfigurationStep selectMyServiceStep = new PropertyConfigurationStep(
+				this.model.getMessage("select.my.service.title"), this.model
+						.getMessage("select.my.service.desc"));
+		FilePropertyConfigurationOption mySvcDir = new FilePropertyConfigurationOption(
+				Constants.MY_SERVICE_DIR, this.model
+						.getMessage("my.service.dir"), this.model.getProperty(
+						Constants.MY_SERVICE_DIR, ""), true);
+		mySvcDir.setBrowseLabel(this.model.getMessage("browse"));
+		mySvcDir.setDirectoriesOnly(true);
+		selectMyServiceStep.getOptions().add(mySvcDir);
+		this.model.add(selectMyServiceStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_MY_SERVICE);
+			}
+		});
+
+		ConfigureServiceMetadataStep editMySvcMetaStep = new ConfigureServiceMetadataStep(
+				Constants.MY_SERVICE_DIR, this.model
+						.getMessage("my.service.edit.service.metadata.title"),
+				this.model.getMessage("my.service.edit.service.metadata.desc"));
+		this.model.add(editMySvcMetaStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_MY_SERVICE);
+			}
+		});
+
+		IntroduceServicePropertiesFileEditorStep mySvcDeployPropsStep = new IntroduceServicePropertiesFileEditorStep(
+				Constants.MY_SERVICE_DIR,
+				"deploy.properties",
+				this.model
+						.getMessage("my.service.edit.deploy.properties.title"),
+				this.model.getMessage("my.service.edit.deploy.properties.desc"),
+				this.model.getMessage("edit.properties.property.name"),
+				this.model.getMessage("edit.properties.property.value"));
+		this.model.add(mySvcDeployPropsStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_MY_SERVICE);
+			}
+		});
+
+		IntroduceServicePropertiesFileEditorStep mySvcServicePropsStep = new IntroduceServicePropertiesFileEditorStep(
+				Constants.MY_SERVICE_DIR,
+				"service.properties",
+				this.model
+						.getMessage("my.service.edit.service.properties.title"),
+				this.model
+						.getMessage("my.service.edit.service.properties.desc"),
+				this.model.getMessage("edit.properties.property.name"),
+				this.model.getMessage("edit.properties.property.value"));
+		this.model.add(mySvcServicePropsStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_MY_SERVICE);
+			}
+		});		
+	}
+
+	private void addConfigureContainerSteps() {
+		// Checks if secure container should be used
+		CheckSecureContainerStep checkDeployGlobusSecureStep = new CheckSecureContainerStep(
+				this.model.getMessage("globus.check.secure.title"), this.model
+						.getMessage("globus.check.secure.desc"));
+		checkDeployGlobusSecureStep.getOptions().add(
+				new BooleanPropertyConfigurationOption(
+						Constants.USE_SECURE_CONTAINER, this.model
+								.getMessage("yes"), false, false));
+		this.model.add(checkDeployGlobusSecureStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return !model.isTrue(Constants.USE_SECURE_CONTAINER)
+						&& model.isConfigureContainerSelected();
+			}
+
+		});
+
+		PropertyConfigurationStep getHostnameStep = new PropertyConfigurationStep(
+				this.model.getMessage("specify.service.hostname.title"),
+				this.model.getMessage("specify.service.hostname.desc"));
+		getHostnameStep.getOptions().add(
+				new TextPropertyConfigurationOption(Constants.SERVICE_HOSTNAME,
+						this.model.getMessage("service.hostname"), this.model
+								.getProperty(Constants.SERVICE_HOSTNAME,
+										"localhost"), true));
+		this.model.add(getHostnameStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return (model.isDeployGlobusRequired() || model
+						.isConfigureGlobusRequired())
+						&& model.isConfigureContainerSelected();
+			}
+
+		});
+
+		// Allows user to specify Tomcat ports
+		SpecifyTomcatPortsStep tomcatPortsStep = new SpecifyTomcatPortsStep(
+				this.model.getMessage("tomcat.specify.ports.title"), this.model
+						.getMessage("tomcat.specify.ports.desc"));
+		tomcatPortsStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.TOMCAT_SHUTDOWN_PORT, this.model
+								.getMessage("tomcat.shutdown.port"), this.model
+								.getProperty(Constants.TOMCAT_SHUTDOWN_PORT,
+										"8005"), true));
+		tomcatPortsStep.getOptions().add(
+				new TextPropertyConfigurationOption(Constants.TOMCAT_HTTP_PORT,
+						this.model.getMessage("tomcat.http.port"),
+						this.model.getProperty(Constants.TOMCAT_HTTP_PORT,
+								"8080"), true));
+		tomcatPortsStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.TOMCAT_HTTPS_PORT, this.model
+								.getMessage("tomcat.https.port"), this.model
+								.getProperty(Constants.TOMCAT_HTTPS_PORT,
+										"8443"), true));
+		// TODO: add validation
+		this.model.add(tomcatPortsStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTomcatConfigurationRequired()
+						&& model.isConfigureContainerSelected();
+			}
+		});
+
+
+		// Checks if service cert is present
+		PropertyConfigurationStep checkServiceCertPresentStep = new PropertyConfigurationStep(
+				this.model.getMessage("svc.cert.check.present.title"),
+				this.model.getMessage("svc.cert.check.present.desc"));
+		checkServiceCertPresentStep.getOptions().add(
+				new BooleanPropertyConfigurationOption(
+						Constants.SERVICE_CERT_PRESENT, this.model
+								.getMessage("yes"), false, false));
+		this.model.add(checkServiceCertPresentStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isSecurityConfigurationRequired()
+						&& !model.isTrue(Constants.INSTALL_DORIAN)
+						&& model.isConfigureContainerSelected();
+			}
+		});
+
+
+		// Checks if CA cert is present
+		PropertyConfigurationStep checkCAPresentStep = new PropertyConfigurationStep(
+				this.model.getMessage("ca.cert.check.present.title"),
+				this.model.getMessage("ca.cert.check.present.desc"));
+		checkCAPresentStep.getOptions().add(
+				new BooleanPropertyConfigurationOption(
+						Constants.CA_CERT_PRESENT,
+						this.model.getMessage("yes"), false, false));
+		this.model.add(checkCAPresentStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isSecurityConfigurationRequired()
+						&& !model.isTrue(Constants.INSTALL_DORIAN)
+						&& !model.isTrue(Constants.SERVICE_CERT_PRESENT)
+						&& model.isConfigureContainerSelected();
+			}
+		});
+
+		// Allows user to enter existing CA cert info
+		ConfigureCAStep caCertInfoStep = new ConfigureCAStep(this.model
+				.getMessage("ca.cert.info.title"), this.model
+				.getMessage("ca.cert.info.desc"));
+		addCommonCACertFields(caCertInfoStep, Constants.CA_CERT_PATH,
+				Constants.CA_KEY_PATH, Constants.CA_KEY_PWD, true);
+		this.model.add(caCertInfoStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isSecurityConfigurationRequired()
+						&& !model.isTrue(Constants.INSTALL_DORIAN)
+						&& !model.isTrue(Constants.SERVICE_CERT_PRESENT)
+						&& model.isTrue(Constants.CA_CERT_PRESENT)
+						&& model.isConfigureContainerSelected();
+			}
+		});
+
+
+		// Allows user to enter info necessary to gen new CA cert
+		ConfigureCAStep newCaCertInfoStep = new ConfigureCAStep(this.model
+				.getMessage("ca.cert.new.info.title"), this.model
+				.getMessage("ca.cert.new.info.desc"));
+		addCommonNewCACertFields(newCaCertInfoStep, Constants.CA_CERT_PATH,
+				Constants.CA_KEY_PATH, Constants.CA_KEY_PWD, Constants.CA_DN,
+				Constants.CA_DAYS_VALID);
+		this.model.add(newCaCertInfoStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isSecurityConfigurationRequired()
+						&& !model.isTrue(Constants.INSTALL_DORIAN)
+						&& !model.isTrue(Constants.SERVICE_CERT_PRESENT)
+						&& !model.isTrue(Constants.CA_CERT_PRESENT)
+						&& model.isConfigureContainerSelected();
+			}
+		});
+
+
+		// Allows user to enter info necessary to gen new service cert
+		ConfigureServiceCertStep newServiceCertInfoStep = new ConfigureServiceCertStep(
+				this.model.getMessage("service.cert.new.info.title"),
+				this.model.getMessage("service.cert.new.info.desc"));
+		FilePropertyConfigurationOption nscPathOption = new FilePropertyConfigurationOption(
+				Constants.SERVICE_CERT_PATH, this.model
+						.getMessage("service.cert.info.cert.path"), this.model
+						.getProperty(Constants.SERVICE_CERT_PATH,
+								InstallerUtils.getInstallerDir()
+										+ "/certs/service.cert"), true);
+		nscPathOption.setDirectoriesOnly(false);
+		nscPathOption.setBrowseLabel(this.model.getMessage("browse"));
+		newServiceCertInfoStep.getOptions().add(nscPathOption);
+		FilePropertyConfigurationOption nskPathOption = new FilePropertyConfigurationOption(
+				Constants.SERVICE_KEY_PATH, this.model
+						.getMessage("service.cert.info.key.path"), this.model
+						.getProperty(Constants.SERVICE_KEY_PATH, InstallerUtils
+								.getInstallerDir()
+								+ "/certs/service.key"), true);
+		nskPathOption.setDirectoriesOnly(false);
+		nskPathOption.setBrowseLabel(this.model.getMessage("browse"));
+		newServiceCertInfoStep.getOptions().add(nskPathOption);
+		newServiceCertInfoStep.getOptions().add(
+				new TextPropertyConfigurationOption(Constants.SERVICE_HOSTNAME,
+						this.model.getMessage("service.cert.info.hostname"),
+						this.model.getProperty(Constants.SERVICE_HOSTNAME,
+								"localhost"), true));
+		// TODO: add validation
+		this.model.add(newServiceCertInfoStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isSecurityConfigurationRequired()
+						&& !model.isTrue(Constants.INSTALL_DORIAN)
+						&& !model.isTrue(Constants.SERVICE_CERT_PRESENT)
+						&& model.isConfigureContainerSelected();
+			}
+		});
+
+
+		ConfigureServiceCertStep serviceCertInfoStep = new ConfigureServiceCertStep(
+				this.model.getMessage("service.cert.info.title"), this.model
+						.getMessage("service.cert.info.desc"));
+		FilePropertyConfigurationOption escpOption = new FilePropertyConfigurationOption(
+				Constants.SERVICE_CERT_PATH, this.model
+						.getMessage("service.cert.info.cert.path"), this.model
+						.getProperty(Constants.SERVICE_CERT_PATH,
+								InstallerUtils.getInstallerDir()
+										+ "/certs/service.cert"), true);
+		escpOption.setDirectoriesOnly(false);
+		escpOption.setBrowseLabel(this.model.getMessage("browse"));
+		serviceCertInfoStep.getOptions().add(escpOption);
+		FilePropertyConfigurationOption eskpOption = new FilePropertyConfigurationOption(
+				Constants.SERVICE_KEY_PATH, this.model
+						.getMessage("service.cert.info.key.path"), this.model
+						.getProperty(Constants.SERVICE_KEY_PATH, InstallerUtils
+								.getInstallerDir()
+								+ "/certs/service.key"), true);
+		eskpOption.setDirectoriesOnly(false);
+		eskpOption.setBrowseLabel(this.model.getMessage("browse"));
+		serviceCertInfoStep.getOptions().add(eskpOption);
+		serviceCertInfoStep.getValidators().add(
+				new PathExistsValidator(Constants.SERVICE_CERT_PATH, this.model
+						.getMessage("error.cert.file.not.found")));
+		serviceCertInfoStep.getValidators().add(
+				new PathExistsValidator(Constants.SERVICE_KEY_PATH, this.model
+						.getMessage("error.key.file.not.found")));
+		serviceCertInfoStep.getValidators().add(
+				new KeyAccessValidator(Constants.SERVICE_KEY_PATH, null,
+						this.model.getMessage("error.key.no.access")));
+		this.model.add(serviceCertInfoStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isSecurityConfigurationRequired()
+						&& !model.isTrue(Constants.INSTALL_DORIAN)
+						&& model.isTrue(Constants.SERVICE_CERT_PRESENT)
+						&& model.isConfigureContainerSelected();
+			}
+		});		
+		
+	}
+
+	private void addInstallDependenciesStep() {
+		// Downloads and installs the dependencies
+		final RunTasksStep installDependenciesStep = new RunTasksStep(
+				this.model.getMessage("install.dependencies.title"), this.model
+						.getMessage("install.dependencies.desc"));
+		addUnzipInstallTask(installDependenciesStep, this.model
+				.getMessage("downloading.ant.title"), this.model
+				.getMessage("installing.ant.title"), "",
+				Constants.ANT_DOWNLOAD_URL, Constants.ANT_TEMP_FILE_NAME,
+				Constants.ANT_INSTALL_DIR_PATH, Constants.ANT_DIR_NAME,
+				Constants.ANT_HOME, Constants.INSTALL_ANT, Integer
+						.parseInt(this.model.getProperty("ant.bytes")));
+		addUnzipInstallTask(installDependenciesStep, this.model
+				.getMessage("downloading.tomcat.title"), this.model
+				.getMessage("installing.tomcat.title"), "",
+				Constants.TOMCAT_DOWNLOAD_URL, Constants.TOMCAT_TEMP_FILE_NAME,
+				Constants.TOMCAT_INSTALL_DIR_PATH, Constants.TOMCAT_DIR_NAME,
+				Constants.TOMCAT_HOME, Constants.INSTALL_TOMCAT, Integer
+						.parseInt(this.model.getProperty("tomcat.bytes")));
+		addUnzipInstallTask(installDependenciesStep, this.model
+				.getMessage("downloading.globus.title"), this.model
+				.getMessage("installing.globus.title"), "",
+				Constants.GLOBUS_DOWNLOAD_URL, Constants.GLOBUS_TEMP_FILE_NAME,
+				Constants.GLOBUS_INSTALL_DIR_PATH, Constants.GLOBUS_DIR_NAME,
+				Constants.GLOBUS_HOME, Constants.INSTALL_GLOBUS, Integer
+						.parseInt(this.model.getProperty("globus.bytes")));
+
+		addUnTarInstallTask(installDependenciesStep, this.model
+				.getMessage("downloading.activebpel.title"), this.model
+				.getMessage("installing.activebpel.title"), "",
+				Constants.ACTIVEBPEL_DOWNLOAD_URL,
+				Constants.ACTIVEBPEL_TEMP_FILE_NAME,
+				Constants.ACTIVEBPEL_INSTALL_DIR_PATH,
+				Constants.ACTIVEBPEL_DIR_NAME, Constants.ACTIVEBPEL_HOME,
+				Constants.INSTALL_ACTIVEBPEL, Integer.parseInt(this.model
+						.getProperty("activebpel.bytes")));
+
+		installDependenciesStep.getTasks().add(
+				new ConditionalTask(new DeployActiveBPELTask(this.model
+						.getMessage("installing.activebpel.title"), ""),
+						new Condition() {
+
+							public boolean evaluate(WizardModel m) {
+								CaGridInstallerModel model = (CaGridInstallerModel) m;
+								return model
+										.isTrue(Constants.INSTALL_ACTIVEBPEL)
+										&& model
+												.isTrue(Constants.INSTALL_WORKFLOW);
+							}
+
+						}));
+
+		addUnzipInstallTask(installDependenciesStep, this.model
+				.getMessage("downloading.cagrid.title"), this.model
+				.getMessage("installing.cagrid.title"), "",
+				Constants.CAGRID_DOWNLOAD_URL, Constants.CAGRID_TEMP_FILE_NAME,
+				Constants.CAGRID_INSTALL_DIR_PATH, Constants.CAGRID_DIR_NAME,
+				Constants.CAGRID_HOME, Constants.INSTALL_CAGRID, Integer
+						.parseInt(this.model.getProperty("cagrid.bytes")));
+
+		installDependenciesStep.getTasks().add(
+				new ConditionalTask(new CompileCaGridTask(this.model
+						.getMessage("compiling.cagrid.title"), ""),
+						new Condition() {
+
+							public boolean evaluate(WizardModel m) {
+								CaGridInstallerModel model = (CaGridInstallerModel) m;
+								return model.isTrue(Constants.INSTALL_CAGRID);
+							}
+
+						}));
+
+		// TODO: figure out why this fails on Mac sometimes
+		ConfigureTargetGridTask configTargetGridTask = new ConfigureTargetGridTask(
+				this.model.getMessage("configuring.target.grid"), "");
+		configTargetGridTask.setAbortOnError(false);
+		installDependenciesStep.getTasks().add(
+				new ConditionalTask(configTargetGridTask, new Condition() {
+					public boolean evaluate(WizardModel m) {
+						CaGridInstallerModel model = (CaGridInstallerModel) m;
+						return !model.isSet(Constants.TARGET_GRID)
+								|| model.isTrue(Constants.RECONFIGURE_CAGRID)
+								|| model.isTrue(Constants.INSTALL_CAGRID);
+					}
+				}));
+
+		installDependenciesStep.getTasks().add(
+				new ConditionalTask(
+						new CopySelectedServicesToTempDirTask(this.model
+								.getMessage("copying.selected.services"), ""),
+						new Condition() {
+							public boolean evaluate(WizardModel m) {
+								CaGridInstallerModel model = (CaGridInstallerModel) m;
+								return model.isTrue(Constants.INSTALL_SERVICES);
+							}
+						}));
+
+		installDependenciesStep.getTasks().add(new AbstractTask("", "") {
+
+			public Object execute(CaGridInstallerModel model) throws Exception {
+				if (model.isTrue(Constants.INSTALL_TOMCAT)) {
+					model.setProperty(Constants.GLOBUS_DEPLOYED, Constants.FALSE);
+					model.setProperty(Constants.GLOBUS_CONFIGURED, Constants.FALSE);
+				}
+				return null;
+			}
+
+		});
+		installDependenciesStep.getTasks().add(
+				new SaveSettingsTask(this.model
+						.getMessage("saving.settings.title"), ""));
+
+		this.model.add(installDependenciesStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return installDependenciesStep.getTasksCount(model) > 0;
+			}
+		});
+
+		// If globus has already been deployed, see if it should be redeployed
+		PropertyConfigurationStep checkDeployGlobusStep = new PropertyConfigurationStep(
+				this.model.getMessage("globus.check.redeploy.title"),
+				this.model.getMessage("globus.check.redeploy.desc"));
+		checkDeployGlobusStep.getOptions().add(
+				new BooleanPropertyConfigurationOption(
+						Constants.REDEPLOY_GLOBUS,
+						this.model.getMessage("yes"), false, false));
+		this.model.add(checkDeployGlobusStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTomcatContainer()
+						&& model.isTrue(Constants.GLOBUS_DEPLOYED)
+						&& model.isConfigureContainerSelected();
+			}
+
+		});		
+	}
+
+	private void addCheckReInstallSteps() {
+		// Asks user if Ant should be installed.
+		addCheckInstallStep(this.model, "ant.check.reinstall.title",
+				"ant.check.reinstall.desc", Constants.ANT_HOME,
+				Constants.INSTALL_ANT, Constants.ANT_INSTALLED);
+
+		// Allows user to specify where Ant should be installed
+		addInstallInfoStep(this.model, Constants.ANT_HOME, "ant",
+				"ant.home.title", "ant.home.desc",
+				Constants.ANT_INSTALL_DIR_PATH, Constants.INSTALL_ANT);
+
+		// Asks user if Tomcat should be installed
+		addCheckInstallStep(this.model, "tomcat.check.reinstall.title",
+				"tomcat.check.reinstall.desc", Constants.TOMCAT_HOME,
+				Constants.INSTALL_TOMCAT, Constants.TOMCAT_INSTALLED,
+				new Condition() {
+
+					public boolean evaluate(WizardModel m) {
+						CaGridInstallerModel model = (CaGridInstallerModel) m;
+						return model.isTomcatContainer();
+					}
+
+				});
+
+		// Allows user to specify where Tomcat should be installed
+		addInstallInfoStep(this.model, Constants.TOMCAT_HOME, "tomcat",
+				"tomcat.home.title", "tomcat.home.desc",
+				Constants.TOMCAT_INSTALL_DIR_PATH, Constants.INSTALL_TOMCAT);
+
+		// Asks user if Globus should be installed
+		addCheckInstallStep(this.model, "globus.check.reinstall.title",
+				"globus.check.reinstall.desc", Constants.GLOBUS_HOME,
+				Constants.INSTALL_GLOBUS, Constants.GLOBUS_INSTALLED);
+
+		// Allows user to specify where Globus should be installed
+		addInstallInfoStep(this.model, Constants.GLOBUS_HOME, "globus",
+				"globus.home.title", "globus.home.desc",
+				Constants.GLOBUS_INSTALL_DIR_PATH, Constants.INSTALL_GLOBUS);
+
+		// Asks user if caGrid should be installed
+		addCheckInstallStep(this.model, "cagrid.check.reinstall.title",
+				"cagrid.check.reinstall.desc", Constants.CAGRID_HOME,
+				Constants.INSTALL_CAGRID, Constants.CAGRID_INSTALLED);
+
+		// Allows user to specify where caGrid should be installed
+		addInstallInfoStep(this.model, Constants.CAGRID_HOME, "cagrid",
+				"cagrid.home.title", "cagrid.home.desc",
+				Constants.CAGRID_INSTALL_DIR_PATH, Constants.INSTALL_CAGRID);
+
+		addCheckInstallStep(this.model, "activebpel.check.reinstall.title",
+				"activebpel.check.reinstall.desc", Constants.ACTIVEBPEL_HOME,
+				Constants.INSTALL_ACTIVEBPEL, Constants.ACTIVEBPEL_INSTALLED,
+				new Condition() {
+
+					public boolean evaluate(WizardModel m) {
+						CaGridInstallerModel model = (CaGridInstallerModel) m;
+						return model.isTrue(Constants.INSTALL_ACTIVEBPEL);
+					}
+
+				});
+
+		// Allows user to specify where ActiveBpel should be installed
+		addInstallActiveBPELInfoStep(this.model, Constants.ACTIVEBPEL_HOME,
+				"activebpel", "activebpel.home.title", "activebpel.home.desc",
+				Constants.ACTIVEBPEL_INSTALL_DIR_PATH);
+	}
+
+	private void checkEnvironment() {
+		// Check for the presence of Ant
+		checkInstalled("Ant", "ANT_HOME", Constants.ANT_HOME,
+				Constants.ANT_INSTALLED, Constants.INSTALL_ANT);
+
+		// Check for presence of Tomcat
+		checkInstalled("Tomcat", "CATALINA_HOME", Constants.TOMCAT_HOME,
+				Constants.TOMCAT_INSTALLED, Constants.INSTALL_TOMCAT);
+
+		// Check for presence of Globus
+		checkInstalled("Globus", "GLOBUS_LOCATION", Constants.GLOBUS_HOME,
+				Constants.GLOBUS_INSTALLED, Constants.INSTALL_GLOBUS);
+
+		// Check for presence of caGrid
+		checkInstalled("caGrid", null, Constants.CAGRID_HOME,
+				Constants.CAGRID_INSTALLED, Constants.INSTALL_CAGRID);
+		// TODO: check caGrid version
+
+		// Check for presence of ActiveBPEL
+		checkInstalled("ActiveBPEL", null, Constants.ACTIVEBPEL_HOME,
+				Constants.ACTIVEBPEL_INSTALLED, Constants.INSTALL_ACTIVEBPEL);
+		// TODO: check ActiveBpel version
+
+		checkGlobusDeployed();
+
+		checkGlobusConfigured();
+
+	}
+
+	private void clearFlags() {
+		this.model.unsetProperty(Constants.CONFIGURE_CONTAINER);
+		this.model.unsetProperty(Constants.DORIAN_USE_GEN_CA);
+		this.model.unsetProperty(Constants.DORIAN_CA_PRESENT);
+		this.model.unsetProperty(Constants.INSTALL_ACTIVEBPEL);
+		this.model.unsetProperty(Constants.INSTALL_AUTHN_SVC);
+		this.model.unsetProperty(Constants.INSTALL_CADSR);
+		this.model.unsetProperty(Constants.INSTALL_DORIAN);
+		this.model.unsetProperty(Constants.INSTALL_EVS);
+		this.model.unsetProperty(Constants.INSTALL_FQP);
+		this.model.unsetProperty(Constants.INSTALL_GME);
+		this.model.unsetProperty(Constants.INSTALL_GRID_GROUPER);
+		this.model.unsetProperty(Constants.INSTALL_GTS);
+		this.model.unsetProperty(Constants.INSTALL_SYNC_GTS);
+		this.model.unsetProperty(Constants.INSTALL_IDENT_SVC);
+		this.model.unsetProperty(Constants.INSTALL_INDEX_SVC);
+		this.model.unsetProperty(Constants.INSTALL_MY_SERVICE);
+		this.model.unsetProperty(Constants.INSTALL_SERVICES);
+		this.model.unsetProperty(Constants.INSTALL_WORKFLOW);
+		this.model.unsetProperty(Constants.RECONFIGURE_CAGRID);
+		this.model.unsetProperty(Constants.USE_SECURE_CONTAINER);
 	}
 
 	private void checkGlobusConfigured() {
@@ -2912,12 +3008,12 @@ public class Installer {
 	}
 
 	private void checkGlobusDeployed() {
-		String globusDeployed = "false";
+		String globusDeployed = Constants.FALSE;
 		if (model.isTrue(Constants.TOMCAT_INSTALLED)) {
 			File wsrfDir = new File((String) model
 					.getProperty(Constants.TOMCAT_HOME)
 					+ "/webapps/wsrf");
-			globusDeployed = wsrfDir.exists() ? "true" : "false";
+			globusDeployed = wsrfDir.exists() ? Constants.TRUE : Constants.FALSE;
 		}
 
 		model.setProperty(Constants.GLOBUS_DEPLOYED, globusDeployed);
@@ -3020,21 +3116,21 @@ public class Installer {
 	}
 
 	private void addCheckInstallStep(CaGridInstallerModelImpl m,
-			String titleProp, String descProp, String configProp,
-			final String installedProp) {
+			String titleProp, String descProp, String homeProp,
+			String configProp, final String installedProp) {
 
 		Condition c = new Condition() {
 			public boolean evaluate(WizardModel m) {
 				return true;
 			}
 		};
-		addCheckInstallStep(m, titleProp, descProp, configProp, installedProp,
-				c);
+		addCheckInstallStep(m, titleProp, descProp, homeProp, configProp,
+				installedProp, c);
 	}
 
 	private void addCheckInstallStep(CaGridInstallerModelImpl m,
-			String titleProp, String descProp, String configProp,
-			final String installedProp, Condition c1) {
+			String titleProp, String descProp, String homeProp,
+			String configProp, final String installedProp, Condition c1) {
 
 		Condition c = new Condition() {
 			public boolean evaluate(WizardModel m) {
@@ -3043,14 +3139,15 @@ public class Installer {
 			}
 
 		};
-		addCheckInstallStep(m, titleProp, descProp, configProp,
+		addCheckInstallStep(m, titleProp, descProp, homeProp, configProp,
 				new AndCondition(c, c1));
 	}
 
 	private void addCheckInstallStep(CaGridInstallerModelImpl m,
-			String titleProp, String descProp, String configProp, Condition c) {
-		PropertyConfigurationStep checkInstallStep = new PropertyConfigurationStep(
-				m.getMessage(titleProp), m.getMessage(descProp));
+			String titleProp, String descProp, String homeProp,
+			String configProp, Condition c) {
+		CheckReInstallStep checkInstallStep = new CheckReInstallStep(m
+				.getMessage(titleProp), m.getMessage(descProp), homeProp);
 		checkInstallStep.getOptions().add(
 				new BooleanPropertyConfigurationOption(configProp, m
 						.getMessage("yes"), false, false));
@@ -3091,7 +3188,7 @@ public class Installer {
 		if (home != null) {
 			logger.info(progName + " found at '" + home + "'");
 			model.setProperty(propName, home);
-			model.setProperty(propInstalledName, "true");
+			model.setProperty(propInstalledName, Constants.TRUE);
 
 			logger.info("Checking version...");
 			if ("Ant".equals(progName)) {
@@ -3116,8 +3213,8 @@ public class Installer {
 
 		} else {
 
-			model.setProperty(propInstalledName, "false");
-			model.setProperty(propInstall, "true");
+			model.setProperty(propInstalledName, Constants.FALSE);
+			model.setProperty(propInstall, Constants.TRUE);
 		}
 
 		if (!installed) {
