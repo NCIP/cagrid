@@ -6,7 +6,9 @@
 #   of the mysqldump call.  The "root" username for the database can also be changed.  The filenames for the imports are assumed to be the <databasename>.sql.gz.
 #
 
+importFileName=$1
 
+gunzip importFileName
 
 databases="GlobusGME_GME_REGISTRY GlobusGME_GME_SCHEMA_STORE GlobusGME_GME_SCHEMA_CACHE"
 
@@ -18,6 +20,7 @@ gunzip ${database}.sql.gz
 
 mysql -u root ${database} < ${database}.sql
 
+rm -fr ${database}.sql.gz
 rm -fr ${database}.sql
 
 done

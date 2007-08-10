@@ -7,7 +7,6 @@
 #
 
 
-
 echo Starting to backup databases
 
 databases="GlobusGME_GME_REGISTRY GlobusGME_GME_SCHEMA_STORE GlobusGME_GME_SCHEMA_CACHE"
@@ -20,6 +19,12 @@ mysqldump -u root --add-drop-database --add-drop-table --add-locks ${database} |
 
 done
 
-echo Finished backing up databases
+gzip gmeExport.gz GlobusGME_GME_REGISTRY.sql.gz GlobusGME_GME_SCHEMA_STORE.sql.gz GlobusGME_GME_SCHEMA_CACHE.sql.gz
+
+rm -fr GlobusGME_GME_REGISTRY.sql.gz
+rm -fr GlobusGME_GME_SCHEMA_STORE.sql.gz
+rm -fr GlobusGME_GME_SCHEMA_CACHE.sql.gz
+
+echo Finished backing up databases into file gmeExport.gz
 
 exit 
