@@ -25,6 +25,6 @@ rm -fr GlobusGME_GME_REGISTRY.sql.gz
 rm -fr GlobusGME_GME_SCHEMA_STORE.sql.gz
 rm -fr GlobusGME_GME_SCHEMA_CACHE.sql.gz
 
-echo Finished backing up databases into file gmeExport.gz
+echo Finished backing up databases into file gmeDBExport.tar
 
 exit 
