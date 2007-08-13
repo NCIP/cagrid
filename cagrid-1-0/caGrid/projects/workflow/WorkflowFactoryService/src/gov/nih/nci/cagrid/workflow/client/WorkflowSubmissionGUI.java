@@ -107,6 +107,8 @@ public class WorkflowSubmissionGUI extends ApplicationComponent {
 	private WSDLReferences[] wsdlReferences = null;
 	
 	private Vector wsdlReferencesVector = new Vector();
+	
+	PartnerLinkFrame fr = null;
 
 	/**
 	 * This is the default constructor
@@ -348,7 +350,12 @@ public class WorkflowSubmissionGUI extends ApplicationComponent {
 						ErrorDialog.showError("BPEL File cannot be empty");
 					}
 					try {
+						wsdlReferencesVector.add(fr.getWSDLReference());
 						wsdlReferences = new WSDLReferences[wsdlReferencesVector.size()];
+						for(int i=0;i<wsdlReferencesVector.size();i++) {
+							wsdlReferences[i] = (WSDLReferences) wsdlReferencesVector.elementAt(i);
+							
+						}
 						factoryClient = new WorkflowFactoryServiceClient(
 								workflowFactoryURL);
 						WMSInputType input = factoryClient.createInput(bpelFile
@@ -476,9 +483,9 @@ public class WorkflowSubmissionGUI extends ApplicationComponent {
 			partnerLinkButton.setPreferredSize(new Dimension(100, 20));
 			partnerLinkButton.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
-					PartnerLinkFrame fr = new PartnerLinkFrame();
+					fr = new PartnerLinkFrame();
 					fr.show();
-					wsdlReferencesVector.add(fr.getWSDLReference());
+					
 				}
 			});
 		}

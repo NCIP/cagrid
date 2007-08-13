@@ -181,6 +181,9 @@ public class PartnerLinkFrame extends JFrame {
 
 	public WSDLReferences getWSDLReference() {
 		if (this.wsdlReference != null) {
+			System.out.println(" " + this.wsdlReference.getPartnerLinkType()
+					+ " " + this.wsdlReference.getWsdlLocation().toString()
+					+ " " + this.wsdlReference.getServiceUrl().toString());
 			return this.wsdlReference;
 		} else {
 			ErrorDialog.showError("Invalid PartnerLink");
