@@ -5,6 +5,8 @@ package org.cagrid.installer.steps;
 
 import javax.swing.Icon;
 
+import org.pietschy.wizard.InvalidStateException;
+
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
  * 
@@ -39,15 +41,29 @@ public class SelectInstallationTypeStep extends PropertyConfigurationStep {
 
 		if (isSelected(Constants.INSTALL_CAGRID)
 				|| isSelected(Constants.CONFIGURE_CONTAINER)
-				|| isSelected(Constants.INSTALL_SERVICES)) {
+				|| isSelected(Constants.INSTALL_SERVICES)
+				|| isSelected(Constants.INSTALL_PORTAL)
+				|| isSelected(Constants.INSTALL_BROWSER)) {
 			setComplete(true);
 		} else {
 			setComplete(false);
 		}
 	}
-	
-	private boolean isSelected(String fieldName){
-		return this.requiredFields.containsKey(fieldName) && this.requiredFields.get(fieldName);
+
+	private boolean isSelected(String fieldName) {
+		return this.requiredFields.containsKey(fieldName)
+				&& this.requiredFields.get(fieldName);
+	}
+
+	public void applyState() throws InvalidStateException {
+		super.applyState();
+
+		if (this.model.isTrue(Constants.INSTALL_PORTAL)
+				|| this.model.isTrue(Constants.INSTALL_BROWSER)) {
+			this.model.setProperty(Constants.CONTAINER_TYPE, this.model
+					.getMessage("container.type.tomcat"));
+		}
+
 	}
 
 }

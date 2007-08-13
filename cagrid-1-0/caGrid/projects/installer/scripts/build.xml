@@ -30,7 +30,7 @@
 		<for list="${selected.services}" param="serviceName"
 			parallel="false">
 			<sequential>
-				<copy todir="${service.dest.dir}">
+				<copy todir="${service.dest.dir}" overwrite="true">
 					<fileset dir="${cagrid.home}/projects">
 						<include name="@{serviceName}/**" />
 					</fileset>
@@ -233,7 +233,8 @@
 
 			<if>
 				<not>
-					<equals arg1="${dorian.ifs.gts.url}" arg2="" trim="true"/>
+					<equals arg1="${dorian.ifs.gts.url}" arg2=""
+						trim="true" />
 				</not>
 				<then>
 					<insert
@@ -821,6 +822,132 @@ ${authn.svc.csm.ctx}{
 		]]>
 			</replace>
 		</xmltask>
+	</target>
+
+	<target name="configure-portal-properties">
+		<propertyfile
+			file="${service.dest.dir}/portal/portal-build.properties">
+			<entry key="db.connection.url"
+				value="jdbc:mysql://${portal.db.host}:${portal.db.port}/${portal.db.id}" />
+			<entry key="db.connection.username"
+				value="${portal.db.username}" />
+			<entry key="db.connection.password"
+				value="${portal.db.password}" />
+			<entry key="google.map.key"
+				value="${portal.google.map.key}" />
+			<entry key="metadata.aggregator.frequncy"
+				value="${portal.meta.agg.freq}" />
+			<entry key="geocoder.application.id"
+				value="${portal.geocoder.app.id}" />
+		</propertyfile>
+	</target>
+
+	<target name="configure-portal-index-svc">
+
+		<property name="config.file"
+			value="${service.dest.dir}/portal/webcontent/WEB-INF/applicationContext.xml" />
+
+		<xmltask source="${config.file}" dest="${config.file}"
+			preservetype="true">
+			<remove
+				path="/beans/bean[@id='initBean']/property[@name='indexSet']/set/value" />
+		</xmltask>
+
+		<for list="${portal.index.svc.urls}" param="url">
+			<sequential>
+
+				<xmltask source="${config.file}" dest="${config.file}"
+					preservetype="true">
+					<insert
+						path="/beans/bean[@id='initBean']/property[@name='indexSet']/set">
+						<![CDATA[
+							<value>@{url}</value>
+						]]>
+					</insert>
+				</xmltask>
+			</sequential>
+		</for>
+
+	</target>
+
+	<target name="configure-portal-deactivate-syncgts">
+		<property name="config.file"
+			value="${service.dest.dir}/portal/src/properties/applicationContext-aggregators.xml" />
+
+		<xmltask source="${config.file}" dest="${config.file}"
+			preservetype="true">
+			<remove path="/beans/bean[@id='syncGTSInitBean']" />
+			<remove path="/beans/bean[@id='syncMethodInvokingTask']" />
+			<remove path="/beans/bean[@id='syncGTSTask']" />
+			<remove
+				path="/beans/bean[@id='timerFactory']/property[@name='scheduledTimerTasks']/list/ref[@local='syncGTSTask']" />
+		</xmltask>
+	</target>
+
+	<target name="deploy-portal">
+		<ant dir="${service.dest.dir}/portal" inheritAll="false"
+			target="deployTomcatExploded">
+			<property name="project.name"
+				value="${portal.context.name}" />
+		</ant>
+	</target>
+
+	<target name="deploy-portal-crypto-jars">
+		<if>
+			<available file="${tomcat.home}/common/lib/cog-jglobus.jar" />
+			<then>
+				<!-- It's a secure container. Only need to ensure the correct cog-jglobus.jar -->
+				
+				<copy
+					file="${cagrid.home}/projects/syncgts/lib/globus-patches/cog-jglobus.jar"
+					todir="${tomcat.home}/common/lib" overwrite="true" />
+			</then>
+			<elseif>
+				<available
+					file="${tomcat.home}/webapps/wsrf/WEB-INF/lib/cog-jglobus.jar" />
+				<then>
+					<!-- Then some other Globus service is installed that needs these 
+						 crypto jars. Need to consolidate under CATALINA_HOME/common/lib 
+						 to avoid class loader issues. -->
+					<delete>
+						<fileset
+							dir="${tomcat.home}/webapps/wsrf/WEB-INF/lib">
+							<include name="cog-jglobus.jar" />
+							<include name="cryptix*.jar" />
+							<include name="puretls.jar" />
+							<include name="jce-jdk13-125.jar" />
+						</fileset>
+					</delete>
+					<copy
+						file="${cagrid.home}/projects/syncgts/lib/globus-patches/cog-jglobus.jar"
+						todir="${tomcat.home}/common/lib" overwrite="true" />
+					<copy todir="${tomcat.home}/common/lib"
+						overwrite="true">
+						<fileset dir="${globus.home}/lib">
+							<include name="cryptix*.jar" />
+							<include name="puretls.jar" />
+							<include name="jce-jdk13-125.jar" />
+						</fileset>
+					</copy>
+				</then>
+			</elseif>
+			<else>
+				<!-- Installing portal into non-secure container, without any other globus services. -->
+				<copy
+					file="${cagrid.home}/projects/syncgts/lib/globus-patches/cog-jglobus.jar"
+					todir="${tomcat.home}/webapps/${portal.context.name}/WEB-INF/lib"
+					overwrite="true" />
+				<copy
+					todir="${tomcat.home}/webapps/${portal.context.name}/WEB-INF/lib"
+					overwrite="true">
+					<fileset dir="${globus.home}">
+						<include name="cryptix*.jar" />
+						<include name="puretls.jar" />
+						<include name="jce-jdk13-125.jar" />
+					</fileset>
+				</copy>
+			</else>
+		</if>
 	</target>
 
 </project>

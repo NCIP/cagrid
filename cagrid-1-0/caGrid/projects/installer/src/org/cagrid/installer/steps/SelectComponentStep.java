@@ -46,15 +46,12 @@ public class SelectComponentStep extends PropertyConfigurationStep {
 	
 	protected void checkComplete(){
 		boolean oneChecked = false;
-		logger.debug("requiredFields: \n" + this.requiredFields);
 		for(String key : this.requiredFields.keySet()){
 			if(this.requiredFields.get(key)){
-				logger.debug(key + " is checked");
 				oneChecked = true;
 				break;
 			}
 		}
-		logger.debug("oneChecked = " + oneChecked);
 		setComplete(oneChecked);
 	}
 	

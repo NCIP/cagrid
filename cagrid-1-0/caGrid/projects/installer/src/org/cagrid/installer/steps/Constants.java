@@ -404,5 +404,17 @@ public abstract class Constants {
 
 	public static final String INSTALL_BROWSER = "install.browser";
 
+	public static final String PORTAL_META_AGG_FREQ = "portal.meta.agg.freq";
+
+	public static final String PORTAL_GOOGLE_MAP_KEY = "portal.google.map.key";
+
+	public static final String PORTAL_GEOCODER_APP_ID = "portal.geocoder.app.id";
+
+	public static final String PORTAL_INDEX_SVC_URLS = "portal.index.svc.urls";
+
+	public static final String PORTAL_CONTEXT_NAME = "portal.context.name";
+
+	public static final String CAGRID_VERSION = "1.1";
+
 
 }

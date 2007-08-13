@@ -169,8 +169,9 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 		add(optionsPanel, InstallerUtils.getGridBagConstraints(0, 0));
 
 		// Add gtsServiceURI field
-		String gtsServiceURI = this.model.getProperty(Constants.SYNC_GTS_GTS_URI,
-				"https://cagrid02.bmi.ohio-state.edu:8442/wsrf/services/cagrid/GTS");
+		String gtsServiceURI = this.model
+				.getProperty(Constants.SYNC_GTS_GTS_URI,
+						"https://cagrid02.bmi.ohio-state.edu:8442/wsrf/services/cagrid/GTS");
 		this.gtsServiceURIField = new JTextField(gtsServiceURI);
 		addRequiredListener(this.gtsServiceURIField);
 		JLabel gtsServiceURILabel = new JLabel(this.model
@@ -178,7 +179,8 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 		addOption(optionsPanel, gtsServiceURILabel, this.gtsServiceURIField, 0);
 
 		// Expiration hours
-		String hours = this.model.getProperty(Constants.SYNC_GTS_EXPIRATION_HOURS, "1");
+		String hours = this.model.getProperty(
+				Constants.SYNC_GTS_EXPIRATION_HOURS, "1");
 		this.expirationHoursField = new JTextField(hours);
 		addRequiredListener(this.expirationHoursField);
 		JLabel expirationHoursLabel = new JLabel(this.model
@@ -186,7 +188,8 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 		addOption(optionsPanel, expirationHoursLabel,
 				this.expirationHoursField, 1);
 
-		String minutes = this.model.getProperty(Constants.SYNC_GTS_EXPIRATION_MINUTES, "0");
+		String minutes = this.model.getProperty(
+				Constants.SYNC_GTS_EXPIRATION_MINUTES, "0");
 		this.expirationMinutesField = new JTextField(minutes);
 		addRequiredListener(this.expirationMinutesField);
 		JLabel expirationMinutesLabel = new JLabel(this.model
@@ -194,7 +197,8 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 		addOption(optionsPanel, expirationMinutesLabel,
 				this.expirationMinutesField, 2);
 
-		String seconds = this.model.getProperty(Constants.SYNC_GTS_EXPIRATION_SECONDS, "0");
+		String seconds = this.model.getProperty(
+				Constants.SYNC_GTS_EXPIRATION_SECONDS, "0");
 		this.expirationSecondsField = new JTextField(seconds);
 		addRequiredListener(this.expirationSecondsField);
 		JLabel expirationSecondsLabel = new JLabel(this.model
@@ -202,7 +206,8 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 		addOption(optionsPanel, expirationSecondsLabel,
 				this.expirationSecondsField, 3);
 
-		String performAuthz = this.model.getProperty(Constants.SYNC_GTS_PERFORM_AUTHZ, Constants.TRUE);
+		String performAuthz = this.model.getProperty(
+				Constants.SYNC_GTS_PERFORM_AUTHZ, Constants.TRUE);
 		this.performAuthzField = new JCheckBox();
 		this.performAuthzField.setSelected(Constants.TRUE.equals(performAuthz));
 		JLabel performAuthzLabel = new JLabel(this.model
@@ -218,17 +223,20 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 
 		});
 
-		String gtsIdent = this.model.getProperty(Constants.SYNC_GTS_GTS_IDENT,
-				"/O=OSU/OU=BMI/OU=caGrid/OU=Trust Fabric/CN=host/cagrid02.bmi.ohio-state.edu");
+		String gtsIdent = this.model
+				.getProperty(Constants.SYNC_GTS_GTS_IDENT,
+						"/O=OSU/OU=BMI/OU=caGrid/OU=Trust Fabric/CN=host/cagrid02.bmi.ohio-state.edu");
 		this.gtsIdentField = new JTextField(gtsIdent);
 		JLabel gtsIdentLabel = new JLabel(this.model
 				.getMessage("sync.gts.gts.ident"));
 		addOption(optionsPanel, gtsIdentLabel, this.gtsIdentField, 5);
 		this.gtsIdentField.setEnabled(this.performAuthzField.isSelected());
 
-		String deleteInvalid = this.model.getProperty(Constants.SYNC_GTS_DELETE_INVALID, Constants.FALSE);
+		String deleteInvalid = this.model.getProperty(
+				Constants.SYNC_GTS_DELETE_INVALID, Constants.FALSE);
 		this.deleteInvalidField = new JCheckBox();
-		this.deleteInvalidField.setSelected(Constants.TRUE.equals(deleteInvalid));
+		this.deleteInvalidField.setSelected(Constants.TRUE
+				.equals(deleteInvalid));
 		JLabel deleteInvalidLabel = new JLabel(this.model
 				.getMessage("sync.gts.delete.invalid"));
 		addOption(optionsPanel, deleteInvalidLabel, this.deleteInvalidField, 6);
@@ -240,20 +248,25 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 
 		});
 
-		String nextSync = this.model.getProperty(Constants.SYNC_GTS_NEXT_SYNC, "600");
+		String nextSync = this.model.getProperty(Constants.SYNC_GTS_NEXT_SYNC,
+				"600");
 		this.nextSyncField = new JTextField(nextSync);
 		addRequiredListener(this.nextSyncField);
 		JLabel nextSyncLabel = new JLabel(this.model
 				.getMessage("sync.gts.next.sync"));
 		addOption(optionsPanel, nextSyncLabel, this.nextSyncField, 7);
 
-		String performFirstSync = this.model.getProperty(Constants.SYNC_GTS_PERFORM_FIRST_SYNC, Constants.TRUE);
-		this.performFirstSyncField = new JCheckBox();
-		this.performFirstSyncField.setSelected(Constants.TRUE.equals(performFirstSync));
-		JLabel performFirstSyncLabel = new JLabel(this.model
-				.getMessage("sync.gts.perform.first.sync"));
-		addOption(optionsPanel, performFirstSyncLabel,
-				this.performFirstSyncField, 8);
+		if (isShowPerformFirstSyncField()) {
+			String performFirstSync = this.model.getProperty(
+					Constants.SYNC_GTS_PERFORM_FIRST_SYNC, Constants.TRUE);
+			this.performFirstSyncField = new JCheckBox();
+			this.performFirstSyncField.setSelected(Constants.TRUE
+					.equals(performFirstSync));
+			JLabel performFirstSyncLabel = new JLabel(this.model
+					.getMessage("sync.gts.perform.first.sync"));
+			addOption(optionsPanel, performFirstSyncLabel,
+					this.performFirstSyncField, 8);
+		}
 
 		JPanel trustedAuthFilterPanel = new JPanel();
 		trustedAuthFilterPanel.setLayout(new BorderLayout());
@@ -331,6 +344,10 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 
 	}
 
+	protected boolean isShowPerformFirstSyncField() {
+		return true;
+	}
+
 	private void addOption(JPanel panel, JLabel label, Component field, int y) {
 		GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
 		gridBagConstraints1.gridx = 0;
@@ -373,7 +390,6 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 	private boolean isEmpty(JTextField field) {
 		return field.getText() == null || field.getText().trim().length() == 0;
 	}
-
 
 	public void prepare() {
 		try {
@@ -434,7 +450,8 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 					// Perform authorization
 					Element performAuthzEl = (Element) xpFact
 							.newXPath()
-							.compile("./*[local-name()='PerformAuthorization']").evaluate(syncDescEl, XPathConstants.NODE);
+							.compile("./*[local-name()='PerformAuthorization']")
+							.evaluate(syncDescEl, XPathConstants.NODE);
 					if (performAuthzEl != null) {
 						this.performAuthzField.setSelected(Constants.TRUE
 								.equals(performAuthzEl.getTextContent()));
@@ -442,7 +459,8 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 
 					// GTS Identity
 					Element gtsIdentEl = (Element) xpFact.newXPath().compile(
-							"./*[local-name()='GTSIdentity']").evaluate(syncDescEl, XPathConstants.NODE);
+							"./*[local-name()='GTSIdentity']").evaluate(
+							syncDescEl, XPathConstants.NODE);
 					if (gtsIdentEl != null) {
 						String gtsIdent = gtsIdentEl.getTextContent();
 						if (!InstallerUtils.isEmpty(gtsIdent)) {
@@ -458,13 +476,13 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 							.evaluate(syncDescEl, XPathConstants.NODESET);
 					logger.debug("Found " + filters.getLength()
 							+ " TrustedAuthorityFilter elments.");
-					
-					//Remove existing rows
-					while(this.tafTableModel.getRowCount() > 0){
+
+					// Remove existing rows
+					while (this.tafTableModel.getRowCount() > 0) {
 						this.tafTableModel.removeRow(0);
 					}
-					
-					//Create new rows
+
+					// Create new rows
 					for (int i = 0; i < filters.getLength(); i++) {
 						Element filter = (Element) filters.item(i);
 						String name = getValue(getChildElementText(filter,
@@ -528,14 +546,13 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 						.evaluate(root, XPathConstants.NODESET);
 				logger.debug("Found " + caSubjEls.getLength()
 						+ " excluded CAs.");
-				
-				
-				//Remove existing rows
-				while(this.ecTableModel.getRowCount() > 0){
+
+				// Remove existing rows
+				while (this.ecTableModel.getRowCount() > 0) {
 					this.ecTableModel.removeRow(0);
 				}
-				
-				//Create new rows
+
+				// Create new rows
 				for (int i = 0; i < caSubjEls.getLength(); i++) {
 					Element caSubjEl = (Element) caSubjEls.item(i);
 					String text = caSubjEl.getTextContent();
@@ -558,13 +575,14 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 				logger.debug("Setting NextSync = " + nextSync);
 				this.nextSyncField.setText(nextSync);
 
-				String servicePropsFile = this.model.getServiceDestDir()
-						+ "/syncgts/service.properties";
-
-				Properties props = new Properties();
-				props.load(new FileInputStream(servicePropsFile));
-				this.performFirstSyncField.setSelected(Constants.TRUE.equals(props
-						.getProperty("performFirstSync")));
+				if (isShowPerformFirstSyncField()) {
+					String servicePropsFile = this.model.getServiceDestDir()
+							+ "/syncgts/service.properties";
+					Properties props = new Properties();
+					props.load(new FileInputStream(servicePropsFile));
+					this.performFirstSyncField.setSelected(Constants.TRUE
+							.equals(props.getProperty("performFirstSync")));
+				}
 
 			}
 			checkComplete();
@@ -575,7 +593,7 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 		}
 	}
 
-	private String getSyncDescriptionFileName() {
+	protected String getSyncDescriptionFileName() {
 		return this.model.getServiceDestDir()
 				+ "/syncgts/ext/resources/sync-description.xml";
 	}
@@ -762,18 +780,20 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 		}
 
 		// Also, edit the service.propeties file
-		String servicePropsFile = this.model.getServiceDestDir()
-				+ "/syncgts/service.properties";
-		try {
-			Properties props = new Properties();
-			props.load(new FileInputStream(servicePropsFile));
-			props.setProperty("performFirstSync", String
-					.valueOf(this.performFirstSyncField.isSelected()));
-			props.store(new FileOutputStream(servicePropsFile), "");
-		} catch (Exception ex) {
-			logger.error(ex);
-			throw new InvalidStateException("Error configuring "
-					+ servicePropsFile + ": " + ex.getMessage(), ex);
+		if (isShowPerformFirstSyncField()) {
+			String servicePropsFile = this.model.getServiceDestDir()
+					+ "/syncgts/service.properties";
+			try {
+				Properties props = new Properties();
+				props.load(new FileInputStream(servicePropsFile));
+				props.setProperty("performFirstSync", String
+						.valueOf(this.performFirstSyncField.isSelected()));
+				props.store(new FileOutputStream(servicePropsFile), "");
+			} catch (Exception ex) {
+				logger.error(ex);
+				throw new InvalidStateException("Error configuring "
+						+ servicePropsFile + ": " + ex.getMessage(), ex);
+			}
 		}
 	}
 

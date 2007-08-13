@@ -13,6 +13,8 @@ public class CheckReInstallStep extends PropertyConfigurationStep {
 
 	private String homeProp;
 
+	private boolean setSummary;
+
 	/**
 	 * 
 	 */
@@ -40,8 +42,12 @@ public class CheckReInstallStep extends PropertyConfigurationStep {
 	}
 
 	public void prepare() {
-		setSummary(getSummary() + " (" + this.model.getMessage("installed.at")
-				+ " '" + this.model.getProperty(this.homeProp) + "')");
+		if (!this.setSummary) {
+			setSummary(getSummary() + " ("
+					+ this.model.getMessage("installed.at") + " '"
+					+ this.model.getProperty(this.homeProp) + "')");
+			this.setSummary = true;
+		}
 	}
 
 }

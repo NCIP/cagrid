@@ -66,6 +66,10 @@ public class CopySelectedServicesToTempDirTask extends CaGridInstallerAntTask {
 			selectedServices.add("syncgts");
 		}
 		
+		if(model.isTrue(Constants.INSTALL_PORTAL)){
+			selectedServices.add("portal");
+		}
+		
 		StringBuilder sb = new StringBuilder();
 		for(Iterator i = selectedServices.iterator(); i.hasNext();){
 			sb.append((String)i.next());

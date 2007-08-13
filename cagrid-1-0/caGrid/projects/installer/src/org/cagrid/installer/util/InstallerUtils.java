@@ -9,7 +9,7 @@ import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -20,7 +20,7 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Enumeration;
-import java.util.Map;
+import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -36,6 +36,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.installer.model.CaGridInstallerModel;
 import org.cagrid.installer.steps.Constants;
 import org.w3c.dom.Node;
@@ -46,6 +48,8 @@ import org.w3c.dom.Node;
  */
 public class InstallerUtils {
 
+	private static final Log logger = LogFactory.getLog(InstallerUtils.class);
+	
 	public InstallerUtils() {
 
 	}
@@ -54,12 +58,11 @@ public class InstallerUtils {
 		return System.getProperty("os.name").toLowerCase().indexOf("windows") != -1;
 	}
 
-
-	public static void showError(String msg){
+	public static void showError(String msg) {
 		JOptionPane.showMessageDialog(null, msg, "Error",
 				JOptionPane.ERROR_MESSAGE);
 	}
-	
+
 	public static void unzipFile(File toFile, File toDir) throws Exception {
 		String baseOut = toDir.getAbsolutePath() + "/";
 		ZipFile zipFile = new ZipFile(toFile);
@@ -123,9 +126,9 @@ public class InstallerUtils {
 				&& !model.isTrue(Constants.SERVICE_CERT_PRESENT)
 				&& !model.isTrue(Constants.CA_CERT_PRESENT);
 	}
-	
+
 	public static void copyCACertToTrustStore(String certPath)
-	throws IOException {
+			throws IOException {
 		copyCACertToTrustStore(certPath, "CA.0");
 	}
 
@@ -135,13 +138,13 @@ public class InstallerUtils {
 		File trustDir = new File(System.getProperty("user.home")
 				+ "/.globus/certificates");
 		copyFile(certPath, trustDir.getAbsolutePath() + "/" + caFileName);
-		
+
 	}
-	
+
 	public static void copyFile(String from, String to) throws IOException {
 		BufferedReader in = new BufferedReader(new FileReader(from));
 		File toFile = new File(to);
-		if(!toFile.getParentFile().exists()){
+		if (!toFile.getParentFile().exists()) {
 			toFile.getParentFile().mkdirs();
 		}
 		BufferedWriter out = new BufferedWriter(new FileWriter(toFile));
@@ -153,7 +156,6 @@ public class InstallerUtils {
 		out.flush();
 		out.close();
 	}
-
 
 	public static String getScriptsBuildFilePath() {
 		return new File("scripts/build.xml").getAbsolutePath();
@@ -169,8 +171,6 @@ public class InstallerUtils {
 		t.transform(s, r);
 		return w.getBuffer().toString();
 	}
-
-	
 
 	public static String getInstallerTempDir() {
 		return getInstallerDir() + "/tmp";
@@ -203,20 +203,108 @@ public class InstallerUtils {
 		}
 	}
 
-	public static Object getGridBagConstraints(int x, int y) {
+	public static GridBagConstraints getGridBagConstraints(int x, int y) {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridx = x;
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.weightx = 1;
 		gbc.gridy = y;
-		return gbc;		
+		return gbc;
 	}
-	
-	public static String getDbNameFromJdbcUrl(String jdbcUrl){
+
+	public static String getDbNameFromJdbcUrl(String jdbcUrl) {
 		return jdbcUrl.substring(jdbcUrl.lastIndexOf("/") + 1);
 	}
-	
-	public static String getJdbcBaseFromJdbcUrl(String jdbcUrl){
+
+	public static String getJdbcBaseFromJdbcUrl(String jdbcUrl) {
 		return jdbcUrl.substring(0, jdbcUrl.lastIndexOf("/"));
 	}
+
+	public static boolean checkCaGridVersion(String home) {
+		boolean isCorrectVersion = false;
+		try {
+			File propsFile = new File(home
+					+ "/share/resources/cagrid.properties");
+			if (propsFile.exists()) {
+
+				Properties props = new Properties();
+				props.load(new FileInputStream(propsFile));
+
+				if (Constants.CAGRID_VERSION.equals(props
+						.getProperty("cagrid.master.project.version"))) {
+					isCorrectVersion = true;
+				}
+			}
+		} catch (Exception ex) {
+			logger.debug("Error checking caGrid version: " + ex.getMessage(), ex);
+		}
+		return isCorrectVersion;
+	}
+	
+	
+	public static boolean checkTomcatVersion(String home) {
+		boolean correctVersion = false;
+		try {
+			String[] envp = new String[] { "JAVA_HOME="
+					+ System.getProperty("java.home") };
+
+			String antHome = System.getenv("CATALINA_HOME");
+			String[] cmd = null;
+			if (InstallerUtils.isWindows()) {
+				cmd = new String[] { antHome + "/bin/version.bat" };
+			} else {
+				cmd = new String[] { "sh", antHome + "/bin/version.sh" };
+			}
+			Process p = Runtime.getRuntime().exec(cmd, envp);
+			StringBuffer stdout = new StringBuffer();
+			new IOThread(p.getInputStream(), System.out, stdout).start();
+			p.waitFor();
+			correctVersion = stdout.toString().indexOf("Apache Tomcat/5.0.28") != -1;
+		} catch (Exception ex) {
+			logger
+					.warn("Error checking Tomcat version: " + ex.getMessage(),
+							ex);
+		}
+		return correctVersion;
+
+	}	
+	
+	public static boolean checkGlobusVersion(String home) {
+		return home.indexOf("4.0.3") != -1;
+	}
+
+
+
+	public static boolean checkAntVersion(String home) {
+		boolean correctVersion = false;
+		try {
+			String[] envp = new String[] { "JAVA_HOME="
+					+ System.getProperty("java.home") };
+
+			String antHome = System.getenv("ANT_HOME");
+
+			String[] cmd = null;
+			if (InstallerUtils.isWindows()) {
+				cmd = new String[] { antHome + "/bin/ant.bat", "-version" };
+			} else {
+				cmd = new String[] { "sh", antHome + "/bin/ant", "-version" };
+			}
+
+			Process p = Runtime.getRuntime().exec(cmd, envp);
+			StringBuffer stdout = new StringBuffer();
+			new IOThread(p.getInputStream(), System.out, stdout).start();
+			p.waitFor();
+			correctVersion = stdout.toString().indexOf(
+					"Apache Ant version 1.6.5") != -1;
+		} catch (Exception ex) {
+			logger.warn("Error checking Ant version: " + ex.getMessage(), ex);
+		}
+		return correctVersion;
+	}
+
+	public static boolean checkActiveBPELVersion(String home) {
+		//TODO: improve this check
+		return new File(home).exists();
+	}	
+	
 }

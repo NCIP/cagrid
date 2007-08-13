@@ -58,4 +58,6 @@ public interface CaGridInstallerModel extends WizardModel {
 	boolean isSecureContainerRequired();
 
 	boolean isConfigureContainerSelected();
+
+	boolean isSyncGTSInstalled();
 }
