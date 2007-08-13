@@ -9,7 +9,7 @@ file in the etc directory.  The GME also dynamically creates its databases and t
 Make sure that the database priviliges are set correctly to enable this.
 
 GME installations should run a backup script to make sure the integrity of the database
-can be restored apon any failures.  A general purpose script for this is provided in the
+can be restored upon any failures.  A general purpose script for this is provided in the
 tools/backup directory.  This script can be executed from a crontab and will maintain 5 rolling 
 backup caches of the GME databases.
 
