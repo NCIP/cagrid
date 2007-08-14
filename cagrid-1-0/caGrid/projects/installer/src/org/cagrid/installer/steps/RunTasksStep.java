@@ -243,6 +243,7 @@ public class RunTasksStep extends PanelWizardStep implements
 					getStartButton().setEnabled(false);
 					RunTasksStep.this.setDeactivePrevious(true);
 					RunTasksStep.this.model.setDeactivatePrevious(true);
+					RunTasksStep.this.setSummary(workingLabel);
 					w.start();
 				}
 			});
@@ -259,6 +260,7 @@ public class RunTasksStep extends PanelWizardStep implements
 				getBusyProgressBar()
 						.setValue(getBusyProgressBar().getMaximum());
 				setBusyLabel(this.model.getMessage("finished"));
+				setSummary(this.model.getMessage("finished"));
 				setComplete(true);
 			}
 		} else if ("currentTask" == evt.getPropertyName()) {
@@ -266,6 +268,7 @@ public class RunTasksStep extends PanelWizardStep implements
 			setBusyLabel(currentTask.getName());
 		} else if ("exception" == evt.getPropertyName()) {
 			this.exception = (Exception) evt.getNewValue();
+			setSummary(this.model.getMessage("error"));
 			setBusyLabel(this.model.getMessage("error"));
 			String msg = this.exception.getMessage();
 			logger.error(msg, this.exception);

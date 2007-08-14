@@ -116,8 +116,8 @@ public class PropertyConfigurationStep extends PanelWizardStep {
 		GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
 		gridBagConstraints1.gridx = 0;
 		gridBagConstraints1.fill = GridBagConstraints.BOTH;
-//		gridBagConstraints1.weightx = 1.0D;
-//		gridBagConstraints1.weighty = 1.0D;
+		gridBagConstraints1.weightx = 1.0D;
+		gridBagConstraints1.weighty = 1.0D;
 		gridBagConstraints1.gridy = 1;
 		this.setLayout(new GridBagLayout());
 		this.add(getOptionsPanel(), gridBagConstraints1);

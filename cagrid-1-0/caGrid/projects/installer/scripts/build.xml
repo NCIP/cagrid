@@ -40,6 +40,13 @@
 
 	</target>
 
+	<target name="copy-browser">
+		<mkdir dir="${service.dest.dir}/cagrid-browser" />
+		<copy todir="${service.dest.dir}/cagrid-browser" overwrite="true">
+			<fileset dir="${browser.home}" />
+		</copy>
+	</target>
+
 	<target name="configure-dorian-conf">
 
 		<property name="dorian.config.ns"
@@ -891,13 +898,33 @@ ${authn.svc.csm.ctx}{
 				value="${portal.context.name}" />
 		</ant>
 	</target>
-
+	
+	<target name="deploy-browser">
+		<ant dir="${service.dest.dir}/cagrid-browser" inheritAll="false"
+			target="deployWebapp">
+			<property name="project.name"
+				value="${browser.context.name}" />
+		</ant>
+	</target>
+	
 	<target name="deploy-portal-crypto-jars">
+		<antcall target="deploy-webapp-crypto-jars">
+			<param name="webapp.context.name" value="${portal.context.name}"/>
+		</antcall>
+	</target>
+	
+	<target name="deploy-browser-crypto-jars">
+		<antcall target="deploy-webapp-crypto-jars">
+			<param name="webapp.context.name" value="${browser.context.name}"/>
+		</antcall>
+	</target>
+
+	<target name="deploy-webapp-crypto-jars">
 		<if>
 			<available file="${tomcat.home}/common/lib/cog-jglobus.jar" />
 			<then>
 				<!-- It's a secure container. Only need to ensure the correct cog-jglobus.jar -->
-				
+
 				<copy
 					file="${cagrid.home}/projects/syncgts/lib/globus-patches/cog-jglobus.jar"
 					todir="${tomcat.home}/common/lib" overwrite="true" />
@@ -907,8 +934,8 @@ ${authn.svc.csm.ctx}{
 					file="${tomcat.home}/webapps/wsrf/WEB-INF/lib/cog-jglobus.jar" />
 				<then>
 					<!-- Then some other Globus service is installed that needs these 
-						 crypto jars. Need to consolidate under CATALINA_HOME/common/lib 
-						 to avoid class loader issues. -->
+						crypto jars. Need to consolidate under CATALINA_HOME/common/lib 
+						to avoid class loader issues. -->
 					<delete>
 						<fileset
 							dir="${tomcat.home}/webapps/wsrf/WEB-INF/lib">
@@ -932,13 +959,13 @@ ${authn.svc.csm.ctx}{
 				</then>
 			</elseif>
 			<else>
-				<!-- Installing portal into non-secure container, without any other globus services. -->
+				<!-- Installing webapp into non-secure container, without any other globus services. -->
 				<copy
 					file="${cagrid.home}/projects/syncgts/lib/globus-patches/cog-jglobus.jar"
-					todir="${tomcat.home}/webapps/${portal.context.name}/WEB-INF/lib"
+					todir="${tomcat.home}/webapps/${webapp.context.name}/WEB-INF/lib"
 					overwrite="true" />
 				<copy
-					todir="${tomcat.home}/webapps/${portal.context.name}/WEB-INF/lib"
+					todir="${tomcat.home}/webapps/${webapp.context.name}/WEB-INF/lib"
 					overwrite="true">
 					<fileset dir="${globus.home}">
 						<include name="cryptix*.jar" />
@@ -948,6 +975,70 @@ ${authn.svc.csm.ctx}{
 				</copy>
 			</else>
 		</if>
+	</target>
+
+	<target name="configure-browser">
+
+		<property name="config.file"
+			value="${service.dest.dir}/cagrid-browser/webcontent/WEB-INF/faces-config.xml" />
+
+		<xmltask source="${config.file}" dest="${config.file}"
+			preservetype="true">
+			<remove
+				path="/*[local-name()='faces-config']/*[local-name()='managed-bean' and ./*[local-name()='managed-bean-name' and text()='discoveryBean']]/*[local-name()='managed-property' and ./*[local-name()='property-name' and text()='indexServiceUrls']]/*[local-name()='list-entries']/*[local-name()='value']" />
+			<remove
+				path="/*[local-name()='faces-config']/*[local-name()='managed-bean' and ./*[local-name()='managed-bean-name' and text()='discoveryBean']]/*[local-name()='managed-property' and ./*[local-name()='property-name' and text()='indexServiceUrlsSelected']]/*[local-name()='list-entries']/*[local-name()='value']" />
+				
+			<remove
+				path="/*[local-name()='faces-config']/*[local-name()='managed-bean' and ./*[local-name()='managed-bean-name' and starts-with(text(),'indexService')]]"/>
+		</xmltask>
+
+		<var name="idx" value="0" />
+		<for list="${browser.index.svc.urls}" param="url">
+			<sequential>
+				<math result="sum" operand1="${idx}" operation="+"
+					operand2="1" datatype="int" />
+				<var name="idx" value="${sum}" />
+
+				<xmltask source="${config.file}" dest="${config.file}"
+					preservetype="true">
+					
+					<insert path="/*[local-name()='faces-config']/*[local-name()='managed-bean' and ./*[local-name()='managed-bean-name' and text()='discoveryBean']]/*[local-name()='managed-property' and ./*[local-name()='property-name' and text()='indexServiceUrls']]/*[local-name()='list-entries']">
+						<![CDATA[
+						<value xmlns="http://java.sun.com/JSF/Configuration">#{indexService${idx}}</value>
+						]]>
+					</insert>
+					
+					<insert path="/*[local-name()='faces-config']/*[local-name()='managed-bean' and ./*[local-name()='managed-bean-name' and text()='discoveryBean']]/*[local-name()='managed-property' and ./*[local-name()='property-name' and text()='indexServiceUrlsSelected']]/*[local-name()='list-entries']">
+						<![CDATA[
+						<value xmlns="http://java.sun.com/JSF/Configuration">#{indexService${idx}.value}</value>
+						]]>
+					</insert>
+					
+					
+					<insert path="/*[local-name()='faces-config']">
+						<![CDATA[
+    <managed-bean xmlns="http://java.sun.com/JSF/Configuration">
+        <managed-bean-name>indexService${idx}</managed-bean-name>
+        <managed-bean-class>javax.faces.model.SelectItem</managed-bean-class>
+        <managed-bean-scope>none</managed-bean-scope>
+        <managed-property>
+            <property-name>label</property-name>
+            <value>@{url}</value>
+        </managed-property>
+        <managed-property>
+            <property-name>value</property-name>
+            <value>@{url}</value>
+        </managed-property>
+    </managed-bean> 					
+						]]>
+					</insert>
+					
+				</xmltask>
+
+
+			</sequential>
+		</for>
 	</target>
 
 </project>

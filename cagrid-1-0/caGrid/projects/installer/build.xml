@@ -19,6 +19,7 @@
 	
 	<property name="download.properties.url" value="http://localhost:8080/downloads/cagrid.installer.properties"/>
 	<property name="cagrid.download.url" value="http://localhost:8080/downloads/${cagrid.master.jar.prefix}src.zip"/>
+	<property name="browser.download.url" value="http://localhost:8080/downloads/caGrid-1.1-browser.zip"/>
 	
 
 	<path id="build.classpath">
@@ -137,6 +138,7 @@
 		<copy file="cagrid.installer.properties" todir="build" overwrite="true">
 			<filterset>
 				<filter token="CAGRID_DOWNLOAD_URL" value="${cagrid.download.url}"/>
+				<filter token="BROWSER_DOWNLOAD_URL" value="${browser.download.url}"/>
 			</filterset>
 		</copy>
 		

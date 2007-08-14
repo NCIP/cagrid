@@ -79,8 +79,13 @@ public class CopySelectedServicesToTempDirTask extends CaGridInstallerAntTask {
 		}
 		sysProps.setProperty("selected.services", sb.toString());
 
-		return new AntTask("", "", target, env, sysProps).execute(model);
+		new AntTask("", "", target, env, sysProps).execute(model);
 
+		if(model.isTrue(Constants.INSTALL_BROWSER)){
+			new AntTask("", "", "copy-browser", env, sysProps).execute(model);
+		}
+		
+		return null;
 	}
 
 }

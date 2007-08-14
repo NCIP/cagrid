@@ -6,6 +6,8 @@ package org.cagrid.installer.model;
 import java.util.Map;
 
 import org.pietschy.wizard.WizardModel;
+import org.pietschy.wizard.WizardStep;
+import org.pietschy.wizard.models.Condition;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
@@ -14,6 +16,10 @@ import org.pietschy.wizard.WizardModel;
 public interface CaGridInstallerModel extends WizardModel {
 
 //	Map getState();
+	
+	void add(WizardStep step);
+	
+	void add(WizardStep step, Condition condition);
 	
 	Map<String,String> getStateMap();
 	
@@ -60,4 +66,20 @@ public interface CaGridInstallerModel extends WizardModel {
 	boolean isConfigureContainerSelected();
 
 	boolean isSyncGTSInstalled();
+	
+	boolean isAntInstalled();
+
+	boolean isTomcatInstalled();
+
+	boolean isGlobusInstalled();
+
+	boolean isCaGridInstalled();
+
+	boolean isActiveBPELInstalled();
+	
+	boolean isGlobusConfigured();
+	
+	boolean isGlobusDeployed();
+
+	boolean isBrowserInstalled();
 }

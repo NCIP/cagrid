@@ -111,9 +111,6 @@ public abstract class Constants {
 
 	public static final String ACTIVEBPEL_DIR_NAME = "activebpel.dir.name";
 
-	
-	public static final String GLOBUS_DEPLOYED = "globus.deployed";
-
 	public static final String REDEPLOY_GLOBUS = "redeploy.globus";
 
 	public static final String USE_SECURE_CONTAINER = "use.secure.container";
@@ -139,10 +136,6 @@ public abstract class Constants {
 	public static final String INSTALL_IDENT_SVC = "install.ident.svc";
 
 	public static final String CA_CERT_PRESENT = "ca.cert.present";
-
-//	public static final String GENERATE_SERVICE_CERT = "gen.service.cert";
-
-//	public static final String GENERATE_CA_CERT = "gen.ca.cert";
 
 	public static final String SERVICE_HOSTNAME = "service.hostname";
 
@@ -380,8 +373,6 @@ public abstract class Constants {
 
 	public static final String RECONFIGURE_GLOBUS = "reconfigure.globus";
 
-	public static final String GLOBUS_CONFIGURED = "globus.configured";
-
 	public static final String RECONFIGURE_CAGRID = "reconfigure.cagrid";
 
 	public static final String INSTALL_MY_SERVICE = "install.my.service";
@@ -415,6 +406,30 @@ public abstract class Constants {
 	public static final String PORTAL_CONTEXT_NAME = "portal.context.name";
 
 	public static final String CAGRID_VERSION = "1.1";
+
+	public static final String BROWSER_HOME = "browser.home";
+
+	public static final String BROWSER_INSTALLED = "browser.installed";
+
+	public static final String BROWSER_INSTALL_DIR_PATH = "browser.install.dir.path";
+
+	public static final String BROWSER_DOWNLOAD_URL = "browser.download.url";
+
+	public static final String BROWSER_TEMP_FILE_NAME = "browser.temp.file.name";
+
+	public static final String BROWSER_DIR_NAME = "browser.dir.name";
+
+	public static final String BROWSER_INDEX_SERVICE_URLS = "browser.index.svc.urls";
+
+	public static final String BROWSER_EVS_SVC_URL = "browser.evs.svc.url";
+
+	public static final String BROWSER_IDP_URL1 = "browser.idp.url1";
+
+	public static final String BROWSER_IDP_URL2 = "browser.idp.url2";
+
+	public static final String BROWSER_IFS_URL = "browser.ifs.url";
+
+	public static final String BROWSER_CONTEXT_NAME = "browser.context.name";
 
 
 }

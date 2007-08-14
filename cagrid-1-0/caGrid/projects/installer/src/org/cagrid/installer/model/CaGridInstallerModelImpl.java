@@ -12,12 +12,19 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.installer.steps.Constants;
 import org.cagrid.installer.steps.RunTasksStep;
 import org.cagrid.installer.util.InstallerUtils;
 import org.pietschy.wizard.models.DynamicModel;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
@@ -33,6 +40,20 @@ CaGridInstallerModel {
 	private PropertyChangeEventProviderMap state;
 
 	private ResourceBundle messages;
+
+	private Boolean tomcatInstalled = null;
+
+	private Boolean globusInstalled = null;
+
+	private Boolean activeBpelInstalled = null;
+
+	private Boolean antInstalled = null;
+
+	private Boolean cagridInstalled = null;
+
+	private Boolean globusConfigured = null;
+
+	private Boolean globusDeployed = null;
 
 	/**
 	 * 
@@ -119,7 +140,7 @@ CaGridInstallerModel {
 
 	public boolean isTomcatConfigurationRequired() {
 		return isTomcatContainer()
-				&& (isTrue(Constants.REDEPLOY_GLOBUS) || !isTrue(Constants.GLOBUS_DEPLOYED));
+				&& (isTrue(Constants.REDEPLOY_GLOBUS) || !isGlobusDeployed());
 
 	}
 
@@ -140,9 +161,8 @@ CaGridInstallerModel {
 		return isTrue(Constants.USE_SECURE_CONTAINER)
 				&& (isTrue(Constants.RECONFIGURE_GLOBUS)
 						|| isTrue(Constants.REDEPLOY_GLOBUS)
-						|| isTomcatContainer()
-						&& !isTrue(Constants.GLOBUS_DEPLOYED) || !isTomcatContainer()
-						&& !isTrue(Constants.GLOBUS_CONFIGURED));
+						|| isTomcatContainer() && !isGlobusDeployed() || !isTomcatContainer()
+						&& !isGlobusConfigured());
 	}
 
 	public boolean isSet(String propName) {
@@ -188,12 +208,12 @@ CaGridInstallerModel {
 	public boolean isConfigureGlobusRequired() {
 		return !isTomcatContainer()
 				&& isTrue(Constants.USE_SECURE_CONTAINER)
-				&& (isTrue(Constants.RECONFIGURE_GLOBUS) || !isTrue(Constants.GLOBUS_CONFIGURED));
+				&& (isTrue(Constants.RECONFIGURE_GLOBUS) || !isGlobusConfigured());
 	}
 
 	public boolean isDeployGlobusRequired() {
 		return isTomcatContainer()
-				&& (isTrue(Constants.REDEPLOY_GLOBUS) || !isTrue(Constants.GLOBUS_DEPLOYED));
+				&& (isTrue(Constants.REDEPLOY_GLOBUS) || !isGlobusDeployed());
 	}
 
 	public void setDeactivatePrevious(boolean b) {
@@ -241,5 +261,148 @@ CaGridInstallerModel {
 				getProperty(Constants.TOMCAT_HOME)
 						+ "/webapps/wsrf/WEB-INF/etc/cagrid_SyncGTS/sync-description.xml");
 		return syncDescFile.exists();
+	}
+
+	public boolean isAntInstalled() {
+		if (antInstalled == null) {
+			String homeDir = getHomeDir(Constants.ANT_HOME, "ANT_HOME");
+			antInstalled = homeDir != null
+					&& InstallerUtils.checkAntVersion(homeDir);
+		}
+		return antInstalled;
+	}
+
+	protected String getHomeDir(String homeProp, String envName) {
+		String home = getProperty(homeProp);
+		if (home == null) {
+			if (envName != null) {
+				logger
+						.info(homeProp
+								+ " was not found in initial properties. Checking environment variable: "
+								+ envName);
+				home = System.getenv(envName);
+			}
+		}
+		if (home != null) {
+			File f = new File(home);
+			if (!f.exists()) {
+				logger.info(home + " does not exist");
+				home = null;
+			}
+		}
+		return home;
+	}
+
+	public boolean isTomcatInstalled() {
+		if (tomcatInstalled == null) {
+			String homeDir = getHomeDir(Constants.TOMCAT_HOME, "CATALINA_HOME");
+			tomcatInstalled = homeDir != null
+					&& InstallerUtils.checkTomcatVersion(homeDir);
+		}
+		return tomcatInstalled;
+	}
+
+	public boolean isGlobusInstalled() {
+		if (globusInstalled == null) {
+			String homeDir = getHomeDir(Constants.GLOBUS_HOME,
+					"GLOBUS_LOCATION");
+			globusInstalled = homeDir != null
+					&& InstallerUtils.checkGlobusVersion(homeDir);
+		}
+		return globusInstalled;
+	}
+
+	public boolean isCaGridInstalled() {
+		if (cagridInstalled == null) {
+			String homeDir = getHomeDir(Constants.CAGRID_HOME, null);
+			cagridInstalled = homeDir != null
+					&& InstallerUtils.checkCaGridVersion(homeDir);
+		}
+		return cagridInstalled;
+	}
+
+	public boolean isActiveBPELInstalled() {
+
+		if (activeBpelInstalled == null) {
+			String homeDir = getHomeDir(Constants.ACTIVEBPEL_HOME, null);
+			activeBpelInstalled = homeDir != null
+					&& InstallerUtils.checkActiveBPELVersion(homeDir);
+		}
+		return activeBpelInstalled;
+
+	}
+
+	public boolean isGlobusConfigured() {
+
+		if (globusConfigured == null) {
+			globusConfigured = false;
+			File secDesc = new File(getProperty(Constants.GLOBUS_HOME)
+					+ "/etc/globus_wsrf_core/global_security_descriptor.xml");
+			if (secDesc.exists()) {
+				try {
+					DocumentBuilderFactory fact = DocumentBuilderFactory
+							.newInstance();
+					fact.setValidating(false);
+					fact.setNamespaceAware(true);
+					DocumentBuilder builder = fact.newDocumentBuilder();
+					Document doc = builder.parse(secDesc);
+					XPathFactory xpFact = XPathFactory.newInstance();
+					Element keyFileEl = (Element) xpFact
+							.newXPath()
+							.compile(
+									"/*[local-name()='securityConfig']/*[local-name()='credential']/*[local-name()='key-file']")
+							.evaluate(doc, XPathConstants.NODE);
+					Element certFileEl = (Element) xpFact
+							.newXPath()
+							.compile(
+									"/*[local-name()='securityConfig']/*[local-name()='credential']/*[local-name()='cert-file']")
+							.evaluate(doc, XPathConstants.NODE);
+					if (keyFileEl != null && certFileEl != null) {
+						String keyFilePath = keyFileEl.getAttribute("value");
+						String certFilePath = certFileEl.getAttribute("value");
+						if (keyFilePath != null && certFilePath != null) {
+							File keyFile = new File(keyFilePath);
+							File certFile = new File(certFilePath);
+							globusConfigured = keyFile.exists()
+									&& certFile.exists();
+						}
+					}
+				} catch (Exception ex) {
+					logger.error(
+							"Error checking if globus is already configured: "
+									+ ex.getMessage(), ex);
+				}
+			}
+		}
+
+		if (isTrue(Constants.INSTALL_TOMCAT)) {
+			globusConfigured = false;
+		}
+		return globusConfigured;
+	}
+
+	public boolean isGlobusDeployed() {
+		if (globusDeployed == null) {
+			globusDeployed = false;
+			if (isTomcatInstalled()) {
+				File wsrfDir = new File(
+						(String) getProperty(Constants.TOMCAT_HOME)
+								+ "/webapps/wsrf");
+				globusDeployed = wsrfDir.exists();
+			}
+		}
+		if(isTrue(Constants.INSTALL_TOMCAT)){
+			globusDeployed = false;
+		}
+		return globusDeployed;
+	}
+
+	public boolean isBrowserInstalled() {
+		boolean installed = false;
+		String homeDir = getHomeDir(Constants.BROWSER_HOME, null);
+		if (homeDir != null) {
+			installed = InstallerUtils.checkBrowserVersion(homeDir);
+		}
+		return installed;
 	}
 }
