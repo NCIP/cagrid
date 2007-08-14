@@ -718,5 +718,10 @@
                 <include name="gridgrouper-ui-configuration.xml" />
             </fileset>
         </artifact>
+        <artifact track="main" type="resources" id="workflow.ui.conf">
+            <fileset dir="${current.grid.dir}">
+                <include name="workflow-ui-configuration.xml" />
+            </fileset>
+        </artifact>
     </target>
 </project>
