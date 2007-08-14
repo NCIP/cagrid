@@ -19,7 +19,7 @@ import javax.swing.JPanel;
  * @author David Ervin
  * 
  * @created May 21, 2007 10:50:26 AM
- * @version $Id: MonitoredEventsPanel.java,v 1.1 2007-07-12 17:20:52 dervin Exp $ 
+ * @version $Id: MonitoredEventsPanel.java,v 1.1.2.1 2007-08-14 14:42:01 dervin Exp $ 
  */
 public class MonitoredEventsPanel extends JPanel {
 

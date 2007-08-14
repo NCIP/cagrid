@@ -10,7 +10,7 @@ import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
  * @author David Ervin
  * 
  * @created Jul 10, 2007 10:49:21 AM
- * @version $Id: StyleCodegenPostProcessor.java,v 1.1 2007-07-12 17:20:52 dervin Exp $ 
+ * @version $Id: StyleCodegenPostProcessor.java,v 1.1.2.1 2007-08-14 14:42:01 dervin Exp $ 
  */
 public interface StyleCodegenPostProcessor {
 

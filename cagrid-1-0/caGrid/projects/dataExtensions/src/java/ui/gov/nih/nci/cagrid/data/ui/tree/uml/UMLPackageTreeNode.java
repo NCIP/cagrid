@@ -10,7 +10,7 @@ import gov.nih.nci.cagrid.data.ui.tree.CheckBoxTreeNode;
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  * 
  * @created Oct 5, 2006 
- * @version $Id: UMLPackageTreeNode.java,v 1.1 2007-07-12 17:20:52 dervin Exp $ 
+ * @version $Id: UMLPackageTreeNode.java,v 1.1.2.1 2007-08-14 14:42:01 dervin Exp $ 
  */
 public class UMLPackageTreeNode extends CheckBoxTreeNode {
 	private String packageName;

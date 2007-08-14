@@ -50,7 +50,7 @@ import javax.swing.JScrollPane;
  * 
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  * @created May 11, 2006
- * @version $Id: ClassBrowserPanel.java,v 1.3 2007-08-06 14:04:08 dervin Exp $
+ * @version $Id: ClassBrowserPanel.java,v 1.3.2.1 2007-08-14 14:42:01 dervin Exp $
  */
 public class ClassBrowserPanel extends JPanel {
 

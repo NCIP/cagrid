@@ -24,7 +24,7 @@ import javax.swing.tree.TreeSelectionModel;
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  * 
  * @created Oct 5, 2006 
- * @version $Id: CheckBoxTree.java,v 1.2 2007-08-10 17:01:02 dervin Exp $ 
+ * @version $Id: CheckBoxTree.java,v 1.2.2.1 2007-08-14 14:42:01 dervin Exp $ 
  */
 public class CheckBoxTree extends JTree {
 	private DefaultTreeModel model;

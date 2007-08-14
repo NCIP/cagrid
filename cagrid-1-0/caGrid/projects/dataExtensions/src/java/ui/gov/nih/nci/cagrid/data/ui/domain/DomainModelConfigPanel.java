@@ -65,7 +65,7 @@ import org.projectmobius.portal.PortalResourceManager;
  * @author David Ervin
  * 
  * @created Apr 11, 2007 9:59:24 AM
- * @version $Id: DomainModelConfigPanel.java,v 1.3 2007-08-10 17:27:16 dervin Exp $
+ * @version $Id: DomainModelConfigPanel.java,v 1.3.2.1 2007-08-14 14:42:01 dervin Exp $
  */
 public class DomainModelConfigPanel extends DataServiceModificationSubPanel {
 

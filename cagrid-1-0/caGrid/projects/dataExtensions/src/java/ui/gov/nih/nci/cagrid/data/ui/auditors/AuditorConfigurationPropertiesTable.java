@@ -21,7 +21,7 @@ import javax.swing.table.DefaultTableModel;
  * @author David Ervin
  * 
  * @created May 21, 2007 10:58:45 AM
- * @version $Id: AuditorConfigurationPropertiesTable.java,v 1.1 2007-07-12 17:20:52 dervin Exp $ 
+ * @version $Id: AuditorConfigurationPropertiesTable.java,v 1.1.2.1 2007-08-14 14:42:01 dervin Exp $ 
  */
 public class AuditorConfigurationPropertiesTable extends JTable {
 

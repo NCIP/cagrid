@@ -39,7 +39,7 @@ import org.projectmobius.common.XMLUtilities;
  * @author David Ervin
  * 
  * @created Apr 4, 2007 9:56:09 AM
- * @version $Id: BDTFeatureCreator.java,v 1.2 2007-07-18 14:01:47 dervin Exp $ 
+ * @version $Id: BDTFeatureCreator.java,v 1.2.2.1 2007-08-14 14:42:01 dervin Exp $ 
  */
 public class BDTFeatureCreator extends FeatureCreator {
 

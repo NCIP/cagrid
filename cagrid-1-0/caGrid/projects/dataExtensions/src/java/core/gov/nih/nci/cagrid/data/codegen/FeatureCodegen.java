@@ -13,7 +13,7 @@ import java.util.Properties;
  * @author David Ervin
  * 
  * @created Mar 12, 2007 1:18:19 PM
- * @version $Id: FeatureCodegen.java,v 1.1 2007-07-12 17:20:52 dervin Exp $ 
+ * @version $Id: FeatureCodegen.java,v 1.1.2.1 2007-08-14 14:42:01 dervin Exp $ 
  */
 public abstract class FeatureCodegen {
 

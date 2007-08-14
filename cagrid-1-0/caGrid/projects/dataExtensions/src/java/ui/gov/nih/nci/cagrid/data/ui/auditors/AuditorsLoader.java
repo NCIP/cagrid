@@ -22,7 +22,7 @@ import java.util.jar.JarFile;
  * @author David Ervin
  * 
  * @created May 23, 2007 4:05:52 PM
- * @version $Id: AuditorsLoader.java,v 1.2 2007-08-06 14:04:08 dervin Exp $ 
+ * @version $Id: AuditorsLoader.java,v 1.2.2.1 2007-08-14 14:42:01 dervin Exp $ 
  */
 public class AuditorsLoader {
 

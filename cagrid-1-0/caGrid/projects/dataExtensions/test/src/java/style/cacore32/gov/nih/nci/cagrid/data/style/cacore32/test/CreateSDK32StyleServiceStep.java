@@ -23,7 +23,7 @@ import java.io.InputStream;
  * @author David Ervin
  * 
  * @created Jul 18, 2007 2:53:54 PM
- * @version $Id: CreateSDK32StyleServiceStep.java,v 1.1 2007-07-19 16:41:24 dervin Exp $ 
+ * @version $Id: CreateSDK32StyleServiceStep.java,v 1.1.2.1 2007-08-14 14:42:01 dervin Exp $ 
  */
 public class CreateSDK32StyleServiceStep extends CreationStep {
 

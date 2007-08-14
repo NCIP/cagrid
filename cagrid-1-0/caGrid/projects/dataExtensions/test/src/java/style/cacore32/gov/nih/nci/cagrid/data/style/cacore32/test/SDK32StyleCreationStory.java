@@ -16,7 +16,7 @@ import com.atomicobject.haste.framework.Story;
  * @author David Ervin
  * 
  * @created Jul 18, 2007 2:35:15 PM
- * @version $Id: SDK32StyleCreationStory.java,v 1.1 2007-07-19 16:41:23 dervin Exp $ 
+ * @version $Id: SDK32StyleCreationStory.java,v 1.1.2.1 2007-08-14 14:42:01 dervin Exp $ 
  */
 public class SDK32StyleCreationStory extends Story {
     public static final String INTRODUCE_DIR_PROPERTY = "introduce.base.dir";

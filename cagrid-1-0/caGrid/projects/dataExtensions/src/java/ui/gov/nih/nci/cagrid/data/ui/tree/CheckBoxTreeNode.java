@@ -18,7 +18,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  * 
  * @created Apr 20, 2006 
- * @version $Id: CheckBoxTreeNode.java,v 1.2 2007-08-10 17:01:13 dervin Exp $ 
+ * @version $Id: CheckBoxTreeNode.java,v 1.2.2.1 2007-08-14 14:42:01 dervin Exp $ 
  */
 public class CheckBoxTreeNode extends DefaultMutableTreeNode {
 

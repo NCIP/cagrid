@@ -12,7 +12,7 @@ import javax.swing.JPanel;
  * @author David Ervin
  * 
  * @created Jul 9, 2007 1:42:17 PM
- * @version $Id: DataServiceModificationSubPanel.java,v 1.1 2007-07-12 17:20:52 dervin Exp $ 
+ * @version $Id: DataServiceModificationSubPanel.java,v 1.1.2.1 2007-08-14 14:42:01 dervin Exp $ 
  */
 public abstract class DataServiceModificationSubPanel extends JPanel implements UpdatablePanel {
     private ServiceInformation serviceInfo;

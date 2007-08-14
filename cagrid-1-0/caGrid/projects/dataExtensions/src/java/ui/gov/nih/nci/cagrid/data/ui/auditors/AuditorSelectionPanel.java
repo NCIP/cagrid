@@ -33,7 +33,7 @@ import org.projectmobius.portal.PortalResourceManager;
  * @author David Ervin
  * 
  * @created May 21, 2007 11:38:54 AM
- * @version $Id: AuditorSelectionPanel.java,v 1.2 2007-08-13 14:14:07 dervin Exp $ 
+ * @version $Id: AuditorSelectionPanel.java,v 1.2.2.1 2007-08-14 14:42:01 dervin Exp $ 
  */
 public class AuditorSelectionPanel extends JPanel {
 

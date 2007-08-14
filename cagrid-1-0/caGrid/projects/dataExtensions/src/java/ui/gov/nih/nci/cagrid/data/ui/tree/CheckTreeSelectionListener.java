@@ -7,7 +7,7 @@ package gov.nih.nci.cagrid.data.ui.tree;
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  * 
  * @created Apr 21, 2006 
- * @version $Id: CheckTreeSelectionListener.java,v 1.1 2007-07-12 17:20:52 dervin Exp $ 
+ * @version $Id: CheckTreeSelectionListener.java,v 1.1.2.1 2007-08-14 14:42:01 dervin Exp $ 
  */
 public interface CheckTreeSelectionListener {
 

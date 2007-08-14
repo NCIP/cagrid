@@ -38,7 +38,7 @@ import org.apache.log4j.Logger;
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  * 
  * @created Jun 16, 2006 
- * @version $Id: BaseCodegenPostProcessorExtension.java,v 1.1 2007-07-12 17:20:52 dervin Exp $ 
+ * @version $Id: BaseCodegenPostProcessorExtension.java,v 1.1.2.1 2007-08-14 14:42:01 dervin Exp $ 
  */
 public abstract class BaseCodegenPostProcessorExtension implements CodegenExtensionPostProcessor {
 	private static final Logger logger = Logger.getLogger(DataServiceOperationProviderCodegenPostProcessor.class);

@@ -11,7 +11,7 @@ import java.util.EventListener;
  * @author David Ervin
  * 
  * @created May 21, 2007 11:57:48 AM
- * @version $Id: AuditorAdditionListener.java,v 1.1 2007-07-12 17:20:52 dervin Exp $ 
+ * @version $Id: AuditorAdditionListener.java,v 1.1.2.1 2007-08-14 14:42:01 dervin Exp $ 
  */
 public interface AuditorAdditionListener extends EventListener {
 

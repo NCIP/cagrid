@@ -30,7 +30,7 @@ import org.apache.log4j.Logger;
  * 
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  * @created Oct 10, 2006
- * @version $Id: DataServiceModificationPanel.java,v 1.3 2007-08-13 14:13:51 dervin Exp $
+ * @version $Id: DataServiceModificationPanel.java,v 1.3.2.1 2007-08-14 14:42:01 dervin Exp $
  */
 public class DataServiceModificationPanel extends ServiceModificationUIPanel {
     

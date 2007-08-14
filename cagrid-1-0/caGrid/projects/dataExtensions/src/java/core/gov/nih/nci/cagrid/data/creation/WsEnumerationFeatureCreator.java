@@ -37,7 +37,7 @@ import javax.xml.namespace.QName;
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  * 
  * @created Aug 22, 2006
- * @version $Id: WsEnumerationFeatureCreator.java,v 1.2 2007-07-18 14:01:47 dervin Exp $
+ * @version $Id: WsEnumerationFeatureCreator.java,v 1.2.2.1 2007-08-14 14:42:01 dervin Exp $
  */
 public class WsEnumerationFeatureCreator extends FeatureCreator {
 	public static final String WS_ENUM_EXTENSION_NAME = "cagrid_wsEnum";

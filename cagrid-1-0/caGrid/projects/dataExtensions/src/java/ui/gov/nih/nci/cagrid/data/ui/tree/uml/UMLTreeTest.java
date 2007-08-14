@@ -24,7 +24,7 @@ import javax.swing.JScrollPane;
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  * 
  * @created Oct 5, 2006 
- * @version $Id: UMLTreeTest.java,v 1.2 2007-07-27 01:56:26 dervin Exp $ 
+ * @version $Id: UMLTreeTest.java,v 1.2.2.1 2007-08-14 14:42:01 dervin Exp $ 
  */
 public class UMLTreeTest extends JFrame {
 	private UMLProjectTree projectTree = null;

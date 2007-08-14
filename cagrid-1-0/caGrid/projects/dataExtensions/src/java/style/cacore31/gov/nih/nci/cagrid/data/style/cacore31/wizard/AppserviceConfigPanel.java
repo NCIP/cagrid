@@ -35,7 +35,7 @@ import javax.swing.event.DocumentEvent;
  * @author David Ervin
  * 
  * @created Mar 23, 2007 3:35:47 PM
- * @version $Id: AppserviceConfigPanel.java,v 1.1 2007-07-12 17:20:52 dervin Exp $ 
+ * @version $Id: AppserviceConfigPanel.java,v 1.1.2.1 2007-08-14 14:42:01 dervin Exp $ 
  */
 public class AppserviceConfigPanel extends AbstractWizardPanel {
 

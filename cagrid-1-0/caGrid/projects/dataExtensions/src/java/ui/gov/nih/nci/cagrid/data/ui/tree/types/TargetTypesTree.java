@@ -18,7 +18,7 @@ import javax.swing.tree.TreePath;
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  * 
  * @created Apr 20, 2006 
- * @version $Id: TargetTypesTree.java,v 1.1 2007-07-12 17:20:52 dervin Exp $ 
+ * @version $Id: TargetTypesTree.java,v 1.1.2.1 2007-08-14 14:42:01 dervin Exp $ 
  */
 public class TargetTypesTree extends CheckBoxTree {
 	

@@ -10,7 +10,7 @@ import java.util.EventListener;
  * @author David Ervin
  * 
  * @created Mar 23, 2007 1:57:47 PM
- * @version $Id: AppserviceConfigCompletionListener.java,v 1.1 2007-07-12 17:20:52 dervin Exp $ 
+ * @version $Id: AppserviceConfigCompletionListener.java,v 1.1.2.1 2007-08-14 14:42:01 dervin Exp $ 
  */
 public interface AppserviceConfigCompletionListener extends EventListener {
 

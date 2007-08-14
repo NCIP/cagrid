@@ -45,7 +45,7 @@ import org.projectmobius.portal.PortalResourceManager;
  * @author David Ervin
  * 
  * @created Jun 14, 2007 10:14:20 AM
- * @version $Id: DomainModelAdvancedOptionsDialog.java,v 1.1 2007-07-12 17:20:52 dervin Exp $
+ * @version $Id: DomainModelAdvancedOptionsDialog.java,v 1.1.2.1 2007-08-14 14:42:01 dervin Exp $
  */
 public class DomainModelAdvancedOptionsDialog extends JDialog {
     public static final String INFORMATION = 

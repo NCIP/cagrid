@@ -25,7 +25,7 @@ import java.util.Set;
  * @author David Ervin
  * 
  * @created Jul 12, 2007 3:33:36 PM
- * @version $Id: SDK31InitializationPanel.java,v 1.1 2007-07-12 19:53:06 dervin Exp $ 
+ * @version $Id: SDK31InitializationPanel.java,v 1.1.2.1 2007-08-14 14:42:01 dervin Exp $ 
  */
 public class SDK31InitializationPanel extends CoreDsIntroPanel {
     

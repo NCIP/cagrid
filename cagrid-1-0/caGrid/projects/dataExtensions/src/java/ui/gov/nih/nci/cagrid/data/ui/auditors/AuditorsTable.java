@@ -22,7 +22,7 @@ import org.projectmobius.portal.JComponentCellEditor;
  * @author David Ervin
  * 
  * @created May 21, 2007 10:41:23 AM
- * @version $Id: AuditorsTable.java,v 1.1 2007-07-12 17:20:52 dervin Exp $ 
+ * @version $Id: AuditorsTable.java,v 1.1.2.1 2007-08-14 14:42:01 dervin Exp $ 
  */
 public class AuditorsTable extends JTable {
     

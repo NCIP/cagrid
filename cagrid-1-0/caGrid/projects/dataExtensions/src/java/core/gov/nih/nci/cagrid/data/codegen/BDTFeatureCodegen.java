@@ -20,7 +20,7 @@ import java.util.Properties;
  * @author David Ervin
  * 
  * @created Mar 13, 2007 1:10:16 PM
- * @version $Id: BDTFeatureCodegen.java,v 1.2 2007-08-06 13:52:50 dervin Exp $ 
+ * @version $Id: BDTFeatureCodegen.java,v 1.2.2.1 2007-08-14 14:42:01 dervin Exp $ 
  */
 public class BDTFeatureCodegen extends FeatureCodegen {
 	// public static final String NL = System.getProperties().getProperty("line.separator");

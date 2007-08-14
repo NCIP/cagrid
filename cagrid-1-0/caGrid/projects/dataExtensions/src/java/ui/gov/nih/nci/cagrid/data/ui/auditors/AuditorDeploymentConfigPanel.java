@@ -17,7 +17,7 @@ import java.awt.GridBagLayout;
  * @author David Ervin
  * 
  * @created May 24, 2007 1:34:32 PM
- * @version $Id: AuditorDeploymentConfigPanel.java,v 1.1 2007-07-12 17:20:52 dervin Exp $ 
+ * @version $Id: AuditorDeploymentConfigPanel.java,v 1.1.2.1 2007-08-14 14:42:01 dervin Exp $ 
  */
 public class AuditorDeploymentConfigPanel extends ServiceDeploymentUIPanel {
     

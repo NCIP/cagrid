@@ -10,7 +10,7 @@ import javax.swing.ButtonModel;
  * 
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>  * 
  * @created Nov 27, 2006 
- * @version $Id: GroupSelectionListener.java,v 1.1 2007-07-12 17:20:52 dervin Exp $ 
+ * @version $Id: GroupSelectionListener.java,v 1.1.2.1 2007-08-14 14:42:01 dervin Exp $ 
  */
 public interface GroupSelectionListener extends EventListener {
 

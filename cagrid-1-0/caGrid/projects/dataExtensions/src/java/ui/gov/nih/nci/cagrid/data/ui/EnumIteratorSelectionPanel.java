@@ -27,7 +27,7 @@ import javax.swing.border.TitledBorder;
  * @author David Ervin
  * 
  * @created Apr 30, 2007 1:59:16 PM
- * @version $Id: EnumIteratorSelectionPanel.java,v 1.1 2007-07-12 17:20:52 dervin Exp $ 
+ * @version $Id: EnumIteratorSelectionPanel.java,v 1.1.2.1 2007-08-14 14:42:01 dervin Exp $ 
  */
 public class EnumIteratorSelectionPanel extends DataServiceModificationSubPanel {
     

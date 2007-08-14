@@ -42,7 +42,7 @@ import javax.swing.JScrollPane;
  * @author David Ervin
  * 
  * @created Jun 27, 2007 8:58:22 AM
- * @version $Id: QueryProcessorConfigPanel.java,v 1.2 2007-07-17 13:40:36 dervin Exp $ 
+ * @version $Id: QueryProcessorConfigPanel.java,v 1.2.2.1 2007-08-14 14:42:01 dervin Exp $ 
  */
 public class QueryProcessorConfigPanel extends DataServiceModificationSubPanel {
     

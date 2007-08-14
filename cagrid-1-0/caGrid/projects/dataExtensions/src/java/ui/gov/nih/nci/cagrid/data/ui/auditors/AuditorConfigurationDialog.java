@@ -37,7 +37,7 @@ import org.projectmobius.portal.PortalResourceManager;
  * @author David Ervin
  * 
  * @created Jun 26, 2007 11:41:25 AM
- * @version $Id: AuditorConfigurationDialog.java,v 1.1 2007-07-12 17:20:52 dervin Exp $ 
+ * @version $Id: AuditorConfigurationDialog.java,v 1.1.2.1 2007-08-14 14:42:01 dervin Exp $ 
  */
 public class AuditorConfigurationDialog extends JDialog {
 

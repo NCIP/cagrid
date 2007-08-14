@@ -24,7 +24,7 @@ import org.projectmobius.portal.PortalResourceManager;
  * @author David Ervin
  * 
  * @created Apr 6, 2007 1:25:32 PM
- * @version $Id: QueryProcessorConfigurationDialog.java,v 1.1 2007-07-12 17:20:52 dervin Exp $ 
+ * @version $Id: QueryProcessorConfigurationDialog.java,v 1.1.2.1 2007-08-14 14:42:01 dervin Exp $ 
  */
 public class QueryProcessorConfigurationDialog extends JDialog {
     private CQLQueryProcessorConfigUI configUi = null;

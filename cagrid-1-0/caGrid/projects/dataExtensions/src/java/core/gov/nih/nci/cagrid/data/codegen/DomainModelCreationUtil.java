@@ -22,7 +22,7 @@ import org.apache.axis.types.URI.MalformedURIException;
  * @author David Ervin
  * 
  * @created Apr 2, 2007 1:35:01 PM
- * @version $Id: DomainModelCreationUtil.java,v 1.2 2007-07-27 13:41:26 dervin Exp $ 
+ * @version $Id: DomainModelCreationUtil.java,v 1.2.2.1 2007-08-14 14:42:01 dervin Exp $ 
  */
 public class DomainModelCreationUtil {
     
