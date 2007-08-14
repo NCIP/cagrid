@@ -356,6 +356,7 @@ public class WorkflowSubmissionGUI extends ApplicationComponent {
 							wsdlReferences[i] = (WSDLReferences) wsdlReferencesVector.elementAt(i);
 							
 						}
+						
 						factoryClient = new WorkflowFactoryServiceClient(
 								workflowFactoryURL);
 						WMSInputType input = factoryClient.createInput(bpelFile

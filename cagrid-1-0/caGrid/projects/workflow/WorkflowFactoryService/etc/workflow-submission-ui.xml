@@ -26,4 +26,20 @@
             </components>
         </menu>
     </menus>
+ <configuration>
+        <ConfigurationDescriptors>
+            <ConfigurationDescriptor>
+                <DisplayName>Workflow Management</DisplayName>
+                <SystemName>workflow</SystemName>
+                <ModelClassname>org.cagrid.grape.configuration.GeneralConfiguration</ModelClassname>
+                <qname>
+                    <namespace>http://www.cagrid.org/1/grape-general-configuration</namespace>
+                    <name>GeneralConfiguration</name>
+                </qname>
+                <ConfigurationPanel>org.cagrid.grape.GeneralConfigurationEditor</ConfigurationPanel>
+                <DefaultFile>ext/resources/workflow-ui-configuration.xml</DefaultFile>
+            </ConfigurationDescriptor>
+        </ConfigurationDescriptors>
+    </configuration>
+
 </application>
