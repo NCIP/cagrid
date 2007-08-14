@@ -829,6 +829,7 @@
     <target name="configure-workflow/WorkflowFactoryService" depends="prepare">
         <resolveDependencies extdir="${projects.dir}/workflow/WorkflowFactoryService/ext">
             <artifact refid="service_urls.properties" />
+            <artifact refid="workflow.ui.conf" />
         </resolveDependencies>
         <ant dir="${projects.dir}/workflow/WorkflowFactoryService" inheritAll="false" antfile="build.xml" target="configure" />
     </target>
