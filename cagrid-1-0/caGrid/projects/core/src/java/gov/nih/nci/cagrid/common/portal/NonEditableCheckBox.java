@@ -16,7 +16,7 @@ import javax.swing.JCheckBox;
  * @author David Ervin
  * 
  * @created Aug 8, 2007 10:57:31 AM
- * @version $Id: NonEditableCheckBox.java,v 1.1 2007-08-08 15:07:03 dervin Exp $ 
+ * @version $Id: NonEditableCheckBox.java,v 1.1.2.1 2007-08-14 13:50:05 dervin Exp $ 
  */
 public class NonEditableCheckBox extends JCheckBox {
 
