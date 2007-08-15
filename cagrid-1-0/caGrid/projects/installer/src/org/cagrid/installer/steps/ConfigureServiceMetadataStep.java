@@ -40,6 +40,7 @@ import javax.xml.xpath.XPathFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.installer.model.CaGridInstallerModel;
+import org.cagrid.installer.util.AutoSizingJTable;
 import org.cagrid.installer.util.InstallerUtils;
 import org.pietschy.wizard.InvalidStateException;
 import org.pietschy.wizard.PanelWizardStep;
@@ -184,10 +185,9 @@ public class ConfigureServiceMetadataStep extends PanelWizardStep implements
 
 		this.sPOCsTableModel = new DefaultTableModel(new Object[0][0],
 				pocColNames);
-		this.sPOCsTable = new JTable(this.sPOCsTableModel);
+		this.sPOCsTable = new AutoSizingJTable(this.sPOCsTableModel);
 		InstallerUtils.setUpCellRenderer(this.sPOCsTable);
-		this.sPOCsTable.setPreferredScrollableViewportSize(new Dimension(400,
-				100));
+		
 		JScrollPane sPOCsScrollPane = new JScrollPane(this.sPOCsTable);
 		sPOCsPanel.setLayout(new BorderLayout());
 		sPOCsPanel.add(BorderLayout.NORTH, new JLabel(this.model
@@ -281,10 +281,9 @@ public class ConfigureServiceMetadataStep extends PanelWizardStep implements
 
 		this.rPOCsTableModel = new DefaultTableModel(new Object[0][0],
 				pocColNames);
-		this.rPOCsTable = new JTable(this.rPOCsTableModel);
+		this.rPOCsTable = new AutoSizingJTable(this.rPOCsTableModel);
 		InstallerUtils.setUpCellRenderer(this.rPOCsTable);
-		this.rPOCsTable.setPreferredScrollableViewportSize(new Dimension(400,
-				100));
+		
 		JScrollPane rPOCsScrollPane = new JScrollPane(this.rPOCsTable);
 		rPOCsPanel.setLayout(new BorderLayout());
 		rPOCsPanel.add(BorderLayout.NORTH, new JLabel(this.model

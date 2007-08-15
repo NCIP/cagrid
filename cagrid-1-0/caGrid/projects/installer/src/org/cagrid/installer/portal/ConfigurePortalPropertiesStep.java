@@ -4,7 +4,6 @@
 package org.cagrid.installer.portal;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
@@ -17,7 +16,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JViewport;
 import javax.swing.table.DefaultTableModel;
 
 import org.apache.commons.logging.Log;
@@ -26,6 +24,7 @@ import org.cagrid.installer.model.CaGridInstallerModel;
 import org.cagrid.installer.steps.Constants;
 import org.cagrid.installer.steps.PropertyConfigurationStep;
 import org.cagrid.installer.steps.options.TextPropertyConfigurationOption;
+import org.cagrid.installer.util.AutoSizingJTable;
 import org.cagrid.installer.util.InstallerUtils;
 import org.pietschy.wizard.InvalidStateException;
 import org.pietschy.wizard.WizardModel;
@@ -120,17 +119,7 @@ public class ConfigurePortalPropertiesStep extends PropertyConfigurationStep
 
 		String[] idxColNames = new String[] { "URLs" };
 		this.idxTableModel = new DefaultTableModel(rowData, idxColNames);
-		this.idxTable = new JTable(this.idxTableModel) {
-
-			public boolean getScrollableTracksViewportHeight() {
-		        if (getParent() instanceof JViewport) {
-		            JViewport parent = (JViewport) getParent();
-		            return (parent.getHeight() > getPreferredSize().height);
-		        }
-		        return false;
-		    }
-			
-		};
+		this.idxTable = new AutoSizingJTable(this.idxTableModel);
 		InstallerUtils.setUpCellRenderer(this.idxTable);
 		indexSvcUrlsPanel.add(BorderLayout.NORTH, new JLabel(this.model
 				.getMessage("index.svc.urls")));

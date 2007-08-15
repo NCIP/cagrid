@@ -21,6 +21,7 @@ import javax.swing.table.DefaultTableModel;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.installer.model.CaGridInstallerModel;
+import org.cagrid.installer.util.AutoSizingJTable;
 import org.pietschy.wizard.InvalidStateException;
 import org.pietschy.wizard.PanelWizardStep;
 import org.pietschy.wizard.WizardModel;
@@ -89,7 +90,7 @@ public abstract class AbstractPropertiesFileEditorStep extends PanelWizardStep
 		JPanel tablePanel = new JPanel();
 		tablePanel.setLayout(new GridBagLayout());
 		this.add(tablePanel, gridBagConstraints1);
-		this.table = new JTable();
+		this.table = new AutoSizingJTable();
 		this.table.setPreferredScrollableViewportSize(new Dimension(500, 200));		
 		tablePanel.add(new JScrollPane(this.table));
 	}

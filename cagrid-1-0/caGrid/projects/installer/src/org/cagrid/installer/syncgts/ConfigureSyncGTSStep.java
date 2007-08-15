@@ -17,7 +17,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
-import java.util.Map;
 import java.util.Properties;
 
 import javax.swing.DefaultCellEditor;
@@ -42,6 +41,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.installer.model.CaGridInstallerModel;
 import org.cagrid.installer.steps.Constants;
+import org.cagrid.installer.util.AutoSizingJTable;
 import org.cagrid.installer.util.InstallerUtils;
 import org.pietschy.wizard.InvalidStateException;
 import org.pietschy.wizard.PanelWizardStep;
@@ -286,7 +286,7 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 				"TrustLevels", "Lifetime", "Status", "IsAuthority",
 				"AuthorityGTS", "SourceGTS" };
 		this.tafTableModel = new DefaultTableModel(new Object[0][0], colNames);
-		this.tafTable = new JTable(this.tafTableModel);
+		this.tafTable = new AutoSizingJTable(this.tafTableModel);
 		InstallerUtils.setUpCellRenderer(this.tafTable);
 
 		JComboBox lifetimeChoices = new JComboBox();
@@ -310,8 +310,7 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 		this.tafTable.getColumnModel().getColumn(5).setCellEditor(
 				new DefaultCellEditor(isAuthChoices));
 
-		this.tafTable
-				.setPreferredScrollableViewportSize(new Dimension(400, 100));
+		
 		JScrollPane scrollPane = new JScrollPane(this.tafTable);
 		trustedAuthFilterPanel.add(BorderLayout.NORTH, new JLabel(this.model
 				.getMessage("sync.gts.auth.filter")));
@@ -333,10 +332,8 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 
 		String[] ecColNames = new String[] { "ExcludedCAs" };
 		this.ecTableModel = new DefaultTableModel(new Object[0][0], ecColNames);
-		this.ecTable = new JTable(this.ecTableModel);
+		this.ecTable = new AutoSizingJTable(this.ecTableModel);
 		InstallerUtils.setUpCellRenderer(this.ecTable);
-		this.ecTable
-				.setPreferredScrollableViewportSize(new Dimension(400, 100));
 		excludedCAsPanel.add(BorderLayout.NORTH, new JLabel(this.model
 				.getMessage("sync.gts.excluded.cas")));
 		excludedCAsPanel
