@@ -556,7 +556,7 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 					String text = caSubjEl.getTextContent();
 					if (text != null && text.trim().length() > 0) {
 						String[] excludedCARow = new String[] { text };
-						logger.debug("Adding excluded CA: " + excludedCARow);
+						logger.debug("Adding excluded CA: " + text);
 						this.ecTableModel.addRow(excludedCARow);
 					}
 				}

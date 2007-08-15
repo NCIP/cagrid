@@ -3,6 +3,7 @@
  */
 package org.cagrid.installer.util;
 
+import java.awt.Dimension;
 import java.util.Vector;
 
 import javax.swing.JTable;
@@ -86,5 +87,9 @@ public class AutoSizingJTable extends JTable {
         }
         return false;
     }
+	
+	public Dimension getPreferredScrollableViewportSize() {
+		 return getPreferredSize();
+	}
 
 }
