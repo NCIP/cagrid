@@ -446,7 +446,7 @@ public class Introduce_1_0__1_1_Upgrader extends IntroduceUpgraderBase {
             if(csm){
                 hadCSMJars = true;
             }
-            boolean otherSecurityJarsNotNeeded= (filename.startsWith("caGrid-1.0-gridca") || filename.startsWith("caGrid-1.0-metadata-common"))
+            boolean otherSecurityJarsNotNeeded= (filename.startsWith("caGrid-1.0-gridca"))
             && filename.endsWith(".jar");
             
             boolean wsrf = (filename.startsWith("globus_wsrf_mds") || filename.startsWith("globus_wsrf_servicegroup"))
