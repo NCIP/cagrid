@@ -288,15 +288,19 @@ CaGridInstallerModel {
 	}
 
 	public boolean isAntInstalled() {
+		logger.debug("Looking for ant...");
 		if (antInstalled == null) {
+			logger.debug("...first time.");
 			String homeDir = getHomeDir(Constants.ANT_HOME, "ANT_HOME");
 			antInstalled = homeDir != null
 					&& InstallerUtils.checkAntVersion(homeDir);
 		}
+		logger.debug("...antInstalled = " + antInstalled);
 		return antInstalled;
 	}
 
 	protected String getHomeDir(String homeProp, String envName) {
+		logger.debug("looking for home '" + homeProp + "'...");
 		String home = getProperty(homeProp);
 		if (home == null) {
 			if (envName != null) {
@@ -314,6 +318,7 @@ CaGridInstallerModel {
 				home = null;
 			}
 		}
+		logger.debug("...home = " + home);
 		return home;
 	}
 
