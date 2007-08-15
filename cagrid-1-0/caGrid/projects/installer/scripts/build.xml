@@ -42,7 +42,8 @@
 
 	<target name="copy-browser">
 		<mkdir dir="${service.dest.dir}/cagrid-browser" />
-		<copy todir="${service.dest.dir}/cagrid-browser" overwrite="true">
+		<copy todir="${service.dest.dir}/cagrid-browser"
+			overwrite="true">
 			<fileset dir="${browser.home}" />
 		</copy>
 	</target>
@@ -236,14 +237,16 @@
 
 		</xmltask>
 
-		<xmltask source="${config.file}" dest="${config.file}">
 
-			<if>
-				<not>
-					<equals arg1="${dorian.ifs.gts.url}" arg2=""
-						trim="true" />
-				</not>
-				<then>
+
+		<if>
+			<not>
+				<equals arg1="${dorian.ifs.gts.url}" arg2=""
+					trim="true" />
+			</not>
+			<then>
+				<xmltask source="${config.file}"
+					dest="${config.file}">
 					<insert
 						path="/*[local-name()='DorianConfiguration']/*[local-name()='IdentityFederationConfiguration']">
 						<![CDATA[
@@ -252,9 +255,10 @@
 				</CRLPublish>
 						]]>
 					</insert>
-				</then>
-			</if>
-		</xmltask>
+				</xmltask>
+			</then>
+		</if>
+
 
 		<xmltask source="${config.file}" dest="${config.file}">
 			<replace
@@ -898,7 +902,7 @@ ${authn.svc.csm.ctx}{
 				value="${portal.context.name}" />
 		</ant>
 	</target>
-	
+
 	<target name="deploy-browser">
 		<ant dir="${service.dest.dir}/cagrid-browser" inheritAll="false"
 			target="deployWebapp">
@@ -906,16 +910,18 @@ ${authn.svc.csm.ctx}{
 				value="${browser.context.name}" />
 		</ant>
 	</target>
-	
+
 	<target name="deploy-portal-crypto-jars">
 		<antcall target="deploy-webapp-crypto-jars">
-			<param name="webapp.context.name" value="${portal.context.name}"/>
+			<param name="webapp.context.name"
+				value="${portal.context.name}" />
 		</antcall>
 	</target>
-	
+
 	<target name="deploy-browser-crypto-jars">
 		<antcall target="deploy-webapp-crypto-jars">
-			<param name="webapp.context.name" value="${browser.context.name}"/>
+			<param name="webapp.context.name"
+				value="${browser.context.name}" />
 		</antcall>
 	</target>
 
@@ -988,9 +994,9 @@ ${authn.svc.csm.ctx}{
 				path="/*[local-name()='faces-config']/*[local-name()='managed-bean' and ./*[local-name()='managed-bean-name' and text()='discoveryBean']]/*[local-name()='managed-property' and ./*[local-name()='property-name' and text()='indexServiceUrls']]/*[local-name()='list-entries']/*[local-name()='value']" />
 			<remove
 				path="/*[local-name()='faces-config']/*[local-name()='managed-bean' and ./*[local-name()='managed-bean-name' and text()='discoveryBean']]/*[local-name()='managed-property' and ./*[local-name()='property-name' and text()='indexServiceUrlsSelected']]/*[local-name()='list-entries']/*[local-name()='value']" />
-				
+
 			<remove
-				path="/*[local-name()='faces-config']/*[local-name()='managed-bean' and ./*[local-name()='managed-bean-name' and starts-with(text(),'indexService')]]"/>
+				path="/*[local-name()='faces-config']/*[local-name()='managed-bean' and ./*[local-name()='managed-bean-name' and starts-with(text(),'indexService')]]" />
 		</xmltask>
 
 		<var name="idx" value="0" />
@@ -1002,20 +1008,22 @@ ${authn.svc.csm.ctx}{
 
 				<xmltask source="${config.file}" dest="${config.file}"
 					preservetype="true">
-					
-					<insert path="/*[local-name()='faces-config']/*[local-name()='managed-bean' and ./*[local-name()='managed-bean-name' and text()='discoveryBean']]/*[local-name()='managed-property' and ./*[local-name()='property-name' and text()='indexServiceUrls']]/*[local-name()='list-entries']">
+
+					<insert
+						path="/*[local-name()='faces-config']/*[local-name()='managed-bean' and ./*[local-name()='managed-bean-name' and text()='discoveryBean']]/*[local-name()='managed-property' and ./*[local-name()='property-name' and text()='indexServiceUrls']]/*[local-name()='list-entries']">
 						<![CDATA[
 						<value xmlns="http://java.sun.com/JSF/Configuration">#{indexService${idx}}</value>
 						]]>
 					</insert>
-					
-					<insert path="/*[local-name()='faces-config']/*[local-name()='managed-bean' and ./*[local-name()='managed-bean-name' and text()='discoveryBean']]/*[local-name()='managed-property' and ./*[local-name()='property-name' and text()='indexServiceUrlsSelected']]/*[local-name()='list-entries']">
+
+					<insert
+						path="/*[local-name()='faces-config']/*[local-name()='managed-bean' and ./*[local-name()='managed-bean-name' and text()='discoveryBean']]/*[local-name()='managed-property' and ./*[local-name()='property-name' and text()='indexServiceUrlsSelected']]/*[local-name()='list-entries']">
 						<![CDATA[
 						<value xmlns="http://java.sun.com/JSF/Configuration">#{indexService${idx}.value}</value>
 						]]>
 					</insert>
-					
-					
+
+
 					<insert path="/*[local-name()='faces-config']">
 						<![CDATA[
     <managed-bean xmlns="http://java.sun.com/JSF/Configuration">
@@ -1033,7 +1041,7 @@ ${authn.svc.csm.ctx}{
     </managed-bean> 					
 						]]>
 					</insert>
-					
+
 				</xmltask>
 
 
