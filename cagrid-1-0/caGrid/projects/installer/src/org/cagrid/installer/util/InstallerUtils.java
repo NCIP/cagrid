@@ -253,8 +253,11 @@ public class InstallerUtils {
 	public static boolean checkTomcatVersion(String home) {
 		boolean correctVersion = false;
 		try {
-			String[] envp = new String[] { "JAVA_HOME="
-					+ System.getProperty("java.home") };
+			String javaHome = System.getenv("JAVA_HOME");
+			if(isEmpty(javaHome)){
+				javaHome = System.getProperty("java.home");
+			}
+			String[] envp = new String[] { "JAVA_HOME=" + javaHome };
 
 			String antHome = System.getenv("CATALINA_HOME");
 			String[] cmd = null;
