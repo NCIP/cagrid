@@ -389,8 +389,8 @@
 				<include name="caGrid-*-metadata-common.jar" />
 				<include name="caGrid-*-gridca.jar" />
 				<include name="caGrid-*-core.jar" />
-				<include name="caGrid-1.1-grape-resources.jar" />
-				<include name="caGrid-1.1-grape.jar" />
+				<include name="caGrid-*-grape-resources.jar" />
+				<include name="caGrid-*-grape.jar" />
 			</fileset>
 		</artifact>
 
