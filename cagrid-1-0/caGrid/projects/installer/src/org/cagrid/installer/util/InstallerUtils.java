@@ -267,8 +267,15 @@ public class InstallerUtils {
 			StringBuffer stdout = new StringBuffer();
 			new IOThread(p.getInputStream(), System.out, stdout).start();
 			p.waitFor();
-			logger.debug("Tomcat Version Out: \n" + stdout);
+
 			correctVersion = stdout.toString().indexOf("Apache Tomcat/5.0.28") != -1;
+			if (!correctVersion) {
+				logger
+						.warn("The Tomcat version utility indicates " +
+								"that the correct tomcat version is not " +
+								"installed. Here is the output from that tool: \n"
+								+ stdout);
+			}
 		} catch (Exception ex) {
 			logger
 					.warn("Error checking Tomcat version: " + ex.getMessage(),
@@ -315,32 +322,33 @@ public class InstallerUtils {
 	}
 
 	public static boolean checkBrowserVersion(String homeDir) {
-		File coreJar = new File(homeDir + "/ext/lib/caGrid-" + Constants.CAGRID_VERSION + "-core.jar");
+		File coreJar = new File(homeDir + "/ext/lib/caGrid-"
+				+ Constants.CAGRID_VERSION + "-core.jar");
 		return coreJar.exists();
 	}
-	
-	public static void addDBConfigPropertyOptions(CaGridInstallerModel model, PropertyConfigurationStep step,
-			String propPrefix, String dbIdDefault) {
+
+	public static void addDBConfigPropertyOptions(CaGridInstallerModel model,
+			PropertyConfigurationStep step, String propPrefix,
+			String dbIdDefault) {
 		step.getOptions().add(
 				new TextPropertyConfigurationOption(propPrefix + "db.host",
-						model.getMessage(propPrefix + "db.host"),
-						model.getProperty(propPrefix + "db.host",
-								"localhost"), true));
+						model.getMessage(propPrefix + "db.host"), model
+								.getProperty(propPrefix + "db.host",
+										"localhost"), true));
 		step.getOptions().add(
 				new TextPropertyConfigurationOption(propPrefix + "db.port",
-						model.getMessage(propPrefix + "db.port"),
-						model.getProperty(propPrefix + "db.port", "3306"),
+						model.getMessage(propPrefix + "db.port"), model
+								.getProperty(propPrefix + "db.port", "3306"),
 						true));
 		step.getOptions().add(
-				new TextPropertyConfigurationOption(propPrefix + "db.id",
-						model.getMessage(propPrefix + "db.id"),
-						model.getProperty(propPrefix + "db.id",
-								dbIdDefault), true));
+				new TextPropertyConfigurationOption(propPrefix + "db.id", model
+						.getMessage(propPrefix + "db.id"), model.getProperty(
+						propPrefix + "db.id", dbIdDefault), true));
 		step.getOptions().add(
 				new TextPropertyConfigurationOption(propPrefix + "db.username",
 						model.getMessage(propPrefix + "db.username"),
-						model.getProperty(propPrefix + "db.username",
-								"root"), true));
+						model.getProperty(propPrefix + "db.username", "root"),
+						true));
 		step.getOptions().add(
 				new PasswordPropertyConfigurationOption(propPrefix
 						+ "db.password", model.getMessage(propPrefix
@@ -353,33 +361,25 @@ public class InstallerUtils {
 								.getMessage("db.validation.failed")));
 	}
 
-	public static void addCommonDorianCAConfigFields(CaGridInstallerModel model, PropertyConfigurationStep step) {
+	public static void addCommonDorianCAConfigFields(
+			CaGridInstallerModel model, PropertyConfigurationStep step) {
 
 		step.getOptions().add(
 				new PasswordPropertyConfigurationOption(
 						Constants.DORIAN_CA_KEY_PWD, model
 								.getMessage("dorian.ca.cert.info.key.pwd"),
-						model.getProperty(Constants.DORIAN_CA_KEY_PWD),
+						model.getProperty(Constants.DORIAN_CA_KEY_PWD), true));
+		step.getOptions().add(
+				new TextPropertyConfigurationOption(Constants.DORIAN_CA_OID,
+						model.getMessage("dorian.ca.cert.info.oid"), model
+								.getProperty(Constants.DORIAN_CA_OID), false));
+		step.getOptions().add(
+				new ListPropertyConfigurationOption(
+						Constants.DORIAN_CA_USERKEY_SIZE,
+						model.getMessage("dorian.ca.cert.info.userkey.size"),
+						new String[] { String.valueOf(1024),
+								String.valueOf(2048), String.valueOf(512) },
 						true));
-		step
-				.getOptions()
-				.add(
-						new TextPropertyConfigurationOption(
-								Constants.DORIAN_CA_OID,
-								model
-										.getMessage("dorian.ca.cert.info.oid"),
-								model.getProperty(Constants.DORIAN_CA_OID),
-								false));
-		step
-				.getOptions()
-				.add(
-						new ListPropertyConfigurationOption(
-								Constants.DORIAN_CA_USERKEY_SIZE,
-								model
-										.getMessage("dorian.ca.cert.info.userkey.size"),
-								new String[] { String.valueOf(1024),
-										String.valueOf(2048),
-										String.valueOf(512) }, true));
 		step
 				.getOptions()
 				.add(
@@ -400,17 +400,12 @@ public class InstallerUtils {
 								model.getProperty(
 										Constants.DORIAN_CA_AUTORENEW_MONTHS,
 										"0"), true));
-		step
-				.getOptions()
-				.add(
-						new TextPropertyConfigurationOption(
-								Constants.DORIAN_CA_AUTORENEW_DAYS,
-								model
-										.getMessage("dorian.ca.cert.info.autorenew.days"),
-								model
-										.getProperty(
-												Constants.DORIAN_CA_AUTORENEW_DAYS,
-												"0"), true));
+		step.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.DORIAN_CA_AUTORENEW_DAYS,
+						model.getMessage("dorian.ca.cert.info.autorenew.days"),
+						model.getProperty(Constants.DORIAN_CA_AUTORENEW_DAYS,
+								"0"), true));
 		step
 				.getOptions()
 				.add(
@@ -443,34 +438,33 @@ public class InstallerUtils {
 										"0"), true));
 
 	}
-	
-	public static void addCommonCACertFields(CaGridInstallerModel model, PropertyConfigurationStep step,
-			String caCertPathProp, String caKeyPathProp, String caKeyPwdProp,
-			boolean validate) {
+
+	public static void addCommonCACertFields(CaGridInstallerModel model,
+			PropertyConfigurationStep step, String caCertPathProp,
+			String caKeyPathProp, String caKeyPwdProp, boolean validate) {
 
 		FilePropertyConfigurationOption caCertPathOption = new FilePropertyConfigurationOption(
-				caCertPathProp,
-				model.getMessage("ca.cert.info.cert.path"), model
-						.getProperty(caCertPathProp, InstallerUtils
-								.getInstallerDir()
-								+ "/certs/ca.cert"), true);
+				caCertPathProp, model.getMessage("ca.cert.info.cert.path"),
+				model.getProperty(caCertPathProp, InstallerUtils
+						.getInstallerDir()
+						+ "/certs/ca.cert"), true);
 		caCertPathOption.setDirectoriesOnly(false);
 		caCertPathOption.setBrowseLabel(model.getMessage("browse"));
 		step.getOptions().add(caCertPathOption);
 
 		FilePropertyConfigurationOption caKeyPathOption = new FilePropertyConfigurationOption(
-				caKeyPathProp, model.getMessage("ca.cert.info.key.path"),
-				model.getProperty(caKeyPathProp, InstallerUtils
-						.getInstallerDir()
-						+ "/certs/ca.key"), true);
+				caKeyPathProp, model.getMessage("ca.cert.info.key.path"), model
+						.getProperty(caKeyPathProp, InstallerUtils
+								.getInstallerDir()
+								+ "/certs/ca.key"), true);
 		caKeyPathOption.setDirectoriesOnly(false);
 		caKeyPathOption.setBrowseLabel(model.getMessage("browse"));
 		step.getOptions().add(caKeyPathOption);
 
 		step.getOptions().add(
-				new PasswordPropertyConfigurationOption(caKeyPwdProp,
-						model.getMessage("ca.cert.info.key.pwd"),
-						model.getProperty(caKeyPwdProp), true));
+				new PasswordPropertyConfigurationOption(caKeyPwdProp, model
+						.getMessage("ca.cert.info.key.pwd"), model
+						.getProperty(caKeyPwdProp), true));
 
 		if (validate) {
 			step.getValidators().add(
@@ -480,14 +474,15 @@ public class InstallerUtils {
 					new PathExistsValidator(caKeyPathProp, model
 							.getMessage("error.key.file.not.found")));
 			step.getValidators().add(
-					new KeyAccessValidator(caKeyPathProp, caKeyPwdProp,
-							model.getMessage("error.key.no.access")));
+					new KeyAccessValidator(caKeyPathProp, caKeyPwdProp, model
+							.getMessage("error.key.no.access")));
 		}
 	}
-	
-	public static void addCommonNewCACertFields(CaGridInstallerModel model, PropertyConfigurationStep step,
-			String caCertPathProp, String caKeyPathProp, String caKeyPwdProp,
-			String caDnProp, String caDaysValidProp) {
+
+	public static void addCommonNewCACertFields(CaGridInstallerModel model,
+			PropertyConfigurationStep step, String caCertPathProp,
+			String caKeyPathProp, String caKeyPwdProp, String caDnProp,
+			String caDaysValidProp) {
 
 		addCommonCACertFields(model, step, caCertPathProp, caKeyPathProp,
 				caKeyPwdProp, false);
@@ -501,5 +496,5 @@ public class InstallerUtils {
 						.getMessage("ca.cert.info.days.valid"), model
 						.getProperty(caDaysValidProp, "1000"), true));
 	}
-	
+
 }
