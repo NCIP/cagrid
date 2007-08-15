@@ -293,14 +293,11 @@ CaGridInstallerModel {
 	}
 
 	public boolean isAntInstalled() {
-		logger.debug("Looking for ant...");
 		if (antInstalled == null) {
-			logger.debug("...first time.");
 			String homeDir = getHomeDir(Constants.ANT_HOME, "ANT_HOME");
 			antInstalled = homeDir != null
 					&& InstallerUtils.checkAntVersion(homeDir);
 		}
-		logger.debug("...antInstalled = " + antInstalled);
 		return antInstalled;
 	}
 
