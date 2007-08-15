@@ -1162,8 +1162,7 @@ public class Installer {
 		this.model.add(browserInstallInfoStep, new Condition() {
 			public boolean evaluate(WizardModel m) {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return !model.isBrowserInstalled()
-						|| model.isTrue(Constants.INSTALL_BROWSER);
+				return model.isTrue(Constants.INSTALL_BROWSER);
 			}
 		});
 
