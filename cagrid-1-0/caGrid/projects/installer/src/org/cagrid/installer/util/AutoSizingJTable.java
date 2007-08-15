@@ -89,7 +89,7 @@ public class AutoSizingJTable extends JTable {
     }
 	
 	public Dimension getPreferredSize(){
-		return new Dimension(400, 100);
+		return new Dimension(400, 200);
 	}
 	
 	public Dimension getPreferredScrollableViewportSize() {

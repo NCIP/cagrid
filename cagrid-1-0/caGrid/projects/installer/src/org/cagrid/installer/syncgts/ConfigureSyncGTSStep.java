@@ -271,7 +271,7 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 
 		JPanel trustedAuthFilterPanel = new JPanel();
 		trustedAuthFilterPanel.setLayout(new BorderLayout());
-		trustedAuthFilterPanel.setPreferredSize(new Dimension(500, 125));
+		trustedAuthFilterPanel.setPreferredSize(new Dimension(500, 150));
 		add(trustedAuthFilterPanel, InstallerUtils.getGridBagConstraints(0, 1));
 
 		JPanel buttonPanel = new JPanel();
@@ -319,7 +319,7 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 
 		JPanel excludedCAsPanel = new JPanel();
 		excludedCAsPanel.setLayout(new BorderLayout());
-		excludedCAsPanel.setPreferredSize(new Dimension(500, 125));
+		excludedCAsPanel.setPreferredSize(new Dimension(500, 150));
 		add(excludedCAsPanel, InstallerUtils.getGridBagConstraints(0, 2));
 
 		JPanel ecButtonPanel = new JPanel();
