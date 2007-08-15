@@ -91,14 +91,19 @@ CaGridInstallerModel {
 	}
 	
 	private void checkEnvironment(){
-		//Look for ant
+		// Look for ant
 		if(isAntInstalled()){
 			setProperty(Constants.ANT_HOME, getHomeDir(Constants.ANT_HOME, "ANT_HOME"));
 		}
 		
-		//Look for tomcat
+		// Look for tomcat
 		if(isTomcatInstalled()){
 			setProperty(Constants.TOMCAT_HOME, getHomeDir(Constants.TOMCAT_HOME, "CATALINA_HOME"));
+		}
+		
+		// Look for globus
+		if(isGlobusInstalled()){
+			setProperty(Constants.GLOBUS_HOME, getHomeDir(Constants.GLOBUS_HOME, "GLOBUS_LOCATION"));
 		}
 		
 		//Look for cagrid
@@ -106,12 +111,12 @@ CaGridInstallerModel {
 			setProperty(Constants.CAGRID_HOME, getHomeDir(Constants.CAGRID_HOME, null));
 		}
 		
-		//Look for activebpel
+		// Look for activebpel
 		if(isActiveBPELInstalled()){
 			setProperty(Constants.ACTIVEBPEL_HOME, getHomeDir(Constants.ACTIVEBPEL_HOME, null));
 		}
 		
-		//Look for browser
+		// Look for browser
 		if(isBrowserInstalled()){
 			setProperty(Constants.BROWSER_HOME, getHomeDir(Constants.BROWSER_HOME, null));
 		}
