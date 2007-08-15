@@ -371,7 +371,9 @@ public class WorkflowSubmissionGUI extends ApplicationComponent {
 								"", "WMS_EPR")));
 						jLabel3.setText("Submitted");
 					} catch (Exception e1) {
-						// TODO Auto-generated catch block
+						JOptionPane.showMessageDialog(null,
+								e1.getMessage(), "Error Submitting workflow",
+								JOptionPane.ERROR_MESSAGE);
 						e1.printStackTrace();
 					}
 				}
@@ -415,10 +417,12 @@ public class WorkflowSubmissionGUI extends ApplicationComponent {
 							jLabel3.setText("Active");
 							System.out.println("actionPerformed()");
 						}
-						// TODO Auto-generated Event stub actionPerformed()
 					} catch (Exception ex) {
-						ex.printStackTrace();
 						jLabel3.setText("Failed");
+						JOptionPane.showMessageDialog(null,
+								ex.getMessage(), "Error starting the workflow",
+								JOptionPane.ERROR_MESSAGE);
+						ex.printStackTrace();
 					}
 				}
 			});
@@ -451,9 +455,13 @@ public class WorkflowSubmissionGUI extends ApplicationComponent {
 											AnyHelper.toSingleString(output.get_any()));
 								}
 							} catch (Exception ex) {
+								JOptionPane.showMessageDialog(null,
+										ex.getMessage(), "Error getting status of " +
+												" the workflow",
+										JOptionPane.ERROR_MESSAGE);
 								ex.printStackTrace();
 							}
-							System.out.println("actionPerformed()"); 
+							
 						}
 					});
 		}
@@ -521,20 +529,19 @@ public class WorkflowSubmissionGUI extends ApplicationComponent {
 			getDetailedStatusButton.setText("Get Details");
 			getDetailedStatusButton.setEnabled(true);
 			getDetailedStatusButton.setName("getDetailedStatusButton");
-			getDetailedStatusButton
-					.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-						public void propertyChange(java.beans.PropertyChangeEvent e) {
-							if ((e.getPropertyName().equals("enabled"))) {
-								System.out.println("propertyChange(enabled)"); // TODO Auto-generated property Event stub "enabled" 
-							}
-						}
-					});
 			getDetailedStatusButton.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					try {
 						WorkflowStatusEventType[] eve = wclient.getDetailedStatus();
-						WorkflowDetailedStatusGUI detGUI = new WorkflowDetailedStatusGUI();
-						detGUI.show();
+						if(eve != null) {
+							WorkflowDetailedStatusGUI detGUI = new WorkflowDetailedStatusGUI(eve);
+							detGUI.show();
+						} else {
+							JOptionPane.showMessageDialog(null,
+									null, "Error starting the workflow",
+									JOptionPane.ERROR_MESSAGE);
+							return;
+						}
 					} catch (WorkflowExceptionType e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
