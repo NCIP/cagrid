@@ -87,16 +87,40 @@ CaGridInstallerModel {
 						+ ex.getMessage());
 			}
 		}
+		checkEnvironment();
+	}
+	
+	private void checkEnvironment(){
+		//Look for ant
+		if(isAntInstalled()){
+			setProperty(Constants.ANT_HOME, getHomeDir(Constants.ANT_HOME, "ANT_HOME"));
+		}
+		
+		//Look for tomcat
+		if(isTomcatInstalled()){
+			setProperty(Constants.TOMCAT_HOME, getHomeDir(Constants.TOMCAT_HOME, "CATALINA_HOME"));
+		}
+		
+		//Look for cagrid
+		if(isCaGridInstalled()){
+			setProperty(Constants.CAGRID_HOME, getHomeDir(Constants.CAGRID_HOME, null));
+		}
+		
+		//Look for activebpel
+		if(isActiveBPELInstalled()){
+			setProperty(Constants.ACTIVEBPEL_HOME, getHomeDir(Constants.ACTIVEBPEL_HOME, null));
+		}
+		
+		//Look for browser
+		if(isBrowserInstalled()){
+			setProperty(Constants.BROWSER_HOME, getHomeDir(Constants.BROWSER_HOME, null));
+		}
 	}
 
 	public void addPropertyChangeListener(PropertyChangeListener l) {
 		super.addPropertyChangeListener(l);
 		this.state.addPropertyChangeListener(l);
 	}
-
-	// public Map<String, String> getState() {
-	// return state;
-	// }
 
 	public String getMessage(String key) {
 		String message = null;
