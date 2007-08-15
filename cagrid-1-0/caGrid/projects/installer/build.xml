@@ -95,7 +95,6 @@
 		<zip destfile="build/${cagrid.master.jar.prefix}src.zip">
 			<fileset dir="${cagrid.home}">
 				<include name="caGrid/**"/>
-				<exclude name="caGrid/projects/portal2/**"/>
 				<exclude name="**/bin/**"/>
 			</fileset>
 		</zip>
