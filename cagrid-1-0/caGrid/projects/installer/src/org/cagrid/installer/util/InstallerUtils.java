@@ -267,6 +267,7 @@ public class InstallerUtils {
 			StringBuffer stdout = new StringBuffer();
 			new IOThread(p.getInputStream(), System.out, stdout).start();
 			p.waitFor();
+			logger.debug("Tomcat Version Out: \n" + stdout);
 			correctVersion = stdout.toString().indexOf("Apache Tomcat/5.0.28") != -1;
 		} catch (Exception ex) {
 			logger
