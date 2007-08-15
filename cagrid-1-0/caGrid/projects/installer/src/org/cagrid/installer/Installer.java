@@ -408,6 +408,7 @@ public class Installer {
 			public void validate(Map state) throws InvalidStateException {
 				String caGridHome = (String) state.get(Constants.CAGRID_HOME);
 				if (!InstallerUtils.checkCaGridVersion(caGridHome)) {
+					//TODO: externalize this message
 					throw new InvalidStateException(
 							""
 									+ caGridHome
@@ -420,7 +421,7 @@ public class Installer {
 			public boolean evaluate(WizardModel m) {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
 				return !model.isTrue(Constants.INSTALL_CAGRID)
-						&& !model.isTrue(Constants.CAGRID_INSTALLED);
+						&& !model.isCaGridInstalled();
 			}
 		});
 
