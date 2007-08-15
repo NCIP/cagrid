@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src/java/core"/>
+	<classpathentry kind="src" path="src/java/upgrades"/>
 	<classpathentry kind="src" path="src/java/ui"/>
 	<classpathentry kind="src" path="src/java/style/cacore31"/>
 	<classpathentry kind="src" path="src/java/style/cacore32"/>
