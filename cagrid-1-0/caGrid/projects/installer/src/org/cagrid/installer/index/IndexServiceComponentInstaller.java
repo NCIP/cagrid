@@ -3,7 +3,7 @@
  */
 package org.cagrid.installer.index;
 
-import org.cagrid.installer.ComponentInstaller;
+import org.cagrid.installer.CaGridComponentInstaller;
 import org.cagrid.installer.model.CaGridInstallerModel;
 import org.cagrid.installer.steps.Constants;
 import org.cagrid.installer.steps.RunTasksStep;
@@ -15,7 +15,7 @@ import org.pietschy.wizard.models.Condition;
  * @author <a href="joshua.phillips@semanticbits.com">Joshua Phillips</a>
  *
  */
-public class IndexServiceComponentInstaller implements ComponentInstaller {
+public class IndexServiceComponentInstaller implements CaGridComponentInstaller {
 
 	/**
 	 * 

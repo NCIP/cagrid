@@ -3,7 +3,7 @@
  */
 package org.cagrid.installer.syncgts;
 
-import org.cagrid.installer.ComponentInstaller;
+import org.cagrid.installer.CaGridComponentInstaller;
 import org.cagrid.installer.model.CaGridInstallerModel;
 import org.cagrid.installer.steps.Constants;
 import org.cagrid.installer.steps.DeployPropertiesFileEditorStep;
@@ -20,7 +20,7 @@ import org.pietschy.wizard.models.Condition;
  * @author <a href="joshua.phillips@semanticbits.com">Joshua Phillips</a>
  * 
  */
-public class SyncGTSComponentInstaller implements ComponentInstaller {
+public class SyncGTSComponentInstaller implements CaGridComponentInstaller {
 
 	/**
 	 * 

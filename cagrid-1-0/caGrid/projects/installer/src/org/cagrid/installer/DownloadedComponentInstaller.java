@@ -10,9 +10,9 @@ import org.cagrid.installer.steps.RunTasksStep;
  * @author <a href="joshua.phillips@semanticbits.com">Joshua Phillips</a>
  *
  */
-public interface ComponentInstaller {
+public interface DownloadedComponentInstaller {
 
-	void addSteps(CaGridInstallerModel model);
-	void addInstallTasks(CaGridInstallerModel model, RunTasksStep installStep);
+	void addCheckInstallSteps(CaGridInstallerModel model);
 	
+	void addInstallDownloadedComponentTasks(CaGridInstallerModel model, RunTasksStep installStep);
 }

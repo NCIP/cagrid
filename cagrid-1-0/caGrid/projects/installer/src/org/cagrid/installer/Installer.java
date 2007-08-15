@@ -97,10 +97,18 @@ public class Installer {
 
 	private int initProgress = 0;
 
-	private List<ComponentInstaller> componentInstallers = new ArrayList<ComponentInstaller>();
+	private List<CaGridComponentInstaller> componentInstallers = new ArrayList<CaGridComponentInstaller>();
+	
+	private List<DownloadedComponentInstaller> downloadedComponentInstallers = new ArrayList<DownloadedComponentInstaller>();
 
 	public Installer() {
 
+		downloadedComponentInstallers.add(new AntComponentInstaller());
+		downloadedComponentInstallers.add(new TomcatComponentInstaller());
+		downloadedComponentInstallers.add(new GlobusComponentInstaller());
+		downloadedComponentInstallers.add(new ActiveBPELComponentInstaller());
+		downloadedComponentInstallers.add(new CaGridSourceComponentInstaller());
+		
 		componentInstallers.add(new MyServiceComponentInstaller());
 		componentInstallers.add(new SyncGTSComponentInstaller());
 		componentInstallers.add(new DorianComponentInstaller());
@@ -116,6 +124,8 @@ public class Installer {
 		componentInstallers.add(new IndexServiceComponentInstaller());
 		componentInstallers.add(new BrowserComponentInstaller());
 	}
+	
+	
 
 	public static void main(String[] args) {
 		Installer installer = new Installer();
@@ -537,11 +547,41 @@ public class Installer {
 		});
 		incrementProgress();
 
-		addCheckInstallSteps();
-		incrementProgress();
+		final RunTasksStep installDependenciesStep = new RunTasksStep(
+				this.model.getMessage("install.dependencies.title"), this.model
+						.getMessage("install.dependencies.desc"));
+		for(DownloadedComponentInstaller installer : getDownloadedComponentInstallers()){
+			installer.addCheckInstallSteps(this.model);
+			installer.addInstallDownloadedComponentTasks(this.model, installDependenciesStep);
+			incrementProgress();
+		}
+		
+		installDependenciesStep.getTasks().add(
+				new ConditionalTask(
+						new CopySelectedServicesToTempDirTask(this.model
+								.getMessage("copying.selected.services"), ""),
+						new Condition() {
+							public boolean evaluate(WizardModel m) {
+								CaGridInstallerModel model = (CaGridInstallerModel) m;
+								return model.isTrue(Constants.INSTALL_SERVICES)
+										|| model
+												.isTrue(Constants.INSTALL_PORTAL)
+										|| model
+												.isTrue(Constants.INSTALL_BROWSER);
+							}
+						}));
 
-		addInstallDependenciesStep();
-		incrementProgress();
+		installDependenciesStep.getTasks().add(
+				new SaveSettingsTask(this.model
+						.getMessage("saving.settings.title"), ""));
+
+		this.model.add(installDependenciesStep, new Condition() {
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return installDependenciesStep.getTasksCount(model) > 0;
+			}
+		});
+		
 
 		addConfigureContainerSteps();
 		incrementProgress();
@@ -594,7 +634,7 @@ public class Installer {
 
 						}));
 
-		for (ComponentInstaller installer : getComponentInstallers()) {
+		for (CaGridComponentInstaller installer : getComponentInstallers()) {
 			installer.addSteps(this.model);
 			installer.addInstallTasks(this.model, installStep);
 			incrementProgress();
@@ -662,6 +702,24 @@ public class Installer {
 	}
 
 	private void addConfigureContainerSteps() {
+		
+		PropertyConfigurationStep checkDeployGlobusStep = new PropertyConfigurationStep(
+				this.model.getMessage("globus.check.redeploy.title"),
+				this.model.getMessage("globus.check.redeploy.desc"));
+		checkDeployGlobusStep.getOptions().add(
+				new BooleanPropertyConfigurationOption(
+						Constants.REDEPLOY_GLOBUS,
+						this.model.getMessage("yes"), false, false));
+		this.model.add(checkDeployGlobusStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTomcatContainer() && model.isGlobusDeployed()
+						&& model.isConfigureContainerSelected();
+			}
+
+		});		
+		
 		// Checks if secure container should be used
 		CheckSecureContainerStep checkDeployGlobusSecureStep = new CheckSecureContainerStep(
 				this.model.getMessage("globus.check.secure.title"), this.model
@@ -884,290 +942,6 @@ public class Installer {
 
 	}
 
-	private void addInstallDependenciesStep() {
-		// Downloads and installs the dependencies
-		final RunTasksStep installDependenciesStep = new RunTasksStep(
-				this.model.getMessage("install.dependencies.title"), this.model
-						.getMessage("install.dependencies.desc"));
-		addUnzipInstallTask(installDependenciesStep, this.model
-				.getMessage("downloading.ant.title"), this.model
-				.getMessage("installing.ant.title"), "",
-				Constants.ANT_DOWNLOAD_URL, Constants.ANT_TEMP_FILE_NAME,
-				Constants.ANT_INSTALL_DIR_PATH, Constants.ANT_DIR_NAME,
-				Constants.ANT_HOME, Constants.INSTALL_ANT, Integer
-						.parseInt(this.model.getProperty("ant.bytes")));
-		addUnzipInstallTask(installDependenciesStep, this.model
-				.getMessage("downloading.tomcat.title"), this.model
-				.getMessage("installing.tomcat.title"), "",
-				Constants.TOMCAT_DOWNLOAD_URL, Constants.TOMCAT_TEMP_FILE_NAME,
-				Constants.TOMCAT_INSTALL_DIR_PATH, Constants.TOMCAT_DIR_NAME,
-				Constants.TOMCAT_HOME, Constants.INSTALL_TOMCAT, Integer
-						.parseInt(this.model.getProperty("tomcat.bytes")));
-		addUnzipInstallTask(installDependenciesStep, this.model
-				.getMessage("downloading.globus.title"), this.model
-				.getMessage("installing.globus.title"), "",
-				Constants.GLOBUS_DOWNLOAD_URL, Constants.GLOBUS_TEMP_FILE_NAME,
-				Constants.GLOBUS_INSTALL_DIR_PATH, Constants.GLOBUS_DIR_NAME,
-				Constants.GLOBUS_HOME, Constants.INSTALL_GLOBUS, Integer
-						.parseInt(this.model.getProperty("globus.bytes")));
-
-		addUnTarInstallTask(installDependenciesStep, this.model
-				.getMessage("downloading.activebpel.title"), this.model
-				.getMessage("installing.activebpel.title"), "",
-				Constants.ACTIVEBPEL_DOWNLOAD_URL,
-				Constants.ACTIVEBPEL_TEMP_FILE_NAME,
-				Constants.ACTIVEBPEL_INSTALL_DIR_PATH,
-				Constants.ACTIVEBPEL_DIR_NAME, Constants.ACTIVEBPEL_HOME,
-				Constants.INSTALL_ACTIVEBPEL, Integer.parseInt(this.model
-						.getProperty("activebpel.bytes")));
-
-		installDependenciesStep.getTasks().add(
-				new ConditionalTask(new DeployActiveBPELTask(this.model
-						.getMessage("installing.activebpel.title"), ""),
-						new Condition() {
-
-							public boolean evaluate(WizardModel m) {
-								CaGridInstallerModel model = (CaGridInstallerModel) m;
-								return model
-										.isTrue(Constants.INSTALL_ACTIVEBPEL)
-										&& model
-												.isTrue(Constants.INSTALL_WORKFLOW);
-							}
-
-						}));
-
-		addUnzipInstallTask(installDependenciesStep, this.model
-				.getMessage("downloading.cagrid.title"), this.model
-				.getMessage("installing.cagrid.title"), "",
-				Constants.CAGRID_DOWNLOAD_URL, Constants.CAGRID_TEMP_FILE_NAME,
-				Constants.CAGRID_INSTALL_DIR_PATH, Constants.CAGRID_DIR_NAME,
-				Constants.CAGRID_HOME, Constants.INSTALL_CAGRID, Integer
-						.parseInt(this.model.getProperty("cagrid.bytes")));
-
-		installDependenciesStep.getTasks().add(
-				new ConditionalTask(new CompileCaGridTask(this.model
-						.getMessage("compiling.cagrid.title"), ""),
-						new Condition() {
-
-							public boolean evaluate(WizardModel m) {
-								CaGridInstallerModel model = (CaGridInstallerModel) m;
-								return model.isTrue(Constants.INSTALL_CAGRID);
-							}
-
-						}));
-
-		// TODO: figure out why this fails on Mac sometimes
-		ConfigureTargetGridTask configTargetGridTask = new ConfigureTargetGridTask(
-				this.model.getMessage("configuring.target.grid"), "");
-		configTargetGridTask.setAbortOnError(false);
-		installDependenciesStep.getTasks().add(
-				new ConditionalTask(configTargetGridTask, new Condition() {
-					public boolean evaluate(WizardModel m) {
-						CaGridInstallerModel model = (CaGridInstallerModel) m;
-						return !model.isSet(Constants.TARGET_GRID)
-								|| model.isTrue(Constants.RECONFIGURE_CAGRID)
-								|| model.isTrue(Constants.INSTALL_CAGRID);
-					}
-				}));
-
-		addUnzipInstallTask(installDependenciesStep, this.model
-				.getMessage("downloading.browser.title"), this.model
-				.getMessage("installing.browser.title"), "",
-				Constants.BROWSER_DOWNLOAD_URL,
-				Constants.BROWSER_TEMP_FILE_NAME,
-				Constants.BROWSER_INSTALL_DIR_PATH, Constants.BROWSER_DIR_NAME,
-				Constants.BROWSER_HOME, Constants.INSTALL_BROWSER, Integer
-						.parseInt(this.model.getProperty("browser.bytes")));
-
-		installDependenciesStep.getTasks().add(
-				new ConditionalTask(
-						new CopySelectedServicesToTempDirTask(this.model
-								.getMessage("copying.selected.services"), ""),
-						new Condition() {
-							public boolean evaluate(WizardModel m) {
-								CaGridInstallerModel model = (CaGridInstallerModel) m;
-								return model.isTrue(Constants.INSTALL_SERVICES)
-										|| model
-												.isTrue(Constants.INSTALL_PORTAL)
-										|| model
-												.isTrue(Constants.INSTALL_BROWSER);
-							}
-						}));
-
-		installDependenciesStep.getTasks().add(
-				new SaveSettingsTask(this.model
-						.getMessage("saving.settings.title"), ""));
-
-		this.model.add(installDependenciesStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return installDependenciesStep.getTasksCount(model) > 0;
-			}
-		});
-
-		// If globus has already been deployed, see if it should be redeployed
-		PropertyConfigurationStep checkDeployGlobusStep = new PropertyConfigurationStep(
-				this.model.getMessage("globus.check.redeploy.title"),
-				this.model.getMessage("globus.check.redeploy.desc"));
-		checkDeployGlobusStep.getOptions().add(
-				new BooleanPropertyConfigurationOption(
-						Constants.REDEPLOY_GLOBUS,
-						this.model.getMessage("yes"), false, false));
-		this.model.add(checkDeployGlobusStep, new Condition() {
-
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTomcatContainer() && model.isGlobusDeployed()
-						&& model.isConfigureContainerSelected();
-			}
-
-		});
-	}
-
-	private void addCheckInstallSteps() {
-
-		CheckReInstallStep checkInstallAntStep = new CheckReInstallStep(
-				this.model.getMessage("ant.check.reinstall.title"), this.model
-						.getMessage("ant.check.reinstall.desc"),
-				Constants.ANT_HOME, Constants.INSTALL_ANT);
-		this.model.add(checkInstallAntStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isAntInstalled();
-			}
-		});
-
-		InstallInfoStep antInstallInfoStep = new InstallInfoStep(this.model
-				.getMessage("ant.home.title"), this.model
-				.getMessage("ant.home.desc"), Constants.ANT_HOME, "ant",
-				Constants.ANT_INSTALL_DIR_PATH);
-		this.model.add(antInstallInfoStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return !model.isAntInstalled()
-						|| model.isTrue(Constants.INSTALL_ANT);
-			}
-		});
-
-		CheckReInstallStep checkInstallTomcatStep = new CheckReInstallStep(
-				this.model.getMessage("tomcat.check.reinstall.title"),
-				this.model.getMessage("tomcat.check.reinstall.desc"),
-				Constants.TOMCAT_HOME, Constants.INSTALL_TOMCAT);
-		this.model.add(checkInstallTomcatStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTomcatContainer() && model.isTomcatInstalled();
-			}
-		});
-
-		InstallInfoStep tomcatInstallInfoStep = new InstallInfoStep(this.model
-				.getMessage("tomcat.home.title"), this.model
-				.getMessage("tomcat.home.desc"), Constants.TOMCAT_HOME,
-				"tomcat", Constants.TOMCAT_INSTALL_DIR_PATH);
-		this.model.add(tomcatInstallInfoStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return !model.isTomcatInstalled()
-						|| model.isTrue(Constants.INSTALL_TOMCAT);
-			}
-		});
-
-		CheckReInstallStep checkInstallGlobusStep = new CheckReInstallStep(
-				this.model.getMessage("globus.check.reinstall.title"),
-				this.model.getMessage("globus.check.reinstall.desc"),
-				Constants.GLOBUS_HOME, Constants.INSTALL_GLOBUS);
-		this.model.add(checkInstallGlobusStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isGlobusInstalled();
-			}
-		});
-
-		InstallInfoStep globusInstallInfoStep = new InstallInfoStep(this.model
-				.getMessage("globus.home.title"), this.model
-				.getMessage("globus.home.desc"), Constants.GLOBUS_HOME,
-				"globus", Constants.GLOBUS_INSTALL_DIR_PATH);
-		this.model.add(globusInstallInfoStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return !model.isGlobusInstalled()
-						|| model.isTrue(Constants.INSTALL_GLOBUS);
-			}
-		});
-
-		CheckReInstallStep checkInstallCaGridStep = new CheckReInstallStep(
-				this.model.getMessage("cagrid.check.reinstall.title"),
-				this.model.getMessage("cagrid.check.reinstall.desc"),
-				Constants.CAGRID_HOME, Constants.INSTALL_CAGRID);
-		this.model.add(checkInstallCaGridStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isCaGridInstalled();
-			}
-		});
-
-		InstallInfoStep cagridInstallInfoStep = new InstallInfoStep(this.model
-				.getMessage("cagrid.home.title"), this.model
-				.getMessage("cagrid.home.desc"), Constants.CAGRID_HOME,
-				"cagrid", Constants.CAGRID_INSTALL_DIR_PATH);
-		this.model.add(cagridInstallInfoStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return !model.isCaGridInstalled()
-						|| model.isTrue(Constants.INSTALL_CAGRID);
-			}
-		});
-
-		CheckReInstallStep checkInstallActiveBPELStep = new CheckReInstallStep(
-				this.model.getMessage("activebpel.check.reinstall.title"),
-				this.model.getMessage("activebpel.check.reinstall.desc"),
-				Constants.ACTIVEBPEL_HOME, Constants.INSTALL_ACTIVEBPEL);
-		this.model.add(checkInstallActiveBPELStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_WORKFLOW)
-						&& model.isActiveBPELInstalled();
-			}
-		});
-
-		InstallInfoStep activebpelInstallInfoStep = new InstallInfoStep(
-				this.model.getMessage("activebpel.home.title"), this.model
-						.getMessage("activebpel.home.desc"),
-				Constants.ACTIVEBPEL_HOME, "activebpel",
-				Constants.ACTIVEBPEL_INSTALL_DIR_PATH);
-		this.model.add(activebpelInstallInfoStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_WORKFLOW)
-						&& (!model.isActiveBPELInstalled() || model
-								.isTrue(Constants.INSTALL_ACTIVEBPEL));
-			}
-		});
-
-		CheckReInstallStep checkInstallBrowserStep = new CheckReInstallStep(
-				this.model.getMessage("browser.check.reinstall.title"),
-				this.model.getMessage("browser.check.reinstall.desc"),
-				Constants.BROWSER_HOME, Constants.INSTALL_BROWSER);
-		this.model.add(checkInstallBrowserStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isBrowserInstalled();
-			}
-		});
-
-		InstallInfoStep browserInstallInfoStep = new InstallInfoStep(this.model
-				.getMessage("browser.home.title"), this.model
-				.getMessage("browser.home.desc"), Constants.BROWSER_HOME,
-				"activebpel", Constants.BROWSER_INSTALL_DIR_PATH);
-		this.model.add(browserInstallInfoStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_BROWSER);
-			}
-		});
-
-	}
-
 	private void clearFlags() {
 		this.model.unsetProperty(Constants.CONFIGURE_CONTAINER);
 		this.model.unsetProperty(Constants.DORIAN_USE_GEN_CA);
@@ -1189,102 +963,6 @@ public class Installer {
 		this.model.unsetProperty(Constants.INSTALL_WORKFLOW);
 		this.model.unsetProperty(Constants.RECONFIGURE_CAGRID);
 		this.model.unsetProperty(Constants.USE_SECURE_CONTAINER);
-	}
-
-	private void addUnzipInstallTask(RunTasksStep installStep,
-			String downloadMsg, String installMsg, String desc,
-			String downloadUrlProp, String tempFileNameProp,
-			String installDirPathProp, String dirNameProp, String homeProp,
-			final String installProp, int totalBytes) {
-
-		Condition c = new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(installProp);
-			}
-		};
-		installStep.getTasks().add(
-				new ConditionalTask(new DownloadFileTask(downloadMsg, desc,
-						downloadUrlProp, tempFileNameProp,
-						Constants.CONNECT_TIMEOUT, totalBytes), c));
-		installStep.getTasks().add(
-				new ConditionalTask(new UnzipInstallTask(installMsg, desc,
-						tempFileNameProp, installDirPathProp, dirNameProp,
-						homeProp), c));
-	}
-
-	private void addUnTarInstallTask(RunTasksStep installStep,
-			String downloadMsg, String installMsg, String desc,
-			String downloadUrlProp, String tempFileNameProp,
-			String installDirPathProp, String dirNameProp, String homeProp,
-			final String installProp, int totalBytes) {
-
-		Condition c = new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(installProp)
-						&& model.isTrue(Constants.INSTALL_WORKFLOW);
-			}
-		};
-		installStep.getTasks().add(
-				new ConditionalTask(new DownloadFileTask(downloadMsg, desc,
-						downloadUrlProp, tempFileNameProp,
-						Constants.CONNECT_TIMEOUT, totalBytes), c));
-		installStep.getTasks().add(
-				new ConditionalTask(new UnTarInstallTask(installMsg, desc,
-						tempFileNameProp, installDirPathProp, dirNameProp,
-						homeProp), c));
-	}
-
-	private void addInstallActiveBPELInfoStep(CaGridInstallerModelImpl m,
-			String homeProp, String defaultDirName, String titleProp,
-			String descProp, String installDirPathProp) {
-
-		PropertyConfigurationStep installInfoStep = new PropertyConfigurationStep(
-				m.getMessage(titleProp), m.getMessage(descProp));
-		FilePropertyConfigurationOption fpo = new FilePropertyConfigurationOption(
-				installDirPathProp, m.getMessage("directory"), System
-						.getProperty("user.home"), true);
-		fpo.setDirectoriesOnly(true);
-		fpo.setBrowseLabel(m.getMessage("browse"));
-		installInfoStep.getOptions().add(fpo);
-		installInfoStep.getValidators().add(
-				new CreateFilePermissionValidator(installDirPathProp, m
-						.getMessage("error.permission.directory.create")));
-		m.add(installInfoStep, new Condition() {
-
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_WORKFLOW)
-						&& model.isTrue(Constants.INSTALL_ACTIVEBPEL);
-			}
-
-		});
-	}
-
-	private void addInstallInfoStep(CaGridInstallerModelImpl m,
-			String homeProp, String defaultDirName, String titleProp,
-			String descProp, String installDirPathProp, final String installProp) {
-
-		PropertyConfigurationStep installInfoStep = new PropertyConfigurationStep(
-				m.getMessage(titleProp), m.getMessage(descProp));
-		FilePropertyConfigurationOption fpo = new FilePropertyConfigurationOption(
-				installDirPathProp, m.getMessage("directory"), System
-						.getProperty("user.home"), true);
-		fpo.setDirectoriesOnly(true);
-		fpo.setBrowseLabel(m.getMessage("browse"));
-		installInfoStep.getOptions().add(fpo);
-		installInfoStep.getValidators().add(
-				new CreateFilePermissionValidator(installDirPathProp, m
-						.getMessage("error.permission.directory.create")));
-		m.add(installInfoStep, new Condition() {
-
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(installProp);
-			}
-
-		});
 	}
 
 	public void run() {
@@ -1342,13 +1020,26 @@ public class Installer {
 
 	}
 
-	public List<ComponentInstaller> getComponentInstallers() {
+	public List<CaGridComponentInstaller> getComponentInstallers() {
 		return componentInstallers;
 	}
 
 	public void setComponentInstallers(
-			List<ComponentInstaller> componentInstallers) {
+			List<CaGridComponentInstaller> componentInstallers) {
 		this.componentInstallers = componentInstallers;
+	}
+
+
+
+	public List<DownloadedComponentInstaller> getDownloadedComponentInstallers() {
+		return downloadedComponentInstallers;
+	}
+
+
+
+	public void setDownloadedComponentInstallers(
+			List<DownloadedComponentInstaller> externalComponentInstallers) {
+		this.downloadedComponentInstallers = externalComponentInstallers;
 	}
 
 }

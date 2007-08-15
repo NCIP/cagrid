@@ -3,7 +3,7 @@
  */
 package org.cagrid.installer.portal;
 
-import org.cagrid.installer.ComponentInstaller;
+import org.cagrid.installer.CaGridComponentInstaller;
 import org.cagrid.installer.model.CaGridInstallerModel;
 import org.cagrid.installer.steps.Constants;
 import org.cagrid.installer.steps.DropServiceDatabaseStep;
@@ -20,7 +20,7 @@ import org.pietschy.wizard.models.Condition;
  * @author <a href="joshua.phillips@semanticbits.com">Joshua Phillips</a>
  *
  */
-public class PortalComponentInstaller implements ComponentInstaller {
+public class PortalComponentInstaller implements CaGridComponentInstaller {
 
 	/**
 	 * 

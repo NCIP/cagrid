@@ -5,7 +5,7 @@ package org.cagrid.installer.gridgrouper;
 
 import java.util.Map;
 
-import org.cagrid.installer.ComponentInstaller;
+import org.cagrid.installer.CaGridComponentInstaller;
 import org.cagrid.installer.model.CaGridInstallerModel;
 import org.cagrid.installer.steps.ConfigureServiceMetadataStep;
 import org.cagrid.installer.steps.Constants;
@@ -26,7 +26,7 @@ import org.pietschy.wizard.models.Condition;
  * @author <a href="joshua.phillips@semanticbits.com">Joshua Phillips</a>
  *
  */
-public class GridGrouperComponentInstaller implements ComponentInstaller {
+public class GridGrouperComponentInstaller implements CaGridComponentInstaller {
 
 	/**
 	 * 

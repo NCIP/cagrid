@@ -16,10 +16,6 @@ import org.pietschy.wizard.WizardModel;
  */
 public class InstallInfoStep extends PropertyConfigurationStep {
 
-	private String homeProp;
-
-	private String defaultDir;
-
 	private String installDirPathProp;
 
 	/**
@@ -33,9 +29,8 @@ public class InstallInfoStep extends PropertyConfigurationStep {
 	 * @param name
 	 * @param description
 	 */
-	public InstallInfoStep(String name, String description, String homeProp,
-			String defaultDir, String installDirPathProp) {
-		this(name, description, homeProp, defaultDir, installDirPathProp, null);
+	public InstallInfoStep(String name, String description, String installDirPathProp) {
+		this(name, description, installDirPathProp, null);
 
 	}
 
@@ -44,11 +39,8 @@ public class InstallInfoStep extends PropertyConfigurationStep {
 	 * @param description
 	 * @param icon
 	 */
-	public InstallInfoStep(String name, String description, String homeProp,
-			String defaultDir, String installDirPathProp, Icon icon) {
+	public InstallInfoStep(String name, String description, String installDirPathProp, Icon icon) {
 		super(name, description, icon);
-		this.homeProp = homeProp;
-		this.defaultDir = defaultDir;
 		this.installDirPathProp = installDirPathProp;
 	}
 

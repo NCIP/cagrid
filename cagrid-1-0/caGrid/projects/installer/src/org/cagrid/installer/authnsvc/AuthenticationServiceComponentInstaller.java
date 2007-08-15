@@ -5,7 +5,7 @@ package org.cagrid.installer.authnsvc;
 
 import java.io.File;
 
-import org.cagrid.installer.ComponentInstaller;
+import org.cagrid.installer.CaGridComponentInstaller;
 import org.cagrid.installer.model.CaGridInstallerModel;
 import org.cagrid.installer.steps.ConfigureServiceMetadataStep;
 import org.cagrid.installer.steps.Constants;
@@ -30,7 +30,7 @@ import org.pietschy.wizard.models.Condition;
  *
  */
 public class AuthenticationServiceComponentInstaller implements
-		ComponentInstaller {
+		CaGridComponentInstaller {
 
 	/**
 	 * 
