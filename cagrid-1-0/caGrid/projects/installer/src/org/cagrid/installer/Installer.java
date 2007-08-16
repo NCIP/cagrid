@@ -98,7 +98,7 @@ public class Installer {
 	private int initProgress = 0;
 
 	private List<CaGridComponentInstaller> componentInstallers = new ArrayList<CaGridComponentInstaller>();
-	
+
 	private List<DownloadedComponentInstaller> downloadedComponentInstallers = new ArrayList<DownloadedComponentInstaller>();
 
 	public Installer() {
@@ -108,7 +108,7 @@ public class Installer {
 		downloadedComponentInstallers.add(new GlobusComponentInstaller());
 		downloadedComponentInstallers.add(new ActiveBPELComponentInstaller());
 		downloadedComponentInstallers.add(new CaGridSourceComponentInstaller());
-		
+
 		componentInstallers.add(new MyServiceComponentInstaller());
 		componentInstallers.add(new SyncGTSComponentInstaller());
 		componentInstallers.add(new DorianComponentInstaller());
@@ -124,8 +124,6 @@ public class Installer {
 		componentInstallers.add(new IndexServiceComponentInstaller());
 		componentInstallers.add(new BrowserComponentInstaller());
 	}
-	
-	
 
 	public static void main(String[] args) {
 		Installer installer = new Installer();
@@ -408,7 +406,7 @@ public class Installer {
 			public void validate(Map state) throws InvalidStateException {
 				String caGridHome = (String) state.get(Constants.CAGRID_HOME);
 				if (!InstallerUtils.checkCaGridVersion(caGridHome)) {
-					//TODO: externalize this message
+					// TODO: externalize this message
 					throw new InvalidStateException(
 							""
 									+ caGridHome
@@ -551,12 +549,13 @@ public class Installer {
 		final RunTasksStep installDependenciesStep = new RunTasksStep(
 				this.model.getMessage("install.dependencies.title"), this.model
 						.getMessage("install.dependencies.desc"));
-		for(DownloadedComponentInstaller installer : getDownloadedComponentInstallers()){
+		for (DownloadedComponentInstaller installer : getDownloadedComponentInstallers()) {
 			installer.addCheckInstallSteps(this.model);
-			installer.addInstallDownloadedComponentTasks(this.model, installDependenciesStep);
+			installer.addInstallDownloadedComponentTasks(this.model,
+					installDependenciesStep);
 			incrementProgress();
 		}
-		
+
 		installDependenciesStep.getTasks().add(
 				new ConditionalTask(
 						new CopySelectedServicesToTempDirTask(this.model
@@ -582,7 +581,6 @@ public class Installer {
 				return installDependenciesStep.getTasksCount(model) > 0;
 			}
 		});
-		
 
 		addConfigureContainerSteps();
 		incrementProgress();
@@ -703,7 +701,7 @@ public class Installer {
 	}
 
 	private void addConfigureContainerSteps() {
-		
+
 		PropertyConfigurationStep checkDeployGlobusStep = new PropertyConfigurationStep(
 				this.model.getMessage("globus.check.redeploy.title"),
 				this.model.getMessage("globus.check.redeploy.desc"));
@@ -719,8 +717,8 @@ public class Installer {
 						&& model.isConfigureContainerSelected();
 			}
 
-		});		
-		
+		});
+
 		// Checks if secure container should be used
 		CheckSecureContainerStep checkDeployGlobusSecureStep = new CheckSecureContainerStep(
 				this.model.getMessage("globus.check.secure.title"), this.model
@@ -903,33 +901,8 @@ public class Installer {
 		ConfigureServiceCertStep serviceCertInfoStep = new ConfigureServiceCertStep(
 				this.model.getMessage("service.cert.info.title"), this.model
 						.getMessage("service.cert.info.desc"));
-		FilePropertyConfigurationOption escpOption = new FilePropertyConfigurationOption(
-				Constants.SERVICE_CERT_PATH, this.model
-						.getMessage("service.cert.info.cert.path"), this.model
-						.getProperty(Constants.SERVICE_CERT_PATH,
-								InstallerUtils.getInstallerDir()
-										+ "/certs/service.cert"), true);
-		escpOption.setDirectoriesOnly(false);
-		escpOption.setBrowseLabel(this.model.getMessage("browse"));
-		serviceCertInfoStep.getOptions().add(escpOption);
-		FilePropertyConfigurationOption eskpOption = new FilePropertyConfigurationOption(
-				Constants.SERVICE_KEY_PATH, this.model
-						.getMessage("service.cert.info.key.path"), this.model
-						.getProperty(Constants.SERVICE_KEY_PATH, InstallerUtils
-								.getInstallerDir()
-								+ "/certs/service.key"), true);
-		eskpOption.setDirectoriesOnly(false);
-		eskpOption.setBrowseLabel(this.model.getMessage("browse"));
-		serviceCertInfoStep.getOptions().add(eskpOption);
-		serviceCertInfoStep.getValidators().add(
-				new PathExistsValidator(Constants.SERVICE_CERT_PATH, this.model
-						.getMessage("error.cert.file.not.found")));
-		serviceCertInfoStep.getValidators().add(
-				new PathExistsValidator(Constants.SERVICE_KEY_PATH, this.model
-						.getMessage("error.key.file.not.found")));
-		serviceCertInfoStep.getValidators().add(
-				new KeyAccessValidator(Constants.SERVICE_KEY_PATH, null,
-						this.model.getMessage("error.key.no.access")));
+		InstallerUtils.addCommonCertFields(this.model, serviceCertInfoStep,
+				Constants.SERVICE_CERT_PATH, Constants.SERVICE_KEY_PATH, null);
 		this.model.add(serviceCertInfoStep, new Condition() {
 
 			public boolean evaluate(WizardModel m) {
@@ -1030,13 +1003,9 @@ public class Installer {
 		this.componentInstallers = componentInstallers;
 	}
 
-
-
 	public List<DownloadedComponentInstaller> getDownloadedComponentInstallers() {
 		return downloadedComponentInstallers;
 	}
-
-
 
 	public void setDownloadedComponentInstallers(
 			List<DownloadedComponentInstaller> externalComponentInstallers) {

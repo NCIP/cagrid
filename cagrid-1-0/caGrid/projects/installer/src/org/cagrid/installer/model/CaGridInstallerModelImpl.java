@@ -216,12 +216,6 @@ CaGridInstallerModel {
 
 	}
 
-	public boolean isAuthnSvcCAGenerationRequired() {
-		return !isTrue(Constants.AUTHN_SVC_CA_PRESENT)
-				&& !isTrue(Constants.AUTHN_SVC_USE_GEN_CA);
-
-	}
-
 	public boolean isEqual(String value, String propName) {
 		return value.equals(getProperty(propName));
 	}
@@ -286,6 +280,7 @@ CaGridInstallerModel {
 	}
 
 	public boolean isSyncGTSInstalled() {
+		//TODO: handle different webapp names and prefixes.
 		File syncDescFile = new File(
 				getProperty(Constants.TOMCAT_HOME)
 						+ "/webapps/wsrf/WEB-INF/etc/cagrid_SyncGTS/sync-description.xml");
@@ -416,6 +411,7 @@ CaGridInstallerModel {
 		if (globusDeployed == null) {
 			globusDeployed = false;
 			if (isTomcatInstalled()) {
+				//TODO: handle different webapp names
 				File wsrfDir = new File(
 						(String) getProperty(Constants.TOMCAT_HOME)
 								+ "/webapps/wsrf");

@@ -22,12 +22,13 @@ import org.cagrid.installer.tasks.ConditionalTask;
 import org.cagrid.installer.util.InstallerUtils;
 import org.cagrid.installer.validator.GenericDBConnectionValidator;
 import org.cagrid.installer.validator.PathExistsValidator;
+import org.pietschy.wizard.InvalidStateException;
 import org.pietschy.wizard.WizardModel;
 import org.pietschy.wizard.models.Condition;
 
 /**
  * @author <a href="joshua.phillips@semanticbits.com">Joshua Phillips</a>
- *
+ * 
  */
 public class AuthenticationServiceComponentInstaller implements
 		CaGridComponentInstaller {
@@ -39,15 +40,17 @@ public class AuthenticationServiceComponentInstaller implements
 
 	}
 
-	/* (non-Javadoc)
-	 * @see org.cagrid.installer.ComponentInstaller#addInstallTasks(org.cagrid.installer.model.CaGridInstallerModel, org.cagrid.installer.steps.RunTasksStep)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.cagrid.installer.ComponentInstaller#addInstallTasks(org.cagrid.installer.model.CaGridInstallerModel,
+	 *      org.cagrid.installer.steps.RunTasksStep)
 	 */
 	public void addInstallTasks(CaGridInstallerModel model,
 			RunTasksStep installStep) {
 		installStep.getTasks().add(
-				new ConditionalTask(
-						new DeployAuthenticationServiceTask(model
-								.getMessage("deploying.authn.svc.title"), ""),
+				new ConditionalTask(new DeployAuthenticationServiceTask(model
+						.getMessage("deploying.authn.svc.title"), ""),
 						new Condition() {
 
 							public boolean evaluate(WizardModel m) {
@@ -60,13 +63,14 @@ public class AuthenticationServiceComponentInstaller implements
 
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.cagrid.installer.ComponentInstaller#addSteps(org.cagrid.installer.model.CaGridInstallerModel)
 	 */
 	public void addSteps(CaGridInstallerModel model) {
 		ConfigureServiceMetadataStep editAuthnSvcMetaStep = new ConfigureServiceMetadataStep(
-				"", model
-						.getMessage("authn.svc.edit.service.metadata.title"),
+				"", model.getMessage("authn.svc.edit.service.metadata.title"),
 				model.getMessage("authn.svc.edit.service.metadata.desc")) {
 			protected String getServiceMetadataPath() {
 				return model.getServiceDestDir()
@@ -80,90 +84,71 @@ public class AuthenticationServiceComponentInstaller implements
 			}
 		});
 
-		PropertyConfigurationStep checkAuthnUseGeneratedCAStep = new PropertyConfigurationStep(
-				model.getMessage("authn.svc.check.use.gen.ca.title"),
-				model.getMessage("authn.svc.check.use.gen.ca.desc"));
-		checkAuthnUseGeneratedCAStep.getOptions().add(
+		// Check if user wants to use the service credentials as the
+		// asserting credentials
+		PropertyConfigurationStep checkUseSvcCredsStep = new PropertyConfigurationStep(
+				model.getMessage("authn.svc.use.svc.creds.title"), model
+						.getMessage("authn.svc.use.svc.creds.desc")) {
+			public void applyState() throws InvalidStateException {
+
+				super.applyState();
+
+				if (this.model.isTrue(Constants.AUTHN_SVC_USE_SVC_CREDS)) {
+					this.model
+							.setProperty(
+									Constants.AUTH_SVC_SAML_PROVIDER_CERT_PATH,
+									this.model
+											.getProperty(Constants.SERVICE_CERT_PATH));
+					this.model.setProperty(
+							Constants.AUTH_SVC_SAML_PROVIDER_KEY_PATH,
+							this.model.getProperty(Constants.SERVICE_KEY_PATH));
+					this.model.setProperty(
+							Constants.AUTH_SVC_SAML_PROVIDER_KEY_PWD, "");
+				}
+
+			}
+		};
+		checkUseSvcCredsStep.getOptions().add(
 				new BooleanPropertyConfigurationOption(
-						Constants.AUTHN_SVC_USE_GEN_CA, model
+						Constants.AUTHN_SVC_USE_SVC_CREDS, model
 								.getMessage("yes"), false, false));
-		model.add(checkAuthnUseGeneratedCAStep, new Condition() {
+		model.add(checkUseSvcCredsStep, new Condition() {
 
 			public boolean evaluate(WizardModel m) {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
-
-				return (model.isCAGenerationRequired() || model
-						.isTrue(Constants.CA_CERT_PRESENT))
-						&& model.isTrue(Constants.INSTALL_AUTHN_SVC);
+				return model.isTrue(Constants.INSTALL_AUTHN_SVC);
 			}
 
 		});
 
-		// Checks if user will supply Authn Svc CA
-		PropertyConfigurationStep checkAuthnCAPresentStep = new PropertyConfigurationStep(
-				model.getMessage("authn.svc.check.ca.present.title"),
-				model.getMessage("authn.svc.check.ca.present.desc"));
-		checkAuthnCAPresentStep.getOptions().add(
-				new BooleanPropertyConfigurationOption(
-						Constants.AUTHN_SVC_CA_PRESENT, model
-								.getMessage("yes"), false, false));
-		model.add(checkAuthnCAPresentStep, new Condition() {
+		// If user doesn't want to use service credentials, ask for location
+		// of asserting credentials
+		PropertyConfigurationStep configAssertingCredsStep = new PropertyConfigurationStep(
+				model.getMessage("authn.svc.asserting.creds.title"), model
+						.getMessage("authn.svc.asserting.creds.desc"));
+		InstallerUtils.addCommonCertFields(model, configAssertingCredsStep,
+				Constants.AUTH_SVC_SAML_PROVIDER_CERT_PATH,
+				Constants.AUTH_SVC_SAML_PROVIDER_KEY_PATH,
+				Constants.AUTH_SVC_SAML_PROVIDER_KEY_PWD);
+		model.add(configAssertingCredsStep, new Condition() {
 
 			public boolean evaluate(WizardModel m) {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
-
-				return model.isTrue(Constants.INSTALL_AUTHN_SVC)
-						&& !model.isTrue(Constants.AUTHN_SVC_USE_GEN_CA);
-			}
-
-		});
-
-		// Authentication Service Existing CA Config
-		ConfigureAuthnCAStep authnCaCertInfoStep = new ConfigureAuthnCAStep(
-				model.getMessage("authn.svc.ca.cert.info.title"),
-				model.getMessage("authn.svc.ca.cert.info.desc"));
-		InstallerUtils.addCommonCACertFields(model, authnCaCertInfoStep,
-				Constants.AUTHN_SVC_CA_CERT_PATH,
-				Constants.AUTHN_SVC_CA_KEY_PATH,
-				Constants.AUTHN_SVC_CA_KEY_PWD, true);
-		model.add(authnCaCertInfoStep, new Condition() {
-
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return !model.isAuthnSvcCAGenerationRequired()
-						&& model.isTrue(Constants.INSTALL_AUTHN_SVC);
-
-			}
-		});
-
-		// AuthenticationService New CA
-		PropertyConfigurationStep authnCaNewCertInfoStep = new PropertyConfigurationStep(
-				model.getMessage("authn.svc.ca.new.cert.info.title"),
-				model.getMessage("authn.svc.ca.new.cert.info.desc"));
-		InstallerUtils.addCommonNewCACertFields(model, authnCaNewCertInfoStep,
-				Constants.AUTHN_SVC_CA_CERT_PATH,
-				Constants.AUTHN_SVC_CA_KEY_PATH,
-				Constants.AUTHN_SVC_CA_KEY_PWD, Constants.AUTHN_SVC_CA_DN,
-				Constants.AUTHN_SVC_CA_DAYS_VALID);
-		model.add(authnCaNewCertInfoStep, new Condition() {
-
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isAuthnSvcCAGenerationRequired()
+				return !model.isTrue(Constants.AUTHN_SVC_USE_SVC_CREDS)
 						&& model.isTrue(Constants.INSTALL_AUTHN_SVC);
 			}
+
 		});
 
 		PropertyConfigurationStep overwriteJaasStep = new PropertyConfigurationStep(
-				model.getMessage("authn.svc.overwrite.jaas.title"),
-				model.getMessage("authn.svc.overwrite.jaas.desc"));
+				model.getMessage("authn.svc.overwrite.jaas.title"), model
+						.getMessage("authn.svc.overwrite.jaas.desc"));
 		overwriteJaasStep
 				.getOptions()
 				.add(
 						new ListPropertyConfigurationOption(
 								Constants.AUTHN_SVC_OVERWRITE_JAAS,
-								model
-										.getMessage("authn.svc.overwrite.jaas"),
+								model.getMessage("authn.svc.overwrite.jaas"),
 								new LabelValuePair[] {
 										new LabelValuePair(
 												model
@@ -186,10 +171,8 @@ public class AuthenticationServiceComponentInstaller implements
 
 		// Let's user select the type of credential provider
 		PropertyConfigurationStep selectCredentialProviderStep = new PropertyConfigurationStep(
-				model
-						.getMessage("authn.svc.select.cred.provider.type.title"),
-				model
-						.getMessage("authn.svc.select.cred.provider.type.desc"));
+				model.getMessage("authn.svc.select.cred.provider.type.title"),
+				model.getMessage("authn.svc.select.cred.provider.type.desc"));
 		selectCredentialProviderStep
 				.getOptions()
 				.add(
@@ -233,14 +216,11 @@ public class AuthenticationServiceComponentInstaller implements
 								"jdbc:mysql://localhost:3306/authnsvc"), true));
 
 		FilePropertyConfigurationOption driverJar = new FilePropertyConfigurationOption(
-				Constants.AUTHN_SVC_RDBMS_DRIVER_JAR,
-				model.getMessage("authn.svc.rdbms.driver.jar"),
-				model
-						.getProperty(
-								Constants.AUTHN_SVC_RDBMS_DRIVER_JAR,
-								System.getProperty("user.dir")
-										+ "/lib/mysql-connector-java-3.0.16-ga-bin.jar"),
-				true);
+				Constants.AUTHN_SVC_RDBMS_DRIVER_JAR, model
+						.getMessage("authn.svc.rdbms.driver.jar"),
+				model.getProperty(Constants.AUTHN_SVC_RDBMS_DRIVER_JAR, System
+						.getProperty("user.dir")
+						+ "/lib/mysql-connector-java-3.0.16-ga-bin.jar"), true);
 		driverJar.setBrowseLabel(model.getMessage("browse"));
 		driverJar.setExtensions(new String[] { ".jar" });
 		authnSvcRdbmsStep.getOptions().add(driverJar);
@@ -248,29 +228,27 @@ public class AuthenticationServiceComponentInstaller implements
 		authnSvcRdbmsStep.getOptions().add(
 				new TextPropertyConfigurationOption(
 						Constants.AUTHN_SVC_RDBMS_DRIVER, model
-								.getMessage("authn.svc.rdbms.driver"),
-						model.getProperty(
-								Constants.AUTHN_SVC_RDBMS_DRIVER,
-								"org.gjt.mm.mysql.Driver"), true));
+								.getMessage("authn.svc.rdbms.driver"), model
+								.getProperty(Constants.AUTHN_SVC_RDBMS_DRIVER,
+										"org.gjt.mm.mysql.Driver"), true));
 		authnSvcRdbmsStep.getOptions().add(
 				new TextPropertyConfigurationOption(
 						Constants.AUTHN_SVC_RDBMS_USERNAME, model
-								.getMessage("authn.svc.rdbms.username"),
-						model.getProperty(
-								Constants.AUTHN_SVC_RDBMS_USERNAME, "root"),
-						true));
+								.getMessage("authn.svc.rdbms.username"), model
+								.getProperty(
+										Constants.AUTHN_SVC_RDBMS_USERNAME,
+										"root"), true));
 		authnSvcRdbmsStep.getOptions().add(
 				new PasswordPropertyConfigurationOption(
 						Constants.AUTHN_SVC_RDBMS_PASSWORD, model
 								.getMessage("authn.svc.rdbms.password"),
-						model.getProperty(
-								Constants.AUTHN_SVC_RDBMS_PASSWORD, ""), true));
+						model.getProperty(Constants.AUTHN_SVC_RDBMS_PASSWORD,
+								""), true));
 		authnSvcRdbmsStep.getOptions().add(
 				new TextPropertyConfigurationOption(
 						Constants.AUTHN_SVC_RDBMS_TABLE_NAME, model
 								.getMessage("authn.svc.rdbms.table.name"),
-						model.getProperty(
-								Constants.AUTHN_SVC_RDBMS_TABLE_NAME,
+						model.getProperty(Constants.AUTHN_SVC_RDBMS_TABLE_NAME,
 								"CSM_USER"), true));
 		authnSvcRdbmsStep.getOptions().add(
 				new TextPropertyConfigurationOption(
@@ -286,28 +264,20 @@ public class AuthenticationServiceComponentInstaller implements
 						model.getProperty(
 								Constants.AUTHN_SVC_RDBMS_PASSWORD_COLUMN,
 								"PASSWORD"), true));
-		authnSvcRdbmsStep
-				.getOptions()
-				.add(
-						new TextPropertyConfigurationOption(
+		authnSvcRdbmsStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.AUTHN_SVC_RDBMS_FIRST_NAME_COLUMN,
+						model.getMessage("authn.svc.rdbms.first.name.column"),
+						model.getProperty(
 								Constants.AUTHN_SVC_RDBMS_FIRST_NAME_COLUMN,
-								model
-										.getMessage("authn.svc.rdbms.first.name.column"),
-								model
-										.getProperty(
-												Constants.AUTHN_SVC_RDBMS_FIRST_NAME_COLUMN,
-												"FIRST_NAME"), true));
-		authnSvcRdbmsStep
-				.getOptions()
-				.add(
-						new TextPropertyConfigurationOption(
+								"FIRST_NAME"), true));
+		authnSvcRdbmsStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.AUTHN_SVC_RDBMS_LAST_NAME_COLUMN,
+						model.getMessage("authn.svc.rdbms.last.name.column"),
+						model.getProperty(
 								Constants.AUTHN_SVC_RDBMS_LAST_NAME_COLUMN,
-								model
-										.getMessage("authn.svc.rdbms.last.name.column"),
-								model
-										.getProperty(
-												Constants.AUTHN_SVC_RDBMS_LAST_NAME_COLUMN,
-												"LAST_NAME"), true));
+								"LAST_NAME"), true));
 
 		authnSvcRdbmsStep.getOptions().add(
 				new TextPropertyConfigurationOption(
@@ -316,14 +286,11 @@ public class AuthenticationServiceComponentInstaller implements
 						model.getProperty(
 								Constants.AUTHN_SVC_RDBMS_EMAIL_ID_COLUMN,
 								"EMAIL_ID"), true));
-		authnSvcRdbmsStep
-				.getOptions()
-				.add(
-						new BooleanPropertyConfigurationOption(
-								Constants.AUTHN_SVC_RDBMS_ENCRYPTION_ENABLED,
-								model
-										.getMessage("authn.svc.rdbms.encryption.enabled"),
-								false, false));
+		authnSvcRdbmsStep.getOptions().add(
+				new BooleanPropertyConfigurationOption(
+						Constants.AUTHN_SVC_RDBMS_ENCRYPTION_ENABLED,
+						model.getMessage("authn.svc.rdbms.encryption.enabled"),
+						false, false));
 		authnSvcRdbmsStep
 				.getValidators()
 				.add(
@@ -334,8 +301,8 @@ public class AuthenticationServiceComponentInstaller implements
 		authnSvcRdbmsStep.getValidators().add(
 				new GenericDBConnectionValidator(
 						Constants.AUTHN_SVC_RDBMS_USERNAME,
-						Constants.AUTHN_SVC_RDBMS_PASSWORD, "select 1",
-						model.getMessage("db.validation.failed"),
+						Constants.AUTHN_SVC_RDBMS_PASSWORD, "select 1", model
+								.getMessage("db.validation.failed"),
 						Constants.AUTHN_SVC_RDBMS_DRIVER_JAR,
 						Constants.AUTHN_SVC_RDBMS_URL,
 						Constants.AUTHN_SVC_RDBMS_DRIVER));
@@ -363,28 +330,23 @@ public class AuthenticationServiceComponentInstaller implements
 		authnSvcLdapStep.getOptions().add(
 				new TextPropertyConfigurationOption(
 						Constants.AUTHN_SVC_LDAP_HOSTNAME, model
-								.getMessage("authn.svc.ldap.hostname"),
-						model.getProperty(
-								Constants.AUTHN_SVC_LDAP_HOSTNAME,
-								"ldaps://cbioweb.nci.nih.gov:636"), true));
+								.getMessage("authn.svc.ldap.hostname"), model
+								.getProperty(Constants.AUTHN_SVC_LDAP_HOSTNAME,
+										"ldaps://cbioweb.nci.nih.gov:636"),
+						true));
 		authnSvcLdapStep.getOptions().add(
 				new TextPropertyConfigurationOption(
 						Constants.AUTHN_SVC_LDAP_SEARCH_BASE, model
 								.getMessage("authn.svc.ldap.search.base"),
-						model.getProperty(
-								Constants.AUTHN_SVC_LDAP_SEARCH_BASE,
+						model.getProperty(Constants.AUTHN_SVC_LDAP_SEARCH_BASE,
 								"ou=nci,o=nih"), true));
-		authnSvcLdapStep
-				.getOptions()
-				.add(
-						new TextPropertyConfigurationOption(
+		authnSvcLdapStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.AUTHN_SVC_LDAP_LOGIN_ID_ATTRIBUTE,
+						model.getMessage("authn.svc.ldap.login.id.attribute"),
+						model.getProperty(
 								Constants.AUTHN_SVC_LDAP_LOGIN_ID_ATTRIBUTE,
-								model
-										.getMessage("authn.svc.ldap.login.id.attribute"),
-								model
-										.getProperty(
-												Constants.AUTHN_SVC_LDAP_LOGIN_ID_ATTRIBUTE,
-												"cn"), true));
+								"cn"), true));
 		authnSvcLdapStep
 				.getOptions()
 				.add(
@@ -396,28 +358,20 @@ public class AuthenticationServiceComponentInstaller implements
 										.getProperty(
 												Constants.AUTHN_SVC_LDAP_FIRST_NAME_ATTRIBUTE,
 												"givenName"), true));
-		authnSvcLdapStep
-				.getOptions()
-				.add(
-						new TextPropertyConfigurationOption(
+		authnSvcLdapStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.AUTHN_SVC_LDAP_LAST_NAME_ATTRIBUTE,
+						model.getMessage("authn.svc.ldap.last.name.attribute"),
+						model.getProperty(
 								Constants.AUTHN_SVC_LDAP_LAST_NAME_ATTRIBUTE,
-								model
-										.getMessage("authn.svc.ldap.last.name.attribute"),
-								model
-										.getProperty(
-												Constants.AUTHN_SVC_LDAP_LAST_NAME_ATTRIBUTE,
-												"sn"), true));
-		authnSvcLdapStep
-				.getOptions()
-				.add(
-						new TextPropertyConfigurationOption(
+								"sn"), true));
+		authnSvcLdapStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.AUTHN_SVC_LDAP_EMAIL_ID_ATTRIBUTE,
+						model.getMessage("authn.svc.ldap.email.id.attribute"),
+						model.getProperty(
 								Constants.AUTHN_SVC_LDAP_EMAIL_ID_ATTRIBUTE,
-								model
-										.getMessage("authn.svc.ldap.email.id.attribute"),
-								model
-										.getProperty(
-												Constants.AUTHN_SVC_LDAP_EMAIL_ID_ATTRIBUTE,
-												"mail"), true));
+								"mail"), true));
 		// TODO: add validation
 		model.add(authnSvcLdapStep, new Condition() {
 
@@ -435,8 +389,8 @@ public class AuthenticationServiceComponentInstaller implements
 				"authentication-service", model
 						.getMessage("authn.svc.edit.deploy.properties.title"),
 				model.getMessage("authn.svc.edit.deploy.properties.desc"),
-				model.getMessage("edit.properties.property.name"),
-				model.getMessage("edit.properties.property.value"));
+				model.getMessage("edit.properties.property.name"), model
+						.getMessage("edit.properties.property.value"));
 		model.add(editAuthnDeployPropertiesStep, new Condition() {
 			public boolean evaluate(WizardModel m) {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
@@ -445,5 +399,4 @@ public class AuthenticationServiceComponentInstaller implements
 		});
 
 	}
-
 }

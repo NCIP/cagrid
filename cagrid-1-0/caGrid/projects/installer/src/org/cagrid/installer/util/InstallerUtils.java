@@ -39,6 +39,8 @@ import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.installer.model.CaGridInstallerModel;
+import org.cagrid.installer.model.CaGridInstallerModelImpl;
+import org.cagrid.installer.steps.ConfigureServiceCertStep;
 import org.cagrid.installer.steps.Constants;
 import org.cagrid.installer.steps.PropertyConfigurationStep;
 import org.cagrid.installer.steps.options.FilePropertyConfigurationOption;
@@ -254,7 +256,7 @@ public class InstallerUtils {
 		boolean correctVersion = false;
 		try {
 			String javaHome = System.getenv("JAVA_HOME");
-			if(isEmpty(javaHome)){
+			if (isEmpty(javaHome)) {
 				javaHome = System.getProperty("java.home");
 			}
 			String[] envp = new String[] { "JAVA_HOME=" + javaHome };
@@ -273,11 +275,10 @@ public class InstallerUtils {
 
 			correctVersion = stdout.toString().indexOf("Apache Tomcat/5.0.28") != -1;
 			if (!correctVersion) {
-				logger
-						.warn("The Tomcat version utility indicates " +
-								"that the correct tomcat version is not " +
-								"installed. Here is the output from that tool: \n"
-								+ stdout);
+				logger.warn("The Tomcat version utility indicates "
+						+ "that the correct tomcat version is not "
+						+ "installed. Here is the output from that tool: \n"
+						+ stdout);
 			}
 		} catch (Exception ex) {
 			logger
@@ -498,6 +499,42 @@ public class InstallerUtils {
 				new TextPropertyConfigurationOption(caDaysValidProp, model
 						.getMessage("ca.cert.info.days.valid"), model
 						.getProperty(caDaysValidProp, "1000"), true));
+	}
+
+	public static void addCommonCertFields(CaGridInstallerModel model,
+			PropertyConfigurationStep step, String certPathProp,
+			String keyPathProp, String keyPwdProp) {
+		FilePropertyConfigurationOption escpOption = new FilePropertyConfigurationOption(
+				certPathProp, model.getMessage("service.cert.info.cert.path"),
+				model
+						.getProperty(certPathProp, System
+								.getProperty("user.home")), true);
+		escpOption.setDirectoriesOnly(false);
+		escpOption.setBrowseLabel(model.getMessage("browse"));
+		step.getOptions().add(escpOption);
+		FilePropertyConfigurationOption eskpOption = new FilePropertyConfigurationOption(
+				keyPathProp,
+				model.getMessage("service.cert.info.key.path"),
+				model.getProperty(keyPathProp, System.getProperty("user.home")),
+				true);
+		eskpOption.setDirectoriesOnly(false);
+		eskpOption.setBrowseLabel(model.getMessage("browse"));
+		step.getOptions().add(eskpOption);
+		if (keyPwdProp != null) {
+			step.getOptions().add(
+					new PasswordPropertyConfigurationOption(keyPwdProp, model
+							.getMessage("service.cert.info.key.pwd"), model
+							.getProperty(keyPwdProp, ""), false));
+		}
+		step.getValidators().add(
+				new PathExistsValidator(certPathProp, model
+						.getMessage("error.cert.file.not.found")));
+		step.getValidators().add(
+				new PathExistsValidator(keyPathProp, model
+						.getMessage("error.key.file.not.found")));
+		step.getValidators().add(
+				new KeyAccessValidator(keyPathProp, keyPwdProp, model
+						.getMessage("error.key.no.access")));
 	}
 
 }

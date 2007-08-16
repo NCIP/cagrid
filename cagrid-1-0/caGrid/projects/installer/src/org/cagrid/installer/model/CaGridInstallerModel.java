@@ -47,10 +47,6 @@ public interface CaGridInstallerModel extends WizardModel {
 
 	boolean isServiceCertGenerationRequired();
 
-	boolean isAuthnSvcCAGenerationRequired();
-
-
-
 	boolean isEqual(String value, String propName2);
 
 	boolean isConfigureGlobusRequired();

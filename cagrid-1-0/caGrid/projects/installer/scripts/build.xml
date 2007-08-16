@@ -776,11 +776,11 @@ ${authn.svc.csm.ctx}{
 			file="${service.dest.dir}/authentication-service/idp.properties">
 			<entry key="csm.app.context" value="${authn.svc.csm.ctx}" />
 			<entry key="saml.provider.crt"
-				value="${authn.svc.ca.cert.path}" />
+				value="${authn.svc.saml.provider.cert.path}" />
 			<entry key="saml.provider.key"
-				value="${authn.svc.ca.key.path}" />
+				value="${authn.svc.saml.provider.key.path}" />
 			<entry key="saml.provider.pwd"
-				value="${authn.svc.ca.key.pwd}" />
+				value="${authn.svc.saml.provider.key.pwd}" />
 		</propertyfile>
 	</target>
 

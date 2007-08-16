@@ -265,25 +265,13 @@ public abstract class Constants {
 
 	public static final String TOMCAT_OLD_HTTPS_PORT = "tomcat.old.https.port";
 
-	public static final String AUTHN_SVC_USE_GEN_CA = "authn.svc.use.gen.ca";
-
-	public static final String AUTHN_SVC_CA_PRESENT = "authn.svc.ca.present";
-
-	public static final String AUTHN_SVC_CA_CERT_PATH = "authn.svc.ca.cert.path";
-
-	public static final String AUTHN_SVC_CA_KEY_PATH = "authn.svc.ca.key.path";
-
-	public static final String AUTHN_SVC_CA_KEY_PWD = "authn.svc.ca.key.pwd";
-
-	public static final String AUTHN_SVC_CA_DN = "authn.svc.ca.dn";
-
-	public static final String AUTHN_SVC_CA_DAYS_VALID = "authn.svc.ca.days.valid";
-
 	public static final String AUTHN_SVC_CRED_PROVIDER_TYPE = "authn.svc.cred.provider.type";
 
 	public static final String AUTHN_SVC_CRED_PROVIDER_TYPE_RDBMS = "authn.svc.cred.provider.type.rdbms";
 
 	public static final String AUTHN_SVC_CRED_PROVIDER_TYPE_LDAP = "authn.svc.cred.provider.type.ldap";
+	
+	public static final String AUTHN_SVC_USE_SVC_CREDS = "authn.svc.use.svc.creds";
 
 	public static final String AUTHN_SVC_CSM_CTX = "authn.svc.csm.ctx";
 
@@ -436,6 +424,14 @@ public abstract class Constants {
 	public static final String BPEL_ADMIN_USERNAME = "bpel.admin.username";
 
 	public static final String BPEL_ADMIN_PASSWORD = "bpel.admin.password";
+
+	public static final String AUTH_SVC_SAML_PROVIDER_CERT_PATH = "authn.svc.saml.provider.cert.path";
+
+	public static final String AUTH_SVC_SAML_PROVIDER_KEY_PATH = "authn.svc.saml.provider.key.path";
+
+	public static final String AUTH_SVC_SAML_PROVIDER_KEY_PWD = "authn.svc.saml.provider.key.pwd";
+
+	
 
 
 }

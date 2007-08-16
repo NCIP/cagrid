@@ -3,7 +3,6 @@
  */
 package org.cagrid.installer.authnsvc;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
@@ -38,15 +37,6 @@ public class DeployAuthenticationServiceTask extends DeployServiceTask {
 
 		model.setProperty(Constants.BUILD_FILE_PATH, installerBuildFilePath);
 
-		// Generate the AuthnSvc CA
-		if (model.isAuthnSvcCAGenerationRequired()) {
-			new AntTask("", "", "generate-authn-service-ca", env, sysProps)
-					.execute(model);
-			InstallerUtils.copyCACertToTrustStore(model
-					.getProperty(Constants.AUTHN_SVC_CA_CERT_PATH),
-					"AUTHNSVC_CA.0");
-		}
-
 		// Modify deploy.properties
 		new AntTask("", "", "set-authn-service-idp-properties", env,
 				sysProps).execute(model);
@@ -55,14 +45,6 @@ public class DeployAuthenticationServiceTask extends DeployServiceTask {
 		// TODO: setting these properties shouldn't be necessary, but the build
 		// file
 		// is not including deploy.properties at the right time.
-//		sysProps.setProperty("csm.app.context", (String) state
-//				.get(Constants.AUTHN_SVC_CSM_CTX));
-//		sysProps.setProperty("saml.provider.crt", (String) state
-//				.get(Constants.AUTHN_SVC_CA_CERT_PATH));
-//		sysProps.setProperty("saml.provider.key", (String) state
-//				.get(Constants.AUTHN_SVC_CA_KEY_PATH));
-//		sysProps.setProperty("saml.provider.pwd", (String) state
-//				.get(Constants.AUTHN_SVC_CA_KEY_PWD));
 		model.setProperty(Constants.BUILD_FILE_PATH, svcBuildFilePath);
 		super.runAntTask(model, target, env, sysProps);
 
