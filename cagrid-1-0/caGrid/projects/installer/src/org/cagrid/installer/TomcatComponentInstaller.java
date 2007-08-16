@@ -10,7 +10,7 @@ import org.pietschy.wizard.models.Condition;
 
 /**
  * @author <a href="joshua.phillips@semanticbits.com">Joshua Phillips</a>
- *
+ * 
  */
 public class TomcatComponentInstaller extends
 		AbstractDownloadedComponentInstaller {
@@ -22,7 +22,9 @@ public class TomcatComponentInstaller extends
 
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.cagrid.installer.AbstractExternalComponentInstaller#getComponentId()
 	 */
 	@Override
@@ -30,7 +32,9 @@ public class TomcatComponentInstaller extends
 		return "tomcat";
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.cagrid.installer.AbstractExternalComponentInstaller#getShouldCheckCondition()
 	 */
 	@Override
@@ -42,13 +46,14 @@ public class TomcatComponentInstaller extends
 			}
 		};
 	}
-	
-	protected Condition getShouldInstallCondition(){
+
+	protected Condition getShouldInstallCondition() {
 		return new Condition() {
 			public boolean evaluate(WizardModel m) {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return !model.isTomcatInstalled()
-						|| model.isTrue(Constants.INSTALL_TOMCAT);
+				return model.isTomcatContainer()
+						&& (!model.isTomcatInstalled() || model
+								.isTrue(Constants.INSTALL_TOMCAT));
 			}
 		};
 	}
