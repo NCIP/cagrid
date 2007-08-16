@@ -17,6 +17,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
@@ -355,7 +356,12 @@ public class ActiveBPELAdapter implements WorkflowEngineAdapter {
 		} catch (IOException ex) {
 			throw  new WorkflowExceptionType();
 		}
-		return (WorkflowStatusEventType[]) processStates.values().toArray();
+		ArrayList temp = new ArrayList(this.processStates.values());
+		System.out.println("EVENTS:" + temp.size());
+		WorkflowStatusEventType returnThis[] = 
+			(WorkflowStatusEventType[]) temp.toArray(new WorkflowStatusEventType[temp.size()]);
+		return returnThis;
+		//return (WorkflowStatusEventType[]) processStates.values().toArray();
 
 	}
 	

@@ -1,7 +1,6 @@
 
 package gov.nih.nci.cagrid.workflow.handlers;
 
-import java.io.File;
 
 import org.apache.axis.AxisFault;
 import org.apache.axis.MessageContext;
@@ -23,6 +22,7 @@ public class SimpleGlobusAuthorizationHandler extends BasicHandler {
 		 msgContext.setProperty(
                  GSIConstants.GSI_AUTHORIZATION,
                  org.globus.gsi.gssapi.auth.NoAuthorization.getInstance());
+
 		/* String pathToDesc = System.getProperty("java.io.tmpdir") + 
 		 File.separator + "secDescriptor.xml";
 		 System.out.println("setting desc" + pathToDesc);
