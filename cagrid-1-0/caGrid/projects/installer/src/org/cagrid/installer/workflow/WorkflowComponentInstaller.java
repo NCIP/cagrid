@@ -18,11 +18,20 @@ import org.pietschy.wizard.models.Condition;
  */
 public class WorkflowComponentInstaller implements CaGridComponentInstaller {
 
+	private Condition installWorkflow;
+	
 	/**
 	 * 
 	 */
 	public WorkflowComponentInstaller() {
+		installWorkflow  = new Condition() {
 
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return model.isTrue(Constants.INSTALL_WORKFLOW);
+			}
+
+		};
 	}
 
 	/* (non-Javadoc)
@@ -30,17 +39,18 @@ public class WorkflowComponentInstaller implements CaGridComponentInstaller {
 	 */
 	public void addInstallTasks(CaGridInstallerModel model,
 			RunTasksStep installStep) {
+		
+		
+		
+		installStep.getTasks().add(
+				new ConditionalTask(new DeployActiveBPELTask(model
+						.getMessage("installing.activebpel.title"), ""),
+						installWorkflow));
+		
 		installStep.getTasks().add(
 				new ConditionalTask(new DeployWorkflowServiceTask(model
 						.getMessage("installing.workflow.title"), "",
-						"workflow"), new Condition() {
-
-					public boolean evaluate(WizardModel m) {
-						CaGridInstallerModel model = (CaGridInstallerModel) m;
-						return model.isTrue(Constants.INSTALL_WORKFLOW);
-					}
-
-				}));
+						"workflow"), installWorkflow));
 	}
 
 	/* (non-Javadoc)
@@ -56,12 +66,7 @@ public class WorkflowComponentInstaller implements CaGridComponentInstaller {
 						+ "/workflow/WorkflowFactoryService/etc/serviceMetadata.xml";
 			}
 		};
-		model.add(editWorkflowSvcMetaStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_WORKFLOW);
-			}
-		});
+		model.add(editWorkflowSvcMetaStep, installWorkflow);
 
 		ServicePropertiesWorkflowFileEditorStep editWorkflowServicePropertiesStep = new ServicePropertiesWorkflowFileEditorStep(
 				"workflow", model
@@ -69,12 +74,7 @@ public class WorkflowComponentInstaller implements CaGridComponentInstaller {
 				model.getMessage("workflow.edit.service.properties.desc"),
 				model.getMessage("edit.properties.property.name"),
 				model.getMessage("edit.properties.property.value"));
-		model.add(editWorkflowServicePropertiesStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_WORKFLOW);
-			}
-		});
+		model.add(editWorkflowServicePropertiesStep, installWorkflow);
 
 		DeployPropertiesWorkflowFileEditorStep editWorkflowDeployPropertiesStep = new DeployPropertiesWorkflowFileEditorStep(
 				"workflow", model
@@ -82,12 +82,7 @@ public class WorkflowComponentInstaller implements CaGridComponentInstaller {
 				model.getMessage("workflow.edit.deploy.properties.desc"),
 				model.getMessage("edit.properties.property.name"),
 				model.getMessage("edit.properties.property.value"));
-		model.add(editWorkflowDeployPropertiesStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_WORKFLOW);
-			}
-		});
+		model.add(editWorkflowDeployPropertiesStep, installWorkflow);
 	}
 
 }

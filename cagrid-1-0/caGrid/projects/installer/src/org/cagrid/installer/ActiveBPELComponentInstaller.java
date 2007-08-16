@@ -3,6 +3,8 @@
  */
 package org.cagrid.installer;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.installer.model.CaGridInstallerModel;
 import org.cagrid.installer.steps.Constants;
 import org.cagrid.installer.steps.RunTasksStep;
@@ -19,6 +21,9 @@ import org.pietschy.wizard.models.Condition;
  */
 public class ActiveBPELComponentInstaller extends
 		AbstractDownloadedComponentInstaller {
+
+	private static final Log logger = LogFactory
+			.getLog(ActiveBPELComponentInstaller.class);
 
 	/**
 	 * 
@@ -63,9 +68,20 @@ public class ActiveBPELComponentInstaller extends
 		return new Condition() {
 			public boolean evaluate(WizardModel m) {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_WORKFLOW)
-						&& (!model.isActiveBPELInstalled() || model
-								.isTrue(Constants.INSTALL_ACTIVEBPEL));
+				boolean installWorkflow = model
+						.isTrue(Constants.INSTALL_WORKFLOW);
+				boolean isActiveBPELInstalled = model.isActiveBPELInstalled();
+				boolean installActiveBPEL = model
+						.isTrue(Constants.INSTALL_ACTIVEBPEL);
+				boolean shouldInstall = installWorkflow
+						&& (!isActiveBPELInstalled || installActiveBPEL);
+
+				logger.debug("installWorkflow = " + installWorkflow
+						+ ", isActiveBPELInstalled = " + isActiveBPELInstalled
+						+ ", installActiveBPEL = " + installActiveBPEL
+						+ ", shouldInstall = " + shouldInstall);
+
+				return shouldInstall;
 			}
 		};
 	}
@@ -73,54 +89,13 @@ public class ActiveBPELComponentInstaller extends
 	public void addInstallDownloadedComponentTasks(CaGridInstallerModel model,
 			RunTasksStep installStep) {
 
-		addUnTarInstallTask(installStep, model
-				.getMessage("downloading.activebpel.title"), model
-				.getMessage("installing.activebpel.title"), "",
-				Constants.ACTIVEBPEL_DOWNLOAD_URL,
-				Constants.ACTIVEBPEL_TEMP_FILE_NAME,
-				Constants.ACTIVEBPEL_INSTALL_DIR_PATH,
-				Constants.ACTIVEBPEL_DIR_NAME, Constants.ACTIVEBPEL_HOME,
-				Constants.INSTALL_ACTIVEBPEL, Integer.parseInt(model
-						.getProperty("activebpel.bytes")));
+		super.addInstallDownloadedComponentTasks(model, installStep);
 
 		installStep.getTasks().add(
 				new ConditionalTask(new DeployActiveBPELTask(model
 						.getMessage("installing.activebpel.title"), ""),
-						new Condition() {
+						getShouldInstallCondition()));
 
-							public boolean evaluate(WizardModel m) {
-								CaGridInstallerModel model = (CaGridInstallerModel) m;
-								return model
-										.isTrue(Constants.INSTALL_ACTIVEBPEL)
-										&& model
-												.isTrue(Constants.INSTALL_WORKFLOW);
-							}
-
-						}));
-
-	}
-
-	private void addUnTarInstallTask(RunTasksStep installStep,
-			String downloadMsg, String installMsg, String desc,
-			String downloadUrlProp, String tempFileNameProp,
-			String installDirPathProp, String dirNameProp, String homeProp,
-			final String installProp, int totalBytes) {
-
-		Condition c = new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(installProp)
-						&& model.isTrue(Constants.INSTALL_WORKFLOW);
-			}
-		};
-		installStep.getTasks().add(
-				new ConditionalTask(new DownloadFileTask(downloadMsg, desc,
-						downloadUrlProp, tempFileNameProp,
-						Constants.CONNECT_TIMEOUT, totalBytes), c));
-		installStep.getTasks().add(
-				new ConditionalTask(new UnTarInstallTask(installMsg, desc,
-						tempFileNameProp, installDirPathProp, dirNameProp,
-						homeProp), c));
 	}
 
 }
