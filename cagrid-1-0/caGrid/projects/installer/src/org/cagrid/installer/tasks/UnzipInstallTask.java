@@ -58,18 +58,13 @@ public class UnzipInstallTask extends BasicTask {
 			throw new RuntimeException("Error instantiating zip file: "
 					+ ex.getMessage(), ex);
 		}
-		// setStepCount(zipFile.size());
 
 		File installDir = new File(model.getProperty(this.installDirPathProp));
 		File home = new File(installDir.getAbsolutePath() + "/"
 				+ model.getProperty(this.dirNameProp));
 
-		// TODO: change this. this strays from the norm. usually steps modify
-		// state
-		// while tasks do not.
-		model.setProperty(this.homeProp, home.getAbsolutePath());
 
-//		home.delete();
+		model.setProperty(this.homeProp, home.getAbsolutePath());
 
 		String baseOut = installDir.getAbsolutePath() + "/";
 		Enumeration entries = zipFile.entries();
@@ -115,7 +110,7 @@ public class UnzipInstallTask extends BasicTask {
 				out.close();
 				in.close();
 			}
-			// setLastStep(getLastStep() + 1);
+
 		}
 		zipFile.close();
 
