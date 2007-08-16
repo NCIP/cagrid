@@ -61,9 +61,9 @@ public abstract class AbstractDownloadedComponentInstaller implements
 								+ ".title"), "", getComponentId()
 						+ ".download.url",
 						getComponentId() + ".temp.file.name",
-						Constants.CONNECT_TIMEOUT, Integer.parseInt(model
-								.getProperty(getComponentId() + ".bytes"))),
-						getShouldInstallCondition()));
+						Constants.CONNECT_TIMEOUT),
+
+				getShouldInstallCondition()));
 
 		installStep.getTasks().add(
 				new ConditionalTask(new UnzipInstallTask(

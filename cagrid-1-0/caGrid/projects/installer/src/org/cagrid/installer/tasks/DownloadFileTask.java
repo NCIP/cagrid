@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.Map;
 
 import javax.swing.SwingUtilities;
@@ -24,8 +25,6 @@ import org.cagrid.installer.steps.Constants;
  */
 public class DownloadFileTask extends BasicTask {
 
-	private static final Log logger = LogFactory.getLog(DownloadFileTask.class);
-
 	private static final int BUFFER_SIZE = 1024;
 
 	private static final int LOGAFTER_SIZE = BUFFER_SIZE * 1000;
@@ -37,19 +36,16 @@ public class DownloadFileTask extends BasicTask {
 	// Max time to wait for connection
 	private long connectTimeout;
 
-	private int totalBytes;
-
 	/**
 	 * @param name
 	 * @param description
 	 */
 	public DownloadFileTask(String name, String description,
-			String fromUrlProp, String toFileProp, long timeout, int totalBytes) {
+			String fromUrlProp, String toFileProp, long timeout) {
 		super(name, description);
 		this.fromUrlProp = fromUrlProp;
 		this.toFileProp = toFileProp;
 		this.connectTimeout = timeout;
-		this.totalBytes = totalBytes;
 	}
 
 	protected Object internalExecute(CaGridInstallerModel model) throws Exception {
@@ -60,7 +56,7 @@ public class DownloadFileTask extends BasicTask {
 		try {
 			url = new URL(fromUrl);
 		} catch (MalformedURLException ex) {
-			throw new RuntimeException("Bad URL.", ex);
+			throw new RuntimeException("Bad URL: '" + fromUrl + "'", ex);
 		}
 
 		ConnectThread t = new ConnectThread(url);
@@ -96,7 +92,7 @@ public class DownloadFileTask extends BasicTask {
 
 			if (bytesRead > nextLog) {
 				nextLog += LOGAFTER_SIZE;
-				double percent = bytesRead / (double) this.totalBytes;
+				double percent = bytesRead / (double) t.getTotalBytes();
 				String currMsg = Math.round(percent * 100) + " % complete";
 				if (!currMsg.equals(lastMsg)) {
 					System.out.println(currMsg);
@@ -120,6 +116,8 @@ public class DownloadFileTask extends BasicTask {
 		private boolean finished;
 
 		private URL url;
+		
+		int totalBytes;
 
 		ConnectThread(URL url) {
 			this.url = url;
@@ -127,11 +125,18 @@ public class DownloadFileTask extends BasicTask {
 
 		public void run() {
 			try {
-				this.in = this.url.openStream();
+				URLConnection conn = this.url.openConnection();
+				conn.connect();
+				this.totalBytes = conn.getContentLength();
+				this.in = conn.getInputStream();
 				this.finished = true;
 			} catch (Exception ex) {
 				this.ex = ex;
 			}
+		}
+		
+		int getTotalBytes(){
+			return this.totalBytes;
 		}
 
 		Exception getEx() {
