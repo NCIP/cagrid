@@ -26,7 +26,7 @@ import org.pietschy.wizard.WizardModel;
  * 
  */
 public abstract class AbstractDropDatabaseStep extends
-		PropertyConfigurationStep{
+		PropertyConfigurationStep {
 
 	private static final Log logger = LogFactory
 			.getLog(AbstractDropDatabaseStep.class);
@@ -110,27 +110,30 @@ public abstract class AbstractDropDatabaseStep extends
 	}
 
 	public boolean databaseExists(CaGridInstallerModel model) {
+		boolean exists = false;
 		String db = getDatabase(model);
-
-		Set<String> dbNames = new HashSet<String>();
-		Connection conn = null;
-		try {
-			conn = openConnection();
-			DatabaseMetaData meta = conn.getMetaData();
-			ResultSet rs = meta.getCatalogs();
-			while (rs.next()) {
-				dbNames.add(rs.getString(1));
+		if (db != null) {
+			Set<String> dbNames = new HashSet<String>();
+			Connection conn = null;
+			try {
+				conn = openConnection();
+				DatabaseMetaData meta = conn.getMetaData();
+				ResultSet rs = meta.getCatalogs();
+				while (rs.next()) {
+					dbNames.add(rs.getString(1));
+				}
+				rs.close();
+			} catch (Exception ex) {
+				String msg = "Error checking if database '" + db + "' exists: "
+						+ ex.getMessage();
+				logger.warn(msg);
+			} finally {
+				closeConnection(conn);
 			}
-			rs.close();
-		} catch (Exception ex) {
-			String msg = "Error checking if database '" + db + "' exists: "
-					+ ex.getMessage();
-			logger.warn(msg);
-		} finally {
-			closeConnection(conn);
-		}
 
-		return dbNames.contains(db);
+			exists = dbNames.contains(db);
+		}
+		return exists;
 	}
 
 	protected abstract String getJdbcUrl(CaGridInstallerModel model);

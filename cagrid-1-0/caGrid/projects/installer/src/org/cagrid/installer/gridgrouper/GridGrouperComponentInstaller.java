@@ -170,7 +170,12 @@ public class GridGrouperComponentInstaller implements CaGridComponentInstaller {
 			}
 
 			protected String getDatabase(CaGridInstallerModel model) {
-				return InstallerUtils.getDbNameFromJdbcUrl(getJdbcUrl(model));
+				String db = null;
+				String url = getJdbcUrl(model);
+				if(url != null){
+					db = InstallerUtils.getDbNameFromJdbcUrl(url); 
+				}
+				return db;
 			}
 		};
 		model.add(dropGridGrouperDbStep, new Condition() {
