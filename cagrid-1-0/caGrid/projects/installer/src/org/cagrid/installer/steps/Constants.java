@@ -431,5 +431,11 @@ public abstract class Constants {
 
 	public static final String BROWSER_CONTEXT_NAME = "browser.context.name";
 
+	public static final String BPEL_ADMIN_ROLE = "bpel.admin.role";
+
+	public static final String BPEL_ADMIN_USERNAME = "bpel.admin.username";
+
+	public static final String BPEL_ADMIN_PASSWORD = "bpel.admin.password";
+
 
 }

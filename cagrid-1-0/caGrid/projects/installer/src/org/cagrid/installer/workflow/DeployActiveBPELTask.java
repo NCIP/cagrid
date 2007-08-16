@@ -44,8 +44,8 @@ public class DeployActiveBPELTask extends BasicTask {
 				env.put((String) entry.getKey(), (String) entry.getValue());
 			}
 		}
-		env.put((String) "GLOBUS_LOCATION", model.getProperty(Constants.GLOBUS_HOME));
-		env.put((String) "CATALINA_HOME", model.getProperty(Constants.TOMCAT_HOME));
+		env.put("GLOBUS_LOCATION", model.getProperty(Constants.GLOBUS_HOME));
+		env.put("CATALINA_HOME", model.getProperty(Constants.TOMCAT_HOME));
 		Map<String, String> myEnv = new HashMap<String, String>(env);
 
 		String[] envp = new String[myEnv.size()];
@@ -98,14 +98,12 @@ public class DeployActiveBPELTask extends BasicTask {
 
 		// run ant
 		Process p = Runtime.getRuntime().exec(cmd, envp, dir);
-		// track stdout and stderr
 		StringBuffer stdout = new StringBuffer();
 		StringBuffer stderr = new StringBuffer();
 		new IOThread(p.getInputStream(), System.out, stdout).start();
 		new IOThread(p.getErrorStream(), System.err, stderr).start();
 
-		// wait and return
-		int result = p.waitFor();
+		p.waitFor();
 		if (stdout.indexOf("BUILD FAILED") != -1
 				|| stderr.indexOf("BUILD FAILED") != -1
 				|| stdout.indexOf("Build failed") != -1

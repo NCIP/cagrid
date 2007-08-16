@@ -14,17 +14,17 @@ import org.pietschy.wizard.models.Condition;
 
 /**
  * @author <a href="joshua.phillips@semanticbits.com">Joshua Phillips</a>
- *
+ * 
  */
 public class WorkflowComponentInstaller implements CaGridComponentInstaller {
 
 	private Condition installWorkflow;
-	
+
 	/**
 	 * 
 	 */
 	public WorkflowComponentInstaller() {
-		installWorkflow  = new Condition() {
+		installWorkflow = new Condition() {
 
 			public boolean evaluate(WizardModel m) {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
@@ -34,32 +34,39 @@ public class WorkflowComponentInstaller implements CaGridComponentInstaller {
 		};
 	}
 
-	/* (non-Javadoc)
-	 * @see org.cagrid.installer.ComponentInstaller#addInstallTasks(org.cagrid.installer.model.CaGridInstallerModel, org.cagrid.installer.steps.RunTasksStep)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.cagrid.installer.ComponentInstaller#addInstallTasks(org.cagrid.installer.model.CaGridInstallerModel,
+	 *      org.cagrid.installer.steps.RunTasksStep)
 	 */
 	public void addInstallTasks(CaGridInstallerModel model,
 			RunTasksStep installStep) {
-		
-		
-		
+
 		installStep.getTasks().add(
 				new ConditionalTask(new DeployActiveBPELTask(model
 						.getMessage("installing.activebpel.title"), ""),
 						installWorkflow));
-		
+
+		installStep.getTasks().add(
+				new ConditionalTask(new ConfigureBPELAdminSecurityTask(model
+						.getMessage("installing.activebpel.title"), "", null),
+						installWorkflow));
+
 		installStep.getTasks().add(
 				new ConditionalTask(new DeployWorkflowServiceTask(model
 						.getMessage("installing.workflow.title"), "",
 						"workflow"), installWorkflow));
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.cagrid.installer.ComponentInstaller#addSteps(org.cagrid.installer.model.CaGridInstallerModel)
 	 */
 	public void addSteps(CaGridInstallerModel model) {
 		ConfigureServiceMetadataStep editWorkflowSvcMetaStep = new ConfigureServiceMetadataStep(
-				"", model
-						.getMessage("workflow.edit.service.metadata.title"),
+				"", model.getMessage("workflow.edit.service.metadata.title"),
 				model.getMessage("workflow.edit.service.metadata.desc")) {
 			protected String getServiceMetadataPath() {
 				return model.getServiceDestDir()
@@ -72,17 +79,22 @@ public class WorkflowComponentInstaller implements CaGridComponentInstaller {
 				"workflow", model
 						.getMessage("workflow.edit.service.properties.title"),
 				model.getMessage("workflow.edit.service.properties.desc"),
-				model.getMessage("edit.properties.property.name"),
-				model.getMessage("edit.properties.property.value"));
+				model.getMessage("edit.properties.property.name"), model
+						.getMessage("edit.properties.property.value"));
 		model.add(editWorkflowServicePropertiesStep, installWorkflow);
 
 		DeployPropertiesWorkflowFileEditorStep editWorkflowDeployPropertiesStep = new DeployPropertiesWorkflowFileEditorStep(
 				"workflow", model
 						.getMessage("workflow.edit.deploy.properties.title"),
-				model.getMessage("workflow.edit.deploy.properties.desc"),
-				model.getMessage("edit.properties.property.name"),
-				model.getMessage("edit.properties.property.value"));
+				model.getMessage("workflow.edit.deploy.properties.desc"), model
+						.getMessage("edit.properties.property.name"), model
+						.getMessage("edit.properties.property.value"));
 		model.add(editWorkflowDeployPropertiesStep, installWorkflow);
+
+		ConfigureBPELAdminSecurityStep configureBPELAdminStep = new ConfigureBPELAdminSecurityStep(
+				model.getMessage("bpel.admin.config.title"), model
+						.getMessage("bpel.admin.config.desc"));
+		model.add(configureBPELAdminStep, installWorkflow);
 	}
 
 }
