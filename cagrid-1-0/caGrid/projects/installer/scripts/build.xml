@@ -30,7 +30,7 @@
 		<for list="${selected.services}" param="serviceName"
 			parallel="false">
 			<sequential>
-				<copy todir="${service.dest.dir}" overwrite="true">
+				<copy todir="${service.dest.dir}" overwrite="false">
 					<fileset dir="${cagrid.home}/projects">
 						<include name="@{serviceName}/**" />
 					</fileset>
@@ -43,7 +43,7 @@
 	<target name="copy-browser">
 		<mkdir dir="${service.dest.dir}/cagrid-browser" />
 		<copy todir="${service.dest.dir}/cagrid-browser"
-			overwrite="true">
+			overwrite="false">
 			<fileset dir="${browser.home}" />
 		</copy>
 	</target>
