@@ -7,7 +7,7 @@
 	<!-- Pre Deploy Tomcat                                              -->
 	<!-- ============================================================== -->
 	<target name="preDeployTomcat">
-
+        <runtarget target="deployGlobusHandler"/>
 	</target>
 
 
