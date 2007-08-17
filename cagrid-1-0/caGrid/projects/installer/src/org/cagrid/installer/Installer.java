@@ -923,6 +923,7 @@ public class Installer {
 		this.model.unsetProperty(Constants.DORIAN_CA_PRESENT);
 		this.model.unsetProperty(Constants.INSTALL_ACTIVEBPEL);
 		this.model.unsetProperty(Constants.INSTALL_AUTHN_SVC);
+		this.model.unsetProperty(Constants.INSTALL_BROWSER);
 		this.model.unsetProperty(Constants.INSTALL_CADSR);
 		this.model.unsetProperty(Constants.INSTALL_DORIAN);
 		this.model.unsetProperty(Constants.INSTALL_EVS);
@@ -930,10 +931,10 @@ public class Installer {
 		this.model.unsetProperty(Constants.INSTALL_GME);
 		this.model.unsetProperty(Constants.INSTALL_GRID_GROUPER);
 		this.model.unsetProperty(Constants.INSTALL_GTS);
-		this.model.unsetProperty(Constants.INSTALL_SYNC_GTS);
-		this.model.unsetProperty(Constants.INSTALL_IDENT_SVC);
 		this.model.unsetProperty(Constants.INSTALL_INDEX_SVC);
 		this.model.unsetProperty(Constants.INSTALL_MY_SERVICE);
+		this.model.unsetProperty(Constants.INSTALL_PORTAL);
+		this.model.unsetProperty(Constants.INSTALL_SYNC_GTS);
 		this.model.unsetProperty(Constants.INSTALL_SERVICES);
 		this.model.unsetProperty(Constants.INSTALL_WORKFLOW);
 		this.model.unsetProperty(Constants.RECONFIGURE_CAGRID);

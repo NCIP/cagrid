@@ -133,8 +133,6 @@ public abstract class Constants {
 
 	public static final String INSTALL_WORKFLOW = "install.workflow";
 
-	public static final String INSTALL_IDENT_SVC = "install.ident.svc";
-
 	public static final String CA_CERT_PRESENT = "ca.cert.present";
 
 	public static final String SERVICE_HOSTNAME = "service.hostname";
