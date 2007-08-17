@@ -274,7 +274,7 @@ public class InstallerUtils {
 			new IOThread(p.getInputStream(), System.out, stdout).start();
 			StringBuffer stderr = new StringBuffer();
 			
-			new IOThread(p.getInputStream(), System.err, stderr).start();
+			new IOThread(p.getErrorStream(), System.err, stderr).start();
 			int code = p.waitFor();
 
 			correctVersion = stdout.toString().indexOf("Apache Tomcat/5.0.28") != -1;
