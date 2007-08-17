@@ -537,4 +537,12 @@ public class InstallerUtils {
 						.getMessage("error.key.no.access")));
 	}
 
+	public static String trim(String s) {
+		String trimmed = s;
+		if(trimmed != null){
+			trimmed = trimmed.trim();
+		}
+		return trimmed;
+	}
+
 }

@@ -424,7 +424,7 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 							"gtsServiceURI");
 					logger.debug("Setting gtsServiceURI to '" + gtsServiceURI
 							+ "'");
-					this.gtsServiceURIField.setText(gtsServiceURI);
+					this.gtsServiceURIField.setText(InstallerUtils.trim(gtsServiceURI));
 
 					// Get Expiration
 					Element expirationEl = (Element) xpFact.newXPath().compile(
@@ -462,7 +462,7 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 					if (gtsIdentEl != null) {
 						String gtsIdent = gtsIdentEl.getTextContent();
 						if (!InstallerUtils.isEmpty(gtsIdent)) {
-							this.gtsIdentField.setText(gtsIdent);
+							this.gtsIdentField.setText(InstallerUtils.trim(gtsIdent));
 						}
 					}
 
@@ -498,8 +498,9 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 								+ " trust levels");
 						StringBuilder sb = new StringBuilder();
 						for (int j = 0; j < levels.getLength(); j++) {
-							Element level = (Element) levels.item(j);
-							sb.append(level.getTextContent());
+							Element levelEl = (Element) levels.item(j);
+							String level = InstallerUtils.trim(levelEl.getTextContent()); 
+							sb.append(level);
 							if (j + 1 < levels.getLength()) {
 								sb.append(",");
 							}
@@ -553,8 +554,8 @@ public class ConfigureSyncGTSStep extends PanelWizardStep implements
 				// Create new rows
 				for (int i = 0; i < caSubjEls.getLength(); i++) {
 					Element caSubjEl = (Element) caSubjEls.item(i);
-					String text = caSubjEl.getTextContent();
-					if (text != null && text.trim().length() > 0) {
+					String text = InstallerUtils.trim(caSubjEl.getTextContent());
+					if (text != null) {
 						String[] excludedCARow = new String[] { text };
 						logger.debug("Adding excluded CA: " + text);
 						this.ecTableModel.addRow(excludedCARow);
