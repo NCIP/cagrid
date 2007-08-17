@@ -28,12 +28,12 @@ public class CreateGridGrouperDatabaseTask extends AbstractCreateDatabaseTask {
 
 	@Override
 	protected String getPassword(CaGridInstallerModel model) {
-		return model.getProperty(Constants.GRID_GROUPER_DB_USERNAME);
+		return model.getProperty(Constants.GRID_GROUPER_DB_PASSWORD);
 	}
 
 	@Override
 	protected String getUsername(CaGridInstallerModel model) {
-		return model.getProperty(Constants.GRID_GROUPER_DB_PASSWORD);
+		return model.getProperty(Constants.GRID_GROUPER_DB_USERNAME);
 	}
 
 }
