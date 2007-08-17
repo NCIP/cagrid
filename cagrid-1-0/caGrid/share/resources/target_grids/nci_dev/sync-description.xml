@@ -5,7 +5,7 @@
 		<ns1:gtsServiceURI>
 			https://cbiovdev5037.nci.nih.gov:8443/wsrf/services/cagrid/GTS
 		</ns1:gtsServiceURI>
-		<ns1:Expiration hours="1" minutes="0" seconds="0" />
+		<ns1:Expiration hours="12" minutes="0" seconds="0" />
 		<ns1:PerformAuthorization>true</ns1:PerformAuthorization>
 		<ns1:GTSIdentity>
 			/O=NIH/OU=NCI/OU=NCICB/OU=caBIG Trust Group/CN=host/cbiovdev5037.nci.nih.gov
