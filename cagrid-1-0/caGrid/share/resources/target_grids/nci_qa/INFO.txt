@@ -51,5 +51,11 @@ server9 cbvgrid-q1009 - https, syncGTS, caGrid Browser and caGrid Portal web
 GTS CA Subject:
 O=caBIG,OU=caGrid,OU=QA Trust Fabric,CN=caGrid QA Trust Fabric Certificate Authority
 
+MASTER GTS Subject:
+/O=caBIG/OU=caGrid/OU=QA Trust Fabric/CN=host/cagrid-gts-master-qa
 
+Dorian CA Subject:
+O=caBIG,OU=caGrid,OU=QA LOA1,CN=caGrid QA LOA1 Certificate Authority
+Dorian Identity:
+/O=caBIG/OU=caGrid/OU=QA LOA1/OU=Services/CN=host/cagrid-dorian-qa.nci.nih.gov
 
