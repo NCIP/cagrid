@@ -22,6 +22,7 @@ import org.apache.commons.logging.LogFactory;
 import org.cagrid.installer.steps.Constants;
 import org.cagrid.installer.steps.RunTasksStep;
 import org.cagrid.installer.util.InstallerUtils;
+import org.cagrid.installer.validator.PathExistsValidator;
 import org.pietschy.wizard.models.DynamicModel;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -89,36 +90,42 @@ CaGridInstallerModel {
 		}
 		checkEnvironment();
 	}
-	
-	private void checkEnvironment(){
+
+	private void checkEnvironment() {
 		// Look for ant
-		if(isAntInstalled()){
-			setProperty(Constants.ANT_HOME, getHomeDir(Constants.ANT_HOME, "ANT_HOME"));
+		if (isAntInstalled()) {
+			setProperty(Constants.ANT_HOME, getHomeDir(Constants.ANT_HOME,
+					"ANT_HOME"));
 		}
-		
+
 		// Look for tomcat
-		if(isTomcatInstalled()){
-			setProperty(Constants.TOMCAT_HOME, getHomeDir(Constants.TOMCAT_HOME, "CATALINA_HOME"));
+		if (isTomcatInstalled()) {
+			setProperty(Constants.TOMCAT_HOME, getHomeDir(
+					Constants.TOMCAT_HOME, "CATALINA_HOME"));
 		}
-		
+
 		// Look for globus
-		if(isGlobusInstalled()){
-			setProperty(Constants.GLOBUS_HOME, getHomeDir(Constants.GLOBUS_HOME, "GLOBUS_LOCATION"));
+		if (isGlobusInstalled()) {
+			setProperty(Constants.GLOBUS_HOME, getHomeDir(
+					Constants.GLOBUS_HOME, "GLOBUS_LOCATION"));
 		}
-		
-		//Look for cagrid
-		if(isCaGridInstalled()){
-			setProperty(Constants.CAGRID_HOME, getHomeDir(Constants.CAGRID_HOME, null));
+
+		// Look for cagrid
+		if (isCaGridInstalled()) {
+			setProperty(Constants.CAGRID_HOME, getHomeDir(
+					Constants.CAGRID_HOME, null));
 		}
-		
+
 		// Look for activebpel
-		if(isActiveBPELInstalled()){
-			setProperty(Constants.ACTIVEBPEL_HOME, getHomeDir(Constants.ACTIVEBPEL_HOME, null));
+		if (isActiveBPELInstalled()) {
+			setProperty(Constants.ACTIVEBPEL_HOME, getHomeDir(
+					Constants.ACTIVEBPEL_HOME, null));
 		}
-		
+
 		// Look for browser
-		if(isBrowserInstalled()){
-			setProperty(Constants.BROWSER_HOME, getHomeDir(Constants.BROWSER_HOME, null));
+		if (isBrowserInstalled()) {
+			setProperty(Constants.BROWSER_HOME, getHomeDir(
+					Constants.BROWSER_HOME, null));
 		}
 	}
 
@@ -280,7 +287,7 @@ CaGridInstallerModel {
 	}
 
 	public boolean isSyncGTSInstalled() {
-		//TODO: handle different webapp names and prefixes.
+		// TODO: handle different webapp names and prefixes.
 		File syncDescFile = new File(
 				getProperty(Constants.TOMCAT_HOME)
 						+ "/webapps/wsrf/WEB-INF/etc/cagrid_SyncGTS/sync-description.xml");
@@ -411,14 +418,14 @@ CaGridInstallerModel {
 		if (globusDeployed == null) {
 			globusDeployed = false;
 			if (isTomcatInstalled()) {
-				//TODO: handle different webapp names
+				// TODO: handle different webapp names
 				File wsrfDir = new File(
 						(String) getProperty(Constants.TOMCAT_HOME)
 								+ "/webapps/wsrf");
 				globusDeployed = wsrfDir.exists();
 			}
 		}
-		if(isTrue(Constants.INSTALL_TOMCAT)){
+		if (isTrue(Constants.INSTALL_TOMCAT)) {
 			globusDeployed = false;
 		}
 		return globusDeployed;
@@ -431,5 +438,21 @@ CaGridInstallerModel {
 			installed = InstallerUtils.checkBrowserVersion(homeDir);
 		}
 		return installed;
+	}
+
+	public boolean isAuthnSvcServiceCredentialsPresent() {
+
+		boolean present = false;
+		try {
+			new PathExistsValidator(Constants.SERVICE_CERT_PATH,
+					"Couldn't find service certificate")
+					.validate(getStateMap());
+			new PathExistsValidator(Constants.SERVICE_KEY_PATH,
+					"Couldn't find service key").validate(getStateMap());
+			present = true;
+		} catch (Exception ex) {
+			logger.warn(ex.getMessage(), ex);
+		}
+		return present;
 	}
 }

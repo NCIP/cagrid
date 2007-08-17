@@ -120,6 +120,24 @@ public class AuthenticationServiceComponentInstaller implements
 			}
 
 		});
+		
+		//If can't find the service credentials, as user for location.
+		PropertyConfigurationStep configAssertingSvcCredsStep = new PropertyConfigurationStep(
+				model.getMessage("authn.svc.asserting.svc.creds.title"), model
+						.getMessage("authn.svc.asserting.svc.creds.desc"));
+		InstallerUtils.addCommonCertFields(model, configAssertingSvcCredsStep,
+				Constants.AUTH_SVC_SAML_PROVIDER_CERT_PATH,
+				Constants.AUTH_SVC_SAML_PROVIDER_KEY_PATH,
+				null);
+		model.add(configAssertingSvcCredsStep, new Condition() {
+
+			public boolean evaluate(WizardModel m) {
+				CaGridInstallerModel model = (CaGridInstallerModel) m;
+				return !model.isAuthnSvcServiceCredentialsPresent()
+						&& model.isTrue(Constants.INSTALL_AUTHN_SVC);
+			}
+
+		});
 
 		// If user doesn't want to use service credentials, ask for location
 		// of asserting credentials
