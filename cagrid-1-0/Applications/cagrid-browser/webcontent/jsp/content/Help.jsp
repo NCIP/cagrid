@@ -119,7 +119,7 @@ To change this template use File | Settings | File Templates.
                     </h:column>
 
                     <h:column>
-                        <h:outputLink title="caGrid Homepage" value="https://cabig.nci.nih.gov/workspaces/Architecture/caGrid1-0/">
+                        <h:outputLink title="caGrid Homepage" value="https://cabig.nci.nih.gov/workspaces/Architecture/caGrid/">
                             <h:outputText
                                     value="#{messages.helpcaGridHomepage}"/>
                         </h:outputLink>
