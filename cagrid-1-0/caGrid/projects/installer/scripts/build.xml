@@ -1002,9 +1002,18 @@ ${authn.svc.csm.ctx}{
 
 		<property name="config.file"
 			value="${service.dest.dir}/cagrid-browser/webcontent/WEB-INF/faces-config.xml" />
+			
+			
+		
 
 		<xmltask source="${config.file}" dest="${config.file}"
 			preservetype="true">
+			
+			<replace path="/*[local-name()='faces-config']/*[local-name()='managed-bean' and ./*[local-name()='managed-bean-name' and contains(text(),'loginBean')]]/*[local-name()='managed-property' and ./*[local-name()='property-name' and contains(text(),'idpUrl1')]]/*[local-name()='value']/text()" withText="${browser.idp.url1}"/>
+			<replace path="/*[local-name()='faces-config']/*[local-name()='managed-bean' and ./*[local-name()='managed-bean-name' and contains(text(),'loginBean')]]/*[local-name()='managed-property' and ./*[local-name()='property-name' and contains(text(),'idpUrl2')]]/*[local-name()='value']/text()" withText="${browser.idp.url2}"/>
+			<replace path="/*[local-name()='faces-config']/*[local-name()='managed-bean' and ./*[local-name()='managed-bean-name' and contains(text(),'loginBean')]]/*[local-name()='managed-property' and ./*[local-name()='property-name' and contains(text(),'ifsUrl')]]/*[local-name()='value']/text()" withText="${browser.ifs.url}"/>
+			<replace path="/*[local-name()='faces-config']/*[local-name()='managed-bean' and ./*[local-name()='managed-bean-name' and contains(text(),'semanticSearchConfig')]]/*[local-name()='managed-property' and ./*[local-name()='property-name' and contains(text(),'evsGridServiceUrl')]]/*[local-name()='value']/text()" withText="${browser.evs.svc.url}"/>
+			
 			<remove
 				path="/*[local-name()='faces-config']/*[local-name()='managed-bean' and ./*[local-name()='managed-bean-name' and text()='discoveryBean']]/*[local-name()='managed-property' and ./*[local-name()='property-name' and text()='indexServiceUrls']]/*[local-name()='list-entries']/*[local-name()='value']" />
 			<remove
