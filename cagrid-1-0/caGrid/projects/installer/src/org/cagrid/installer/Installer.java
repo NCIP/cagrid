@@ -108,6 +108,7 @@ public class Installer {
 		downloadedComponentInstallers.add(new GlobusComponentInstaller());
 		downloadedComponentInstallers.add(new ActiveBPELComponentInstaller());
 		downloadedComponentInstallers.add(new CaGridSourceComponentInstaller());
+		downloadedComponentInstallers.add(new BrowserSourceComponentInstaller());
 
 		componentInstallers.add(new MyServiceComponentInstaller());
 		componentInstallers.add(new SyncGTSComponentInstaller());
