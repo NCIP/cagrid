@@ -926,31 +926,46 @@ ${authn.svc.csm.ctx}{
 	</target>
 
 	<target name="deploy-webapp-crypto-jars">
+	
 		<if>
 			<available file="${tomcat.home}/common/lib/cog-jglobus.jar" />
 			<then>
-				<!-- It's a secure container. Only need to ensure the correct cog-jglobus.jar -->
+				<echo>Installing to secure container. Copying patched cog-jglobus.jar and removing crypto jars in all other web aplications.</echo>
 
 				<copy
 					file="${cagrid.home}/projects/syncgts/lib/globus-patches/cog-jglobus.jar"
 					todir="${tomcat.home}/common/lib" overwrite="true" />
+
+				<delete>
+						<fileset
+							dir="${tomcat.home}/webapps">
+							<include name="**/WEB-INF/lib/cog-jglobus.jar" />
+							<include name="**/WEB-INF/lib/cryptix*.jar" />
+							<include name="**/WEB-INF/lib/puretls.jar" />
+							<include name="**/WEB-INF/lib/jce-jdk13-125.jar" />
+						</fileset>
+					</delete>
+					
 			</then>
 			<elseif>
 				<available
 					file="${tomcat.home}/webapps/wsrf/WEB-INF/lib/cog-jglobus.jar" />
 				<then>
-					<!-- Then some other Globus service is installed that needs these 
-						crypto jars. Need to consolidate under CATALINA_HOME/common/lib 
-						to avoid class loader issues. -->
+				
+					<echo>Some Globus service is installed that needs these 
+						crypto jars. Consolidating crypto jars under ${tomcat.home}/common/lib 
+						to avoid class loader issues.</echo>
+				
 					<delete>
 						<fileset
-							dir="${tomcat.home}/webapps/wsrf/WEB-INF/lib">
-							<include name="cog-jglobus.jar" />
-							<include name="cryptix*.jar" />
-							<include name="puretls.jar" />
-							<include name="jce-jdk13-125.jar" />
+							dir="${tomcat.home}/webapps">
+							<include name="**/WEB-INF/lib/cog-jglobus.jar" />
+							<include name="**/WEB-INF/lib/cryptix*.jar" />
+							<include name="**/WEB-INF/lib/puretls.jar" />
+							<include name="**/WEB-INF/lib/jce-jdk13-125.jar" />
 						</fileset>
-					</delete>
+					</delete>				
+						
 					<copy
 						file="${cagrid.home}/projects/syncgts/lib/globus-patches/cog-jglobus.jar"
 						todir="${tomcat.home}/common/lib" overwrite="true" />
