@@ -270,15 +270,24 @@ public class InstallerUtils {
 			}
 			Process p = Runtime.getRuntime().exec(cmd, envp);
 			StringBuffer stdout = new StringBuffer();
+			
 			new IOThread(p.getInputStream(), System.out, stdout).start();
-			p.waitFor();
+			StringBuffer stderr = new StringBuffer();
+			
+			new IOThread(p.getInputStream(), System.err, stderr).start();
+			int code = p.waitFor();
 
 			correctVersion = stdout.toString().indexOf("Apache Tomcat/5.0.28") != -1;
 			if (!correctVersion) {
+				
 				logger.warn("The Tomcat version utility indicates "
 						+ "that the correct tomcat version is not "
 						+ "installed. Here is the output from that tool: \n"
 						+ stdout);
+				
+				logger.warn("Exit code: " + code);
+				logger.warn("STDERR:\n" + stderr);
+				
 			}
 		} catch (Exception ex) {
 			logger
