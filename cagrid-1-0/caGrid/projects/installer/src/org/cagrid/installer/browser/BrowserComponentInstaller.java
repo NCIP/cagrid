@@ -50,7 +50,10 @@ public class BrowserComponentInstaller implements CaGridComponentInstaller {
 						.getMessage("installing.browser.title"), "",
 						"deploy-browser"), installBrowser));
 		
-		
+		installStep.getTasks().add(
+				new ConditionalTask(new CaGridInstallerAntTask(model
+						.getMessage("installing.browser.title"), "",
+						"deploy-browser-crypto-jars"), installBrowser));
 		
 	}
 

@@ -155,7 +155,7 @@ public class ConfigurePortalPropertiesStep extends PropertyConfigurationStep
 				new TextPropertyConfigurationOption(
 						Constants.PORTAL_CONTEXT_NAME, model
 								.getMessage("portal.context.name"), model
-								.getProperty(Constants.PORTAL_GEOCODER_APP_ID,
+								.getProperty(Constants.PORTAL_CONTEXT_NAME,
 										""), true));
 	}
 

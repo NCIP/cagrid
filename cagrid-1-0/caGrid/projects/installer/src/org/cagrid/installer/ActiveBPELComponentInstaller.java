@@ -76,10 +76,10 @@ public class ActiveBPELComponentInstaller extends
 				boolean shouldInstall = installWorkflow
 						&& (!isActiveBPELInstalled || installActiveBPEL);
 
-				logger.debug("installWorkflow = " + installWorkflow
-						+ ", isActiveBPELInstalled = " + isActiveBPELInstalled
-						+ ", installActiveBPEL = " + installActiveBPEL
-						+ ", shouldInstall = " + shouldInstall);
+//				logger.debug("installWorkflow = " + installWorkflow
+//						+ ", isActiveBPELInstalled = " + isActiveBPELInstalled
+//						+ ", installActiveBPEL = " + installActiveBPEL
+//						+ ", shouldInstall = " + shouldInstall);
 
 				return shouldInstall;
 			}
