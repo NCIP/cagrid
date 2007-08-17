@@ -1,0 +1,37 @@
+server1 cbvgrid-q1001 - http, syncGTS, Index service
+  http://cagrid-index-stage.nci.nih.gov:8080/wsrf/services/DefaultIndexService
+                                        
+server2 cbvgrid-q1002 - http, syncGTS, GME, caDSR, EVS services
+  http://cagrid-service-stage.nci.nih.gov:8080/wsrf/services/cagrid/GlobalModelExchange
+  http://cagrid-service-stage.nci.nih.gov:8080/wsrf/services/cagrid/EVSGridService
+  http://cagrid-service-stage.nci.nih.gov:8080/wsrf/services/cagrid/CaDSRService
+
+server3 cbvgrid-q1003 - https, syncGTS, Dorian services
+  https://cagrid-dorian-stage.nci.nih.gov:8443/wsrf/services/cagrid/Dorian
+  
+server4 cbvgrid-q1004 - https, syncGTS, GTS master service
+  https://cagrid-gts-master-stage.nci.nih.gov:8443/wsrf/services/cagrid/GTS
+  
+server5 cbvgrid-q1005 - https, syncGTS, GTS slave service                                   
+  https://cagrid-gts-slave-stage.nci.nih.gov:8443/wsrf/services/cagrid/GTS
+
+server6 cbvgrid-q1006 - https, syncGTS, FQP, Workflow service
+  https://cagrid-workflow-stage.nci.nih.gov:8443/wsrf/services/cagrid/WorkflowFactoryService
+  https://cagrid-workflow-stage.nci.nih.gov:8443/wsrf/services/cagrid/FederatedQueryProcessor
+
+server7 cbvgrid-q1007 - https, syncGTS, Authentication Service
+  https://cagrid-auth-stage.nci.nih.gov:8443/wsrf/services/cagrid/AuthenticationService
+
+server8 cbvgrid-q1008 - https, syncGTS, Grid grouper services         
+  https://cagrid-gridgrouper-stage.nci.nih.gov:8443/wsrf/services/cagrid/GridGrouper
+
+server9 cbvgrid-q1009 - https, syncGTS, caGrid Browser and caGrid Portal web     
+  https://cagrid-portal-stage.nci.nih.gov/cagrid-browser/
+  https://cagrid-portal-stage.nci.nih.gov/portal/
+
+
+GTS CA Subject:
+O=caBIG,OU=caGrid,OU=Stage Trust Fabric,CN=caGrid Stage Trust Fabric Certificate Authority
+
+
+
