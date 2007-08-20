@@ -1,5 +1,5 @@
 /**
- * $Id: DefaultSAMLProvider.java,v 1.4 2006-10-31 16:03:52 joshua Exp $
+ * $Id: DefaultSAMLProvider.java,v 1.4.4.1 2007-08-20 14:59:51 joshua Exp $
  *
  */
 package gov.nih.nci.cagrid.authentication.service;
@@ -39,7 +39,7 @@ import org.apache.xml.security.signature.XMLSignature;
 
 /**
  *
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.4.4.1 $
  * @author Joshua Phillips
  *
  */
@@ -142,6 +142,10 @@ public class DefaultSAMLProvider implements
 	try {
 	    org.apache.xml.security.Init.init();
 	    GregorianCalendar cal = new GregorianCalendar();
+	    
+	    //Feature Request 7989: Subtract 5 seconds
+	    cal.add(Calendar.SECOND, -5);
+	    
 	    Date start = cal.getTime();
 	    cal.add(Calendar.MINUTE, 2);
 	    Date end = cal.getTime();
