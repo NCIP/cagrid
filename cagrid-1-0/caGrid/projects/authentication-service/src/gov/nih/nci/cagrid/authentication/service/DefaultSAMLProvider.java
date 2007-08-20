@@ -1,5 +1,5 @@
 /**
- * $Id: DefaultSAMLProvider.java,v 1.4.4.1 2007-08-20 14:59:51 joshua Exp $
+ * $Id: DefaultSAMLProvider.java,v 1.4.4.2 2007-08-20 15:48:44 joshua Exp $
  *
  */
 package gov.nih.nci.cagrid.authentication.service;
@@ -39,13 +39,14 @@ import org.apache.xml.security.signature.XMLSignature;
 
 /**
  *
- * @version $Revision: 1.4.4.1 $
+ * @version $Revision: 1.4.4.2 $
  * @author Joshua Phillips
  *
  */
 public class DefaultSAMLProvider implements
 	gov.nih.nci.cagrid.authentication.common.SAMLProvider {
     
+	private int validLifetimeSeconds = 120;
     private String certificateFileName;
     private String privateKeyFileName;
     private X509Certificate certificate;
@@ -143,12 +144,13 @@ public class DefaultSAMLProvider implements
 	    org.apache.xml.security.Init.init();
 	    GregorianCalendar cal = new GregorianCalendar();
 	    
-	    //Feature Request 7989: Subtract 5 seconds
-	    cal.add(Calendar.SECOND, -5);
-	    
+	    //Create symetric padding around current time to
+	    //address imperfect synchronization among clocks.
+	    cal.add(Calendar.SECOND, -1 * getValidLifetimeSeconds());
 	    Date start = cal.getTime();
-	    cal.add(Calendar.MINUTE, 2);
+	    cal.add(Calendar.SECOND, 2 * getValidLifetimeSeconds());
 	    Date end = cal.getTime();
+	    
 	    String issuer = this.certificate.getSubjectDN().toString();
 	    String federation = this.certificate.getSubjectDN().toString();
 	    String ipAddress = null;
@@ -238,6 +240,14 @@ public class DefaultSAMLProvider implements
     public void setPrivateKeyFileName(String privateKeyFileName) {
         this.privateKeyFileName = privateKeyFileName;
     }
+
+	public int getValidLifetimeSeconds() {
+		return validLifetimeSeconds;
+	}
+
+	public void setValidLifetimeSeconds(int validLifetimeSeconds) {
+		this.validLifetimeSeconds = validLifetimeSeconds;
+	}
 
 
 }
