@@ -17,6 +17,7 @@
         <property name="certificateFileName" value="@SAML_PROVIDER_CRT@"/>
         <property name="privateKeyFileName" value="@SAML_PROVIDER_KEY@"/>
         <property name="password" value="@SAML_PROVIDER_PWD@"/>
+        <property name="validLifetimeSeconds" value="120"/>
     </bean>
 
     <bean id="authenticationProvider" class="gov.nih.nci.cagrid.authentication.service.DefaultAuthenticationProvider">
