@@ -391,77 +391,7 @@ public class Installer {
 
 		incrementProgress();
 
-		// If user has NOT selected to install caGrid, and installer
-		// has not located it, ask where it is.
-		FilePropertyConfigurationOption browseToCaGridOpt = new FilePropertyConfigurationOption(
-				Constants.CAGRID_HOME, this.model.getMessage("directory"), "",
-				true);
-		browseToCaGridOpt.setBrowseLabel(this.model.getMessage("browse"));
-		browseToCaGridOpt.setDirectoriesOnly(true);
-		PropertyConfigurationStep checkCaGridInstalledStep = new PropertyConfigurationStep(
-				this.model.getMessage("check.cagrid.installed.title"),
-				this.model.getMessage("check.cagrid.installed.desc"));
-		checkCaGridInstalledStep.getOptions().add(browseToCaGridOpt);
-		checkCaGridInstalledStep.getValidators().add(new Validator() {
 
-			public void validate(Map state) throws InvalidStateException {
-				String caGridHome = (String) state.get(Constants.CAGRID_HOME);
-				if (!InstallerUtils.checkCaGridVersion(caGridHome)) {
-					// TODO: externalize this message
-					throw new InvalidStateException(
-							""
-									+ caGridHome
-									+ "' does not point to a valid caGrid installation.");
-				}
-			}
-
-		});
-		this.model.add(checkCaGridInstalledStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return !model.isTrue(Constants.INSTALL_CAGRID)
-						&& !model.isCaGridInstalled();
-			}
-		});
-
-		// Check if caGrid should be reconfigured
-		PropertyConfigurationStep checkReconfigureCaGridStep = new PropertyConfigurationStep(
-				this.model.getMessage("check.reconfigure.cagrid.title"),
-				this.model.getMessage("check.reconfigure.cagrid.desc"));
-		checkReconfigureCaGridStep.getOptions().add(
-				new BooleanPropertyConfigurationOption(
-						Constants.RECONFIGURE_CAGRID, this.model
-								.getMessage("yes"), false, false));
-		this.model.add(checkReconfigureCaGridStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isSet(Constants.TARGET_GRID);
-			}
-		});
-
-		// Presents list of available target grids
-		String[] targetGrids = this.model.getProperty(
-				Constants.AVAILABLE_TARGET_GRIDS).split(",");
-		PropertyConfigurationStep selectTargetGridStep = new PropertyConfigurationStep(
-				this.model.getMessage("select.target.grid.title"), this.model
-						.getMessage("select.target.grid.desc"));
-		LabelValuePair[] targetGridPairs = new LabelValuePair[targetGrids.length];
-		for (int i = 0; i < targetGrids.length; i++) {
-			targetGridPairs[i] = new LabelValuePair(this.model
-					.getMessage("target.grid." + targetGrids[i] + ".label"),
-					targetGrids[i]);
-		}
-		selectTargetGridStep.getOptions().add(
-				new ListPropertyConfigurationOption(Constants.TARGET_GRID,
-						this.model.getMessage("target.grid"), targetGridPairs,
-						true));
-		this.model.add(selectTargetGridStep, new Condition() {
-			public boolean evaluate(WizardModel m) {
-				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return !model.isSet(Constants.TARGET_GRID)
-						|| model.isTrue(Constants.RECONFIGURE_CAGRID);
-			}
-		});
 		incrementProgress();
 
 		// Presents list of services that can be installed
