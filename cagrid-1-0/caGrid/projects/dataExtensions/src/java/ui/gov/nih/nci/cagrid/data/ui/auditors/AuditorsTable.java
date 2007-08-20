@@ -22,7 +22,7 @@ import org.projectmobius.portal.JComponentCellEditor;
  * @author David Ervin
  * 
  * @created May 21, 2007 10:41:23 AM
- * @version $Id: AuditorsTable.java,v 1.1.2.1 2007-08-14 14:42:01 dervin Exp $ 
+ * @version $Id: AuditorsTable.java,v 1.1.2.2 2007-08-20 15:50:42 dervin Exp $ 
  */
 public class AuditorsTable extends JTable {
     
@@ -107,6 +107,17 @@ public class AuditorsTable extends JTable {
                 return;
             }
         }
+    }
+    
+    
+    public boolean isAuditorDisplayed(String className, String instanceName) {
+        for (int i = 0; i < getRowCount(); i++) {
+            if (getValueAt(i, 0).equals(className) 
+                && getValueAt(i, 1).equals(instanceName)) {
+                return true;
+            }
+        }
+        return false;
     }
     
     
