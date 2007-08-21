@@ -77,7 +77,7 @@
 	<classpathentry kind="lib" path="ext/lib/caGrid-1.1-core.jar"/>
 	<classpathentry kind="lib" path="ext/lib/caGrid-1.1-grape.jar"/>
 	<classpathentry kind="lib" path="ext/lib/caGrid-1.1-grape-resources.jar"/>
-	<classpathentry kind="lib" path="ext/lib/caGrid-1.1-gridca.jar"/>
+	<classpathentry kind="lib" path="ext/lib/caGrid-1.1-gridca.jar" sourcepath="/caGrid-1.1-gridca"/>
 	<classpathentry kind="lib" path="ext/lib/caGrid-1.1-gts-client.jar"/>
 	<classpathentry kind="lib" path="ext/lib/caGrid-1.1-gts-common.jar"/>
 	<classpathentry kind="lib" path="ext/lib/caGrid-1.1-gts-stubs.jar"/>
@@ -101,5 +101,6 @@
 	<classpathentry kind="lib" path="lib/eracom/jce.zip"/>
 	<classpathentry kind="lib" path="lib/eracom/jprov.jar"/>
 	<classpathentry kind="lib" path="lib/eracom/kmu.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang-2.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
