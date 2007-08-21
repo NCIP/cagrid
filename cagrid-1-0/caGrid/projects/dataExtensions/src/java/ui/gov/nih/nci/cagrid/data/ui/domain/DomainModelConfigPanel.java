@@ -65,7 +65,7 @@ import org.projectmobius.portal.PortalResourceManager;
  * @author David Ervin
  * 
  * @created Apr 11, 2007 9:59:24 AM
- * @version $Id: DomainModelConfigPanel.java,v 1.3.2.2 2007-08-21 14:54:55 dervin Exp $
+ * @version $Id: DomainModelConfigPanel.java,v 1.3.2.3 2007-08-21 17:10:53 dervin Exp $
  */
 public class DomainModelConfigPanel extends DataServiceModificationSubPanel {
 
@@ -274,6 +274,7 @@ public class DomainModelConfigPanel extends DataServiceModificationSubPanel {
                 }
             });
             
+            /*
             boolean noDomainModel = false;
             boolean suppliedDomainModel = false;
             try {
@@ -288,6 +289,7 @@ public class DomainModelConfigPanel extends DataServiceModificationSubPanel {
             if (!noDomainModel && !suppliedDomainModel) {
                 firstCadsrBrowserInit();
             }
+            */
         }
         return cadsrBrowserPanel;
     }

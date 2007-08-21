@@ -30,7 +30,7 @@ import org.apache.log4j.Logger;
  * 
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  * @created Oct 10, 2006
- * @version $Id: DataServiceModificationPanel.java,v 1.3.2.3 2007-08-21 16:11:52 dervin Exp $
+ * @version $Id: DataServiceModificationPanel.java,v 1.3.2.4 2007-08-21 17:10:53 dervin Exp $
  */
 public class DataServiceModificationPanel extends ServiceModificationUIPanel {
     
@@ -187,6 +187,8 @@ public class DataServiceModificationPanel extends ServiceModificationUIPanel {
                 ErrorDialog.showErrorDialog(
                     "Error loading service style configuration tab", ex.getMessage(), ex);
             }
+            
+            resetGUI();
 		}
 		return mainTabbedPane;
 	}
