@@ -45,7 +45,7 @@ import org.projectmobius.portal.PortalResourceManager;
  * @author David Ervin
  * 
  * @created Jun 14, 2007 10:14:20 AM
- * @version $Id: DomainModelAdvancedOptionsDialog.java,v 1.1.2.2 2007-08-21 14:23:28 dervin Exp $
+ * @version $Id: DomainModelAdvancedOptionsDialog.java,v 1.1.2.3 2007-08-21 15:20:27 dervin Exp $
  */
 public class DomainModelAdvancedOptionsDialog extends JDialog {
     public static final String INFORMATION = 
@@ -104,6 +104,7 @@ public class DomainModelAdvancedOptionsDialog extends JDialog {
         loadFromExtensionData();
         this.setSize(new Dimension(450, 280));
         this.setContentPane(getMainPanel());
+        PortalUtils.centerComponent(this);
     }
     
     
