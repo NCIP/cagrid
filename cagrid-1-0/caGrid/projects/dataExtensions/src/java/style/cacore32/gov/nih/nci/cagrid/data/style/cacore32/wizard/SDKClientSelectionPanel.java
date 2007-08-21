@@ -54,7 +54,7 @@ import javax.swing.ScrollPaneConstants;
  * @author David Ervin
  * 
  * @created Jun 4, 2007 1:45:08 PM
- * @version $Id: SDKClientSelectionPanel.java,v 1.3.2.3 2007-08-21 18:08:22 dervin Exp $ 
+ * @version $Id: SDKClientSelectionPanel.java,v 1.3.2.4 2007-08-21 19:40:49 dervin Exp $ 
  */
 public class SDKClientSelectionPanel extends AbstractWizardPanel {
     public static final String[] LOCAL_CLIENT_REQUIRED_FILES = new String[] {
@@ -330,7 +330,7 @@ public class SDKClientSelectionPanel extends AbstractWizardPanel {
     private JTextField getClientLibDirTextField() {
         if (clientLibDirTextField == null) {
             clientLibDirTextField = new JTextField();
-            clientLibDirTextField.setText(
+            clientLibDirTextField.setToolTipText(
                 "The directory containing the client libraries for a caCORE SDK data source");
             clientLibDirTextField.setEditable(false);
         }
@@ -809,7 +809,7 @@ public class SDKClientSelectionPanel extends AbstractWizardPanel {
     private JTextField getClientConfDirTextField() {
         if (clientConfDirTextField == null) {
             clientConfDirTextField = new JTextField();
-            clientConfDirTextField.setText(
+            clientConfDirTextField.setToolTipText(
                 "The directory containing the local API configuration files");
             clientConfDirTextField.setEditable(false);
         }
