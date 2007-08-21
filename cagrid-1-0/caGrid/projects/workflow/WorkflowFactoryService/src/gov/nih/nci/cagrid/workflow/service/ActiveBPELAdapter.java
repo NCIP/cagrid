@@ -16,11 +16,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.rmi.RemoteException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Vector;
 
 import javax.xml.namespace.QName;
 
@@ -75,6 +73,8 @@ public class ActiveBPELAdapter implements WorkflowEngineAdapter {
 		try {
 			URL url = new URL(this.abAdminUrl);
 			this.mRemote = (RemoteDebugSoapBindingStub) locator.getAeActiveWebflowAdminPort(url);
+			this.mRemote._setProperty(org.globus.wsrf.security.Constants.AUTHORIZATION, 
+					org.globus.wsrf.impl.security.authorization.NoAuthorization.getInstance());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
