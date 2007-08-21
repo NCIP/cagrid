@@ -30,7 +30,7 @@ import org.apache.log4j.Logger;
  * 
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  * @created Oct 10, 2006
- * @version $Id: DataServiceModificationPanel.java,v 1.3.2.1 2007-08-14 14:42:01 dervin Exp $
+ * @version $Id: DataServiceModificationPanel.java,v 1.3.2.2 2007-08-21 14:54:55 dervin Exp $
  */
 public class DataServiceModificationPanel extends ServiceModificationUIPanel {
     
@@ -95,7 +95,7 @@ public class DataServiceModificationPanel extends ServiceModificationUIPanel {
 		if (domainConfigPanel == null) {
             domainConfigPanel = new DomainModelConfigPanel(getServiceInfo(), dataManager);
             domainConfigPanel.addClassSelectionListener(new gov.nih.nci.cagrid.data.ui.domain.DomainModelClassSelectionListener() {
-                public void classAdded(String packageName, ClassMapping mapping, NamespaceType packageNamespace) {
+                public void classSelected(String packageName, ClassMapping mapping, NamespaceType packageNamespace) {
                     getDetailConfigPanel().getClassConfigTable().addClass(packageName, mapping, packageNamespace);
                     try {
                         dataManager.setClassSelectedInModel(packageName, mapping.getClassName(), true);
@@ -107,7 +107,7 @@ public class DataServiceModificationPanel extends ServiceModificationUIPanel {
                 }
                 
                 
-                public void classRemoved(String packageName, String className) {
+                public void classDeselected(String packageName, String className) {
                     getDetailConfigPanel().getClassConfigTable().removeRow(packageName, className);
                     try {
                         dataManager.setClassSelectedInModel(packageName, className, false);
