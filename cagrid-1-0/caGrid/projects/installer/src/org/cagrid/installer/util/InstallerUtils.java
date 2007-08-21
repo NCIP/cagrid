@@ -259,14 +259,13 @@ public class InstallerUtils {
 			if (isEmpty(javaHome)) {
 				javaHome = System.getProperty("java.home");
 			}
-			String[] envp = new String[] { "JAVA_HOME=" + javaHome };
-
-			String antHome = System.getenv("CATALINA_HOME");
+			String[] envp = new String[] { "JAVA_HOME=" + javaHome, "CATALINA_HOME=" + home };
+			
 			String[] cmd = null;
 			if (InstallerUtils.isWindows()) {
-				cmd = new String[] { antHome + "/bin/version.bat" };
+				cmd = new String[] { "cmd.exe", "/c", home + "/bin/version.bat" };
 			} else {
-				cmd = new String[] { "sh", antHome + "/bin/version.sh" };
+				cmd = new String[] { "sh", home + "/bin/version.sh" };
 			}
 			Process p = Runtime.getRuntime().exec(cmd, envp);
 			StringBuffer stdout = new StringBuffer();
@@ -308,13 +307,12 @@ public class InstallerUtils {
 			String[] envp = new String[] { "JAVA_HOME="
 					+ System.getProperty("java.home") };
 
-			String antHome = System.getenv("ANT_HOME");
 
 			String[] cmd = null;
 			if (InstallerUtils.isWindows()) {
-				cmd = new String[] { antHome + "/bin/ant.bat", "-version" };
+				cmd = new String[] { "cmd.exe", "/c", home + "/bin/ant.bat", "-version" };
 			} else {
-				cmd = new String[] { "sh", antHome + "/bin/ant", "-version" };
+				cmd = new String[] { "sh", home + "/bin/ant", "-version" };
 			}
 
 			Process p = Runtime.getRuntime().exec(cmd, envp);

@@ -84,7 +84,7 @@ public class DeployActiveBPELTask extends BasicTask {
 		// build command
 		String[] cmd = null;
 		if (isWindows) {
-			cmd = new String[] { "cmd.exe", "/C", "start", "install.bat" };
+			cmd = new String[] { "cmd.exe", "/c", "install.bat" };
 		} else {
 			cmd = new String[] { "sh", "./install.sh" };
 		}
