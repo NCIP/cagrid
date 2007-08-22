@@ -65,7 +65,7 @@ import org.projectmobius.portal.PortalResourceManager;
  * @author David Ervin
  * 
  * @created Apr 11, 2007 9:59:24 AM
- * @version $Id: DomainModelConfigPanel.java,v 1.3.2.4 2007-08-22 15:19:26 dervin Exp $
+ * @version $Id: DomainModelConfigPanel.java,v 1.3.2.5 2007-08-22 15:25:17 dervin Exp $
  */
 public class DomainModelConfigPanel extends DataServiceModificationSubPanel {
 
@@ -496,15 +496,6 @@ public class DomainModelConfigPanel extends DataServiceModificationSubPanel {
                     DomainModelAdvancedOptionsDialog dialog = new DomainModelAdvancedOptionsDialog(
                         getServiceInfo(), getExtensionDataManager());
                     dialog.setVisible(true);
-                    try {
-                        if (getExtensionDataManager().isNoDomainModel()) {
-                            CadsrInformation info = getExtensionDataManager().getCadsrInformation();
-                            info.setPackages(null);
-                        }
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                        ErrorDialog.showErrorDialog("Error setting no domain model option", ex.getMessage(), ex);
-                    }
                     updateDisplayedConfiguration();
                 }
             });
