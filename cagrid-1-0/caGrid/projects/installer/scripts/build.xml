@@ -126,8 +126,8 @@
 				path="/*[local-name()='DorianConfiguration']/*[local-name()='IdentityProviderConfiguration']/*[local-name()='PasswordSecurityPolicy']/*[local-name()='LockoutTime']"
 				value="${dorian.idp.pwd.lockout.seconds}" />
 				
-			<replace path="/*[local-name()='DorianConfiguration']/*[local-name()='IdentityProviderConfiguration']/*[local-name()='PasswordSecurityPolicy']/*[local-name()='MaxConsecutiveInvalidLogins']/text()" withText="${dorian.idp.consec.invalid.logins}"/>
-			<replace path="/*[local-name()='DorianConfiguration']/*[local-name()='IdentityProviderConfiguration']/*[local-name()='PasswordSecurityPolicy']/*[local-name()='MaxTotalInvalidLogins']/text()" withText="${dorian.idp.total.invalid.logins}"/>
+			<replace path="/*[local-name()='DorianConfiguration']/*[local-name()='IdentityProviderConfiguration']/*[local-name()='PasswordSecurityPolicy']/*[local-name()='MaxConsecutiveInvalidLogins']/text()" withText="${dorian.idp.max.consec.invalid.logins}"/>
+			<replace path="/*[local-name()='DorianConfiguration']/*[local-name()='IdentityProviderConfiguration']/*[local-name()='PasswordSecurityPolicy']/*[local-name()='MaxTotalInvalidLogins']/text()" withText="${dorian.idp.max.total.invalid.logins}"/>
 				
 		</xmltask>
 
