@@ -27,7 +27,6 @@
             </fileset>
         </copy>
 
-    <runtarget target="deployGlobusHandler"/>
 	</target>
 
 </project>
