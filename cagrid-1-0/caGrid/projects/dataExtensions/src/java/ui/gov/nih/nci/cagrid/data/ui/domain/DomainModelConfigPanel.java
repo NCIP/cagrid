@@ -65,7 +65,7 @@ import org.projectmobius.portal.PortalResourceManager;
  * @author David Ervin
  * 
  * @created Apr 11, 2007 9:59:24 AM
- * @version $Id: DomainModelConfigPanel.java,v 1.3.2.3 2007-08-21 17:10:53 dervin Exp $
+ * @version $Id: DomainModelConfigPanel.java,v 1.3.2.4 2007-08-22 15:19:26 dervin Exp $
  */
 public class DomainModelConfigPanel extends DataServiceModificationSubPanel {
 
@@ -103,6 +103,18 @@ public class DomainModelConfigPanel extends DataServiceModificationSubPanel {
         try {
             noDomainModel = getExtensionDataManager().isNoDomainModel();
             suppliedDomainModel = getExtensionDataManager().isSuppliedDomainModel();
+            // handle possibility that the domain model source has just been set to 'none'
+            CadsrInformation cadsrInfo = getExtensionDataManager().getCadsrInformation();
+            if (noDomainModel && cadsrInfo.getPackages() != null && cadsrInfo.getPackages().length != 0) {
+                Set<String> shownPackages = getUmlTree().getPackagesInTree();
+                for (CadsrPackage pack : cadsrInfo.getPackages()) {
+                    if (shownPackages.contains(pack.getName())) {
+                        getUmlTree().removeUmlPackage(pack.getName());
+                    }
+                }
+                getExtensionDataManager().storeCadsrPackages(null);
+                fireClassesCleared();
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
             ErrorDialog.showErrorDialog("Error loading domain model source", 
@@ -484,6 +496,15 @@ public class DomainModelConfigPanel extends DataServiceModificationSubPanel {
                     DomainModelAdvancedOptionsDialog dialog = new DomainModelAdvancedOptionsDialog(
                         getServiceInfo(), getExtensionDataManager());
                     dialog.setVisible(true);
+                    try {
+                        if (getExtensionDataManager().isNoDomainModel()) {
+                            CadsrInformation info = getExtensionDataManager().getCadsrInformation();
+                            info.setPackages(null);
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        ErrorDialog.showErrorDialog("Error setting no domain model option", ex.getMessage(), ex);
+                    }
                     updateDisplayedConfiguration();
                 }
             });
