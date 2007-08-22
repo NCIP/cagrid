@@ -2113,7 +2113,14 @@ public class ModificationViewer extends GridPortalComponent {
         if (this.resourcesJTree == null) {
             this.resourcesJTree = new ServicesJTree(this.info.getServices(), this.info, getResourcesOptionsPanel());
             this.resourcesJTree.setVisibleRowCount(10);
- 
+            this.resourcesJTree.addFocusListener(new FocusAdapter() {
+                @Override
+                public void focusGained(FocusEvent e) {
+                    super.focusGained(e);
+                    ModificationViewer.this.resourcesJTree.setServices(ModificationViewer.this.info.getServices(),
+                        ModificationViewer.this.info);
+                }
+            });
             // initialize the option cards for this tree
             this.resourcesOptionsPanel.add(new ServicesButtonPanel(this.resourcesJTree), "services");
             this.resourcesOptionsPanel.add(new ServiceButtonPanel(this.resourcesJTree), "service");
