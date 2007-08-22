@@ -40,7 +40,7 @@ import org.w3c.dom.Document;
  * @author David Ervin
  * 
  * @created Mar 12, 2007 2:08:57 PM
- * @version $Id: BDTResourceHelper.java,v 1.4 2007-06-11 17:05:34 dervin Exp $ 
+ * @version $Id: BDTResourceHelper.java,v 1.4.2.1 2007-08-22 21:02:00 dervin Exp $ 
  */
 public class BDTResourceHelper extends BaseServiceImpl {
 	private CQLQuery query;
@@ -161,7 +161,7 @@ public class BDTResourceHelper extends BaseServiceImpl {
 	 * @throws QueryProcessingException
 	 * @throws MalformedQueryException
 	 */
-	private CQLQueryResults processQuery() throws QueryProcessingException, MalformedQueryException {
+	public CQLQueryResults processQuery() throws QueryProcessingException, MalformedQueryException {
 		if (queryResults == null) {
 			// initialize the CQL Query Processor
 			CQLQueryProcessor processor = getCqlQueryProcessorInstance();
@@ -182,7 +182,7 @@ public class BDTResourceHelper extends BaseServiceImpl {
 	 * @throws IOException
 	 * @throws FileNotFoundException
 	 */
-	private Iterator processQueryAndIterate() throws QueryProcessingException, 
+	public Iterator processQueryAndIterate() throws QueryProcessingException, 
 		MalformedQueryException, IOException {
 		CQLQueryResults results = processQuery();
         fireAuditQueryResults(query, results);
@@ -197,7 +197,7 @@ public class BDTResourceHelper extends BaseServiceImpl {
 	 * 		The QName
 	 * @throws Exception
 	 */
-	private QName getQueryTargetQName() throws Exception {
+	public QName getQueryTargetQName() throws Exception {
 		if (targetQName == null) {
 			Mappings mapping = (Mappings) Utils.deserializeDocument(
 				classToQNameMapfile, Mappings.class);
@@ -221,7 +221,7 @@ public class BDTResourceHelper extends BaseServiceImpl {
 	 * 		A consumable version of the wsdd input stream
 	 * @throws IOException
 	 */
-	private InputStream getConsumableInputStream() throws IOException {
+	public InputStream getConsumableInputStream() throws IOException {
 		if (wsddBytes == null) {
 			StringBuffer wsddContents = Utils.inputStreamToStringBuffer(wsddInput);
 			wsddBytes = wsddContents.toString().getBytes();
