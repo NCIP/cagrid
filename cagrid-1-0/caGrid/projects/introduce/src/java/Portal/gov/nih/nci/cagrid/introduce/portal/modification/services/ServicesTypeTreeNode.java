@@ -2,6 +2,7 @@ package gov.nih.nci.cagrid.introduce.portal.modification.services;
 
 import gov.nih.nci.cagrid.introduce.beans.service.ServiceType;
 import gov.nih.nci.cagrid.introduce.beans.service.ServicesType;
+import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 import gov.nih.nci.cagrid.introduce.portal.common.PopupTreeNode;
 
@@ -88,20 +89,9 @@ public class ServicesTypeTreeNode extends DefaultMutableTreeNode implements Popu
 
 
 	public ServiceTypeTreeNode addService(ServiceType type) {
+	    CommonTools.addService(services, type);
 		ServiceTypeTreeNode newNode = new ServiceTypeTreeNode(type, info, model);
 		model.insertNodeInto(newNode, this, this.getChildCount());
-		// keep servicestype consistant
-		int currentLength = 0;
-		if (services.getService() != null) {
-			currentLength = services.getService().length;
-		}
-		ServiceType[] newServiceTypes = new ServiceType[currentLength + 1];
-		if (currentLength > 0) {
-			System.arraycopy(services.getService(), 0, newServiceTypes, 0, currentLength);
-		}
-		newServiceTypes[currentLength] = type;
-		services.setService(newServiceTypes);
-
 		return newNode;
 	}
 

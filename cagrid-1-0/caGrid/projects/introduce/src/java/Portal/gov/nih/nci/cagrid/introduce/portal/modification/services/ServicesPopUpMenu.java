@@ -1,6 +1,5 @@
 package gov.nih.nci.cagrid.introduce.portal.modification.services;
 
-import gov.nih.nci.cagrid.common.portal.PortalUtils;
 import gov.nih.nci.cagrid.introduce.IntroduceConstants;
 import gov.nih.nci.cagrid.introduce.beans.method.MethodsType;
 import gov.nih.nci.cagrid.introduce.beans.resource.ResourcePropertiesListType;
@@ -70,16 +69,16 @@ public class ServicesPopUpMenu extends JPopupMenu {
         service.setResourcePropertiesList(new ResourcePropertiesListType());
         service.setResourceFrameworkType(IntroduceConstants.INTRODUCE_LIFETIME_RESOURCE);
         // service.setServiceSecurity(new ServiceSecurity());
-        service.setMethods(new MethodsType());
 
         ModifyService comp = new ModifyService(new SpecificServiceInformation(node.getInfo(), service), true);
         comp.setVisible(true);
 
         if (!comp.wasClosed()) {
             ServiceTypeTreeNode newNode = node.addService(service);
-            newNode.getModel().nodeStructureChanged(node);
-            newNode.getModel().nodeChanged(node);
         }
+
+        service.setMethods(new MethodsType());
+
     }
 
 }
