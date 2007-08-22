@@ -429,6 +429,18 @@ public abstract class Constants {
 
 	public static final String AUTH_SVC_SAML_PROVIDER_KEY_PWD = "authn.svc.saml.provider.key.pwd";
 
+	public static final Object JAVA_VERSION_PATTERN = "java.version.pattern";
+
+	public static final String DORIAN_IDP_PWD_LOCKOUT_HOURS = "dorian.idp.pwd.lockout.hours";
+
+	public static final String DORIAN_IDP_PWD_LOCKOUT_MINUTES = "dorian.idp.pwd.lockout.minutes";
+
+	public static final String DORIAN_IDP_PWD_LOCKOUT_SECONDS = "dorian.idp.pwd.lockout.seconds";
+
+	public static final String DORIAN_IDP_MAX_CONSEC_INVALID_LOGINS = "dorian.idp.max.consec.invalid.logins";
+
+	public static final String DORIAN_IDP_MAX_TOTAL_INVALID_LOGINS = "dorian.idp.max.total.invalid.logins";
+
 	
 
 

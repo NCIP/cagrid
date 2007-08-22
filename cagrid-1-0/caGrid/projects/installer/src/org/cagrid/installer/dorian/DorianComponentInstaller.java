@@ -163,6 +163,37 @@ public class DorianComponentInstaller implements CaGridComponentInstaller {
 								.getMessage("dorian.idp.pwd.max"),
 						model.getProperty(Constants.DORIAN_IDP_PWD_MAX,
 								"10"), true));
+		dorianIdpInfoStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.DORIAN_IDP_PWD_LOCKOUT_HOURS, model
+								.getMessage(Constants.DORIAN_IDP_PWD_LOCKOUT_HOURS),
+						model.getProperty(Constants.DORIAN_IDP_PWD_LOCKOUT_HOURS,
+								"4"), true));
+		dorianIdpInfoStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.DORIAN_IDP_PWD_LOCKOUT_MINUTES, model
+								.getMessage(Constants.DORIAN_IDP_PWD_LOCKOUT_MINUTES),
+						model.getProperty(Constants.DORIAN_IDP_PWD_LOCKOUT_MINUTES,
+								"0"), true));
+		dorianIdpInfoStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.DORIAN_IDP_PWD_LOCKOUT_SECONDS, model
+								.getMessage(Constants.DORIAN_IDP_PWD_LOCKOUT_SECONDS),
+						model.getProperty(Constants.DORIAN_IDP_PWD_LOCKOUT_SECONDS,
+								"0"), true));
+		dorianIdpInfoStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.DORIAN_IDP_MAX_CONSEC_INVALID_LOGINS, model
+								.getMessage(Constants.DORIAN_IDP_MAX_CONSEC_INVALID_LOGINS),
+						model.getProperty(Constants.DORIAN_IDP_MAX_CONSEC_INVALID_LOGINS,
+								"5"), true));
+		dorianIdpInfoStep.getOptions().add(
+				new TextPropertyConfigurationOption(
+						Constants.DORIAN_IDP_MAX_TOTAL_INVALID_LOGINS, model
+								.getMessage(Constants.DORIAN_IDP_MAX_TOTAL_INVALID_LOGINS),
+						model.getProperty(Constants.DORIAN_IDP_MAX_TOTAL_INVALID_LOGINS,
+								"500"), true));		
+		
 		dorianIdpInfoStep
 				.getOptions()
 				.add(

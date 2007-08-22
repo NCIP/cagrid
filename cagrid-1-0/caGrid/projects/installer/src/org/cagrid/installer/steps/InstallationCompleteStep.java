@@ -15,6 +15,7 @@ import javax.swing.KeyStroke;
 import javax.swing.text.DefaultEditorKit;
 
 import org.cagrid.installer.model.CaGridInstallerModel;
+import org.cagrid.installer.util.InstallerUtils;
 import org.pietschy.wizard.PanelWizardStep;
 import org.pietschy.wizard.WizardModel;
 
@@ -80,6 +81,10 @@ public class InstallationCompleteStep extends PanelWizardStep {
 
 		sb
 				.append("Please remember to set the following environment variables:\n\n");
+		if (InstallerUtils.isEmpty(System.getenv("JAVA_HOME"))) {
+			sb.append("\t").append("JAVA_HOME=").append(
+					InstallerUtils.getJavaHomePath()).append("\n");
+		}
 		sb.append("\t").append("ANT_HOME=").append(
 				this.model.getProperty(Constants.ANT_HOME)).append("\n");
 		sb.append("\t").append("GLOBUS_LOCATION=").append(
@@ -87,8 +92,7 @@ public class InstallationCompleteStep extends PanelWizardStep {
 		if (this.model.getMessage("container.type.tomcat").equals(
 				this.model.getProperty(Constants.CONTAINER_TYPE))) {
 			sb.append("\t").append("CATALINA_HOME=").append(
-					this.model.getProperty(Constants.TOMCAT_HOME)).append(
-					"\n");
+					this.model.getProperty(Constants.TOMCAT_HOME)).append("\n");
 		}
 
 		this.textPane.setText(sb.toString());

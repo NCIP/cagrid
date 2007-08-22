@@ -72,6 +72,9 @@ public class AntTask extends BasicTask {
 			Map<String, String> env = new HashMap<String, String>(System
 					.getenv());
 			// env.putAll(this.environment);
+			if(this.environment == null){
+				this.environment = new HashMap<String,String>();
+			}
 			for (Iterator i = this.environment.entrySet().iterator(); i
 					.hasNext();) {
 				Entry entry = (Entry) i.next();
@@ -79,6 +82,9 @@ public class AntTask extends BasicTask {
 						&& entry.getValue() instanceof String) {
 					env.put((String) entry.getKey(), (String) entry.getValue());
 				}
+			}
+			if(!this.environment.containsKey("JAVA_HOME")){
+				this.environment.put("JAVA_HOME", InstallerUtils.getJavaHomePath());
 			}
 			Map<String, String> myEnv = new HashMap<String, String>(env);
 			// myEnv.put("ANT_ARGS", "-v");
@@ -115,18 +121,13 @@ public class AntTask extends BasicTask {
 		ArrayList<String> cmd = new ArrayList<String>();
 		String antHome = model.getProperty(Constants.ANT_HOME);
 
-		boolean isWindows = false;
-		if (System.getProperty("os.name").toLowerCase().indexOf("windows") != -1) {
-			isWindows = true;
-		}
-
 		String java = "java";
-		if (isWindows) {
+		if (InstallerUtils.isWindows()) {
 			java += ".exe";
 		}
-		cmd.add(java);
+		cmd.add(InstallerUtils.getJavaHomePath() + "/bin/" + java);
 		cmd.add("-classpath");
-		if (isWindows) {
+		if (InstallerUtils.isWindows()) {
 			cmd.add(toolsJar.getAbsolutePath() + ";" + antHome
 					+ "/lib/ant-launcher.jar");
 		} else {

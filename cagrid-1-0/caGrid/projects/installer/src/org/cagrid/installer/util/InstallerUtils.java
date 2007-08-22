@@ -19,7 +19,9 @@ import java.io.StringWriter;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.Map;
 import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -252,15 +254,65 @@ public class InstallerUtils {
 		return isCorrectVersion;
 	}
 
+
+
+	public static String getJavaVersion() {
+
+		String version = null;
+		
+		String java = "java";
+		if (isWindows()) {
+			java += ".exe";
+		}
+		try {
+			Process p = Runtime.getRuntime().exec(
+					new String[] { getJavaHomePath() + "/bin/" + java, "-version" }, new String[0]);
+
+			StringBuffer stdout = new StringBuffer();
+			new IOThread(p.getInputStream(), System.out, stdout).start();
+			
+			StringBuffer stderr = new StringBuffer();
+			new IOThread(p.getErrorStream(), System.err, stderr).start();
+			
+			int code = p.waitFor();
+			
+			logger.info("CODE: " + code);
+			logger.info("STDOUT: " + stdout);
+			logger.info("STDERR: " + stderr);
+			
+			version = stdout.toString();
+			if(InstallerUtils.isEmpty(version)){
+				version = stderr.toString();
+			}
+			try{
+				version = version.substring(version.indexOf("\"") + 1, version.lastIndexOf("\""));
+			}catch(Exception ex){
+				logger.warn("Couldn't parse out version from '" + version + "'");
+			}
+			
+		} catch (Exception ex) {
+			throw new RuntimeException("Error checking java version: "
+					+ ex.getMessage(), ex);
+		}
+
+		return version;
+	}
+
+	public static String getJavaHomePath() {
+		String javaHome = System.getenv("JAVA_HOME");
+		if (isEmpty(javaHome)) {
+			javaHome = System.getProperty("java.home");
+		}
+		return javaHome;
+	}
+
 	public static boolean checkTomcatVersion(String home) {
 		boolean correctVersion = false;
 		try {
-			String javaHome = System.getenv("JAVA_HOME");
-			if (isEmpty(javaHome)) {
-				javaHome = System.getProperty("java.home");
-			}
-			String[] envp = new String[] { "JAVA_HOME=" + javaHome, "CATALINA_HOME=" + home };
-			
+			String javaHome = getJavaHomePath();
+			String[] envp = new String[] { "JAVA_HOME=" + javaHome,
+					"CATALINA_HOME=" + home };
+
 			String[] cmd = null;
 			if (InstallerUtils.isWindows()) {
 				cmd = new String[] { "cmd.exe", "/c", home + "/bin/version.bat" };
@@ -269,24 +321,24 @@ public class InstallerUtils {
 			}
 			Process p = Runtime.getRuntime().exec(cmd, envp);
 			StringBuffer stdout = new StringBuffer();
-			
+
 			new IOThread(p.getInputStream(), System.out, stdout).start();
 			StringBuffer stderr = new StringBuffer();
-			
+
 			new IOThread(p.getErrorStream(), System.err, stderr).start();
 			int code = p.waitFor();
 
 			correctVersion = stdout.toString().indexOf("Apache Tomcat/5.0.28") != -1;
 			if (!correctVersion) {
-				
+
 				logger.warn("The Tomcat version utility indicates "
 						+ "that the correct tomcat version is not "
 						+ "installed. Here is the output from that tool: \n"
 						+ stdout);
-				
+
 				logger.warn("Exit code: " + code);
 				logger.warn("STDERR:\n" + stderr);
-				
+
 			}
 		} catch (Exception ex) {
 			logger
@@ -305,12 +357,12 @@ public class InstallerUtils {
 		boolean correctVersion = false;
 		try {
 			String[] envp = new String[] { "JAVA_HOME="
-					+ System.getProperty("java.home") };
-
+					+ getJavaHomePath() };
 
 			String[] cmd = null;
 			if (InstallerUtils.isWindows()) {
-				cmd = new String[] { "cmd.exe", "/c", home + "/bin/ant.bat", "-version" };
+				cmd = new String[] { "cmd.exe", "/c", home + "/bin/ant.bat",
+						"-version" };
 			} else {
 				cmd = new String[] { "sh", home + "/bin/ant", "-version" };
 			}
@@ -546,7 +598,7 @@ public class InstallerUtils {
 
 	public static String trim(String s) {
 		String trimmed = s;
-		if(trimmed != null){
+		if (trimmed != null) {
 			trimmed = trimmed.trim();
 		}
 		return trimmed;

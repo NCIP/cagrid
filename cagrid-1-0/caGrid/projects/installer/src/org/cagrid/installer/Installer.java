@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import org.apache.commons.logging.Log;
@@ -108,7 +109,8 @@ public class Installer {
 		downloadedComponentInstallers.add(new GlobusComponentInstaller());
 		downloadedComponentInstallers.add(new ActiveBPELComponentInstaller());
 		downloadedComponentInstallers.add(new CaGridSourceComponentInstaller());
-		downloadedComponentInstallers.add(new BrowserSourceComponentInstaller());
+		downloadedComponentInstallers
+				.add(new BrowserSourceComponentInstaller());
 
 		componentInstallers.add(new MyServiceComponentInstaller());
 		componentInstallers.add(new SyncGTSComponentInstaller());
@@ -233,6 +235,8 @@ public class Installer {
 			}
 			incrementProgress();
 
+			assertCorrectJavaVersion(defaultState);
+
 			initSteps(defaultState);
 
 			while (this.initProgress < TOTAL_INIT_STEPS) {
@@ -245,10 +249,29 @@ public class Installer {
 			}
 
 		} catch (Exception ex) {
-			throw new RuntimeException(
-					"Error initializing: " + ex.getMessage(), ex);
+			handleException("Error initializing: " + ex.getMessage(), ex);
 		} finally {
 			splashScreenDestruct();
+		}
+	}
+
+	private void assertCorrectJavaVersion(Map<String, String> defaultState)
+			throws Exception {
+		String versionPattern = defaultState
+				.get(Constants.JAVA_VERSION_PATTERN);
+		if (versionPattern == null) {
+			throw new Exception("Couldn't find version pattern property.");
+		}
+		String home = InstallerUtils.getJavaHomePath();
+		String version = InstallerUtils.getJavaVersion();
+		logger.info("At '" + home + "', found Java version: " + version);
+		if (!version.matches(versionPattern)) {
+			throw new Exception("The version of Java found at '" + home
+					+ "' is not correct. Found '" + version
+					+ "'. Expected version to match '" + versionPattern + "'.\n" +
+					"Set the JAVA_HOME environment variable to" +
+					" point to where you have installed the correct version of" +
+					" Java before running the installer.");
 		}
 	}
 
@@ -326,7 +349,15 @@ public class Installer {
 	}
 
 	private void handleException(String msg, Exception ex) {
-		JOptionPane.showMessageDialog(null, msg, "Error",
+		
+		String htmlMsg = "";
+		if(!InstallerUtils.isEmpty(msg)){
+			htmlMsg = "<html><body>" + msg.replaceAll("\n", "<br>") + "</body></html>";
+		}
+		
+		JLabel msgLabel = new JLabel(htmlMsg);
+		
+		JOptionPane.showMessageDialog(null, msgLabel, "Error",
 				JOptionPane.ERROR_MESSAGE);
 		if (ex != null) {
 			logger.error(msg, ex);
@@ -390,7 +421,6 @@ public class Installer {
 		this.model.add(selectInstallStep);
 
 		incrementProgress();
-
 
 		incrementProgress();
 
