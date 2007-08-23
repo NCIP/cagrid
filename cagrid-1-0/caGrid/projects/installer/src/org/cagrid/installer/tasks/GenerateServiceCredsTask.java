@@ -47,7 +47,7 @@ public class GenerateServiceCredsTask extends CaGridInstallerAntTask {
 			throw new RuntimeException("The certificate is already expired.");
 		}
 		int diffInDays = (int) ((notAfter.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-		model.getProperty(Constants.SERVICE_CERT_DAYS_VALID, String
+		model.setProperty(Constants.SERVICE_CERT_DAYS_VALID, String
 						.valueOf(diffInDays));
 
 		new AntTask("", "", target, env, sysProps).execute(model);

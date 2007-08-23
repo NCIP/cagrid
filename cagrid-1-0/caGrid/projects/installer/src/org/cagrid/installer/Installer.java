@@ -318,7 +318,7 @@ public class Installer {
 		DownloadPropsThread dpt = new DownloadPropsThread(downloadUrl, toFile);
 		dpt.start();
 		try {
-			dpt.join(5000);
+			dpt.join(Constants.CONNECT_TIMEOUT);
 		} catch (InterruptedException ex) {
 			handleException("Download thread interrupted", ex);
 		}
@@ -399,7 +399,7 @@ public class Installer {
 								Constants.CONFIGURE_CONTAINER,
 								this.model
 										.getMessage("select.install.configure.container"),
-								true, true));
+								false, true));
 		selectInstallStep.getOptions().add(
 				new BooleanPropertyConfigurationOption(
 						Constants.INSTALL_SERVICES, this.model
@@ -410,13 +410,13 @@ public class Installer {
 				new BooleanPropertyConfigurationOption(
 						Constants.INSTALL_PORTAL, this.model
 								.getMessage("select.install.install.portal"),
-						true, true));
+						false, true));
 
 		selectInstallStep.getOptions().add(
 				new BooleanPropertyConfigurationOption(
 						Constants.INSTALL_BROWSER, this.model
 								.getMessage("select.install.install.browser"),
-						true, true));
+						false, true));
 
 		this.model.add(selectInstallStep);
 

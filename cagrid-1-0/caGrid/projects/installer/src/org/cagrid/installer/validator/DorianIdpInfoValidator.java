@@ -17,6 +17,10 @@ import org.pietschy.wizard.InvalidStateException;
  */
 public class DorianIdpInfoValidator implements Validator {
 
+	private static final int DEFAULT_IDP_USER_USERID_LENGTH = 6;
+
+	private static final int DEFAULT_IDP_USER_PASSWORD_LENGTH = 13;
+
 	private CaGridInstallerModel model;
 
 	private String message;
@@ -41,13 +45,56 @@ public class DorianIdpInfoValidator implements Validator {
 				this.model.getMessage("dorian.idp.pwd.min") });
 		pairs.add(new String[] { Constants.DORIAN_IDP_PWD_MAX,
 				this.model.getMessage("dorian.idp.pwd.max") });
-		
-		for(String[] pair : pairs){
-			try{
-				Integer.parseInt((String)state.get(pair[0]));
-			}catch(Exception ex){
+		pairs
+				.add(new String[] {
+						Constants.DORIAN_IDP_MAX_CONSEC_INVALID_LOGINS,
+						this.model
+								.getMessage("dorian.idp.max.consec.invalid.logins") });
+		pairs.add(new String[] { Constants.DORIAN_IDP_MAX_TOTAL_INVALID_LOGINS,
+				this.model.getMessage("dorian.idp.max.total.invalid.logins") });
+		pairs
+				.add(new String[] {
+						Constants.DORIAN_IDP_PWD_LOCKOUT_HOURS,
+						this.model
+								.getMessage(Constants.DORIAN_IDP_PWD_LOCKOUT_HOURS) });
+		pairs
+				.add(new String[] {
+						Constants.DORIAN_IDP_PWD_LOCKOUT_MINUTES,
+						this.model
+								.getMessage(Constants.DORIAN_IDP_PWD_LOCKOUT_MINUTES) });
+		pairs
+				.add(new String[] {
+						Constants.DORIAN_IDP_PWD_LOCKOUT_SECONDS,
+						this.model
+								.getMessage(Constants.DORIAN_IDP_PWD_LOCKOUT_SECONDS) });
+
+		for (String[] pair : pairs) {
+			try {
+				Integer.parseInt((String) state.get(pair[0]));
+			} catch (Exception ex) {
 				throw new InvalidStateException(pair[1] + ": " + message);
 			}
+		}
+
+		if (Integer.parseInt((String) state.get(Constants.DORIAN_IDP_UID_MIN)) > DEFAULT_IDP_USER_USERID_LENGTH) {
+			throw new InvalidStateException(
+					"The userid minimum length must be less than or equal \nto the default IdP user's userid length, which is "
+							+ DEFAULT_IDP_USER_USERID_LENGTH + ".");
+		}
+		if (Integer.parseInt((String) state.get(Constants.DORIAN_IDP_UID_MAX)) < DEFAULT_IDP_USER_USERID_LENGTH) {
+			throw new InvalidStateException(
+					"The userid maximum length must be greated than or equal \nto the default IdP user's userid length, which is "
+							+ DEFAULT_IDP_USER_USERID_LENGTH + ".");
+		}
+		if (Integer.parseInt((String) state.get(Constants.DORIAN_IDP_PWD_MIN)) > DEFAULT_IDP_USER_PASSWORD_LENGTH) {
+			throw new InvalidStateException(
+					"The password minimum length must be less than or equal \nto the default IdP user's userid length, which is "
+							+ DEFAULT_IDP_USER_USERID_LENGTH + ".");
+		}
+		if (Integer.parseInt((String) state.get(Constants.DORIAN_IDP_PWD_MAX)) < DEFAULT_IDP_USER_PASSWORD_LENGTH) {
+			throw new InvalidStateException(
+					"The password maximum length must be greated than or equal \nto the default IdP user's userid length, which is "
+							+ DEFAULT_IDP_USER_USERID_LENGTH + ".");
 		}
 	}
 

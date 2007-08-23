@@ -32,6 +32,8 @@ public class DorianComponentInstaller implements CaGridComponentInstaller {
 
 	private static final int NUM_ERACOM_SLOTS = 16;
 	
+	
+	
 	/**
 	 * 
 	 */
@@ -150,19 +152,19 @@ public class DorianComponentInstaller implements CaGridComponentInstaller {
 						Constants.DORIAN_IDP_UID_MAX, model
 								.getMessage("dorian.idp.uid.max"),
 						model.getProperty(Constants.DORIAN_IDP_UID_MAX,
-								"10"), true));
+								"15"), true));
 		dorianIdpInfoStep.getOptions().add(
 				new TextPropertyConfigurationOption(
 						Constants.DORIAN_IDP_PWD_MIN, model
 								.getMessage("dorian.idp.pwd.min"),
 						model.getProperty(Constants.DORIAN_IDP_PWD_MIN,
-								"6"), true));
+								"10"), true));
 		dorianIdpInfoStep.getOptions().add(
 				new TextPropertyConfigurationOption(
 						Constants.DORIAN_IDP_PWD_MAX, model
 								.getMessage("dorian.idp.pwd.max"),
 						model.getProperty(Constants.DORIAN_IDP_PWD_MAX,
-								"10"), true));
+								"20"), true));
 		dorianIdpInfoStep.getOptions().add(
 				new TextPropertyConfigurationOption(
 						Constants.DORIAN_IDP_PWD_LOCKOUT_HOURS, model
@@ -221,6 +223,7 @@ public class DorianComponentInstaller implements CaGridComponentInstaller {
 		dorianIdpInfoStep.getValidators().add(
 				new DorianIdpInfoValidator(model, model
 						.getMessage("error.nan")));
+		
 
 		model.add(dorianIdpInfoStep, new Condition() {
 

@@ -141,7 +141,7 @@ public abstract class Constants {
 
 	public static final String DOWNLOAD_URL = "download.url";
 
-	public static final long CONNECT_TIMEOUT = 5000;
+	public static final long CONNECT_TIMEOUT = 30000;
 
 	public static final String JDBC_DRIVER_PATH = "jdbc.driver.path";
 

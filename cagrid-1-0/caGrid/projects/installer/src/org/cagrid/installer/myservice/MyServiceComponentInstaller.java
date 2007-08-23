@@ -83,7 +83,7 @@ public class MyServiceComponentInstaller implements CaGridComponentInstaller {
 			}
 		});
 
-		IntroduceServicePropertiesFileEditorStep mySvcDeployPropsStep = new IntroduceServicePropertiesFileEditorStep(
+		final IntroduceServicePropertiesFileEditorStep mySvcDeployPropsStep = new IntroduceServicePropertiesFileEditorStep(
 				Constants.MY_SERVICE_DIR,
 				"deploy.properties",
 				model
@@ -94,11 +94,11 @@ public class MyServiceComponentInstaller implements CaGridComponentInstaller {
 		model.add(mySvcDeployPropsStep, new Condition() {
 			public boolean evaluate(WizardModel m) {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_MY_SERVICE);
+				return mySvcDeployPropsStep.evaluate(m) && model.isTrue(Constants.INSTALL_MY_SERVICE);
 			}
 		});
 
-		IntroduceServicePropertiesFileEditorStep mySvcServicePropsStep = new IntroduceServicePropertiesFileEditorStep(
+		final IntroduceServicePropertiesFileEditorStep mySvcServicePropsStep = new IntroduceServicePropertiesFileEditorStep(
 				Constants.MY_SERVICE_DIR,
 				"service.properties",
 				model
@@ -110,7 +110,7 @@ public class MyServiceComponentInstaller implements CaGridComponentInstaller {
 		model.add(mySvcServicePropsStep, new Condition() {
 			public boolean evaluate(WizardModel m) {
 				CaGridInstallerModel model = (CaGridInstallerModel) m;
-				return model.isTrue(Constants.INSTALL_MY_SERVICE);
+				return mySvcServicePropsStep.evaluate(m) && model.isTrue(Constants.INSTALL_MY_SERVICE);
 			}
 		});
 
