@@ -99,10 +99,7 @@ public class UpgradeManager {
             } catch (Exception e) {
                 status.addIssue(
                     "Build Failed",
-                    "Upgrade was successfull but service does not build.  " +
-                    "Customizations that were made to the build.xml will " +
-                    "now need to be moved to the dev-build.xml and same " +
-                    "for build-deploy.xml to dev-build-deploy.xml.  " +
+                    e.getMessage() +
                     "Once the build is fixed then a sync must be done to " +
                     "complete the upgrade.  To complete the upgrade simply " +
                     "open introduce and open this service for modification " +
@@ -118,10 +115,7 @@ public class UpgradeManager {
             } catch (Exception e) {
                 status.addIssue(
                     "Build Failed",
-                    "Upgrade was successfull but service does not build.  " +
-                    "Customizations that were made to the build.xml will " +
-                    "now need to be moved to the dev-build.xml and the same " +
-                    "for build-deploy.xml to dev-build-deploy.xml.  " +
+                    e.getMessage() +
                     "To complete the upgrade simply open introduce and open " +
                     "this service for modification and then click save.");
                 e.printStackTrace();
@@ -140,8 +134,7 @@ public class UpgradeManager {
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new Exception(
-                    "Service upgrader failed.  This service does not appear to be " +
-                    "upgradable possibly due to modification of Introduce managed files.", e);
+                    "Service upgrader failed: " + e.getMessage(), e);
             }
         }
     }
@@ -164,8 +157,7 @@ public class UpgradeManager {
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new Exception(
-                    "Extensions upgrader failed.  Certain Extensions upgraders must have " +
-                    "failed. Please see upgrade status log.", e);
+                    "Extensions upgrader failed: " + e.getMessage(), e);
             }
         }
         return null;
