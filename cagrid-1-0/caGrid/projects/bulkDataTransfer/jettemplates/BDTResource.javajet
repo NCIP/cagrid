@@ -58,7 +58,7 @@ public class BDTResource extends BDTResourceBase implements BDTResourceI {
 	* when this resource is destroyed it should be done here.
 	*/
     public void remove() throws ResourceException {
-		// TODO Implement me
+		//TODO: Implement me
 	}
     
 }
