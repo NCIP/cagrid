@@ -47,16 +47,28 @@ public class UnzipInstallTask extends BasicTask {
 
 	protected Object internalExecute(CaGridInstallerModel model) throws Exception {
 
+		String path = model.getProperty(Constants.TEMP_DIR_PATH) + "/"
+		+ model.getProperty(this.tempFileNameProp);
 		ZipFile zipFile = null;
 		try {
-			String path = model.getProperty(Constants.TEMP_DIR_PATH) + "/"
-					+ model.getProperty(this.tempFileNameProp);
-
 			logger.info("Trying to open ZipFile for " + path);
 			zipFile = new ZipFile(new File(path));
 		} catch (Exception ex) {
-			throw new RuntimeException("Error instantiating zip file: "
-					+ ex.getMessage(), ex);
+			
+			logger.warn("Failed first attempt to open zip file. Trying again.");
+			try{
+				//Wait 3 seconds
+				Thread.sleep(3000);
+			}catch(InterruptedException ex2){
+				logger.warn("Sleep interrupted");
+			}
+			try{
+				zipFile = new ZipFile(new File(path));				
+			}catch(Exception ex2){
+				logger.error("Failed second attempt to open zip file. Aborting.", ex2);
+				throw new RuntimeException("Error instantiating zip file: "
+						+ ex.getMessage(), ex);
+			}
 		}
 
 		File installDir = new File(model.getProperty(this.installDirPathProp));
