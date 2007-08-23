@@ -234,6 +234,7 @@
         <copy overwrite="true" todir="${tomcat.dir}/shared/lib/" file="${build.lib.dir}/globus-authz.jar" />
         <copy overwrite="true" todir="${tomcat.dir}/shared/classes" file="etc/ae-client-config.wsdd" />
         <copy overwrite="true" todir="${tomcat.dir}/shared/lib" file="${ext.globus.dir}/lib/cog-axis.jar" />
+        <copy overwrite="true" todir="${tomcat.dir}/shared/lib" file="${ext.globus.dir}/lib/cog-jglobus.jar" />
     </target>
 
     <target name="handlerjar" depends="compile">
