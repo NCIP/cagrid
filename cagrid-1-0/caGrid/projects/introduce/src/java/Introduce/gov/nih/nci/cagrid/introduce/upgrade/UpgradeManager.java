@@ -98,8 +98,9 @@ public class UpgradeManager {
                 sync.sync();
             } catch (Exception e) {
                 status.addIssue(
-                    "Build Failed",
-                    e.getMessage() +
+                    "Re-Sync Failed",
+                    e.getMessage() +  "\n" + "This could be due to modifications you may have made to Introduce\n"
+                    + "managed files such as the build files, source files or wsdl files.\n" +
                     "Once the build is fixed then a sync must be done to " +
                     "complete the upgrade.  To complete the upgrade simply " +
                     "open introduce and open this service for modification " +
@@ -114,9 +115,11 @@ public class UpgradeManager {
                 sync.sync();
             } catch (Exception e) {
                 status.addIssue(
-                    "Build Failed",
-                    e.getMessage() +
-                    "To complete the upgrade simply open introduce and open " +
+                    "Re-Sync Failed",
+                    e.getMessage() +  "\n" + "This could be due to modifications you may have made to Introduce\n"
+                    + "managed files such as the build files, source files or wsdl files.\n" +
+                    "Once the build is fixed then a sync must be done to " +
+                    "complete the upgrade. To complete the upgrade simply open introduce and open " +
                     "this service for modification and then click save.");
                 e.printStackTrace();
             }
