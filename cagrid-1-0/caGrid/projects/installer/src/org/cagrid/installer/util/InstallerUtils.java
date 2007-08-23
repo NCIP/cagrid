@@ -357,7 +357,7 @@ public class InstallerUtils {
 		boolean correctVersion = false;
 		try {
 			String[] envp = new String[] { "JAVA_HOME="
-					+ getJavaHomePath() };
+					+ getJavaHomePath(), "ANT_HOME=" + home };
 
 			String[] cmd = null;
 			if (InstallerUtils.isWindows()) {
