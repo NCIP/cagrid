@@ -387,15 +387,14 @@ public class ModificationViewer extends GridPortalComponent {
         getResourcesJTree().setServices(this.info.getServices(), this.info);
         getMethodsTable().clearTable();
         getMethodsTable().setMethods(this.info.getServices().getService(0));
-        getRpHolderPanel().reInitialize(this.info.getServices().getService(0),
-            this.info.getNamespaces());
+        getRpHolderPanel().reInitialize(this.info.getServices().getService(0), this.info.getNamespaces());
         getServicePropertiesTable().setServiceInformation(this.info);
         this.resetMethodSecurityIfServiceSecurityChanged();
         for (int i = 0; i < this.extensionPanels.size(); i++) {
             ServiceModificationUIPanel panel = (ServiceModificationUIPanel) this.extensionPanels.get(i);
             panel.setServiceInfo(this.info);
         }
-        //repaint the component that was selected before the save
+        // repaint the component that was selected before the save
         this.repaint();
     }
 
@@ -446,7 +445,8 @@ public class ModificationViewer extends GridPortalComponent {
                         answer = JOptionPane.showConfirmDialog(PortalResourceManager.getInstance().getGridPortal(),
                             "The service had the following fatal error during the upgrade process:\n" + e.getMessage()
                                 + "If you select OK, Introduce will roll your service back to its previous\n"
-                                + "state before the upgrade attempt", "Error upgrading service", JOptionPane.OK_CANCEL_OPTION);
+                                + "state before the upgrade attempt", "Error upgrading service",
+                            JOptionPane.OK_CANCEL_OPTION);
                         if (answer == JOptionPane.OK_OPTION) {
                             try {
                                 if (dialog != null) {
@@ -1107,8 +1107,7 @@ public class ModificationViewer extends GridPortalComponent {
                                 getMethodsTable().setMethods(info.getServices().getService(0));
                                 break;
                             case 2 :
-                                getRpHolderPanel().reInitialize(
-                                    info.getServices().getService(0), info.getNamespaces());
+                                getRpHolderPanel().reInitialize(info.getServices().getService(0), info.getNamespaces());
                                 break;
                             case 3 :
                                 getServicePropertiesTable().setServiceInformation(info);
@@ -1588,10 +1587,14 @@ public class ModificationViewer extends GridPortalComponent {
                             + File.separator + IntroduceConstants.INTRODUCE_XML_FILE, ModificationViewer.this.info
                             .getServiceDescriptor(), IntroduceConstants.INTRODUCE_SKELETON_QNAME);
 
-                        // call the sync tools
-                        setProgressText("synchronizing skeleton");
-                        SyncTools sync = new SyncTools(ModificationViewer.this.methodsDirectory);
-                        sync.sync();
+                        try {
+                            // call the sync tools
+                            setProgressText("synchronizing skeleton");
+                            SyncTools sync = new SyncTools(ModificationViewer.this.methodsDirectory);
+                            sync.sync();
+                        } catch (Exception e) {
+                            throw new Exception("FATAL ERROR: Service was unable to be re-synced: \n" +  e.getMessage() + "\nPlease either roll back to previous save state or re-create the service." ,e);
+                        }
 
                         // build the synchronized service
                         setProgressText("rebuilding skeleton");
