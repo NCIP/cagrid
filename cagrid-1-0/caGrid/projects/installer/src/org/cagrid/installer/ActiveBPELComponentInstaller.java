@@ -86,16 +86,4 @@ public class ActiveBPELComponentInstaller extends
 		};
 	}
 
-	public void addInstallDownloadedComponentTasks(CaGridInstallerModel model,
-			RunTasksStep installStep) {
-
-		super.addInstallDownloadedComponentTasks(model, installStep);
-
-		installStep.getTasks().add(
-				new ConditionalTask(new DeployActiveBPELTask(model
-						.getMessage("installing.activebpel.title"), ""),
-						getShouldInstallCondition()));
-
-	}
-
 }
