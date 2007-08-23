@@ -42,7 +42,7 @@ import javax.swing.JScrollPane;
  * @author David Ervin
  * 
  * @created Jun 27, 2007 8:58:22 AM
- * @version $Id: QueryProcessorConfigPanel.java,v 1.2.2.2 2007-08-21 18:11:54 dervin Exp $ 
+ * @version $Id: QueryProcessorConfigPanel.java,v 1.2.2.3 2007-08-23 19:21:18 dervin Exp $ 
  */
 public class QueryProcessorConfigPanel extends DataServiceModificationSubPanel {
     
@@ -331,8 +331,7 @@ public class QueryProcessorConfigPanel extends DataServiceModificationSubPanel {
     
     
     private String[] getJarFilenames() {
-        String libDir = getServiceInfo().getIntroduceServiceProperties().getProperty(
-            IntroduceConstants.INTRODUCE_SKELETON_DESTINATION_DIR)
+        String libDir = getServiceInfo().getBaseDirectory().getAbsolutePath()
             + File.separator + "lib";
         String[] qpJarNames = getClassBrowserPanel().getAdditionalJars();
         if (qpJarNames != null) {

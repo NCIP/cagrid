@@ -20,7 +20,6 @@ import java.awt.event.ItemListener;
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -50,7 +49,7 @@ import javax.swing.JScrollPane;
  * 
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  * @created May 11, 2006
- * @version $Id: ClassBrowserPanel.java,v 1.3.2.1 2007-08-14 14:42:01 dervin Exp $
+ * @version $Id: ClassBrowserPanel.java,v 1.3.2.2 2007-08-23 19:21:18 dervin Exp $
  */
 public class ClassBrowserPanel extends JPanel {
 
@@ -141,12 +140,12 @@ public class ClassBrowserPanel extends JPanel {
 	
 	private void addJars(String[] jarFiles) {
 		// only bother adding the jar file to the list if it's not in there yet
-        List<String> uniqueJars = new ArrayList();
+        Set<String> uniqueJars = new HashSet();
         Collections.addAll(uniqueJars, getAdditionalJars());
         for (String jarFile : jarFiles) {
             String shortJarName = (new File(jarFile)).getName();
             if (!uniqueJars.contains(shortJarName)) {
-                copyJarToService(jarFile, shortJarName);
+                copyJarToService(jarFile);
                 uniqueJars.add(shortJarName);
             }
         }
@@ -299,8 +298,8 @@ public class ClassBrowserPanel extends JPanel {
 
 
 	private void deleteAdditionalJar(String shortJarName) {
-		String libDir = serviceInfo.getIntroduceServiceProperties().getProperty(
-			IntroduceConstants.INTRODUCE_SKELETON_DESTINATION_DIR) + File.separator + "lib";
+		String libDir = serviceInfo.getBaseDirectory().getAbsolutePath()
+            + File.separator + "lib";
 		File jarFile = new File(libDir + File.separator + shortJarName);
 		jarFile.delete();
 	}
@@ -429,12 +428,12 @@ public class ClassBrowserPanel extends JPanel {
 	}
 	
 
-	private synchronized void copyJarToService(final String jarFile, final String shortJarName) {
-		String libDir = serviceInfo.getIntroduceServiceProperties().getProperty(
-			IntroduceConstants.INTRODUCE_SKELETON_DESTINATION_DIR) + File.separator + "lib";
+	private synchronized void copyJarToService(final String jarFile) {
+		String libDir = serviceInfo.getBaseDirectory().getAbsolutePath()
+            + File.separator + "lib";
 		try {
 			File inJarFile = new File(jarFile);
-			File outJarFile = new File(libDir + File.separator + shortJarName);
+			File outJarFile = new File(libDir + File.separator + inJarFile.getName());
 			Utils.copyFile(inJarFile, outJarFile);
 		} catch (Exception ex) {
 			ex.printStackTrace();

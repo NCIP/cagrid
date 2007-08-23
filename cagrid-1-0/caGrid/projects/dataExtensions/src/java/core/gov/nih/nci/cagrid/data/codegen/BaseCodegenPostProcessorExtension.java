@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  * 
  * @created Jun 16, 2006 
- * @version $Id: BaseCodegenPostProcessorExtension.java,v 1.1.2.2 2007-08-23 16:58:03 dervin Exp $ 
+ * @version $Id: BaseCodegenPostProcessorExtension.java,v 1.1.2.3 2007-08-23 19:20:46 dervin Exp $ 
  */
 public abstract class BaseCodegenPostProcessorExtension implements CodegenExtensionPostProcessor {
 	private static final Logger logger = Logger.getLogger(DataServiceOperationProviderCodegenPostProcessor.class);
@@ -58,8 +58,7 @@ public abstract class BaseCodegenPostProcessorExtension implements CodegenExtens
     
 
 	protected void modifyEclipseClasspath(ServiceExtensionDescriptionType desc, ServiceInformation info) throws CodegenExtensionException {
-		String serviceDir = info.getIntroduceServiceProperties().getProperty(
-			IntroduceConstants.INTRODUCE_SKELETON_DESTINATION_DIR);
+		String serviceDir = info.getBaseDirectory().getAbsolutePath();
 		// get the eclipse classpath document
 		File classpathFile = new File(serviceDir + File.separator + ".classpath");
 		if (classpathFile.exists()) {
