@@ -274,6 +274,7 @@ public class CreateProxyWindow extends ApplicationComponent {
 	private JComboBox getIdentityProvider() {
 		if (identityProvider == null) {
 			identityProvider = new JComboBox();
+			identityProvider.setEditable(true);
 		}
 		return identityProvider;
 	}
