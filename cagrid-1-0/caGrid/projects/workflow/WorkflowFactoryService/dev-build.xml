@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <project name="Introduce Developer Modified Build File" basedir=".">
 
+    <property name="ext.lib" value="${basedir}/ext/lib" />
     <property name="ext.lib.dir" value="ext/lib" />
     <property file="ext/resources/cagrid.properties" />
     <property name="service.jar.name" value="${cagrid.master.jar.prefix}${service.name}-service.jar" />
