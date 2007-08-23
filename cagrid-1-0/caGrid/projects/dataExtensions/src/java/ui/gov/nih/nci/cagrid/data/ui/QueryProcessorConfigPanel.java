@@ -14,7 +14,6 @@ import gov.nih.nci.cagrid.data.ui.browser.ClassBrowserPanel;
 import gov.nih.nci.cagrid.data.ui.browser.ClassSelectionEvent;
 import gov.nih.nci.cagrid.data.ui.browser.ClassSelectionListener;
 import gov.nih.nci.cagrid.data.ui.table.QueryProcessorParametersTable;
-import gov.nih.nci.cagrid.introduce.IntroduceConstants;
 import gov.nih.nci.cagrid.introduce.beans.ServiceDescription;
 import gov.nih.nci.cagrid.introduce.beans.property.ServicePropertiesProperty;
 import gov.nih.nci.cagrid.introduce.common.CommonTools;
@@ -42,7 +41,7 @@ import javax.swing.JScrollPane;
  * @author David Ervin
  * 
  * @created Jun 27, 2007 8:58:22 AM
- * @version $Id: QueryProcessorConfigPanel.java,v 1.2.2.3 2007-08-23 19:21:18 dervin Exp $ 
+ * @version $Id: QueryProcessorConfigPanel.java,v 1.2.2.4 2007-08-23 19:22:05 dervin Exp $ 
  */
 public class QueryProcessorConfigPanel extends DataServiceModificationSubPanel {
     
