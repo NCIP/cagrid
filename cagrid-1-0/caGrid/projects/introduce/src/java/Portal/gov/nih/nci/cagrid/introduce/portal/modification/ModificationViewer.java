@@ -350,23 +350,6 @@ public class ModificationViewer extends GridPortalComponent {
     }
 
 
-    private Properties loadServiceProps() {
-        try {
-            Properties serviceProperties = new Properties();
-            serviceProperties.load(new FileInputStream(this.methodsDirectory.getAbsolutePath() + File.separator
-                + IntroduceConstants.INTRODUCE_PROPERTIES_FILE));
-            serviceProperties.setProperty(IntroduceConstants.INTRODUCE_SKELETON_DESTINATION_DIR, this.methodsDirectory
-                .getAbsolutePath());
-            return serviceProperties;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-
     private void chooseService() throws Exception {
         String dir = ResourceManager.promptDir(null);
         if (dir != null) {
@@ -1607,13 +1590,10 @@ public class ModificationViewer extends GridPortalComponent {
                             setErrorMessage("Error: Unable to rebuild the skeleton");
                         } else {
                             setProgressText("creating service archive");
+                            
                             info.createArchive();
                         }
                         ModificationViewer.this.dirty = false;
-                        setProgressText("loading service properties");
-                        ModificationViewer.this.info.setIntroduceServiceProperties(loadServiceProps());
-                        setLastSaved(ModificationViewer.this.info.getIntroduceServiceProperties().getProperty(
-                            IntroduceConstants.INTRODUCE_SKELETON_TIMESTAMP));
                         this.setProgressText("");
                     } catch (Exception e1) {
                         e1.printStackTrace();
@@ -1622,7 +1602,7 @@ public class ModificationViewer extends GridPortalComponent {
                     }
                     // reinitialize the GUI with changes from saved model
                     try {
-                        reInitialize(ModificationViewer.this.methodsDirectory);
+                       reInitialize(ModificationViewer.this.methodsDirectory);
                     } catch (Exception e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
