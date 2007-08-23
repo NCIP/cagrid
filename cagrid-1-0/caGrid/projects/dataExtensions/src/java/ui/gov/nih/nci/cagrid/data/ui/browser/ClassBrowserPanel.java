@@ -48,7 +48,7 @@ import javax.swing.JScrollPane;
  * 
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  * @created May 11, 2006
- * @version $Id: ClassBrowserPanel.java,v 1.3.2.3 2007-08-23 19:21:45 dervin Exp $
+ * @version $Id: ClassBrowserPanel.java,v 1.3.2.4 2007-08-23 19:39:00 dervin Exp $
  */
 public class ClassBrowserPanel extends JPanel {
 
@@ -445,7 +445,7 @@ public class ClassBrowserPanel extends JPanel {
         SortedSet<String> foundClassNames = new TreeSet();
 		String libDir = serviceInfo.getBaseDirectory().getAbsolutePath() + File.separator + "lib";
 		String[] additionalJarNames = getAdditionalJars();
-		try {
+        try {
             // get URLs for all jar files in the service's lib dir
             File[] libFiles = (new File(libDir)).listFiles(new FileFilters.JarFileFilter());
             URL[] urls = new URL[libFiles.length];
@@ -455,6 +455,7 @@ public class ClassBrowserPanel extends JPanel {
 			Class queryProcessorClass = CQLQueryProcessor.class;
             // search for query processor classes from additional jars list
             for (String jarName : additionalJarNames) {
+                System.out.println("Populating from jar " + jarName);
                 // creates a new loader each time to avoid having every class in the service
                 // loaded at once, clogging up the loader
                 ClassLoader loader = new URLClassLoader(urls);
@@ -473,15 +474,16 @@ public class ClassBrowserPanel extends JPanel {
                             // theres a lot of these...
                         }
                         if (loadedClass != null) {
+                            System.out.println("Looking at class " + loadedClass.getName());
                             if (queryProcessorClass.isAssignableFrom(loadedClass)) {
+                                System.out.println("It's a query processor");
                                 foundClassNames.add(name);
                             }
                         }
-                    }
-                    // allow the created class loader to be reclaimed by GC
-                    loader = null;
-                    
+                    }                    
                 }
+                // allow the created class loader to be reclaimed by GC
+                loader = null;
                 jarFile.close();
             }
             // potentially populate the class drop down
