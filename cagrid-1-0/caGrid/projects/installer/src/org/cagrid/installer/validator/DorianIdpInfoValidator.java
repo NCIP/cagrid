@@ -83,7 +83,7 @@ public class DorianIdpInfoValidator implements Validator {
 		}
 		if (Integer.parseInt((String) state.get(Constants.DORIAN_IDP_UID_MAX)) < DEFAULT_IDP_USER_USERID_LENGTH) {
 			throw new InvalidStateException(
-					"The userid maximum length must be greated than or equal \nto the default IdP user's userid length, which is "
+					"The userid maximum length must be greater than or equal \nto the default IdP user's userid length, which is "
 							+ DEFAULT_IDP_USER_USERID_LENGTH + ".");
 		}
 		if (Integer.parseInt((String) state.get(Constants.DORIAN_IDP_PWD_MIN)) > DEFAULT_IDP_USER_PASSWORD_LENGTH) {
@@ -93,7 +93,7 @@ public class DorianIdpInfoValidator implements Validator {
 		}
 		if (Integer.parseInt((String) state.get(Constants.DORIAN_IDP_PWD_MAX)) < DEFAULT_IDP_USER_PASSWORD_LENGTH) {
 			throw new InvalidStateException(
-					"The password maximum length must be greated than or equal \nto the default IdP user's password length, which is "
+					"The password maximum length must be greater than or equal \nto the default IdP user's password length, which is "
 							+ DEFAULT_IDP_USER_PASSWORD_LENGTH + ".");
 		}
 	}
