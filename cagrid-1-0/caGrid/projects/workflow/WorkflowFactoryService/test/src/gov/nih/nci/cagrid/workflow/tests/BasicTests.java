@@ -47,7 +47,7 @@ public class BasicTests extends GridTestCase {
 		assertTrue(TEST_CONTAINER != null);
 		FileWriter writer = null;
 		this.factoryClient = new WorkflowFactoryServiceClient(url);
-		WMSInputType input = createInput(null, "Test.bpel");
+		WMSInputType input = createInput(null, "Test1.bpel");
 		WMSOutputType output = this.factoryClient.createWorkflow(input);
 		this.epr = output.getWorkflowEPR();
 		assertTrue(epr != null);
@@ -119,7 +119,7 @@ public class BasicTests extends GridTestCase {
 		this.factoryClient = new WorkflowFactoryServiceClient(url);
 		Calendar termTime = Calendar.getInstance();
 		termTime.add(Calendar.SECOND, 30);
-		WMSInputType input = createInput(termTime, "Test.bpel");
+		WMSInputType input = createInput(termTime, "Test1.bpel");
 		WMSOutputType output = this.factoryClient.createWorkflow(input);
 		this.epr = output.getWorkflowEPR();
 		assertTrue(epr != null);
@@ -146,12 +146,12 @@ public class BasicTests extends GridTestCase {
 		input.setTerminationTime(terminationTime);
 		String bpelProcess = Utils.fileToStringBuffer(new File(bpelFile)).toString();
 		input.setBpelDoc(bpelProcess);
-		input.setWorkflowName("Test");
+		input.setWorkflowName("Test1");
 		WSDLReferences[] wsdlRefArray = new WSDLReferences[1];
 		wsdlRefArray[0] = new WSDLReferences();
-		wsdlRefArray[0].setServiceUrl(new URI("http://Test1"));
-		wsdlRefArray[0].setWsdlLocation("http://localhost:8080/wsrf/simple.wsdl");
-		wsdlRefArray[0].setWsdlNamespace(new URI("http://Test1"));
+		wsdlRefArray[0].setServiceUrl(new URI("http://localhost:8080/wsrf/services/cagrid/WorkflowTestService1"));
+		wsdlRefArray[0].setWsdlLocation("http://localhost:8080/wsrf/share/schema/WorkflowTestService1/WorkflowTestService1.wsdl");
+		wsdlRefArray[0].setWsdlNamespace(new URI("http://sample1.tests.workflow.cagrid.nci.nih.gov/WorkflowTestService1"));
 
 		input.setWsdlReferences(wsdlRefArray);
 		return input;
