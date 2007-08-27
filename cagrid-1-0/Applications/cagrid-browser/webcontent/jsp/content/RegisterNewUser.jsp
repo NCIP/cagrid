@@ -156,7 +156,7 @@
         <h:outputText value="#{messages.regZIP}"></h:outputText>
     </div></td>
     <td class="formField">
-        <h:inputText id="zip" value="#{loginBean.newUserInfo.zipcode}" required="true" maxlength="5" size="5">
+        <h:inputText id="zip" value="#{loginBean.newUserInfo.zipcode}" required="true" maxlength="10" size="5">
         	<f:validateLength minimum="1"/>
         </h:inputText>
         <h:outputText value="*"></h:outputText>
@@ -202,9 +202,9 @@
     </div></td>
     <td class="formField">
         <h:inputText id="username" value="#{loginBean.newUserInfo.userId}" required="true" maxlength="20" size="20">
-            <f:validateLength minimum="4" maximum="10"/>
+            <f:validateLength minimum="4" maximum="15"/>
         </h:inputText>
-        <h:outputText value="* [min 4 chars]"></h:outputText>
+        <h:outputText value="* [between 4 and 15 chars]"></h:outputText>
 
         <h:message for="username" styleClass="loginFailed"/>
     </td>
@@ -215,9 +215,9 @@
     </div></td>
     <td class="formFieldWhite">
         <h:inputSecret id="password" value="#{loginBean.newUserInfo.password}" required="true" size="20">
-            <f:validateLength minimum="6" maximum="10"/>
+            <f:validateLength minimum="10" maximum="20"/>
         </h:inputSecret>
-        <h:outputText value="* [between 6 and 10 chars]"></h:outputText>
+        <h:outputText value="* [between 10 and 20 chars]"></h:outputText>
         <h:message for="password" styleClass="loginFailed"/>
     </td>
 </tr>
@@ -228,9 +228,9 @@
     </div></td>
     <td class="formField">
         <h:inputSecret id="passwordConfirm" required="true" size="20">
-            <f:validateLength minimum="6" maximum="10"/>
+            <f:validateLength minimum="10" maximum="20"/>
         </h:inputSecret>
-        <h:outputText value="* [between 6 and 10 chars]"></h:outputText>
+        <h:outputText value="* [between 10 and 20 chars]"></h:outputText>
         <h:message for="passwordConfirm" styleClass="loginFailed"/>
     </td>
 </tr>
