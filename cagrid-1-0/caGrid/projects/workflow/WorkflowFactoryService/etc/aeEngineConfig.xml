@@ -16,7 +16,7 @@
       <entry name="Class" value="org.activebpel.rt.bpel.server.transreceive.AeNoopTransmissionTracker"/>
    </entry>
    <entry name="Logging" value="true"/>
-   <entry name="AllowCreateXPath" value="false"/>
+   <entry name="AllowCreateXPath" value="true"/>
    <entry name="WorkManager">
       <entry name="DefaultWorkManager.ThreadPool.Max" value="50"/>
       <entry name="DefaultWorkManager.ThreadPool.Min" value="10"/>

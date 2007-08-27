@@ -350,7 +350,7 @@ public class WorkflowSubmissionGUI extends ApplicationComponent {
 						ErrorDialog.showError("BPEL File cannot be empty");
 					}
 					try {
-						wsdlReferencesVector.add(fr.getWSDLReference());
+						wsdlReferencesVector = fr.getWSDLReferences();
 						wsdlReferences = new WSDLReferences[wsdlReferencesVector.size()];
 						for(int i=0;i<wsdlReferencesVector.size();i++) {
 							wsdlReferences[i] = (WSDLReferences) wsdlReferencesVector.elementAt(i);
