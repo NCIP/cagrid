@@ -303,11 +303,13 @@ class FederatedQueryProcessor {
 			gov.nih.nci.cagrid.cqlquery.Attribute attr = new gov.nih.nci.cagrid.cqlquery.Attribute();
 			attr.setName(property);
 			attr.setPredicate(Predicate.IS_NULL);
+			attr.setValue("");
 			attrArray[0] = attr;
 
 			attr = new gov.nih.nci.cagrid.cqlquery.Attribute();
 			attr.setName(property);
 			attr.setPredicate(Predicate.IS_NOT_NULL);
+			attr.setValue("");
 			attrArray[1] = attr;
 			// attach the created attribute array
 			cqlGroup.setAttribute(attrArray);
@@ -357,9 +359,11 @@ class FederatedQueryProcessor {
 			if(joinCondition.getPredicate().equals(ForeignPredicate.EQUAL_TO)){
 				//we got null, and are supposed to compare it as =, so that means is_null
 				attr.setPredicate(Predicate.IS_NULL);
+				attr.setValue("");
 			}else if(joinCondition.getPredicate().equals(ForeignPredicate.NOT_EQUAL_TO)){
 				//we got null, and are supposed to compare it as !=, so that means is_not_null
 				attr.setPredicate(Predicate.IS_NOT_NULL);
+				attr.setValue("");
 			}else{
 				//should not get here, nulls should have been filtered out
 				throw new FederatedQueryProcessingException("Internal problem processing query. Got unexpected null values.");
