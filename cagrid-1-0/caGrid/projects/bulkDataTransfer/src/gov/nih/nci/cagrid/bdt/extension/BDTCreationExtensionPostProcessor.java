@@ -49,10 +49,7 @@ public class BDTCreationExtensionPostProcessor implements CreationExtensionPostP
 		ServiceDescription serviceDescription = serviceInfo.getServiceDescriptor();
 		serviceProperties = serviceInfo.getIntroduceServiceProperties();
 
-		info = new ServiceInformation(serviceDescription, serviceProperties, new File(serviceProperties
-			.getProperty(IntroduceConstants.INTRODUCE_SKELETON_DESTINATION_DIR)));
-
-		// apply BDT service requirements to it
+        // apply BDT service requirements to it
 		try {
 			System.out.println("Adding BDT service components to template");
 			makeBDTService(serviceDescription, serviceProperties);
