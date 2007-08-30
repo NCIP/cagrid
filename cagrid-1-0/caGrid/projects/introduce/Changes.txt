@@ -19,7 +19,7 @@
 -- Refactored service resource framework in order to enable registration of resource
    properties as well as enable the resource class itself to be user modified and 
    extended to there liking.  In doing this the BaseResource class was also renamed to
-   <serviceName>Resource to make more sence to the developer.
+   <serviceName>Resource to make more sense to the developer.
    This also caused the renaming of the etc/registration.xml to etc/<serviceName>_registration.xml
    in order to support registration for the all the resource framework types.
 
@@ -28,7 +28,7 @@
 1.0B --1.0
 A new field to the ResourcePropertiesType was added called fileLocation.  This field
 is used to tell introduce what file to use for reading in a populateFromFile resource
-property.  If you do not metadata files aleady filed out then you should not see a problem.
+property.  If you do not metadata files already filed out then you should not see a problem.
 If you do be sure that you go into this introduce.xml file and set that location to be relative
 to the etc directory and pointing to the file which represents that particular resource
 property instance document.
