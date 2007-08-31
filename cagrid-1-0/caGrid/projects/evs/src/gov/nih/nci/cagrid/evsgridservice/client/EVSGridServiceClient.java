@@ -152,8 +152,8 @@ public class EVSGridServiceClient extends ServiceSecurityClient implements EVSGr
 
                     System.out.println("Calling searchSourceByCode!");
                     EVSSourceSearchParams evsSourceParam = new EVSSourceSearchParams();
-                    evsSourceParam.setCode("N035552");
-                    evsSourceParam.setSourceAbbreviation("NCI2006_05D");
+                    evsSourceParam.setCode("C54372");
+                    evsSourceParam.setSourceAbbreviation("NCI2007_03D");
 
                     MetaThesaurusConcept[] metaConcept2 = client.searchSourceByCode(evsSourceParam);
 
