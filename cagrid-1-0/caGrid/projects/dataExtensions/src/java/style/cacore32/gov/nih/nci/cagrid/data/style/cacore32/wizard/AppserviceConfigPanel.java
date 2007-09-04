@@ -170,8 +170,6 @@ public class AppserviceConfigPanel extends AbstractWizardPanel {
         if (caseInsensitiveCheckBox == null) {
             caseInsensitiveCheckBox = new JCheckBox();
             caseInsensitiveCheckBox.setText("Case Insensitive Queries");
-            caseInsensitiveCheckBox.setToolTipText(
-                "Queries should be conducted without regard for case");
             caseInsensitiveCheckBox.setHorizontalAlignment(SwingConstants.CENTER);
             caseInsensitiveCheckBox.addItemListener(new java.awt.event.ItemListener() {
                 public void itemStateChanged(java.awt.event.ItemEvent e) {
@@ -194,8 +192,6 @@ public class AppserviceConfigPanel extends AbstractWizardPanel {
         if (useCsmCheckBox == null) {
             useCsmCheckBox = new JCheckBox();
             useCsmCheckBox.setText("Use CSM Security");
-            useCsmCheckBox.setToolTipText(
-                "CSM security should be enabled for this application service");
             useCsmCheckBox.setHorizontalAlignment(SwingConstants.CENTER);
             useCsmCheckBox.addItemListener(new java.awt.event.ItemListener() {
                 public void itemStateChanged(java.awt.event.ItemEvent e) {
@@ -252,8 +248,6 @@ public class AppserviceConfigPanel extends AbstractWizardPanel {
     private JTextField getUrlTextField() {
         if (urlTextField == null) {
             urlTextField = new JTextField();
-            urlTextField.setToolTipText(
-                "The URL of the remote application service which the data service will connect to");
             urlTextField.getDocument().addDocumentListener(new DocumentChangeAdapter() {
                 public void documentEdited(DocumentEvent e) {
                     CommonTools.setServiceProperty(getServiceInformation().getServiceDescriptor(),
@@ -507,4 +501,4 @@ public class AppserviceConfigPanel extends AbstractWizardPanel {
             listener.completionStatusChanged(complete);
         }
     }
-}
+}  //  @jve:decl-index=0:visual-constraint="10,10"
