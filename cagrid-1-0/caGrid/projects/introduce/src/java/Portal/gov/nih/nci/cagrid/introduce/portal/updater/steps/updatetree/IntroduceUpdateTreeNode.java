@@ -103,7 +103,7 @@ public class IntroduceUpdateTreeNode extends UpdateTypeTreeNode {
                 ExtensionType extension = extensionVersions[j];
                 if (extension.getCompatibleIntroduceVersions() != null) {
                     if (isCompatibleExtension(extension.getCompatibleIntroduceVersions())
-                        && (isExtensionInstalled(extension) || isExtensionNewer(extension))) {
+                        && (!isExtensionInstalled(extension) || isExtensionNewer(extension))) {
                         ExtensionUpdateTreeNode node = null;
                         if (extension.getVersion() != null) {
                             node = new ExtensionUpdateTreeNode(extension.getDisplayName() + " ("
@@ -136,7 +136,7 @@ public class IntroduceUpdateTreeNode extends UpdateTypeTreeNode {
                     installed = true;
                 }
             } else {
-                if (ExtensionsLoader.getInstance().getExtension(extension.getName()).getVersion().equals(
+                if (ExtensionsLoader.getInstance().getExtension(extension.getName()).getVersion()!=null && ExtensionsLoader.getInstance().getExtension(extension.getName()).getVersion().equals(
                     extension.getVersion())) {
                     installed = true;
                 }
