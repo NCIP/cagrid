@@ -22,6 +22,12 @@
 			</fileset>
 		</classpath>
 	</taskdef>
+	
+	<xmlcatalog id="installer.catalog">
+		<dtd 
+			publicId="-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+			location="resources/web-app_2_3.dtd"/>
+	</xmlcatalog>
 
 	<target name="copy-selected-services">
 
@@ -515,6 +521,9 @@
 		<property name="web.xml.file"
 			value="${tomcat.home}/webapps/wsrf/WEB-INF/web.xml" />
 		<xmltask source="${web.xml.file}" dest="${web.xml.file}">
+			
+			<xmlcatalog refid="installer.catalog"/>
+			
 			<remove
 				path="/web-app/servlet[servlet-name='WSRFServlet']/init-param[param-name='defaultProtocol']" />
 			<remove
