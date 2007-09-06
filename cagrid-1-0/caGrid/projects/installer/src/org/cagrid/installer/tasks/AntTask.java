@@ -109,7 +109,7 @@ public class AntTask extends BasicTask {
 			String propertiesFile) throws IOException, InterruptedException {
 
 		// Check it tools.jar is available
-		File toolsJar = new File(System.getProperty("java.home")
+		File toolsJar = new File(this.environment.get("JAVA_HOME")
 				+ "/lib/tools.jar");
 		if (!toolsJar.exists()) {
 			logger.info("tools.jar not found at '" + toolsJar.getAbsolutePath()
@@ -172,7 +172,7 @@ public class AntTask extends BasicTask {
 		for (String s : cmd) {
 			sb.append(s).append(" ");
 		}
-		logger.debug("########## Executing: " + sb);
+		logger.info("Executing Ant: " + sb);
 
 		// run ant
 		Process p = Runtime.getRuntime().exec(cmd.toArray(new String[0]), envp,
