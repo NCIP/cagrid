@@ -134,7 +134,7 @@ public class ActiveBPELAdapter implements WorkflowEngineAdapter {
 		//output.setOutputType(outputType);
 		this.processId = getProcessId();
 		this.processLogFileLocation = System.getProperty("user.home") + File.separator 
-			+ "AeBPELEngine" + File.separator + "process-logs" 
+			+ "AeBpelEngine" + File.separator + "process-logs" 
 			+ File.separator + this.processId + ".log";
 		return this.workflowStatus;
 	}
