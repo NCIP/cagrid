@@ -139,10 +139,14 @@ public class AntTask extends BasicTask {
 		cmd.add(InstallerUtils.getJavaHomePath() + "/bin/" + java);
 		cmd.add("-classpath");
 		
+//		String cp = createClasspath(toolsJar.getAbsolutePath(), antHome
+//				+ "/lib/ant-launcher.jar", new File("./caGrid-"
+//				+ Constants.CAGRID_VERSION + "-installer.jar")
+//				.getAbsolutePath());
+		
 		String cp = createClasspath(toolsJar.getAbsolutePath(), antHome
-				+ "/lib/ant-launcher.jar", new File("./caGrid-"
-				+ Constants.CAGRID_VERSION + "-installer.jar")
-				.getAbsolutePath());
+				+ "/lib/ant-launcher.jar");
+		
 		cmd.add(cp);
 
 		cmd.add("-Dant.home=" + antHome);
