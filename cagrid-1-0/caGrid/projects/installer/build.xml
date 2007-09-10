@@ -88,27 +88,10 @@
 	<target name="all" depends="clean,compile,jar"></target>
 	
 	
-
-	<target name="dist-cagrid">
-		
-		<mkdir dir="build"/>
-		
-		<property name="cagrid.home" value="../../.."/>
-		
-		<zip destfile="build/${cagrid.master.jar.prefix}src.zip">
-			<fileset dir="${cagrid.home}">
-				<include name="caGrid/**"/>
-				<exclude name="**/bin/**"/>
-			</fileset>
-		</zip>
-		
-	</target>
-	
 	<target name="dist-installer" depends="jar" description="Generates an installer release.">
 
 		<mkdir dir="build/installer/lib"/>
-		<mkdir dir="build/installer/scripts"/>
-		<mkdir dir="build/installer/resources"/>
+		<mkdir dir="build/installer/scripts/resources"/>
 		
 		<copy todir="build/installer" file="${build.jars}/${project.jar.prefix}.jar" overwrite="true"/>
 		
@@ -135,7 +118,7 @@
 		</copy>
 		
 		<copy file="scripts/build.xml" todir="build/installer/scripts"/>
-		<copy todir="build/installer/resources">
+		<copy todir="build/installer/scripts/resources">
 			<fileset dir="src/resources">
 				<include name="**"/>			
 			</fileset>

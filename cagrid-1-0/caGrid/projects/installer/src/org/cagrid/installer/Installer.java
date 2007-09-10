@@ -273,6 +273,14 @@ public class Installer {
 					" point to where you have installed the correct version of" +
 					" Java before running the installer.");
 		}
+		
+		String javacVersion = InstallerUtils.getJavacVersion();
+		if(!javacVersion.matches(versionPattern)){
+			throw new Exception("The correct version of javac could not be located. \n" +
+					"Check that 1) JAVA_HOME points to the JDK; and \n"
+					+ "2) JAVA_HOME" + File.separator + "bin has been added to your PATH\n" +
+					"environment variable.");
+		}
 	}
 
 	private Properties getDownloadedProps(String tempDir) {

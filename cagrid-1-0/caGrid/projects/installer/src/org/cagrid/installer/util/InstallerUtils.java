@@ -254,42 +254,44 @@ public class InstallerUtils {
 		return isCorrectVersion;
 	}
 
-
-
 	public static String getJavaVersion() {
 
 		String version = null;
-		
+
 		String java = "java";
 		if (isWindows()) {
 			java += ".exe";
 		}
 		try {
 			Process p = Runtime.getRuntime().exec(
-					new String[] { getJavaHomePath() + "/bin/" + java, "-version" }, new String[0]);
+					new String[] { getJavaHomePath() + "/bin/" + java,
+							"-version" }, new String[0]);
 
 			StringBuffer stdout = new StringBuffer();
 			new IOThread(p.getInputStream(), System.out, stdout).start();
-			
+
 			StringBuffer stderr = new StringBuffer();
 			new IOThread(p.getErrorStream(), System.err, stderr).start();
-			
+
 			int code = p.waitFor();
-			
+
 			logger.info("CODE: " + code);
 			logger.info("STDOUT: " + stdout);
 			logger.info("STDERR: " + stderr);
-			
+
 			version = stdout.toString();
-			if(InstallerUtils.isEmpty(version)){
+			if (InstallerUtils.isEmpty(version)) {
 				version = stderr.toString();
 			}
-			try{
-				version = version.substring(version.indexOf("\"") + 1, version.lastIndexOf("\""));
-			}catch(Exception ex){
-				logger.warn("Couldn't parse out version from '" + version + "'");
+			try {
+				version = version.substring(version.indexOf("\"") + 1, version
+						.lastIndexOf("\""));
+			} catch (Exception ex) {
+				logger
+						.warn("Couldn't parse out version from '" + version
+								+ "'");
 			}
-			
+
 		} catch (Exception ex) {
 			throw new RuntimeException("Error checking java version: "
 					+ ex.getMessage(), ex);
@@ -304,6 +306,54 @@ public class InstallerUtils {
 			javaHome = System.getProperty("java.home");
 		}
 		return javaHome;
+	}
+	
+	public static String getJavacVersion() {
+
+		String version = "version";
+
+
+		String javacCmd = "javac";
+		if (isWindows()) {
+			javacCmd += ".exe";
+		}
+
+		try {
+			Process p = Runtime.getRuntime().exec(
+					new String[] { javacCmd, "-help",
+							"-version" }, new String[0]);
+
+			StringBuffer stdout = new StringBuffer();
+			new IOThread(p.getInputStream(), System.out, stdout).start();
+
+			StringBuffer stderr = new StringBuffer();
+			new IOThread(p.getErrorStream(), System.err, stderr).start();
+
+			int code = p.waitFor();
+
+			logger.info("CODE: " + code);
+			logger.info("STDOUT: " + stdout);
+			logger.info("STDERR: " + stderr);
+
+			String out = stdout.toString();
+			if (InstallerUtils.isEmpty(out)) {
+				out = stderr.toString();
+			}
+			try {
+				int idx = out.lastIndexOf("javac");
+				version = out.substring(idx + "javac".length() + 1).trim();
+				logger.info("Found javac version '" + version + "'");
+			} catch (Exception ex) {
+				logger.warn("Couldn't parse out javac version from '" + version
+						+ "'");
+			}
+
+		} catch (Exception ex) {
+			logger.warn("Error checking javac version: "
+					+ ex.getMessage(), ex);
+		}
+
+		return version;
 	}
 
 	public static boolean checkTomcatVersion(String home) {
@@ -356,8 +406,8 @@ public class InstallerUtils {
 	public static boolean checkAntVersion(String home) {
 		boolean correctVersion = false;
 		try {
-			String[] envp = new String[] { "JAVA_HOME="
-					+ getJavaHomePath(), "ANT_HOME=" + home };
+			String[] envp = new String[] { "JAVA_HOME=" + getJavaHomePath(),
+					"ANT_HOME=" + home };
 
 			String[] cmd = null;
 			if (InstallerUtils.isWindows()) {
