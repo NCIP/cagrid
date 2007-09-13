@@ -275,7 +275,7 @@
     <target name="compileTests" depends="compile">
         <runtarget target="preCompileTests" />
         <javac srcdir="${test.src.dir}" classpathref="test.build.classpath" destdir="${test.build.dest}" debug="${java.debug}" deprecation="${deprecation}" />
-        <runtarget target="postCompileStubs" />
+        <runtarget target="postCompileTests" />
     </target>
 
 
