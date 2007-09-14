@@ -4,7 +4,7 @@
 <project name="caGrid_target_grid" basedir="." default="">
 
     <!-- The default target grid -->
-    <property name="target.grid" value="osu_dev" />
+    <property name="target.grid" value="nci_prod" />
 
     <!-- The target grid which clients should communicate with -->
     <property name="target.grids.dir" location="${share.dir}/resources/target_grids" />
