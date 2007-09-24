@@ -28,6 +28,7 @@ import gov.nih.nci.cagrid.dorian.ifs.bean.DelegationPathLength;
 import gov.nih.nci.cagrid.dorian.ifs.bean.ProxyLifetime;
 import gov.nih.nci.cagrid.dorian.ifs.bean.PublicKey;
 import gov.nih.nci.cagrid.dorian.stubs.types.DorianInternalFault;
+import gov.nih.nci.cagrid.dorian.stubs.types.InvalidUserPropertyFault;
 import gov.nih.nci.cagrid.gridca.common.CertUtil;
 import gov.nih.nci.cagrid.gridca.common.KeyUtil;
 
@@ -178,6 +179,9 @@ public class LoginBean {
 			setRegistrationFailureMessage(AppUtils
 					.getMessage(REGISTRATION_FAILURE_BAD_IDP_URL));
 			logger.error(getRegistrationFailureMessage(), ex);
+		} catch (InvalidUserPropertyFault ex){
+			setRegistrationFailureMessage(ex.getFaultString());
+			logger.error(ex.getFaultString(), ex);
 		} catch (RemoteException ex) {
 			setRegistrationFailureMessage(AppUtils
 					.getMessage(REGISTRATION_FAILURE_IDP_ERROR));
@@ -197,7 +201,7 @@ public class LoginBean {
 
 	public static String register(String ifsUrl, Application newUserInfo)
 			throws MalformedURIException, DorianInternalFault, RemoteException {
-
+		
 		StateCode state = newUserInfo.getState();
 		if(state == null){
 			newUserInfo.setState(StateCode.fromValue("Outside_US"));
