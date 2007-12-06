@@ -1,9 +1,9 @@
 package org.cagrid.gaards.cds.common;
 
 
-
 import java.security.cert.X509Certificate;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.axis.message.MessageElement;
 import org.cagrid.gaards.cds.common.gridca.CertUtil;
@@ -79,4 +79,20 @@ public class Utils {
 		}
 	}
 
+	public static IdentityDelegationPolicy createIdentityDelegationPolicy(
+			List<String> parties) {
+		IdentityDelegationPolicy policy = new IdentityDelegationPolicy();
+		AllowedParties ap = new AllowedParties();
+		if (parties != null) {
+			String[] ids = new String[parties.size()];
+			for (int i = 0; i < parties.size(); i++) {
+				ids[i] = parties.get(i);
+			}
+			ap.setGridIdentity(ids);
+		} else {
+			ap.setGridIdentity(new String[0]);
+		}
+		policy.setAllowedParties(ap);
+		return policy;
+	}
 }

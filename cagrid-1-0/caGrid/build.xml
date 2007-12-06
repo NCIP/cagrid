@@ -497,6 +497,17 @@
         </resolveDependencies>
         <ant dir="${projects.dir}/cds" inheritAll="false" antfile="build.xml" target="all" />
     </target>
+	
+    <!-- =============================================================== -->
+    <!-- Credential Delegation Service Client:                                  -->
+    <!-- =============================================================== -->
+    <target name="build-cds-client" depends="prepare" description="Builds the Grid Delegation Service Client project">
+        <resolveDependencies extdir="${projects.dir}/cds-client/ext">
+            <artifact refid="cds1.1.client.jars" />
+        </resolveDependencies>
+   
+        <ant dir="${projects.dir}/cds-client" inheritAll="false" antfile="build.xml" target="all" />
+    </target>
 
     <!-- =============================================================== -->
     <!-- Build Grid Grouper:                                             -->

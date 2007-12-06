@@ -404,6 +404,23 @@
 			</fileset>
 		</artifact>
 
+		<artifact track="main" type="jars" id="cds1.1.client.jars">
+			<generatingantcall target="build-cds" />
+			<fileset dir="${projects.dir}/cds/build/lib">
+				<include name="caGrid-*-cds-*stubs.jar" />
+				<include name="caGrid-*-cds-*common.jar" />
+				<include name="caGrid-*-cds-*client.jar" />
+			</fileset>
+
+			<fileset dir="${projects.dir}/cds/ext/lib">
+				<include name="caGrid-*-ServiceSecurityProvider-client.jar" />
+				<include name="caGrid-*-ServiceSecurityProvider-common.jar" />
+				<include name="caGrid-*-ServiceSecurityProvider-stubs.jar" />
+				<include name="caGrid-*-metadata-security.jar" />
+				<include name="caGrid-*-metadata-common.jar" />
+			</fileset>
+		</artifact>
+
 
 		<artifact track="main" type="jars" id="cds.service.jars">
 			<generatingantcall target="build-cds" />
@@ -804,10 +821,10 @@
 			</fileset>
 		</artifact>
 		<artifact track="main" type="resources" id="cds.ui.conf">
-					<fileset dir="${current.grid.dir}">
-						<include name="cds-ui-configuration.xml" />
-					</fileset>
-				</artifact>
+			<fileset dir="${current.grid.dir}">
+				<include name="cds-ui-configuration.xml" />
+			</fileset>
+		</artifact>
 		<artifact track="main" type="resources" id="gridgrouper.ui.conf">
 			<fileset dir="${current.grid.dir}">
 				<include name="gridgrouper-ui-configuration.xml" />
