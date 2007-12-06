@@ -1,10 +1,5 @@
 package org.cagrid.gaards.cds.client;
 
-import gov.nih.nci.cagrid.common.FaultHelper;
-import gov.nih.nci.cagrid.common.security.ProxyUtil;
-import gov.nih.nci.cagrid.gridca.common.KeyUtil;
-import gov.nih.nci.cagrid.gridca.common.ProxyCreator;
-
 import java.rmi.RemoteException;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
@@ -26,6 +21,10 @@ import org.cagrid.gaards.cds.common.DelegationSigningResponse;
 import org.cagrid.gaards.cds.common.DelegationStatus;
 import org.cagrid.gaards.cds.common.ProxyLifetime;
 import org.cagrid.gaards.cds.common.Utils;
+import org.cagrid.gaards.cds.common.core.FaultHelper;
+import org.cagrid.gaards.cds.common.core.ProxyUtil;
+import org.cagrid.gaards.cds.common.gridca.KeyUtil;
+import org.cagrid.gaards.cds.common.gridca.ProxyCreator;
 import org.cagrid.gaards.cds.delegated.stubs.types.DelegatedCredentialReference;
 import org.cagrid.gaards.cds.service.Errors;
 import org.cagrid.gaards.cds.stubs.types.CDSInternalFault;

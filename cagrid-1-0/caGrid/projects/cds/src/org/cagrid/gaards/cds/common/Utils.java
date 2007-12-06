@@ -1,11 +1,12 @@
 package org.cagrid.gaards.cds.common;
 
-import gov.nih.nci.cagrid.gridca.common.CertUtil;
+
 
 import java.security.cert.X509Certificate;
 import java.util.Date;
 
 import org.apache.axis.message.MessageElement;
+import org.cagrid.gaards.cds.common.gridca.CertUtil;
 import org.cagrid.gaards.cds.delegated.stubs.types.DelegatedCredentialReference;
 
 public class Utils {

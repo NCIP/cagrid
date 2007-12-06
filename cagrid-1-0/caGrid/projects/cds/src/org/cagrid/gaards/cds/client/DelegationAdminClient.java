@@ -1,6 +1,6 @@
 package org.cagrid.gaards.cds.client;
 
-import gov.nih.nci.cagrid.common.security.ProxyUtil;
+
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -11,6 +11,7 @@ import org.cagrid.gaards.cds.common.DelegationIdentifier;
 import org.cagrid.gaards.cds.common.DelegationRecord;
 import org.cagrid.gaards.cds.common.DelegationRecordFilter;
 import org.cagrid.gaards.cds.common.DelegationStatus;
+import org.cagrid.gaards.cds.common.core.ProxyUtil;
 import org.cagrid.gaards.cds.stubs.types.CDSInternalFault;
 import org.cagrid.gaards.cds.stubs.types.DelegationFault;
 import org.cagrid.gaards.cds.stubs.types.PermissionDeniedFault;

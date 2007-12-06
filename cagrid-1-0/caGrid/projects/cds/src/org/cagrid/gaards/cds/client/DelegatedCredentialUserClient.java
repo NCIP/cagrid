@@ -1,8 +1,6 @@
 package org.cagrid.gaards.cds.client;
 
-import gov.nih.nci.cagrid.common.FaultHelper;
-import gov.nih.nci.cagrid.common.security.ProxyUtil;
-import gov.nih.nci.cagrid.gridca.common.KeyUtil;
+
 
 import java.rmi.RemoteException;
 import java.security.KeyPair;
@@ -12,6 +10,9 @@ import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.cagrid.gaards.cds.common.CertificateChain;
 import org.cagrid.gaards.cds.common.PublicKey;
 import org.cagrid.gaards.cds.common.Utils;
+import org.cagrid.gaards.cds.common.core.FaultHelper;
+import org.cagrid.gaards.cds.common.core.ProxyUtil;
+import org.cagrid.gaards.cds.common.gridca.KeyUtil;
 import org.cagrid.gaards.cds.delegated.stubs.types.DelegatedCredentialReference;
 import org.cagrid.gaards.cds.stubs.types.CDSInternalFault;
 import org.cagrid.gaards.cds.stubs.types.DelegationFault;
