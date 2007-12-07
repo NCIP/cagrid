@@ -8,7 +8,6 @@
 
     <property name="lib.dir" location="lib" />
     <property name="ext.lib.dir" location="${ext.dir}/lib" />
-	<property name="endorsed.lib.dir" location="${ext.dir}/endorsed/lib" />
 
     <property name="jar.name" value="websso-cas-client.jar" />
 
@@ -37,9 +36,6 @@
                 <include name="*.jar" />
             </fileset>
             <fileset dir="${ext.lib.dir}">
-                <include name="*.jar" />
-            </fileset>
-        	<fileset dir="${endorsed.lib.dir}">
                 <include name="*.jar" />
             </fileset>
             <fileset dir="${env.GLOBUS_LOCATION}/lib">
