@@ -50,7 +50,7 @@
                 <include name="*.jar" />
             </fileset>
         	<fileset dir="${endorsed.lib.dir}">
-        	                <include name="*.jar" />
+        	     <include name="*.jar" />
             </fileset>
             <fileset dir="${env.GLOBUS_LOCATION}/lib">
             	<include name="axis.jar"/>

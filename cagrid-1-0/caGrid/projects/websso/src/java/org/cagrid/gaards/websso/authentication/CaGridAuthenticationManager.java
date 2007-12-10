@@ -5,6 +5,7 @@ import gov.nih.nci.cagrid.opensaml.SAMLAssertion;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import org.cagrid.gaards.websso.authentication.helper.AuthenticationServiceHelper;
 import org.cagrid.gaards.websso.authentication.helper.DorianHelper;
@@ -42,7 +43,7 @@ public class CaGridAuthenticationManager implements AuthenticationManager
 	private List<String> hostIdentities = null;
 	
 	private String authenticationServiceURL = null;
-
+	
 	public CaGridAuthenticationManager()
 	{
 		ObjectFactory.initialize(WebSSOConstants.WEBSSO_BEAN_CONFIG_FILE);
@@ -97,13 +98,10 @@ public class CaGridAuthenticationManager implements AuthenticationManager
 		attributesMap.put(WebSSOConstants.CAGRID_SSO_GRID_IDENTITY, globusCredential.getIdentity());
 		
 		// Creating the Principal from the grid identity
-		Principal p = new SimplePrincipal(globusCredential.getIdentity());
+		Principal p = new SimplePrincipal(this.constructPrincipal(attributesMap));
 
 		// Create a new Authentication Object using the Principal
 		MutableAuthentication mutableAuthentication = new MutableAuthentication(p);
-
-		// Populate the Attributes Map for the Authentication Object
-		mutableAuthentication.getAttributes().putAll(attributesMap);
 		
 		return mutableAuthentication;
 			
@@ -138,4 +136,18 @@ public class CaGridAuthenticationManager implements AuthenticationManager
 		}
 		return hostIdentities;
 	}
+	
+	private String constructPrincipal(HashMap<String, String> attributeMap)
+	{
+		String principalName = new String();
+		Set<String> keySet = attributeMap.keySet();
+		for(String key: keySet)
+		{
+			String value = attributeMap.get(key);
+			principalName = principalName.concat(key + WebSSOConstants.KEY_VALUE_PAIR_DELIMITER + value + WebSSOConstants.ATTRIBUTE_DELIMITER);
+		}
+		principalName = principalName.substring(0, principalName.lastIndexOf(WebSSOConstants.ATTRIBUTE_DELIMITER));
+		return principalName;
+	}
+	
 }

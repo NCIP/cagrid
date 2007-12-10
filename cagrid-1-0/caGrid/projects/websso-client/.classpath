@@ -24,6 +24,14 @@
 	<classpathentry kind="lib" path="ext/lib/caGrid-1.1-ServiceSecurityProvider-client.jar"/>
 	<classpathentry kind="lib" path="ext/lib/caGrid-1.1-ServiceSecurityProvider-common.jar"/>
 	<classpathentry kind="lib" path="ext/lib/caGrid-1.1-ServiceSecurityProvider-stubs.jar"/>
+	<classpathentry kind="lib" path="ext/lib/caGrid-1.2M1-cds-client.jar"/>
+	<classpathentry kind="lib" path="ext/lib/caGrid-1.2M1-cds-common.jar"/>
+	<classpathentry kind="lib" path="ext/lib/caGrid-1.2M1-cds-stubs.jar"/>
+	<classpathentry kind="lib" path="ext/lib/caGrid-1.2M1-metadata-common.jar"/>
+	<classpathentry kind="lib" path="ext/lib/caGrid-1.2M1-metadata-security.jar"/>
+	<classpathentry kind="lib" path="ext/lib/caGrid-1.2M1-ServiceSecurityProvider-client.jar"/>
+	<classpathentry kind="lib" path="ext/lib/caGrid-1.2M1-ServiceSecurityProvider-common.jar"/>
+	<classpathentry kind="lib" path="ext/lib/caGrid-1.2M1-ServiceSecurityProvider-stubs.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/addressing-1.0.jar" sourcepath="/GT4_LOCATION/ws-core-4.0.3-src.zip"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/axis.jar" sourcepath="/AXIS_HOME"/>
@@ -42,7 +50,6 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_core.jar" sourcepath="/globussource"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/wss4j.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xercesImpl.jar" sourcepath="/GT4_LOCATION/Xerces-J-src.2.6.2.zip"/>
-	<classpathentry kind="src" path="/caGrid-1.0-gts"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/servlet.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

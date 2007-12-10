@@ -1,8 +1,14 @@
 package org.cagrid.gaards.websso.authentication.helper.impl;
 
+import gov.nih.nci.cagrid.common.Utils;
+
+import java.io.StringWriter;
 import java.rmi.RemoteException;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
+import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.types.URI.MalformedURIException;
 import org.cagrid.gaards.cds.client.DelegationUserClient;
 import org.cagrid.gaards.cds.common.AllowedParties;
@@ -44,6 +50,8 @@ public class GridCredentialDelegatorImpl implements GridCredentialDelegator
 
 	public String delegateGridCredential(GlobusCredential globusCredential, gov.nih.nci.cagrid.dorian.ifs.bean.ProxyLifetime credentialslifetime, List<String> hostIdentityList ) throws AuthenticationConfigurationException
 	{
+
+		hostIdentityList.add(webSSOHostIdentity);
 
 		ProxyLifetime credentialsCDSLifeTime = convertToCDSLifeTime(credentialslifetime);
 		
@@ -95,14 +103,28 @@ public class GridCredentialDelegatorImpl implements GridCredentialDelegator
 		}
 		
 		String serializedDelegatedCredentialReference = null;
+
 		try
 		{
-			serializedDelegatedCredentialReference = ObjectSerializer.toString(delegatedCredentialReference);
+			serializedDelegatedCredentialReference = ObjectSerializer.toString(delegatedCredentialReference, new QName("http://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential/types", "DelegatedCredentialReference" ));
 		}
 		catch (SerializationException e)
 		{
-			throw new AuthenticationConfigurationException("Error serializing the Delegated Credential Reference : " + e.getMessage());
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+			
+//			StringWriter stringWriter = new StringWriter();
+//			try
+//			{
+//				Utils.serializeObject(delegatedCredentialReference, new QName("http://cds.gaards.cagrid.org/CredentialDelegationService/DelegatedCredential/types", "DelegatedCredentialReference" ), stringWriter);
+//			}
+//			catch (Exception e)
+//			{
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			serializedDelegatedCredentialReference = new String(stringWriter.getBuffer());
 		return serializedDelegatedCredentialReference;
 	}
 

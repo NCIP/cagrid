@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src/java"/>
+	<classpathentry kind="src" path="src/resources"/>
 	<classpathentry kind="lib" path="lib/acegi-security-1.0.4.jar"/>
 	<classpathentry kind="lib" path="lib/cas-server-core-3.1.jar" sourcepath="/cas-server-3.1/cas-server-core/src/main/java"/>
 	<classpathentry kind="lib" path="lib/casclient-2.1.1.jar"/>
@@ -26,24 +27,7 @@
 	<classpathentry kind="lib" path="lib/standard-1.1.2.jar"/>
 	<classpathentry kind="lib" path="lib/xmldsig-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/xmlsec-1.4.0.jar"/>
-	<classpathentry kind="lib" path="ext/lib/caGrid-1.1-cds-client.jar"/>
-	<classpathentry kind="lib" path="ext/lib/caGrid-1.1-cds-common.jar"/>
-	<classpathentry kind="lib" path="ext/lib/caGrid-1.1-cds-stubs.jar" sourcepath="/caGrid-1.0-cds/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="ext/lib/caGrid-1.1-authentication-service-client.jar"/>
-	<classpathentry kind="lib" path="ext/lib/caGrid-1.1-authentication-service-common.jar"/>
-	<classpathentry kind="lib" path="ext/lib/caGrid-1.1-authentication-service-stubs.jar"/>
-	<classpathentry kind="lib" path="ext/lib/caGrid-1.1-core.jar"/>
-	<classpathentry kind="lib" path="ext/lib/caGrid-1.1-dorian-client.jar"/>
-	<classpathentry kind="lib" path="ext/lib/caGrid-1.1-dorian-common.jar"/>
-	<classpathentry kind="lib" path="ext/lib/caGrid-1.1-dorian-stubs.jar"/>
-	<classpathentry kind="lib" path="ext/lib/caGrid-1.1-gridca.jar"/>
-	<classpathentry kind="lib" path="ext/lib/caGrid-1.1-metadata-common.jar"/>
-	<classpathentry kind="lib" path="ext/lib/caGrid-1.1-metadata-security.jar"/>
-	<classpathentry kind="lib" path="ext/lib/caGrid-1.1-opensaml-1.1.jar"/>
-	<classpathentry kind="lib" path="ext/lib/caGrid-1.1-ServiceSecurityProvider-client.jar"/>
-	<classpathentry kind="lib" path="ext/lib/caGrid-1.1-ServiceSecurityProvider-common.jar"/>
-	<classpathentry kind="lib" path="ext/lib/caGrid-1.1-ServiceSecurityProvider-stubs.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/addressing-1.0.jar" sourcepath="/GT4_LOCATION/ws-core-4.0.3-src.zip"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/axis.jar" sourcepath="/AXIS_HOME"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/cog-axis.jar"/>
@@ -61,6 +45,22 @@
 	<classpathentry kind="var" path="GT4_LOCATION/lib/wsrf_core.jar" sourcepath="/globussource"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/wss4j.jar"/>
 	<classpathentry kind="var" path="GT4_LOCATION/lib/xercesImpl.jar" sourcepath="/GT4_LOCATION/Xerces-J-src.2.6.2.zip"/>
-	<classpathentry kind="src" path="/caGrid-1.0-gts"/>
+	<classpathentry kind="lib" path="ext/lib/caGrid-1.2M1-authentication-service-client.jar"/>
+	<classpathentry kind="lib" path="ext/lib/caGrid-1.2M1-authentication-service-common.jar"/>
+	<classpathentry kind="lib" path="ext/lib/caGrid-1.2M1-authentication-service-stubs.jar"/>
+	<classpathentry kind="lib" path="ext/lib/caGrid-1.2M1-cds-client.jar"/>
+	<classpathentry kind="lib" path="ext/lib/caGrid-1.2M1-cds-common.jar"/>
+	<classpathentry kind="lib" path="ext/lib/caGrid-1.2M1-cds-stubs.jar"/>
+	<classpathentry kind="lib" path="ext/lib/caGrid-1.2M1-core.jar"/>
+	<classpathentry kind="lib" path="ext/lib/caGrid-1.2M1-dorian-client.jar"/>
+	<classpathentry kind="lib" path="ext/lib/caGrid-1.2M1-dorian-common.jar"/>
+	<classpathentry kind="lib" path="ext/lib/caGrid-1.2M1-dorian-stubs.jar"/>
+	<classpathentry kind="lib" path="ext/lib/caGrid-1.2M1-gridca.jar"/>
+	<classpathentry kind="lib" path="ext/lib/caGrid-1.2M1-metadata-common.jar"/>
+	<classpathentry kind="lib" path="ext/lib/caGrid-1.2M1-metadata-security.jar"/>
+	<classpathentry kind="lib" path="ext/lib/caGrid-1.2M1-opensaml-1.1.jar" sourcepath="/caGrid-opensaml/src"/>
+	<classpathentry kind="lib" path="ext/lib/caGrid-1.2M1-ServiceSecurityProvider-client.jar"/>
+	<classpathentry kind="lib" path="ext/lib/caGrid-1.2M1-ServiceSecurityProvider-common.jar"/>
+	<classpathentry kind="lib" path="ext/lib/caGrid-1.2M1-ServiceSecurityProvider-stubs.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

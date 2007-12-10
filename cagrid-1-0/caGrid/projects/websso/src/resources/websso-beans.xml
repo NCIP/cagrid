@@ -16,12 +16,14 @@
 	<bean name="dorian-proxy-lifetime-hours" factory-bean="WebSSOProperties" factory-method="getProxyLifeTimeHours" singleton="true"/>
 	<bean name="dorian-proxy-lifetime-minutes" factory-bean="WebSSOProperties" factory-method="getProxyLifeTimeMinutes" singleton="true"/>
 	<bean name="dorian-proxy-lifetime-seconds" factory-bean="WebSSOProperties" factory-method="getProxyLifeTimeSeconds" singleton="true"/>
+	<bean name="dorian-proxy-delegation-path-length" factory-bean="WebSSOProperties" factory-method="getProxyDelegationPathLength" singleton="true"/>
 
 	<bean name="DorianHelper" class="org.cagrid.gaards.websso.authentication.helper.impl.DorianHelperImpl" singleton="true">
 		<constructor-arg ref="dorian-service-url"></constructor-arg>
 		<constructor-arg ref="dorian-proxy-lifetime-hours"></constructor-arg>
 		<constructor-arg ref="dorian-proxy-lifetime-minutes"></constructor-arg>
 		<constructor-arg ref="dorian-proxy-lifetime-seconds"></constructor-arg>
+		<constructor-arg ref="dorian-proxy-delegation-path-length"></constructor-arg>
 	</bean>
 
 	<bean name="ProxyValidator" class="org.cagrid.gaards.websso.authentication.helper.impl.ProxyValidatorImpl" singleton="true" />
@@ -43,12 +45,14 @@
 	<bean name="delegation-lifetime-minutes" factory-bean="WebSSOProperties" factory-method="getDelegationLifeTimeMinutes" singleton="true"/>
 	<bean name="delegation-lifetime-seconds" factory-bean="WebSSOProperties" factory-method="getDelegationLifeTimeSeconds" singleton="true"/>
 
-	<bean name="GridCedentialsDelegator" class="org.cagrid.gaards.websso.authentication.helper.impl.GridCedentialsDelegatorImpl" singleton="true">
+	<bean name="GridCredentialDelegator" class="org.cagrid.gaards.websso.authentication.helper.impl.GridCredentialDelegatorImpl" singleton="true">
 		<constructor-arg ref="delegation-service-url"></constructor-arg>
 		<constructor-arg ref="websso-server-host-identity"></constructor-arg>
 		<constructor-arg ref="delegation-lifetime-hours"></constructor-arg>
 		<constructor-arg ref="delegation-lifetime-minutes"></constructor-arg>
 		<constructor-arg ref="delegation-lifetime-seconds"></constructor-arg>
 	</bean>
-
+	
+	<bean name="SAMLToAttributeMapper" class="org.cagrid.gaards.websso.authentication.helper.impl.SAMLToAttributeMapperImpl" singleton="true" />
+	
 </beans>
