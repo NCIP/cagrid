@@ -12,8 +12,11 @@
     <property name="jar.name" value="websso-cas-client.jar" />
 
     <property name="src.java.dir" location="src/java" />
-
+    <property name="src.resources.dir" location="src/resources" />
+	
     <property name="build.dir" location="build" />
+	<property name="build.lib.dir" location="build/lib" />
+	<property name="build.conf.dir" location="build/conf" />
     <property name="build.classes.dir" location="build/classes" />
 
 
@@ -30,7 +33,7 @@
     </path>
 
     <target name="dist">
-        <copy todir="${build.dir}" flatten="true" overwrite="true">
+        <copy todir="${build.lib.dir}" flatten="true" overwrite="true">
             <!-- TODO: make these includes only include what is necessary... and handle version conflicts -->
             <fileset dir="${lib.dir}">
                 <include name="*.jar" />
@@ -58,10 +61,17 @@
             	<include name="jce-jdk13-125.jar"/>
             </fileset>
         </copy>
+    	<mkdir dir="${build.conf.dir}" />
+    	<copy todir="${build.conf.dir}" flatten="true" overwrite="true">
+    		<fileset dir="${src.resources.dir}">
+    			<include name="*.*" />
+    		</fileset>
+    	</copy>
     </target>
 
     <target name="build-jar">
-		<jar jarfile="${build.dir}/${jar.name}" basedir="${build.classes.dir}" includes="**/*.class"/>
+    	<mkdir dir="${build.lib.dir}" />
+		<jar jarfile="${build.lib.dir}/${jar.name}" basedir="${build.classes.dir}" includes="**/*.class"/>
     	<delete dir="${build.classes.dir}"/>
     </target>
 

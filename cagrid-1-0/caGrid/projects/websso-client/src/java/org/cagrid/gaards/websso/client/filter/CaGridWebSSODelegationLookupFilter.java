@@ -104,6 +104,7 @@ public class CaGridWebSSODelegationLookupFilter implements Filter
 				session.setAttribute(CAGRID_SSO_GRID_CREDENTIAL, userCredential);
 				session.setAttribute(IS_GRID_CREDENTIAL_LOADED, Boolean.TRUE);
 			}
+			filterChain.doFilter(request, response);
 		}
 	}
 
