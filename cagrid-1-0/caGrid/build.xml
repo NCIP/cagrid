@@ -1115,7 +1115,7 @@
             <artifact refid="cagrid.properties" />
             <artifact refid="dorian.client.jars" />
             <artifact refid="dorian.endorsed" />
-        	<artifact refid="cds.client.jars" />
+        	<artifact refid="cds1.1.client.jars" />
         </resolveDependencies>
         <ant dir="${projects.dir}/websso" inheritAll="false" antfile="build.xml" target="all" />
     </target>
@@ -1126,7 +1126,7 @@
     <target name="build-websso-client" depends="prepare" description="Builds the Web SSO client">
         <resolveDependencies extdir="${projects.dir}/websso-client/ext">
             <artifact refid="cagrid.properties" />
-        	<artifact refid="cds.client.jars" />
+        	<artifact refid="cds1.1.client.jars" />
         </resolveDependencies>
         <ant dir="${projects.dir}/websso-client" inheritAll="false" antfile="build.xml" target="all" />
     </target>
