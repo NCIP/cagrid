@@ -38,8 +38,9 @@
             <fileset dir="${src.resources.dir}">
                 <include name="*.xml" />
             	<include name="*.xsd" />
+		<include name="*.wsdd" />
             </fileset>
-		</copy>
+	</copy>
         <mkdir dir="${build.war.dir}/WEB-INF/lib" />
         <copy todir="${build.war.dir}/WEB-INF/lib" flatten="true" overwrite="true">
             <!-- TODO: make these includes only include what is necessary... and handle version conflicts -->
