@@ -44,10 +44,9 @@ public class CaGridWebSSOAttributeLoaderFilter implements Filter
 				String attributeKeyValuePair = stringTokenizer.nextToken();
 				session.setAttribute(attributeKeyValuePair.substring(0, attributeKeyValuePair.indexOf(KEY_VALUE_PAIR_DELIMITER)), attributeKeyValuePair.substring(attributeKeyValuePair.indexOf(KEY_VALUE_PAIR_DELIMITER) + 1, attributeKeyValuePair.length()));
 			}
-			session.setAttribute(IS_SESSION_ATTRIBUTES_LOADED, Boolean.TRUE);
-			
-			filterChain.doFilter(request, response);
-		}	
+			session.setAttribute(IS_SESSION_ATTRIBUTES_LOADED, Boolean.TRUE);			
+		}
+		filterChain.doFilter(request, response);
 	}
 
 	public void init(FilterConfig arg0) throws ServletException
