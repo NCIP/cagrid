@@ -52,7 +52,7 @@ import com.jgoodies.validation.view.ValidationComponentUtils;
  * @author David Ervin
  * 
  * @created Nov 27, 2007 4:50:32 PM
- * @version $Id: QueryProcessorConfigurationPanel.java,v 1.11.2.1 2008-02-29 15:56:51 dervin Exp $ 
+ * @version $Id: QueryProcessorConfigurationPanel.java,v 1.11.2.2 2008-02-29 16:48:43 dervin Exp $ 
  */
 public class QueryProcessorConfigurationPanel extends AbstractWizardPanel {
     // keys for validation
@@ -1141,6 +1141,7 @@ public class QueryProcessorConfigurationPanel extends AbstractWizardPanel {
         if (selection != null && selection.length() != 0) {
             // selection made
             File selectedDir = new File(selection);
+            getOutputDirTextField().setText(selectedDir.getName());
             File[] outputContents = selectedDir.listFiles();
             if (outputContents.length != 1) {
                 throw new Exception("Unable to locate application directory");
