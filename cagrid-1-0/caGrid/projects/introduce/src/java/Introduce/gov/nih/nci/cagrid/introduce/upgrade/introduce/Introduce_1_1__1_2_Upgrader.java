@@ -91,11 +91,6 @@ public class Introduce_1_1__1_2_Upgrader extends IntroduceUpgraderBase {
 		getStatus().addDescriptionLine(
 				"updated build-deploy.xml with new version");
 
-		getStatus()
-				.addIssue(
-						"Replaced the build.xml file.",
-						"Put any additions you need to the service build in the dev-build.xml file which has now been created.");
-
 		Utils.copyFile(new File("." + File.separator + "skeleton"
 				+ File.separator + "build-stubs.xml"), new File(
 				getServicePath() + File.separator + "build-stubs.xml"));
