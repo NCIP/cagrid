@@ -577,6 +577,7 @@ public class InstallerUtils {
             this.dbUrl = dbUrl;
             this.username = username;
             this.password = password;
+            this.setDaemon(true);
         }
 
 
