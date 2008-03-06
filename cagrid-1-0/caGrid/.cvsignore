@@ -1,6 +1,7 @@
-tmp
 .classpath
 .project
+tmp
 build
 integration-repository
 .currentgrid.properties
+.cache
