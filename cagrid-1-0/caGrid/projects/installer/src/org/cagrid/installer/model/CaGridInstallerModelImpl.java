@@ -3,20 +3,6 @@
  */
 package org.cagrid.installer.model;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-import java.io.File;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.Map;
-import java.util.ResourceBundle;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathFactory;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.installer.steps.Constants;
@@ -26,6 +12,15 @@ import org.cagrid.installer.validator.PathExistsValidator;
 import org.pietschy.wizard.models.DynamicModel;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.io.File;
+import java.util.*;
 
 
 /**
@@ -455,5 +450,9 @@ CaGridInstallerModel {
             logger.warn(ex.getMessage(), ex);
         }
         return present;
+    }
+    
+    public String getInstallerDir(){
+    	return InstallerUtils.buildInstallerDirPath(getProperty(Constants.CAGRID_VERSION));
     }
 }
