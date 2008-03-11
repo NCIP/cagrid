@@ -44,7 +44,7 @@ import java.util.*;
  */
 public class Installer {
 
-    private static final Log logger = LogFactory.getLog(Installer.class);
+    private final Log logger;
 
     private CaGridInstallerModelImpl model;
 
@@ -60,6 +60,14 @@ public class Installer {
 
 
     public Installer() {
+
+
+        File _basePath = new File(System.getProperty("user.home") + "/" + Constants.CAGRID_BASE_DIR_NAME);
+        if(!_basePath.exists()){
+            _basePath.mkdir();
+        }
+        logger = LogFactory.getLog(Installer.class);
+        logger.debug("Logger initialized");
 
         downloadedComponentInstallers.add(new AntComponentInstaller());
         downloadedComponentInstallers.add(new TomcatComponentInstaller());

@@ -467,4 +467,6 @@ public abstract class Constants {
     
     public static final String CAGRID_VERSION = "cagrid.version";
 
+    public static final String CAGRID_BASE_DIR_NAME = ".cagrid";
+
 }
