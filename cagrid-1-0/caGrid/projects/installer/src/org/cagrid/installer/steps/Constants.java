@@ -409,6 +409,10 @@ public abstract class Constants {
 
     public static final String PORTAL_ADMIN_EMAIL = "cagrid.portal.admin.email";
 
+    public static final String PORTAL_LIFERAY_ADMIN_USERNAME = "liferay.admin.username";
+
+    public static final String PORTAL_LIFERAY_ADMIN_PASSWORD = "liferay.admin.password";
+
     public static final String PORTAL_SECURITY_ENCRYPTION_KEY = "cagrid.portal.security.encryption.key";
 
     public static final String PORTAL_TRUST_SYNCHRONIZED_ENABLED = "cagrid.portal.trust.synchronizeEnabled";
