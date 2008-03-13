@@ -249,6 +249,8 @@ public class ConfigurePortalGridPropertiesStep extends PropertyConfigurationStep
                 if (sbIdp.length() > 0) {
                     sbIdp.append(",");
                 }
+                //Expected value is Label|Value
+                sbIdp.append(url).append("|");
                 sbIdp.append(url);
             } catch (Exception ex) {
                 // TODO: externalize error message
