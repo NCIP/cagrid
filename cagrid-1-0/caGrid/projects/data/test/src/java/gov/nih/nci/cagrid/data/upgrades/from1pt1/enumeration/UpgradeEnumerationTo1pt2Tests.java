@@ -22,7 +22,7 @@ import junit.textui.TestRunner;
  * 
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>  * 
  * @created Feb 20, 2007 
- * @version $Id: UpgradeEnumerationTo1pt2Tests.java,v 1.1 2008-03-14 18:24:29 dervin Exp $ 
+ * @version $Id: UpgradeEnumerationTo1pt2Tests.java,v 1.1.2.1 2008-03-14 18:42:43 dervin Exp $ 
  */
 public class UpgradeEnumerationTo1pt2Tests extends Story {
     public static final String TEST_DIR = ".." + File.separator + "data" + File.separator + "test";
