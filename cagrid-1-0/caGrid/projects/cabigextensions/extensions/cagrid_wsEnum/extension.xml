@@ -5,4 +5,7 @@
 		<ns1:CodegenPostProcessor>gov.nih.nci.cagrid.introduce.extensions.wsenum.codegen.WsEnumCodegenPostProcessor</ns1:CodegenPostProcessor>
 		<ns1:Properties/>
 	</ns1:ServiceExtensionDescription>
+	<ns1:UpgradesDescription>
+		<ns1:UpgradeDescription upgradeClass="gov.nih.nci.cagrid.introduce.extensions.wsenum.upgrade.WsEnumUpgradeTo1pt2" toVersion="1.2"/>
+	</ns1:UpgradesDescription>
 </ns1:ExtensionDescription>
