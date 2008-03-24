@@ -19,7 +19,7 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Hastings </A>
- * @version $Id: UsersTable.java,v 1.1 2007-09-24 19:09:38 langella Exp $
+ * @version $Id: UsersTable.java,v 1.1.6.1 2008-03-24 17:11:47 langella Exp $
  */
 public class UsersTable extends GrapeBaseTable {
 	public final static String USER = "user";
@@ -119,7 +119,7 @@ public class UsersTable extends GrapeBaseTable {
 					}
 					GridApplication.getContext().addApplicationComponent(
 							new UserWindow(session.getServiceURI(), session
-									.getCredential(), user, tidp));
+									.getCredential(), user, tidp),800,650);
 				} catch (Exception e) {
 					ErrorDialog.showError(e);
 				}
