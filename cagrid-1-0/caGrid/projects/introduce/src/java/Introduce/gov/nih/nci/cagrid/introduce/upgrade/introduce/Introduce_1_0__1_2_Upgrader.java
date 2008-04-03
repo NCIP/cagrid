@@ -2,8 +2,10 @@ package gov.nih.nci.cagrid.introduce.upgrade.introduce;
 
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.common.XMLUtilities;
+import gov.nih.nci.cagrid.introduce.IntroduceConstants;
 import gov.nih.nci.cagrid.introduce.beans.namespace.NamespaceType;
 import gov.nih.nci.cagrid.introduce.beans.namespace.NamespacesType;
+import gov.nih.nci.cagrid.introduce.beans.service.ResourcePropertyManagement;
 import gov.nih.nci.cagrid.introduce.beans.service.ServiceType;
 import gov.nih.nci.cagrid.introduce.codegen.common.SynchronizationException;
 import gov.nih.nci.cagrid.introduce.codegen.services.methods.SyncHelper;
@@ -50,6 +52,21 @@ public class Introduce_1_0__1_2_Upgrader extends IntroduceUpgraderBase {
 
 
     protected void upgrade() throws Exception {
+        // need to make sure to save a copy of hte introduce.xml to a prev file
+        // so that the
+        // sync tools can pick up any service changes i make here.....
+        // make a copy of the model to compate with next time
+        Utils.copyFile(new File(getServicePath() + File.separator + IntroduceConstants.INTRODUCE_XML_FILE), new File(
+            getServicePath() + File.separator + IntroduceConstants.INTRODUCE_XML_FILE + ".prev"));
+
+        // make a copy of the properties to compate with next time
+        Utils.copyFile(new File(getServicePath() + File.separator + IntroduceConstants.INTRODUCE_PROPERTIES_FILE),
+            new File(getServicePath() + File.separator + IntroduceConstants.INTRODUCE_PROPERTIES_FILE + ".prev"));
+
+        // add the resource property management to the main service
+        ServiceType mainService = getServiceInformation().getServices().getService(0);
+        mainService.getResourceFrameworkOptions().setResourcePropertyManagement(new ResourcePropertyManagement());
+
         // need to delete the old registration.xml file
         File registrationFile = new File(getServicePath() + File.separator + "etc" + File.separator
             + "registration.xml");
@@ -133,22 +150,20 @@ public class Introduce_1_0__1_2_Upgrader extends IntroduceUpgraderBase {
                 File oldbaseResourceF = new File(srcDir.getAbsolutePath() + File.separator
                     + CommonTools.getPackageDir(service) + File.separator + "service" + File.separator + "globus"
                     + File.separator + "resource" + File.separator + "BaseResource.java");
-                File oldbaseResourceFRename = new File(srcDir.getAbsolutePath()
-                    + File.separator + CommonTools.getPackageDir(service)
-                    + File.separator + "service" + File.separator
-                    + "globus" + File.separator + "resource"
-                    + File.separator + service.getName()
-                    + "ResourceBaseOLD.java.txt");
+                File oldbaseResourceFRename = new File(srcDir.getAbsolutePath() + File.separator
+                    + CommonTools.getPackageDir(service) + File.separator + "service" + File.separator + "globus"
+                    + File.separator + "resource" + File.separator + service.getName() + "ResourceBaseOLD.java.txt");
                 Utils.copyFile(oldbaseResourceF, oldbaseResourceFRename);
                 oldbaseResourceF.delete();
-                getStatus().addIssue("Generated a new Resource implementation", "The old resource implementation has been written to " + oldbaseResourceFRename.getAbsolutePath() + ". Be sure to copy back over any modified code back into the new file.");
-
+                getStatus().addIssue(
+                    "Generated a new Resource implementation",
+                    "The old resource implementation has been written to " + oldbaseResourceFRename.getAbsolutePath()
+                        + ". Be sure to copy back over any modified code back into the new file.");
 
                 File oldDaseResourceHomeF = new File(srcDir.getAbsolutePath() + File.separator
                     + CommonTools.getPackageDir(service) + File.separator + "service" + File.separator + "globus"
                     + File.separator + "resource" + File.separator + "BaseResourceHome.java");
                 oldDaseResourceHomeF.delete();
-
 
                 File oldResourceConfigurationF = new File(srcDir.getAbsolutePath() + File.separator
                     + CommonTools.getPackageDir(service) + File.separator + "service" + File.separator + "globus"
@@ -315,7 +330,7 @@ public class Introduce_1_0__1_2_Upgrader extends IntroduceUpgraderBase {
             }
             throw new Exception(message.toString());
         }
-        
+
         // need to move the ant-contrib.jar to the tools lib directory
         File currentContribFile = new File(getServicePath() + File.separator + "lib" + File.separator
             + "ant-contrib.jar");
