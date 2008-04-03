@@ -156,9 +156,17 @@ public class Introduce_1_1__1_2_Upgrader extends IntroduceUpgraderBase {
 						+ File.separator + CommonTools.getPackageDir(service)
 						+ File.separator + "service" + File.separator
 						+ "globus" + File.separator + "resource"
-						+ File.separator + "BaseResource.java");
+						+ File.separator + service.getName() + "Resource.java");
+				File oldbaseResourceFRename = new File(srcDir.getAbsolutePath()
+                    + File.separator + CommonTools.getPackageDir(service)
+                    + File.separator + "service" + File.separator
+                    + "globus" + File.separator + "resource"
+                    + File.separator + service.getName()
+                    + "ResourceOLD.java.txt");
+				Utils.copyFile(oldbaseResourceF, oldbaseResourceFRename);
 				oldbaseResourceF.delete();
-
+				getStatus().addIssue("Generated a new Resource implementation", "The old resource implementation has been written to " + oldbaseResourceFRename.getAbsolutePath() + ". Be sure to copy back over any modified code back into the new file.");
+				
 				File oldDaseResourceHomeF = new File(srcDir.getAbsolutePath()
 						+ File.separator + CommonTools.getPackageDir(service)
 						+ File.separator + "service" + File.separator

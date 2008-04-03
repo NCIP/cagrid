@@ -44,12 +44,15 @@ public class Model_1_1__1_2_Upgrader extends ModelUpgraderBase {
                 .getNamespace("gme://gov.nih.nci.cagrid.introduce/1/Services"));
             Element secure = new Element("Secure", Namespace
                 .getNamespace("gme://gov.nih.nci.cagrid.introduce/1/Services"));
+            Element rpManage = new Element("ResourcePropertyManagement", Namespace
+                .getNamespace("gme://gov.nih.nci.cagrid.introduce/1/Services"));
 
             if (resourceFrameworkType.equals(IntroduceConstants.INTRODUCE_MAIN_RESOURCE)) {
                 resourceFrameworkOptions.addContent(main);
                 resourceFrameworkOptions.addContent(singleton);
                 resourceFrameworkOptions.addContent(identifiable);
                 resourceFrameworkOptions.addContent(secure);
+                resourceFrameworkOptions.addContent(rpManage);
             } else if (resourceFrameworkType.equals(IntroduceConstants.INTRODUCE_CUSTOM_RESOURCE)) {
                 resourceFrameworkOptions.addContent(custom);
             } else if (resourceFrameworkType.equals(IntroduceConstants.INTRODUCE_SINGLETON_RESOURCE)) {

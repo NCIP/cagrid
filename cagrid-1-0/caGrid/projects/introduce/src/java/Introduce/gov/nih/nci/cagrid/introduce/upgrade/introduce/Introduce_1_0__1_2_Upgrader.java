@@ -133,17 +133,22 @@ public class Introduce_1_0__1_2_Upgrader extends IntroduceUpgraderBase {
                 File oldbaseResourceF = new File(srcDir.getAbsolutePath() + File.separator
                     + CommonTools.getPackageDir(service) + File.separator + "service" + File.separator + "globus"
                     + File.separator + "resource" + File.separator + "BaseResource.java");
+                File oldbaseResourceFRename = new File(srcDir.getAbsolutePath()
+                    + File.separator + CommonTools.getPackageDir(service)
+                    + File.separator + "service" + File.separator
+                    + "globus" + File.separator + "resource"
+                    + File.separator + service.getName()
+                    + "ResourceBaseOLD.java.txt");
+                Utils.copyFile(oldbaseResourceF, oldbaseResourceFRename);
                 oldbaseResourceF.delete();
+                getStatus().addIssue("Generated a new Resource implementation", "The old resource implementation has been written to " + oldbaseResourceFRename.getAbsolutePath() + ". Be sure to copy back over any modified code back into the new file.");
+
 
                 File oldDaseResourceHomeF = new File(srcDir.getAbsolutePath() + File.separator
                     + CommonTools.getPackageDir(service) + File.separator + "service" + File.separator + "globus"
                     + File.separator + "resource" + File.separator + "BaseResourceHome.java");
                 oldDaseResourceHomeF.delete();
 
-                File oldBaseResourceBaseF = new File(srcDir.getAbsolutePath() + File.separator
-                    + CommonTools.getPackageDir(service) + File.separator + "service" + File.separator + "globus"
-                    + File.separator + "resource" + File.separator + "BaseResourceBase.java");
-                oldBaseResourceBaseF.delete();
 
                 File oldResourceConfigurationF = new File(srcDir.getAbsolutePath() + File.separator
                     + CommonTools.getPackageDir(service) + File.separator + "service" + File.separator + "globus"
