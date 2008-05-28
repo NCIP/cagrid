@@ -39,7 +39,7 @@ import org.globus.wsrf.security.SecurityManager;
  * @author David Ervin
  * 
  * @created Oct 3, 2007 10:34:55 AM
- * @version $Id: SDK4QueryProcessor.java,v 1.14 2008-01-18 18:20:22 dervin Exp $ 
+ * @version $Id: SDK4QueryProcessor.java,v 1.14.2.1 2008-05-28 16:52:18 dervin Exp $ 
  */
 public class SDK4QueryProcessor extends CQLQueryProcessor {
     // configuration property keys
@@ -114,8 +114,14 @@ public class SDK4QueryProcessor extends CQLQueryProcessor {
                     attributeNames = mods.getAttributeNames();
                     resultsAsArrays = new LinkedList<Object[]>();
                     for (Object o : rawResults) {
-                        resultsAsArrays.add((Object[]) o);
-                    }
+                        Object[] array = null;
+                        if (o.getClass().isArray()) {
+                            array = (Object[]) o;
+                        } else {
+                            array = new Object[] {o};
+    	                }
+                        resultsAsArrays.add(array);
+	                }
                 }
                 cqlResults = CQLResultsCreationUtil.createAttributeResults(
                     resultsAsArrays, cqlQuery.getTarget().getName(), attributeNames);
