@@ -7,7 +7,7 @@ package gov.nih.nci.cagrid.metadata.xmi;
  * @author David Ervin
  * 
  * @created Oct 22, 2007 10:28:52 AM
- * @version $Id: Sdk4EaXMIConstants.java,v 1.1 2008-04-04 15:57:41 dervin Exp $ 
+ * @version $Id: Sdk4EaXMIConstants.java,v 1.1.2.1 2008-06-10 18:01:24 dervin Exp $ 
  */
 public class Sdk4EaXMIConstants {
     // classifier constants

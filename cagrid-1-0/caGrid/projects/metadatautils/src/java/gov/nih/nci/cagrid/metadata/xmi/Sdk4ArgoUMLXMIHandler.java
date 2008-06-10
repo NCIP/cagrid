@@ -23,7 +23,7 @@ import org.xml.sax.SAXException;
   * @author David Ervin
   * 
   * @created Oct 22, 2007 10:26:25 AM
-  * @version $Id: Sdk4ArgoUMLXMIHandler.java,v 1.6 2008-04-28 18:10:00 dervin Exp $
+  * @version $Id: Sdk4ArgoUMLXMIHandler.java,v 1.6.2.1 2008-06-10 18:01:24 dervin Exp $
  */
 class Sdk4ArgoUMLXMIHandler extends BaseXMIHandler {
     private static final Log LOG = LogFactory.getLog(Sdk4ArgoUMLXMIHandler.class);

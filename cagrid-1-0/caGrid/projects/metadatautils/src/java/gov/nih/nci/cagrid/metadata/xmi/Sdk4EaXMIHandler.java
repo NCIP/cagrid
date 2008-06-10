@@ -27,7 +27,7 @@ import org.xml.sax.SAXException;
   * @author David Ervin
   * 
   * @created Oct 22, 2007 10:26:25 AM
-  * @version $Id: Sdk4EaXMIHandler.java,v 1.5 2008-04-28 19:30:50 dervin Exp $
+  * @version $Id: Sdk4EaXMIHandler.java,v 1.5.2.1 2008-06-10 18:01:24 dervin Exp $
  */
 class Sdk4EaXMIHandler extends BaseXMIHandler {
     private static final Log LOG = LogFactory.getLog(Sdk4EaXMIHandler.class);   

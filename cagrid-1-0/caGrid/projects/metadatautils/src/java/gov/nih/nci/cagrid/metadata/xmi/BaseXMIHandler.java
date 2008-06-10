@@ -28,7 +28,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author David Ervin
  * 
  * @created Apr 22, 2008 3:44:03 PM
- * @version $Id: BaseXMIHandler.java,v 1.4 2008-04-28 19:30:50 dervin Exp $ 
+ * @version $Id: BaseXMIHandler.java,v 1.4.2.1 2008-06-10 18:01:24 dervin Exp $ 
  */
 public abstract class BaseXMIHandler extends DefaultHandler {
     

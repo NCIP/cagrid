@@ -7,7 +7,7 @@ package gov.nih.nci.cagrid.metadata.xmi;
  * @author David Ervin
  * 
  * @created Mar 19, 2008 11:40:36 AM
- * @version $Id: XmiFileType.java,v 1.1 2008-04-04 15:57:41 dervin Exp $ 
+ * @version $Id: XmiFileType.java,v 1.1.2.1 2008-06-10 18:01:24 dervin Exp $ 
  */
 public enum XmiFileType {
 
