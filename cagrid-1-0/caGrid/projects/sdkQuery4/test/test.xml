@@ -7,8 +7,8 @@
 
 	<!-- properties for caCORE SDK application's location -->
 	<!-- TODO: MOVE TO A MORE PERMANENT LOCATION -->
-	<property name="remote.sdk.host.name" value="http://kramer.bmi.ohio-state.edu" />
-	<property name="remote.sdk.host.port" value="8080" />
+	<property name="remote.sdk.host.name" value="http://sdkexamples.bmi.ohio-state.edu" />
+	<property name="remote.sdk.host.port" value="8040" />
 
 
 
