@@ -124,6 +124,10 @@ public class DomainModelUtils {
      *            the DomainModel to examine
      * @param conceptCode
      *            the concept code to look for
+     * @param primaryConceptOnly
+     *            when true, only return UMLClasses whose primary concept code
+     *            matches the given concept; when false, return if any concept
+     *            matches
      * @return the UMLClasses in the given DomainModel which are based on the
      *         given concept code
      */
@@ -247,7 +251,7 @@ public class DomainModelUtils {
      * Represents a simplified Common Data Element (a Class and Attribute),
      * identified by attributed public ID and version.
      */
-    static class CDE {
+    public static class CDE {
         private UMLClass umlClass;
         private UMLAttribute umlAttribute;
 
