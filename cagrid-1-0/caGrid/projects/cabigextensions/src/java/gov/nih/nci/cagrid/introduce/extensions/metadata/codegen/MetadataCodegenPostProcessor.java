@@ -305,7 +305,7 @@ public class MetadataCodegenPostProcessor implements CodegenExtensionPostProcess
             }
 
             // edit the operation
-            method.setDescription(currOp.getDescription());
+            currOp.setDescription(method.getDescription());
             editOperation(method, currOp);
             newOperations[i] = currOp;
 
