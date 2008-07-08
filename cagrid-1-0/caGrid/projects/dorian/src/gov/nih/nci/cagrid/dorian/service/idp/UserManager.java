@@ -114,7 +114,6 @@ public class UserManager extends LoggingObject {
 				} else {
 					this.passwordSecurityManager.reportSuccessfulLoginAttempt(u
 							.getUserId());
-					//TODO: We may wish to do this differently
 					if (crypt) {
 						u.setPassword(suppliedPassword);
 						try{
