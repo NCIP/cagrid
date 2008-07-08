@@ -159,8 +159,12 @@ public class PasswordSecurityManager extends LoggingObject {
 				entry.setTotalInvalidLogins(rs.getLong(TOTAL_INVALID_LOGINS));
 				entry.setLockoutExpiration(rs.getLong(LOCK_OUT_EXPIRATION));
 				entry.setDigestSalt(Utils.clean(rs.getString(DIGEST_SALT)));
-				entry.setDigestAlgorithm(Utils.clean(rs
-						.getString(DIGEST_ALGORITHM)));
+				String alg = Utils.clean(rs
+						.getString(DIGEST_ALGORITHM));
+				if((alg!=null)&&(alg.equalsIgnoreCase("NULL"))){
+					alg =null;
+				}
+				entry.setDigestAlgorithm(alg);
 				if (entry.getTotalInvalidLogins() >= policy
 						.getMaxTotalInvalidLogins()) {
 					entry.setPasswordStatus(PasswordStatus.LockedUntilChanged);
