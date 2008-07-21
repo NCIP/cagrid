@@ -29,12 +29,12 @@ public class StartSyncGTSServlet extends HttpServlet
 
 			if ("yes".equalsIgnoreCase(webSSOServerInformation.getStartAutoSyncGTS()))
 			{
-				FileHelper fileHelper = (FileHelper)ObjectFactory.getObject(WebSSOConstants.FILE_HELPER);
+				//FileHelper fileHelper = (FileHelper)ObjectFactory.getObject(WebSSOConstants.FILE_HELPER);
 			
-				String pathToSyncDescription = fileHelper.getFileAsURL("sync-description.xml").getPath();
+				//String pathToSyncDescription = fileHelper.getFileAsURL("sync-description.xml").getPath();
 				
 				//Load Sync Description
-				SyncDescription description = (SyncDescription) Utils.deserializeDocument(pathToSyncDescription,SyncDescription.class);
+				SyncDescription description = (SyncDescription) Utils.deserializeDocument("sync-description.xml",SyncDescription.class);
 
 				// Sync with the Trust Fabric Once
 				SyncGTS.getInstance().syncAndResyncInBackground(description, false);
