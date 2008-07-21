@@ -29,12 +29,9 @@ public class StartSyncGTSServlet extends HttpServlet
             String pathToSyncDescription = url.getPath();
             URI uri = new URI(url.toString());
             pathToSyncDescription = new File(uri).getAbsolutePath();
-    		System.out.println("PATH >>>>>>>>>>>>>>>" + pathToSyncDescription);
-            SyncDescription description = (SyncDescription)Utils.deserializeDocument(pathToSyncDescription, SyncDescription.class);
-    		System.out.println("Description >>>>>>>>>>>>>>>" );
+    		SyncDescription description = (SyncDescription)Utils.deserializeDocument("sync-description.xml", SyncDescription.class);
     		SyncGTS.getInstance().syncAndResyncInBackground(description, false);
-    		System.out.println("Start SyncGTS >>>>>>>>>>>>>>>" );    		
-		}
+    	}
 		catch (Exception e) 
 		{
 			e.printStackTrace();
