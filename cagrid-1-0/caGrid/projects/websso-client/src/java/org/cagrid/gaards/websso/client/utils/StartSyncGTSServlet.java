@@ -1,6 +1,8 @@
 package org.cagrid.gaards.websso.client.utils;
 
 import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URL;
 
@@ -14,7 +16,6 @@ import javax.servlet.http.HttpServlet;
 
 public class StartSyncGTSServlet extends HttpServlet
 {
-
 	/**
 	 * 
 	 */
@@ -25,12 +26,10 @@ public class StartSyncGTSServlet extends HttpServlet
 	{
 		try
 		{
-			URL url = Thread.currentThread().getContextClassLoader().getResource("sync-description.xml");		
-            String pathToSyncDescription = url.getPath();
-            URI uri = new URI(url.toString());
-            pathToSyncDescription = new File(uri).getAbsolutePath();
-    		SyncDescription description = (SyncDescription)Utils.deserializeDocument("sync-description.xml", SyncDescription.class);
-    		SyncGTS.getInstance().syncAndResyncInBackground(description, false);
+			final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+			InputStream inputStream = classLoader.getResourceAsStream("sync-description.xml");
+			SyncDescription description = (SyncDescription) Utils.deserializeObject(new InputStreamReader(inputStream),SyncDescription.class);
+			SyncGTS.getInstance().syncAndResyncInBackground(description, false);
     	}
 		catch (Exception e) 
 		{
