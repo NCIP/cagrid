@@ -1,5 +1,8 @@
 package org.cagrid.gaards.websso.utils;
 
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.syncgts.bean.SyncDescription;
 import gov.nih.nci.cagrid.syncgts.core.SyncGTS;
@@ -29,12 +32,13 @@ public class StartSyncGTSServlet extends HttpServlet
 
 			if ("yes".equalsIgnoreCase(webSSOServerInformation.getStartAutoSyncGTS()))
 			{
-				//FileHelper fileHelper = (FileHelper)ObjectFactory.getObject(WebSSOConstants.FILE_HELPER);
+				FileHelper fileHelper = (FileHelper)ObjectFactory.getObject(WebSSOConstants.FILE_HELPER);
 			
 				//String pathToSyncDescription = fileHelper.getFileAsURL("sync-description.xml").getPath();
 				
+				InputStream fileInputStream = fileHelper.getFileAsStream("sync-description.xml");
 				//Load Sync Description
-				SyncDescription description = (SyncDescription) Utils.deserializeDocument("sync-description.xml",SyncDescription.class);
+				SyncDescription description = (SyncDescription) Utils.deserializeObject(new InputStreamReader(fileInputStream),SyncDescription.class);
 
 				// Sync with the Trust Fabric Once
 				SyncGTS.getInstance().syncAndResyncInBackground(description, false);
