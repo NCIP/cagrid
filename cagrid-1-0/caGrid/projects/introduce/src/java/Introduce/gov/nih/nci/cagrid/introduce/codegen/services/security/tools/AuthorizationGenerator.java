@@ -164,7 +164,7 @@ public class AuthorizationGenerator {
 			gg.append(lineStart + "if(gridIdentity!=null){\n");
 			gg.append(lineStart + "\t" + "try{\n");
 			gg.append(lineStart + "\t\t"
-				+ "isMember=gov.nih.nci.cagrid.gridgrouper.client.GridGrouperClientUtils.isMember(gridGrouperAuthorize"
+				+ "isMember=gov.nih.nci.cagrid.gridgrouper.client.GridGrouperClientUtils.isMember(getInvocationCredential(),gridGrouperAuthorize"
 				+ CommonTools.upperCaseFirstCharacter(method.getName()) + ",gridIdentity);\n");
 			gg.append(lineStart + "\t" + "}catch(Exception e){\n");
 			gg.append(lineStart + "\t\t" + "e.printStackTrace();\n");
