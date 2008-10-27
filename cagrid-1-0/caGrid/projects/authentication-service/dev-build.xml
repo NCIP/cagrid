@@ -13,6 +13,8 @@
 	<property environment="env" />
 	<property file="${basedir}/project.properties" />
 	<property file="${basedir}/build.properties" />
+	
+	<property file="${basedir}/idp.properties" />
 
 	<property name="jar.prefix" value="caGrid-authentication-service" />
 	<property name="jar.suffix" value="${project.version}.jar" />
