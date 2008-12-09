@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
  * @author David Ervin
  * 
  * @created Mar 2, 2007 10:26:47 AM
- * @version $Id: CQL2ParameterizedHQL.java,v 1.9 2008-02-21 15:57:41 dervin Exp $ 
+ * @version $Id: CQL2ParameterizedHQL.java,v 1.9.2.1 2008-12-09 19:10:35 dervin Exp $ 
  */
 public class CQL2ParameterizedHQL {
     public static final String TARGET_ALIAS = "__TargetAlias__";
@@ -100,6 +100,9 @@ public class CQL2ParameterizedHQL {
         // apply query modifiers
 		if (query.getQueryModifier() != null) {
 			handleQueryModifier(query.getQueryModifier(), rawHql);
+		} else {
+		    // select only unique objects
+            rawHql.insert(0, "Select distinct (" + TARGET_ALIAS + ") ");      
 		}
         
         // build the final query object
@@ -123,7 +126,7 @@ public class CQL2ParameterizedHQL {
 			if (mods.getDistinctAttribute() != null) {
 				prepend.append("distinct ").append(mods.getDistinctAttribute());
 			} else {
-				prepend.append('*');
+				prepend.append("distinct " + TARGET_ALIAS);
 			}
 			prepend.append(')');
 		} else {
