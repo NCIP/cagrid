@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
  * @author David Ervin
  * 
  * @created Mar 2, 2007 10:26:47 AM
- * @version $Id: CQL2ParameterizedHQL.java,v 1.9.2.2 2008-12-18 14:44:12 dervin Exp $ 
+ * @version $Id: CQL2ParameterizedHQL.java,v 1.9.2.3 2009-01-01 17:33:06 dervin Exp $ 
  */
 public class CQL2ParameterizedHQL {
     public static final String TARGET_ALIAS = "__TargetAlias__";
@@ -437,6 +437,9 @@ public class CQL2ParameterizedHQL {
         }
         if (className.equals(Double.class.getName())) {
             return Double.valueOf(value);
+        }
+        if (className.equals(Boolean.class.getName())) {
+            return Boolean.valueOf(value);
         }
         if (className.equals(Character.class.getName())) {
             if (value.length() == 1) {
