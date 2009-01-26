@@ -130,7 +130,7 @@
 			<echo message="Publishing artifacts for ${ivy.module}." />
 			<delete file="${ivy.generated.artifacts.dir}/ivy.xml" />
 			<!-- delete last produced ivy file to be sure a new one will be generated -->
-			<ivy:publish overwrite="true" resolver="caGrid-ivy-resolver" pubrevision="${project.version}" status="integration">
+			<ivy:publish overwrite="true" resolver="caGrid-ivy-resolver" pubrevision="${project.version}" status="release">
 				<artifacts-list />
 			</ivy:publish>
 		</sequential>
