@@ -5,6 +5,7 @@ import javax.net.ssl.SSLSession;
 
 import gov.nih.nci.cagrid.testing.system.haste.Step;
 
+import org.cagrid.gaards.websso.test.system.WebSSOSystemTest;
 import org.springframework.core.io.ClassPathResource;
 import org.xml.sax.SAXException;
 import sun.net.www.protocol.https.HttpsURLConnectionImpl;
@@ -157,8 +158,8 @@ public class AssertWebSSOApplicationStep extends Step {
 	}
 	
 	public static void main(String[] args) throws Throwable{
-		String jasigURL="http://localhost:45400/webssoclientjasigexample-1.3-dev/protected";
-		String acegiURL="http://localhost:45403/webssoclientacegiexample-1.3-dev/protected";
+		String jasigURL="http://localhost:45400/webssoclientjasigexample-"+WebSSOSystemTest.getProjectVersion()+"/protected";
+		String acegiURL="http://localhost:45403/webssoclientacegiexample-"+WebSSOSystemTest.getProjectVersion()+"/protected";
 		AssertWebSSOApplicationStep applicationStep=new AssertWebSSOApplicationStep(jasigURL,acegiURL,18443,28443,38443);
 		applicationStep.runStep();
 	}

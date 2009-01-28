@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
 
+import org.cagrid.gaards.websso.test.system.WebSSOSystemTest;
 import org.jdom.Content;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -55,7 +56,7 @@ public class WebSSOClientCertificatesStep extends Step {
 		File webssopropertiesfile = new File(tempWebSSOClientService
 				.getCanonicalPath(), "ext" + File.separator
 				+ "dependencies-xml-resources" + File.separator + "xmls"
-				+ File.separator + "web-template-jasig-1.3-dev.xml");
+				+ File.separator + "web-template-jasig-"+WebSSOSystemTest.getProjectVersion()+".xml");
 		
 	    Document confDocument = null;
 	    try {
