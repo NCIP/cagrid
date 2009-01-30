@@ -2,6 +2,7 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="resources"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-advertisement-1.3.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-authentication-service-client-1.3.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-authentication-service-common-1.3.jar"/>
@@ -124,7 +125,6 @@
 	<classpathentry kind="lib" path="ext/dependencies/jars/clm.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/csmapi.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/junit-4.4.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/caGrid-AuthenticationService"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-DorianSystemTests-1.3.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/httpunit-1.7.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/jars/js-1.6R5.jar"/>
