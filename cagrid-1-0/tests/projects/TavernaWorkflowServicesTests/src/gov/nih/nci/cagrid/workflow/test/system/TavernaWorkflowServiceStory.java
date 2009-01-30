@@ -14,7 +14,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 import java.util.Vector;
-import org.apache.tools.ant.*;
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.types.URI.MalformedURIException;
 
