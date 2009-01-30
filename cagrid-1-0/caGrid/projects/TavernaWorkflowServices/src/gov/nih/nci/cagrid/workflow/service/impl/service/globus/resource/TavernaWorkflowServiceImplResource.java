@@ -122,7 +122,9 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 						if(line.equals("Finished!"))		
 							finished = true;
 					}
-					process.waitFor();
+					int status = process.waitFor();
+					if (status != 0)
+						throw new Exception();
 					String[] temp = output.split(":::");
 					System.out.println("\nOUTPUT:\n" + temp[1]);
 					setOutputDoc(new String[] {temp[1]});
@@ -131,9 +133,14 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 					workflowStatus = WorkflowStatusType.Failed;
 					e.printStackTrace();
 				} catch (InterruptedException e) {
+					workflowStatus = WorkflowStatusType.Failed;
 					System.err.println("Process Interrupted");
 					e.printStackTrace();
-				}
+				} catch (Exception e) {
+					workflowStatus = WorkflowStatusType.Failed;
+					System.err.println("Erorr in running the Workflow");
+					e.printStackTrace();
+				} 
 
 
 		}
