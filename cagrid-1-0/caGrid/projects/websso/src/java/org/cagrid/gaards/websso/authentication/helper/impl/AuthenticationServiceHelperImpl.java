@@ -33,10 +33,11 @@ public class AuthenticationServiceHelperImpl implements
 			authenticationClient = new AuthenticationClient(authenticationServiceURL);
 		} catch (MalformedURIException e) {
 			throw new AuthenticationConfigurationException(
-					"Invalid Authentication Service URL : " + e.getMessage());
+					"Invalid Authentication Service URL",e);
 		} catch (RemoteException e) {
 			throw new AuthenticationConfigurationException(
-					"Error accessing the Authentication Service : "+ e.getMessage());
+					"Error accessing the Authentication Service : "
+							+ FaultUtil.printFaultToString(e));
 		}
 		try {
 			samlAssertion = authenticationClient.authenticate(credential);
@@ -54,7 +55,7 @@ public class AuthenticationServiceHelperImpl implements
 		} catch (RemoteException e) {
 			throw new AuthenticationConfigurationException(
 					"Error accessing the Authentication Service : "
-							+ e.getMessage());
+							+ FaultUtil.printFaultToString(e));
 		}
 		return samlAssertion;
 	}
