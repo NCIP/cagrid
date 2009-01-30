@@ -414,8 +414,10 @@ public class WebSSOSystemTest extends Story {
 		}
 		
 		String delegatedApplicationHostIdentity = "/C=US/O=abc/OU=xyz/OU=caGrid/OU=Services/CN=webssoclient";
+		String dorianHostIdentity="/O=osu/CN=host/localhost";
+		String cdsHostIdentity="/O=osu/CN=host/localhost";
 		steps.add(new ChangeWebSSOPropertiesStep(tempWebSSOService, certPath,
-				keyPath, dorianServiceURL, cdsServiceURL, delegatedApplicationHostIdentity));
+				keyPath, dorianServiceURL, cdsServiceURL, delegatedApplicationHostIdentity,cdsHostIdentity,dorianHostIdentity));
 
 		steps.add(new ChangeCASPropertiesStep(tempWebSSOService, webSSOServiceURL));
 	}
