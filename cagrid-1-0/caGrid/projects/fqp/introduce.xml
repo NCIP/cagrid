@@ -386,7 +386,7 @@
  <ns75:Extensions xsi:type="ns75:ExtensionsType" xmlns:ns75="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ns75:Extension name="cagrid_metadata" version="1.3" xsi:type="ns75:ExtensionType"/>
   <ns75:Extension name="caGrid_Transfer" version="1.3" xsi:type="ns75:ExtensionType"/>
-  <ns75:Extension name="cagrid_wsEnum" version="1.3-dev" xsi:type="ns75:ExtensionType"/>
+  <ns75:Extension name="cagrid_wsEnum" version="1.3" xsi:type="ns75:ExtensionType"/>
  </ns75:Extensions>
  <ns76:ServiceProperties xmlns:ns76="gme://gov.nih.nci.cagrid.introduce/1/Property">
   <ns76:Property description="Length of time in minutes a Federated Query Results Resource will live" isFromETC="false" key="initialResultLeaseInMinutes" value="30"/>
