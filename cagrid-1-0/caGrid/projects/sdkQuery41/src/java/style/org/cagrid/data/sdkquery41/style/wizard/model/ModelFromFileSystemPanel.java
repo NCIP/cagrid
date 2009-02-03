@@ -112,7 +112,7 @@ public class ModelFromFileSystemPanel extends DomainModelSourcePanel {
         
         // copy the domain model to the service's etc dir
         File etcDir = new File(
-            SharedConfiguration.getInstance().getSdkDirectory(), "etc");
+            SharedConfiguration.getInstance().getServiceInfo().getBaseDirectory(), "etc");
         String applicationName = SharedConfiguration.getInstance()
             .getSdkDeployProperties().getProperty(
                 SDK41StyleConstants.DeployProperties.PROJECT_NAME);
@@ -377,6 +377,7 @@ public class ModelFromFileSystemPanel extends DomainModelSourcePanel {
                     }
                     if (selectedFilename != null) {
                         getModelFilenameTextField().setText(selectedFilename);
+                        getConfiguration().setDomainModelLocalFile(new File(selectedFilename));
                         validateInput();
                         if (!validationModel.hasErrors()) {
                             // valid domain model, so we can populate fields
