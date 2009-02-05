@@ -24,7 +24,7 @@
         <ns2:Fault description="" name="InvalidCredentialFault"/>
        </ns2:faultCollection>
       </ns2:Operation>
-      <ns2:Operation description="" name="authenticate">
+      <ns2:Operation description="This is authenticates a user with a local identity provider, this method ONLY supports username and password.  This method has been DEPRECATED, the authenticateUser should be used instead. " name="authenticate">
        <ns2:inputParameterCollection>
         <ns2:InputParameter qName="ns7:Credential" dimensionality="1" index="0" isArray="false" isRequired="false" name="credential" xmlns:ns7="http://cagrid.nci.nih.gov/1/authentication-service"/>
        </ns2:inputParameterCollection>
