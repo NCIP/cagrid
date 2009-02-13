@@ -123,8 +123,8 @@
 	<!--
 		<bean id="certificateAuthority"
 		class="org.cagrid.gaards.dorian.ca.EracomCertificateAuthority">
-		<constructor-arg index="0" ref="eracomCAProperties"/> </bean> <bean
-		id="eracomCAProperties"
+		<constructor-arg index="0" ref="caProperties"/> </bean> <bean
+		id="caProperties"
 		class="org.cagrid.gaards.dorian.ca.EracomCertificateAuthorityProperties">
 		<constructor-arg index="0" value="${gaards.dorian.ca.password}" />
 		<constructor-arg index="1" value="${gaards.dorian.ca.policy.oid}" />

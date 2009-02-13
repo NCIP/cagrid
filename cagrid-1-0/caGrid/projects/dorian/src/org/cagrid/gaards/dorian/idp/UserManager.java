@@ -109,7 +109,7 @@ public class UserManager extends LoggingObject {
                             Date unlock = new Date(ps.getLockoutExpiration());
                             if (eventManager != null) {
                                 eventManager.logEvent(u.getUserId(), AuditConstants.SYSTEM_ID,
-                                    IdentityProviderAudit.AccountLocked.getValue(),
+                                    IdentityProviderAudit.LocalAccountLocked.getValue(),
                                     "Account locked because of to many consecutive invalid logins ("
                                         + conf.getPasswordSecurityPolicy().getConsecutiveInvalidLogins()
                                         + ").  The lock will expire on " + unlock.toString() + ".");
@@ -120,7 +120,7 @@ public class UserManager extends LoggingObject {
                                     .logEvent(
                                         u.getUserId(),
                                         AuditConstants.SYSTEM_ID,
-                                        IdentityProviderAudit.AccountLocked.getValue(),
+                                        IdentityProviderAudit.LocalAccountLocked.getValue(),
                                         "Account locked because of to many total invalid logins ("
                                             + conf.getPasswordSecurityPolicy().getTotalInvalidLogins()
                                             + ").  The lock will not expire until the account password is reset by an administrator.");
@@ -138,7 +138,7 @@ public class UserManager extends LoggingObject {
                                 updateUser(u);
                                 if (eventManager != null) {
                                     eventManager.logEvent(u.getUserId(), AuditConstants.SYSTEM_ID,
-                                        IdentityProviderAudit.AccountUpdated.getValue(),
+                                        IdentityProviderAudit.LocalAccountUpdated.getValue(),
                                         "Password encryption algorithm updated from crypt to "
                                             + PasswordSecurityManager.PASSWORD_DIGEST_ALGORITHM + ".");
                                 }
