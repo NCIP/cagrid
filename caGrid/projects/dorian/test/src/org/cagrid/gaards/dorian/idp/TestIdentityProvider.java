@@ -219,7 +219,7 @@ public class TestIdentityProvider extends TestCase {
                         totalLock = true;
                     }
                     performAndValidateMultipleAudit(idp, cred.getUserId(), a.getUserId(), AuditConstants.SYSTEM_ID,
-                        IdentityProviderAudit.AccountLocked, lockCount);
+                        IdentityProviderAudit.LocalAccountLocked, lockCount);
 
                 } else if (localCount != policy.getConsecutiveInvalidLogins()) {
                     try {
@@ -245,7 +245,7 @@ public class TestIdentityProvider extends TestCase {
 
                     lockCount = lockCount + 1;
                     performAndValidateMultipleAudit(idp, cred.getUserId(), a.getUserId(), AuditConstants.SYSTEM_ID,
-                        IdentityProviderAudit.AccountLocked, lockCount);
+                        IdentityProviderAudit.LocalAccountLocked, lockCount);
 
                     Thread.sleep((policy.getLockout().getSeconds() * 1000) + 100);
                     successfulLogins = successfulLogins + 1;
@@ -269,7 +269,7 @@ public class TestIdentityProvider extends TestCase {
             idp.updateUser(cred.getUserId(), users[0]);
 
             performAndValidateSingleAudit(idp, cred.getUserId(), a.getUserId(), cred.getUserId(),
-                IdentityProviderAudit.AccountUpdated);
+                IdentityProviderAudit.LocalAccountUpdated);
             successfulLogins = successfulLogins + 1;
             verifyAuthentication(cred.getUserId(), idp, a, successfulLogins);
         } catch (Exception e) {
@@ -704,7 +704,7 @@ public class TestIdentityProvider extends TestCase {
             users[0].setStatus(LocalUserStatus.Active);
             idp.updateUser(cred.getUserId(), users[0]);
             performAndValidateSingleAudit(idp, cred.getUserId(), a.getUserId(), cred.getUserId(),
-                IdentityProviderAudit.AccountUpdated);
+                IdentityProviderAudit.LocalAccountUpdated);
             users = idp.findUsers(cred.getUserId(), uf);
             assertEquals(1, users.length);
             assertEquals(LocalUserStatus.Active, users[0].getStatus());
@@ -880,7 +880,7 @@ public class TestIdentityProvider extends TestCase {
                 users[0].setStatus(LocalUserStatus.Active);
                 idp.updateUser(cred.getUserId(), users[0]);
                 performAndValidateSingleAudit(idp, cred.getUserId(), a.getUserId(), cred.getUserId(),
-                    IdentityProviderAudit.AccountUpdated);
+                    IdentityProviderAudit.LocalAccountUpdated);
                 users = idp.findUsers(cred.getUserId(), uf);
                 assertEquals(1, users.length);
                 assertEquals(LocalUserStatus.Active, users[0].getStatus());
@@ -912,14 +912,14 @@ public class TestIdentityProvider extends TestCase {
                     updateCount = 1;
                 }
                 performAndValidateMultipleAudit(idp, cred.getUserId(), us[0].getUserId(), cred.getUserId(),
-                    IdentityProviderAudit.AccountUpdated, updateCount);
+                    IdentityProviderAudit.LocalAccountUpdated, updateCount);
                 LocalUser[] us2 = idp.findUsers(cred.getUserId(), f);
                 assertEquals(1, us2.length);
                 assertEquals(us[0], us2[0]);
                 if (!users[i].getUserId().equals(cred.getUserId())) {
                     idp.removeUser(cred.getUserId(), users[i].getUserId());
                     performAndValidateSingleAudit(idp, cred.getUserId(), users[i].getUserId(), cred.getUserId(),
-                        IdentityProviderAudit.AccountRemoved);
+                        IdentityProviderAudit.LocalAccountRemoved);
                     us = idp.findUsers(cred.getUserId(), f);
                     assertEquals(0, us.length);
                 }

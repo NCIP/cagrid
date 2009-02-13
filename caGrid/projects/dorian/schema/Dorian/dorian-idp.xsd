@@ -520,9 +520,9 @@
 	<xsd:simpleType name="IdentityProviderAudit">
 		<xsd:restriction base="xsd:string">
 			<xsd:enumeration value="Registration" />
-			<xsd:enumeration value="AccountUpdated" />
-			<xsd:enumeration value="AccountRemoved" />
-			<xsd:enumeration value="AccountLocked" />
+			<xsd:enumeration value="LocalAccountUpdated" />
+			<xsd:enumeration value="LocalAccountRemoved" />
+			<xsd:enumeration value="LocalAccountLocked" />
 			<xsd:enumeration value="PasswordChanged" />
 			<xsd:enumeration value="SuccessfulLogin" />
 			<xsd:enumeration value="InvalidLogin" />
