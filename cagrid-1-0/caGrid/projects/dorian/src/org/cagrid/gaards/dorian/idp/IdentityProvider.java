@@ -90,12 +90,12 @@ public class IdentityProvider extends LoggingObject {
                 this.eventManager.registerHandler(this.identityProviderAuditor);
             }
 
-            this.eventManager.registerEventWithHandler(new EventToHandlerMapping(IdentityProviderAudit.AccountLocked
+            this.eventManager.registerEventWithHandler(new EventToHandlerMapping(IdentityProviderAudit.LocalAccountLocked
                 .getValue(), AuditingConstants.IDENTITY_PROVIDER_AUDITOR));
 
-            this.eventManager.registerEventWithHandler(new EventToHandlerMapping(IdentityProviderAudit.AccountRemoved
+            this.eventManager.registerEventWithHandler(new EventToHandlerMapping(IdentityProviderAudit.LocalAccountRemoved
                 .getValue(), AuditingConstants.IDENTITY_PROVIDER_AUDITOR));
-            this.eventManager.registerEventWithHandler(new EventToHandlerMapping(IdentityProviderAudit.AccountUpdated
+            this.eventManager.registerEventWithHandler(new EventToHandlerMapping(IdentityProviderAudit.LocalAccountUpdated
                 .getValue(), AuditingConstants.IDENTITY_PROVIDER_AUDITOR));
 
             this.eventManager.registerEventWithHandler(new EventToHandlerMapping(IdentityProviderAudit.InvalidLogin
@@ -326,7 +326,7 @@ public class IdentityProvider extends LoggingObject {
                 this.eventManager.logEvent(u.getUserId(), requestorUID, IdentityProviderAudit.PasswordChanged
                     .getValue(), "Password changed by " + u.getUserId() + ".");
             }
-            this.eventManager.logEvent(u.getUserId(), requestorUID, IdentityProviderAudit.AccountUpdated.getValue(),
+            this.eventManager.logEvent(u.getUserId(), requestorUID, IdentityProviderAudit.LocalAccountUpdated.getValue(),
                 ReportUtils.generateReport(beforeUpdate, this.userManager.getUser(u.getUserId())));
         } catch (DorianInternalFault e) {
             String message = "An unexpected error occurred while trying to update the user " + u.getUserId() + ": ";
@@ -369,7 +369,7 @@ public class IdentityProvider extends LoggingObject {
             LocalUser requestor = verifyUser(requestorUID);
             verifyAdministrator(requestor);
             userManager.removeUser(userId);
-            this.eventManager.logEvent(userId, requestorUID, IdentityProviderAudit.AccountRemoved.getValue(),
+            this.eventManager.logEvent(userId, requestorUID, IdentityProviderAudit.LocalAccountRemoved.getValue(),
                 "The user account for " + userId + " was removed by " + requestorUID + ".");
         } catch (DorianInternalFault e) {
             String message = "An unexpected error occurred while trying to remove the user " + userId + ": ";
