@@ -4,12 +4,12 @@
     <ServiceGroupDescription>Grid Trust Service(s)</ServiceGroupDescription>
     <Services>
         <ServiceDescriptor>
-            <DisplayName>NCI Staging Master</DisplayName>
+            <DisplayName>caBIG Staging Master</DisplayName>
             <ServiceURL>https://cagrid-gts-master-stage.nci.nih.gov:8443/wsrf/services/cagrid/GTS</ServiceURL>
             <ServiceIdentity>/O=caBIG/OU=caGrid/OU=Stage Trust Fabric/CN=host/cagrid-gts-master-stage.nci.nih.gov</ServiceIdentity>
         </ServiceDescriptor>
         <ServiceDescriptor>
-            <DisplayName>NCI Staging Slave</DisplayName>
+            <DisplayName>caBIG Staging Slave</DisplayName>
             <ServiceURL>https://cagrid-gts-slave-stage.nci.nih.gov:8443/wsrf/services/cagrid/GTS</ServiceURL>
             <ServiceIdentity>/O=caBIG/OU=caGrid/OU=Stage Trust Fabric/CN=host/cagrid-gts-slave-stage.nci.nih.gov</ServiceIdentity>
         </ServiceDescriptor>
