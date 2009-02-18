@@ -4,12 +4,12 @@
     <ServiceGroupDescription>Grid Trust Service(s)</ServiceGroupDescription>
     <Services>
         <ServiceDescriptor>
-            <DisplayName>NCI QA Master</DisplayName>
+            <DisplayName>caBIG QA Master</DisplayName>
             <ServiceURL>https://cagrid-gts-master-qa.nci.nih.gov:8443/wsrf/services/cagrid/GTS</ServiceURL>
             <ServiceIdentity>/O=caBIG/OU=caGrid/OU=QA Trust Fabric/CN=host/cagrid-gts-master-qa.nci.nih.gov</ServiceIdentity>
         </ServiceDescriptor>
         <ServiceDescriptor>
-            <DisplayName>NCI QA Slave</DisplayName>
+            <DisplayName>caBIG QA Slave</DisplayName>
             <ServiceURL>https://cagrid-gts-slave-qa.nci.nih.gov:8443/wsrf/services/cagrid/GTS</ServiceURL>
             <ServiceIdentity>/O=caBIG/OU=caGrid/OU=QA Trust Fabric/CN=host/cagrid-gts-slave-qa.nci.nih.gov</ServiceIdentity>
         </ServiceDescriptor>

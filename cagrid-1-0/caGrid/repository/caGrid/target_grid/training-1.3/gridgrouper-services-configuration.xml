@@ -6,7 +6,7 @@
         <ServiceDescriptor>
             <DisplayName>Training</DisplayName>
             <ServiceURL>https://grouper.training.cagrid.org:8443/wsrf/services/cagrid/GridGrouper</ServiceURL>
-            <ServiceIdentity>/O=caBIG/OU=caGrid/OU=Training/OU=Services/CN=host/grouper.training.cagrid.org</ServiceIdentity>
+            <ServiceIdentity>/O=caBIG/OU=caGrid/OU=Training/OU=Services/CN=grouper.training.cagrid.org</ServiceIdentity>
         </ServiceDescriptor>
     </Services>
 </ServiceConfiguration>
