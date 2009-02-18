@@ -4,9 +4,9 @@
     <ServiceGroupDescription>Grid Grouper Service(s)</ServiceGroupDescription>
     <Services>
         <ServiceDescriptor>
-            <DisplayName>caBIG CBIIT</DisplayName>
+            <DisplayName>caBIG</DisplayName>
             <ServiceURL>https://cagrid-gridgrouper.nci.nih.gov:8443/wsrf/services/cagrid/GridGrouper</ServiceURL>
-            <ServiceIdentity>/O=caBIG/OU=caGrid/OU=LOA1/OU=Services/CN=host/cagrid-gridgrouper.nci.nih.gov</ServiceIdentity>
+            <ServiceIdentity>/O=caBIG/OU=caGrid/OU=LOA1/OU=Services/CN=cagrid-gridgrouper.nci.nih.gov</ServiceIdentity>
         </ServiceDescriptor>
     </Services>
 </ServiceConfiguration>
