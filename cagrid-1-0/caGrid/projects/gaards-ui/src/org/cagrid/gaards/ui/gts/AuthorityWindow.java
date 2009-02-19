@@ -129,6 +129,7 @@ public class AuthorityWindow extends ApplicationComponent {
     private void syncPriorities() {
         lockAll();
         try {
+            getPriority().removeAllItems();
             getProgressPanel().showProgress("Syncing priorities...");
             GTSPublicClient client = this.session.getUserClient();
             AuthorityGTS[] auths = client.getAuthorities();
@@ -365,7 +366,7 @@ public class AuthorityWindow extends ApplicationComponent {
             gridBagConstraints9.insets = new java.awt.Insets(2, 2, 2, 2);
             gridBagConstraints9.gridy = 2;
             jLabel3 = new JLabel();
-            jLabel3.setText("Synchronize Trust Levels");
+            jLabel3.setText("Synchronize Assurance Levels");
             GridBagConstraints gridBagConstraints8 = new GridBagConstraints();
             gridBagConstraints8.fill = java.awt.GridBagConstraints.HORIZONTAL;
             gridBagConstraints8.gridy = 1;
@@ -394,7 +395,7 @@ public class AuthorityWindow extends ApplicationComponent {
             gridBagConstraints1.anchor = java.awt.GridBagConstraints.WEST;
             gridBagConstraints1.gridx = 0;
             jLabel2 = new JLabel();
-            jLabel2.setText("GTS URI");
+            jLabel2.setText("GTS URL");
             authorityPanel = new JPanel();
             authorityPanel.setLayout(new GridBagLayout());
             authorityPanel.add(jLabel2, gridBagConstraints1);
@@ -436,11 +437,6 @@ public class AuthorityWindow extends ApplicationComponent {
         if (priority == null) {
             priority = new JComboBox();
             syncPriorities();
-            priority.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent e) {
-                    syncPriorities();
-                }
-            });
         }
         return priority;
     }
