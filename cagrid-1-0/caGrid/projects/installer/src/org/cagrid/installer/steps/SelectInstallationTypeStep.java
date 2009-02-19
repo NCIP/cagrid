@@ -4,6 +4,8 @@
 package org.cagrid.installer.steps;
 
 import javax.swing.Icon;
+import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
 
 import org.pietschy.wizard.InvalidStateException;
 
@@ -42,16 +44,19 @@ public class SelectInstallationTypeStep extends PropertyConfigurationStep {
 
 
     protected void checkComplete() {
-
-        if (isSelected(Constants.INSTALL_CONFIGURE_CAGRID) || isSelected(Constants.INSTALL_CONFIGURE_CONTAINER)) {
-            if (!model.isCaGridInstalled()) {
-                if (isSelected(Constants.INSTALL_CONFIGURE_CAGRID)) {
+        if (getOption(Constants.INSTALL_CONFIGURE_CAGRID) != null
+            && getOption(Constants.INSTALL_CONFIGURE_CONTAINER) != null) {
+            if (model.isCaGridInstalled()) {
+                setComplete(true);
+            } else if (((JCheckBox) getOption(Constants.INSTALL_CONFIGURE_CAGRID)).isSelected()
+                || ((JCheckBox) getOption(Constants.INSTALL_CONFIGURE_CONTAINER)).isSelected()) {
+                if (((JCheckBox) getOption(Constants.INSTALL_CONFIGURE_CAGRID)).isSelected()) {
                     setComplete(true);
                 } else {
                     setComplete(false);
                 }
             } else {
-                setComplete(true);
+                setComplete(false);
             }
         } else {
             setComplete(false);
@@ -59,14 +64,15 @@ public class SelectInstallationTypeStep extends PropertyConfigurationStep {
     }
 
 
-    private boolean isSelected(String fieldName) {
-        return this.requiredFields.containsKey(fieldName) && this.requiredFields.get(fieldName);
-    }
-
-
     public void applyState() throws InvalidStateException {
         super.applyState();
 
+    }
+
+
+    public void prepare() {
+        super.prepare();
+        checkComplete();
     }
 
 }
