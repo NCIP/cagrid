@@ -3,4 +3,25 @@
  PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp Index Version 1.0//EN"
         "http://java.sun.com/products/javahelp/index_1_0.dtd">
 <index version="1.0">
+<indexitem text="Advance client usage" target="advanceclientusage"/>
+<indexitem text="Advanced Service Development Topics" target="advancedservicedevelopmenttopics"/>
+<indexitem text="Changes from Introduce 1.2" target="changesfromintroduce12"/>
+<indexitem text="Data Types" target="datatypes"/>
+<indexitem text="Debugging my service" target="debuggingmyservice"/>
+<indexitem text="Deployment" target="deployment"/>
+<indexitem text="Implementing the Service" target="implementingtheservice"/>
+<indexitem text="Known Issues" target="knownissues"/>
+<indexitem text="Launching Introduce" target="launchingintroduce"/>
+<indexitem text="Overview" target="overview1"/>
+<indexitem text="Preamble" target="preamble1"/>
+<indexitem text="Service Creation" target="servicecreation"/>
+<indexitem text="Service Extensions" target="serviceextensions"/>
+<indexitem text="Service Modification" target="servicemodification"/>
+<indexitem text="Service Properties" target="serviceproperties"/>
+<indexitem text="Service Upgrading" target="serviceupgrading"/>
+<indexitem text="Services" target="services"/>
+<indexitem text="Software Prerequisites" target="softwareprerequisites"/>
+<indexitem text="Software Updates" target="softwareupdates"/>
+<indexitem text="Undeployment" target="undeployment"/>
+<indexitem text="Using the Client" target="usingtheclient"/>
 </index>

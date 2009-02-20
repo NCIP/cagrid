@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>Service Properties</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=Windows-1252"><LINK 
+href="Theme/nav.css" type=text/css rel=stylesheet><LINK 
+href="LinksExt/C1H_HTML.css" type=text/css rel=stylesheet>
+<META content="MSHTML 6.00.6001.18203" name=GENERATOR></HEAD>
+<BODY 
+style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px; BACKGROUND-COLOR: transparent" 
+relPart="">
+<DIV id=nsbanner 
+style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; LEFT: 0px; PADDING-BOTTOM: 0px; PADDING-TOP: 0px">
+<DIV id=TitleRow 
+style="PADDING-RIGHT: 10px; PADDING-LEFT: 22px; PADDING-BOTTOM: 4px; WIDTH: 100%; PADDING-TOP: 4px">
+<DIV id=ienav>
+<P class=linknav align=left><A class=d2hpreviousenabled id=D2HPrevious 
+href="services.htm">Previous</A> &nbsp; <A class=d2hnextenabled id=D2HNext 
+href="serviceextensions.htm">Next</A> </P></DIV></DIV></DIV>
+<DIV class=d2h_main_nstext id=nstext 
+style="PADDING-RIGHT: 10px; PADDING-LEFT: 22px; PADDING-BOTTOM: 10px; PADDING-TOP: 5px" 
+valign="bottom">
+<DIV class=d2h_breadcrumbs id=d2h_breadcrumbs><A class=d2h_breadcrumbsnormal 
+href="introducegraphicaldevelopmentenvironment.htm">Introduce Graphical 
+Development Environment</A><FONT class=d2h_breadcrumbslinkseparator> &gt; 
+</FONT><A class=d2h_breadcrumbsnormal href="servicemodification.htm">Service 
+Modification</A></DIV>
+<H3><A name=DevelopersGuide-ServiceProperties></A>Service Properties</H3>
+<DIV style="MARGIN-TOP: 0pt; MARGIN-BOTTOM: 0pt" align=center>
+<TABLE class=msonormaltable cellPadding=0 border=0>
+  <TBODY>
+  <TR>
+    <TD 
+    style="PADDING-RIGHT: 0.75pt; PADDING-LEFT: 0.75pt; PADDING-BOTTOM: 0.75pt; PADDING-TOP: 0.75pt">
+      <P class=msonormal style="MARGIN-TOP: 0pt"><A 
+      href="https://wiki.cagrid.org/download/attachments/2917693/servicePropertiesScreen.png?version=1"><IMG 
+      title="" height=366 
+      alt=https://wiki.cagrid.org/download/attachments/2917693/servicePropertiesScreen.png 
+      src="ImagesExt/image20_11.jpg" width=537 align=left border=0 
+      v:shapes="Picture_x0020_9"></A><A 
+      href="https://wiki.cagrid.org/download/attachments/2917693/servicePropertiesScreen.png?version=1"><SUP><FONT 
+      style="COLOR: blue; TEXT-DECORATION: none; text-underline: none"><IMG 
+      alt=https://wiki.cagrid.org/images/icons/link_attachment_7.gif 
+      src="ImagesExt/image20_2.png" border=0></FONT></SUP></A></P></TD></TR>
+  <TR>
+    <TD 
+    style="PADDING-RIGHT: 0.75pt; PADDING-LEFT: 0.75pt; PADDING-BOTTOM: 0.75pt; PADDING-TOP: 0.75pt">
+      <P class=msonormal style="MARGIN-BOTTOM: 0pt; TEXT-ALIGN: center" 
+      align=center><B>Introduce GDE Service Properties 
+View</B></P></TD></TR></TBODY></TABLE></DIV>
+<P class=msonormal>Service properties are key value pairs which can be set at 
+deployment time and are available to the server side implementation of the 
+service at run time. This enables passing in configuration variables to the 
+server side of the service at deployment. These key value pair properties can be 
+declared in "Service Properties" tab of the GDE Service Modification interface. 
+Once the "Service Properties" tab is clicked the main panel will show a table of 
+the service properties. The bottom panel has an entry for which can be used to 
+create a new service property. The properties will be confirmed and/or can be 
+changed from there default values at service deployment time. The variables can 
+then be accessed inside the user's implementation of the operations through the 
+services <I>ServiceConfiguration</I> class. For example, if you add a property 
+called <I>foo</I> under the service properties tab, and then save the service. 
+Then go look at the source code for the &lt;service 
+package&gt;.service.ServiceConfiguration.java class you will see that it now has 
+available methods for <I>string getFoo()</I> and void <I>setFoo(string foo)</I>. 
+These operations are now available to your service and can be used to pass 
+properties into your service at deployment time as well as other users for 
+configuring and sharing properties in your service. The &lt;service 
+package&gt;.service.ServiceConfiguration.java contains a static method for 
+obtaining an instance of itself called <I>getConfiguration()</I>. Any call to 
+that operation from anywhere in the service will return the handle to the 
+"ServiceConfiguration" instance and hence provide access to the service 
+properties.</P></DIV></BODY></HTML>

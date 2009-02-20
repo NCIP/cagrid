@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>Creating a Security Descriptor for a Resource</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=Windows-1252"><LINK 
+href="Theme/lf.css" type=text/css rel=stylesheet><LINK 
+href="LinksExt/C1H_HTML.css" type=text/css rel=stylesheet>
+<META content="MSHTML 6.00.6001.18203" name=GENERATOR></HEAD>
+<BODY 
+style="PADDING-RIGHT: 0px; PADDING-LEFT: 10px; PADDING-BOTTOM: 0px; PADDING-TOP: 0px; BACKGROUND-COLOR: transparent" 
+relPart="">
+<DIV class=d2h_secondary_topic 
+style="PADDING-RIGHT: 0pt; PADDING-LEFT: 0pt; PADDING-BOTTOM: 10pt; MARGIN: 0pt; PADDING-TOP: 0pt">
+<H4><A name=DevelopersGuide-CreatingaSecurityDescrip></A>Creating a Security 
+Descriptor for a Resource</H4>
+<P class=msonormal>Sometimes it is necessary to set a security descriptor on an 
+instance of a resource. This might be to protect resource instances so that only 
+the creator of the resource can use it. In order to do this you have to make 
+sure that when the context was generated in introduce that you had selected the 
+"secure" resource framework option. This will enable the resource to have a 
+setSecurityDescriptor() method enabled on it. When the resource is being 
+created, as in the example below, the security descriptor should be generated 
+and set on the resource. Once set it will be utilized on any access to the 
+resource. Below is an example method from the counter service used in the 
+utilizing a factory patter section. This is the method that Introduce generated 
+to create the counter instance for the caller. You can see in this code that 
+there is a place documenting how to set the security descriptor on the 
+resource.</P>
+<P class=msonormal>&nbsp;</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp;public 
+example.counter.context.stubs.types.CounterContextReference createCounter() 
+throws RemoteException {</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp;</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp; 
+org.apache.axis.message.addressing.EndpointReferenceType epr = new 
+org.apache.axis.message.addressing.EndpointReferenceType();</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp; 
+example.counter.context.service.globus.resource.BaseResourceHome home = 
+null;</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp; 
+org.globus.wsrf.ResourceKey resourceKey = null;</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp; 
+org.apache.axis.MessageContext ctx = 
+org.apache.axis.MessageContext.getCurrentContext();</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp; 
+String servicePath = ctx.getTargetService();</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp; 
+String homeName = org.globus.wsrf.Constants.JNDI_SERVICES_BASE_NAME + 
+servicePath + "/" + "counterContextHome";</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp;</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp; 
+try {</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp;&nbsp; 
+javax.naming.Context initialContext = new javax.naming.InitialContext();</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp;&nbsp; 
+home = (example.counter.context.service.globus.resource.BaseResourceHome) 
+initialContext.lookup(homeName);</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp;&nbsp; 
+resourceKey = home.createResource();</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp;</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp;&nbsp; 
+//&nbsp; Grab the newly created resource</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp;&nbsp; 
+example.counter.context.service.globus.resource.CounterContextResource 
+thisResource = 
+(example.counter.context.service.globus.resource.CounterContextResource)home.find(resourceKey);</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp;</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp;&nbsp; 
+//&nbsp; This is where the creator of this resource type can set whatever 
+needs</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp;&nbsp; 
+//&nbsp; to be set on the resource so that it can function appropriatly&nbsp; 
+for instance</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp;&nbsp; 
+//&nbsp; if you want the resouce to only have the query string then there is 
+where you would</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp;&nbsp; 
+//&nbsp; give it the query string.</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp;</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp;</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp;&nbsp; 
+// sample of setting creator only security.&nbsp; This will only allow the 
+caller that created</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp;&nbsp; 
+// this resource to be able to use it.</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp;&nbsp; 
+//thisResource.setSecurityDescriptor(gov.nih.nci.cagrid.introduce.servicetools.security.SecurityUtils.createCreatorOnlyResourceSecurityDescriptor());</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp;</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp;&nbsp; 
+String transportURL = (String) 
+ctx.getProperty(org.apache.axis.MessageContext.TRANS_URL);</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp;&nbsp; 
+transportURL = transportURL.substring(0,transportURL.lastIndexOf('/') +1 );</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp;&nbsp; 
+transportURL += "CounterContext";</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp;&nbsp; 
+epr = 
+org.globus.wsrf.utils.AddressingUtils.createEndpointReference(transportURL,resourceKey);</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp; 
+} catch (Exception e) \</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp;&nbsp; 
+throw new RemoteException("Error looking up CounterContext home:" + 
+e.getMessage(), e);</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp; 
+}</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp;</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp; 
+//return the typed EPR</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp; 
+example.counter.context.stubs.types.CounterContextReference ref = new 
+example.counter.context.stubs.types.CounterContextReference();</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp; 
+ref.setEndpointReference(epr);</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp;</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp; 
+return ref;</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp; 
+}</P></DIV></BODY></HTML>

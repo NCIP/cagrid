@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>Changes from Introduce 1.2</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=Windows-1252"><LINK 
+href="Theme/nav.css" type=text/css rel=stylesheet><LINK 
+href="LinksExt/C1H_HTML.css" type=text/css rel=stylesheet>
+<META content="MSHTML 6.00.6001.18203" name=GENERATOR></HEAD>
+<BODY 
+style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px; BACKGROUND-COLOR: transparent" 
+relPart="">
+<DIV id=nsbanner 
+style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; LEFT: 0px; PADDING-BOTTOM: 0px; PADDING-TOP: 0px">
+<DIV id=TitleRow 
+style="PADDING-RIGHT: 10px; PADDING-LEFT: 22px; PADDING-BOTTOM: 4px; WIDTH: 100%; PADDING-TOP: 4px">
+<DIV id=ienav>
+<P class=linknav align=left><A class=d2hpreviousenabled id=D2HPrevious 
+href="softwareprerequisites.htm">Previous</A> &nbsp; <A class=d2hnextenabled 
+id=D2HNext href="knownissues.htm">Next</A> </P></DIV></DIV></DIV>
+<DIV class=d2h_main_nstext id=nstext 
+style="PADDING-RIGHT: 10px; PADDING-LEFT: 22px; PADDING-BOTTOM: 10px; PADDING-TOP: 5px" 
+valign="bottom">
+<H2><A name=_Toc222839347></A><A 
+name=DevelopersGuide-ChangesfromIntroduce1.2></A>Changes from Introduce 1.2</H2>
+<P class=msonormal 
+style="MARGIN-LEFT: 36pt; TEXT-INDENT: -18pt; tab-stops: 36.0pt">•&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+Fixed circular schema bug in filesystem data type discovery tool </P>
+<P class=msonormal 
+style="MARGIN-LEFT: 36pt; TEXT-INDENT: -18pt; tab-stops: 36.0pt">•&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+Fixed bug in updater that was looking in the wrong place for 
+introduce.extension.properties and template when trying to set the patch version 
+</P>
+<P class=msonormal 
+style="MARGIN-LEFT: 36pt; TEXT-INDENT: -18pt; tab-stops: 36.0pt">•&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+Added new build-deploy.xml to fix problems with undeploy (upgrader needs to 
+handle the copy in) </P>
+<P class=msonormal 
+style="MARGIN-LEFT: 36pt; TEXT-INDENT: -18pt; tab-stops: 36.0pt">•&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+New heuristic for schema imports </P>
+<P class=msonormal 
+style="MARGIN-LEFT: 72pt; TEXT-INDENT: -18pt; tab-stops: 72.0pt">o&nbsp; if 
+introduce imports the schema it will only set namespace excludes or type maps 
+for that schema </P>
+<P class=msonormal 
+style="MARGIN-LEFT: 72pt; TEXT-INDENT: -18pt; tab-stops: 72.0pt">o&nbsp; if it 
+is desired to do this for the schemas that schema imports than those schemas 
+must be added and handled appropriately individually. This is different than in 
+prior versions. </P>
+<P class=msonormal 
+style="MARGIN-LEFT: 72pt; TEXT-INDENT: -18pt; tab-stops: 72.0pt">o&nbsp; Prior 
+versions of introduce would simple namespace exclude any namespace that were 
+imported from a schema that was set to generate stubs false. However this is not 
+always the desired behavior </P>
+<P class=msonormal 
+style="MARGIN-LEFT: 36pt; TEXT-INDENT: -18pt; tab-stops: 36.0pt">•&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+Added button to enable user to control whether or not stubs will be generated 
+for imported schema. </P>
+<P class=msonormal 
+style="MARGIN-LEFT: 36pt; TEXT-INDENT: -18pt; tab-stops: 36.0pt">•&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+Added to introduce model so that services and methods can have extension data 
+added to them </P>
+<P class=msonormal 
+style="MARGIN-LEFT: 36pt; TEXT-INDENT: -18pt; tab-stops: 36.0pt">•&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+Added an introduce log viewer component to the GUI. </P>
+<P class=msonormal 
+style="MARGIN-LEFT: 36pt; TEXT-INDENT: -18pt; tab-stops: 36.0pt">•&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+Added new extension type called INTRODUCE_GDE which enables adding grape 
+components to the UI through extensions </P>
+<P class=msonormal 
+style="MARGIN-LEFT: 36pt; TEXT-INDENT: -18pt; tab-stops: 36.0pt">•&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+Added another subscribe method to base clients that takes in a 
+NotificationCallback so that clients do have to overload the deliver method if 
+they want to implement a notification callback on there own or use another. </P>
+<P class=msonormal 
+style="MARGIN-LEFT: 36pt; TEXT-INDENT: -18pt; tab-stops: 36.0pt">•&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+Complete refactor of authorization within introduce. Introduce now has a 
+Authorization Extension that enables authorization plugins to the Introduce 
+Generated PDP. This is much cleaner and removes the hard coded gridgrouper and 
+csm support and now opens the doors to other authorization plugins to be 
+generated rapidly. </P>
+<P class=msonormal 
+style="MARGIN-LEFT: 36pt; TEXT-INDENT: -18pt; tab-stops: 36.0pt">•&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+Added ability for introduce generated clients to have a setAnonymousPrefered. 
+This will enable controlling whether or not the client will attempt to connect 
+anonymously or not. The default is set to true and can now be changed 
+programmatically. </P>
+<P class=msonormal 
+style="MARGIN-LEFT: 36pt; TEXT-INDENT: -18pt; tab-stops: 36.0pt">•&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+Added to introduce service extension so that service extension providers can 
+plug a deployment validator into the service that will be executed before the 
+service is deployed. This will enable service extension providers to validate 
+the service is properly configured prior to deployment. </P></DIV></BODY></HTML>
