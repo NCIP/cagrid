@@ -100,7 +100,7 @@ public class JBossComponentInstaller extends AbstractDownloadedComponentInstalle
         return new Condition() {
             public boolean evaluate(WizardModel m) {
                 CaGridInstallerModel model = (CaGridInstallerModel) m;
-                return model.isJBossContainer() && model.isJBossInstalled() && model.isTrue(Constants.INSTALL_CONFIGURE_CAGRID);
+                return model.isJBossContainer() && model.isJBossInstalled() && model.isTrue(Constants.INSTALL_CONFIGURE_CONTAINER);
             }
         };
     }

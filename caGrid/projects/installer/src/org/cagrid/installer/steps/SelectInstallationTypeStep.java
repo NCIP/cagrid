@@ -46,15 +46,8 @@ public class SelectInstallationTypeStep extends PropertyConfigurationStep {
     protected void checkComplete() {
         if (getOption(Constants.INSTALL_CONFIGURE_CAGRID) != null
             && getOption(Constants.INSTALL_CONFIGURE_CONTAINER) != null) {
-            if (model.isCaGridInstalled()) {
+            if (model.isCaGridInstalled() || ((JCheckBox) getOption(Constants.INSTALL_CONFIGURE_CAGRID)).isSelected()) {
                 setComplete(true);
-            } else if (((JCheckBox) getOption(Constants.INSTALL_CONFIGURE_CAGRID)).isSelected()
-                || ((JCheckBox) getOption(Constants.INSTALL_CONFIGURE_CONTAINER)).isSelected()) {
-                if (((JCheckBox) getOption(Constants.INSTALL_CONFIGURE_CAGRID)).isSelected()) {
-                    setComplete(true);
-                } else {
-                    setComplete(false);
-                }
             } else {
                 setComplete(false);
             }
