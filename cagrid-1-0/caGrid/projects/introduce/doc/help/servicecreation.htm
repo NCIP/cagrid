@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>Service Creation</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=Windows-1252"><LINK 
+href="Theme/nav.css" type=text/css rel=stylesheet><LINK 
+href="LinksExt/C1H_HTML.css" type=text/css rel=stylesheet>
+<META content="MSHTML 6.00.6001.18203" name=GENERATOR></HEAD>
+<BODY 
+style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px; BACKGROUND-COLOR: transparent" 
+relPart="">
+<DIV id=nsbanner 
+style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; LEFT: 0px; PADDING-BOTTOM: 0px; PADDING-TOP: 0px">
+<DIV id=TitleRow 
+style="PADDING-RIGHT: 10px; PADDING-LEFT: 22px; PADDING-BOTTOM: 4px; WIDTH: 100%; PADDING-TOP: 4px">
+<DIV id=ienav>
+<P class=linknav align=left><A class=d2hpreviousenabled id=D2HPrevious 
+href="launchingintroduce.htm">Previous</A> &nbsp; <A class=d2hnextenabled 
+id=D2HNext href="servicemodification.htm">Next</A> </P></DIV></DIV></DIV>
+<DIV class=d2h_main_nstext id=nstext 
+style="PADDING-RIGHT: 10px; PADDING-LEFT: 22px; PADDING-BOTTOM: 10px; PADDING-TOP: 5px" 
+valign="bottom">
+<DIV class=d2h_breadcrumbs id=d2h_breadcrumbs><A class=d2h_breadcrumbsnormal 
+href="introducegraphicaldevelopmentenvironment.htm">Introduce Graphical 
+Development Environment</A></DIV>
+<H2><A name=_Toc222839351></A><A 
+name=DevelopersGuide-ServiceCreation></A>Service Creation</H2>
+<DIV style="MARGIN-TOP: 0pt; MARGIN-BOTTOM: 0pt" align=center>
+<TABLE class=msonormaltable cellPadding=0 border=0>
+  <TBODY>
+  <TR>
+    <TD 
+    style="PADDING-RIGHT: 0.75pt; PADDING-LEFT: 0.75pt; PADDING-BOTTOM: 0.75pt; PADDING-TOP: 0.75pt">
+      <P class=msonormal style="MARGIN-TOP: 0pt"><A 
+      href="https://wiki.cagrid.org/download/attachments/2917693/createScreen.png?version=1"></A><A 
+      href="https://wiki.cagrid.org/download/attachments/2917693/createScreen.png?version=1"><IMG 
+      title="" height=274 
+      alt=https://wiki.cagrid.org/download/attachments/2917693/createScreen.png 
+      src="ImagesExt/image20_6.png" width=577 align=left border=0 
+      v:shapes="Picture_x0020_4"></A><A 
+      href="https://wiki.cagrid.org/download/attachments/2917693/createScreen.png?version=1"><FONT 
+      style="COLOR: windowtext; TEXT-DECORATION: none; text-underline: none"><SUP><FONT 
+      style="COLOR: blue"><IMG 
+      alt=https://wiki.cagrid.org/images/icons/link_attachment_7.gif 
+      src="ImagesExt/image20_2.png" border=0></FONT></SUP></FONT></A></P></TD></TR>
+  <TR>
+    <TD 
+    style="PADDING-RIGHT: 0.75pt; PADDING-LEFT: 0.75pt; PADDING-BOTTOM: 0.75pt; PADDING-TOP: 0.75pt">
+      <P class=msonormal style="MARGIN-BOTTOM: 0pt; TEXT-ALIGN: center" 
+      align=center><B>Introduce GDE Service Creation 
+  Component</B></P></TD></TR></TBODY></TABLE></DIV>
+<P class=msonormal>The service creation component, shown below, enables the 
+developer to create a new grid service. Using the creation interface, the 
+service developer can provide basic information about the service such 
+as:<BR><B>Creation Directory</B><BR><I>The creation directory is the location of 
+which the grid service will be generated.</I><B>Service Name</B><BR><I>Service 
+name is the name that will be used to generate the service. The service name 
+must be a valid java identifier.</I><B>Package Name</B><BR><I>The package name 
+is the base package to be used when generated the grid service source 
+code.</I><B>Namespace</B><BR><I>The namespace is the namespace to be used when 
+defining the WSDL of the service.</I></P>
+<P class=msonormal>The developer also has the ability to add service extensions. 
+A service extension is an Introduce plug-in (see <A title=Extensions 
+href="https://wiki.cagrid.org/display/introduce13/Extensions"><FONT 
+style="COLOR: blue">Extensions</FONT></A>), which is designed to add 
+customizations to the service. For example, service extensions might add 
+pre-defined operations, resources/resource properties, or security settings. 
+They enable the development of custom service types with predefined methods, 
+which must be implemented. They also enable Introduce to run the custom code 
+implemented in the plug-in, which makes modifications to the underlying service 
+being created. This capability allows the specialization of Introduce to support 
+domain specific common scenarios, further abstracting the individual service 
+developer from responsibilities related to the deployment of grid technologies 
+in a production environment. Once the information has been entered and 
+extensions, if any, have been selected, the user will select the create button. 
+Once the creation button is selected the Introduce creation engine will begin 
+generating the service. After the service is generated is will be compiled and 
+the Modification component will be displayed. For a list of available caGrid 
+Service extension and their documentation please look <A title=Extensions 
+href="https://wiki.cagrid.org/display/introduce13/Extensions"><FONT 
+style="COLOR: blue">here</FONT></A>.</P></DIV></BODY></HTML>

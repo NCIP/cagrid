@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>Deployment</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=Windows-1252"><LINK 
+href="Theme/nav.css" type=text/css rel=stylesheet><LINK 
+href="LinksExt/C1H_HTML.css" type=text/css rel=stylesheet>
+<META content="MSHTML 6.00.6001.18203" name=GENERATOR></HEAD>
+<BODY 
+style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px; BACKGROUND-COLOR: transparent" 
+relPart="">
+<DIV id=nsbanner 
+style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; LEFT: 0px; PADDING-BOTTOM: 0px; PADDING-TOP: 0px">
+<DIV id=TitleRow 
+style="PADDING-RIGHT: 10px; PADDING-LEFT: 22px; PADDING-BOTTOM: 4px; WIDTH: 100%; PADDING-TOP: 4px">
+<DIV id=ienav>
+<P class=linknav align=left><A class=d2hpreviousenabled id=D2HPrevious 
+href="serviceextensions.htm">Previous</A> &nbsp; <A class=d2hnextenabled 
+id=D2HNext href="undeployment.htm">Next</A> </P></DIV></DIV></DIV>
+<DIV class=d2h_main_nstext id=nstext 
+style="PADDING-RIGHT: 10px; PADDING-LEFT: 22px; PADDING-BOTTOM: 10px; PADDING-TOP: 5px" 
+valign="bottom">
+<DIV class=d2h_breadcrumbs id=d2h_breadcrumbs><A class=d2h_breadcrumbsnormal 
+href="introducegraphicaldevelopmentenvironment.htm">Introduce Graphical 
+Development Environment</A></DIV>
+<H2><A name=_Toc222839353></A><A 
+name=DevelopersGuide-Deployment></A>Deployment</H2>
+<DIV style="MARGIN-TOP: 0pt; MARGIN-BOTTOM: 0pt" align=center>
+<TABLE class=msonormaltable cellPadding=0 border=0>
+  <TBODY>
+  <TR>
+    <TD 
+    style="PADDING-RIGHT: 0.75pt; PADDING-LEFT: 0.75pt; PADDING-BOTTOM: 0.75pt; PADDING-TOP: 0.75pt">
+      <P class=msonormal style="MARGIN-TOP: 0pt"><A 
+      href="https://wiki.cagrid.org/download/attachments/2917693/deployServiceScreen.png?version=1"><IMG 
+      title="" height=424 
+      alt=https://wiki.cagrid.org/download/attachments/2917693/deployServiceScreen.png 
+      src="ImagesExt/image20_13.jpg" width=602 align=left border=0 
+      v:shapes="Picture_x0020_11"></A><A 
+      href="https://wiki.cagrid.org/download/attachments/2917693/deployServiceScreen.png?version=1"><SUP><FONT 
+      style="COLOR: blue; TEXT-DECORATION: none; text-underline: none"><IMG 
+      alt=https://wiki.cagrid.org/images/icons/link_attachment_7.gif 
+      src="ImagesExt/image20_2.png" border=0></FONT></SUP></A></P></TD></TR>
+  <TR>
+    <TD 
+    style="PADDING-RIGHT: 0.75pt; PADDING-LEFT: 0.75pt; PADDING-BOTTOM: 0.75pt; PADDING-TOP: 0.75pt">
+      <P class=msonormal style="MARGIN-BOTTOM: 0pt; TEXT-ALIGN: center" 
+      align=center><B>Introduce GDE Service Deployment 
+  Component</B></P></TD></TR></TBODY></TABLE></DIV>
+<P class=msonormal>The deployment option of the GDE allows the service developer 
+to deploy the implemented grid service, which has been created with Introduce, 
+to a Grid service container. The toolkit currently supports deploying a service 
+to either a Globus, Tomcat, or JBoss Grid service container; however, support 
+for other deployment options can easily be added to the GDE. The <B>General 
+Deployment</B> tab shows basic information about the service you have going to 
+deploy and provides the ability to choose the container to deploy to. Introduce 
+will detect the available containers on the host machine by checking for the 
+existing of environment variables (GLOBUS_LOCATION (Globus), CATALINA_HOME 
+(Tomcat), JBOSS_HOME (JBoss)). The <B>Advanced Deployment</B> tab enables 
+configuration of many standard deployment options:</P>
+<TABLE class=msonormaltable cellPadding=0 border=0>
+  <TBODY>
+  <TR>
+    <TD 
+    style="PADDING-RIGHT: 0.75pt; PADDING-LEFT: 0.75pt; PADDING-BOTTOM: 0.75pt; PADDING-TOP: 0.75pt">
+      <P class=msonormal style="TEXT-ALIGN: center" align=center><B>Property 
+      Name <BR clear=all></B></P></TD>
+    <TD 
+    style="PADDING-RIGHT: 0.75pt; PADDING-LEFT: 0.75pt; PADDING-BOTTOM: 0.75pt; PADDING-TOP: 0.75pt">
+      <P class=msonormal style="TEXT-ALIGN: center" align=center><B>Value(s) <BR 
+      clear=all></B></P></TD>
+    <TD 
+    style="PADDING-RIGHT: 0.75pt; PADDING-LEFT: 0.75pt; PADDING-BOTTOM: 0.75pt; PADDING-TOP: 0.75pt">
+      <P class=msonormal style="TEXT-ALIGN: center" align=center><B>Description 
+      <BR clear=all></B></P></TD></TR>
+  <TR>
+    <TD 
+    style="PADDING-RIGHT: 0.75pt; PADDING-LEFT: 0.75pt; PADDING-BOTTOM: 0.75pt; PADDING-TOP: 0.75pt">
+      <P class=msonormal>perform.index.service.registration <BR 
+clear=all></P></TD>
+    <TD 
+    style="PADDING-RIGHT: 0.75pt; PADDING-LEFT: 0.75pt; PADDING-BOTTOM: 0.75pt; PADDING-TOP: 0.75pt">
+      <P class=msonormal>true of false <BR clear=all></P></TD>
+    <TD 
+    style="PADDING-RIGHT: 0.75pt; PADDING-LEFT: 0.75pt; PADDING-BOTTOM: 0.75pt; PADDING-TOP: 0.75pt">
+      <P class=msonormal>Whether or not the service should register with the 
+      Index Service <BR clear=all></P></TD></TR>
+  <TR>
+    <TD 
+    style="PADDING-RIGHT: 0.75pt; PADDING-LEFT: 0.75pt; PADDING-BOTTOM: 0.75pt; PADDING-TOP: 0.75pt">
+      <P class=msonormal>index.service.url <BR clear=all></P></TD>
+    <TD 
+    style="PADDING-RIGHT: 0.75pt; PADDING-LEFT: 0.75pt; PADDING-BOTTOM: 0.75pt; PADDING-TOP: 0.75pt">
+      <P class=msonormal>URL <BR clear=all></P></TD>
+    <TD 
+    style="PADDING-RIGHT: 0.75pt; PADDING-LEFT: 0.75pt; PADDING-BOTTOM: 0.75pt; PADDING-TOP: 0.75pt">
+      <P class=msonormal>The URL of the Index Service to register with. <BR 
+      clear=all></P></TD></TR>
+  <TR>
+    <TD 
+    style="PADDING-RIGHT: 0.75pt; PADDING-LEFT: 0.75pt; PADDING-BOTTOM: 0.75pt; PADDING-TOP: 0.75pt">
+      <P class=msonormal>index.service.index.refresh_milliseconds <BR 
+      clear=all></P></TD>
+    <TD 
+    style="PADDING-RIGHT: 0.75pt; PADDING-LEFT: 0.75pt; PADDING-BOTTOM: 0.75pt; PADDING-TOP: 0.75pt">
+      <P class=msonormal>Integer <BR clear=all></P></TD>
+    <TD 
+    style="PADDING-RIGHT: 0.75pt; PADDING-LEFT: 0.75pt; PADDING-BOTTOM: 0.75pt; PADDING-TOP: 0.75pt">
+      <P class=msonormal>How often to reregister with the index service (this 
+      should be a relatively large amount of time and is simply useful for 
+      making sure the index service does not loose your registration). <BR 
+      clear=all></P></TD></TR>
+  <TR>
+    <TD 
+    style="PADDING-RIGHT: 0.75pt; PADDING-LEFT: 0.75pt; PADDING-BOTTOM: 0.75pt; PADDING-TOP: 0.75pt">
+      <P class=msonormal>index.service.registration.refresh_seconds <BR 
+      clear=all></P></TD>
+    <TD 
+    style="PADDING-RIGHT: 0.75pt; PADDING-LEFT: 0.75pt; PADDING-BOTTOM: 0.75pt; PADDING-TOP: 0.75pt">
+      <P class=msonormal>Integer <BR clear=all></P></TD>
+    <TD 
+    style="PADDING-RIGHT: 0.75pt; PADDING-LEFT: 0.75pt; PADDING-BOTTOM: 0.75pt; PADDING-TOP: 0.75pt">
+      <P class=msonormal>When registering to the index service this number tell 
+      the index service how often, in milliseconds, to contact me for updated 
+      met </P></TD></TR></TBODY></TABLE>
+<P class=msonormal>The <I>Service Properties</I> deployment tab allows the 
+service deployer to populate service configuration properties, which the service 
+will have access to at runtime.</P></DIV></BODY></HTML>

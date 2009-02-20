@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>Resource Framework Options</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=Windows-1252"><LINK 
+href="Theme/lf.css" type=text/css rel=stylesheet><LINK 
+href="LinksExt/C1H_HTML.css" type=text/css rel=stylesheet>
+<META content="MSHTML 6.00.6001.18203" name=GENERATOR></HEAD>
+<BODY 
+style="PADDING-RIGHT: 0px; PADDING-LEFT: 10px; PADDING-BOTTOM: 0px; PADDING-TOP: 0px; BACKGROUND-COLOR: transparent" 
+relPart="">
+<DIV class=d2h_secondary_topic 
+style="PADDING-RIGHT: 0pt; PADDING-LEFT: 0pt; PADDING-BOTTOM: 10pt; MARGIN: 0pt; PADDING-TOP: 0pt">
+<H5><A name=DevelopersGuide-ResourceFrameworkOptions></A>Resource Framework 
+Options</H5>
+<P class=msonormal>The resource framework options for a service will add or 
+remove a particular type of functionality to the service resource. The supported 
+resource framework options for this release of introduce are as follows</P>
+<P class=msonormal 
+style="MARGIN-LEFT: 36pt; TEXT-INDENT: -18pt; tab-stops: 36.0pt">•&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+<B>Custom</B><BR>Enables the user to provide thier own implantation of the 
+resource class. </P>
+<P class=msonormal 
+style="MARGIN-LEFT: 36pt; TEXT-INDENT: -18pt; tab-stops: 36.0pt">•&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+<B>Singleton</B><BR>The service will only have one instance of the resource. 
+</P>
+<P class=msonormal 
+style="MARGIN-LEFT: 36pt; TEXT-INDENT: -18pt; tab-stops: 36.0pt">•&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+<B>Lifetime</B><BR>The resources created by this service will support the 
+WS-Lifetime specification and therefore the service will implement the 
+setTerminationTime and destory operations as part of its wsdl. </P>
+<P class=msonormal 
+style="MARGIN-LEFT: 36pt; TEXT-INDENT: -18pt; tab-stops: 36.0pt">•&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+<B>Persistent</B><BR>The resources created by this service will automatically 
+persist themselves including resource properties and registered notification 
+consumers to the file system so that if the container is restarted or 
+inadvertently dies they will come back to life once the container is up and 
+running again. </P>
+<P class=msonormal 
+style="MARGIN-LEFT: 36pt; TEXT-INDENT: -18pt; tab-stops: 36.0pt">•&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+<B>Secure</B><BR>The resources will implement SecureResource and therefore have 
+the getServiceSecurityProvider so that they can provide a security descriptor 
+for each particular instance of the resource. </P>
+<P class=msonormal 
+style="MARGIN-LEFT: 36pt; TEXT-INDENT: -18pt; tab-stops: 36.0pt">•&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+<B>Notification</B><BR>The resources created by this service will automatically 
+support the WS-Notification specification and therefore the service will 
+implement the subscribe operation in its wsdl and the client will have 
+operations to make subscriptions and utilize notifications. </P>
+<P class=msonormal 
+style="MARGIN-LEFT: 36pt; TEXT-INDENT: -18pt; tab-stops: 36.0pt">•&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+<B>Resource Property Access</B><BR>The resources will implement the 
+getResourcePropterty, getResourceProperties and QueryResourceProperty operations 
+and these methods will be exposed through the service's wsdl. </P>
+<DIV style="MARGIN-TOP: 0pt; MARGIN-BOTTOM: 0pt" align=center>
+<TABLE class=msonormaltable cellPadding=0 border=0>
+  <TBODY>
+  <TR>
+    <TD 
+    style="PADDING-RIGHT: 0.75pt; PADDING-LEFT: 0.75pt; PADDING-BOTTOM: 0.75pt; PADDING-TOP: 0.75pt">
+      <P class=msonormal style="MARGIN-TOP: 0pt"><A 
+      href="https://wiki.cagrid.org/download/attachments/2917693/modifyServiceScreen.png?version=1"><IMG 
+      title="" height=326 
+      alt=https://wiki.cagrid.org/download/attachments/2917693/modifyServiceScreen.png 
+      src="ImagesExt/image20_9.jpg" width=500 align=left border=0 
+      v:shapes="Picture_x0020_7"></A><A 
+      href="https://wiki.cagrid.org/download/attachments/2917693/modifyServiceScreen.png?version=1"><SUP><FONT 
+      style="COLOR: blue; TEXT-DECORATION: none; text-underline: none"><IMG 
+      alt=https://wiki.cagrid.org/images/icons/link_attachment_7.gif 
+      src="ImagesExt/image20_2.png" border=0></FONT></SUP></A></P></TD></TR>
+  <TR>
+    <TD 
+    style="PADDING-RIGHT: 0.75pt; PADDING-LEFT: 0.75pt; PADDING-BOTTOM: 0.75pt; PADDING-TOP: 0.75pt">
+      <P class=msonormal style="MARGIN-BOTTOM: 0pt; TEXT-ALIGN: center" 
+      align=center><B>Introduce GDE Modify Service 
+View</B></P></TD></TR></TBODY></TABLE></DIV></DIV></BODY></HTML>
