@@ -75,7 +75,7 @@ public class IntroduceHelp {
 
         // (uses the classloader mechanism)
         ClassLoader loader = IntroduceHelp.class.getClassLoader();
-        URL helpSetURL = HelpSet.findHelpSet(loader, "introduce.hs");
+        URL helpSetURL = HelpSet.findHelpSet(loader, "Introduce.hs");
         try {
             helpSet = new HelpSet(null, helpSetURL);
             fHelp = helpSet.createHelpBroker();
