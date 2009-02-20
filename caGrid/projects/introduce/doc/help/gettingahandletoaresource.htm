@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>Getting a Handle to a Resource</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=Windows-1252"><LINK 
+href="Theme/lf.css" type=text/css rel=stylesheet><LINK 
+href="LinksExt/C1H_HTML.css" type=text/css rel=stylesheet>
+<META content="MSHTML 6.00.6001.18203" name=GENERATOR></HEAD>
+<BODY 
+style="PADDING-RIGHT: 0px; PADDING-LEFT: 10px; PADDING-BOTTOM: 0px; PADDING-TOP: 0px; BACKGROUND-COLOR: transparent" 
+relPart="">
+<DIV class=d2h_secondary_topic 
+style="PADDING-RIGHT: 0pt; PADDING-LEFT: 0pt; PADDING-BOTTOM: 10pt; MARGIN: 0pt; PADDING-TOP: 0pt">
+<H4><A name=DevelopersGuide-GettingaHandletoaResourc></A>Getting a Handle to a 
+Resource</H4>
+<P class=msonormal>When developing in the service context you must remember that 
+the ServiceImpl class is just the service interface but the service should act 
+on the addressed resource as there may be more than one resource instance being 
+used by the service at a time. An example of how to get a handle to the resource 
+which is being addressed by the current caller (exmaple from the counter service 
+context as described in in the section on Utilizing the factory patter):</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp; 
+public void incrementCounter() throws RemoteException {</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+int currentCounter;</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+try {</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+currentCounter = getResourceHome().getAddressedResource().getIntValue();</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp;</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+currentCounter++;</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+getResourceHome().getAddressedResource().setIntValue(currentCounter);</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+} catch (Exception e) {</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+e.printStackTrace();</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+}</P>
+<P class=msonormal 
+style="tab-stops: 45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">&nbsp; 
+}</P></DIV></BODY></HTML>

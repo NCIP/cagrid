@@ -1,4 +1,4 @@
-﻿/*<!--do not change. css modified by doc-to-help-->*/a.d2hpreviousenabled {
+/*<!--do not change. css modified by doc-to-help-->*/a.d2hpreviousenabled {
 	font-weight: normal; color: blue; font-style: normal; text-decoration: underline
 }
 font.d2hpreviousdisabled {
@@ -32,5 +32,5 @@ font.d2h_breadcrumbslinkseparator {
 	font-weight: normal; color: black; font-style: normal; text-decoration: none
 }
 div.d2h_breadcrumbs {
-	border-bottom: gray 1px solid
+	border-bottom: medium none
 }
