@@ -157,10 +157,13 @@ public class ServicesJTree extends JTree {
 
     public void setServices(ServiceInformation info) {
         removeAllNodes(root);
+        this.currentNode = null;
         ((DefaultTreeModel) this.getModel()).setRoot(null);
         root = new ServicesTypeTreeNode(info);
         ((DefaultTreeModel) this.getModel()).setRoot(root);
         root.setServices(info, (DefaultTreeModel) this.getModel());
+        ((CardLayout) ServicesJTree.this.optionsPanel.getLayout()).show(ServicesJTree.this.optionsPanel,
+        "blank");
         // expand the root
         this.expandAll(true);
 

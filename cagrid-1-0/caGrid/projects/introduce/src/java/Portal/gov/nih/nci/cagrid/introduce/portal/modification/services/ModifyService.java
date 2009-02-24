@@ -418,7 +418,7 @@ public class ModifyService extends JDialog {
                         service.getService().setServiceSecurity(getSecurityPanel().getServiceSecurity(true));
                     } catch (Exception e1) {
                         logger.error(e1.getMessage(),e1);
-                        JOptionPane.showMessageDialog(ModifyService.this, "Error setting service security: " + e1.getMessage());
+                        JOptionPane.showMessageDialog(ModifyService.this, e1.getMessage());
                         return;
                     }
 
