@@ -466,8 +466,7 @@ public class Installer {
 
             public boolean evaluate(WizardModel model) {
                 CaGridInstallerModel cagridmodel = (CaGridInstallerModel) model;
-                return ((CaGridInstallerModel) model).isDeployGlobusRequired()
-                    && ((CaGridInstallerModel) model).isConfigureContainerSelected()
+                return ((CaGridInstallerModel) model).isConfigureContainerSelected()
                     && (cagridmodel.getProperty(Constants.TARGET_GRID) != null)
                     && !cagridmodel.getProperty(Constants.TARGET_GRID).equals(Constants.NO_TARGET_GRID);
             }
