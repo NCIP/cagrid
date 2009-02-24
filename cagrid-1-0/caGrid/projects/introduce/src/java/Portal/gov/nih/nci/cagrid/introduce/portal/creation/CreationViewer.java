@@ -149,7 +149,6 @@ public class CreationViewer extends CreationViewerBaseComponent {
         this.setTitle("Create a Grid Service");
 
         initValidation();
-        
     }
 
 
@@ -948,6 +947,7 @@ public class CreationViewer extends CreationViewerBaseComponent {
 			GridBagConstraints gridBagConstraints201 = new GridBagConstraints();
 			gridBagConstraints201.gridwidth = 2;
 			gridBagConstraints201.gridy = 2;
+			gridBagConstraints201.fill = GridBagConstraints.HORIZONTAL;
 			gridBagConstraints201.gridx = 0;
 			GridBagConstraints gridBagConstraints61 = new GridBagConstraints();
 			gridBagConstraints61.anchor = GridBagConstraints.NORTHWEST;
@@ -991,11 +991,6 @@ public class CreationViewer extends CreationViewerBaseComponent {
 			lifetimeResource.setSelected(false);
 			lifetimeResource.setText(IntroduceConstants.INTRODUCE_LIFETIME_RESOURCE);
 			lifetimeResource.setHorizontalTextPosition(SwingConstants.TRAILING);
-			lifetimeResource.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent e) {
-					checkResourcePropertyOptions();
-				}
-			});
 		}
 		return lifetimeResource;
 	}
@@ -1012,11 +1007,6 @@ public class CreationViewer extends CreationViewerBaseComponent {
 			persistantResource.setToolTipText("enables resources to save state to disk and recover from disk");
 			persistantResource.setSelected(false);
 			persistantResource.setText(IntroduceConstants.INTRODUCE_PERSISTENT_RESOURCE);
-			persistantResource.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent e) {
-					checkResourcePropertyOptions();
-				}
-			});
 		}
 		return persistantResource;
 	}
@@ -1033,11 +1023,6 @@ public class CreationViewer extends CreationViewerBaseComponent {
 			notificationResource.setSelected(false);
 			notificationResource.setToolTipText("add support for WS-Notification");
 			notificationResource.setText(IntroduceConstants.INTRODUCE_NOTIFICATION_RESOURCE);
-			notificationResource.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent e) {
-					checkResourcePropertyOptions();
-				}
-			});
 		}
 		return notificationResource;
 	}
@@ -1054,11 +1039,6 @@ public class CreationViewer extends CreationViewerBaseComponent {
 			secureResource.setSelected(false);
 			secureResource.setToolTipText("enables security to be added to this resource type");
 			secureResource.setText(IntroduceConstants.INTRODUCE_SECURE_RESOURCE);
-			secureResource.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent e) {
-					checkResourcePropertyOptions();
-				}
-			});
 		}
 		return secureResource;
 	}
@@ -1075,22 +1055,7 @@ public class CreationViewer extends CreationViewerBaseComponent {
 			resourceProperty.setSelected(true);
 			resourceProperty.setToolTipText("enables access/query/set operations for the resource properties");
 			resourceProperty.setText("resource property access");
-			resourceProperty.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent e) {
-					checkResourcePropertyOptions();
-				}
-			});
 		}
 		return resourceProperty;
-	}
-	
-	private void checkResourcePropertyOptions() {
-		
-		getLifetimeResource().setEnabled(true);
-		getPersistantResource().setEnabled(true);
-		getNotificationResource().setEnabled(true);
-		getSecureResource().setEnabled(true);
-		getResourceProperty().setEnabled(false);
-
 	}
 }  //  @jve:decl-index=0:visual-constraint="10,10"
