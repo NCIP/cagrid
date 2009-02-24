@@ -34,6 +34,13 @@
 			location="./resources/spring-beans.dtd"/>
 	</xmlcatalog>
 	
+	<target name="fix-permissions">
+		<chmod perm="u+x">
+			  <fileset dir="${jboss.home}/bin">
+			    <include name="*.sh"/>
+			  </fileset>
+		</chmod>
+	</target>
 
 	<target name="fix-secure-web-xml">
 		<antcall target="fix-web-xml">

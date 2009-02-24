@@ -43,8 +43,9 @@ public class ConfigureTomcatTask extends CaGridInstallerAntTask {
             setLastStep(1);
             new AntExecutionTask("", "", getBuildFilePath(), "configure-server-config", env, sysProps)
             .execute(model);
+            setLastStep(2);
         } else {
-            setStepCount(5);
+            setStepCount(6);
             new AntExecutionTask("", "", getBuildFilePath(), "insert-secure-connector", env, sysProps)
                     .execute(model);
             setLastStep(1);
@@ -58,7 +59,11 @@ public class ConfigureTomcatTask extends CaGridInstallerAntTask {
             setLastStep(4);
             new AntExecutionTask("", "", getBuildFilePath(), "configure-server-config", env, sysProps)
                     .execute(model);
+            setLastStep(5);
         }
+        
+        new AntExecutionTask("", "", getBuildFilePath(), "fix-permissions", env, sysProps)
+        .execute(model);
         
         return null;
     }
