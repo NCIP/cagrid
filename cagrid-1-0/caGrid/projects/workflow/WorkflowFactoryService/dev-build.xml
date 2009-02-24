@@ -21,6 +21,32 @@
 	<property name="ext.test.lib" value="${ext.dependencies.dir}/test/jars" />
 	<property name="ext.tools.lib.dir" location="${ext.dependencies.dir}/tools/jars" />
 
+	<!-- overide the introduce location of this which is suposed to be in tools/lib -->
+        <property name="ant.contrib.location" value="${ext.tools.lib.dir}/ant-contrib-1.0b3.jar" />
+	
+	<path id="xmltaskdef.cp">
+                <fileset dir="${lib.dir}">
+                        <include name="xmltask-v1.14.jar" />
+                </fileset>
+    </path>
+	<taskdef name="xmltask"
+                classname="com.oopsconsultancy.xmltask.ant.XmlTask"
+                classpathref="xmltaskdef.cp" />
+	
+
+	<xmlcatalog id="installer.catalog">
+		<dtd 
+			publicId="-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+			location="./resources/web-app_2_3.dtd"/>
+		<dtd 
+			publicId="-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN"
+			location="./resources/web-facesconfig_1_1.dtd"/>
+		<dtd 
+			publicId="-//SPRING//DTD BEAN//EN"
+			location="./resources/spring-beans.dtd"/>
+	</xmlcatalog>
+
+
 	<!-- ============================================================== -->
 	<!-- This file is designed to allow the developer to extend the     -->
 	<!-- build process without having to edit the master build.xml      -->
@@ -252,5 +278,72 @@
 		</junit>
 	</target>
 
+	<target name="configure-bpel-admin-web-xml">
 
+	  <property name="bpel.admin.role" value="admin"/>
+	  <property name="tomcat.home" value="/Users/sulakhe/Desktop/jakarta-tomcat-5.0.28" />
+	  
+	  <property name="config.file"
+		    value="${tomcat.home}/webapps/BpelAdmin/WEB-INF/web.xml" />
+	  <xmltask source="${config.file}" dest="${config.file}" preservetype="true">
+	    <xmlcatalog refid="installer.catalog"/>    
+	    <remove path="/web-app/security-constraint" />
+	    <remove path="/web-app/login-config" />
+	    <remove path="/web-app/security-role" />
+	    <insert path="/web-app">
+<![CDATA[
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>BpelAdmin</web-resource-name>
+      <url-pattern>/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>${bpel.admin.role}</role-name>
+    </auth-constraint>
+  </security-constraint>
+  <login-config>
+    <auth-method>DIGEST</auth-method>
+  </login-config>
+  <security-role>
+    <role-name>${bpel.admin.role}</role-name>
+  </security-role>
+  ]]>
+      </insert>
+    </xmltask>
+
+	</target>
+
+	<target name="create-bpel-admin-context">
+  
+	  <!-- TODO: handle virutal hosts and other engines -->
+	  <property name="context.file" value="${tomcat.home}/conf/Catalina/localhost/BpelAdmin.xml"/>
+	  <delete file="${context.file}"/>
+	  <touch mkdirs="true" file="${context.file}"/>
+	  <concat destfile="${context.file}"><![CDATA[<?xml version='1.0' encoding='utf-8'?>
+<Context reloadable="false" displayName="ActiveBPEL Administrative Console" path="/BpelAdmin">
+  <Realm className="org.apache.catalina.realm.MemoryRealm"
+	 pathname="conf/BpelAdmin-users.xml"/>
+</Context>
+]]>
+	  </concat>
+	  
+	</target>
+
+	<target name="create-bpel-admin-users">
+	  
+	  <property name="users.file" value="${tomcat.home}/conf/BpelAdmin-users.xml"/>
+	  <property name="bpel.admin.role" value="admin"/>
+	  <property name="bpel.admin.username" value="changeMe"/>
+	  <property name="bpel.admin.password" value="changeMe"/>
+	  <delete file="${users.file}"/>
+	  <touch mkdirs="true" file="${users.file}"/>
+	  <concat destfile="${users.file}"><![CDATA[<tomcat-users>
+ <user name="${bpel.admin.username}" 
+       password="${bpel.admin.password}" 
+       roles="${bpel.admin.role}"/>
+	    </tomcat-users>
+	    ]]>
+	  </concat>
+	  
+	</target>
 </project>
