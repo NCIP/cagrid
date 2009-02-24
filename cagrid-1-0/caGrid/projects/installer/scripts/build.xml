@@ -11,9 +11,7 @@
 		</fileset>
 	</path>
 
-	<taskdef name="xmltask"
-		classname="com.oopsconsultancy.xmltask.ant.XmlTask"
-		classpathref="xmltaskdef.cp" />
+	<taskdef name="xmltask" classname="com.oopsconsultancy.xmltask.ant.XmlTask" classpathref="xmltaskdef.cp" />
 
 	<taskdef resource="net/sf/antcontrib/antlib.xml">
 		<classpath>
@@ -22,25 +20,27 @@
 			</fileset>
 		</classpath>
 	</taskdef>
-	
+
 	<xmlcatalog id="installer.catalog">
-		<dtd 
-			publicId="-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
-			location="./resources/web-app_2_3.dtd"/>
-		<dtd 
-			publicId="-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN"
-			location="./resources/web-facesconfig_1_1.dtd"/>
-		<dtd 
-			publicId="-//SPRING//DTD BEAN//EN"
-			location="./resources/spring-beans.dtd"/>
+		<dtd publicId="-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" location="./resources/web-app_2_3.dtd" />
+		<dtd publicId="-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN" location="./resources/web-facesconfig_1_1.dtd" />
+		<dtd publicId="-//SPRING//DTD BEAN//EN" location="./resources/spring-beans.dtd" />
 	</xmlcatalog>
-	
+
 	<target name="fix-ant-permissions">
 		<chmod perm="u+x">
-			  <fileset dir="${ant.home}/bin">
-			    <include name="ant"/>
-			  	<include name="antRun"/>
-			  </fileset>
+			<fileset dir="${ant.home}/bin">
+				<include name="ant" />
+				<include name="antRun" />
+			</fileset>
+		</chmod>
+	</target>
+
+	<target name="fix-globus-permissions">
+		<chmod perm="u+x">
+			<fileset dir="${globus.home}/bin">
+				<exclude name="*.bat" />
+			</fileset>
 		</chmod>
 	</target>
 
@@ -48,8 +48,7 @@
 
 		<mkdir dir="${service.dest.dir}" />
 
-		<for list="${selected.services}" param="serviceName"
-			parallel="false">
+		<for list="${selected.services}" param="serviceName" parallel="false">
 			<sequential>
 				<copy todir="${service.dest.dir}" overwrite="false">
 					<fileset dir="${cagrid.home}/projects">
