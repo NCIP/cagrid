@@ -34,6 +34,15 @@
 			publicId="-//SPRING//DTD BEAN//EN"
 			location="./resources/spring-beans.dtd"/>
 	</xmlcatalog>
+	
+	<target name="fix-ant-permissions">
+		<chmod perm="u+x">
+			  <fileset dir="${ant.home}/bin">
+			    <include name="ant"/>
+			  	<include name="antRun"/>
+			  </fileset>
+		</chmod>
+	</target>
 
 	<target name="copy-selected-services">
 
