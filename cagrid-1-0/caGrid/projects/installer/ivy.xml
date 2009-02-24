@@ -25,6 +25,7 @@
     <!-- External Dependencies -->
     <dependency rev="1.14" org="oopsconsultancy" name="xmltask"/>
     <dependency rev="2.0.0" org="jgoodies" name="validation" conf="impl->default"/>
+    <dependency rev="1.0b3" org="ant-contrib" name="ant-contrib" />
 
   </dependencies>
 </ivy-module>

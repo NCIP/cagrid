@@ -13,7 +13,7 @@
 
 	<taskdef resource="net/sf/antcontrib/antlib.xml">
 		<classpath>
-			<fileset dir="${cagrid.home}/antfiles/lib">
+			<fileset dir="${lib.dir}">
 				<include name="ant-contrib*.jar" />
 			</fileset>
 		</classpath>

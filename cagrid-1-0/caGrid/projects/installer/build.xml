@@ -17,6 +17,7 @@
 	<property name="build.classes" location="${build}/classes" />
 	<property name="build.jars" location="${build}/jars" />
 	<property name="ext.lib.dir" location="ext/dependencies/default/jars" />
+	<property name="lib.dir" location="lib" />
 
 	<property name="runtime.mainclass" value="org.cagrid.installer.Installer" />
 
@@ -132,6 +133,10 @@
 			</fileset>
 
 			<fileset dir="${ext.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			
+			<fileset dir="${lib.dir}">
 				<include name="*.jar" />
 			</fileset>
 		</copy>
