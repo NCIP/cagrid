@@ -167,7 +167,6 @@ public class GridMapPanel extends JPanel {
     private JTextField getGridmapLocation() {
         if (gridmapLocation == null) {
             gridmapLocation = new JTextField();
-            gridmapLocation.setEditable(false);
         }
         return gridmapLocation;
     }
