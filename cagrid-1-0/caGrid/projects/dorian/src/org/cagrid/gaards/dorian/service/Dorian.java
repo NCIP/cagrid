@@ -109,7 +109,18 @@ public class Dorian extends LoggingObject {
             this.db = this.configuration.getDatabase();
             this.db.createDatabaseIfNeeded();
             this.properties = new PropertyManager(this.db);
-
+            if (this.properties.getCertificateAuthorityType() == null) {
+                this.properties.setCertificateAuthorityType(configuration.getCertificateAuthority().getClass().getName());
+            } else if (!this.properties.getCertificateAuthorityType().equals(
+                configuration.getCertificateAuthority().getClass().getName())) {
+                DorianInternalFault fault = new DorianInternalFault();
+                fault
+                        .setFaultString("Certificate Authority type conflict detected, this Dorian was created using a "
+                                + configuration.getCertificateAuthority().getClass().getName()
+                                + " CA but the configuration file specifies the usage of a "
+                                + configuration.getCertificateAuthority().getClass().getName() + " CA.");
+                throw fault;
+            }
             this.ca = this.configuration.getCertificateAuthority();
             this.identityProvider = new IdentityProvider(configuration.getIdentityProviderProperties(), db, ca,
                 this.eventManager);

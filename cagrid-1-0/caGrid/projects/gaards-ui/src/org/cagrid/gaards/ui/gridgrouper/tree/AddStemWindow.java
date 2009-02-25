@@ -270,10 +270,9 @@ public class AddStemWindow extends ApplicationComponent {
     private JTextField getParentStem() {
         if (parentStem == null) {
             parentStem = new JTextField();
-            parentStem.setEditable(false);
-            GridGrouperBaseTreeNode parent = (GridGrouperBaseTreeNode) node.getParent();
-            if (parent instanceof StemTreeNode) {
-                parentStem.setText(((StemTreeNode) parent).getStem().getDisplayName());
+            parentStem.setEditable(false);     
+            if (node instanceof StemTreeNode) {
+                parentStem.setText(this.node.getStem().getDisplayName());
             } else {
                 parentStem.setText("Root");
             }

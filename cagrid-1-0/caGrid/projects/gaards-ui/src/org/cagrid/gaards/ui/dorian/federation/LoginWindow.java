@@ -401,6 +401,12 @@ public class LoginWindow extends ApplicationComponent {
         DorianHandle dorian = ((DorianServiceListComboBox) this.getDorianService()).getSelectedService();
         AuthenticationServiceHandle as = ((AuthenticationServiceHandle) getIdentityProvider().getSelectedItem());
 
+        if (as == null) {
+            ErrorDialog
+                .showError("Login Error: You have not selected an Organization to authenticate with.  If the organization list is empty either the Credential Provider you selected may be down or the Credential Provider you selected does not support authentication profiles.   If the credential provider you selected does not support authentication profiles, you can manually add your organization's authentication service through the preferences menu.");
+            return;
+        }
+
         getProgressPanel().showProgress("Authenticating with identity provider...");
 
         try {
@@ -416,11 +422,12 @@ public class LoginWindow extends ApplicationComponent {
                 IFSUserClient c2 = dorian.getOldUserClient();
                 int delegationPathLength = 0;
                 String str = Utils.clean(getDelegationPathLength().getText());
-                if(str!=null){
-                    try{
+                if (str != null) {
+                    try {
                         delegationPathLength = Integer.valueOf(str).intValue();
-                    }catch (Exception e) {
-                        throw new Exception("Invalid delegation path length specified, the delegation path length must be an integer.");
+                    } catch (Exception e) {
+                        throw new Exception(
+                            "Invalid delegation path length specified, the delegation path length must be an integer.");
                     }
                 }
                 gov.nih.nci.cagrid.dorian.ifs.bean.ProxyLifetime lifetime = new gov.nih.nci.cagrid.dorian.ifs.bean.ProxyLifetime();
@@ -543,7 +550,7 @@ public class LoginWindow extends ApplicationComponent {
     private JComboBox getHours() {
         if (hours == null) {
             hours = new JComboBox();
-            for (int i = 0; i < 23; i++) {
+            for (int i = 0; i < 24; i++) {
                 hours.addItem(String.valueOf(i));
             }
             hours.setSelectedItem("12");
@@ -560,7 +567,7 @@ public class LoginWindow extends ApplicationComponent {
     private JComboBox getMinutes() {
         if (minutes == null) {
             minutes = new JComboBox();
-            for (int i = 0; i < 59; i++) {
+            for (int i = 0; i < 60; i++) {
                 minutes.addItem(String.valueOf(i));
             }
         }
@@ -576,7 +583,7 @@ public class LoginWindow extends ApplicationComponent {
     private JComboBox getSeconds() {
         if (seconds == null) {
             seconds = new JComboBox();
-            for (int i = 0; i < 59; i++) {
+            for (int i = 0; i < 60; i++) {
                 seconds.addItem(String.valueOf(i));
             }
         }
