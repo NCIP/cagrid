@@ -28,7 +28,7 @@
 
 
 
-<iframe
+<iframe title="caBIG Tools"
         id="toolsView"
         onload='resize_iframe()'
         src='<c:out value="${remoteView}"/>'
