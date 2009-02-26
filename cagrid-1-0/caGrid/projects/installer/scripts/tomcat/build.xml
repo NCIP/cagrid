@@ -91,7 +91,7 @@
 
 <target name="insert-secure-connector">
 	<xmltask source="${tomcat.home}/conf/server.xml" dest="${tomcat.home}/conf/server.xml">
-		<remove path="/Server/Service[@name='Catalina' or @name='jboss.web']/Connector[@scheme='https']" />
+		<remove path="/Server/Service[@name='Catalina' or @name='jboss.web']/Connector[@scheme='https' or not(@protocol)]" />
 		<insert path="/Server/Service[@name='Catalina' or @name='jboss.web']">
 			<![CDATA[
 				<Connector
