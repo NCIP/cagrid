@@ -23,6 +23,9 @@ import org.apache.commons.logging.LogFactory;
  */
 public class EventManager {
 
+    private static String UNKNOWN_PARTY = "UNKOWN";
+    private static String NO_MESSAGE = "";
+
     private Map<String, EventHandler> handlers;
     private Map<String, Set<String>> events;
     private Log log;
@@ -65,10 +68,23 @@ public class EventManager {
         try {
             // TODO: Thread this out.
             Event e = new Event();
-            e.setTargetId(targetId);
-            e.setReportingPartyId(reportingPartyId);
+            if (targetId != null) {
+                e.setTargetId(targetId);
+            } else {
+                e.setTargetId(UNKNOWN_PARTY);
+            }
+
+            if (reportingPartyId != null) {
+                e.setReportingPartyId(reportingPartyId);
+            } else {
+                e.setReportingPartyId(UNKNOWN_PARTY);
+            }
             e.setEventType(eventType);
-            e.setMessage(message);
+            if (message != null) {
+                e.setMessage(message);
+            } else {
+                e.setMessage(NO_MESSAGE);
+            }
             e.setOccurredAt(new Date().getTime());
             Set<EventHandler> s = getHandlers(eventType);
             Iterator<EventHandler> itr = s.iterator();
@@ -184,8 +200,8 @@ public class EventManager {
     }
 
 
-    public List<Event> findEvents(String targetId, String reportingPartyId, String eventType, Date start, Date end, String message)
-        throws EventAuditingException {
+    public List<Event> findEvents(String targetId, String reportingPartyId, String eventType, Date start, Date end,
+        String message) throws EventAuditingException {
         Set<EventHandler> temp = null;
         if (eventType != null) {
             temp = getHandlers(eventType);

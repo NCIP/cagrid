@@ -20,6 +20,8 @@ import org.cagrid.tools.database.DatabaseException;
  * @author <A href="mailto:ervin@bmi.osu.edu">David Ervin</A>
  */
 public class EventAuditor extends BaseEventHandler implements Auditor {
+    
+
 
     private Database db;
 
@@ -122,8 +124,8 @@ public class EventAuditor extends BaseEventHandler implements Auditor {
     }
 
 
-    public List<Event> findEvents(String targetId, String reportingPartyId, String eventType, Date start, Date end, String message)
-        throws EventAuditingException {
+    public List<Event> findEvents(String targetId, String reportingPartyId, String eventType, Date start, Date end,
+        String message) throws EventAuditingException {
         try {
             buildDatabase();
         } catch (DatabaseException e) {
@@ -158,7 +160,7 @@ public class EventAuditor extends BaseEventHandler implements Auditor {
             if (end != null) {
                 whereAppended = appendToSQLBuffer(sql, whereAppended, OCCURRED_AT, "<=");
             }
-            
+
             if (message != null) {
                 whereAppended = appendToSQLBuffer(sql, whereAppended, MESSAGE, "LIKE");
             }
@@ -190,9 +192,9 @@ public class EventAuditor extends BaseEventHandler implements Auditor {
                 s.setLong(count, end.getTime());
                 count = count + 1;
             }
-            
+
             if (message != null) {
-                s.setString(count, "%"+message+"%");
+                s.setString(count, "%" + message + "%");
                 count = count + 1;
             }
 
@@ -222,28 +224,29 @@ public class EventAuditor extends BaseEventHandler implements Auditor {
 
     private Event insertEvent(Event event) throws DatabaseException, EventHandlingException {
         buildDatabase();
+        
+        if (Utils.clean(event.getTargetId()) == null) {
+            
+            throw new EventHandlingException("Could not audit event, no target id was specified.");
+        }
+
+        if (Utils.clean(event.getReportingPartyId()) == null) {
+            throw new EventHandlingException("Could not audit event, no reporting party was specified.");
+        }
+
+        if (Utils.clean(event.getEventType()) == null) {
+            throw new EventHandlingException("Could not audit event, no event type was specified.");
+        }
+
+        if (Utils.clean(event.getMessage()) == null) {
+            throw new EventHandlingException("Could not audit event, no event message was specified.");
+        }
+
+        if (event.getOccurredAt() <= 0) {
+            throw new EventHandlingException("Could not audit event, no occurred at date was specified.");
+        }
         Connection c = null;
         try {
-
-            if (Utils.clean(event.getTargetId()) == null) {
-                throw new EventHandlingException("Could not audit event, no target id was specified.");
-            }
-
-            if (Utils.clean(event.getReportingPartyId()) == null) {
-                throw new EventHandlingException("Could not audit event, no reporting party was specified.");
-            }
-
-            if (Utils.clean(event.getEventType()) == null) {
-                throw new EventHandlingException("Could not audit event, no event type was specified.");
-            }
-
-            if (Utils.clean(event.getMessage()) == null) {
-                throw new EventHandlingException("Could not audit event, no event message was specified.");
-            }
-
-            if (event.getOccurredAt() <= 0) {
-                throw new EventHandlingException("Could not audit event, no occurred at date was specified.");
-            }
 
             c = db.getConnection();
             PreparedStatement s = c.prepareStatement("INSERT INTO " + this.table + " SET " + TARGET_ID + "= ?, "
