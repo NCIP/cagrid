@@ -44,7 +44,9 @@
       </element>
       <element name="WorkflowFactoryServiceResourceProperties">
         <complexType>
-          <sequence />
+          <sequence>
+            <element ref="ns0:ServiceMetadata" />
+          </sequence>
         </complexType>
       </element>
     </schema>

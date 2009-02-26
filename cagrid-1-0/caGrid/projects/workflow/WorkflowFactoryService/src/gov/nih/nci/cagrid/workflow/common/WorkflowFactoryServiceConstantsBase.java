@@ -12,5 +12,6 @@ public interface WorkflowFactoryServiceConstantsBase {
 	public static final String SERVICE_NS = "http://workflow.cagrid.nci.nih.gov/WorkflowFactoryService";
 	public static final QName RESOURCE_KEY = new QName(SERVICE_NS, "WorkflowFactoryServiceKey");
 	public static final QName RESOURCE_PROPERTY_SET = new QName(SERVICE_NS, "WorkflowFactoryServiceResourceProperties");
+	public static final QName SERVICEMETADATA = new QName("gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata", "ServiceMetadata");
 	
 }
