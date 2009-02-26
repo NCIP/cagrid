@@ -4,6 +4,7 @@ import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.data.DataServiceConstants;
 import gov.nih.nci.cagrid.data.enumeration.service.globus.EnumerationDataServiceProviderImpl;
 import gov.nih.nci.cagrid.data.enumeration.stubs.EnumerationDataServicePortType;
+import gov.nih.nci.cagrid.introduce.IntroduceConstants;
 import gov.nih.nci.cagrid.introduce.beans.ServiceDescription;
 import gov.nih.nci.cagrid.introduce.beans.extension.ServiceExtensionDescriptionType;
 import gov.nih.nci.cagrid.introduce.beans.method.MethodType;
@@ -23,7 +24,11 @@ import gov.nih.nci.cagrid.introduce.extension.ExtensionsLoader;
 import gov.nih.nci.cagrid.wsenum.common.WsEnumConstants;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
+import java.util.Properties;
 
 import javax.xml.namespace.QName;
 
@@ -36,7 +41,7 @@ import javax.xml.namespace.QName;
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  * 
  * @created Aug 22, 2006
- * @version $Id: WsEnumerationFeatureCreator.java,v 1.3 2008-09-11 17:50:38 dervin Exp $
+ * @version $Id: WsEnumerationFeatureCreator.java,v 1.3.4.1 2009-02-26 17:05:18 dervin Exp $
  */
 public class WsEnumerationFeatureCreator extends FeatureCreator {
 	public static final String WS_ENUM_EXTENSION_NAME = "cagrid_wsEnum";
@@ -64,8 +69,25 @@ public class WsEnumerationFeatureCreator extends FeatureCreator {
 
 		if (!wsEnumExtensionUsed()) {
 			System.out.println("Adding the WS-Enumeration extension to the service");
-			// add the ws Enumeration extension
+			// add the ws Enumeration extension to the service model
             ExtensionTools.addExtensionToService(getServiceInformation(), WS_ENUM_EXTENSION_NAME);
+            // edit the introduce.properties file to add the enum extension to the list
+            Properties introduceProps = new Properties();
+            File propsFile = new File(getServiceInformation().getBaseDirectory(), IntroduceConstants.INTRODUCE_PROPERTIES_FILE);
+            try {
+                FileInputStream fis = new FileInputStream(propsFile);
+                introduceProps.load(fis);
+                fis.close();
+                String extensionsProperty = introduceProps.getProperty(IntroduceConstants.INTRODUCE_SKELETON_EXTENSIONS);
+                extensionsProperty += "," + WS_ENUM_EXTENSION_NAME;
+                introduceProps.setProperty(IntroduceConstants.INTRODUCE_SKELETON_EXTENSIONS, extensionsProperty);
+                FileOutputStream fos = new FileOutputStream(propsFile);
+                introduceProps.store(fos, "Edited by " + WsEnumerationFeatureCreator.class.getName());
+                fos.close();
+            } catch (IOException ex) {
+                throw new CreationExtensionException("Error editing " 
+                    + propsFile.getAbsolutePath() + " : " + ex.getMessage(), ex);
+            }
 		}
 	}
 
