@@ -694,30 +694,13 @@ public class SyncTools {
                 newExts.add(next);
                 if (!oldExts.contains(next)) {
                     logger.info("A new extension needs added: " + next);
-                    // double check to make sure it is not really in the model
-                    // already
-                    boolean found = false;
-                    ExtensionsType extensions = info.getExtensions();
-                    if (extensions != null) {
-                        ExtensionType[] exts = extensions.getExtension();
-                        if (exts != null) {
-                            for (int i = 0; i < exts.length; i++) {
-                                ExtensionType ext = exts[i];
-                                if (ext.getName().equals(next)) {
-                                    found = true;
-                                }
-                            }
-                        }
-                    }
-                    if (!found) {
-                        CreationExtensionPostProcessor pp = null;
-                        ServiceExtensionDescriptionType desc = ExtensionsLoader.getInstance().getServiceExtension(next);
+                    CreationExtensionPostProcessor pp = null;
+                    ServiceExtensionDescriptionType desc = ExtensionsLoader.getInstance().getServiceExtension(next);
 
-                        pp = ExtensionTools.getCreationPostProcessor(next);
+                    pp = ExtensionTools.getCreationPostProcessor(next);
 
-                        if (pp != null) {
-                            pp.postCreate(desc, info);
-                        }
+                    if (pp != null) {
+                        pp.postCreate(desc, info);
                     }
                 }
 
