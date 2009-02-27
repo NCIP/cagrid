@@ -24,6 +24,12 @@
 	<!-- overide the introduce location of this which is suposed to be in tools/lib -->
         <property name="ant.contrib.location" value="${ext.tools.lib.dir}/ant-contrib-1.0b3.jar" />
 	
+	
+	<property environment="env" />
+	<property name="tomcat.home" value="${env.CATALINA_HOME}" />
+	
+	
+	
 	<path id="xmltaskdef.cp">
                 <fileset dir="${lib.dir}">
                         <include name="xmltask-v1.14.jar" />
@@ -281,8 +287,7 @@
 	<target name="configure-bpel-admin-web-xml">
 
 	  <property name="bpel.admin.role" value="admin"/>
-	  <property name="tomcat.home" value="/Users/sulakhe/Desktop/jakarta-tomcat-5.0.28" />
-	  
+	  <echo message="CATALINA_HOME is set to : ${tomcat.home}" />
 	  <property name="config.file"
 		    value="${tomcat.home}/webapps/BpelAdmin/WEB-INF/web.xml" />
 	  <xmltask source="${config.file}" dest="${config.file}" preservetype="true">
@@ -316,6 +321,8 @@
 	<target name="create-bpel-admin-context">
   
 	  <!-- TODO: handle virutal hosts and other engines -->
+	  <echo message="CATALINA_HOME is set to : ${tomcat.home}" />
+	  
 	  <property name="context.file" value="${tomcat.home}/conf/Catalina/localhost/BpelAdmin.xml"/>
 	  <delete file="${context.file}"/>
 	  <touch mkdirs="true" file="${context.file}"/>
@@ -331,6 +338,7 @@
 
 	<target name="create-bpel-admin-users">
 	  
+	  <echo message="CATALINA_HOME is set to : ${tomcat.home}" />
 	  <property name="users.file" value="${tomcat.home}/conf/BpelAdmin-users.xml"/>
 	  <property name="bpel.admin.role" value="admin"/>
 	  <property name="bpel.admin.username" value="changeMe"/>
