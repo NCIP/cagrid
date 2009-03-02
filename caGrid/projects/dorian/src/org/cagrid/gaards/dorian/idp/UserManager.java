@@ -100,7 +100,7 @@ public class UserManager extends LoggingObject {
                         }
                     } else {
                         DorianInternalFault fault = new DorianInternalFault();
-                        fault.setFaultString("Could not obtain password digest, unknown digest algorithm!!!");
+                        fault.setFaultString("Could not obtain password digest, unknown digest algorithm ("+entry.getDigestAlgorithm()+")!!!");
                         throw fault;
                     }
                     if (!u.getPassword().equals(digest)) {
@@ -709,7 +709,7 @@ public class UserManager extends LoggingObject {
                     }
                 } else {
                     DorianInternalFault fault = new DorianInternalFault();
-                    fault.setFaultString("Could not obtain password digest, unknown digest algorithm!!!");
+                    fault.setFaultString("Could not obtain password digest, unknown digest algorithm ("+existingDigestAlgorithm+")!!!");
                     throw fault;
                 }
                 
