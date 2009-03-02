@@ -85,7 +85,8 @@ public class UserManager extends LoggingObject {
                 if (status.equals(PasswordStatus.Valid)) {
                     String digest = null;
                     boolean crypt = false;
-                    if (entry.getDigestAlgorithm() == null) {
+                    if ((entry.getDigestAlgorithm() == null)
+                        || (entry.getDigestAlgorithm().equals(PasswordSecurityManager.CRYPT_DIGEST_ALGORITHM))) {
                         crypt = true;
                         digest = Crypt.crypt(suppliedPassword);
                     } else if (entry.getDigestAlgorithm().equals(PasswordSecurityManager.PASSWORD_DIGEST_ALGORITHM)) {
@@ -691,19 +692,29 @@ public class UserManager extends LoggingObject {
             LocalUser curr = this.getUser(u.getUserId());
             boolean passwordChanged = false;
             if (u.getPassword() != null) {
-
-                String newPassOldSalt = null;
-                try {
-                    newPassOldSalt = PasswordSecurityManager.encrypt(u.getPassword(), curr.getPasswordSecurity()
-                        .getDigestSalt());
-                } catch (Exception e) {
-                    log.error(e);
+                String newPasswordDigest = null;
+                String existingDigestAlgorithm = curr.getPasswordSecurity().getDigestAlgorithm();
+                if ((existingDigestAlgorithm == null)
+                    || (existingDigestAlgorithm.equals(PasswordSecurityManager.CRYPT_DIGEST_ALGORITHM))) {
+                    newPasswordDigest = Crypt.crypt(u.getPassword());
+                } else if (existingDigestAlgorithm.equals(PasswordSecurityManager.PASSWORD_DIGEST_ALGORITHM)) {
+                    try {
+                        newPasswordDigest = PasswordSecurityManager.encrypt(u.getPassword(), curr.getPasswordSecurity()
+                            .getDigestSalt());
+                    } catch (Exception e) {
+                        log.error(e);
+                        DorianInternalFault fault = new DorianInternalFault();
+                        fault.setFaultString("Unexpected error calculating password digest!!!");
+                        throw fault;
+                    }
+                } else {
                     DorianInternalFault fault = new DorianInternalFault();
-                    fault.setFaultString("Could not update user, unexpected error calculating the password digest.");
+                    fault.setFaultString("Could not obtain password digest, unknown digest algorithm!!!");
                     throw fault;
                 }
+                
 
-                if (!newPassOldSalt.equals(curr.getPassword())) {
+                if (!newPasswordDigest.equals(curr.getPassword())) {
                     validatePassword(u);
                     String newPass = null;
                     try {
@@ -913,5 +924,4 @@ public class UserManager extends LoggingObject {
     protected PasswordSecurityManager getPasswordSecurityManager() {
         return passwordSecurityManager;
     }
-
 }
