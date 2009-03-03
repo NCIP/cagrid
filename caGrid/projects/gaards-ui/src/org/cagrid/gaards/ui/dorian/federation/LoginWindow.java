@@ -418,7 +418,7 @@ public class LoginWindow extends ApplicationComponent {
             GlobusCredential cred = null;
 
             if (version.equals(GridUserClient.VERSION_1_0) || version.equals(GridUserClient.VERSION_1_1)
-                || version.equals(GridUserClient.VERSION_1_2) || version.equals(GridUserClient.VERSION_UNKOWN)) {
+                || version.equals(GridUserClient.VERSION_1_2) || version.equals(GridUserClient.VERSION_UNKNOWN)) {
                 IFSUserClient c2 = dorian.getOldUserClient();
                 int delegationPathLength = 0;
                 String str = Utils.clean(getDelegationPathLength().getText());

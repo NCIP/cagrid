@@ -45,7 +45,7 @@ public class AuthenticationManager {
 						"The authentication provider must support at least 1 valid authentication profile.");
 			} else if (!AuthenticationProfile.isValid(set)) {
 				throw new Exception(
-						"The authentication provider supports an unkown authentication profile.");
+						"The authentication provider supports an unknown authentication profile.");
 			}
 		} catch (Exception ex) {
 			throw new RemoteException(
