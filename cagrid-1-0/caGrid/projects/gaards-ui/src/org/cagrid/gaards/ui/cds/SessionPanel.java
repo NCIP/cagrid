@@ -66,7 +66,7 @@ public class SessionPanel extends JPanel {
         gridBagConstraints.gridy = 0;
         gridBagConstraints.weightx = 1.0;
         jLabel = new JLabel();
-        jLabel.setText("Service URI");
+        jLabel.setText("Delegation Service");
         this.setSize(300, 200);
         this.setLayout(new GridBagLayout());
         this.add(jLabel, gridBagConstraints1);
