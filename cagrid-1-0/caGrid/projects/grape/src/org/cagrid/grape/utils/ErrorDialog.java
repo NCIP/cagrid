@@ -91,7 +91,7 @@ public class ErrorDialog extends JDialog {
 	public static void showError(Throwable ex) {
 		String message = Utils.getExceptionMessage(ex);
 		if (message == null) {
-			message = "Unkown Error";
+			message = "Unknown Error";
 		}
 		showError(message, ex);
 	}
