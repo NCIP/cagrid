@@ -23,7 +23,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class EventManager {
 
-    private static String UNKNOWN_PARTY = "UNKOWN";
+    private static String UNKNOWN_PARTY = "UNKNOWN";
     private static String NO_MESSAGE = "";
 
     private Map<String, EventHandler> handlers;

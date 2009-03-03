@@ -21,7 +21,7 @@ import org.w3c.dom.Element;
 
 public abstract class DorianBaseClient {
 
-    public static final String VERSION_UNKOWN = "UNKNOWN";
+    public static final String VERSION_UNKNOWN = "UNKNOWN";
     public static final String VERSION_1_0 = "1.0";
     public static final String VERSION_1_1 = "1.1";
     public static final String VERSION_1_2 = "1.2";
@@ -102,20 +102,20 @@ public abstract class DorianBaseClient {
     public String getServiceVersion() throws InvalidResourcePropertyException, ResourcePropertyRetrievalException {
         ServiceMetadata sm = getServiceMetadata();
         if (sm == null) {
-            return VERSION_UNKOWN;
+            return VERSION_UNKNOWN;
         } else {
             if (sm.getServiceDescription() != null) {
                 if (sm.getServiceDescription().getService() != null) {
                     if (sm.getServiceDescription().getService().getVersion() != null) {
                         return sm.getServiceDescription().getService().getVersion();
                     } else {
-                        return VERSION_UNKOWN;
+                        return VERSION_UNKNOWN;
                     }
                 } else {
-                    return VERSION_UNKOWN;
+                    return VERSION_UNKNOWN;
                 }
             } else {
-                return VERSION_UNKOWN;
+                return VERSION_UNKNOWN;
             }
 
         }

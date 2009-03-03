@@ -84,7 +84,7 @@ public class GridUserClient extends DorianBaseClient {
                 KeyUtil.writePublicKey(pair.getPublic()));
 
             if (version.equals(VERSION_1_0) || version.equals(VERSION_1_1) || version.equals(VERSION_1_2)
-                || version.equals(VERSION_UNKOWN)) {
+                || version.equals(VERSION_UNKNOWN)) {
                 try {
                     org.cagrid.gaards.dorian.SAMLAssertion assertion = new org.cagrid.gaards.dorian.SAMLAssertion();
                     assertion.setXml(SAMLUtils.samlAssertionToString(saml));

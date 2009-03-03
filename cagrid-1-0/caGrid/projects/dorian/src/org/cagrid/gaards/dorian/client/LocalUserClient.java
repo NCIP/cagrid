@@ -133,7 +133,7 @@ public class LocalUserClient extends DorianBaseClient {
         try {
             String version = getServiceVersion();
             if (version.equals(VERSION_1_0) || version.equals(VERSION_1_1) || version.equals(VERSION_1_2)
-                || version.equals(VERSION_UNKOWN)) {
+                || version.equals(VERSION_UNKNOWN)) {
                 BasicAuthCredential bac = new BasicAuthCredential();
                 bac.setUserId(cred.getUserId());
                 bac.setPassword(cred.getPassword());
@@ -174,7 +174,7 @@ public class LocalUserClient extends DorianBaseClient {
         try {
             String version = getServiceVersion();
             if (version.equals(VERSION_1_0) || version.equals(VERSION_1_1) || version.equals(VERSION_1_2)
-                || version.equals(VERSION_UNKOWN)) {
+                || version.equals(VERSION_UNKNOWN)) {
                 return getClient().registerWithIdP(a);
             } else {
                 return getClient().registerLocalUser(a);
