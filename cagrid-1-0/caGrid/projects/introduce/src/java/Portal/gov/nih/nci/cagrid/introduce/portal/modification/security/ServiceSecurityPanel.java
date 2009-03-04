@@ -205,6 +205,8 @@ public class ServiceSecurityPanel extends JPanel implements PanelSynchronizer {
             // PortalUtils.showErrorDialogDialog(e);
             CompositeErrorDialog.showErrorDialog(e);
         }
+        
+        isInited = true;
     }
 
 
@@ -226,7 +228,7 @@ public class ServiceSecurityPanel extends JPanel implements PanelSynchronizer {
             new Font("Dialog", Font.BOLD, 12), PortalLookAndFeel.getPanelLabelColor()));
         this.add(getTransportPanel(), gridBagConstraints17);
         synchronize();
-        isInited = true;
+        
     }
 
 

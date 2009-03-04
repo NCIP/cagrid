@@ -5,6 +5,7 @@ import gov.nih.nci.cagrid.common.XMLUtilities;
 import gov.nih.nci.cagrid.introduce.IntroduceConstants;
 import gov.nih.nci.cagrid.introduce.beans.ServiceDescription;
 import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionType;
+import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionsType;
 import gov.nih.nci.cagrid.introduce.beans.extension.ServiceExtensionDescriptionType;
 import gov.nih.nci.cagrid.introduce.beans.method.MethodType;
 import gov.nih.nci.cagrid.introduce.beans.method.MethodTypeExceptionsException;
@@ -90,7 +91,7 @@ import com.ibm.wsdl.PartImpl;
  */
 public class SyncTools {
     public static final String DEPLOYMENT_VALIDATOR_FILE = "deploymentValidator.xml";
-    
+
     private static final Logger logger = Logger.getLogger(SyncTools.class);
 
 
@@ -189,7 +190,7 @@ public class SyncTools {
                                 IntroduceConstants.INTRODUCE_SKELETON_SERVICE_NAME) + File.separator
                             + service.getName() + ".wsdl").getAbsolutePath());
                     } catch (Exception e) {
-                        logger.error(e.getMessage(),e);
+                        logger.error(e.getMessage(), e);
                     }
                     table = parser.getSymbolTable();
 
@@ -289,7 +290,7 @@ public class SyncTools {
                                         exception.setQname(new QName(service.getNamespace() + "/types", exception
                                             .getName()));
                                     } catch (Exception e) {
-                                       logger.error(e.getMessage(),e);
+                                        logger.error(e.getMessage(), e);
                                     }
                                 }
                             }
@@ -371,7 +372,7 @@ public class SyncTools {
         } catch (Exception e) {
             String mess = "ERROR: Unable to find all referenced elements in service wsdl and xsd.  Please make sure"
                 + " that if there are imported wsdl or xsd that they all exist and are in the right location and are well formed and valid.";
-            logger.error(mess,e);
+            logger.error(mess, e);
             throw new Exception(mess, e);
         }
 
@@ -408,7 +409,7 @@ public class SyncTools {
 
         table = null;
         System.gc();
-        
+
         generateDeploymentValidatorList(info);
 
         // make a copy of the model to compate with next time
@@ -421,16 +422,17 @@ public class SyncTools {
             + IntroduceConstants.INTRODUCE_PROPERTIES_FILE), new File(baseDirectory.getAbsolutePath() + File.separator
             + IntroduceConstants.INTRODUCE_PROPERTIES_FILE + ".prev"));
     }
-    
-    
-    private void generateDeploymentValidatorList(ServiceInformation info) throws Exception{
+
+
+    private void generateDeploymentValidatorList(ServiceInformation info) throws Exception {
         DeploymentValidatorDescriptor desc = new DeploymentValidatorDescriptor();
         List descs = new ArrayList();
-        if(info.getExtensions()!=null && info.getExtensions().getExtension()!=null){
-            for(int i =0; i < info.getExtensions().getExtension().length; i ++){
+        if (info.getExtensions() != null && info.getExtensions().getExtension() != null) {
+            for (int i = 0; i < info.getExtensions().getExtension().length; i++) {
                 ExtensionType ext = info.getExtensions().getExtension(i);
-                ServiceExtensionDescriptionType extDesc = ExtensionsLoader.getInstance().getServiceExtension(ext.getName());
-                if(extDesc.getServiceDeploymentValidator()!=null){
+                ServiceExtensionDescriptionType extDesc = ExtensionsLoader.getInstance().getServiceExtension(
+                    ext.getName());
+                if (extDesc.getServiceDeploymentValidator() != null) {
                     ValidatorDescriptor vdesc = new ValidatorDescriptor(extDesc.getServiceDeploymentValidator());
                     descs.add(vdesc);
                 }
@@ -439,14 +441,15 @@ public class SyncTools {
         ValidatorDescriptor[] vdescs = new ValidatorDescriptor[descs.size()];
         descs.toArray(vdescs);
         desc.setValidatorDescriptor(vdescs);
-        
+
         try {
-            Utils.serializeDocument(info.getBaseDirectory() + File.separator + "tools" + File.separator + DEPLOYMENT_VALIDATOR_FILE , desc, DeploymentValidatorDescriptor.getTypeDesc().getXmlType());
+            Utils.serializeDocument(info.getBaseDirectory() + File.separator + "tools" + File.separator
+                + DEPLOYMENT_VALIDATOR_FILE, desc, DeploymentValidatorDescriptor.getTypeDesc().getXmlType());
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-      
+
     }
 
 
@@ -491,10 +494,11 @@ public class SyncTools {
                                 }
                                 type.setClassName(getRelativeClassName(element.getName()));
                                 type.setPackageName(getPackageName(element.getName()));
-                                
-                                if(type.getClassName()==null || type.getClassName().length()<=0){
+
+                                if (type.getClassName() == null || type.getClassName().length() <= 0) {
                                     throw new SynchronizationException(
-                                        "Error when setting finding classname mapping for element " + type.getType() + " , classname is null or empty.");
+                                        "Error when setting finding classname mapping for element " + type.getType()
+                                            + " , classname is null or empty.");
                                 }
                             }
                         } else {
@@ -508,7 +512,7 @@ public class SyncTools {
                             // package name in the namespace type
                             type.setPackageName(ntype.getPackageName());
                         }
-                        
+
                     }
                 }
 
@@ -551,7 +555,7 @@ public class SyncTools {
                                                 "Unable to find Element in symbol table for: " + qname);
                                         } else if (type == null) {
                                             logger.error("ERROR: The lement cannot be found in the symbol table: "
-                                                    + mtype.getName() + ":" + inputParam.getName());
+                                                + mtype.getName() + ":" + inputParam.getName());
                                         } else {
 
                                             if (mtype.isIsImported()) {
@@ -699,6 +703,7 @@ public class SyncTools {
                         pp.postCreate(desc, info);
                     }
                 }
+
             }
 
             // process the old ones and compare to the new ones
@@ -884,7 +889,7 @@ public class SyncTools {
                 }
 
             } catch (Exception e) {
-                logger.error(e); 
+                logger.error(e);
             }
         }
         String serverConfigS;
@@ -924,11 +929,13 @@ public class SyncTools {
             for (int i = 0; i < info.getNamespaces().getNamespace().length; i++) {
                 NamespaceType ntype = info.getNamespaces().getNamespace(i);
 
-                if ((ntype.getGenerateStubs() != null) && !ntype.getGenerateStubs().booleanValue() && !ntype.getNamespace().equals(IntroduceConstants.W3CNAMESPACE)) {
+                if ((ntype.getGenerateStubs() != null) && !ntype.getGenerateStubs().booleanValue()
+                    && !ntype.getNamespace().equals(IntroduceConstants.W3CNAMESPACE)) {
                     // the model explictly says not to generate stubs
                     excludeSet.add(ntype.getNamespace());
                 } else if (ntype.getSchemaElement() != null) {
-                    //only needed for backwards compatibility before the gui always set the generateStubs attribute
+                    // only needed for backwards compatibility before the gui
+                    // always set the generateStubs attribute
                     for (int j = 0; j < ntype.getSchemaElement().length; j++) {
                         SchemaElementType type = ntype.getSchemaElement(j);
                         if (type.getClassName() != null) {
