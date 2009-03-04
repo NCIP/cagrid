@@ -1,6 +1,7 @@
 package gov.nih.nci.cagrid.introduce.portal.init;
 
 import gov.nih.nci.cagrid.introduce.common.ConfigurationUtil;
+import gov.nih.nci.cagrid.introduce.extension.ExtensionsLoader;
 import gov.nih.nci.cagrid.introduce.portal.common.IntroduceLookAndFeel;
 import gov.nih.nci.cagrid.introduce.portal.updater.IntroduceUpdateWizard;
 import gov.nih.nci.cagrid.introduce.portal.updater.UptodateChecker;
@@ -9,6 +10,7 @@ import javax.swing.JOptionPane;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.cagrid.gaards.ui.dorian.ServicesManager;
 import org.cagrid.grape.ApplicationInitializer;
 import org.cagrid.grape.GridApplication;
 import org.cagrid.grape.model.Application;
@@ -37,6 +39,12 @@ public class IntroducePortalPostInitializer implements ApplicationInitializer {
                     }
                 } catch (Exception e) {
                     logger.error("Unable to check for updates:, " + e.getMessage(), e);
+                }
+                
+                
+                if(ExtensionsLoader.getInstance().getExtension("cagrid_gaards_ui")!=null){
+                    logger.info("Loading GAARDS UI Initializer");
+                    ServicesManager.getInstance();
                 }
         
             }
