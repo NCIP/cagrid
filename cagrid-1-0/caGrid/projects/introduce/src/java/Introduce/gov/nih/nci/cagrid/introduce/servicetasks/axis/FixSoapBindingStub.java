@@ -29,7 +29,7 @@ public class FixSoapBindingStub extends Task {
     public void execute() throws BuildException {
 
         try {
-            
+
             File basedir = getProject().getBaseDir();
 
             Document doc = null;
@@ -39,7 +39,8 @@ public class FixSoapBindingStub extends Task {
             Properties props = new Properties();
             String excludeArgs = null;
 
-            props.load(new FileInputStream(new File(basedir.getAbsolutePath() + File.separator + "introduce.properties")));
+            props.load(new FileInputStream(
+                new File(basedir.getAbsolutePath() + File.separator + "introduce.properties")));
             excludeArgs = (String) props.get("introduce.soap.binding.excludes");
 
             List services = doc.getRootElement().getChild("Services",
@@ -50,64 +51,64 @@ public class FixSoapBindingStub extends Task {
             for (int i = 0; i < services.size(); i++) {
                 System.out.println("looking to fix soap binding for service "
                     + ((Element) services.get(i)).getAttributeValue("name"));
-                stubFileName = basedir.getAbsolutePath() + File.separator +  "build" + File.separator + "stubs-" + mainServiceName + File.separator + "src"
-                    + File.separator
+                stubFileName = basedir.getAbsolutePath() + File.separator + "build" + File.separator + "stubs-"
+                    + mainServiceName + File.separator + "src" + File.separator
                     + ((Element) services.get(i)).getAttributeValue("packageName").replace(".", File.separator)
                     + File.separator + "stubs" + File.separator + "bindings" + File.separator
                     + ((Element) services.get(i)).getAttributeValue("name") + "PortTypeSOAPBindingStub.java";
-            }
 
-            if (excludeArgs == null) {
-                System.out.println("there are no custom serialized namespaces");
-                return;
-            }
-
-            StringTokenizer strtok = new StringTokenizer(excludeArgs, " ", false);
-
-            StringBuffer oldContent = null;
-
-            BufferedReader br = new BufferedReader(new FileReader(new File(stubFileName)));
-            StringBuffer sb = new StringBuffer();
-            try {
-                String s = null;
-                while ((s = br.readLine()) != null) {
-                    sb.append(s + "\n");
+                if (excludeArgs == null) {
+                    System.out.println("there are no custom serialized namespaces");
+                    return;
                 }
-            } finally {
-                br.close();
-            }
 
-            oldContent = sb;
+                StringTokenizer strtok = new StringTokenizer(excludeArgs, " ", false);
 
-            while (strtok.hasMoreElements()) {
-                String namespace = strtok.nextToken();
-                System.out.println("scanning for references to objects from the namespace: " + namespace);
+                StringBuffer oldContent = null;
 
-                StringBuffer newFileContent = new StringBuffer();
-
-                // find the method
-                br = new BufferedReader(new StringReader(oldContent.toString()));
-
-                String line = br.readLine();
-                while (line != null) {
-                    if (line.indexOf(namespace) >= 0) {
-                        for (int i = 0; i < 6; i++) {
-                            br.readLine();
-                        }
-                    } else {
-                        newFileContent.append(line + "\n");
+                BufferedReader br = new BufferedReader(new FileReader(new File(stubFileName)));
+                StringBuffer sb = new StringBuffer();
+                try {
+                    String s = null;
+                    while ((s = br.readLine()) != null) {
+                        sb.append(s + "\n");
                     }
-                    line = br.readLine();
+                } finally {
+                    br.close();
                 }
 
-                oldContent = newFileContent;
+                oldContent = sb;
+
+                while (strtok.hasMoreElements()) {
+                    String namespace = strtok.nextToken();
+                    System.out.println("scanning for references to objects from the namespace: " + namespace);
+
+                    StringBuffer newFileContent = new StringBuffer();
+
+                    // find the method
+                    br = new BufferedReader(new StringReader(oldContent.toString()));
+
+                    String line = br.readLine();
+                    while (line != null) {
+                        if (line.indexOf(namespace) >= 0) {
+                            for (int j = 0; j < 6; j++) {
+                                br.readLine();
+                            }
+                        } else {
+                            newFileContent.append(line + "\n");
+                        }
+                        line = br.readLine();
+                    }
+
+                    oldContent = newFileContent;
+
+                }
+
+                FileWriter fw = new FileWriter(new File(stubFileName));
+                fw.write(oldContent.toString());
+                fw.close();
 
             }
-
-            FileWriter fw = new FileWriter(new File(stubFileName));
-            fw.write(oldContent.toString());
-            fw.close();
-
         } catch (Exception e) {
             throw new BuildException(e);
         }
