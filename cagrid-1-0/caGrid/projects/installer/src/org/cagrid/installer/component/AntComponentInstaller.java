@@ -5,6 +5,11 @@ package org.cagrid.installer.component;
 
 import org.cagrid.installer.model.CaGridInstallerModel;
 import org.cagrid.installer.steps.Constants;
+import org.cagrid.installer.steps.RunTasksStep;
+import org.cagrid.installer.tasks.ConditionalTask;
+import org.cagrid.installer.tasks.installer.ConfigureAntTask;
+import org.cagrid.installer.tasks.installer.ConfigureJBossTask;
+import org.cagrid.installer.tasks.installer.DeployGlobusToJBossTask;
 import org.pietschy.wizard.WizardModel;
 import org.pietschy.wizard.models.Condition;
 
@@ -43,5 +48,15 @@ public class AntComponentInstaller extends AbstractDownloadedComponentInstaller 
 			}
 		};
 	}
+	
+    @Override
+    public void addInstallDownloadedComponentTasks(CaGridInstallerModel model, RunTasksStep installAntTasks) {
+        super.addInstallDownloadedComponentTasks(model, installAntTasks);
+
+        installAntTasks.getTasks().add(
+            new ConditionalTask(new ConfigureAntTask(model.getMessage("configuring.ant.title"), model
+                .getMessage("configuring.ant.title")), getShouldInstallCondition()));
+
+    }
 
 }

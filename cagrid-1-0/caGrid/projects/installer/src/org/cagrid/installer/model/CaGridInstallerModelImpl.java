@@ -367,22 +367,24 @@ CaGridInstallerModel, OverviewProvider {
 
 
     public boolean isGlobusDeployed() {
-        if (globusDeployed == null) {
-            globusDeployed = false;
-            if (isTomcatContainer() && isTomcatInstalled()) {
-                File wsrfDir = new File((String) getProperty(Constants.TOMCAT_HOME) + "/webapps/wsrf");
-                globusDeployed = wsrfDir.exists();
-            } else if (isJBossContainer() && isJBossInstalled()) {
-                File wsrfDir = new File((String) getProperty(Constants.JBOSS_HOME) + "/server/default/deploy/wsrf.war/");
-                globusDeployed = wsrfDir.exists();
-            }
+        globusDeployed = false;
+        
+        if (isTomcatContainer() && isTomcatInstalled()) {
+            File wsrfDir = new File((String) getProperty(Constants.TOMCAT_HOME) + "/webapps/wsrf");
+            globusDeployed = wsrfDir.exists();
+        } else if (isJBossContainer() && isJBossInstalled()) {
+            File wsrfDir = new File((String) getProperty(Constants.JBOSS_HOME) + "/server/default/deploy/wsrf.war/");
+            globusDeployed = wsrfDir.exists();
         }
+    
+    	//just assume its not there if we are reinstalling
         if (isTrue(Constants.REINSTALL_TOMCAT)) {
             globusDeployed = false;
         }
         if (isTrue(Constants.REINSTALL_JBOSS)) {
             globusDeployed = false;
         }
+    
         return globusDeployed;
     }
 
