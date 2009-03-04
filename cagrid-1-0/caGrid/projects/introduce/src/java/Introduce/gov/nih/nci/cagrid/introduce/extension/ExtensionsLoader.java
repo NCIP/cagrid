@@ -82,7 +82,7 @@ public class ExtensionsLoader {
     }
 
 
-    private void load() throws Exception {
+    private synchronized void load() throws Exception {
 
         if (extensionsDir.isDirectory()) {
             final File[] dirs = extensionsDir.listFiles();
@@ -153,31 +153,36 @@ public class ExtensionsLoader {
                 try {
                     if (prop != null && prop.getMakeGlobal() != null && prop.getMakeGlobal().booleanValue()) {
                         Application app = null;
-                        app = (Application) Utils.deserializeDocument(IntroducePropertiesManager.getIntroduceConfigurationFile(),
-                            Application.class);
-                        ConfigurationManager configurationManager = new ConfigurationManager(app.getConfiguration(),null);
+                        app = (Application) Utils.deserializeDocument(IntroducePropertiesManager
+                            .getIntroduceConfigurationFile(), Application.class);
+                        ConfigurationManager configurationManager = new ConfigurationManager(app.getConfiguration(),
+                            null);
                         Properties globalExtensionProperties = (Properties) configurationManager
-                        .getConfigurationObject("introduceGlobalExtensionProperties");
-                        
+                            .getConfigurationObject("introduceGlobalExtensionProperties");
+
                         if (globalExtensionProperties != null && globalExtensionProperties.getProperty() != null) {
-                            for(int propi = 0; propi < globalExtensionProperties.getProperty().length; propi++){
+                            boolean found = false;
+                            for (int propi = 0; propi < globalExtensionProperties.getProperty().length; propi++) {
                                 PropertiesProperty checkProp = globalExtensionProperties.getProperty(propi);
-                                if(checkProp.getKey().equals(prop.getKey())){
-                                    return;
+                                if (checkProp.getKey().equals(prop.getKey())) {
+                                    found = true;
                                 }
                             }
-                            PropertiesProperty[] props = new PropertiesProperty[globalExtensionProperties.getProperty().length + 1];
-                            System.arraycopy(globalExtensionProperties.getProperty(), 0, props, 0,globalExtensionProperties
-                                .getProperty().length);
-                            props[globalExtensionProperties.getProperty().length] = prop;
-                            globalExtensionProperties.setProperty(props);
+                            if (!found) {
+                                PropertiesProperty[] props = new PropertiesProperty[globalExtensionProperties
+                                    .getProperty().length + 1];
+                                System.arraycopy(globalExtensionProperties.getProperty(), 0, props, 0,
+                                    globalExtensionProperties.getProperty().length);
+                                props[globalExtensionProperties.getProperty().length] = prop;
+                                globalExtensionProperties.setProperty(props);
+                            }
                         } else if (globalExtensionProperties != null) {
                             PropertiesProperty[] props = new PropertiesProperty[1];
                             props[0] = prop;
                             globalExtensionProperties.setProperty(props);
                         }
                         configurationManager.saveAll();
-                        
+
                     }
                 } catch (Exception e) {
                     logger.warn("WARNING: extension property " + prop.getKey() + " could not be processed");
