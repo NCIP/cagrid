@@ -297,7 +297,7 @@ public class Installer {
         this.model.add(checkReconfigureCaGridStep, new Condition() {
             public boolean evaluate(WizardModel m) {
                 CaGridInstallerModel model = (CaGridInstallerModel) m;
-                return model.isCaGridInstalled() && model.isTrue(Constants.INSTALL_CONFIGURE_CAGRID);
+                return !model.isTrue(Constants.REINSTALL_CAGRID) && model.isCaGridInstalled() && model.isTrue(Constants.INSTALL_CONFIGURE_CAGRID);
             }
         });
 
@@ -306,7 +306,7 @@ public class Installer {
         this.model.add(confStep, new Condition() {
             public boolean evaluate(WizardModel m) {
                 CaGridInstallerModel model = (CaGridInstallerModel) m;
-                return (model.isTrue(Constants.RECONFIGURE_CAGRID) || !model.isCaGridInstalled());
+                return (model.isTrue(Constants.RECONFIGURE_CAGRID) || model.isTrue(Constants.REINSTALL_CAGRID) || !model.isCaGridInstalled());
             }
         });
 
@@ -466,8 +466,7 @@ public class Installer {
 
             public boolean evaluate(WizardModel model) {
                 CaGridInstallerModel cagridmodel = (CaGridInstallerModel) model;
-                return ((CaGridInstallerModel) model).isDeployGlobusRequired()
-                    && ((CaGridInstallerModel) model).isConfigureContainerSelected()
+                return ((CaGridInstallerModel) model).isConfigureContainerSelected()
                     && (cagridmodel.getProperty(Constants.TARGET_GRID) != null)
                     && !cagridmodel.getProperty(Constants.TARGET_GRID).equals(Constants.NO_TARGET_GRID);
             }

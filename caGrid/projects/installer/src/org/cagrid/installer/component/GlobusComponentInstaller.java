@@ -5,6 +5,10 @@ package org.cagrid.installer.component;
 
 import org.cagrid.installer.model.CaGridInstallerModel;
 import org.cagrid.installer.steps.Constants;
+import org.cagrid.installer.steps.RunTasksStep;
+import org.cagrid.installer.tasks.ConditionalTask;
+import org.cagrid.installer.tasks.installer.ConfigureAntTask;
+import org.cagrid.installer.tasks.installer.ConfigureGlobusTask;
 import org.pietschy.wizard.WizardModel;
 import org.pietschy.wizard.models.Condition;
 
@@ -51,5 +55,17 @@ public class GlobusComponentInstaller extends
 			}
 		};
 	}
+	
+	
+    @Override
+    public void addInstallDownloadedComponentTasks(CaGridInstallerModel model, RunTasksStep installAntTasks) {
+        super.addInstallDownloadedComponentTasks(model, installAntTasks);
+
+        installAntTasks.getTasks().add(
+            new ConditionalTask(new ConfigureGlobusTask(model.getMessage("configuring.globus.title"), model
+                .getMessage("configuring.globus.title")), getShouldInstallCondition()));
+
+    }
+
 
 }
