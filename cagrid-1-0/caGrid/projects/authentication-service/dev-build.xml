@@ -261,7 +261,6 @@
 	</target>
 
 
-
 	<target name="createTruststore" description="Create a truststore." depends="init">
 		<java classname="org.cagrid.gaards.pki.tools.TruststoreCreator" fork="false" newenvironment="true" failonerror="true">
 			<classpath refid="run.classpath" />
