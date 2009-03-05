@@ -176,7 +176,7 @@ public class FederatedQueryResultsResource extends FederatedQueryResultsResource
      * Indicates if processing of the query is complete
      */
     public boolean isComplete() {
-        return this.queryResults != null;
+        return this.queryResults != null || this.processingException!=null;
     }
     
     
