@@ -67,6 +67,10 @@ public class DataServiceQueryExecutor {
         CQLQueryResults cqlResults = null;
         try {
             DataServiceClient client = new DataServiceClient(targetServiceURL, cred);
+            // if we have been supplied a credential, make sure we always use it
+            if (cred != null) {
+                client.setAnonymousPrefered(false);
+            }
             cqlResults = client.query(cqlQuery);
         } catch (MalformedURIException e) {
             throw new RemoteDataServiceException("Invalid target service URL:" + targetServiceURL, e);
