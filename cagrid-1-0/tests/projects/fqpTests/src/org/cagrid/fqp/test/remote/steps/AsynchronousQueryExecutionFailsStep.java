@@ -20,12 +20,7 @@ public class AsynchronousQueryExecutionFailsStep extends Step {
     private static Log LOG = LogFactory.getLog(AsynchronousQueryExecutionFailsStep.class);
     
     public static final int FAILURE_TIMEOUT = 20; // secconds before failure waiting... fails...
-    
-    public static final String[] QUERY_URL_PLACEHOLDERS = {
-        "DATA_SERVICE_1", "DATA_SERVICE_2"
-    };
-    
-    
+        
     private FederatedQueryProcessorClient fqpClient = null;
     private String queryFilename = null;
     
@@ -55,6 +50,11 @@ public class AsynchronousQueryExecutionFailsStep extends Step {
         while (!complete && 
             (System.currentTimeMillis() - start) < (FAILURE_TIMEOUT * 1000)) {
             complete = resultsClient.isProcessingComplete();
+            try {
+                Thread.sleep(500);
+            } catch (Exception ex) {
+                // ?
+            }
         }
         
         // should have at least completed...
