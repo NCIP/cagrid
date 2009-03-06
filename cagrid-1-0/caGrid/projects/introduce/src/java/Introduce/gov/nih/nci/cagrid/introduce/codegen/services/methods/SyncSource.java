@@ -292,13 +292,13 @@ public class SyncSource {
                         // then return the client handle...
                         if (returnTypeEl.isIsArray()) {
                             methodString += returnTypeEl.getClientHandleClass() + "[] clientArray = null;\n";
-                            methodString += DOUBLE_TAB + "if(boxedResult.get" + CommonTools.upperCaseFirstCharacter(info.getType().getType()) + "()!=null){\n";
+                            methodString += DOUBLE_TAB + "if(boxedResult.get" + CommonTools.fixPortTypeMethodName(info.getType().getType()) + "()!=null){\n";
                             methodString += DOUBLE_TAB + "  clientArray = new " + returnTypeEl.getClientHandleClass()
-                                + "[boxedResult.get" + CommonTools.upperCaseFirstCharacter(info.getType().getType()) + "().length];\n";
+                                + "[boxedResult.get" + CommonTools.fixPortTypeMethodName(info.getType().getType()) + "().length];\n";
                             methodString += DOUBLE_TAB
-                                + "  for(int i = 0; i < boxedResult.get" + CommonTools.upperCaseFirstCharacter(info.getType().getType()) + "().length; i++){\n";
+                                + "  for(int i = 0; i < boxedResult.get" + CommonTools.fixPortTypeMethodName(info.getType().getType()) + "().length; i++){\n";
                             methodString += DOUBLE_TAB + "	   clientArray[i] = new "
-                                + returnTypeEl.getClientHandleClass() + "(boxedResult.get" + CommonTools.upperCaseFirstCharacter(info.getType().getType())
+                                + returnTypeEl.getClientHandleClass() + "(boxedResult.get" + CommonTools.fixPortTypeMethodName(info.getType().getType())
                                 + "(i).getEndpointReference(),getProxy());\n";
                             methodString += DOUBLE_TAB + "  }\n";
                             methodString += DOUBLE_TAB + "}\n";
@@ -312,7 +312,7 @@ public class SyncSource {
                         }
                     } else {
                         methodString += "return boxedResult.get"
-                            + CommonTools.upperCaseFirstCharacter(info.getType().getType()) + "();\n";
+                            + CommonTools.fixPortTypeMethodName(info.getType().getType()) + "();\n";
                     }
                 }
             }
@@ -492,7 +492,7 @@ public class SyncSource {
                     methodString += "boxedResult.setResponse(" + var + "." + methodName + "(" + params + "));\n";
                 } else {
                     methodString += "boxedResult.set"
-                        + CommonTools.upperCaseFirstCharacter(outputNamespace.getType().getType()) + "(" + var + "."
+                        + CommonTools.fixPortTypeMethodName(outputNamespace.getType().getType()) + "(" + var + "."
                         + methodName + "(" + params + "));\n";
                 }
             }

@@ -42,7 +42,6 @@ import org.jdom.Document;
 import org.jdom.Element;
 
 
-
 /**
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Hastings </A>
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster </A>
@@ -73,6 +72,25 @@ public final class CommonTools {
 
     private CommonTools() {
 
+    }
+
+
+    public static String fixPortTypeMethodName(String typeName) {
+        typeName = CommonTools.upperCaseFirstCharacter(typeName);
+        String newTypeName = "";
+        boolean lastwasignored = false;
+        for (int i = 0; i < typeName.length(); i++) {
+            if (typeName.charAt(i) == '-') {
+                lastwasignored = true;
+            } else if (lastwasignored) {
+                lastwasignored = false;
+                newTypeName += Character.toString(typeName.charAt(i)).toUpperCase();
+            } else {
+                newTypeName += typeName.charAt(i);
+            }
+        }
+
+        return newTypeName;
     }
 
 
@@ -361,15 +379,16 @@ public final class CommonTools {
         namespaceType.setPackageName(packageName);
 
         namespaceType.setNamespace(rawNamespace);
-        
+
         processSchema(namespaceType, schemaDoc, new File(xsdFilename).getParentFile());
-        
+
         return namespaceType;
     }
-    
+
+
     private static void processSchema(NamespaceType namespaceType, Document schemaDoc, File dir) throws Exception {
         List elementTypes = schemaDoc.getRootElement()
-        .getChildren("element", schemaDoc.getRootElement().getNamespace());
+            .getChildren("element", schemaDoc.getRootElement().getNamespace());
 
         SchemaElementType[] schemaTypes = new SchemaElementType[elementTypes.size()];
         for (int i = 0; i < elementTypes.size(); i++) {
@@ -381,40 +400,44 @@ public final class CommonTools {
             type.setType(element.getAttributeValue("name"));
             schemaTypes[i] = type;
         }
-        
-        if(namespaceType.getSchemaElement()!=null){
-            SchemaElementType[] newSchemaTypes = new SchemaElementType[schemaTypes.length + namespaceType.getSchemaElement().length];
-            System.arraycopy(namespaceType.getSchemaElement(), 0, newSchemaTypes, 0, namespaceType.getSchemaElement().length);
-            System.arraycopy(schemaTypes, 0, newSchemaTypes, namespaceType.getSchemaElement().length, schemaTypes.length);
+
+        if (namespaceType.getSchemaElement() != null) {
+            SchemaElementType[] newSchemaTypes = new SchemaElementType[schemaTypes.length
+                + namespaceType.getSchemaElement().length];
+            System.arraycopy(namespaceType.getSchemaElement(), 0, newSchemaTypes, 0,
+                namespaceType.getSchemaElement().length);
+            System.arraycopy(schemaTypes, 0, newSchemaTypes, namespaceType.getSchemaElement().length,
+                schemaTypes.length);
             namespaceType.setSchemaElement(newSchemaTypes);
         } else {
             namespaceType.setSchemaElement(schemaTypes);
         }
-        
+
         List includeTypes = schemaDoc.getRootElement()
-        .getChildren("include", schemaDoc.getRootElement().getNamespace());
-        for(int i = 0; i < includeTypes.size(); i++){
+            .getChildren("include", schemaDoc.getRootElement().getNamespace());
+        for (int i = 0; i < includeTypes.size(); i++) {
             Element element = (Element) includeTypes.get(i);
-            File xsdFile = new File(dir.getAbsolutePath() + File.separator + element.getAttributeValue("schemaLocation"));
+            File xsdFile = new File(dir.getAbsolutePath() + File.separator
+                + element.getAttributeValue("schemaLocation"));
             Document includeSchemaDoc = XMLUtilities.fileNameToDocument(xsdFile.getAbsolutePath());
             String rawNamespace = schemaDoc.getRootElement().getAttributeValue("targetNamespace");
-            
+
             processSchema(namespaceType, includeSchemaDoc, xsdFile.getParentFile());
-            
+
         }
-        
-        List redefineTypes = schemaDoc.getRootElement()
-        .getChildren("redefine", schemaDoc.getRootElement().getNamespace());
-        for(int i = 0; i < redefineTypes.size(); i++){
+
+        List redefineTypes = schemaDoc.getRootElement().getChildren("redefine",
+            schemaDoc.getRootElement().getNamespace());
+        for (int i = 0; i < redefineTypes.size(); i++) {
             Element element = (Element) redefineTypes.get(i);
-            File xsdFile = new File(dir.getAbsolutePath() + File.separator + element.getAttributeValue("schemaLocation"));
+            File xsdFile = new File(dir.getAbsolutePath() + File.separator
+                + element.getAttributeValue("schemaLocation"));
             Document redefineSchemaDoc = XMLUtilities.fileNameToDocument(xsdFile.getAbsolutePath());
-     
+
             processSchema(namespaceType, redefineSchemaDoc, xsdFile.getParentFile());
-            
+
         }
-        
-       
+
     }
 
 
@@ -438,7 +461,7 @@ public final class CommonTools {
         try {
             location = "./" + Utils.getRelativePath(serviceSchemaDir, xsdFile).replace('\\', '/');
         } catch (IOException e) {
-           logger.error(e);
+            logger.error(e);
             throw new Exception("Problem getting relative path of XSD.", e);
         }
         namespaceType.setLocation(location);
