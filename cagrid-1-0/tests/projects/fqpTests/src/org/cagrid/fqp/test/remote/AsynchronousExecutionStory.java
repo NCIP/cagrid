@@ -10,6 +10,7 @@ import java.util.Vector;
 
 import org.cagrid.fqp.test.common.FQPTestingConstants;
 import org.cagrid.fqp.test.common.ServiceContainerSource;
+import org.cagrid.fqp.test.remote.steps.AsynchronousQueryExecutionFailsStep;
 import org.cagrid.fqp.test.remote.steps.AsynchronousQueryExecutionStep;
 
 /** 
@@ -19,7 +20,7 @@ import org.cagrid.fqp.test.remote.steps.AsynchronousQueryExecutionStep;
  * @author David Ervin
  * 
  * @created Jun 30, 2008 12:48:50 PM
- * @version $Id: AsynchronousExecutionStory.java,v 1.5 2008-10-10 18:49:05 dervin Exp $ 
+ * @version $Id: AsynchronousExecutionStory.java,v 1.5.2.1 2009-03-06 14:06:30 dervin Exp $ 
  */
 public class AsynchronousExecutionStory extends Story {
     
@@ -74,6 +75,10 @@ public class AsynchronousExecutionStory extends Story {
         steps.add(new AsynchronousQueryExecutionStep(FQPTestingConstants.QUERIES_LOCATION + File.separator + "exampleDistributedJoin1.xml",
             FQPTestingConstants.GOLD_LOCATION + File.separator + "exampleDistributedJoin1_gold.xml", 
             fqpClient, serviceUrls));
+        
+        // asynchronous execution which fails
+        steps.add(new AsynchronousQueryExecutionFailsStep(
+            fqpClient, FQPTestingConstants.QUERIES_LOCATION + File.separator + "exampleDistributedJoin1.xml"));
         return steps;
     }
 }
