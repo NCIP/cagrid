@@ -1,5 +1,7 @@
 package org.cagrid.gme.service;
 
+import gov.nih.nci.cagrid.common.Utils;
+
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.URI;
@@ -172,7 +174,7 @@ public class GME {
                     processSchema(schemaLoader, processedSchemas, submittedSchema);
                 } catch (Exception e) {
                     String message = "Problem processing schema submissions; the schema ["
-                        + submittedSchema.getTargetNamespace() + "] was not valid:" + e.getMessage();
+                        + submittedSchema.getTargetNamespace() + "] was not valid:" + Utils.getExceptionMessage(e);
                     LOG.error(message, e);
 
                     InvalidSchemaSubmissionFault fault = new InvalidSchemaSubmissionFault();
@@ -315,7 +317,8 @@ public class GME {
                 } catch (Exception e) {
                     String message = "Problem processing schema submissions; the schema ["
                         + submittedSchema.getTargetNamespace() + "] included a SchemaDocument ["
-                        + schemaDocument.getSystemID() + "] whose expanded URI was not valid:" + e.getMessage();
+                        + schemaDocument.getSystemID() + "] whose expanded URI was not valid:"
+                        + Utils.getExceptionMessage(e);
                     LOG.error(message, e);
 
                     InvalidSchemaSubmissionFault fault = new InvalidSchemaSubmissionFault();
@@ -373,7 +376,7 @@ public class GME {
                     } catch (URISyntaxException e) {
                         String message = "Problem processing schema submissions; the schema ["
                             + submittedSchema.getTargetNamespace() + "] imported a schema [" + importedTargetNS
-                            + "] whose URI was not valid:" + e.getMessage();
+                            + "] whose URI was not valid:" + Utils.getExceptionMessage(e);
                         LOG.error(message, e);
 
                         InvalidSchemaSubmissionFault fault = new InvalidSchemaSubmissionFault();
