@@ -32,7 +32,7 @@ import java.util.List;
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
  * @author <a href="mailto:manav.kher@semanticbits.com">Manav Kher</a>
-*/
+ */
 
 public class MetadataChangeTest extends TestCase {
 
@@ -81,7 +81,7 @@ public class MetadataChangeTest extends TestCase {
         TestDB.drop();
     }
 
-    public void testTransaction() throws Exception{
+    public void testTransaction() throws Exception {
 
         String serviceUrl = "http://service.url";
         GridDataService dataService = new GridDataService();
@@ -92,10 +92,10 @@ public class MetadataChangeTest extends TestCase {
 
         try {
             meta.dmodel = MetadataUtils.deserializeDomainModel(new FileReader(
-                    "aggr/test/data/cabioModelSnippet.xml"));
+                    "test/data/cabioModelSnippet.xml"));
             meta.smeta = MetadataUtils
                     .deserializeServiceMetadata(new FileReader(
-                            "aggr/test/data/cabioServiceMetadata.xml"));
+                            "test/data/cabioServiceMetadata.xml"));
         } catch (Exception ex) {
             fail("Error deserializing test data: " + ex.getMessage());
             ex.printStackTrace();
@@ -108,8 +108,8 @@ public class MetadataChangeTest extends TestCase {
         }
         GridServiceDao testDao = new TestGridServiceDao();
 
-          testDao.setHibernateTemplate(gridServiceDao.getHibernateTemplate());
-          testDao.setSessionFactory(gridServiceDao.getHibernateTemplate().getSessionFactory());
+        testDao.setHibernateTemplate(gridServiceDao.getHibernateTemplate());
+        testDao.setSessionFactory(gridServiceDao.getHibernateTemplate().getSessionFactory());
         GridServiceDao _mockDao = mock(GridServiceDao.class);
 
         try {
@@ -119,27 +119,27 @@ public class MetadataChangeTest extends TestCase {
             changeListener.setGridServiceDao(testDao);
             changeListener.updateServiceMetadata(serviceUrl, meta);
             fail("Transaction should have failed");
-        }catch (RuntimeException e){
-            ServiceMetadataDao  serviceMetadataDao = (ServiceMetadataDao) TestDB
+        } catch (RuntimeException e) {
+            ServiceMetadataDao serviceMetadataDao = (ServiceMetadataDao) TestDB
                     .getApplicationContext().getBean("serviceMetadataDao");
             ServiceMetadata loadedMetadata = serviceMetadataDao.getById(1);
-            assertNull("Service metadata was not deleted",loadedMetadata.getService());
+            assertNull("Service metadata was not deleted", loadedMetadata.getService());
 
             try {
                 //reattach and save
                 loadedMetadata.setService(dataService);
                 serviceMetadataDao.save(loadedMetadata);
 
-                MetadataChangeListener springProvidedListener = (MetadataChangeListener)l.getApplicationContext().getBean("metadataChangeListener");
+                MetadataChangeListener springProvidedListener = (MetadataChangeListener) l.getApplicationContext().getBean("metadataChangeListener");
 
                 springProvidedListener.setGridServiceDao(testDao);
 
                 springProvidedListener.updateServiceMetadata(serviceUrl, meta);
                 fail("Transaction should have been interrupted");
             } catch (RuntimeException e1) {
-                assertNotSame("NPE is unexpected",e1.getClass(),NullPointerException.class);
-                assertNotNull("Metadata was not persisted",serviceMetadataDao.getById(1));
-                assertNotNull("Service metadata was deleted. Transaction was not applied" + e1.getMessage(),serviceMetadataDao.getById(1).getService());
+                assertNotSame("NPE is unexpected", e1.getClass(), NullPointerException.class);
+                assertNotNull("Metadata was not persisted", serviceMetadataDao.getById(1));
+                assertNotNull("Service metadata was deleted. Transaction was not applied" + e1.getMessage(), serviceMetadataDao.getById(1).getService());
             }
 
         } catch (Exception ex) {
@@ -148,7 +148,6 @@ public class MetadataChangeTest extends TestCase {
         }
 
     }
-
 
 
     public void testMetadataChange() {
@@ -160,10 +159,10 @@ public class MetadataChangeTest extends TestCase {
         Metadata meta = new Metadata();
         try {
             meta.dmodel = MetadataUtils.deserializeDomainModel(new FileReader(
-                    "aggr/test/data/cabioDomainModel.xml"));
+                    "test/data/cabioDomainModel.xml"));
             meta.smeta = MetadataUtils
                     .deserializeServiceMetadata(new FileReader(
-                            "aggr/test/data/cabioServiceMetadata.xml"));
+                            "test/data/cabioServiceMetadata.xml"));
         } catch (Exception ex) {
             fail("Error deserializing test data: " + ex.getMessage());
             ex.printStackTrace();
@@ -178,7 +177,7 @@ public class MetadataChangeTest extends TestCase {
         // Now associate some CQLQueryInstance and SharedCQLQuery objects
         String cql = null;
         try {
-            cql = loadCQL("aggr/test/data/cabioMouseQuery.xml");
+            cql = loadCQL("test/data/cabioMouseQuery.xml");
         } catch (Exception ex) {
             fail("Error loading test query: " + ex.getMessage());
             ex.printStackTrace();
@@ -269,13 +268,13 @@ public class MetadataChangeTest extends TestCase {
         @Override
         public ApplicationContext getApplicationContext() {
             return new ClassPathXmlApplicationContext(
-                    new String[]{"applicationContext-aggr.xml","applicationContext-db.xml",
+                    new String[]{"applicationContext-aggr.xml", "applicationContext-db.xml",
                     });
 //            return TestDB.getApplicationContext();
         }
     }
 
-    public class TestGridServiceDao extends GridServiceDao{
+    public class TestGridServiceDao extends GridServiceDao {
         @Override
         public void save(GridService domainObject) {
             throw new RuntimeException();
