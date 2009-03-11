@@ -3,13 +3,9 @@ package gov.nih.nci.cagrid.portal.util;
 import gov.nih.nci.cagrid.portal.AbstractTimeSensitiveTest;
 import gov.nih.nci.cagrid.portal.domain.metadata.dataservice.DomainModel;
 import gov.nih.nci.cagrid.portal.domain.metadata.dataservice.XMLSchema;
+import org.cagrid.gme.client.GlobalModelExchangeClient;
+import org.cagrid.gme.domain.XMLSchemaNamespace;
 import static org.mockito.Mockito.mock;
-import org.projectmobius.common.GridServiceResolver;
-import org.projectmobius.common.MobiusException;
-import org.projectmobius.common.Namespace;
-import org.projectmobius.gme.XMLDataModelService;
-import org.projectmobius.gme.client.GlobusGMEXMLDataModelServiceFactory;
-import org.projectmobius.protocol.gme.SchemaNode;
 
 import java.util.List;
 
@@ -20,12 +16,12 @@ import java.util.List;
  */
 public class PortalUtilsTest extends AbstractTimeSensitiveTest {
     private String badUrl;
-    private Namespace ns;
+    private XMLSchemaNamespace ns;
 
 
     public PortalUtilsTest() throws Exception {
         badUrl = "http://www.yahoo.com";
-        ns = new Namespace("gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata");
+        ns = new XMLSchemaNamespace("gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common");
 
     }
 
@@ -35,14 +31,13 @@ public class PortalUtilsTest extends AbstractTimeSensitiveTest {
 
 
     public void testGME() {
-
-        GridServiceResolver.getInstance().setDefaultFactory(
-                new GlobusGMEXMLDataModelServiceFactory());
         try {
-            XMLDataModelService handle = (XMLDataModelService) GridServiceResolver
-                    .getInstance().getGridService(badUrl);
-            SchemaNode schema = handle.getSchema(ns, false);
-        } catch (MobiusException e) {
+
+            GlobalModelExchangeClient client = new GlobalModelExchangeClient(badUrl);
+            org.cagrid.gme.domain.XMLSchema schema = client.getXMLSchema(ns);
+            String content = schema.getRootDocument().getSchemaText();
+            fail("Schema should be null");
+        } catch (Exception e) {
             assertNotNull(e);
         }
 
@@ -51,11 +46,15 @@ public class PortalUtilsTest extends AbstractTimeSensitiveTest {
 
     public void testGetXMLSchemas() throws Exception {
         DomainModel _model = mock(DomainModel.class);
-        List<XMLSchema> _schemas = PortalUtils.getXMLSchemas(_model, badUrl, badUrl);
+        List<XMLSchema> _schemas = null;
+
+        _schemas = PortalUtils.getXMLSchemas(_model, badUrl, badUrl);
+        assertEquals("Schemas returned for bad URL", _schemas.size(), 0);
 
     }
 
-    public void testGetXmlSchemaContent() {
+
+    public void testBadGetXmlSchemaContent() {
         PortalUtils.getXmlSchemaContent(ns.toString(), badUrl);
     }
 }
