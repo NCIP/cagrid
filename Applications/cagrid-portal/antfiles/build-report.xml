@@ -56,7 +56,7 @@
                 <mkdir dir="${reports.codecoverage.dir}/@{project.name}"/>
                 <echo message="${projects.dir}/@{project.name}/src/java"/>
 
-                <cobertura-report format="html" destdir="${reports.codecoverage.dir}/@{project.name}"
+                <cobertura-report format="${cobertura.report.format}" destdir="${reports.codecoverage.dir}/@{project.name}"
                                   datafile="${cobertura.instrumented.dir}/@{project.name}-cobertura.ser">
 
                     <fileset dir="${projects.dir}/@{project.name}/src/java">
