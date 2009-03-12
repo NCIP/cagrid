@@ -1,266 +1,188 @@
-<project name="cagrid-portal" default="all">
+<?xml version="1.0"?>
 
-    <property name="target.env" value="local"/>
-    <property name="build.ext.properties" value="build-${target.env}.properties"/>
-    <property file="${build.ext.properties}"/>
-    <property file="build.properties"/>
-    <property environment="env"/>
-    <property name="ant.home" value="${env.ANT_HOME}"/>
-    <property name="tools.ant.lib" value="tools/ant/lib"/>
+<project name="cagrid-portal" basedir="."
+         xmlns:ivy="antlib:org.apache.ivy.ant">
 
-    <path id="xmltaskdef.cp">
-        <pathelement location="${tools.ant.lib}/xmltask-v1.14.jar"/>
-    </path>
+    <property name="build.dir" value="${basedir}/build"/>
+    <property name="projects.dir" value="${basedir}"/>
+    <property name="ivy.dir" value="${basedir}/ivy"/>
 
-    <taskdef name="xmltask"
-             classname="com.oopsconsultancy.xmltask.ant.XmlTask"
-             classpathref="xmltaskdef.cp"/>
+    <property name="antfiles.dir" value="${basedir}/antfiles"/>
 
-    <taskdef resource="net/sf/antcontrib/antlib.xml">
-        <classpath>
-            <fileset dir="${tools.ant.lib}">
-                <include name="ant-contrib*.jar"/>
+    <import file="${antfiles.dir}/build-common.xml"/>
+    <import file="${ivy.dir}/ivy-targets.xml"/>
+    <import file="${antfiles.dir}/build-test.xml"/>
+    <import file="${antfiles.dir}/build-report.xml"/>
+
+    <property name="liferay.autodeploy.dir" value="${liferay.jboss.dir}/deploy"/>
+
+
+    <target name="prepare" depends="prepare-ant-tasks, ivy:load">
+        <tstamp/>
+    </target>
+
+    <target name="build-projects-list" depends="prepare">
+        <ivy:buildlist reference="ivy.projects.list" ivyfilepath="ivy.xml" skipbuildwithoutivy="true">
+            <fileset dir="${basedir}">
+                <include name="*/ivy-build.xml"/>
             </fileset>
-        </classpath>
-    </taskdef>
-
-
-    <patternset id="db.compile.jars">
-        <include name="spring/spring.jar"/>
-        <include name="spring/spring-aspects.jar"/>
-
-        <include name="hibernate/core/commons-logging-1.0.4.jar"/>
-        <include
-                name="hibernate/annotations/hibernate-commons-annotations.jar"/>
-        <include name="hibernate/annotations/hibernate-annotations.jar"/>
-        <include name="hibernate/annotations/ejb3-persistence.jar"/>
-        <include name="hibernate/core/hibernate3.jar"/>
-        <include name="jakarta-commons/commons-lang.jar"/>
-        <include name="aspectj/aspectjrt.jar"/>
-        <include name="aspectj/aspectjweaver.jar"/>
-    </patternset>
-
-    <patternset id="db.run.jars">
-
-        <include name="hibernate/core/*.jar"/>
-        <include name="liquibase/*.jar"/>
-        <include name="jakarta-commons/commons-dbcp.jar"/>
-        <include name="jakarta-commons/commons-pool.jar"/>
-
-    </patternset>
-
-    <patternset id="globus.crypto.jars">
-        <include name="cryptix-asn1.jar"/>
-        <include name="cryptix.jar"/>
-        <include name="cryptix32.jar"/>
-        <include name="jce-jdk13-125.jar"/>
-        <include name="jgss.jar"/>
-        <include name="puretls.jar"/>
-        <include name="xmlsec.jar"/>
-    </patternset>
-
-    <patternset id="cagrid.crypto.jars">
-        <include name="cog-jglobus.jar"/>
-    </patternset>
-
-    <patternset id="globus.jars">
-        <include name="addressing-1.0.jar"/>
-        <include name="axis.jar"/>
-        <include name="bootstrap.jar"/>
-        <include name="cog-axis.jar"/>
-        <include name="commonj.jar"/>
-        <include name="commons-discovery.jar"/>
-        <include name="concurrent.jar"/>
-        <include name="jaxrpc.jar"/>
-        <include name="resolver.jar"/>
-        <include name="saaj.jar"/>
-        <include name="servlet.jar"/>
-        <include name="wsdl4j.jar"/>
-        <include name="wsrf_common.jar"/>
-        <include name="wsrf_core_stubs.jar"/>
-        <include name="wsrf_core.jar"/>
-        <include name="wss4j.jar"/>
-    </patternset>
-
-    <patternset id="cagrid.jars">
-        <include name="caGrid-1.1-*client.jar"/>
-        <include name="caGrid-1.1-*common.jar"/>
-        <include name="caGrid-1.1-*stubs.jar"/>
-        <include name="caGrid-1.1-advertisement.jar"/>
-        <include name="caGrid-1.1-core.jar"/>
-        <include name="caGrid-1.1-discovery.jar"/>
-        <include name="caGrid-1.1-grape.jar"/>
-        <include name="caGrid-1.1-gridca.jar"/>
-        <include name="caGrid-1.1-metadata*.jar"/>
-        <include name="caGrid-1.1-opensaml-1.1.jar"/>
-        <include name="castor-0.9.9.jar"/>
-        <include name="commons-codec-1.3.jar"/>
-        <include name="globus*.jar"/>
-        <include name="mobius*.jar"/>
-        <include name="client.jar"/>
-        <include name="activation.jar"/>
-        <include name="mail.jar"/>
-        <include name="caGrid-1.1-wsEnum.jar"/>
-    </patternset>
-
-    <xmlcatalog id="portal.catalog">
-        <dtd
-                publicId="-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
-                location="./tools/ant/resources/web-app_2_3.dtd"/>
-        <dtd
-                publicId="-//Liferay//DTD Display 4.0.0//EN"
-                location="./tools/ant/resources/liferay-display_4_0_0.dtd"/>
-        <dtd
-                publicId="-//JBoss//DTD JBOSS Security Config 3.0//EN"
-                location="./tools/ant/resources/security_config.dtd"/>
-        <dtd
-                publicId="-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-                location="./tools/ant/resources/hibernate-configuration-3.0.dtd"/>
-
-    </xmlcatalog>
-
-
-    <import file="build-db.xml"/>
-    <import file="build-security.xml"/>
-    <import file="build-aggr.xml"/>
-    <import file="build-portlets.xml"/>
-    <!--
-     <import file="build-js2.xml" />
-      -->
-    <import file="build-liferay.xml"/>
-
-
-    <target name="compile">
-        <antcall target="portlets:compile"/>
+        </ivy:buildlist>
     </target>
 
-    <target name="test">
+    <target name="input-project-name">
+        <input addproperty="single.project.name" message="Please enter the project name:"/>
+    </target>
 
-        <antcall target="db:test"/>
-        <antcall target="aggr:test"/>
-        <antcall target="portlets:test"/>
+    <target name="check-project-name">
+        <fail unless="single.project.name" message="The expected property, 'single.project.name' was not defined!"/>
+        <condition property="single.project.name.invalid">
+            <or>
+                <equals arg1="${single.project.name}" arg2="" trim="true"/>
+                <and>
+                    <not>
+                        <available file="${projects.dir}/${single.project.name}" type="dir"/>
+                    </not>
+                </and>
+            </or>
+        </condition>
+        <fail if="single.project.name.invalid"
+              message="The expected property, 'single.project.name' was not defined as a valid project name!  The value was: [${single.project.name}]"/>
+    </target>
 
-        <mkdir dir="docs/test/report/html"/>
 
-        <junitreport todir="docs/test/report">
-            <fileset dir=".">
-                <include name="**/junit-reports/TEST-*.xml"/>
+    <target name="build-project" depends="prepare,input-project-name,check-project-name"
+            description="Build a single project">
+
+        <echo message="Building ${single.project.name}, and all its dependencies (as necessary)."/>
+
+        <ivy:buildlist reference="single.ivy.project.list"
+                       root="portal-${single.project.name}"
+                       ivyfilepath="ivy.xml" skipbuildwithoutivy="true">
+            <fileset dir="${projects.dir}">
+                <include name="*/ivy-build.xml"/>
             </fileset>
-            <report format="frames" todir="docs/test/report/html"/>
-        </junitreport>
+        </ivy:buildlist>
+
+        <echo message="Computed build order is: ${ivy.sorted.modules}"/>
+        <subant target="ivy:publish" buildpathref="single.ivy.project.list">
+            <property name="target.grid" value="${aggr.trust.target.grid}"/>
+        </subant>
 
     </target>
 
-    <target name="clean">
-        <antcall target="db:clean"/>
-        <antcall target="aggr:clean"/>
-        <antcall target="portlets:clean"/>
-        <!--
-          <antcall target="js2:clean"/>
-           -->
-        <antcall target="liferay:clean"/>
-        <antcall target="security:clean"/>
+    <target name="clean" depends="build-projects-list,test:clean,reports:clean"
+            description="Clean dependency management">
+        <delete dir="${build.dir}" failonerror="false"/>
+        <delete dir="${ivy.integration.repository.dir}"/>
+        <ivy:cleancache/>
 
-        <delete dir="docs"/>
-    </target>
-
-    <target name="all" depends="clean,compile,test"/>
-
-    <target name="create-cagridportal-properties">
-        <propertyfile file="${target.dir}" comment="Auto-generated by cagridportal build.">
-            <entry key="cagrid.portal.db.url" value="${cagrid.portal.db.url}"/>
-            <entry key="cagrid.portal.db.username" value="${cagrid.portal.db.username}"/>
-            <entry key="cagrid.portal.db.password" value="${cagrid.portal.db.password}"/>
-            <entry key="cagrid.portal.db.dialect" value="${cagrid.portal.db.dialect}"/>
-            <entry key="cagrid.portal.db.driver" value="${cagrid.portal.db.driver}"/>
-            <entry key="cagrid.portal.db.show_sql" value="${cagrid.portal.db.show_sql}"/>
-            <entry key="cagrid.portal.indexServiceUrls" value="${cagrid.portal.indexServiceUrls}"/>
-            <entry key="cagrid.portal.geocoder.yahoo.baseUrl" value="${cagrid.portal.geocoder.yahoo.baseUrl}"/>
-            <entry key="cagrid.portal.geocoder.yahoo.appId" value="${cagrid.portal.geocoder.yahoo.appId}"/>
-            <entry key="cagrid.portal.map.google.baseUrl" value="${cagrid.portal.map.google.baseUrl}"/>
-            <entry key="cagrid.portal.map.google.apiKey" value="${cagrid.portal.map.google.apiKey}"/>
-            <entry key="cagrid.portal.gmeUrl" value="${cagrid.portal.gmeUrl}"/>
-            <entry key="cagrid.portal.cadsrUrl" value="${cagrid.portal.cadsrUrl}"/>
-            <entry key="cagrid.portal.security.encryption.key" value="${cagrid.portal.security.encryption.key}"/>
-            <entry key="cagrid.portal.admin.email" value="${cagrid.portal.admin.email}"/>
-            <entry key="cagrid.portal.idpInfo" value="${cagrid.portal.idpInfo}"/>
-            <entry key="cagrid.portal.ifsUrl" value="${cagrid.portal.ifsUrl}"/>
-            <entry key="cagrid.portal.http.port" value="${liferay.http.port}"/>
-            <entry key="cagrid.portal.https.port" value="${liferay.https.port}"/>
-            <entry key="cagrid.portal.httpRedirect.port" value="${cagrid.portal.httpRedirect.port}"/>
-            <entry key="cagrid.portal.httpsRedirect.port" value="${cagrid.portal.httpsRedirect.port}"/>
-            <entry key="cagrid.portal.trust.synchronizeEnabled" value="${cagrid.portal.trust.synchronizeEnabled}"/>
-            <entry key="cabig.tools.remoteView" value="${cabig.tools.remoteView}"/>
-            <entry key="fqp.service.url" value="${fqp.service.url}"/>
-            <entry key="evs.remoteAPI.url" value="${evs.remoteAPI.url}"/>
-            <entry key="strict.index.verification" value="${strict.index.verification}"/>
-            <entry key="cagrid.portal.aggr.defaultTimeout" value="${cagrid.portal.aggr.defaultTimeout}"/>
-            <entry key="cagrid.portal.aggr.long.defaultTimeout" value="${cagrid.portal.aggr.long.defaultTimeout}"/>
-            <entry key="cagrid.portal.aggr.defaultPeriod" value="${cagrid.portal.aggr.defaultPeriod}"/>
-            <entry key="cagrid.portal.slow.aggr.defaultPeriod" value="${cagrid.portal.slow.aggr.defaultPeriod}"/>
-            <entry key="cagrid.portal.fast.aggr.defaultPeriod" value="${cagrid.portal.fast.aggr.defaultPeriod}"/>
-            <entry key="cagrid.portal.maxDowntimeHours" value="${cagrid.portal.maxDowntimeHours}"/>
-            <entry key="cagrid.portal.build.stamp" value="${cagrid.portal.build.stamp}"/>
-        </propertyfile>
-    </target>
-
-    <target name="config-trust">
-        <if>
-            <istrue value="${aggr.trust.copy.certificates}"/>
-            <then>
-                <mkdir dir="${user.home}/.globus/certificates"/>
-                <copy todir="${user.home}/.globus/certificates" overwrite="true">
-                    <fileset dir="${aggr.trust.certs.dir}">
-                        <include name="*"/>
-                    </fileset>
-                </copy>
-            </then>
-        </if>
-    </target>
-
-    <target name="install">
-        <antcall target="config-trust"/>
-        <antcall target="db:load-schema"/>
-        <antcall target="aggr:load-workspaces">
-            <param name="aggr:participant-list" value="${aggr.dir}/etc/caBIG_Workspaces_participants.xls"/>
-        </antcall>
-        <antcall target="liferay:install-liferay"/>
-        <antcall target="liferay:deploy-all"/>
-
+        <for parallel="false" param="project.buildfile" trim="true">
+            <path refid="ivy.projects.list"/>
+            <sequential>
+                <dirname file="@{project.buildfile}" property="@{project.buildfile}.dir"/>
+                <ant inheritAll="false" dir="${@{project.buildfile}.dir}"
+                     antfile="@{project.buildfile}" target="ivy:clean">
+                </ant>
+            </sequential>
+        </for>
     </target>
 
 
-    <target name="javadoc" depends="db:compile,aggr:compile,portlets:compile,liferay:compile,security:compile">
-        <mkdir dir="docs/api"/>
-        <javadoc packagenames="*" destdir="docs/api" author="true" version="true" use="true"
-                 windowtitle="caGrid Portal API">
-
-            <sourcepath>
-                <pathelement location="${db.src.java.dir}"/>
-                <pathelement location="${aggr.src.java.dir}"/>
-                <pathelement location="${portlets.src.java.dir}"/>
-                <pathelement location="${liferay.src.java.dir}"/>
-                <pathelement location="${security.src.java.dir}"/>
-            </sourcepath>
-
-            <classpath>
-                <pathelement location="${db.classes.dir}"/>
-                <pathelement location="${aggr.classes.dir}"/>
-                <pathelement location="${portlets.classes.dir}"/>
-                <pathelement location="${liferay.classes.dir}"/>
-                <pathelement location="${security.classes.dir}"/>
-                <path refid="db.compile.cp"/>
-                <path refid="aggr.compile.cp"/>
-                <path refid="portlets.compile.cp"/>
-                <path refid="liferay.compile.cp"/>
-                <path refid="security.compile.cp"/>
-            </classpath>
-
-            <tag name="todo" scope="all" description="To do:"/>
-            <tag name="created" scope="all" description="Created On:"/>
-
-        </javadoc>
+    <target name="config-trust" depends="prepare" description="Configure Globus trust store">
+        <trycatch>
+            <try>
+                <ant target="config-trust"
+                     dir="${projects.dir}/aggr"/>
+            </try>
+            <catch>
+                <fail message="Please build the project first or run 'ant all'"/>
+            </catch>
+        </trycatch>
     </target>
+
+    <target name="deploy-all" depends="prepare" description="Deploy all Portlets to Liferay Portal.">
+        <trycatch>
+            <try>
+                <ant target="deploy-all"
+                     dir="${projects.dir}/portals"/>
+            </try>
+            <catch>
+                <fail message="Please build the project first or run 'ant all'"/>
+            </catch>
+        </trycatch>
+    </target>
+
+    <target name="deploy-portlets" depends="prepare">
+        <ant inheritall="false" target="deploy-portlets"
+             dir="${projects.dir}/portlets">
+            <property name="target.dir" value="${liferay.autodeploy.dir}"/>
+        </ant>
+    </target>
+
+
+    <target name="install-liferay" depends="prepare" description="Install the Liferay Portal(war).">
+        <ant inheritall="false" target="install-liferay"
+             dir="${projects.dir}/portals">
+        </ant>
+    </target>
+
+    <target name="install" depends="prepare"
+            description="Install caGrid Portal">
+        <trycatch>
+            <try>
+                <antcall target="config-trust"/>
+                <antcall target="load-schema"/>
+                <antcall target="load-workspaces"/>
+                <antcall target="install-liferay"/>
+                <antcall target="deploy-all"/>
+                <antcall target="deploy-portlets"/>
+            </try>
+            <catch>
+                <fail message="Please build the project first or run 'ant all'"/>
+            </catch>
+        </trycatch>
+    </target>
+
+
+    <target name="load-schema" depends="prepare" description="Create the Portal Application Database.">
+        <ant inheritall="false" target="load-schema"
+             dir="${projects.dir}/db">
+        </ant>
+    </target>
+
+    <target name="load-workspaces" depends="prepare" description="Load the caBIG workspaces">
+        <ant inheritall="false" target="run-load-workspaces"
+             dir="${projects.dir}/aggr">
+        </ant>
+    </target>
+
+    <target name="run-trust" depends="config-trust" description="Sync with caGrid GTS service">
+        <ant inheritall="false" target="run-trust"
+             dir="${projects.dir}/aggr">
+        </ant>
+    </target>
+
+
+    <target name="build-all" depends="build-projects-list"
+            description="Do dependency management">
+
+        <for parallel="false" param="project.buildfile" trim="true">
+            <path refid="ivy.projects.list"/>
+            <sequential>
+                <dirname file="@{project.buildfile}" property="@{project.buildfile}.dir"/>
+                <ant inheritAll="false" dir="${@{project.buildfile}.dir}"
+                     antfile="@{project.buildfile}" target="ivy:publish">
+                    <property name="target.grid" value="${aggr.trust.target.grid}"/>
+                </ant>
+            </sequential>
+        </for>
+    </target>
+
+    <target name="all" depends="clean,build-all"/>
+
+    <!--for automatated build-->
+    <target name="test" depends="all, test:test" description="Run all unit tests for the project."/>
+    <target name="reports" depends="all, reports:reports" description="Generate reports for the project."/>
 
 
 </project>

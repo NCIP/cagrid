@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+
+<project name="cagrid-portal-test" basedir=".">
+
+    <dirname property="cagrid-portal-test.basedir" file="${ant.file.cagrid-portal-test}"/>
+
+    <property name="test.junit.dir" value="${basedir}/junit"/>
+    <property name="test.junit.reports.dir" value="${test.junit.dir}/reports"/>
+
+
+    <target name="test:prepare" depends="prepare"/>
+
+    <target name="test:clean">
+        <delete dir="${test.junit.dir}"/>
+    </target>
+
+    <target name="test:test" depends="test:prepare">
+
+        <delete dir="${test.junit.reports.dir}" failonerror="false"/>
+        <mkdir dir="${test.junit.reports.dir}"/>
+
+        <for list="${unit.testable.projects.list}" parallel="false" param="project.name" trim="true">
+
+            <sequential>
+                <stopwatch name="@{project.name}"/>
+                <trycatch property="@{project.name}.unit.test.failed.message">
+                    <try>
+                        <ant inheritAll="false" dir="${projects.dir}/@{project.name}"
+                             target="test" inheritrefs="false">
+                            <property name="test.junit.reports.dir" value="${test.junit.reports.dir}"/>
+                        </ant>
+                    </try>
+                    <catch>
+                        <fail message="@{project.name} Unit tests failed (${@{project.name}.unit.test.failed.message})"
+                              if="test.failfast"/>
+                        <echo message="@{project.name} Unit tests failed (${@{project.name}.unit.test.failed.message}), proceeding with other tests, but build will fail at completion."/>
+                        <property name="unit.test.failed" value="true"/>
+                    </catch>
+                </trycatch>
+                <stopwatch name="@{project.name}" action="total"/>
+            </sequential>
+        </for>
+        <fail message="Unit Tests failed! Consult the logs for details." if="unit.test.failed"/>
+    </target>
+</project>
