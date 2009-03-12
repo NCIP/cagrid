@@ -66,6 +66,6 @@ public class UmlClassDaoTest extends DBTestBase<UMLClassDao> {
 
     @Override
     protected String getDataSet() throws Exception {
-        return "db/test/data/UMLClassDaoTest.xml";
+        return "test/data/UMLClassDaoTest.xml";
     }
 }

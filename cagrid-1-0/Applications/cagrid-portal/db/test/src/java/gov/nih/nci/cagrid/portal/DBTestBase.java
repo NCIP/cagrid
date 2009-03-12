@@ -25,7 +25,7 @@ public class DBTestBase<T extends AbstractDao> extends AbstractDBTestBase {
     }
 
     protected String getDataSet() throws Exception {
-        return "db/test/data/" + getNamingStrategy() + ".xml";
+        return "test/data/" + getNamingStrategy() + ".xml";
     }
 
     public String getNamingStrategy() {

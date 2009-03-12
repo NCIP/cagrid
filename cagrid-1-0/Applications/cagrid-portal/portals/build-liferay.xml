@@ -1,0 +1,505 @@
+<?xml version="1.0"?>
+
+<project name="liferay-portal" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+
+    <property name="liferay.version" value="5.0.1"/>
+    <property name="liferay.jboss.download.url"
+              value="http://switch.dl.sourceforge.net/sourceforge/jboss/jboss-4.0.5.GA.zip"/>
+    <property name="liferay.jboss.dir.name" value="jboss-4.0.5.GA"/>
+    <property name="liferay.jboss.zip" value="${liferay.jboss.dir}/jboss-4.0.5.GA.zip"/>
+    <property name="liferay.jboss.home" value="${liferay.jboss.dir}/${liferay.jboss.dir.name}"/>
+    <property name="liferay.jboss.deploy.dest.dir"
+              value="${liferay.jboss.home}/server/${liferay.jboss.server.name}/deploy"/>
+    <property name="liferay.root.context.dir"
+              value="${liferay.jboss.home}/server/${liferay.jboss.server.name}/deploy/liferay-portal.war"/>
+    <property name="liferay.db.url"
+              value="jdbc:mysql://${liferay.db.host}:${liferay.db.port}/${liferay.db.name}"/>
+    <property name="liferay.db.driver" value="com.mysql.jdbc.Driver"/>
+    <property name="liferay.downloads.dir" value="${liferay.jboss.dir}"/>
+    <property name="liferay.dependencies.download.url"
+              value="http://downloads.sourceforge.net/lportal/liferay-portal-dependencies-${liferay.version}.zip"/>
+    <property name="liferay.dependecies.name" value="liferay-portal-dependencies-${liferay.version}"/>
+    <property name="liferay.dependencies.zip" value="${liferay.dependecies.name}.zip"/>
+    <property name="liferay.war.download.url"
+              value="http://downloads.sourceforge.net/lportal/liferay-portal-${liferay.version}.war"/>
+    <property name="liferay.war" value="liferay-portal-${liferay.version}.war"/>
+    <property name="liferay.mail.username" value="nobody"/>
+    <property name="liferay.mail.password" value="password"/>
+    <property name="liferay.mail.host" value="localhost"/>
+    <property name="liferay.portal.war.dir"
+              value="${liferay.jboss.home}/server/${liferay.jboss.server.name}/deploy/liferay-portal.war"/>
+    <property name="liferay.autodeploy.dir" value="${liferay.jboss.dir}/deploy"/>
+    <property name="liferay.theme.name" value="cagrid-minimal"/>
+
+
+    <xmlcatalog id="portal.catalog">
+        <dtd
+                publicId="-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+                location="./tools/ant/resources/web-app_2_3.dtd"/>
+        <dtd
+                publicId="-//Liferay//DTD Display 4.0.0//EN"
+                location="./tools/ant/resources/liferay-display_4_0_0.dtd"/>
+        <dtd
+                publicId="-//JBoss//DTD JBOSS Security Config 3.0//EN"
+                location="./tools/ant/resources/security_config.dtd"/>
+        <dtd
+                publicId="-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+                location="./tools/ant/resources/hibernate-configuration-3.0.dtd"/>
+
+    </xmlcatalog>
+
+    <target name="deploy-authn" depends="jar, jar-resources" description="Will deploy caGrid Authentication Portlet">
+
+        <copy todir="${liferay.root.context.dir}/WEB-INF/lib" overwrite="true" flatten="true">
+            <fileset dir="${ext.authn.lib.dir}">
+                <include name="*.jar"/>
+            </fileset>
+            <fileset dir="${liferay.build.jar.dir}">
+                <include name="*.jar"/>
+            </fileset>
+        </copy>
+
+        <copy todir="${liferay.jboss.home}/server/${liferay.jboss.server.name}/lib/ext"
+              overwrite="true" flatten="true">
+            <fileset dir="${ext.ext.lib.dir}">
+                <include name="*.jar"/>
+            </fileset>
+        </copy>
+
+        <copy todir="${liferay.root.context.dir}/WEB-INF/classes" overwrite="true">
+            <fileset dir="${liferay.src.war.dir}/WEB-INF/classes">
+                <include name="*.xml"/>
+                <include name="*.properties"/>
+
+            </fileset>
+
+            <filterset>
+                <filter token="LIFERAY_JBOSS_DEPLOY_DEST_DIR"
+                        value="${liferay.jboss.deploy.dest.dir}"/>
+                <filter token="LIFERAY_AUTODEPLOY_DIR" value="${liferay.autodeploy.dir}"/>
+                <filter token="LIFERAY_ADMIN_PASSWORD" value="${liferay.admin.password}"/>
+                <filter token="LIFERAY_ADMIN_USERNAME" value="${liferay.admin.username}"/>
+            </filterset>
+
+        </copy>
+
+        <!-- This is need on windows if user.home is used to set up the autodeploy path. -->
+        <replaceregexp file="${liferay.root.context.dir}/WEB-INF/classes/portal-ext.properties"
+                       match="\\" replace="\/" flags="g"/>
+
+        <copy todir="${liferay.root.context.dir}/WEB-INF" overwrite="true">
+            <fileset dir="${liferay.src.war.dir}/WEB-INF">
+                <include name="applicationContext-acegi-security.xml"/>
+                <include name="web.xml"/>
+
+            </fileset>
+        </copy>
+
+        <!--Copy properties-->
+        <antcall target="create-cagridportal-properties" inheritall="false">
+            <param name="target.dir" value="${liferay.root.context.dir}/WEB-INF/classes"/>
+        </antcall>
+
+    </target>
+
+    <target name="test-jboss-zip">
+        <condition property="liferay.jboss.zip.available">
+            <available file="${liferay.jboss.zip}" type="file"/>
+        </condition>
+    </target>
+
+    <target name="download-jboss" unless="liferay.jboss.zip.available"
+            depends="test-jboss-zip">
+        <mkdir dir="${liferay.jboss.dir}"/>
+        <get src="${liferay.jboss.download.url}" dest="${liferay.jboss.zip}" verbose="on"/>
+    </target>
+
+    <target name="test-jboss">
+        <condition property="liferay.jboss.available">
+            <available file="${liferay.jboss.home}" type="dir"/>
+        </condition>
+    </target>
+
+    <target name="unzip-jboss" unless="liferay.jboss.available" depends="test-jboss">
+        <mkdir dir="${liferay.jboss.dir}"/>
+        <unzip src="${liferay.jboss.zip}" dest="${liferay.jboss.dir}"/>
+    </target>
+
+    <target name="install-jboss" depends="test-jboss">
+        <if>
+            <not>
+                <isset property="liferay.jboss.available"/>
+            </not>
+            <then>
+                <echo>Installing JBoss</echo>
+
+                <antcall target="download-jboss"/>
+                <antcall target="unzip-jboss"/>
+
+            </then>
+        </if>
+    </target>
+
+    <target name="configure-jboss-classpath">
+        <!-- No DTD or Schema needed. -->
+        <property name="config.file"
+                  value="${liferay.jboss.home}/server/${liferay.jboss.server.name}/conf/jboss-service.xml"/>
+        <xmltask source="${config.file}" dest="${config.file}">
+            <remove path="/server/classpath"/>
+            <insert path="/server/mbean[1]" position="before">
+                <![CDATA[
+	                <classpath archives="*" codebase="${jboss.server.lib.url:lib}/ext"/>
+	                <classpath archives="*" codebase="${jboss.server.lib.url:lib}"/>
+				]]>
+            </insert>
+        </xmltask>
+
+    </target>
+
+    <target name="configure-jboss-root">
+
+        <delete
+                file="${liferay.jboss.home}/server/${liferay.jboss.server.name}/deploy/jbossweb-tomcat55.sar/ROOT.war"/>
+
+        <!-- Downloaded DTD to tools/ant/resources/web-app_2_3.dtd -->
+        <property name="config.file"
+                  value="${liferay.jboss.home}/server/${liferay.jboss.server.name}/deploy/jbossweb-tomcat55.sar/conf/web.xml"/>
+        <echo>Config File: ${config.file}</echo>
+
+        <xmltask preservetype="true" source="${config.file}" dest="${config.file}"
+                 failWithoutMatch="false">
+            <remove
+                    path="*[local-name()='web-app']/*[local-name()='servlet']/*[local-name()='init-param'][*[local-name()='param-name']='compilerSourceVM']"/>
+            <insert
+                    path="/*[local-name()='web-app']/*[local-name()='servlet'][2]/*[local-name()='init-param'][1]"
+                    position="after">
+                <![CDATA[
+                <init-param xmlns="http://java.sun.com/xml/ns/j2ee">
+                <param-name>compilerSourceVM</param-name>
+                <param-value>1.5</param-value>
+                </init-param>
+				]]>
+            </insert>
+        </xmltask>
+
+        <xmltask preservetype="true" source="${config.file}" dest="${config.file}"
+                 failWithoutMatch="true">
+            <xmlcatalog refid="portal.catalog"/>
+
+            <replace
+                    path="/*[local-name()='web-app']/*[local-name()='servlet' and ./*[local-name()='servlet-name' and text()='default']]">
+                <![CDATA[
+                    <servlet xmlns="http://java.sun.com/xml/ns/j2ee">
+                    <servlet-name>default</servlet-name>
+                    <servlet-class>org.apache.catalina.servlets.DefaultServlet</servlet-class>
+                    <init-param>
+                        <param-name>debug</param-name>
+                        <param-value>0</param-value>
+                    </init-param>
+                    <init-param>
+                        <param-name>listings</param-name>
+                        <param-value>false</param-value>
+                    </init-param>
+                    <init-param>
+                        <param-name>input</param-name>
+                        <param-value>4096</param-value>
+                    </init-param>
+                    <init-param>
+                        <param-name>output</param-name>
+                        <param-value>4096</param-value>
+                    </init-param>
+                    <load-on-startup>1</load-on-startup>
+                    </servlet>
+				]]>
+            </replace>
+        </xmltask>
+    </target>
+
+    <target name="create-liferay-datasource">
+        <concat
+                destfile="${liferay.jboss.home}/server/${liferay.jboss.server.name}/deploy/liferay-ds.xml"
+                append="false"><![CDATA[<datasources>
+               <local-tx-datasource>
+                <jndi-name>jdbc/LiferayPool</jndi-name>
+                <connection-url>
+                    ${liferay.db.url}?useUnicode=true&amp;characterEncoding=UTF-8
+                </connection-url>
+                <driver-class>${liferay.db.driver}</driver-class>
+                <user-name>${liferay.db.username}</user-name>
+                <password>${liferay.db.password}</password>
+                <min-pool-size>0</min-pool-size>
+               </local-tx-datasource>
+              </datasources>
+			]]>
+        </concat>
+    </target>
+
+    <target name="configure-jboss-mail-service">
+        <concat
+                destfile="${liferay.jboss.home}/server/${liferay.jboss.server.name}/deploy/mail-service.xml"
+                append="false"><![CDATA[<server>
+	<mbean code="org.jboss.mail.MailService" name="jboss:service=MailSession">
+		<attribute name="JNDIName">mail/MailSession</attribute>
+		<attribute name="User">${liferay.mail.username}</attribute>
+		<attribute name="Password">${liferay.mail.password}</attribute>
+		<attribute name="Configuration">
+			<configuration>
+				<property name="mail.store.protocol" value="imap" />
+				<property name="mail.transport.protocol" value="smtp" />
+				<property name="mail.imap.host" value="${liferay.mail.host}" />
+				<property name="mail.pop3.host" value="${liferay.mail.host}" />
+				<property name="mail.smtp.host" value="${liferay.mail.host}" />
+			</configuration>
+		</attribute>
+	</mbean>
+</server>
+			]]>
+        </concat>
+    </target>
+
+    <target name="configure-jboss-jaas">
+        <!-- Downloaded DTD to tools/ant/resources/security_config.dtd -->
+        <property name="config.file"
+                  value="${liferay.jboss.home}/server/${liferay.jboss.server.name}/conf/login-config.xml"/>
+        <xmltask preservetype="true" source="${config.file}" dest="${config.file}">
+            <xmlcatalog refid="portal.catalog"/>
+            <remove path="/policy/application-policy[@name='other']"/>
+        </xmltask>
+    </target>
+
+
+    <target name="configure-jboss-jca-service">
+        <!-- No DTD or Schema needed. -->
+        <property name="config.file"
+                  value="${liferay.jboss.home}/server/${liferay.jboss.server.name}/deploy/jbossjca-service.xml"/>
+        <xmltask source="${config.file}" dest="${config.file}">
+            <replace
+                    path="/server/mbean[@name='jboss.jca:service=CachedConnectionManager']/attribute[@name='Debug']/text()"
+                    withText="false"/>
+        </xmltask>
+    </target>
+
+    <target name="configure-jboss-jms-service">
+        <concat
+                destfile="${liferay.jboss.home}/server/${liferay.jboss.server.name}/deploy/jms/jbossmq-destinations-service.xml"
+                append="false"><![CDATA[<?xml version="1.0"?>
+<server></server>]]></concat>
+    </target>
+
+    <target name="configure-jboss-tomcat">
+        <if>
+            <istrue value="${liferay.jboss.configure.connectors}"/>
+            <then>
+                <!-- No DTD or Schema needed. -->
+                <property name="config.file"
+                          value="${liferay.jboss.home}/server/${liferay.jboss.server.name}/deploy/jbossweb-tomcat55.sar/server.xml"/>
+                <xmltask source="${config.file}" dest="${config.file}">
+
+                    <!-- Remove all the Connector elements except AJP/1.3  -->
+                    <remove
+                            path="/Server/Service[@name='jboss.web']/Connector[not(@protocol='AJP/1.3')]"/>
+
+                    <insert path="/Server/Service[@name='jboss.web']/Engine[@name='jboss.web']"
+                            position="before">
+                        <![CDATA[
+		      <Connector acceptCount="100" address="$${jboss.bind.address}" connectionTimeout="20000"
+		      		disableUploadTimeout="true" emptySessionPath="true" enableLookups="false"
+		      		maxHttpHeaderSize="8192" maxThreads="250" port="${liferay.http.port}"
+		      		redirectPort="${liferay.https.port}" strategy="ms"/>
+					]]>
+                    </insert>
+
+                    <insert path="/Server/Service[@name='jboss.web']/Engine[@name='jboss.web']"
+                            position="before">
+                        <![CDATA[
+		      <Connector port="${liferay.https.port}" address="$${jboss.bind.address}"
+		           maxThreads="100" strategy="ms" maxHttpHeaderSize="8192"
+		           emptySessionPath="true"
+		           scheme="https" secure="true" clientAuth="false"
+		           keystoreFile="${liferay.https.keystore.path}"
+		           keystorePass="${liferay.https.keystore.password}" sslProtocol="TLS" />
+					]]>
+                    </insert>
+
+                </xmltask>
+            </then>
+        </if>
+    </target>
+
+    <target name="copy-startup-scripts">
+        <if>
+            <istrue value="${liferay.jboss.deploy.scripts}"/>
+            <then>
+                <copy todir="${liferay.jboss.home}/bin" overwrite="true">
+                    <fileset dir="${liferay.src.scripts.dir}">
+                        <include name="run.sh"/>
+                        <include name="run.bat"/>
+                    </fileset>
+                </copy>
+            </then>
+        </if>
+    </target>
+
+    <target name="configure-startup-scripts">
+        <if>
+            <istrue value="${liferay.jboss.deploy.scripts}"/>
+            <then>
+                <chmod dir="${liferay.jboss.home}/bin" perm="u+x" includes="*.sh"></chmod>
+            </then>
+        </if>
+    </target>
+
+    <target name="configure-jboss">
+        <antcall target="configure-jboss-classpath"/>
+        <antcall target="configure-jboss-root"/>
+        <antcall target="configure-jboss-mail-service"/>
+        <antcall target="configure-jboss-jaas"/>
+        <antcall target="configure-jboss-jca-service"/>
+        <antcall target="configure-jboss-jms-service"/>
+        <antcall target="create-liferay-datasource"/>
+        <antcall target="copy-liferay-ext-jars"/>
+        <antcall target="configure-jboss-tomcat"/>
+        <antcall target="copy-startup-scripts"/>
+        <antcall target="configure-startup-scripts"/>
+    </target>
+
+    <target name="check-dependencies-downloaded">
+        <condition property="liferay.dependencies.zip.available">
+            <available file="${liferay.downloads.dir}/${liferay.dependencies.zip}" type="file"/>
+        </condition>
+    </target>
+
+    <target name="download-dependencies" unless="liferay.dependencies.zip.available"
+            depends="check-dependencies-downloaded">
+        <mkdir dir="${liferay.downloads.dir}"/>
+        <get src="${liferay.dependencies.download.url}"
+             dest="${liferay.downloads.dir}/${liferay.dependencies.zip}" verbose="on"/>
+    </target>
+
+    <target name="check-war-downloaded">
+        <condition property="liferay.war.available">
+            <available file="${liferay.downloads.dir}/${liferay.war}" type="file"/>
+        </condition>
+    </target>
+
+    <target name="download-war" unless="liferay.war.available"
+            depends="check-war-downloaded">
+        <mkdir dir="${liferay.downloads.dir}"/>
+        <get src="${liferay.war.download.url}" dest="${liferay.downloads.dir}/${liferay.war}"
+             verbose="on"/>
+    </target>
+
+    <target name="copy-liferay-ext-jars" depends="download-dependencies">
+        <mkdir dir="${liferay.jboss.home}/server/${liferay.jboss.server.name}/lib/ext"/>
+        <unzip src="${liferay.downloads.dir}/${liferay.dependencies.zip}"
+               dest="${liferay.downloads.dir}"/>
+
+        <copy todir="${liferay.jboss.home}/server/${liferay.jboss.server.name}/lib/ext"
+              overwrite="true">
+            <fileset dir="${liferay.downloads.dir}/${liferay.dependecies.name}">
+                <include name="**/*.jar"/>
+            </fileset>
+        </copy>
+
+        <delete dir="${liferay.downloads.dir}/${liferay.dependecies.name}"/>
+    </target>
+
+    <target name="deploy-liferay-portal-war" depends="download-war">
+
+        <mkdir dir="${liferay.portal.war.dir}"/>
+        <unzip src="${liferay.downloads.dir}/${liferay.war}" dest="${liferay.portal.war.dir}"/>
+
+        <move todir="${liferay.jboss.home}/lib">
+            <fileset dir="${liferay.portal.war.dir}/WEB-INF/lib">
+                <include name="dom4j.jar"/>
+                <include name="jaxen.jar"/>
+            </fileset>
+        </move>
+
+        <move file="${liferay.portal.war.dir}/WEB-INF/lib/commons-collections.jar"
+              todir="${liferay.jboss.home}/server/${liferay.jboss.server.name}/lib"/>
+
+        <delete>
+            <fileset dir="${liferay.jboss.home}/server/${liferay.jboss.server.name}/lib">
+                <include name="hibernate3.jar"/>
+                <include name="jboss-hibernate.jar"/>
+            </fileset>
+        </delete>
+
+        <delete file="${liferay.portal.war.dir}/WEB-INF/lib/log4j.jar"/>
+
+    </target>
+
+    <target name="add-cagrid-category" depends="prepare">
+        <!-- Downloaded to tools/ant/resources/liferay-display_4_0_0.dtd -->
+        <property name="config.file" value="${liferay.portal.war.dir}/WEB-INF/liferay-display.xml"/>
+        <xmltask source="${config.file}" dest="${config.file}" preservetype="true">
+            <xmlcatalog refid="portal.catalog"/>
+            <remove path="/display/category[@name='category.cagrid']"/>
+            <insert path="/display/category[@name='category.cms']" position="before">
+                <![CDATA[
+	<category name="category.cagrid">
+		<portlet id="cagriddirectauthn_WAR_cagridportlets" />
+		<portlet id="cagridgreeting_WAR_cagridportlets" />
+		<portlet id="cagridregistration_WAR_cagridportlets" />
+		<portlet id="cagridnewssummary_WAR_cagridportlets" />
+		<portlet id="cagridnews_WAR_cagridportlets" />
+		<portlet id="cagridstatus_WAR_cagridportlets" />
+		<portlet id="cagridmap_WAR_cagridportlets" />
+		<portlet id="cagriddiagnostics_WAR_cagridportlets" />
+	    <portlet id="cagriddiscovery_WAR_cagridportlets" />
+		<portlet id="cabigtools_WAR_cagridportlets" />
+		<portlet id="cagridquery_WAR_cagridportlets" />
+		<portlet id="WelcomeToCaGridPortal_WAR_cagridportlets" />
+		<portlet id="cagridinterestinglinks_WAR_cagridportlets" />
+	</category>
+			]]>
+            </insert>
+        </xmltask>
+    </target>
+
+    <target name="configure-liferay-messages" depends="prepare">
+        <mkdir dir="${liferay.portal.war.dir}/WEB-INF/classes/content"/>
+        <propertyfile
+                file="${liferay.portal.war.dir}/WEB-INF/classes/content/Language-ext.properties">
+            <entry key="category.cagrid" value="caGrid"/>
+        </propertyfile>
+    </target>
+
+    <target name="install-liferay" depends="prepare">
+        <antcall target="install-jboss"/>
+        <antcall target="configure-jboss"/>
+        <antcall target="deploy-liferay-portal-war"/>
+        <antcall target="add-cagrid-category"/>
+        <antcall target="configure-liferay-messages"/>
+    </target>
+
+    <target name="war-layouts">
+        <mkdir dir="${liferay.build.dir}"/>
+        <jar destfile="${liferay.build.dir}/cagridportallayouts.war"
+             basedir="${liferay.src.layouts.dir}"/>
+    </target>
+
+    <target name="deploy-layouts" depends="war-layouts">
+        <copy file="${liferay.build.dir}/cagridportallayouts.war" todir="${liferay.autodeploy.dir}"
+              overwrite="true"/>
+    </target>
+
+    <target name="war-theme">
+        <mkdir dir="${liferay.build.dir}"/>
+        <jar destfile="${liferay.build.dir}/${liferay.theme.name}.war"
+             basedir="${liferay.src.themes.dir}/${liferay.theme.name}"/>
+    </target>
+
+    <target name="deploy-theme" depends="war-theme">
+        <copy file="${liferay.build.dir}/${liferay.theme.name}.war"
+              todir="${liferay.autodeploy.dir}" overwrite="true"/>
+    </target>
+
+    <target name="deploy-all">
+        <antcall target="deploy-authn"/>
+        <antcall target="deploy-layouts"/>
+        <antcall target="deploy-theme"/>
+    </target>
+
+</project>

@@ -13,7 +13,6 @@
 	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
     <import resource="classpath:applicationContext-aggr-status-beans.xml"/>
-    <import resource="classpath:applicationContext-aggr-regsvc.xml"/>
 
     <bean id="statusChangeArchiverTask"
           class="org.springframework.scheduling.timer.ScheduledTimerTask">
