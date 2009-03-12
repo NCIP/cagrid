@@ -33,7 +33,7 @@ public class UmlAttributeDaoTest extends DBTestBase<UMLAttributeDao> {
 
      @Override
     protected String getDataSet() throws Exception {
-        return "db/test/data/UMLAttributeDaoTest.xml";
+        return "test/data/UMLAttributeDaoTest.xml";
     }
 
 }

@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+
+<project name="cagrid-portal-portals" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+
+    <import file="${basedir}/../antfiles/build-common.xml"/>
+
+    <property name="liferay.dir" value="${basedir}/liferay"/>
+    <property name="liferay.build.dir" value="${basedir}/build"/>
+    <property name="liferay.build.jar.dir" value="${liferay.build.dir}/jars"/>
+
+    <property name="liferay.classes.dir" value="${liferay.build.dir}/classes"/>
+    <property name="liferay.src.java.dir" value="${liferay.dir}/src/java"/>
+    <property name="liferay.src.war.dir" value="${liferay.dir}/src/war"/>
+    <property name="liferay.src.layouts.dir" value="${liferay.dir}/src/layouts"/>
+    <property name="liferay.src.themes.dir" value="${liferay.dir}/src/themes"/>
+    <property name="liferay.src.scripts.dir" value="${liferay.dir}/src/scripts"/>
+
+    <property name="ext.dir" value="${basedir}/ext"/>
+    <property name="ext.default.lib.dir" value="${ext.dir}/default/jars"/>
+    <property name="ext.ext.lib.dir" value="${ext.dir}/ext/jars"/>
+    <property name="ext.authn.lib.dir" value="${ext.dir}/authn/jars"/>
+    <property name="ext.authn.xml.dir" value="${ext.dir}/authn/xmls"/>
+
+    <property name="ext.test.lib.dir" value="${ext.dir}/test/jars"/>
+
+    <import file="${basedir}/build-liferay.xml"/>
+
+    <path id="liferay.compile.cp">
+        <fileset dir="${ext.default.lib.dir}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <target name="prepare" depends="prepare-ant-tasks"/>
+
+    <target name="compile">
+        <mkdir dir="${liferay.classes.dir}"/>
+        <javac srcdir="${liferay.src.java.dir}" destdir="${liferay.classes.dir}"
+               debug="${javac.debug.flag}">
+            <classpath refid="liferay.compile.cp"/>
+        </javac>
+    </target>
+
+    <target name="jar" depends="compile">
+        <mkdir dir="${liferay.build.jar.dir}"/>
+
+        <jar basedir="${liferay.classes.dir}"
+             destfile="${liferay.build.jar.dir}/cagrid-portal-liferay.jar"/>
+    </target>
+
+    <target name="jar-resources">
+
+        <mkdir dir="${liferay.build.dir}/resources"/>
+
+        <copy todir="${liferay.build.dir}/resources">
+            <fileset dir="${liferay.dir}/etc">
+                <include name="*.xml"/>
+            </fileset>
+            <fileset dir="${ext.authn.xml.dir}">
+                <include name="*.xml"/>
+            </fileset>
+        </copy>
+
+        <jar basedir="${liferay.build.dir}/resources"
+             destfile="${liferay.build.jar.dir}/cagrid-portal-liferay-resources.jar"/>
+
+    </target>
+
+    <target name="javadoc"
+            description="Generate javadocs for this project. To be called from main build.">
+        <!--does nothing-->
+    </target>
+
+    <target name="test" description="Run all tests in the project">
+        <echo message="No tests in the Project."/>
+    </target>
+
+    <target name="clean">
+        <delete dir="${liferay.build.dir}"/>
+    </target>
+
+    <target name="all" depends="jar,jar-resources"/>
+
+</project>

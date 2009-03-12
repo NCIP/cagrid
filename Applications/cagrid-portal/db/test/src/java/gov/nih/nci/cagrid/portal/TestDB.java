@@ -5,21 +5,13 @@ package gov.nih.nci.cagrid.portal;
 
 import gov.nih.nci.cagrid.portal.dao.PersonDao;
 import gov.nih.nci.cagrid.portal.domain.Person;
-
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.util.List;
-import java.util.Properties;
-
+import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.database.QueryDataSet;
-import org.dbunit.database.DatabaseConfig;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.dataset.xml.XmlDataSet;
+import org.dbunit.ext.mysql.MySqlDataTypeFactory;
 import org.dbunit.operation.DatabaseOperation;
 import org.hibernate.Session;
 import org.springframework.context.ApplicationContext;
@@ -28,11 +20,12 @@ import org.springframework.orm.hibernate3.HibernateTransactionManager;
 import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
 
-import org.apache.commons.logging.*;
-import org.dbunit.dataset.datatype.*;
-import org.dbunit.ext.mysql.MySqlDataTypeFactory;
-
-import java.sql.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.util.List;
+import java.util.Properties;
 
 
 /**
@@ -140,7 +133,7 @@ public class TestDB {
     public static void main(String[] args) {
         try {
             TestDB.create();
-            TestDB.loadData("db/test/data/PersonDaoTest.xml");
+            TestDB.loadData("test/data/PersonDaoTest.xml");
             PersonDao personDao = (PersonDao) TestDB.getApplicationContext()
                     .getBean("personDao");
             List<Person> persons = personDao.getAll();
