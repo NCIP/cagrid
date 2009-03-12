@@ -10,8 +10,8 @@ import org.apache.commons.logging.LogFactory;
  *
  * @author kherm manav.kher@semanticbits.com
  */
-public class DynamicServiceUrlProviderSystemTest extends TestCase {
-    private final Log logger = LogFactory.getLog(DynamicServiceUrlProviderSystemTest.class);
+public class DynamicServiceUrlProviderIntegrationTest extends TestCase {
+    private final Log logger = LogFactory.getLog(DynamicServiceUrlProviderIntegrationTest.class);
 
 
     public void testRun() {
