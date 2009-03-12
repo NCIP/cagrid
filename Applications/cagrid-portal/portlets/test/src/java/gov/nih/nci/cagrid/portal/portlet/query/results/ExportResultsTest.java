@@ -21,7 +21,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
- * 
+ * @author <a href="mailto:manav.kher@semanticbits.com">Manav Kher</a>
  */
 public class ExportResultsTest extends TestCase {
 
@@ -43,7 +43,7 @@ public class ExportResultsTest extends TestCase {
 		try {
 			StringBuilder sb = new StringBuilder();
 			BufferedReader br = new BufferedReader(new FileReader(
-					"portlets/test/data/cabioGeneQueryResults.xml"));
+					"test/data/cabioGeneQueryResults.xml"));
 			String line = null;
 			while ((line = br.readLine()) != null) {
 				sb.append(line);
