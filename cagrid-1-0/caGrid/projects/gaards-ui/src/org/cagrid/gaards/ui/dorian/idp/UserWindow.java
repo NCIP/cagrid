@@ -33,7 +33,7 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Langella </A>
- * @version $Id: UserWindow.java,v 1.8 2008-12-04 20:46:23 langella Exp $
+ * @version $Id: UserWindow.java,v 1.9 2009-03-13 15:54:13 langella Exp $
  */
 public class UserWindow extends ApplicationComponent {
 
@@ -306,7 +306,7 @@ public class UserWindow extends ApplicationComponent {
     }
 
 
-    private synchronized void updateUser() {
+    private void updateUser() {
         disableAllButtons();
         getProgressPanel().showProgress("Updating user...");
         String pass = format(this.getPassword().getPassword());
