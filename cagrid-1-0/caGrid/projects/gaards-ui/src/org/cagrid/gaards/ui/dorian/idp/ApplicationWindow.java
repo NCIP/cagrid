@@ -705,7 +705,7 @@ public class ApplicationWindow extends ApplicationComponent {
     }
 
 
-    public synchronized void apply() {
+    public void apply() {
         getApplyButton().setEnabled(false);
         getProgressPanel().showProgress("Registering account...");
         String pass = new String(this.getPassword().getPassword());

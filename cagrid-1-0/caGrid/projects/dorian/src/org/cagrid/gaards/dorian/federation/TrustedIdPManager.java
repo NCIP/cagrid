@@ -278,7 +278,7 @@ public class TrustedIdPManager extends LoggingObject {
 
         String authenticationServiceURL = curr.getAuthenticationServiceURL();
 
-        if ((Utils.clean(idp.getAuthenticationServiceURL()) != null)
+        if ((idp.getAuthenticationServiceURL() != null)
             && (!idp.getAuthenticationServiceURL().equals(curr.getAuthenticationServiceURL()))) {
             needsUpdate = true;
             authenticationServiceURL = validateAndGetAuthenticationServiceURL(idp);
@@ -286,7 +286,7 @@ public class TrustedIdPManager extends LoggingObject {
 
         String authenticationServiceIdentity = curr.getAuthenticationServiceIdentity();
 
-        if ((Utils.clean(idp.getAuthenticationServiceIdentity()) != null)
+        if ((idp.getAuthenticationServiceIdentity() != null)
             && (!idp.getAuthenticationServiceIdentity().equals(curr.getAuthenticationServiceIdentity()))) {
             needsUpdate = true;
             authenticationServiceIdentity = validateAndGetAuthenticationServiceIdentity(idp);

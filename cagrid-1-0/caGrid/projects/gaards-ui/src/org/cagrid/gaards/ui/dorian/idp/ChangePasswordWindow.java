@@ -331,7 +331,7 @@ public class ChangePasswordWindow extends ApplicationComponent {
 	}
 
 
-	public synchronized void resetPassword() {
+	public void resetPassword() {
 		getResetPassword().setEnabled(false);
 		final String pass = new String(this.getNewPassword().getPassword());
 		String vpass = new String(this.getVerify().getPassword());
