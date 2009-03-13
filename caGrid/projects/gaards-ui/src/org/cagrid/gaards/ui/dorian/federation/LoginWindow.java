@@ -84,10 +84,6 @@ public class LoginWindow extends ApplicationComponent {
 
     private JLabel secondsLabel = null;
 
-    private boolean isCreating = false;
-
-    private Object mutex = new Object();
-
     private CardLayout credentialLayout = null;
 
     private CredentialPanel currentCredentialPanel = null;
@@ -387,14 +383,7 @@ public class LoginWindow extends ApplicationComponent {
 
 
     private void authenticate() {
-        synchronized (mutex) {
-            if (isCreating) {
-                ErrorDialog.showError("Already trying to login, please wait!!!");
-                return;
-            } else {
-                isCreating = true;
-            }
-        }
+  
         // prevent clicking this button while working
         getAuthenticateButton().setEnabled(false);
 
@@ -461,7 +450,7 @@ public class LoginWindow extends ApplicationComponent {
             getAuthenticateButton().setEnabled(true);
         }
 
-        isCreating = false;
+
     }
 
 

@@ -1,5 +1,6 @@
 package org.cagrid.gaards.ui.dorian.federation;
 
+import gov.nih.nci.cagrid.common.FaultUtil;
 import gov.nih.nci.cagrid.common.Runner;
 import gov.nih.nci.cagrid.common.Utils;
 
@@ -44,7 +45,8 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella </A>
  * @author <A HREF="MAILTO:oster@bmi.osu.edu">Scott Oster </A>
  * @author <A HREF="MAILTO:hastings@bmi.osu.edu">Shannon Langella </A>
- * @version $Id: TrustedIdPWindow.java,v 1.7 2009-02-10 20:26:05 langella Exp $
+ * @version $Id: TrustedIdPWindow.java,v 1.6.2.1 2009/02/10 20:26:02 langella
+ *          Exp $
  */
 public class TrustedIdPWindow extends ApplicationComponent implements DorianSessionProvider {
 
@@ -431,7 +433,7 @@ public class TrustedIdPWindow extends ApplicationComponent implements DorianSess
     }
 
 
-    private synchronized void updateTrustedIdP() {
+    private void updateTrustedIdP() {
         if (newTrustedIdP) {
             getProgressPanel().showProgress("Adding IdP...");
         } else {
@@ -444,8 +446,8 @@ public class TrustedIdPWindow extends ApplicationComponent implements DorianSess
             }
             idp.setName(getIdPName().getText().trim());
             idp.setDisplayName(Utils.clean(getDisplayName().getText()));
-            idp.setAuthenticationServiceURL(Utils.clean(getAuthenticationServiceURL().getText()));
-            idp.setAuthenticationServiceIdentity(Utils.clean(getAuthenticationServiceIdentity().getText()));
+            idp.setAuthenticationServiceURL(getAuthenticationServiceURL().getText());
+            idp.setAuthenticationServiceIdentity(getAuthenticationServiceIdentity().getText());
             idp.setStatus(getStatus().getSelectedStatus());
             idp.setUserPolicyClass(((UserPolicyCaddy) getUserPolicy().getSelectedItem()).getPolicy().getClassName());
             List<SAMLAuthenticationMethod> authMethod = new ArrayList<SAMLAuthenticationMethod>();
@@ -526,11 +528,14 @@ public class TrustedIdPWindow extends ApplicationComponent implements DorianSess
                 getProgressPanel().stopProgress("Successfully updated IdP.");
             }
         } catch (PermissionDeniedFault pdf) {
+            FaultUtil.printFault(pdf);
+            getProgressPanel().stopProgress("Error");
             ErrorDialog.showError(pdf);
-            getProgressPanel().stopProgress("Error");
+
         } catch (Exception e) {
-            ErrorDialog.showError(e);
+            FaultUtil.printFault(e);
             getProgressPanel().stopProgress("Error");
+            ErrorDialog.showError(e);
         } finally {
             getUpdateTrustedIdP().setEnabled(true);
         }
