@@ -40,7 +40,8 @@
     <artifact name="certificates/17e36bb5" type="certificate" ext="signing_policy" conf="certs"/>
 
     <!--  grape UI configurations-->
-    <artifact name="dorian-ui-configuration" type="xml" conf="dorian-ui"/>
+   <artifact name="authentication-services-configuration" type="xml" conf="authentication-services"/>
+    <artifact name="dorian-services-configuration" type="xml" conf="dorian-services"/>
     <artifact name="gridgrouper-services-configuration" type="xml" conf="gridgrouper-services"/>
     <artifact name="gts-services-configuration" type="xml" conf="gts-services"/>
     <artifact name="workflow-ui-configuration" type="xml" conf="workflow-ui"/>
