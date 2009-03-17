@@ -10,6 +10,8 @@
         <!-- Public Configurations-->
         <conf name="authn" visibility="public"/>
         <conf name="ext" visibility="public"/>
+        <conf name="themes" visibility="public"/>
+
         <conf name="default" extends="authn,ext" visibility="public"/>
     </configurations>
 
@@ -23,6 +25,7 @@
         <dependency rev="latest.integration" org="caGrid" name="portal-security" conf="authn->runtime"/>
         <dependency rev="latest.integration" org="caGrid" name="portal-db" conf="ext->domain;authn->dao;default->default"/>
 
+        <dependency rev="1.0.4" org="acegisecurity" name="acegisecurity" conf="authn->*"/>
         <dependency rev="2.3+" org="sun" name="servlet" conf="default"/>
         <dependency rev="2.0+" org="sun" name="portlet" conf="ext->*"/>
 
@@ -30,8 +33,7 @@
         <dependency rev="4.0.3" org="globus" name="globus" conf="ext->crypto"/>
         <dependency rev="1.5.3" org="aspectj" name="aspectjrt" conf="authn->default" />
         <dependency rev="1.5.3" org="aspectj" name="aspectjweaver" conf="authn->default"  />
-        <dependency rev="3.3.0" org="hibernate" name="annotations" conf="default"  />
-        <dependency rev="3.3.0" org="hibernate" name="annotations" conf="default"  />
+        <dependency rev="3.3.0" org="hibernate" name="annotations" conf="authn->*"  />
 
         <dependency rev="5.1.6+" org="mysql" name="mysql-connector-java" conf="ext->*"/>
 
@@ -39,7 +41,7 @@
         <dependency rev="${target.grid}" org="caGrid" name="target_grid" conf="default->trust"/>
         <!--<dependency rev="${cagrid.integration.version}" org="caGrid" name="caGrid-websso-client-liferay" conf="default"/>-->
 
-        <dependency rev="5.0.1" org="liferay" name="portal" conf="default->portal;ext->portal-ext"/>
+        <dependency rev="${liferay.portal.version}" org="liferay" name="portal" conf="default->portal;ext->portal-ext;themes->portlet-utils"/>
     </dependencies>
 
 </ivy-module>

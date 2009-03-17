@@ -1,9 +1,10 @@
 package gov.nih.nci.cagrid.portal;
 
-import org.apache.commons.logging.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.dbunit.dataset.datatype.*;
 
-import java.sql.*;
+import java.sql.Types;
 
 /**
  * User: kherm

@@ -188,7 +188,11 @@
         </javac>
     </target>
 
-    <target name="test" depends="compile-test" description="Run all tests in the project">
+    <target  name="prepare-test-cp" depends="resources,compile-test">
+
+    </target>
+
+    <target name="test" depends="prepare-test-cp" description="Run all tests in the project">
         <mkdir dir="${junit.reports.dir}"/>
 
         <junit dir="${basedir}" printsummary="yes" showoutput="true" fork="true">
@@ -209,6 +213,21 @@
 
         </junit>
     </target>
+
+    <target name="test-single" depends="prepare-test-cp">
+
+        <junit dir="${basedir}" printsummary="yes" showoutput="yes" fork="true" haltonfailure="yes">
+            <sysproperty key="basedir" value="${basedir}"/>
+
+            <classpath>
+                <path refid="test.run.cp"/>
+            </classpath>
+
+               <test name="gov.nih.nci.cagrid.portal.util.ActivateFilterAspectTest"/>
+
+        </junit>
+    </target>
+
 
     <target name="load-schema" depends="gen-ddl" description="Will create the Portal DB schema.">
 

@@ -2,8 +2,11 @@ package gov.nih.nci.cagrid.portal.dao;
 
 import gov.nih.nci.cagrid.portal.DBTestBase;
 import gov.nih.nci.cagrid.portal.domain.metadata.common.UMLAttribute;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 import java.util.List;
+
 
 /**
  * User: kherm
@@ -12,10 +15,12 @@ import java.util.List;
  */
 public class UmlAttributeDaoTest extends DBTestBase<UMLAttributeDao> {
 
+    @Test
     public void testDao() {
         assertNotNull(getDao().getAll());
     }
 
+    @Test
     public void testSemanticEquivalence() {
         UMLAttribute attr = getDao().getById(-1);
         List<UMLAttribute> attrs = getDao().getSemanticallyEquivalentAttributes(attr);
