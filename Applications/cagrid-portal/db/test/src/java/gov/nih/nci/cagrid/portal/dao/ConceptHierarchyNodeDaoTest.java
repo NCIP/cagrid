@@ -6,18 +6,23 @@ package gov.nih.nci.cagrid.portal.dao;
 import gov.nih.nci.cagrid.portal.DBTestBase;
 import gov.nih.nci.cagrid.portal.domain.ConceptHierarchy;
 import gov.nih.nci.cagrid.portal.domain.ConceptHierarchyNode;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
+ * @author <a href="mailto:manav.kher@semanticbits.com">Manav Kher</a>
  */
 public class ConceptHierarchyNodeDaoTest extends
         DBTestBase<ConceptHierarchyNodeDao> {
 
+    @Test
     public void testHierarchy() {
         try {
             Set<String> childSet1 = new HashSet<String>();
@@ -67,6 +72,7 @@ public class ConceptHierarchyNodeDaoTest extends
         }
     }
 
+    @Test
     public void testGetByConceptInHierarchy() {
 
         ConceptHierarchy hierarchy = getDao().getHierarchyByUri(
@@ -87,6 +93,7 @@ public class ConceptHierarchyNodeDaoTest extends
                 pathFromRoot, node22.getCode());
     }
 
+    @Test
     public void testUpdateHierarchy() {
         try {
             Set<String> childSet1 = new HashSet<String>();
@@ -146,12 +153,14 @@ public class ConceptHierarchyNodeDaoTest extends
         }
     }
 
+    @Test
     public void testSearchByName() {
         assertTrue("node returned null", getDao().getByName("node2").size() > 0);
         assertEquals("node returned null", 8, getDao().getByName("node2").size());
         assertNotNull(getDao().getByConceptCode("node1_code"));
     }
 
+    @Test
     public void testServicesByCode() {
         assertEquals(1, getDao().getServicesByCode("root_code").size());
     }

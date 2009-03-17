@@ -13,7 +13,7 @@
 
         <conf name="default" extends="dao,domain" visibility="public"/>
         <conf name="schema" extends="default" description="Only needed to generate database schemas"/>
-        <conf name="test" extends="default" visibility="public" description="Test configuration"/>
+        <conf name="test" extends="schema" visibility="public" description="Test configuration"/>
     </configurations>
 
     <publications>
@@ -31,7 +31,7 @@
     <dependencies>
         <dependency rev="1.5.3" org="aspectj" name="aspectjrt" conf="default"/>
         <dependency rev="1.5.3" org="aspectj" name="aspectjweaver" conf="default"/>
-        <dependency rev="latest.integration" org="apache" name="log4j" conf="default"/>
+        <dependency rev="latest.integration" org="apache" name="log4j" conf="default->*"/>
         <dependency rev="3.3.0" org="hibernate" name="hibernate" conf="default->full"/>
         <dependency rev="1.4.2_08-b03" org="hibernate" name="tools" conf="schema->default"/>
         <dependency rev="1.9.1" org="org.liquibase" name="liquibase-core" conf="default"/>

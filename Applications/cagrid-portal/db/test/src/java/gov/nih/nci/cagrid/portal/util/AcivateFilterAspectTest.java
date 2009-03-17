@@ -1,20 +1,23 @@
 package gov.nih.nci.cagrid.portal.util;
 
-import gov.nih.nci.cagrid.portal.domain.GridService;
-import gov.nih.nci.cagrid.portal.domain.StatusChange;
-import gov.nih.nci.cagrid.portal.domain.ServiceStatus;
+import gov.nih.nci.cagrid.portal.DBTestBase;
 import gov.nih.nci.cagrid.portal.dao.GridServiceDao;
 import gov.nih.nci.cagrid.portal.dao.GridServiceDaoTest;
-import gov.nih.nci.cagrid.portal.DBTestBase;
+import gov.nih.nci.cagrid.portal.domain.GridService;
+import gov.nih.nci.cagrid.portal.domain.ServiceStatus;
+import gov.nih.nci.cagrid.portal.domain.StatusChange;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.junit.After;
+import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
-import org.springframework.beans.BeansException;
-import org.hibernate.SessionFactory;
-import org.hibernate.Session;
-import junit.framework.TestCase;
 
 /**
  * User: kherm
@@ -25,9 +28,8 @@ public class AcivateFilterAspectTest extends DBTestBase<GridServiceDao> {
 
     ApplicationContext applicationContext;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         applicationContext = new ClassPathXmlApplicationContext(
                 new String[]{"classpath:applicationContext-db-aspects.xml"});
 
@@ -38,8 +40,8 @@ public class AcivateFilterAspectTest extends DBTestBase<GridServiceDao> {
         TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
     }
 
-    public void testEnableFilter(){
-
+    @Test
+    public void enableFilter(){
 
         GridService newService3  = new GridService();
         newService3.setUrl("http://new3");
@@ -71,9 +73,8 @@ public class AcivateFilterAspectTest extends DBTestBase<GridServiceDao> {
 
 
 
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @After
+    public void tearDown() throws Exception {
 
         SessionFactory sessionFactory = (SessionFactory) applicationContext
                 .getBean("sessionFactory");

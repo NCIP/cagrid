@@ -2,6 +2,8 @@ package gov.nih.nci.cagrid.portal.dao;
 
 import gov.nih.nci.cagrid.portal.DBTestBase;
 import gov.nih.nci.cagrid.portal.domain.metadata.dataservice.UMLClass;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 import java.util.List;
 
@@ -13,6 +15,7 @@ import java.util.List;
 public class UmlClassDaoTest extends DBTestBase<UMLClassDao> {
 
 
+    @Test
     public void testSemanticEquivalence() {
         UMLClass uClass = getDao().getById(-1);
         List<UMLClass> classes = getDao().getSemanticalyEquivalentClassesBasedOnAtrributes(uClass);
@@ -30,6 +33,7 @@ public class UmlClassDaoTest extends DBTestBase<UMLClassDao> {
         }
     }
 
+    @Test
     public void testgetSemanticallyEquivalentClassesBasedOnAssociations() {
         UMLClass uClass = getDao().getById(-1);
         List<UMLClass> classes = getDao().getSemanticallyEquivalentClassesBasedOnAssociations(uClass);
@@ -47,6 +51,7 @@ public class UmlClassDaoTest extends DBTestBase<UMLClassDao> {
         }
     }
 
+    @Test
     public void testQueryByExample() {
         UMLClass example = getDao().getById(-1);
         List<UMLClass> result = getDao().getSameClassesInDifferentModel(example);
@@ -54,6 +59,7 @@ public class UmlClassDaoTest extends DBTestBase<UMLClassDao> {
         assertEquals(1, result.size());
     }
 
+    @Test
     public void testMaxResultSet() {
         UMLClass uClass = getDao().getById(-1);
 

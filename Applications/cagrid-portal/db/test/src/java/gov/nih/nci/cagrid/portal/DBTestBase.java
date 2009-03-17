@@ -1,6 +1,8 @@
 package gov.nih.nci.cagrid.portal;
 
 import gov.nih.nci.cagrid.portal.dao.AbstractDao;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.springframework.context.ApplicationContext;
 
 /**
@@ -8,28 +10,16 @@ import org.springframework.context.ApplicationContext;
  *
  * @author kherm manav.kher@semanticbits.com
  */
-public class DBTestBase<T extends AbstractDao> extends AbstractDBTestBase {
+public class DBTestBase<T extends AbstractDao> extends DaoTestBase<T> {
 
-    public T getDao() {
-        return (T) getApplicationContext().getBean(getNamingStrategy().substring(0, 1).toLowerCase() + getNamingStrategy().substring(1, getNamingStrategy().indexOf("Test")));
-    }
 
-    public ApplicationContext getApplicationContext() {
-        return TestDB.getApplicationContext();
-    }
-
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();    //To change body of overridden methods use File | Settings | File Templates.
+    @Before
+    public void initialize() throws Exception {
         TestDB.loadData(getDataSet());
     }
 
     protected String getDataSet() throws Exception {
         return "test/data/" + getNamingStrategy() + ".xml";
-    }
-
-    public String getNamingStrategy() {
-        return getClass().getSimpleName();
     }
 
 

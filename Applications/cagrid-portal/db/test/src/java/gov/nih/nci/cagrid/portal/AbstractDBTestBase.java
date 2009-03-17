@@ -1,6 +1,10 @@
 package gov.nih.nci.cagrid.portal;
 
 import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.springframework.context.ApplicationContext;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -14,7 +18,7 @@ import org.springframework.web.context.request.WebRequest;
  *
  * @author kherm manav.kher@semanticbits.com
  */
-public abstract class AbstractDBTestBase extends TestCase {
+public abstract class AbstractDBTestBase {
 
     protected MockHttpServletRequest request = new MockHttpServletRequest();
     protected MockHttpServletResponse response = new MockHttpServletResponse();
@@ -26,18 +30,14 @@ public abstract class AbstractDBTestBase extends TestCase {
           return TestDB.getApplicationContext();
       }
 
-
-
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void begin() throws Exception {
         TestDB.create();
         beginSession();
     }
 
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();    //To change body of overridden methods use File | Settings | File Templates.
+    @After  
+    public void end() throws Exception {
         TestDB.drop();
         endSession();
     }

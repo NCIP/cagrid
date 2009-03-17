@@ -24,6 +24,7 @@ import org.hibernate.annotations.Parameter;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
+ * @author <a href="mailto:manav.kher@semanticbits.com">Manav Kher</a>
  *
  */
 @Entity
@@ -71,4 +72,22 @@ public abstract class Query extends AbstractDomainObject {
 		this.hash = hash;
 	}
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+      
+        final Query that = (Query) o;
+
+        if (hash != null ? !hash.equals(that.hash) : that.hash != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int Loggerresult = super.hashCode();
+        Loggerresult = 31 * Loggerresult + (hash != null ? hash.hashCode() : 0);
+        return Loggerresult;
+    }
 }

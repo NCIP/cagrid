@@ -4,23 +4,24 @@
 package gov.nih.nci.cagrid.portal.dao;
 
 
+import gov.nih.nci.cagrid.portal.DBTestBase;
 import gov.nih.nci.cagrid.portal.domain.GridService;
 import gov.nih.nci.cagrid.portal.domain.IndexService;
 import gov.nih.nci.cagrid.portal.domain.ServiceStatus;
 import gov.nih.nci.cagrid.portal.domain.StatusChange;
-import gov.nih.nci.cagrid.portal.DBTestBase;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import static org.junit.Assert.*;
+import org.junit.Test;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.HibernateTransactionManager;
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import org.springframework.orm.hibernate3.SessionHolder;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
-import org.springframework.beans.BeansException;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -32,6 +33,7 @@ import java.util.*;
 public class GridServiceDaoTest extends DBTestBase<GridServiceDao> {
 
 
+    @Test
     public void testGetGridServiceForIndexService() {
 
 
@@ -60,6 +62,7 @@ public class GridServiceDaoTest extends DBTestBase<GridServiceDao> {
 
     }
 
+    @Test
     public void testGetLatestServices() {
 
 
@@ -90,6 +93,7 @@ public class GridServiceDaoTest extends DBTestBase<GridServiceDao> {
 
     }
 
+    @Test
     public void testBannedServices() {
         int serviceCount = getDao().getAll().size();
 
@@ -144,6 +148,7 @@ public class GridServiceDaoTest extends DBTestBase<GridServiceDao> {
 
     }
 
+    @Test
     public void testCachePerformance(){
         GridService newService  = new GridService();
 
@@ -166,6 +171,7 @@ public class GridServiceDaoTest extends DBTestBase<GridServiceDao> {
     }
 
 
+    @Test
     public void testPerformance(){
         long init = System.currentTimeMillis();
         GridService service = (GridService)getDao().getById(-1);
@@ -206,6 +212,7 @@ public class GridServiceDaoTest extends DBTestBase<GridServiceDao> {
 
     }
 
+    @Test
     public void testFilterPerformance(){
 
         GridService newService3  = new GridService();

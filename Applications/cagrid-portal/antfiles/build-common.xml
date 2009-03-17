@@ -12,7 +12,7 @@
 
     <property file="${projects.dir}/build-${target.env}.properties"/>
     <property file="${projects.dir}/build.properties"/>
-    <property file="${projects.dir}/project.properties"/>
+    <property file="${cagrid-portal-common.basedir}/project.properties"/>
 
     <target name="prepare-ant-tasks" unless="defined.anttaskes">
         <path id="xmltaskdef.cp">
