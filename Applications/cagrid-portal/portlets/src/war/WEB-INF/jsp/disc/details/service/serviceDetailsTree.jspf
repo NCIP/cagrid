@@ -2,8 +2,6 @@
 
 <script type='text/javascript'
         src='<c:url value="/dwr/interface/ServiceDetailsTreeFacade.js"/>'></script>
-<script type='text/javascript' src='<c:url value="/dwr/engine.js"/>'></script>
-<script type='text/javascript' src='<c:url value="/dwr/util.js"/>'></script>
 
 <portlet:actionURL var="selectXmlSchemaUrl">
     <portlet:param name="operation" value="selectXmlSchema"/>

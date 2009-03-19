@@ -1,24 +1,16 @@
 
 
-	<table border="0" class="contentInnerTable">
+	<table id="${prefix}mainTable" border="0"
+       class="sortable-onload-0 rowstyle-dataRowLight paginate-10 max-pages-7 ">
 		<thead>
 			<tr class="contentTableHeader">
-				<th>Name</th>
-				<th>Email</th>
-				<th></th>
+				<th  class="sortable-text fd-column-0 contentTableHeaderCell">Name</th>
+				<th  class="sortable-text fd-column-1 contentTableHeaderCell">Email</th>
+				<th  class="contentTableHeaderCell"></th>
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach items="${listCommand.scroller.page}" var="poc" varStatus="rowStatus">
-			
-				<c:choose>
-					<c:when test="${rowStatus.index % 2 == 0}">
-						<c:set var="rowClass" value="dataRowDark"/>
-					</c:when>
-					<c:otherwise>
-						<c:set var="rowClass" value="dataRowLight"/>
-					</c:otherwise>
-				</c:choose>
+			<c:forEach items="${listCommand.scroller.objects}" var="poc" varStatus="rowStatus">
 			
 				<tr class="<c:out value="${rowClass}"/>">
 			

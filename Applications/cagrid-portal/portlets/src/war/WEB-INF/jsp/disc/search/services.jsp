@@ -11,15 +11,11 @@
 <script type="text/javascript" src='<c:url value="/dwr/engine.js"/>'></script>
 <script type="text/javascript" src='<c:url value="/dwr/util.js"/>'></script>
 
-<script type="text/javascript" src='<c:url value="/js/scriptaculous/prototype.js"/>'></script>
-<script type="text/javascript" src='<c:url value="/js/scriptaculous/effects.js"/>'></script>
-<script type="text/javascript" src='<c:url value="/js/scriptaculous/controls.js"/>'></script>
-
 <script type="text/javascript" src='<c:url value="/dwr/interface/EVSAutomcompleter.js"/>'></script>
 <script type="text/javascript" src='<c:url value="/js/autocomplete.js"/>'></script>
 
 
-<portlet:actionURL var="formAction">
+<portlet:actionURL var="formAction" windowState="<%= LiferayWindowState.EXCLUSIVE.toString() %>">
     <portlet:param name="operation" value="searchServices"/>
 </portlet:actionURL>
 

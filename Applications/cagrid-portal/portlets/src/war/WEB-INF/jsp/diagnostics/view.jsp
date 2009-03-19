@@ -3,7 +3,6 @@
 
 <script type="text/javascript" src='<c:url value="/js/script.js"/>'></script>
 
-<script type="text/javascript" src='<c:url value="/js/scriptaculous/prototype.js"/>'></script>
 <script type="text/javascript" src='<c:url value="/dwr/engine.js"/>'></script>
 <script type="text/javascript" src='<c:url value="/dwr/util.js"/>'></script>
 <script type="text/javascript" src='<c:url value="/dwr/interface/portalStatusDiagnostic.js"/>'></script>

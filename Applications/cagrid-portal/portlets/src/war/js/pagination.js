@@ -196,35 +196,30 @@ var tablePaginater = (function() {
         };
 
         var createButton = function(details, ul, pseudo) {
-                var li   = document.createElement("li"),
-                    but  = document.createElement(pseudo ? "span" : "a"),
-                    img  = document.createElement("img");
+              var li   = document.createElement("li"),
+                  but  = document.createElement(pseudo ? "div" : "a"),
+                  span = document.createElement("span");
 
-                <!--var li   = document.createElement("li"),-->
-                    <!--but  = document.createElement(pseudo ? "div" : "a"),-->
-                    <!--span = document.createElement("span");-->
+              if(!pseudo) {
+                      but.href = "#";
+                      but.title = details.title;
+              };
 
-                if(!pseudo) {
-                        but.href = "#";
-                        but.title = details.title;
-                };
+              but.className = details.className;
+              span.className="pageTxtBtn"
 
-                but.className = details.className;
+              ul.appendChild(li);
+              li.appendChild(but);
+              but.appendChild(span);
+              span.appendChild(document.createTextNode(details.text));
 
-                ul.appendChild(li);
-                li.appendChild(but);
-                but.appendChild(img);
-                img.src=details.img;
+              if(!pseudo) {
+                      li.onclick = but.onclick = buttonClick;
+                      if(details.id) { but.id = details.id; };
+              };
 
-                <!--span.appendChild(document.createTextNode(details.text));-->
-
-                if(!pseudo) {
-                        li.onclick = but.onclick = buttonClick;
-                        if(details.id) { but.id = details.id; };
-                };
-
-                li = but =  null;
-        };
+              li = but = span = null;
+      };
         var removePagination = function(tableId) {
                 var wrapT = document.getElementById(tableId + "-fdtablePaginaterWrapTop"),
                     wrapB = document.getElementById(tableId + "-fdtablePaginaterWrapBottom");
@@ -280,14 +275,14 @@ var tablePaginater = (function() {
 
                 // FIRST (only created if maxPages set)
                 if(details.maxPages) {
-                        createButton({title:text[0], className:"first-page", text:"\u00ab",img:"/cagridportlets/images/scroller/arrow-first.gif"}, ulT, !findex);
-                        createButton({title:text[0], className:"first-page", text:"\u00ab",img:"/cagridportlets/images/scroller/arrow-first.gif"}, ulB, !findex);
+                        createButton({title:text[0], className:"first-page", text:"\u00ab"}, ulT, !findex);
+                        createButton({title:text[0], className:"first-page", text:"\u00ab"}, ulB, !findex);
                 };
 
                 // PREVIOUS (only created if there are more than two pages)
                 if(details.numPages > 2) {
-                        createButton({title:resolveText(text[1], details.currentPage-1), className:"previous-page", text:"\u2039", id:tblId+"-previousPage",img:"/cagridportlets/images/scroller/arrow-previous.gif"}, ulT, details.currentPage == 1);
-                        createButton({title:resolveText(text[1], details.currentPage-1), className:"previous-page", text:"\u2039", id:tblId+"-previousPageC",img:"/cagridportlets/images/scroller/arrow-previous.gif"}, ulB, details.currentPage == 1);
+                        createButton({title:resolveText(text[1], details.currentPage-1), className:"previous-page", text:"\u2039", id:tblId+"-previousPage"}, ulT, details.currentPage == 1);
+                        createButton({title:resolveText(text[1], details.currentPage-1), className:"previous-page", text:"\u2039", id:tblId+"-previousPageC"}, ulB, details.currentPage == 1);
                 };
 
                 // NUMBERED
@@ -298,14 +293,14 @@ var tablePaginater = (function() {
 
                 // NEXT (only created if there are more than two pages)
                 if(details.numPages > 2) {
-                        createButton({title:resolveText(text[2], details.currentPage + 1), className:"next-page", text:"\u203a", id:tblId+"-nextPage",img:"/cagridportlets/images/scroller/arrow-next.gif"}, ulT, details.currentPage == details.numPages);
-                        createButton({title:resolveText(text[2], details.currentPage + 1), className:"next-page", text:"\u203a", id:tblId+"-nextPageC",img:"/cagridportlets/images/scroller/arrow-next.gif"}, ulB, details.currentPage == details.numPages);
+                        createButton({title:resolveText(text[2], details.currentPage + 1), className:"next-page", text:"\u203a", id:tblId+"-nextPage"}, ulT, details.currentPage == details.numPages);
+                        createButton({title:resolveText(text[2], details.currentPage + 1), className:"next-page", text:"\u203a", id:tblId+"-nextPageC"}, ulB, details.currentPage == details.numPages);
                 };
 
                 // LAST (only created if maxPages set)
                 if(details.maxPages) {
-                        createButton({title:resolveText(text[3], details.numPages), className:"last-page", text:"\u00bb",img:"/cagridportlets/images/scroller/arrow-last.gif"}, ulT, lindex == details.numPages);
-                        createButton({title:resolveText(text[3], details.numPages), className:"last-page", text:"\u00bb",img:"/cagridportlets/images/scroller/arrow-last.gif"}, ulB, lindex == details.numPages);
+                        createButton({title:resolveText(text[3], details.numPages), className:"last-page", text:"\u00bb"}, ulT, lindex == details.numPages);
+                        createButton({title:resolveText(text[3], details.numPages), className:"last-page", text:"\u00bb"}, ulB, lindex == details.numPages);
                 };
 
                 // DOM inject wrapper DIVs (FireFox 2.x Bug: this has to be done here if you use display:table)
@@ -361,7 +356,7 @@ var tablePaginater = (function() {
                                 if(cnt > d1 && cnt <= d2) {
                                         if(rowStyle) {
                                                 if(rs++ & 1) setClass(tr, rowStyle);
-                                                else     
+                                                else
                                                         setClass(tr, "dataRowDark");
                                         };
                                         tr.style.display = "";
