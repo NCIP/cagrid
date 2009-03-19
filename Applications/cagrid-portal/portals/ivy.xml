@@ -27,7 +27,6 @@
 
         <dependency rev="1.0.4" org="acegisecurity" name="acegisecurity" conf="authn->*"/>
         <dependency rev="2.3+" org="sun" name="servlet" conf="default"/>
-        <dependency rev="2.0+" org="sun" name="portlet" conf="ext->*"/>
 
 
         <dependency rev="4.0.3" org="globus" name="globus" conf="ext->crypto"/>
