@@ -26,6 +26,7 @@
 	<publications>
         <artifact name="portal-kernel" conf="portal-ext" type="jar"/>
         <artifact name="portal-service" conf="portal-ext" type="jar"/>
+        <artifact name="portlet" conf="portal-ext" type="jar"/>
 
         <artifact name="web" conf="portal-ext" type="xml"/>
 

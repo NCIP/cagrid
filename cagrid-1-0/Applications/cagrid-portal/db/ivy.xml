@@ -9,7 +9,7 @@
     <configurations>
         <conf name="utils" visibility="private"/>
         <conf name="domain" visibility="public"/>
-        <conf name="dao" extends="utils" visibility="public"/>
+        <conf name="dao" extends="domain,utils" visibility="public"/>
 
         <conf name="default" extends="dao,domain" visibility="public"/>
         <conf name="schema" extends="default" description="Only needed to generate database schemas"/>

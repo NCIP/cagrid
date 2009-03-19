@@ -10,6 +10,10 @@
         $theme.include($top_head_include)
 
         #css ($css_main_file)
+        <!--include scritpaculous. Load first for smoother page loads.-->
+        #js ("/cagrid-minimal/javascript/prototype.js")
+        #js ("/cagrid-minimal/javascript/effects.js")
+        #js ("/cagrid-minimal/javascript/controls.js")
         #js ($js_main_file)
         #set ($buildstamp =  $request.getSession().getAttribute("cagrid.portal.build.stamp"))
     </head>
