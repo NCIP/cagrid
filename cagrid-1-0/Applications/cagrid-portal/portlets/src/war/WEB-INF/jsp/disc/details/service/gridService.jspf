@@ -1,11 +1,6 @@
 <%@ include file="/WEB-INF/jsp/include/includes.jspf" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
-<script type="text/javascript" src='<c:url value="/dwr/engine.js"/>'></script>
-<script type="text/javascript" src='<c:url value="/dwr/util.js"/>'></script>
-
-<script type="text/javascript" src='<c:url value="/js/scriptaculous/prototype.js"/>'></script>
-<script type="text/javascript" src='<c:url value="/js/scriptaculous/effects.js"/>'></script>
 <script type="text/javascript" src='<c:url value="/dwr/interface/ServiceStatusManager.js"/>'></script>
 
 <c:set var="prefix"><portlet:namespace/></c:set>
