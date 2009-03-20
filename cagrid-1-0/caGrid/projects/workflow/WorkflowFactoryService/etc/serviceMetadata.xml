@@ -1,18 +1,18 @@
 <ns1:ServiceMetadata xmlns:ns1="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata">
  <ns1:serviceDescription>
-  <ns2:Service description="" name="WorkflowFactoryService" version="1.3" xmlns:ns2="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service">
+  <ns2:Service description="The WorkflowFactoryService grid service, created with caGrid Introduce. This service is used to execute BPEL workflows that orchestrate caGrid Analytical and Data Services." name="WorkflowFactoryService" version="1.3" xmlns:ns2="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service">
    <ns2:pointOfContactCollection>
     <ns3:PointOfContact affiliation="ANL" email="sulakhe@mcs.anl.gov" firstName="Dinanath" lastName="Sulakhe" phoneNumber="630-252-7856" role="Developer" xmlns:ns3="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
    </ns2:pointOfContactCollection>
    <ns2:serviceContextCollection>
     <ns2:ServiceContext description="Workflow Factory Service to create workflow resources" name="WorkflowFactoryService">
      <ns2:operationCollection>
-      <ns2:Operation description="" name="getServiceSecurityMetadata">
+      <ns2:Operation description="Get the service security metadata for the Worfkflow factory service" name="getServiceSecurityMetadata">
        <ns2:inputParameterCollection/>
        <ns2:Output qName="ns4:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns4="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
        <ns2:faultCollection/>
       </ns2:Operation>
-      <ns2:Operation description="creats workflow resources" name="createWorkflow">
+      <ns2:Operation description="creates workflow resources" name="createWorkflow">
        <ns2:inputParameterCollection>
         <ns2:InputParameter qName="ns5:WMSInputElement" dimensionality="1" index="0" isArray="false" isRequired="false" name="wMSInputElement" xmlns:ns5="http://types.workflow.cagrid.nci.nih.gov/WorkflowManagementFactoryService"/>
        </ns2:inputParameterCollection>
@@ -35,12 +35,12 @@
       </ns2:Operation>
      </ns2:operationCollection>
      <ns2:contextPropertyCollection>
-      <ns2:ContextProperty description="" name="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata}ServiceMetadata"/>
+      <ns2:ContextProperty description="Service Metadata" name="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata}ServiceMetadata"/>
      </ns2:contextPropertyCollection>
     </ns2:ServiceContext>
     <ns2:ServiceContext description="Workflow Service that will let users start workflows, get status, pause, resume and get intermediate results" name="WorkflowServiceImpl">
      <ns2:operationCollection>
-      <ns2:Operation description="" name="getServiceSecurityMetadata">
+      <ns2:Operation description="Get Security Metadata of the Workflow Service" name="getServiceSecurityMetadata">
        <ns2:inputParameterCollection/>
        <ns2:Output qName="ns7:ServiceSecurityMetadata" dimensionality="1" isArray="false" xmlns:ns7="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
        <ns2:faultCollection/>
