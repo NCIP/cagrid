@@ -294,20 +294,22 @@ SIDEBAR BEGINS
   font-size:0.7em;
 }
 .sidebarTitle{ /* for the titles of the individual sidebar sections */
-  font-size:1em;
+  font-size:0.7em;
   font-weight:bold;
+  font-family:verdana, arial, helvetica, sans-serif;
   padding-left:0.8em;
   background-color:#5C5C5C; /* constant: dark gray */
   color:#FFFFFF; /* constant: white */
 }
 .sidebarContent{ /* for the areas under the sidebar titles and requires text */
-  font-size:1em;
-  padding:0.8em;
+  font-size:0.7em;
+  padding:1em;
+  font-family:verdana, arial, helvetica, sans-serif;
   border-left:1px solid #CCCCCC; /* constant: medium gray */
 }
 .sidebarLogin{ /* for the sidebar login cells */
   font-size:0.7em;
-  padding-left:0.8em;
+  /*padding-left:0.8em;*/
 }
 
 /*###############
@@ -442,7 +444,7 @@ MISCELLANEOUS BEGINS
 }
 .welcomeContent{ /* for the area below the title content of the home page */
   font-family:arial,helvetica,verdana,sans-serif;
-  font-size:0.6em;
+  font-size:0.7em;
   padding:1em;
   line-height:1.5em;
 }
