@@ -1,5 +1,6 @@
 package gov.nih.nci.cagrid.workflow.service;
 
+import gov.nih.nci.cagrid.workflow.context.service.globus.resource.WorkflowServiceImplResource;
 import gov.nih.nci.cagrid.workflow.context.service.globus.resource.WorkflowServiceImplResourceHome;
 import gov.nih.nci.cagrid.workflow.stubs.types.WMSOutputType;
 
@@ -54,6 +55,8 @@ public class WorkflowFactoryServiceImpl extends WorkflowFactoryServiceImplBase {
 			EndpointReferenceType epr = new EndpointReferenceType();
 			epr = AddressingUtils.createEndpointReference(ServiceHost.getBaseURL() 
 					+ "cagrid/WorkflowServiceImpl", key);
+			WorkflowServiceImplResource workflowResource = workflowHome.getResource(key);
+			workflowResource.setup(wMSInputElement, null);
 			output.setWorkflowEPR(epr);
 
 		} catch (Exception e) {

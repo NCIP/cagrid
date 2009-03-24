@@ -94,7 +94,83 @@ static final Log logger = LogFactory.getLog(WorkflowFactoryServiceResource.class
 	private TopicList topicList = null;
 	
 	
-	protected void initialize(Object key) {
+	public WorkflowServiceImplResource ()
+	{
+		
+	}
+
+	/*public WorkflowServiceImplResource (WMSInputType input, Calendar terminationTime)
+			throws Exception {
+		File bpelFile = null;
+		if (terminationTime != null) {
+			this.setTerminationTime(terminationTime);
+		} else {
+			this.terminationTime = Calendar.getInstance();
+			// default TTL 12 hrs
+			this.terminationTime.add(Calendar.HOUR, 12);
+		}
+		this.workflowName = input.getWorkflowName();
+		this.bpelProcess = input.getBpelDoc();
+		
+		//This was done in the previous version of the service.
+//		this.key = new SimpleResourceKey( WorkflowServiceHome.workflowQName, input.getWorkflowName());
+		this.key = this.getResourceKey();
+		
+		this.initialize3(key);
+		String bpelFileName = System.getProperty("java.io.tmpdir")
+				+ File.separator + workflowName + BPEL_EXTENSION;
+		bpelFile = new File(bpelFileName);
+		bpelFile.deleteOnExit();
+		Utils.stringBufferToFile(new StringBuffer(bpelProcess), bpelFileName);
+		WSDLReferences[] wsdlRefArray = input.getWsdlReferences();
+		this.outputType = new WorkflowOutputType();
+		this.abAdapter = new ActiveBPELAdapter(
+				WorkflowFactoryServiceConfiguration.getConfiguration().getAbEndpoint(), 
+				this.outputType, this.workflowStatus);
+		String returnString = deploy(bpelFileName, workflowName, wsdlRefArray);
+		logger.debug("deployment summary: " + returnString);
+		logger.debug("Created a Workflow resource with key:" 
+				+ input.getWorkflowName());
+	}
+	
+	*/
+	
+	public void setup(WMSInputType input, Calendar terminationTime) throws Exception {
+		
+		File bpelFile = null;
+		if (terminationTime != null) {
+			this.setTerminationTime(terminationTime);
+		} else {
+			this.terminationTime = Calendar.getInstance();
+			// default TTL 12 hrs
+			this.terminationTime.add(Calendar.HOUR, 12);
+		}
+		this.workflowName = input.getWorkflowName();
+		this.bpelProcess = input.getBpelDoc();
+		
+		//This was done in the previous version of the service.
+//		this.key = new SimpleResourceKey( WorkflowServiceHome.workflowQName, input.getWorkflowName());
+		this.key = this.getResourceKey();
+		
+		this.initialize3(key);
+		String bpelFileName = System.getProperty("java.io.tmpdir")
+				+ File.separator + workflowName + BPEL_EXTENSION;
+		bpelFile = new File(bpelFileName);
+		bpelFile.deleteOnExit();
+		Utils.stringBufferToFile(new StringBuffer(bpelProcess), bpelFileName);
+		WSDLReferences[] wsdlRefArray = input.getWsdlReferences();
+		this.outputType = new WorkflowOutputType();
+		this.abAdapter = new ActiveBPELAdapter(
+				WorkflowFactoryServiceConfiguration.getConfiguration().getAbEndpoint(), 
+				this.outputType, this.workflowStatus);
+		String returnString = deploy(bpelFileName, workflowName, wsdlRefArray);
+		logger.debug("deployment summary: " + returnString);
+		logger.debug("Created a Workflow resource with key:" 
+				+ input.getWorkflowName());
+		
+	}
+	
+	protected void initialize3(Object key) {
 		this.key = key;
 		this.propSet = new SimpleResourcePropertySet(WF_RP_SET);
 		this.topicList = new SimpleTopicList(this);
@@ -116,39 +192,8 @@ static final Log logger = LogFactory.getLog(WorkflowFactoryServiceResource.class
 			throw new RuntimeException(e.getMessage());
 		}
 	}
-	public WorkflowServiceImplResource (WMSInputType input, Calendar terminationTime)
-			throws Exception {
-		File bpelFile = null;
-		if (terminationTime != null) {
-			this.setTerminationTime(terminationTime);
-		} else {
-			this.terminationTime = Calendar.getInstance();
-			// default TTL 12 hrs
-			this.terminationTime.add(Calendar.HOUR, 12);
-		}
-		this.workflowName = input.getWorkflowName();
-		this.bpelProcess = input.getBpelDoc();
-		
-		//This was done in the previous version of the service.
-//		this.key = new SimpleResourceKey( WorkflowServiceHome.workflowQName, input.getWorkflowName());
-		this.key = this.getResourceKey();
-		
-		this.initialize(key);
-		String bpelFileName = System.getProperty("java.io.tmpdir")
-				+ File.separator + workflowName + BPEL_EXTENSION;
-		bpelFile = new File(bpelFileName);
-		bpelFile.deleteOnExit();
-		Utils.stringBufferToFile(new StringBuffer(bpelProcess), bpelFileName);
-		WSDLReferences[] wsdlRefArray = input.getWsdlReferences();
-		this.outputType = new WorkflowOutputType();
-		this.abAdapter = new ActiveBPELAdapter(
-				WorkflowFactoryServiceConfiguration.getConfiguration().getAbEndpoint(), 
-				this.outputType, this.workflowStatus);
-		String returnString = deploy(bpelFileName, workflowName, wsdlRefArray);
-		logger.debug("deployment summary: " + returnString);
-		logger.debug("Created a Workflow resource with key:" 
-				+ input.getWorkflowName());
-	}
+	
+	
 
 	private String deploy(String bpelFileName, String workflowName,
 			WSDLReferences[] wsdlRefArray) throws Exception {
@@ -213,7 +258,13 @@ static final Log logger = LogFactory.getLog(WorkflowFactoryServiceResource.class
 		
 		return this.abAdapter.getWorkflowStatusEventsArray();
 	}
+
+	public TopicList getTopicList() {
+		// TODO Auto-generated method stub
+		return this.topicList;
+	}
 	
+/*	
 	public WorkflowServiceImplResourceConfiguration getConfiguration() {
 		if (this.configuration != null) {
 			return this.configuration;
@@ -267,5 +318,5 @@ static final Log logger = LogFactory.getLog(WorkflowFactoryServiceResource.class
 		}
 		
 	}
-	
+	*/
 }
