@@ -27,7 +27,7 @@ import org.xml.sax.SAXException;
   * @author David Ervin
   * 
   * @created Oct 22, 2007 10:26:25 AM
-  * @version $Id: Sdk4EaXMIHandler.java,v 1.5.8.1 2009-02-05 19:05:02 dervin Exp $
+  * @version $Id: Sdk4EaXMIHandler.java,v 1.5.8.2 2009-03-24 15:00:31 dervin Exp $
  */
 class Sdk4EaXMIHandler extends BaseXMIHandler {
     private static final Log LOG = LogFactory.getLog(Sdk4EaXMIHandler.class);   
@@ -97,8 +97,6 @@ class Sdk4EaXMIHandler extends BaseXMIHandler {
             addAssociation(ass);
         } else if (qName.equals(XMIConstants.XMI_UML_ASSOCIATION_END)) {
             handleAssociationEnd(atts);
-        } else if (qName.equals(XMIConstants.XMI_UML_MULTIPLICITY_RANGE) && edge != null) {
-            handleMultiplicity(atts);
         } else if (qName.equals(XMIConstants.XMI_UML_GENERALIZATION)) {
             handleGeneralization(atts);
         } else if (qName.equals(XMIConstants.XMI_UML_TAGGED_VALUE)) {
@@ -142,14 +140,6 @@ class Sdk4EaXMIHandler extends BaseXMIHandler {
     }
     
     
-    private void handleMultiplicity(Attributes atts) {
-        edge.setMinCardinality(Integer.parseInt(
-            atts.getValue(XMIConstants.XMI_UML_MULTIPLICITY_LOWER)));
-        edge.setMaxCardinality(Integer.parseInt(
-            atts.getValue(XMIConstants.XMI_UML_MULTIPLICITY_UPPER)));
-    }
-    
-    
     private void handleAssociationEnd(Attributes atts) {
         // get the most recently found association
         UMLAssociation assoc = getLastAssociation();
@@ -165,6 +155,32 @@ class Sdk4EaXMIHandler extends BaseXMIHandler {
         }
         edge.setRoleName(atts.getValue(XMIConstants.XMI_NAME_ATTRIBUTE));
         edge.setUMLClassReference(new UMLClassReference(atts.getValue(XMIConstants.XMI_TYPE_ATTRIBUTE)));
+        
+        // multiplicity of the edge
+        String multiplicity = atts.getValue(Sdk4EaXMIConstants.MULTIPLICITY_ATTRIBUTE);
+        int minMult = 0;
+        int maxMult = -1; // flag for unbounded
+        if (multiplicity == null) {
+            // this is probably an error!
+            LOG.warn("WARNING!!! NO MULTIPLICITY DEFINED FOR AN ASSOCIATION EDGE!!!!");
+        } else if (multiplicity.contains(Sdk4EaXMIConstants.MULTIPLICITY_RANGE_SEPARATOR)) {
+            // distinct min and max
+            String min = multiplicity.substring(0, multiplicity.indexOf(Sdk4EaXMIConstants.MULTIPLICITY_RANGE_SEPARATOR));
+            String max = multiplicity.substring(min.length() + Sdk4EaXMIConstants.MULTIPLICITY_RANGE_SEPARATOR.length());
+            minMult = Integer.parseInt(min);
+            if (!max.equals("*")) {
+                maxMult = Integer.parseInt(max);
+            }
+        } else if (multiplicity.equals("*")) {
+            // unbounded in general?? (AIM has this, but I have no idea why)
+            minMult = -1;
+        } else {
+            // single value for min and max
+            minMult = Integer.parseInt(multiplicity);
+            maxMult = minMult;
+        }
+        edge.setMinCardinality(minMult);
+        edge.setMaxCardinality(maxMult);
     }
     
     
