@@ -2,199 +2,199 @@
  <ns1:exposedUMLAssociationCollection>
   <ns1:UMLAssociation bidirectional="false">
    <ns1:targetUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="pupilCollection">
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="pupilCollection">
      <ns1:UMLClassReference refid="EAID_25C922D6_7AE9_4b07_9E7D_1FDEC6CAF278"/>
     </ns1:UMLAssociationEdge>
    </ns1:targetUMLAssociationEdge>
    <ns1:sourceUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="teacher">
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="teacher">
      <ns1:UMLClassReference refid="EAID_EE02A000_21A2_4056_9A0F_0A9FD052E526"/>
     </ns1:UMLAssociationEdge>
    </ns1:sourceUMLAssociationEdge>
   </ns1:UMLAssociation>
   <ns1:UMLAssociation bidirectional="false">
    <ns1:targetUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="issuingBank">
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="issuingBank">
      <ns1:UMLClassReference refid="EAID_99A644B0_2028_4462_8301_4D34931B9995"/>
     </ns1:UMLAssociationEdge>
    </ns1:targetUMLAssociationEdge>
    <ns1:sourceUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0">
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0">
      <ns1:UMLClassReference refid="EAID_0F0E92DD_E304_40aa_9ADE_4BEB771EAF2D"/>
     </ns1:UMLAssociationEdge>
    </ns1:sourceUMLAssociationEdge>
   </ns1:UMLAssociation>
   <ns1:UMLAssociation bidirectional="false">
    <ns1:targetUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="designer">
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="designer">
      <ns1:UMLClassReference refid="EAID_DB8B1781_754E_4e83_B780_F316B364C451"/>
     </ns1:UMLAssociationEdge>
    </ns1:targetUMLAssociationEdge>
    <ns1:sourceUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0">
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="-1">
      <ns1:UMLClassReference refid="EAID_DF13C79C_9FDF_4de7_BD1E_0240185CFFB3"/>
     </ns1:UMLAssociationEdge>
    </ns1:sourceUMLAssociationEdge>
   </ns1:UMLAssociation>
   <ns1:UMLAssociation bidirectional="false">
    <ns1:targetUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="tankCollection">
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="tankCollection">
      <ns1:UMLClassReference refid="EAID_3368D1E5_BDDF_4b9b_9AB3_76F263AEEFCB"/>
     </ns1:UMLAssociationEdge>
    </ns1:targetUMLAssociationEdge>
    <ns1:sourceUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="tankAccessoryCollection">
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="tankAccessoryCollection">
      <ns1:UMLClassReference refid="EAID_8636A398_D1B8_4675_9B5E_E892791208B6"/>
     </ns1:UMLAssociationEdge>
    </ns1:sourceUMLAssociationEdge>
   </ns1:UMLAssociation>
   <ns1:UMLAssociation bidirectional="false">
    <ns1:targetUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="tank">
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="tank">
      <ns1:UMLClassReference refid="EAID_3368D1E5_BDDF_4b9b_9AB3_76F263AEEFCB"/>
     </ns1:UMLAssociationEdge>
    </ns1:targetUMLAssociationEdge>
    <ns1:sourceUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="fishCollection">
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="fishCollection">
      <ns1:UMLClassReference refid="EAID_D20806E4_DC1A_41e8_A8A3_78548AF4AAD5"/>
     </ns1:UMLAssociationEdge>
    </ns1:sourceUMLAssociationEdge>
   </ns1:UMLAssociation>
   <ns1:UMLAssociation bidirectional="false">
    <ns1:targetUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="substrateCollection">
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="substrateCollection">
      <ns1:UMLClassReference refid="EAID_33CF06A3_F17D_40f0_823A_07C5757AE74C"/>
     </ns1:UMLAssociationEdge>
    </ns1:targetUMLAssociationEdge>
    <ns1:sourceUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="saltwaterFishTank">
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="saltwaterFishTank">
      <ns1:UMLClassReference refid="EAID_A760311D_8E99_471f_9809_4A498AF3D06C"/>
     </ns1:UMLAssociationEdge>
    </ns1:sourceUMLAssociationEdge>
   </ns1:UMLAssociation>
   <ns1:UMLAssociation bidirectional="false">
    <ns1:targetUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="assistantCollection">
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="assistantCollection">
      <ns1:UMLClassReference refid="EAID_5CA73A59_BD41_4920_B53C_AC571E123E64"/>
     </ns1:UMLAssociationEdge>
    </ns1:targetUMLAssociationEdge>
    <ns1:sourceUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0">
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1">
      <ns1:UMLClassReference refid="EAID_00F8EA6B_E027_4bad_B011_41830FF87842"/>
     </ns1:UMLAssociationEdge>
    </ns1:sourceUMLAssociationEdge>
   </ns1:UMLAssociation>
   <ns1:UMLAssociation bidirectional="true">
    <ns1:targetUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="wheel">
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="wheel">
      <ns1:UMLClassReference refid="EAID_A2EE906F_6DC7_4bbb_9261_98FCE0777DBA"/>
     </ns1:UMLAssociationEdge>
    </ns1:targetUMLAssociationEdge>
    <ns1:sourceUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="luggage">
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="luggage">
      <ns1:UMLClassReference refid="EAID_6135B872_E71A_44c8_9DC1_269DE3815F79"/>
     </ns1:UMLAssociationEdge>
    </ns1:sourceUMLAssociationEdge>
   </ns1:UMLAssociation>
   <ns1:UMLAssociation bidirectional="true">
    <ns1:targetUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="projectCollection">
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="projectCollection">
      <ns1:UMLClassReference refid="EAID_8598F1F2_EE47_41a6_B3A0_A61E801D02BE"/>
     </ns1:UMLAssociationEdge>
    </ns1:targetUMLAssociationEdge>
    <ns1:sourceUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="employeeCollection">
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="employeeCollection">
      <ns1:UMLClassReference refid="EAID_C266F257_44CD_4b19_9E33_23F63573B38F"/>
     </ns1:UMLAssociationEdge>
    </ns1:sourceUMLAssociationEdge>
   </ns1:UMLAssociation>
   <ns1:UMLAssociation bidirectional="false">
    <ns1:targetUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="authorCollection">
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="authorCollection">
      <ns1:UMLClassReference refid="EAID_775B56C3_D694_417a_A41E_2926FD5F3160"/>
     </ns1:UMLAssociationEdge>
    </ns1:targetUMLAssociationEdge>
    <ns1:sourceUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0">
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0">
      <ns1:UMLClassReference refid="EAID_178351E2_A663_474e_AE08_943831F4CF2B"/>
     </ns1:UMLAssociationEdge>
    </ns1:sourceUMLAssociationEdge>
   </ns1:UMLAssociation>
   <ns1:UMLAssociation bidirectional="false">
    <ns1:targetUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="restaurant">
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="restaurant">
      <ns1:UMLClassReference refid="EAID_97A1477D_77DA_499c_B516_8FEAEDA36D04"/>
     </ns1:UMLAssociationEdge>
    </ns1:targetUMLAssociationEdge>
    <ns1:sourceUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0">
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="1">
      <ns1:UMLClassReference refid="EAID_29924AF0_3BB6_4c6f_8F06_17F1530B416E"/>
     </ns1:UMLAssociationEdge>
    </ns1:sourceUMLAssociationEdge>
   </ns1:UMLAssociation>
   <ns1:UMLAssociation bidirectional="false">
    <ns1:targetUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="album">
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="album">
      <ns1:UMLClassReference refid="EAID_0C0D26AA_6F2C_48c2_BE76_D4E5A4B50C96"/>
     </ns1:UMLAssociationEdge>
    </ns1:targetUMLAssociationEdge>
    <ns1:sourceUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0">
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="-1">
      <ns1:UMLClassReference refid="EAID_E28B033A_B5A6_4ec5_A5F9_0AF41625877D"/>
     </ns1:UMLAssociationEdge>
    </ns1:sourceUMLAssociationEdge>
   </ns1:UMLAssociation>
   <ns1:UMLAssociation bidirectional="true">
    <ns1:targetUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="hardDriveCollection">
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="1" roleName="hardDriveCollection">
      <ns1:UMLClassReference refid="EAID_7233AB7C_C607_4c28_825F_F2872AB280ED"/>
     </ns1:UMLAssociationEdge>
    </ns1:targetUMLAssociationEdge>
    <ns1:sourceUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="computer">
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="computer">
      <ns1:UMLClassReference refid="EAID_8EC973CE_B07C_41b5_9B73_9CC6C5B663B6"/>
     </ns1:UMLAssociationEdge>
    </ns1:sourceUMLAssociationEdge>
   </ns1:UMLAssociation>
   <ns1:UMLAssociation bidirectional="true">
    <ns1:targetUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="passangerCollection">
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="1" roleName="passangerCollection">
      <ns1:UMLClassReference refid="EAID_C09EA099_C221_424b_996E_50CB230E9822"/>
     </ns1:UMLAssociationEdge>
    </ns1:targetUMLAssociationEdge>
    <ns1:sourceUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="flight">
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="flight">
      <ns1:UMLClassReference refid="EAID_F117109E_DB4A_4cc5_935F_902E68FA958B"/>
     </ns1:UMLAssociationEdge>
    </ns1:sourceUMLAssociationEdge>
   </ns1:UMLAssociation>
   <ns1:UMLAssociation bidirectional="false">
    <ns1:targetUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="childCollection">
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="childCollection">
      <ns1:UMLClassReference refid="EAID_D676F2CC_2D5F_4013_9ED6_2BE3A9D72BA7"/>
     </ns1:UMLAssociationEdge>
    </ns1:targetUMLAssociationEdge>
    <ns1:sourceUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="parent">
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="parent">
      <ns1:UMLClassReference refid="EAID_D676F2CC_2D5F_4013_9ED6_2BE3A9D72BA7"/>
     </ns1:UMLAssociationEdge>
    </ns1:sourceUMLAssociationEdge>
   </ns1:UMLAssociation>
   <ns1:UMLAssociation bidirectional="false">
    <ns1:targetUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="keyCollection">
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="keyCollection">
      <ns1:UMLClassReference refid="EAID_024059C8_1B42_42ec_AB1D_FCA70ECC0E0B"/>
     </ns1:UMLAssociationEdge>
    </ns1:targetUMLAssociationEdge>
    <ns1:sourceUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0">
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1">
      <ns1:UMLClassReference refid="EAID_5C5D8562_D2C0_4b88_B6F7_534CF2D13B55"/>
     </ns1:UMLAssociationEdge>
    </ns1:sourceUMLAssociationEdge>
   </ns1:UMLAssociation>
   <ns1:UMLAssociation bidirectional="false">
    <ns1:targetUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="buttonCollection">
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="-1" roleName="buttonCollection">
      <ns1:UMLClassReference refid="EAID_7ED8208F_0BDC_496e_901A_343AB0932A2E"/>
     </ns1:UMLAssociationEdge>
    </ns1:targetUMLAssociationEdge>
@@ -206,144 +206,144 @@
   </ns1:UMLAssociation>
   <ns1:UMLAssociation bidirectional="true">
    <ns1:targetUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="product">
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="product">
      <ns1:UMLClassReference refid="EAID_A693FCC2_3A49_46d5_B053_4B7AC895C2F3"/>
     </ns1:UMLAssociationEdge>
    </ns1:targetUMLAssociationEdge>
    <ns1:sourceUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="line">
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="line">
      <ns1:UMLClassReference refid="EAID_2029ED90_8EE0_43bf_B569_3298D506D53D"/>
     </ns1:UMLAssociationEdge>
    </ns1:sourceUMLAssociationEdge>
   </ns1:UMLAssociation>
   <ns1:UMLAssociation bidirectional="true">
    <ns1:targetUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="pendant">
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="pendant">
      <ns1:UMLClassReference refid="EAID_BCA4DDF7_7AFB_4a59_A63A_3AC1F3FE4E6A"/>
     </ns1:UMLAssociationEdge>
    </ns1:targetUMLAssociationEdge>
    <ns1:sourceUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="chain">
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="chain">
      <ns1:UMLClassReference refid="EAID_7A1D9ED9_4BF4_4958_A62D_68F9EEF29182"/>
     </ns1:UMLAssociationEdge>
    </ns1:sourceUMLAssociationEdge>
   </ns1:UMLAssociation>
   <ns1:UMLAssociation bidirectional="false">
    <ns1:targetUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="mother">
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="mother">
      <ns1:UMLClassReference refid="EAID_AD703EC5_9168_4615_8D3E_9DC3D586D9A8"/>
     </ns1:UMLAssociationEdge>
    </ns1:targetUMLAssociationEdge>
    <ns1:sourceUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0">
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1">
      <ns1:UMLClassReference refid="EAID_F1BCE88D_CB0D_4552_8958_81854FCFABF9"/>
     </ns1:UMLAssociationEdge>
    </ns1:sourceUMLAssociationEdge>
   </ns1:UMLAssociation>
   <ns1:UMLAssociation bidirectional="false">
    <ns1:targetUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="father">
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="father">
      <ns1:UMLClassReference refid="EAID_AD703EC5_9168_4615_8D3E_9DC3D586D9A8"/>
     </ns1:UMLAssociationEdge>
    </ns1:targetUMLAssociationEdge>
    <ns1:sourceUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0">
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1">
      <ns1:UMLClassReference refid="EAID_F1BCE88D_CB0D_4552_8958_81854FCFABF9"/>
     </ns1:UMLAssociationEdge>
    </ns1:sourceUMLAssociationEdge>
   </ns1:UMLAssociation>
   <ns1:UMLAssociation bidirectional="false">
    <ns1:targetUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="father">
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="father">
      <ns1:UMLClassReference refid="EAID_4AE4D452_0643_423c_9D55_226DE635EDCB"/>
     </ns1:UMLAssociationEdge>
    </ns1:targetUMLAssociationEdge>
    <ns1:sourceUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0">
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1">
      <ns1:UMLClassReference refid="EAID_978ACAFD_E5BF_4d08_949E_980278DB7ADD"/>
     </ns1:UMLAssociationEdge>
    </ns1:sourceUMLAssociationEdge>
   </ns1:UMLAssociation>
   <ns1:UMLAssociation bidirectional="false">
    <ns1:targetUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="mother">
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="mother">
      <ns1:UMLClassReference refid="EAID_4AE4D452_0643_423c_9D55_226DE635EDCB"/>
     </ns1:UMLAssociationEdge>
    </ns1:targetUMLAssociationEdge>
    <ns1:sourceUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0">
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1">
      <ns1:UMLClassReference refid="EAID_978ACAFD_E5BF_4d08_949E_980278DB7ADD"/>
     </ns1:UMLAssociationEdge>
    </ns1:sourceUMLAssociationEdge>
   </ns1:UMLAssociation>
   <ns1:UMLAssociation bidirectional="false">
    <ns1:targetUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="livesAt">
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="livesAt">
      <ns1:UMLClassReference refid="EAID_AB8D6FAC_AB89_4d65_98C2_6AD93982C3E0"/>
     </ns1:UMLAssociationEdge>
    </ns1:targetUMLAssociationEdge>
    <ns1:sourceUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0">
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1">
      <ns1:UMLClassReference refid="EAID_2DA26850_8BCA_4c42_9186_B151F9ADB196"/>
     </ns1:UMLAssociationEdge>
    </ns1:sourceUMLAssociationEdge>
   </ns1:UMLAssociation>
   <ns1:UMLAssociation bidirectional="false">
    <ns1:targetUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="handle">
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="handle">
      <ns1:UMLClassReference refid="EAID_D6630603_D640_4865_B78B_FD2D5878ACD0"/>
     </ns1:UMLAssociationEdge>
    </ns1:targetUMLAssociationEdge>
    <ns1:sourceUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0">
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0">
      <ns1:UMLClassReference refid="EAID_E29943AF_01E3_4933_8D13_9C1DBD97B3FB"/>
     </ns1:UMLAssociationEdge>
    </ns1:sourceUMLAssociationEdge>
   </ns1:UMLAssociation>
   <ns1:UMLAssociation bidirectional="true">
    <ns1:targetUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="utensilCollection">
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="utensilCollection">
      <ns1:UMLClassReference refid="EAID_899CA401_1F3E_4dd8_8BD7_EB829DBA8BC6"/>
     </ns1:UMLAssociationEdge>
    </ns1:targetUMLAssociationEdge>
    <ns1:sourceUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="dessertCollection">
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="dessertCollection">
      <ns1:UMLClassReference refid="EAID_FD6CE3D5_7F2F_4b6b_9BEC_76AD345F575D"/>
     </ns1:UMLAssociationEdge>
    </ns1:sourceUMLAssociationEdge>
   </ns1:UMLAssociation>
   <ns1:UMLAssociation bidirectional="true">
    <ns1:targetUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="suit">
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="suit">
      <ns1:UMLClassReference refid="EAID_E3BC9F7F_E85C_4f73_917A_E33725FD6DE7"/>
     </ns1:UMLAssociationEdge>
    </ns1:targetUMLAssociationEdge>
    <ns1:sourceUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="cardCollection">
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="1" roleName="cardCollection">
      <ns1:UMLClassReference refid="EAID_1D4C03D8_03CC_4f4e_A948_19A3B5DD3537"/>
     </ns1:UMLAssociationEdge>
    </ns1:sourceUMLAssociationEdge>
   </ns1:UMLAssociation>
   <ns1:UMLAssociation bidirectional="false">
    <ns1:targetUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="cardCollection">
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="1" roleName="cardCollection">
      <ns1:UMLClassReference refid="EAID_1D4C03D8_03CC_4f4e_A948_19A3B5DD3537"/>
     </ns1:UMLAssociationEdge>
    </ns1:targetUMLAssociationEdge>
    <ns1:sourceUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="handCollection">
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="handCollection">
      <ns1:UMLClassReference refid="EAID_DF711CE5_51FF_4575_821B_772EA4A3513D"/>
     </ns1:UMLAssociationEdge>
    </ns1:sourceUMLAssociationEdge>
   </ns1:UMLAssociation>
   <ns1:UMLAssociation bidirectional="true">
    <ns1:targetUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="deck">
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="deck">
      <ns1:UMLClassReference refid="EAID_613B45B4_C464_42c1_BDEC_A7D2018B7412"/>
     </ns1:UMLAssociationEdge>
    </ns1:targetUMLAssociationEdge>
    <ns1:sourceUMLAssociationEdge>
-    <ns1:UMLAssociationEdge maxCardinality="0" minCardinality="0" roleName="suitCollection">
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="1" roleName="suitCollection">
      <ns1:UMLClassReference refid="EAID_E3BC9F7F_E85C_4f73_917A_E33725FD6DE7"/>
     </ns1:UMLAssociationEdge>
    </ns1:sourceUMLAssociationEdge>
@@ -1034,20 +1034,20 @@
   </ns1:UMLClass>
   <ns1:UMLClass allowableAsTarget="true" className="AllValidationType" description="Test Class for Hibernate Validation" id="EAID_854CDD85_9FDB_4d13_BA15_17621CD57F0B" packageName="gov.nih.nci.cacoresdk.domain.other.validationtype" projectName="example" projectVersion="4.1">
    <ns107:umlAttributeCollection xmlns:ns107="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
-    <ns107:UMLAttribute dataTypeName="java.lang.String" name="email" publicID="-725723764" version="1.0"/>
-    <ns107:UMLAttribute dataTypeName="java.util.Date" name="future" publicID="-1080311690" version="1.0"/>
-    <ns107:UMLAttribute dataTypeName="java.lang.Integer" name="id" publicID="-1354480646" version="1.0"/>
-    <ns107:UMLAttribute dataTypeName="java.lang.String" name="length" publicID="708021138" version="1.0"/>
-    <ns107:UMLAttribute dataTypeName="java.lang.Integer" name="maxNumeric" publicID="1892274096" version="1.0"/>
-    <ns107:UMLAttribute dataTypeName="java.lang.String" name="maxString" publicID="-1202363696" version="1.0"/>
-    <ns107:UMLAttribute dataTypeName="java.lang.Integer" name="minNumeric" publicID="-262986150" version="1.0"/>
-    <ns107:UMLAttribute dataTypeName="java.lang.String" name="minString" publicID="-1706211106" version="1.0"/>
-    <ns107:UMLAttribute dataTypeName="java.lang.String" name="notEmpty" publicID="2028256695" version="1.0"/>
-    <ns107:UMLAttribute dataTypeName="java.lang.String" name="notNull" publicID="-745784987" version="1.0"/>
-    <ns107:UMLAttribute dataTypeName="java.util.Date" name="past" publicID="-322962793" version="1.0"/>
-    <ns107:UMLAttribute dataTypeName="java.lang.String" name="pattern" publicID="-2033538314" version="1.0"/>
-    <ns107:UMLAttribute dataTypeName="java.lang.Integer" name="rangeNumeric" publicID="1464852395" version="1.0"/>
-    <ns107:UMLAttribute dataTypeName="java.lang.String" name="rangeString" publicID="-1790537795" version="1.0"/>
+    <ns107:UMLAttribute dataTypeName="java.lang.String" description="Test attribute for email Hibernate Validation" name="email" publicID="-725723764" version="1.0"/>
+    <ns107:UMLAttribute dataTypeName="java.util.Date" description="Test attribute for future date Hibernate Validation" name="future" publicID="-1080311690" version="1.0"/>
+    <ns107:UMLAttribute dataTypeName="java.lang.Integer" description="Id attribute for Hibernate Validation test class" name="id" publicID="-1354480646" version="1.0"/>
+    <ns107:UMLAttribute dataTypeName="java.lang.String" description="Test attribute for length Hibernate Validation" name="length" publicID="708021138" version="1.0"/>
+    <ns107:UMLAttribute dataTypeName="java.lang.Integer" description="Test attribute for max (numeric) Hibernate Validation" name="maxNumeric" publicID="1892274096" version="1.0"/>
+    <ns107:UMLAttribute dataTypeName="java.lang.String" description="Test attribute for max (string) Hibernate Validation" name="maxString" publicID="-1202363696" version="1.0"/>
+    <ns107:UMLAttribute dataTypeName="java.lang.Integer" description="Test attribute for min (numeric) Hibernate Validation" name="minNumeric" publicID="-262986150" version="1.0"/>
+    <ns107:UMLAttribute dataTypeName="java.lang.String" description="Test attribute for min (string) Hibernate Validation" name="minString" publicID="-1706211106" version="1.0"/>
+    <ns107:UMLAttribute dataTypeName="java.lang.String" description="Test attribute for notEmpty  Hibernate Validation" name="notEmpty" publicID="2028256695" version="1.0"/>
+    <ns107:UMLAttribute dataTypeName="java.lang.String" description="Test attribute for notNull Hibernate Validation" name="notNull" publicID="-745784987" version="1.0"/>
+    <ns107:UMLAttribute dataTypeName="java.util.Date" description="Test attribute for past date Hibernate Validation" name="past" publicID="-322962793" version="1.0"/>
+    <ns107:UMLAttribute dataTypeName="java.lang.String" description="Test attribute for pattern Hibernate Validation.  This is currently the only Hibernate Validator annotation type we are interested in using within the SDK.  It should contain a list of enumerated permissible values." name="pattern" publicID="-2033538314" version="1.0"/>
+    <ns107:UMLAttribute dataTypeName="java.lang.Integer" description="Test attribute for range (numeric) Hibernate Validation" name="rangeNumeric" publicID="1464852395" version="1.0"/>
+    <ns107:UMLAttribute dataTypeName="java.lang.String" description="Test attribute for range (string) Hibernate Validation" name="rangeString" publicID="-1790537795" version="1.0"/>
    </ns107:umlAttributeCollection>
   </ns1:UMLClass>
  </ns1:exposedUMLClassCollection>
