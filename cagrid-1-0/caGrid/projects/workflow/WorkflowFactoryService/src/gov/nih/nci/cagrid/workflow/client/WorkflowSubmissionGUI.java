@@ -4,6 +4,7 @@
 package gov.nih.nci.cagrid.workflow.client;
 
 import gov.nih.nci.cagrid.workflow.context.client.WorkflowServiceImplClient;
+import gov.nih.nci.cagrid.workflow.context.common.WorkflowServiceImplConstants;
 import gov.nih.nci.cagrid.workflow.stubs.types.StartInputType;
 import gov.nih.nci.cagrid.workflow.stubs.types.WMSInputType;
 import gov.nih.nci.cagrid.workflow.stubs.types.WMSOutputType;
@@ -39,6 +40,7 @@ import java.io.FileWriter;
 import java.io.StringReader;
 import java.rmi.RemoteException;
 import java.util.Vector;
+import java.util.concurrent.CountDownLatch;
 
 import javax.swing.SwingConstants;
 import javax.xml.namespace.QName;
@@ -47,6 +49,7 @@ import org.cagrid.grape.utils.ErrorDialog;
 import org.globus.wsrf.encoding.ObjectSerializer;
 import org.globus.wsrf.utils.AnyHelper;
 import org.globus.wsrf.utils.XmlUtils;
+import org.oasis.wsrf.properties.GetResourcePropertyResponse;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
@@ -365,10 +368,13 @@ public class WorkflowSubmissionGUI extends ApplicationComponent {
 						WMSOutputType output = factoryClient
 								.createWorkflow(input);
 						epr = output.getWorkflowEPR();
-						FileWriter writer = new FileWriter("workflow_"
-								+ input.getWorkflowName() + "_epr");
-						writer.write(ObjectSerializer.toString(epr, new QName(
-								"", "WMS_EPR")));
+						
+						writeEprToFile(epr, input.getWorkflowName());
+						
+			//			FileWriter writer = new FileWriter("workflow_"
+			//					+ input.getWorkflowName() + "_epr");
+			//			writer.write(ObjectSerializer.toString(epr, new QName(
+			//					"", "WMS_EPR")));
 						jLabel3.setText("Submitted");
 					} catch (Exception e1) {
 						JOptionPane.showMessageDialog(null,
@@ -445,6 +451,7 @@ public class WorkflowSubmissionGUI extends ApplicationComponent {
 						public void actionPerformed(java.awt.event.ActionEvent e) {
 							try {
 								status = wclient.getStatus().getValue();
+
 								if (!status.equals("Pending")) {
 									jLabel3.setText(status);
 								}
@@ -556,6 +563,25 @@ public class WorkflowSubmissionGUI extends ApplicationComponent {
 		return getDetailedStatusButton;
 	}
 
+	public static void writeEprToFile(EndpointReferenceType epr,
+			String workflowName) throws Exception {
+		FileWriter writer = null;
+		String curDir = System.getProperty("user.dir");
+		System.out.println(curDir + "/workflow_" + workflowName + "_epr");
+
+		try {
+			writer = new FileWriter(curDir + "/workflow_" + workflowName + "_epr");
+			QName qName = new QName("", "WMS_EPR");
+
+			writer.write(ObjectSerializer.toString(epr, qName));
+
+		} finally {
+			if (writer != null) {
+				writer.close();
+			}
+		}
+	}
+	
 	public static void main(String args[]) {
 		WorkflowSubmissionGUI gui = new WorkflowSubmissionGUI();
 		gui.setEnabled(true);

@@ -99,41 +99,7 @@ static final Log logger = LogFactory.getLog(WorkflowFactoryServiceResource.class
 		
 	}
 
-	/*public WorkflowServiceImplResource (WMSInputType input, Calendar terminationTime)
-			throws Exception {
-		File bpelFile = null;
-		if (terminationTime != null) {
-			this.setTerminationTime(terminationTime);
-		} else {
-			this.terminationTime = Calendar.getInstance();
-			// default TTL 12 hrs
-			this.terminationTime.add(Calendar.HOUR, 12);
-		}
-		this.workflowName = input.getWorkflowName();
-		this.bpelProcess = input.getBpelDoc();
-		
-		//This was done in the previous version of the service.
-//		this.key = new SimpleResourceKey( WorkflowServiceHome.workflowQName, input.getWorkflowName());
-		this.key = this.getResourceKey();
-		
-		this.initialize3(key);
-		String bpelFileName = System.getProperty("java.io.tmpdir")
-				+ File.separator + workflowName + BPEL_EXTENSION;
-		bpelFile = new File(bpelFileName);
-		bpelFile.deleteOnExit();
-		Utils.stringBufferToFile(new StringBuffer(bpelProcess), bpelFileName);
-		WSDLReferences[] wsdlRefArray = input.getWsdlReferences();
-		this.outputType = new WorkflowOutputType();
-		this.abAdapter = new ActiveBPELAdapter(
-				WorkflowFactoryServiceConfiguration.getConfiguration().getAbEndpoint(), 
-				this.outputType, this.workflowStatus);
-		String returnString = deploy(bpelFileName, workflowName, wsdlRefArray);
-		logger.debug("deployment summary: " + returnString);
-		logger.debug("Created a Workflow resource with key:" 
-				+ input.getWorkflowName());
-	}
-	
-	*/
+
 	
 	public void setup(WMSInputType input, Calendar terminationTime) throws Exception {
 		
@@ -152,7 +118,7 @@ static final Log logger = LogFactory.getLog(WorkflowFactoryServiceResource.class
 //		this.key = new SimpleResourceKey( WorkflowServiceHome.workflowQName, input.getWorkflowName());
 		this.key = this.getResourceKey();
 		
-		this.initialize3(key);
+		this.initialize2(key);
 		String bpelFileName = System.getProperty("java.io.tmpdir")
 				+ File.separator + workflowName + BPEL_EXTENSION;
 		bpelFile = new File(bpelFileName);
@@ -170,7 +136,7 @@ static final Log logger = LogFactory.getLog(WorkflowFactoryServiceResource.class
 		
 	}
 	
-	protected void initialize3(Object key) {
+	protected void initialize2(Object key) {
 		this.key = key;
 		this.propSet = new SimpleResourcePropertySet(WF_RP_SET);
 		this.topicList = new SimpleTopicList(this);
@@ -212,6 +178,12 @@ static final Log logger = LogFactory.getLog(WorkflowFactoryServiceResource.class
 		} catch (Exception e) {
 			this.workflowStatus = WorkflowStatusType.Failed;
 			throw new WorkflowException();
+		}
+		try {
+			Thread.sleep(30000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		this.setStatusRP(this.workflowStatus);
 		return this.workflowStatus;
@@ -263,60 +235,9 @@ static final Log logger = LogFactory.getLog(WorkflowFactoryServiceResource.class
 		// TODO Auto-generated method stub
 		return this.topicList;
 	}
-	
-/*	
-	public WorkflowServiceImplResourceConfiguration getConfiguration() {
-		if (this.configuration != null) {
-			return this.configuration;
-		}
-		MessageContext ctx = MessageContext.getCurrentContext();
-
-		String servicePath = ctx.getTargetService();
-
-		String jndiName = 
-			Constants.JNDI_SERVICES_BASE_NAME + servicePath + "/serviceconfiguration";
-		try {
-			javax.naming.Context initialContext = new InitialContext();
-			this.configuration = (WorkflowServiceImplResourceConfiguration) initialContext.lookup(jndiName);
-		} catch (Exception e) {
-			try {
-				throw new Exception("Unable to instantiate service configuration.", e);
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		}
-
-		return this.configuration;
-	}
-
-	public void setTerminationTime(Calendar arg0) {
-		this.terminationTime = arg0;
-	}
-
-	public Calendar getTerminationTime() {
-		return this.terminationTime;
-	}
 
 	public Calendar getCurrentTime() {
 		return Calendar.getInstance();
 	}
-
-	public ResourcePropertySet getResourcePropertySet() {
-		return this.propSet;
-	}
-
-	public TopicList getTopicList() {
-		return this.topicList;
-	}
 	
-	public void remove() throws ResourceException {
-		try {
-			this.abAdapter.remove();
-		} catch (RemoteException e) {
-			throw new ResourceException();
-		}
-		
-	}
-	*/
 }
