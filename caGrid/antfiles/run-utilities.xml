@@ -25,9 +25,4 @@
     <target name="syncWithTrustFabric" description="Syncs With Trust Fabric">
         <ant dir="${basedir}/projects/syncgts" antfile="build.xml" target="syncWithTrustFabric" inheritall="false" />
     </target>
-
-    <target name="requestHostCertificate" description="Request a Host Certificate">
-        <ant dir="${basedir}/projects/gridca" antfile="build.xml" target="requestHostCertificate" inheritall="false" />
-    </target>
-
 </project>
