@@ -186,7 +186,7 @@ public class UpdateManager {
         ZipEntry e;
         while ((e = zin.getNextEntry()) != null) {
             if (e.isDirectory()) {
-                new File(e.getName()).mkdirs();
+                new File("." + File.separator + "extensions" + File.separator + e.getName()).mkdirs();
             } else {
                 unzip("." + File.separator + "extensions", zin, e.getName());
             }
