@@ -29,4 +29,10 @@ E X E C U T I N G
 -------------------------------------------
 To launch Introduce: ant introduce
 
+------------------------------------------
+Documentation
+------------------------------------------
+Javadoc exists in build/javadoc
+Full documentation can be found at http://cagrid.org
+
 Thank you for using Introduce.
