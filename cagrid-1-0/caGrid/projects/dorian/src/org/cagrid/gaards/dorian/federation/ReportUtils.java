@@ -39,15 +39,20 @@ public class ReportUtils {
             sb.append(count + ". Signing certificate changed.\n");
         }
 
-        if ((Utils.clean(updated.getAuthenticationServiceURL()) != null)
-            && (!updated.getAuthenticationServiceURL().equals(original.getAuthenticationServiceURL()))) {
+        if (updated.getAuthenticationServiceURL() == null) {
+            updated.setAuthenticationServiceURL("");
+        }
+        if (!updated.getAuthenticationServiceURL().equals(original.getAuthenticationServiceURL())) {
             count = count + 1;
             sb.append(count + ". Authentication Service URL changed from " + original.getAuthenticationServiceURL()
                 + " to " + updated.getAuthenticationServiceURL() + ".\n");
         }
 
-        if ((Utils.clean(updated.getAuthenticationServiceIdentity()) != null)
-            && (!updated.getAuthenticationServiceIdentity().equals(original.getAuthenticationServiceIdentity()))) {
+        if (updated.getAuthenticationServiceIdentity() == null) {
+            updated.setAuthenticationServiceIdentity("");
+        }
+
+        if (!updated.getAuthenticationServiceIdentity().equals(original.getAuthenticationServiceIdentity())) {
             count = count + 1;
             sb.append(count + ". Authentication Service Identity changed from "
                 + original.getAuthenticationServiceIdentity() + " to " + updated.getAuthenticationServiceIdentity()
