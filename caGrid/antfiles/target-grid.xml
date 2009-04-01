@@ -59,7 +59,7 @@
 		<property file="${current.grid.property.file}" />
 
 		<ivy:listmodules organisation="caGrid" module="target_grid" revision="*" property="target.grid.names.[revision]" value="found" />
-		<propertyselector property="target.grid.list" delimiter="," match="target\.grid\.names\.ivy\-(.*)\.xml" select="\1" />
+		<propertyselector property="target.grid.list" delimiter="," match="target\.grid\.names\.(.*)" select="\1" />
 		<sortlist property="sorted.target.grid.list" value="${target.grid.list}" delimiter="," />
 
 		<echo message="=====================================================================================" />

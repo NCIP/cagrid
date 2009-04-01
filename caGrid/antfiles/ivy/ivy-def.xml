@@ -14,13 +14,12 @@
 
 
 	<target name="init-ivy" unless="ivy.initialized">
-		<!-- NOTE: I used to just do this at parse time, but there is a bug in Ant versions < 1.7 
+		<!-- NOTE: I used to just do this at parse time, but there is a bug in Ant  
 		     with classloaders on taskdefs not getting reclaimed after subant calls, and we would 
 		     get OutOfMemory PermGen space.  Such taskdefs live across subant calls, so I only do this once now.
 		-->
 		<taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path" loaderRef="ivy.loader" />
-
-		<ivy:settings id="ivy.instance" file="${project.root.dir}/antfiles/ivy/ivysettings.xml" override="true" />
+		<ivy:settings id="ivy.instance" file="${project.root.dir}/antfiles/ivy/ivysettings.xml" />
 		<property name="ivy.initialized" location="true" />
 	</target>
 </project>
