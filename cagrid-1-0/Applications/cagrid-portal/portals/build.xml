@@ -4,16 +4,24 @@
 
     <import file="${basedir}/../antfiles/build-common.xml"/>
 
+    <property name="build.dir" value="${basedir}/build"/>
     <property name="liferay.dir" value="${basedir}/liferay"/>
-    <property name="liferay.build.dir" value="${basedir}/build"/>
-    <property name="liferay.build.jar.dir" value="${liferay.build.dir}/jars"/>
+    <property name="build.jar.dir" value="${build.dir}/jars"/>
 
-    <property name="liferay.classes.dir" value="${liferay.build.dir}/classes"/>
-    <property name="liferay.src.java.dir" value="${liferay.dir}/src/java"/>
-    <property name="liferay.src.war.dir" value="${liferay.dir}/src/war"/>
-    <property name="liferay.src.layouts.dir" value="${liferay.dir}/src/layouts"/>
-    <property name="liferay.src.themes.dir" value="${liferay.dir}/src/themes"/>
-    <property name="liferay.src.scripts.dir" value="${liferay.dir}/src/scripts"/>
+    <property  name="test.build.dir" value="${build.dir}/test"/>
+    <property name="test.dir" value="${liferay.dir}/test"/>
+    <property name="test.src.java.dir" value="${test.dir}/src/java"/>
+    <property name="test.build.dir" value="${build.dir}/test"/>
+    <property name="test.build.classes.dir" value="${test.build.dir}/classes"/>
+    <property name="junit.reports.dir" value="${test.build.dir}/junit"/>
+    <property name="cobertura.datafile" value="${test.build.dir}/cobertura.ser"/>
+
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="src.java.dir" value="${liferay.dir}/src/java"/>
+    <property name="src.war.dir" value="${liferay.dir}/src/war"/>
+    <property name="src.layouts.dir" value="${liferay.dir}/src/layouts"/>
+    <property name="src.themes.dir" value="${liferay.dir}/src/themes"/>
+    <property name="src.scripts.dir" value="${liferay.dir}/src/scripts"/>
 
     <property name="ext.dir" value="${basedir}/ext"/>
     <property name="ext.default.lib.dir" value="${ext.dir}/default/jars"/>
@@ -26,34 +34,41 @@
 
     <import file="${basedir}/build-liferay.xml"/>
 
-    <path id="liferay.compile.cp">
+    <path id="compile.cp">
         <fileset dir="${ext.default.lib.dir}">
             <include name="*.jar"/>
         </fileset>
     </path>
 
+    <path  id="test.compile.cp">
+        <path refid="compile.cp"/>
+         <path path="${classes.dir}"/>
+    </path>
+
+    <path  id="test.run.cp">
+        <path refid="test.compile.cp"/>
+        <path path="${test.build.classes.dir}"/>
+    </path>
+
     <target name="prepare" depends="prepare-ant-tasks"/>
 
     <target name="compile">
-        <mkdir dir="${liferay.classes.dir}"/>
-        <javac srcdir="${liferay.src.java.dir}" destdir="${liferay.classes.dir}"
+        <mkdir dir="${classes.dir}"/>
+        <javac srcdir="${src.java.dir}" destdir="${classes.dir}"
                debug="${javac.debug.flag}">
-            <classpath refid="liferay.compile.cp"/>
+            <classpath refid="compile.cp"/>
         </javac>
     </target>
 
     <target name="jar" depends="compile">
-        <mkdir dir="${liferay.build.jar.dir}"/>
+        <mkdir dir="${build.jar.dir}"/>
 
-        <jar basedir="${liferay.classes.dir}"
-             destfile="${liferay.build.jar.dir}/cagrid-portal-liferay.jar"/>
-    </target>
+        <jar basedir="${classes.dir}"
+             destfile="${build.jar.dir}/cagrid-portal-liferay.jar"/>
 
-    <target name="jar-resources">
+        <mkdir dir="${build.dir}/resources"/>
 
-        <mkdir dir="${liferay.build.dir}/resources"/>
-
-        <copy todir="${liferay.build.dir}/resources">
+        <copy todir="${build.dir}/resources">
             <fileset dir="${liferay.dir}/etc">
                 <include name="*.xml"/>
             </fileset>
@@ -62,8 +77,8 @@
             </fileset>
         </copy>
 
-        <jar basedir="${liferay.build.dir}/resources"
-             destfile="${liferay.build.jar.dir}/cagrid-portal-liferay-resources.jar"/>
+        <jar basedir="${build.dir}/resources"
+             destfile="${build.jar.dir}/cagrid-portal-liferay-resources.jar"/>
 
     </target>
 
@@ -72,14 +87,46 @@
         <!--does nothing-->
     </target>
 
-    <target name="test" description="Run all tests in the project">
-        <echo message="No tests in the Project."/>
+    <target  name="compile-test" depends="compile">
+        <mkdir dir="${test.build.classes.dir}"/>
+        <javac srcdir="${test.src.java.dir}" destdir="${test.build.classes.dir}" debug="true">
+            <classpath refid="test.compile.cp"/>
+        </javac>
+
+    </target>
+
+    <target  name="prepare-test-cp" depends="compile-test">
+        <antcall target="copy-properties">
+            <param name="target.dir" value="${test.build.classes.dir}"/>
+        </antcall>
+    </target>
+
+    <target name="test" depends="prepare-test-cp" description="Run all tests in the project">
+        <mkdir dir="${junit.reports.dir}"/>
+
+        <junit dir="${basedir}" printsummary="yes" showoutput="true" fork="true">
+
+            <!--needed to hook into main reporting task-->
+            <sysproperty key="net.sourceforge.cobertura.datafile"
+                         file="${cobertura.datafile}"/>
+
+            <classpath refid="test.run.cp"/>
+            <formatter type="xml"/>
+
+            <batchtest todir="${junit.reports.dir}">
+                <fileset dir="${test.src.java.dir}">
+                    <include name="**/*Test.java"/>
+                    <exclude name="**/Abstract*.java"/>
+                </fileset>
+            </batchtest>
+
+        </junit>
     </target>
 
     <target name="clean">
-        <delete dir="${liferay.build.dir}"/>
+        <delete dir="${build.dir}"/>
     </target>
 
-    <target name="all" depends="jar,jar-resources"/>
+    <target name="all" depends="jar"/>
 
 </project>
