@@ -1,2 +1,0 @@
-set MAVEN_HOME=@MAVEN_HOME@
-%MAVEN_HOME%\bin\install_repo.bat @USER_HOME@\.maven\repository
