@@ -48,13 +48,13 @@ public class PortalUtilsTest extends AbstractTimeSensitiveTest {
         DomainModel _model = mock(DomainModel.class);
         List<XMLSchema> _schemas = null;
 
-        _schemas = PortalUtils.getXMLSchemas(_model, badUrl, badUrl);
+        _schemas = XMLSchemaUtils.getXMLSchemas(_model, badUrl, badUrl);
         assertEquals("Schemas returned for bad URL", _schemas.size(), 0);
 
     }
 
 
     public void testBadGetXmlSchemaContent() {
-        PortalUtils.getXmlSchemaContent(ns.toString(), badUrl);
+        XMLSchemaUtils.getXmlSchemaContent(ns.toString(), badUrl);
     }
 }

@@ -9,8 +9,8 @@ import gov.nih.nci.cagrid.portal.domain.GridService;
 import gov.nih.nci.cagrid.portal.domain.metadata.dataservice.DomainModel;
 import gov.nih.nci.cagrid.portal.domain.metadata.dataservice.XMLSchema;
 import gov.nih.nci.cagrid.portal.domain.metadata.service.*;
-import gov.nih.nci.cagrid.portal.util.PortalUtils;
 import gov.nih.nci.cagrid.portal.util.TimestampProvider;
+import gov.nih.nci.cagrid.portal.util.XMLSchemaUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.orm.hibernate3.HibernateTemplate;
@@ -55,7 +55,7 @@ public class XMLSchemaMonitor implements TrackableMonitor {
                 for (XMLSchema xmlSchema : domainModel.getXmlSchemas()) {
                     namespaces.add(xmlSchema.getNamespace());
                 }
-                List<XMLSchema> xmlSchemas = PortalUtils.getXMLSchemas(
+                List<XMLSchema> xmlSchemas = XMLSchemaUtils.getXMLSchemas(
                         domainModel, getCadsrUrl(), getGmeUrl());
                 for (XMLSchema xmlSchema : xmlSchemas) {
                     if (!namespaces.contains(xmlSchema.getNamespace())) {
@@ -71,9 +71,9 @@ public class XMLSchemaMonitor implements TrackableMonitor {
                 for (ContextProperty contextProperty : context
                         .getContextPropertyCollection()) {
                     if (contextProperty.getXmlSchema() == null) {
-                        XMLSchema xmlSchema = PortalUtils.getXMLSchemaForQName(
+                        XMLSchema xmlSchema = XMLSchemaUtils.getXMLSchemaForQName(
                                 getHibernateTemplate(), contextProperty
-                                .getName(), getGmeUrl());
+                                        .getName(), getGmeUrl());
                         if (xmlSchema != null) {
                             if (xmlSchema.getId() == null) {
                                 getHibernateTemplate().save(xmlSchema);
@@ -86,7 +86,7 @@ public class XMLSchemaMonitor implements TrackableMonitor {
                 for (Operation op : context.getOperationCollection()) {
                     for (InputParameter input : op.getInputParameterCollection()) {
                         if (input.getXmlSchema() == null) {
-                            XMLSchema xmlSchema = PortalUtils.getXMLSchemaForQName(
+                            XMLSchema xmlSchema = XMLSchemaUtils.getXMLSchemaForQName(
                                     getHibernateTemplate(), input.getQName(), getGmeUrl());
                             if (xmlSchema != null) {
                                 if (xmlSchema.getId() == null) {
@@ -100,7 +100,7 @@ public class XMLSchemaMonitor implements TrackableMonitor {
 
                     Output output = op.getOutput();
                     if (output != null && output.getXmlSchema() == null) {
-                        XMLSchema xmlSchema = PortalUtils.getXMLSchemaForQName(
+                        XMLSchema xmlSchema = XMLSchemaUtils.getXMLSchemaForQName(
                                 getHibernateTemplate(), output.getQName(), getGmeUrl());
                         if (xmlSchema != null) {
                             if (xmlSchema.getId() == null) {

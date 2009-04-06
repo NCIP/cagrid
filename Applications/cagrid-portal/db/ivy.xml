@@ -37,8 +37,7 @@
         <dependency rev="1.9.1" org="org.liquibase" name="liquibase-core" conf="default"/>
         <dependency rev="5.1.6" org="mysql" name="mysql-connector-java" conf="default->*"/>
         <dependency rev="1.14" org="oopsconsultancy" name="xmltask" conf="schema->default"/>
-        <dependency rev="2.0.5" org="springframework" name="spring" conf="default->full;test->test"/>
-        <dependency rev="2.0.5" org="springframework" name="aspects" conf="default"/>
+        <dependency rev="2.5.5" org="springframework" name="spring" conf="default->full;test->test"/>
 
         <!--test dependencies-->
         <dependency rev="4.4" org="junit" name="junit" conf="test->*"/>
