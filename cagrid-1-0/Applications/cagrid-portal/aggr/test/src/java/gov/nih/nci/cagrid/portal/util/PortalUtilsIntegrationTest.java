@@ -35,7 +35,7 @@ public class PortalUtilsIntegrationTest extends PortalAggrIntegrationTestBase {
             fail("GME Client throw an unexpected exception" + e.getMessage());
         }
 
-        String xmlSchemaContent = PortalUtils.getXmlSchemaContent(ns.toString(), gmeUrl);
+        String xmlSchemaContent = XMLSchemaUtils.getXmlSchemaContent(ns.toString(), gmeUrl);
         assertEquals(xmlSchemaContent, content);
     }
 
