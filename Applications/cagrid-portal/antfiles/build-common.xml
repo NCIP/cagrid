@@ -81,6 +81,9 @@
             <entry key="cagrid.portal.fast.aggr.defaultPeriod" value="${cagrid.portal.fast.aggr.defaultPeriod}"/>
             <entry key="cagrid.portal.maxDowntimeHours" value="${cagrid.portal.maxDowntimeHours}"/>
             <entry key="cagrid.portal.build.stamp" value="${cagrid.portal.build.stamp}"/>
+            <entry key="cagrid.portal.authenticationMode" value="${cagrid.portal.authenticationMode}"/>
+            <entry  key="cagrid.portal.host.cert" value="${cagrid.portal.host.cert}"/>
+            <entry  key="cagrid.portal.host.key" value="${cagrid.portal.host.key}"/>
         </propertyfile>
     </target>
 

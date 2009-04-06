@@ -6,6 +6,7 @@ package gov.nih.nci.cagrid.portal.portlet;
 import gov.nih.nci.cagrid.portal.dao.PortalUserDao;
 import gov.nih.nci.cagrid.portal.domain.PortalUser;
 import gov.nih.nci.cagrid.portal.portlet.query.QueryModel;
+import gov.nih.nci.cagrid.portal.security.CDSCredentialRetriever;
 
 import javax.portlet.PortletSession;
 
@@ -30,6 +31,7 @@ public class PortalUserInterceptor implements WebRequestInterceptor {
 	private QueryModel queryModel;
 	private String userIdAttributeName;
 	private String proxyAttributeName;
+    private CDSCredentialRetriever cdsCredentialRetriever;
 
 	/**
 	 * 
@@ -76,6 +78,10 @@ public class PortalUserInterceptor implements WebRequestInterceptor {
 			portalUser = getPortalUserDao().getById(userId);
 			logger.debug("Putting portal user " + portalUser.getId()
 					+ " in session");
+            if(portalUser.getGridCredential()==null && portalUser.getDelegatedEPR()!=null){
+                logger.info("User logged in with webSSO. Will try to get delegated credential");
+               portalUser.setGridCredential(cdsCredentialRetriever.getCredential(portalUser.getDelegatedEPR()));
+            }
 			req.getRequest().getPortletSession().setAttribute(
 					getPortalUserAttributeName(), portalUser,
 					PortletSession.APPLICATION_SCOPE);
@@ -123,4 +129,11 @@ public class PortalUserInterceptor implements WebRequestInterceptor {
 		this.proxyAttributeName = proxyAttributeName;
 	}
 
+    public CDSCredentialRetriever getCdsCredentialRetriever() {
+        return cdsCredentialRetriever;
+    }
+
+    public void setCdsCredentialRetriever(CDSCredentialRetriever cdsCredentialRetriever) {
+        this.cdsCredentialRetriever = cdsCredentialRetriever;
+    }
 }

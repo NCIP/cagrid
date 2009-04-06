@@ -15,7 +15,7 @@
               description="The ant target in the project's main build file that should be called to clean a build"/>
 
     <path id="ivy.lib.path">
-        <fileset dir="${ivy.jar.dir}" includes="ivy-*.jar"/>
+        <fileset dir="${ivy.jar.dir}" includes="*.jar"/>
     </path>
 
 
@@ -35,8 +35,8 @@
         <property name="from.resolver" value="caGrid-portal-ivy-resolver"/>
         <property name="to.resolver" value="fs-repository"/>
 
-        <ivy:install
-                organisation="objectweb" module="asm" revision="2.0+"
+        <ivy:install 
+                organisation="apache" module="commons-collections"  revision="3.1"  
                 from="${from.resolver}" to="${to.resolver}"/>
     </target>
 
