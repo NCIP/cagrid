@@ -138,6 +138,10 @@
 		<filter-name>Virtual Host Filter</filter-name>
 		<filter-class>com.liferay.portal.servlet.filters.virtualhost.VirtualHostFilter</filter-class>
 	</filter>
+    <filter-mapping>
+		<filter-name>Acegi Filter Chain Proxy</filter-name>
+		<url-pattern>/c/portal/*</url-pattern>
+	</filter-mapping>
 	<filter-mapping>
 		<filter-name>Session Id Filter</filter-name>
 		<url-pattern>/*</url-pattern>
