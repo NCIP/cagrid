@@ -10,6 +10,8 @@
         <!-- Public Configurations-->
         <conf name="runtime" visibility="public"/>
         <conf name="default" extends="runtime" visibility="public"/>
+        <conf name="test" extends="default" visibility="public"/>
+
     </configurations>
 
 
@@ -20,7 +22,17 @@
 
 
     <dependencies>
+        <dependency rev="${cagrid.integration.version}" org="caGrid" name="cds" conf="default->client"/>
+        <dependency rev="${cagrid.integration.version}" org="caGrid" name="websso-client-common" transitive="false">
+            <exclude name="caGrid-websso-client-common-conf" type="jar"/>
+        </dependency>
+
+
         <dependency rev="latest.integration" org="caGrid" name="portal-aggr" conf="default"/>
+        <dependency rev="latest.integration" org="caGrid" name="portal-aggr" conf="test"/>
+
+        <!--global exclude-->
+        <exclude artifact="jprov" type="jar"/>
     </dependencies>
 
 </ivy-module>

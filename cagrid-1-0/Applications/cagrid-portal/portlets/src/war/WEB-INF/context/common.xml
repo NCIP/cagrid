@@ -102,6 +102,11 @@
     <bean id="portalUserInterceptor" class="gov.nih.nci.cagrid.portal.portlet.PortalUserInterceptor" autowire="byName">
         <property name="portalUserAttributeName" ref="portalUserAttributeName"/>
         <property name="userIdAttributeName" value="CAGRIDPORTAL_ATTS_userId"/>
+        <property name="cdsCredentialRetriever">
+         <bean class="gov.nih.nci.cagrid.portal.security.CDSCredentialRetriever"
+            p:certificateFilePath="${cagrid.portal.host.cert}" p:keyFilePath="${cagrid.portal.host.key}"
+            p:encryptionService-ref="encryptionServicePrototype"/>
+        </property>
     </bean>
     <bean id="portalUserRequestInterceptor" class="gov.nih.nci.cagrid.portal.portlet.PortalUserRequestInterceptor"
           autowire="byName">
