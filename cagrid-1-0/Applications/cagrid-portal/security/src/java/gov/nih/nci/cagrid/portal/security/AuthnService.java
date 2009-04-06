@@ -35,7 +35,6 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.security.KeyPair;
 import java.security.cert.X509Certificate;
 import java.util.Date;
@@ -219,17 +218,8 @@ public class AuthnService {
                     ex);
         }
 
-        String proxyStr = null;
-        try {
-            ByteArrayOutputStream buf = new ByteArrayOutputStream();
-            cred.save(buf);
-            proxyStr = buf.toString();
-        } catch (Exception ex) {
-            throw new AuthnServiceException("Error writing proxy to string: "
-                    + ex.getMessage(), ex);
-        }
         PortalUser user = getPortalUser(cred.getIdentity(), email, firstName,
-                lastName, proxyStr);
+                lastName, ProxyUtil.getProxyString(cred));
 
         AuthnTicket ticket = new AuthnTicket();
         ticket.setPortalUser(user);
