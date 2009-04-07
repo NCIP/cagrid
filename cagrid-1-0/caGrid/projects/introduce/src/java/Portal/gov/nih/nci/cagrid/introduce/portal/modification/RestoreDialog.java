@@ -149,7 +149,13 @@ public class RestoreDialog extends JDialog {
 							int decision = JOptionPane
 									.showConfirmDialog(
 											RestoreDialog.this,
-											"Are you sure you wish to roll back?\nThis will roll back to the last save point!\nAll current modifactions will be lost!\nIf you simply wish to throw away current modifications and reopen\nthe modification viewer to start again just close the window and click Modify Service again.");
+											"Are you sure you wish to roll back?\n" +
+                                            "This will roll back to the last save point!\n" +
+                                            "All current modifactions will be lost!\n" +
+                                            "If you simply wish to throw away current modifications and reopen\n" +
+                                            "the modification viewer to start again just close the window\n" +
+                                            "and click Modify Service again.",
+                                            "Are you sure", JOptionPane.YES_NO_OPTION);
 							if (decision == JOptionPane.OK_OPTION) {
 								BusyDialogRunnable r = new BusyDialogRunnable(
 								    GridApplication.getContext().getApplication(), "Roll Back") {

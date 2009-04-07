@@ -395,7 +395,7 @@ public class ModificationViewer extends ApplicationComponent {
                             int answer = JOptionPane.showConfirmDialog(GridApplication.getContext().getApplication(),
                                 "The service had the following fatal error during the upgrade process:\n"
                                     + e.getMessage()
-                                    + "If you select OK, Introduce will roll your service back to its previous\n"
+                                    + "\nIf you select OK, Introduce will roll your service back to its previous\n"
                                     + "state before the upgrade attempt", "Error upgrading service",
                                 JOptionPane.OK_CANCEL_OPTION);
                             if (answer == JOptionPane.OK_OPTION) {
@@ -549,7 +549,11 @@ public class ModificationViewer extends ApplicationComponent {
                     int decision = JOptionPane
                         .showConfirmDialog(
                             ModificationViewer.this,
-                            "Are you sure you wish to reload?\nAll current modifactions will be lost!\nThis will simply reload the modification viewer with the\nservice without saving the current changes since the last save.");
+                            "Are you sure you wish to reload?\n" +
+                            "All current modifactions will be lost!\n" +
+                            "This will simply reload the modification viewer with the\n" +
+                            "service without saving the current changes since the last save.",
+                            "Are you sure?", JOptionPane.YES_NO_OPTION);
                     if (decision == JOptionPane.OK_OPTION) {
                         BusyDialogRunnable r = new BusyDialogRunnable(GridApplication.getContext().getApplication(),
                             "Reload") {
