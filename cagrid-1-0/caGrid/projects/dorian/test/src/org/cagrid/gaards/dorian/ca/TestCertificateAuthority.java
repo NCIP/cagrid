@@ -167,11 +167,13 @@ public class TestCertificateAuthority extends TestCase {
 
             long okMax = hours * 60 * 60;
             // Allow some Buffer
-            long okMin = okMax - 30;
+            long okMin = okMax - 60;
 
-            if ((okMin > timeLeft) || (timeLeft > okMax)) {
-                assertTrue(false);
-            }
+            // must have less time left than the maximum
+            assertTrue(timeLeft <= okMax);
+            // must have more time left than the minimum
+            assertTrue(timeLeft >= okMin);
+
         } catch (Exception e) {
             FaultUtil.printFault(e);
             assertTrue(false);
@@ -341,7 +343,7 @@ public class TestCertificateAuthority extends TestCase {
             submitCertificateRequest(ca, SUBJECT_PREFIX, start, end);
         } catch (Exception e) {
             FaultUtil.printFault(e);
-            assertTrue(false);
+            fail(e.getMessage());
         } finally {
             try {
                 ca.clearCertificateAuthority();
@@ -370,11 +372,11 @@ public class TestCertificateAuthority extends TestCase {
             if (f.getFaultString().indexOf("Certificate expiration date is after the CA certificates expiration date") == -1) {
 
                 FaultUtil.printFault(f);
-                assertTrue(false);
+                fail(f.getMessage());
             }
         } catch (Exception e) {
             FaultUtil.printFault(e);
-            assertTrue(false);
+            fail(e.getMessage());
         } finally {
             try {
                 ca.clearCertificateAuthority();
