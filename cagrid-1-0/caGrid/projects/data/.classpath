@@ -92,5 +92,9 @@
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/caGrid-core-tests-1.3-dev.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/test/jars/client.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-Transfer-client-1.3-dev.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-Transfer-common-1.3-dev.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-Transfer-service-1.3-dev.jar"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/caGrid-Transfer-stubs-1.3-dev.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

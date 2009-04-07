@@ -33,7 +33,8 @@
 
     <conf name="bdt-schemas" visibility="public"/>
     <conf name="enum-schemas" visibility="public"/>
-    <conf name="service-schemas" visibility="public" extends="bdt-schemas,enum-schemas"/>
+    <conf name="transfer-schemas" visibility="public"/>
+    <conf name="service-schemas" visibility="public" extends="bdt-schemas,enum-schemas,transfer-schemas"/>
     
     <conf name="extension-schemas" visibility="public"/>
   </configurations>
@@ -69,6 +70,9 @@
     <artifact name="EnumerationDataService" conf="enum-schemas" type="wsdl"/>
     <artifact name="EnumerationDataServiceTypes" conf="enum-schemas" type="xsd"/>
     
+    <artifact name="TransferDataService" conf="transfer-schemas" type="wsdl"/>
+    <artifact name="TransferDataServiceTypes" conf="transfer-schemas" type="xsd"/>
+    
     <artifact name="ClassToQname" conf="extension-schemas" type="xsd"/>
     <artifact name="DataServiceAuditorConfiguration" conf="extension-schemas" type="xsd"/>
     <artifact name="DataServiceExtensionData" conf="extension-schemas" type="xsd"/>
@@ -82,8 +86,8 @@
     <artifact name="invalid/domain/invalidAttributeDataType" conf="cql-examples" type="xml"/>
     <artifact name="invalid/domain/invalidTarget" conf="cql-examples" type="xml"/>
     <artifact name="invalid/domain/objectWithInvalidAssociationClass" conf="cql-examples" type="xml"/>
-    <artifact name="invalid/domain/objectWithInvalidAssociationRoleName" conf="cql-examples"
-      type="xml"/>
+    <artifact name="invalid/domain/objectWithInvalidAssociationRoleName" 
+      conf="cql-examples" type="xml"/>
     <artifact name="invalid/associationWithoutName" conf="cql-examples" type="xml"/>
     <artifact name="invalid/associationWithTooManyChildren" conf="cql-examples" type="xml"/>
     <artifact name="invalid/attributeWithoutValue" conf="cql-examples" type="xml"/>
@@ -124,6 +128,7 @@
     <dependency rev="latest.integration" org="caGrid" name="bulkDataTransfer" conf="utils->client"/>
     <dependency rev="latest.integration" org="caGrid" name="mms" conf="impl->schemas,stubs" />
     <dependency rev="latest.integration" org="caGrid" name="cql" conf="common->cql;service->cql,cql-schemas;service-schemas->cql-schemas;extension-schemas->cql-schemas"/>
+    <dependency rev="latest.integration" org="caGrid" name="transfer" conf="service->stubs,common,service"/>
     
     <!-- Extenernal Dependencies -->
     <dependency rev="1.0" org="jdom" name="jdom" conf="service->*"/>
