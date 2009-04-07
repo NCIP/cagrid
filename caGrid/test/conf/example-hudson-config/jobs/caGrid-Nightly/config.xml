@@ -10,7 +10,7 @@
     <cvsroot>:ext:anonymous@cbiocvs2.nci.nih.gov:/share/content/gforge/cagrid-1-0</cvsroot>
     <module>cagrid-1-0</module>
     <cvsRsh>/home/oster/hudson/bin/wraplink.sh</cvsRsh>
-    <canUseUpdate>false</canUseUpdate>
+    <canUseUpdate>true</canUseUpdate>
     <flatten>true</flatten>
     <repositoryBrowser class="hudson.scm.browsers.ViewCVS">
       <url>http://gforge.nci.nih.gov/plugins/scmcvs/cvsweb.php/?cvsroot=cagrid-1-0;f=h</url>
