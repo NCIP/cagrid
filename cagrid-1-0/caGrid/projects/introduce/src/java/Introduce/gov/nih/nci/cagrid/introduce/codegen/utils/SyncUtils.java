@@ -6,6 +6,7 @@ import gov.nih.nci.cagrid.introduce.beans.ServiceDescription;
 import gov.nih.nci.cagrid.introduce.beans.method.MethodType;
 import gov.nih.nci.cagrid.introduce.beans.namespace.NamespaceType;
 import gov.nih.nci.cagrid.introduce.beans.service.ServiceType;
+import gov.nih.nci.cagrid.introduce.codegen.common.SynchronizationException;
 import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.common.ImportInformation;
 import gov.nih.nci.cagrid.introduce.common.NamespaceInformation;
@@ -13,8 +14,10 @@ import gov.nih.nci.cagrid.introduce.common.SpecificServiceInformation;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -73,10 +76,18 @@ public class SyncUtils {
             + serviceInfo.getIntroduceServiceProperties().getProperty(
                 IntroduceConstants.INTRODUCE_SKELETON_SERVICE_NAME) + File.separator
             + method.getImportInformation().getWsdlFile();
+        String toDocFile = serviceInfo.getBaseDirectory().getAbsolutePath()
+            + File.separator
+            + "schema"
+            + File.separator
+            + serviceInfo.getIntroduceServiceProperties().getProperty(
+                IntroduceConstants.INTRODUCE_SKELETON_SERVICE_NAME) + File.separator
+                + serviceInfo.getService().getName() + ".wsdl";
         if (!(new File(fromDocFile).exists())) {
             // try From Globus Location
             fromDocFile = CommonTools.getGlobusLocation() + File.separator + "share" + File.separator + "schema"
                 + File.separator + "wsrf" + File.separator + method.getImportInformation().getWsdlFile();
+            logger.info("Imported operation's WSDL not found in service directory, using WSDL from globus...");
         }
         if (!(new File(fromDocFile).exists())) {
             throw new Exception("Cannot locate WSDL file: " + fromDocFile + " to import from for Method: "
@@ -84,84 +95,114 @@ public class SyncUtils {
         }
 
         // parse the wsdl and get the operation text.....
-        Document fromDoc = null;
-        Document toDoc = null;
+        Document fromWsdl = null;
+        Document toWsdl = null;
         try {
-            fromDoc = XMLUtilities.fileNameToDocument(fromDocFile);
-            toDoc = XMLUtilities.fileNameToDocument(serviceInfo.getBaseDirectory().getAbsolutePath()
-                + File.separator
-                + "schema"
-                + File.separator
-                + serviceInfo.getIntroduceServiceProperties().getProperty(
-                    IntroduceConstants.INTRODUCE_SKELETON_SERVICE_NAME) + File.separator
-                + serviceInfo.getService().getName() + ".wsdl");
-            List portTypes = fromDoc.getRootElement().getChildren("portType", fromDoc.getRootElement().getNamespace());
-            for (int i = 0; i < portTypes.size(); i++) {
-                Element el = (Element) portTypes.get(i);
-                if (el.getAttributeValue("name").equals(method.getImportInformation().getPortTypeName())) {
-                    List operations = el.getChildren("operation", fromDoc.getRootElement().getNamespace());
-                    for (int j = 0; j < operations.size(); j++) {
-                        Element opEl = (Element) operations.get(j);
-                        if (opEl.getAttributeValue("name").equals(method.getName())) {
-                            // need to detach the el and add it to the service
-                            // which will be using it...
-                            List toportTypes = toDoc.getRootElement().getChildren("portType",
-                                toDoc.getRootElement().getNamespace());
-                            for (int i2 = 0; i2 < toportTypes.size(); i2++) {
-                                Element el2 = (Element) toportTypes.get(i2);
-                                if (el2.getAttributeValue("name").equals(
-                                    serviceInfo.getService().getName() + "PortType")) {
-                                    // found the right one... add to here
-                                    Element copEl = (Element) opEl.clone();
-                                    List copElChildren = copEl.getChildren();
-                                    for (int childi = 0; childi < copElChildren.size(); childi++) {
-                                        Element copElChild = (Element) copElChildren.get(childi);
-                                        String messageString = copElChild.getAttributeValue("message");
-                                        logger.debug("Looking for namespace prefix for message " + messageString);
-                                        Namespace ns = null;
-                                        String prefix = "";
-                                        String message = "";
-                                        if (messageString.indexOf(":") >= 0) {
-                                            prefix = messageString.substring(0, messageString.indexOf(":"));
-                                            message = messageString.substring(messageString.indexOf(":") + 1);
-                                            ns = fromDoc.getRootElement().getNamespace(prefix);
-                                        } else {
-                                            message = messageString;
-                                            ns = fromDoc.getRootElement().getNamespace();
-                                        }
-                                        List nslist = toDoc.getRootElement().getAdditionalNamespaces();
-                                        for (int nsli = 0; nsli < nslist.size(); nsli++) {
-                                            Namespace tempns = (Namespace) nslist.get(nsli);
-                                            if (tempns.getURI().equals(ns.getURI())) {
-                                                logger.debug("Setting message " + message + " nsPrefix: "
-                                                    + tempns.getPrefix());
-                                                copElChild.setAttribute("message", tempns.getPrefix() + ":" + message);
-                                                break;
-                                            }
-                                        }
-                                    }
-                                    el2.addContent(copEl);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                    }
+            // read the wsdl we're importing an operation FROM
+            fromWsdl = XMLUtilities.fileNameToDocument(fromDocFile);
+            // read the service's wsdl we're writing TO
+            toWsdl = XMLUtilities.fileNameToDocument(toDocFile);
+        } catch (IOException ex) {
+            logger.error(ex);
+            throw ex;
+        }
+        
+        // get the port type we're importing from
+        Element importPortType = getPortTypeElement(fromWsdl.getRootElement(), 
+            method.getImportInformation().getPortTypeName());
+        if (importPortType == null) {
+            String message = "Unable to locate port type in imported WSDL (" 
+                + method.getImportInformation().getPortTypeName() + ")";
+            logger.error(message);
+            throw new SynchronizationException(message);
+        }
+        // get the operation from the import's port type
+        Element importOperation = getOperationElement(importPortType, method.getName());
+        if (importOperation == null) {
+            String message = "Unable to locate operation in imported port type (" 
+                + method.getName() + ")";
+            logger.error(message);
+            throw new SynchronizationException(message);
+        }
+        // detach the operation element so we can add it to our own WSDL later
+        Element copyOperation = (Element) importOperation.detach();
+        // find the port type within the service we're importing a method INTO
+        Element servicePortType = getPortTypeElement(toWsdl.getRootElement(),
+            serviceInfo.getService().getName() + "PortType");
+        if (servicePortType == null) {
+            String message = "Unable to locate port type in service's WSDL (" 
+                + serviceInfo.getService().getName() + "PortType)";
+            logger.error(message);
+            throw new SynchronizationException(message);
+        }
+        // fix up the namespaceing of the imported operation
+        List copyElemChildren = copyOperation.getChildren();
+        Iterator childIter = copyElemChildren.iterator();
+        while (childIter.hasNext()) {
+            Element copyChild = (Element) childIter.next();
+            String messageString = copyChild.getAttributeValue("message");
+            logger.debug("Looking for namespace prefix for message " + messageString);
+            Namespace ns = null;
+            String prefix = "";
+            String message = "";
+            if (messageString.indexOf(":") >= 0) {
+                prefix = messageString.substring(0, messageString.indexOf(":"));
+                message = messageString.substring(messageString.indexOf(":") + 1);
+                ns = fromWsdl.getRootElement().getNamespace(prefix);
+            } else {
+                message = messageString;
+                ns = fromWsdl.getRootElement().getNamespace();
+            }
+            List toNamespaces = toWsdl.getRootElement().getAdditionalNamespaces();
+            for (int namespaceIndex = 0; namespaceIndex < toNamespaces.size(); namespaceIndex++) {
+                Namespace tempns = (Namespace) toNamespaces.get(namespaceIndex);
+                if (tempns.getURI().equals(ns.getURI())) {
+                    logger.debug("Setting message " + message + " nsPrefix: "
+                        + tempns.getPrefix());
+                    copyChild.setAttribute("message", tempns.getPrefix() + ":" + message);
                     break;
                 }
             }
-            FileWriter fw = new FileWriter(serviceInfo.getBaseDirectory().getAbsolutePath()
-                + File.separator
-                + "schema"
-                + File.separator
-                + serviceInfo.getIntroduceServiceProperties().getProperty(
-                    IntroduceConstants.INTRODUCE_SKELETON_SERVICE_NAME) + File.separator
-                + serviceInfo.getService().getName() + ".wsdl");
-            fw.write(XMLUtilities.formatXML(XMLUtilities.documentToString(toDoc)));
-            fw.close();
-        } catch (Exception e) {
-            logger.error(e);
         }
+        // add the operation to our service's port type
+        servicePortType.addContent(copyOperation);
+        
+        // write out the modified service WSDL
+        try {
+            FileWriter fw = new FileWriter(toDocFile);
+            fw.write(XMLUtilities.formatXML(XMLUtilities.documentToString(toWsdl)));
+            fw.close();
+        } catch (IOException ex) {
+            String message = "Error writing modified service WSDL: " + ex.getMessage();
+            logger.error(message, ex);
+            throw new SynchronizationException(message, ex);
+        }
+    }
+    
+    
+    private static Element getPortTypeElement(Element wsdlRoot, String portTypeName) {
+        List portTypeElements = wsdlRoot.getChildren("portType", wsdlRoot.getNamespace());
+        Iterator portTypeIter = portTypeElements.iterator();
+        while (portTypeIter.hasNext()) {
+            Element portType = (Element) portTypeIter.next();
+            if (portTypeName.equals(portType.getAttributeValue("name"))) {
+                return portType;
+            }
+        }
+        return null;
+    }
+    
+    
+    private static Element getOperationElement(Element portType, String operationName) {
+        List operationElements = portType.getChildren("operation", portType.getNamespace());
+        Iterator operationIter = operationElements.iterator();
+        while (operationIter.hasNext()) {
+            Element operation = (Element) operationIter.next();
+            if (operationName.equals(operation.getAttributeValue("name"))) {
+                return operation;
+            }
+        }
+        return null;
     }
 
 
@@ -173,8 +214,8 @@ public class SyncUtils {
                 MethodType method = service.getMethods().getMethod(i);
                 if (method.isIsImported()) {
                     if (!map.containsKey(method.getImportInformation().getNamespace())) {
-                        ImportInformation ii = new ImportInformation(method.getImportInformation(), "wns"
-                            + namespaceCount++);
+                        ImportInformation ii = new ImportInformation(method.getImportInformation(), 
+                            "wns" + namespaceCount++);
                         map.put(method.getImportInformation().getNamespace(), ii);
                     }
                 }
