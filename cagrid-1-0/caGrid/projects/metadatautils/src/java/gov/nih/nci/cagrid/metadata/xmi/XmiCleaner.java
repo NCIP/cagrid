@@ -32,14 +32,17 @@ import org.jdom.filter.Filter;
  * @author David Ervin
  * 
  * @created Dec 10, 2007 12:51:39 PM
- * @version $Id: XmiCleaner.java,v 1.2 2008-04-28 19:31:07 dervin Exp $ 
+ * @version $Id: XmiCleaner.java,v 1.3 2009-04-07 14:30:14 dervin Exp $ 
  */
 public class XmiCleaner {
     private static Log log = LogFactory.getLog(XmiCleaner.class);
     
+    @SuppressWarnings("all")
     public static final String ERROR_APOSTROPHE = "â€™";
     
+    @SuppressWarnings("all")
     public static final String ERROR_DOUBLE_OPEN_BRACKET = "«";
+    @SuppressWarnings("all")
     public static final String ERROR_DOUBLE_CLOSE_BRACKET = "»";
     
     // problematic elements in the original XMI
