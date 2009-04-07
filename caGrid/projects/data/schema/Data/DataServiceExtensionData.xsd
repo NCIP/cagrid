@@ -31,6 +31,7 @@
 		<xsd:attribute name="useWsEnumeration" type="xsd:boolean" use="required"/>
 		<xsd:attribute name="useGridIdeitifiers" type="xsd:boolean" use="required"/>
 		<xsd:attribute name="useBdt" type="xsd:boolean" use="required"/>
+		<xsd:attribute name="useTransfer" type="xsd:boolean" use="required"/>
 		<xsd:attribute name="serviceStyle" type="xsd:string" use="optional"/>
 	</xsd:complexType>
 	<xsd:complexType name="ModelInformation">
