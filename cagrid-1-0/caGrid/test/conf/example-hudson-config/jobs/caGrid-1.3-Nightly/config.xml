@@ -10,7 +10,7 @@
     <cvsroot>:ext:anonymous@cbiocvs2.nci.nih.gov:/share/content/gforge/cagrid-1-0</cvsroot>
     <module>cagrid-1-0</module>
     <branch>caGrid-1_3_release</branch>
-    <cvsRsh>/home/oster/hudson/bin/wraplink.sh</cvsRsh>
+    <cvsRsh>/tmp/wraplink.sh</cvsRsh>
     <canUseUpdate>true</canUseUpdate>
     <flatten>true</flatten>
     <repositoryBrowser class="hudson.scm.browsers.ViewCVS">
@@ -68,7 +68,7 @@
       <canRunOnFailed>true</canRunOnFailed>
     </hudson.plugins.warnings.WarningsPublisher>
     <hudson.tasks.Mailer>
-      <recipients>scott.oster@osumc.edu</recipients>
+      <recipients>cagrid-1-0-quality@gforge.nci.nih.gov</recipients>
       <dontNotifyEveryUnstableBuild>false</dontNotifyEveryUnstableBuild>
       <sendToIndividuals>false</sendToIndividuals>
     </hudson.tasks.Mailer>
