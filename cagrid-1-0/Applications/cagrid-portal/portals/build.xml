@@ -25,6 +25,7 @@
 
     <property name="ext.dir" value="${basedir}/ext"/>
     <property name="ext.default.lib.dir" value="${ext.dir}/default/jars"/>
+    <property name="ext.test.lib.dir" value="${ext.dir}/test/jars"/>
     <property name="ext.ext.lib.dir" value="${ext.dir}/ext/jars"/>
     <property name="ext.ext.xml.dir" value="${ext.dir}/ext/xmls"/>
     <property name="ext.themes.lib.dir" value="${ext.dir}/themes/jars"/>
@@ -41,7 +42,9 @@
     </path>
 
     <path  id="test.compile.cp">
-        <path refid="compile.cp"/>
+        <fileset dir="${ext.test.lib.dir}">
+            <include name="*.jar"/>
+        </fileset>
          <path path="${classes.dir}"/>
     </path>
 
