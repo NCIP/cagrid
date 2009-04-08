@@ -9,7 +9,7 @@
   <scm class="hudson.scm.CVSSCM">
     <cvsroot>:ext:anonymous@cbiocvs2.nci.nih.gov:/share/content/gforge/cagrid-1-0</cvsroot>
     <module>cagrid-1-0</module>
-    <cvsRsh>/Users/hudson/hudson/bin/wraplink.sh</cvsRsh>
+    <cvsRsh>/tmp/wraplink.sh</cvsRsh>
     <canUseUpdate>true</canUseUpdate>
     <flatten>true</flatten>
     <isTag>false</isTag>
@@ -63,11 +63,6 @@
       <parserNames/>
       <canRunOnFailed>true</canRunOnFailed>
     </hudson.plugins.warnings.WarningsPublisher>
-    <hudson.tasks.Mailer>
-      <recipients>scott.oster@osumc.edu</recipients>
-      <dontNotifyEveryUnstableBuild>false</dontNotifyEveryUnstableBuild>
-      <sendToIndividuals>false</sendToIndividuals>
-    </hudson.tasks.Mailer>
     <hudson.plugins.cigame.GamePublisher/>
   </publishers>
   <buildWrappers>

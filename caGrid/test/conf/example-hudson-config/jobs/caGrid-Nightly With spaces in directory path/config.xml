@@ -11,7 +11,7 @@ http://gforge.nci.nih.gov/tracker/?group_id=25&amp;atid=174&amp;func=detail&amp;
   <scm class="hudson.scm.CVSSCM">
     <cvsroot>:ext:anonymous@cbiocvs2.nci.nih.gov:/share/content/gforge/cagrid-1-0</cvsroot>
     <module>cagrid-1-0/caGrid</module>
-    <cvsRsh>/home/oster/hudson/bin/wraplink.sh</cvsRsh>
+    <cvsRsh>/tmp/wraplink.sh</cvsRsh>
     <canUseUpdate>true</canUseUpdate>
     <flatten>true</flatten>
     <repositoryBrowser class="hudson.scm.browsers.ViewCVS">
@@ -67,11 +67,6 @@ http://gforge.nci.nih.gov/tracker/?group_id=25&amp;atid=174&amp;func=detail&amp;
       <parserNames/>
       <canRunOnFailed>true</canRunOnFailed>
     </hudson.plugins.warnings.WarningsPublisher>
-    <hudson.tasks.Mailer>
-      <recipients>scott.oster@osumc.edu</recipients>
-      <dontNotifyEveryUnstableBuild>false</dontNotifyEveryUnstableBuild>
-      <sendToIndividuals>false</sendToIndividuals>
-    </hudson.tasks.Mailer>
   </publishers>
   <buildWrappers>
     <hudson.plugins.build__timeout.BuildTimeoutWrapper>

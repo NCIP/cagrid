@@ -10,7 +10,7 @@
     <cvsroot>:ext:anonymous@cbiocvs2.nci.nih.gov:/share/content/gforge/cagrid-1-0</cvsroot>
     <module>cagrid-1-0</module>
     <branch>caGrid-1_2_release</branch>
-    <cvsRsh>/home/oster/hudson/bin/wraplink.sh</cvsRsh>
+    <cvsRsh>/tmp/wraplink.sh</cvsRsh>
     <canUseUpdate>true</canUseUpdate>
     <flatten>true</flatten>
     <isTag>false</isTag>
