@@ -80,6 +80,8 @@
                 <value>gov.nih.nci.cagrid.portal.domain.GridService</value>
                 <value>gov.nih.nci.cagrid.portal.domain.GridDataService</value>
                 <value>gov.nih.nci.cagrid.portal.domain.IndexService</value>
+                <value>gov.nih.nci.cagrid.portal.domain.NotificationSubscriber</value>
+                <value>gov.nih.nci.cagrid.portal.domain.NotificationSubscription</value>
                 <value>gov.nih.nci.cagrid.portal.domain.ServiceAnnotation</value>
                 <value>gov.nih.nci.cagrid.portal.domain.StatusChange</value>
 
@@ -222,6 +224,9 @@
 
     <bean id="semanticMetadataMappingDao" parent="daoTemplate"
           class="gov.nih.nci.cagrid.portal.dao.SemanticMetadataMappingDao"/>
+
+    <bean id="notificationSubscriptionDao" parent="daoTemplate"
+          class="gov.nih.nci.cagrid.portal.dao.NotificationSubscriptionDao"/>
 
     <bean id="openSessionInViewForTesting"
           class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor"
