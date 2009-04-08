@@ -10,7 +10,7 @@ http://gforge.nci.nih.gov/tracker/?group_id=25&amp;atid=174&amp;func=detail&amp;
   </properties>
   <scm class="hudson.scm.CVSSCM">
     <cvsroot>:ext:anonymous@cbiocvs2.nci.nih.gov:/share/content/gforge/cagrid-1-0</cvsroot>
-    <module>cagrid-1-0</module>
+    <module>cagrid-1-0/caGrid</module>
     <cvsRsh>/home/oster/hudson/bin/wraplink.sh</cvsRsh>
     <canUseUpdate>true</canUseUpdate>
     <flatten>true</flatten>
@@ -31,7 +31,7 @@ http://gforge.nci.nih.gov/tracker/?group_id=25&amp;atid=174&amp;func=detail&amp;
     <hudson.tasks.Ant>
       <targets>configure-clean</targets>
       <antName>Ant 1.7.0</antName>
-      <buildFile>caGrid/build.xml</buildFile>
+      <buildFile>build.xml</buildFile>
     </hudson.tasks.Ant>
     <hudson.tasks.Ant>
       <targets>all</targets>
@@ -41,16 +41,16 @@ http://gforge.nci.nih.gov/tracker/?group_id=25&amp;atid=174&amp;func=detail&amp;
     <hudson.tasks.Ant>
       <targets>test</targets>
       <antName>Ant 1.7.0</antName>
-      <buildFile>caGrid/build.xml</buildFile>
+      <buildFile>build.xml</buildFile>
     </hudson.tasks.Ant>
   </builders>
   <publishers>
     <hudson.tasks.ArtifactArchiver>
-      <artifacts>caGrid/integration-repository/**,caGrid/repository/**,caGrid/test/logs/junit/report/**</artifacts>
+      <artifacts>integration-repository/**,repository/**,test/logs/junit/report/**</artifacts>
       <latestOnly>true</latestOnly>
     </hudson.tasks.ArtifactArchiver>
     <hudson.tasks.junit.JUnitResultArchiver>
-      <testResults>caGrid/test/logs/junit/*.xml</testResults>
+      <testResults>test/logs/junit/*.xml</testResults>
     </hudson.tasks.junit.JUnitResultArchiver>
     <hudson.plugins.warnings.WarningsPublisher>
       <threshold></threshold>

@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <hudson>
-  <numExecutors>0</numExecutors>
+  <numExecutors>1</numExecutors>
   <mode>NORMAL</mode>
   <useSecurity>true</useSecurity>
   <authorizationStrategy class="hudson.security.GlobalMatrixAuthorizationStrategy">
@@ -203,10 +203,7 @@
       <remoteFS>/home/oster/hudson</remoteFS>
       <numExecutors>1</numExecutors>
       <mode>NORMAL</mode>
-      <retentionStrategy class="hudson.slaves.RetentionStrategy$Demand">
-        <inDemandDelay>1</inDemandDelay>
-        <idleDelay>30</idleDelay>
-      </retentionStrategy>
+      <retentionStrategy class="hudson.slaves.RetentionStrategy$Always"/>
       <launcher class="hudson.slaves.CommandLauncher">
         <agentCommand>ssh oster@cagrid03 ~/hudson/bin/slave.sh</agentCommand>
       </launcher>
