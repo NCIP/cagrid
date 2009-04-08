@@ -24,7 +24,7 @@
       <ns2:enumerationCollection/>
      </ns2:ValueDomain>
     </ns2:UMLAttribute>
-    <ns2:UMLAttribute dataTypeName="CHARACTER" description="No definition loaded" name="genbankAccession.Version" publicID="2322245" version="1.0">
+    <ns2:UMLAttribute dataTypeName="CHARACTER" description="No definition loaded" name="Version" publicID="2322245" version="1.0">
      <ns2:SemanticMetadata conceptCode="C45766" conceptDefinition="One or more characters and/or numbers that are used to identify, name, or characterize the nature, properties, or contents of genomic sequences, mRNA transcripts, protein products, or other class of entities that occurs throughout the genome." conceptName="Genomic Identifier" order="0"/>
      <ns2:SemanticMetadata conceptCode="C45814" conceptDefinition="A Genbank accession number with an explicit version." conceptName="Versioned Genbank Accession Number" order="1"/>
      <ns2:SemanticMetadata conceptCode="C25402" conceptDefinition="A control number unique to an object, used to identify it among the other objects in a collection." conceptName="Accession Number" order="2"/>
@@ -65,7 +65,7 @@
       <ns4:enumerationCollection/>
      </ns4:ValueDomain>
     </ns4:UMLAttribute>
-    <ns4:UMLAttribute dataTypeName="CHARACTER" description="No definition loaded" name="genbankAccession.Version" publicID="2322250" version="1.0">
+    <ns4:UMLAttribute dataTypeName="CHARACTER" description="No definition loaded" name="Version" publicID="2322250" version="1.0">
      <ns4:SemanticMetadata conceptCode="C45766" conceptDefinition="One or more characters and/or numbers that are used to identify, name, or characterize the nature, properties, or contents of genomic sequences, mRNA transcripts, protein products, or other class of entities that occurs throughout the genome." conceptName="Genomic Identifier" order="0"/>
      <ns4:SemanticMetadata conceptCode="C25402" conceptDefinition="A control number unique to an object, used to identify it among the other objects in a collection." conceptName="Accession Number" order="2"/>
      <ns4:SemanticMetadata conceptCode="C45814" conceptDefinition="A Genbank accession number with an explicit version." conceptName="Versioned Genbank Accession Number" order="1"/>
