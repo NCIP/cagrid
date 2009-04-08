@@ -1,12 +1,10 @@
 package gov.nih.nci.cagrid.portal.util;
 
+import gov.nih.nci.cagrid.portal.AbstractTimeSensitiveTest;
 import gov.nih.nci.cagrid.portal.domain.metadata.dataservice.DomainModel;
 import gov.nih.nci.cagrid.portal.domain.metadata.dataservice.XMLSchema;
 import org.cagrid.gme.client.GlobalModelExchangeClient;
 import org.cagrid.gme.domain.XMLSchemaNamespace;
-import static org.junit.Assert.*;
-import org.junit.Before;
-import org.junit.Test;
 import static org.mockito.Mockito.mock;
 
 import java.util.List;
@@ -16,24 +14,22 @@ import java.util.List;
  *
  * @author kherm manav.kher@semanticbits.com
  */
-public class PortalUtilsTest {
+public class PortalUtilsTest extends AbstractTimeSensitiveTest {
     private String badUrl;
     private XMLSchemaNamespace ns;
-    XMLSchemaUtils schemaUtils;
 
 
-    @Before
-    public void setup() throws Exception {
+    public PortalUtilsTest() throws Exception {
         badUrl = "http://www.yahoo.com";
         ns = new XMLSchemaNamespace("gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common");
 
-        schemaUtils = new XMLSchemaUtils();
-        schemaUtils.setGmeUrl("badURL");
-        CaDSRDataServiceClient caDSRClient = new CaDSRDataServiceClient();
-        schemaUtils.setCaDSRClient(caDSRClient);
     }
 
-    @Test
+    protected Long getAcceptableTime() {
+        return new Long("120000");
+    }
+
+
     public void testGME() {
         try {
 
@@ -48,19 +44,17 @@ public class PortalUtilsTest {
 
     }
 
-    @Test
-    public void getXMLSchemas() throws Exception {
+    public void testGetXMLSchemas() throws Exception {
         DomainModel _model = mock(DomainModel.class);
         List<XMLSchema> _schemas = null;
 
-        _schemas = schemaUtils.getXMLSchemas(_model);
+        _schemas = XMLSchemaUtils.getXMLSchemas(_model, badUrl, badUrl);
         assertEquals("Schemas returned for bad URL", _schemas.size(), 0);
 
     }
 
 
-    @Test
-    public void getXmlSchemaContent() {
-        schemaUtils.getXmlSchemaContent(ns.toString());
+    public void testBadGetXmlSchemaContent() {
+        XMLSchemaUtils.getXmlSchemaContent(ns.toString(), badUrl);
     }
 }
