@@ -31,10 +31,57 @@
         </modifyColumn>
     </changeSet>
 
-     <changeSet id="5" author="kherm">
+    <changeSet id="5" author="kherm">
         <modifyColumn tableName="query_instances">
             <column name="error" type="text"/>
         </modifyColumn>
     </changeSet>
 
+    <changeSet id="6" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="notification_subscriber"/>
+            </not>
+        </preConditions>
+        <createTable tableName="notification_subscriber">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="int">
+                <constraints references="portal_users(id)" foreignKeyName="FK345D683C9B17579D"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="7" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="notification_subscriptions"/>
+            </not>
+        </preConditions>
+        <createTable tableName="notification_subscriptions">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="statusesContainer" type="varchar(255)"/>
+            <column name="subscriber_id" type="int">
+                <constraints references="notification_subscriber(id)" foreignKeyName="FKDA99AEA24F1130BC"/>
+            </column>
+            <column name="service_id" type="int">
+                <constraints references="grid_services(id)" foreignKeyName="FKDA99AEA26E4B3B1D"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="8" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="portal_users" columnName="delegatedEPR"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="portal_users">
+            <column name="delegatedEPR" type="text">
+            </column>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
