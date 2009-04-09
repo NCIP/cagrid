@@ -102,6 +102,10 @@ public class FederatedQueryResultsAuthorization implements PDP {
 	public void authorizeQueryResourceProperties(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 		
 	}
+	   				
+	public void authorizeGetExecutionStatus(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
 	   
 	
 	public boolean isPermitted(Subject peerSubject, MessageContext context, QName operation)
@@ -145,6 +149,9 @@ public class FederatedQueryResultsAuthorization implements PDP {
 			return true;
 		} else if(operation.getLocalPart().equals("queryResourceProperties")){
 			authorizeQueryResourceProperties(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("getExecutionStatus")){
+			authorizeGetExecutionStatus(peerSubject, context, operation);
 			return true;
 		} 		
 		return false;

@@ -93,6 +93,18 @@
           </sequence>
         </complexType>
       </element>
+      <element name="GetExecutionStatusRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="GetExecutionStatusResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:FederatedQueryExecutionStatus" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
       <element name="FederatedQueryResultsResourceProperties">
         <complexType>
           <sequence>
@@ -134,6 +146,12 @@
   </message>
   <message name="TransferResponse">
     <part name="parameters" element="tns:TransferResponse" />
+  </message>
+  <message name="GetExecutionStatusRequest">
+    <part name="parameters" element="tns:GetExecutionStatusRequest" />
+  </message>
+  <message name="GetExecutionStatusResponse">
+    <part name="parameters" element="tns:GetExecutionStatusResponse" />
   </message>
   <message name="ProcessingNotCompleteFaultFaultMessage">
     <part name="fault" element="ns16:ProcessingNotCompleteFault" />
@@ -181,6 +199,10 @@
       <fault name="FederatedQueryProcessingFault" message="tns:FederatedQueryProcessingFaultFaultMessage" wsa:Action="http://fqp.cagrid.nci.nih.gov/FederatedResults/FederatedQueryProcessingFaultFaultMessage" />
       <fault name="ProcessingNotCompleteFault" message="tns:ProcessingNotCompleteFaultFaultMessage" wsa:Action="http://fqp.cagrid.nci.nih.gov/FederatedResults/ProcessingNotCompleteFaultFaultMessage" />
       <fault name="InternalErrorFault" message="tns:InternalErrorFaultFaultMessage" wsa:Action="http://fqp.cagrid.nci.nih.gov/FederatedResults/InternalErrorFaultFaultMessage" />
+    </operation>
+    <operation name="getExecutionStatus">
+      <input message="tns:GetExecutionStatusRequest" wsa:Action="http://fqp.cagrid.nci.nih.gov/FederatedResults/GetExecutionStatusRequest" />
+      <output message="tns:GetExecutionStatusResponse" wsa:Action="http://fqp.cagrid.nci.nih.gov/FederatedResults/GetExecutionStatusResponse" />
     </operation>
     <operation name="getServiceSecurityMetadata">
       <input message="wns0:GetServiceSecurityMetadataRequest" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataRequest" />

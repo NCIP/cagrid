@@ -269,6 +269,7 @@
      <ns29:ProviderInformation providerClass="gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl"/>
     </ns29:Method>
    </ns29:Methods>
+   <ns3:description xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema">The caGrid Federated Query Processor provides a mechanism to perform basic distributed aggregations and joins of queries over multiple data services.</ns3:description>
    <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
     <ns3:Custom xsi:type="ns3:Custom"/>
    </ns3:ResourceFrameworkOptions>
@@ -366,12 +367,17 @@
      <ns43:ImportInformation fromIntroduce="false" inputMessage="ns70:QueryResourcePropertiesRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" outputMessage="ns70:QueryResourcePropertiesResponse" packageName="org.oasis.wsrf.properties" portTypeName="QueryResourceProperties" wsdlFile="../wsrf/properties/WS-ResourceProperties.wsdl" xmlns:ns70="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl"/>
      <ns43:ProviderInformation providerClass="QueryRPProvider"/>
     </ns43:Method>
+    <ns43:Method description="Gets the current federated query execution status." isImported="false" isProvided="false" name="getExecutionStatus" xsi:type="ns43:MethodType">
+     <ns43:Inputs/>
+     <ns43:Output qName="ns71:FederatedQueryExecutionStatus" description="" isArray="false" xmlns:ns71="http://fqp.cagrid.nci.nih.gov/FederatedQueryResultsMetadata"/>
+     <ns43:Exceptions/>
+    </ns43:Method>
    </ns43:Methods>
-   <ns71:ResourcePropertiesList xsi:type="ns71:ResourcePropertiesListType" xmlns:ns71="gme://gov.nih.nci.cagrid.introduce/1/Resources">
-    <ns71:ResourceProperty qName="ns72:CurrentTime" description="The current time as believed by this service; should be consulted before setting a termnination time (standard ws-lifetime property)." populateFromFile="false" register="false" xsi:type="ns71:ResourcePropertyType" xmlns:ns72="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
-    <ns71:ResourceProperty qName="ns73:TerminationTime" description="The scheduled termination time of this resource (standard ws-lifetime property)" populateFromFile="false" register="false" xsi:type="ns71:ResourcePropertyType" xmlns:ns73="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
-    <ns71:ResourceProperty qName="ns74:FederatedQueryExecutionStatus" description="The current status of Federated Query execution.  May be subscribed to via ws-notification for updates." fileLocation="FederatedQueryResults_federatedQueryExecutionStatus.xml" populateFromFile="false" register="false" xsi:type="ns71:ResourcePropertyType" xmlns:ns74="http://fqp.cagrid.nci.nih.gov/FederatedQueryResultsMetadata"/>
-   </ns71:ResourcePropertiesList>
+   <ns72:ResourcePropertiesList xsi:type="ns72:ResourcePropertiesListType" xmlns:ns72="gme://gov.nih.nci.cagrid.introduce/1/Resources">
+    <ns72:ResourceProperty qName="ns73:CurrentTime" description="The current time as believed by this service; should be consulted before setting a termnination time (standard ws-lifetime property)." populateFromFile="false" register="false" xsi:type="ns72:ResourcePropertyType" xmlns:ns73="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+    <ns72:ResourceProperty qName="ns74:TerminationTime" description="The scheduled termination time of this resource (standard ws-lifetime property)" populateFromFile="false" register="false" xsi:type="ns72:ResourcePropertyType" xmlns:ns74="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+    <ns72:ResourceProperty qName="ns75:FederatedQueryExecutionStatus" description="The current status of Federated Query execution.  May be subscribed to via ws-notification for updates." fileLocation="FederatedQueryResults_federatedQueryExecutionStatus.xml" populateFromFile="false" register="false" xsi:type="ns72:ResourcePropertyType" xmlns:ns75="http://fqp.cagrid.nci.nih.gov/FederatedQueryResultsMetadata"/>
+   </ns72:ResourcePropertiesList>
    <ns3:description xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema">The resource-qualified results service</ns3:description>
    <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
     <ns3:Lifetime xsi:type="ns3:Lifetime"/>
@@ -383,17 +389,17 @@
    </ns3:ResourceFrameworkOptions>
   </ns3:Service>
  </ns3:Services>
- <ns75:Extensions xsi:type="ns75:ExtensionsType" xmlns:ns75="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ns75:Extension name="cagrid_metadata" version="1.3" xsi:type="ns75:ExtensionType"/>
-  <ns75:Extension name="caGrid_Transfer" version="1.3" xsi:type="ns75:ExtensionType"/>
-  <ns75:Extension name="cagrid_wsEnum" version="1.3-dev" xsi:type="ns75:ExtensionType"/>
- </ns75:Extensions>
- <ns76:ServiceProperties xmlns:ns76="gme://gov.nih.nci.cagrid.introduce/1/Property">
-  <ns76:Property description="Length of time in minutes a Federated Query Results Resource will live" isFromETC="false" key="initialResultLeaseInMinutes" value="30"/>
-  <ns76:Property description="Number of worker threads for federated query processing execution" isFromETC="false" key="threadPoolSize" value="10"/>
-  <ns76:Property description="Maximum number of retries a client may request the FQP service perform when querying failing target data services" isFromETC="false" key="maxRetries" value="4"/>
-  <ns76:Property description="Maximum number of seconds a client can request for a timeout between retries when FQP queries a target data service and fails." isFromETC="false" key="maxRetryTimeout" value="300"/>
-  <ns76:Property description="Maximum number of data services which can be targeted by a single DCQL query" isFromETC="false" key="maxTargetServicesPerQuery" value="12"/>
-  <ns76:Property description="" isFromETC="false" key="caGridWsEnumeration_iterImplType" value="CAGRID_CONCURRENT_COMPLETE"/>
- </ns76:ServiceProperties>
+ <ns76:Extensions xsi:type="ns76:ExtensionsType" xmlns:ns76="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns76:Extension name="cagrid_metadata" version="1.3" xsi:type="ns76:ExtensionType"/>
+  <ns76:Extension name="caGrid_Transfer" version="1.3" xsi:type="ns76:ExtensionType"/>
+  <ns76:Extension name="cagrid_wsEnum" version="1.3-dev" xsi:type="ns76:ExtensionType"/>
+ </ns76:Extensions>
+ <ns77:ServiceProperties xmlns:ns77="gme://gov.nih.nci.cagrid.introduce/1/Property">
+  <ns77:Property description="Length of time in minutes a Federated Query Results Resource will live" isFromETC="false" key="initialResultLeaseInMinutes" value="30"/>
+  <ns77:Property description="Number of worker threads for federated query processing execution" isFromETC="false" key="threadPoolSize" value="10"/>
+  <ns77:Property description="Maximum number of retries a client may request the FQP service perform when querying failing target data services" isFromETC="false" key="maxRetries" value="4"/>
+  <ns77:Property description="Maximum number of seconds a client can request for a timeout between retries when FQP queries a target data service and fails." isFromETC="false" key="maxRetryTimeout" value="300"/>
+  <ns77:Property description="Maximum number of data services which can be targeted by a single DCQL query" isFromETC="false" key="maxTargetServicesPerQuery" value="12"/>
+  <ns77:Property description="" isFromETC="false" key="caGridWsEnumeration_iterImplType" value="CAGRID_CONCURRENT_COMPLETE"/>
+ </ns77:ServiceProperties>
 </ns1:ServiceDescription>

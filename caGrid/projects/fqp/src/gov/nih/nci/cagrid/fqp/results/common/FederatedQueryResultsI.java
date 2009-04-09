@@ -14,6 +14,12 @@ import java.rmi.RemoteException;
  */
 public interface FederatedQueryResultsI {
 
+  /**
+   * Gets the current federated query execution status.
+   *
+   */
+  public org.cagrid.fqp.results.metadata.FederatedQueryExecutionStatus getExecutionStatus() throws RemoteException ;
+
   public org.oasis.wsrf.lifetime.DestroyResponse destroy(org.oasis.wsrf.lifetime.Destroy params) throws RemoteException ;
 
   public org.oasis.wsrf.lifetime.SetTerminationTimeResponse setTerminationTime(org.oasis.wsrf.lifetime.SetTerminationTime params) throws RemoteException ;
