@@ -44,7 +44,6 @@ public class RegisteredServiceMockTest extends TestCase {
         String[] indexSvcUrls = new String[]{indexSvcUrl};
 
         StaticApplicationContext ctx = new StaticApplicationContext();
-        ctx.start();
         ctx.registerSingleton("listener", MockApplicationListener.class);
         ctx.refresh();
 
