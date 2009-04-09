@@ -40,7 +40,7 @@ public class EditServiceStatusManager {
         GridService service = gridServiceDao.getById(serviceId);
 
         //Should be an aspect        
-        if(discoveryModel.getLiferayUser()!=null){
+        if (discoveryModel.getLiferayUser() != null) {
             logger.debug("Found admin user. Will change service status");
             if (service.getCurrentStatus().equals(ServiceStatus.BANNED)) {
                 logger.debug("Service is in Banned state. Will unban " + service.getUrl());
@@ -55,12 +55,13 @@ public class EditServiceStatusManager {
 
     @RemoteMethod
     @Transactional
-    public boolean reloadMetadata(int serviceId){
+    public boolean reloadMetadata(int serviceId) {
         GridService service = gridServiceDao.getById(serviceId);
         //Should be an aspect
-        if(discoveryModel.getLiferayUser()!=null){
+        if (discoveryModel.getLiferayUser() != null) {
             logger.debug("Found admin user. Will schedule a metadata reload");
-            service.setMetadataHash(null);
+            //set it to some non null value            
+            service.setMetadataHash("123");
             gridServiceDao.save(service);
         }
         return true;
