@@ -1,5 +1,7 @@
 package gov.nih.nci.cagrid.fqp.results.service;
 
+import gov.nih.nci.cagrid.common.ByteQueue;
+import gov.nih.nci.cagrid.common.DiskByteBuffer;
 import gov.nih.nci.cagrid.common.FaultHelper;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
@@ -8,34 +10,26 @@ import gov.nih.nci.cagrid.enumeration.stubs.response.EnumerationResponseContaine
 import gov.nih.nci.cagrid.fqp.common.DCQLConstants;
 import gov.nih.nci.cagrid.fqp.processor.DCQLAggregator;
 import gov.nih.nci.cagrid.fqp.processor.exceptions.FederatedQueryProcessingException;
-import gov.nih.nci.cagrid.fqp.results.common.FederatedQueryResultsConstants;
 import gov.nih.nci.cagrid.fqp.results.service.globus.resource.FederatedQueryResultsResource;
 import gov.nih.nci.cagrid.fqp.results.stubs.types.InternalErrorFault;
 import gov.nih.nci.cagrid.fqp.results.stubs.types.ProcessingNotCompleteFault;
 import gov.nih.nci.cagrid.fqp.results.utils.FQPEnumerationExecutionUtil;
 import gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.rmi.RemoteException;
 
-import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.rpc.holders.ByteWrapperHolder;
 
-import org.apache.axis.message.MessageElement;
-import org.cagrid.fqp.results.metadata.FederatedQueryExecutionStatus;
 import org.cagrid.transfer.context.service.helper.TransferServiceHelper;
 import org.cagrid.transfer.context.stubs.types.TransferServiceContextReference;
 import org.cagrid.transfer.descriptor.DataDescriptor;
 import org.globus.wsrf.ResourceContext;
 import org.globus.wsrf.ResourceContextException;
 import org.globus.wsrf.ResourceException;
-import org.globus.wsrf.encoding.SerializationException;
-import org.globus.wsrf.utils.XmlUtils;
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 
 /**
@@ -90,7 +84,7 @@ public class FederatedQueryResultsImpl extends FederatedQueryResultsImplBase {
         }
         DCQLQueryResultsCollection dcqlResults = resource.getResults();
         CQLQueryResults cqlResults = DCQLAggregator.aggregateDCQLResults(
-            dcqlResults, resource.getQuery().getTargetObject().getName());
+        	dcqlResults, resource.getQuery().getTargetObject().getName());
         return cqlResults;
     }
 
@@ -102,7 +96,7 @@ public class FederatedQueryResultsImpl extends FederatedQueryResultsImplBase {
         FederatedQueryResultsResource resource = getResource();
         DCQLQueryResultsCollection dcqlResults = resource.getResults();
         CQLQueryResults cqlResults = DCQLAggregator.aggregateDCQLResults(
-            dcqlResults, resource.getQuery().getTargetObject().getName());
+        	dcqlResults, resource.getQuery().getTargetObject().getName());
         EnumerationResponseContainer response = null;
         try {
             response = FQPEnumerationExecutionUtil.setUpEnumeration(cqlResults);
@@ -124,11 +118,19 @@ public class FederatedQueryResultsImpl extends FederatedQueryResultsImplBase {
         // get the resource and its results
         FederatedQueryResultsResource resource = getResource();
         DCQLQueryResultsCollection dcqlResults = resource.getResults();
+        
+        // create a byte queue to push data in and out of without burning up memory
+        ByteQueue byteQueue = new ByteQueue(new DiskByteBuffer());
 
+        // grab the reader / writers from the byte queue
+        OutputStream byteOutput = byteQueue.getByteOutputStream();
+        InputStream byteInput = byteQueue.getByteInputStream();
+        OutputStreamWriter writer = new OutputStreamWriter(byteOutput);
+        
         // serialize the results
-        StringWriter writer = new StringWriter();
         try {
             Utils.serializeObject(dcqlResults, DCQLConstants.DCQL_RESULTS_QNAME, writer);
+            writer.flush();
         } catch (Exception ex) {
             FaultHelper helper = new FaultHelper(new InternalErrorFault());
             helper.addFaultCause(ex);
@@ -137,29 +139,9 @@ public class FederatedQueryResultsImpl extends FederatedQueryResultsImplBase {
             throw (InternalErrorFault) helper.getFault();
         }
 
-        // convert the results to a byte stream for transfer
-        // TODO: implement InputStream subclass to queue up bytes as they're
-        // available from the
-        // serialization process without storing large XML document in memory
-        ByteArrayInputStream byteInput = new ByteArrayInputStream(writer.getBuffer().toString().getBytes());
-
         // create a data descriptor for the results
         DataDescriptor descriptor = new DataDescriptor();
         descriptor.setName(DCQLConstants.DCQL_RESULTS_QNAME.toString());
-        // This causes no deserializer found exception on the client?!?!
-        // descriptor.setMetadata(getResource().getFederatedQueryExecutionStatus());
-        /* and THIS causes no deserializer found for anyType
-        try {
-            MessageElement metadataElement = getMetadataAsElement();
-            descriptor.setMetadata(metadataElement);
-        } catch (Exception ex) {
-            FaultHelper helper = new FaultHelper(new InternalErrorFault());
-            helper.addFaultCause(ex);
-            helper.addDescription("Error serializing metadata for data descriptor");
-            helper.addDescription(ex.getMessage());
-            throw (InternalErrorFault) helper.getFault();
-        }
-         */
 
         TransferServiceContextReference transferReference = null;
         try {
@@ -174,31 +156,16 @@ public class FederatedQueryResultsImpl extends FederatedQueryResultsImplBase {
 
         return transferReference;
     }
-
-
-    private static FederatedQueryResultsResource getResource() throws ResourceException, ResourceContextException {
-        FederatedQueryResultsResource resource = 
-            (FederatedQueryResultsResource) ResourceContext.getResourceContext().getResource();
-        return resource;
+    
+    
+    public org.cagrid.fqp.results.metadata.FederatedQueryExecutionStatus getExecutionStatus() throws RemoteException {
+        return getResource().getFederatedQueryExecutionStatus();
     }
 
 
-    private MessageElement getMetadataAsElement() throws Exception {
-        FederatedQueryExecutionStatus status = getResource().getFederatedQueryExecutionStatus();
-        StringWriter writer = new StringWriter();
-        Utils.serializeObject(status, FederatedQueryResultsConstants.FEDERATEDQUERYEXECUTIONSTATUS, writer);
-        MessageElement element = null;
-        try {
-            Document doc = XmlUtils.newDocument(new InputSource(new StringReader(writer.getBuffer().toString())));
-            element = new MessageElement(doc.getDocumentElement());
-            element.setQName(FederatedQueryResultsConstants.FEDERATEDQUERYEXECUTIONSTATUS);
-        } catch (ParserConfigurationException ex) {
-            throw new SerializationException("Error in XML parser: " + ex.getMessage(), ex);
-        } catch (SAXException ex) {
-            throw new SerializationException("Error parsing XML document into an element: " + ex.getMessage(), ex);
-        } catch (IOException ex) {
-            throw new SerializationException("Error handling XML: " + ex.getMessage(), ex);
-        }
-        return element;
+    private static FederatedQueryResultsResource getResource() throws ResourceException, ResourceContextException {
+        FederatedQueryResultsResource resource = (FederatedQueryResultsResource) ResourceContext.getResourceContext()
+            .getResource();
+        return resource;
     }
 }
