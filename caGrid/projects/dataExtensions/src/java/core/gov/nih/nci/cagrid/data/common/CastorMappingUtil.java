@@ -2,7 +2,6 @@ package gov.nih.nci.cagrid.data.common;
 
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.common.XMLUtilities;
-import gov.nih.nci.cagrid.data.DataServiceConstants;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 
 import java.io.ByteArrayInputStream;
@@ -22,7 +21,7 @@ import org.jdom.input.SAXBuilder;
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  * 
  * @created Oct 26, 2006 
- * @version $Id: CastorMappingUtil.java,v 1.7 2007-12-06 18:37:58 dervin Exp $ 
+ * @version $Id: CastorMappingUtil.java,v 1.8 2009-04-09 16:28:01 dervin Exp $ 
  */
 public class CastorMappingUtil {
     /**
@@ -133,19 +132,12 @@ public class CastorMappingUtil {
 	
 	
 	public static String getCustomCastorMappingFileName(ServiceInformation serviceInfo) {
-		String mappingOut = serviceInfo.getBaseDirectory().getAbsolutePath() 
-			+ File.separator + "src" + File.separator 
-			+ getCustomCastorMappingName(serviceInfo);
-		return mappingOut;
+		return getMarshallingCastorMappingFileName(serviceInfo);
 	}
 	
 	
 	public static String getCustomCastorMappingName(ServiceInformation serviceInfo) {
-		String mappingName = serviceInfo.getServices().getService(0)
-				.getPackageName().replace('.', '/')
-			+ '/' + serviceInfo.getServices().getService(0).getName() 
-			+ '-' + DataServiceConstants.CACORE_CASTOR_MAPPING_FILE;
-		return mappingName;
+		return getMarshallingCastorMappingName(serviceInfo);
 	}
     
     
