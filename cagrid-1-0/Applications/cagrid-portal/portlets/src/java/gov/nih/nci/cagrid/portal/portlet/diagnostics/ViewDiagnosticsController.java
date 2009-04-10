@@ -13,13 +13,17 @@ import javax.portlet.RenderRequest;
 public class ViewDiagnosticsController extends AbstractViewObjectController {
 
     private InterPortletMessageReceiver interPortletMessageReceiver;
+    private String wikiURL;
 
     protected Object getObject(RenderRequest request) {
         DiagnosticsBean _bean = new DiagnosticsBean();
+        _bean.setWikiURL(wikiURL);
 
         if (getInterPortletMessageReceiver().handles(request)) {
             String url = (String) getInterPortletMessageReceiver().receive(request);
             _bean.setUrl(url);
+            if (url != null)
+                _bean.setIpcRequest(true);
         }
         return _bean;
     }
@@ -31,5 +35,13 @@ public class ViewDiagnosticsController extends AbstractViewObjectController {
 
     public void setInterPortletMessageReceiver(InterPortletMessageReceiver interPortletMessageReceiver) {
         this.interPortletMessageReceiver = interPortletMessageReceiver;
+    }
+
+    public String getWikiURL() {
+        return wikiURL;
+    }
+
+    public void setWikiURL(String wikiURL) {
+        this.wikiURL = wikiURL;
     }
 }

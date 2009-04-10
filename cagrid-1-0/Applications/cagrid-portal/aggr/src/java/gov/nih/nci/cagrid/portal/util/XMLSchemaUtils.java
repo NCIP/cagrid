@@ -1,40 +1,34 @@
 package gov.nih.nci.cagrid.portal.util;
 
-import gov.nih.nci.cadsr.domain.Context;
 import gov.nih.nci.cadsr.umlproject.domain.Project;
-import gov.nih.nci.cagrid.cadsr.client.CaDSRServiceClient;
-import gov.nih.nci.cagrid.cadsr.common.CaDSRServiceI;
-import gov.nih.nci.cagrid.metadata.MetadataUtils;
-import gov.nih.nci.cagrid.portal.aggr.MetadataThread;
-import gov.nih.nci.cagrid.portal.domain.metadata.dataservice.*;
+import gov.nih.nci.cagrid.portal.domain.metadata.dataservice.DomainModel;
+import gov.nih.nci.cagrid.portal.domain.metadata.dataservice.UMLClass;
+import gov.nih.nci.cagrid.portal.domain.metadata.dataservice.XMLSchema;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.gme.client.GlobalModelExchangeClient;
 import org.cagrid.gme.domain.XMLSchemaNamespace;
-import org.hibernate.FlushMode;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.criterion.Example;
-import org.hibernate.criterion.MatchMode;
-import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
-import javax.persistence.NonUniqueResultException;
-import java.io.ByteArrayInputStream;
-import java.io.StringWriter;
-import java.security.MessageDigest;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * User: kherm
+ *
+ * @author kherm manav.kher@semanticbits.com
+ */
+
 public class XMLSchemaUtils {
+    private String gmeUrl;
+    private CaDSRClient caDSRClient;
+
     private static final Log logger = LogFactory.getLog(XMLSchemaUtils.class);
 
 
-    public static List<XMLSchema> getXMLSchemas(DomainModel domainModel,
-                                                String cadsrUrl, String gmeUrl) {
+    public List<XMLSchema> getXMLSchemas(DomainModel domainModel) {
         List<XMLSchema> schemas = new ArrayList<XMLSchema>();
 
         Project proj = new Project();
@@ -42,13 +36,11 @@ public class XMLSchemaUtils {
         proj.setVersion(domainModel.getProjectVersion());
         String context = "caBIG";
         try {
-            CaDSRServiceI cadsrService = new CaDSRServiceClient(cadsrUrl);
-            Context ctx = cadsrService.findContextForProject(proj);
-            context = ctx.getName();
+            context = caDSRClient.getContext(domainModel);
         } catch (Exception ex) {
-            // logger.warn("Coudn't get context from project '"
-            // + proj.getShortName() + "': " + ex.getMessage()
-            // + ". Using '" + context + "'.", ex);
+            logger.warn("Coudn't get context from project '"
+                    + proj.getShortName() + "': " + ex.getMessage()
+                    + ". Using '" + context + "'.", ex);
         }
         String projectVersion = proj.getVersion();
         if (projectVersion == null) {
@@ -64,7 +56,7 @@ public class XMLSchemaUtils {
         for (String packageName : packageNames) {
             String schemaUrl = "gme://" + proj.getShortName() + "." + context
                     + "/" + projectVersion + "/" + packageName;
-            String schemaContents = getXmlSchemaContent(schemaUrl, gmeUrl);
+            String schemaContents = getXmlSchemaContent(schemaUrl);
             if (schemaContents != null) {
                 XMLSchema xmlSchema = new XMLSchema();
                 xmlSchema.setNamespace(schemaUrl);
@@ -75,7 +67,7 @@ public class XMLSchemaUtils {
         return schemas;
     }
 
-    public static String getXmlSchemaContent(String namespace, String gmeUrl) {
+    public String getXmlSchemaContent(String namespace) {
         String content = null;
         try {
             XMLSchemaNamespace ns = new XMLSchemaNamespace(namespace);
@@ -83,15 +75,15 @@ public class XMLSchemaUtils {
             org.cagrid.gme.domain.XMLSchema schema = client.getXMLSchema(ns);
             content = schema.getRootDocument().getSchemaText();
         } catch (Exception ex) {
-            // logger.warn("Error getting XML schema with namespace '" +
-            // namespace
-            // + "': " + ex.getMessage());
+            logger.warn("Error getting XML schema with namespace '" +
+                    namespace
+                    + "': " + ex.getMessage());
         }
         return content;
     }
 
-    public static XMLSchema getXMLSchemaForQName(HibernateTemplate templ,
-                                                 String qName, String gmeUrl) {
+    public XMLSchema getXMLSchemaForQName(HibernateTemplate templ,
+                                          String qName) {
         XMLSchema xmlSchema = null;
         try {
             int idx = qName.indexOf("{");
@@ -102,8 +94,8 @@ public class XMLSchemaUtils {
                 eg.setNamespace(namespace);
                 eg = (XMLSchema) PortalUtils.getByExample(templ, eg);
                 if (eg == null) {
-                    String content = XMLSchemaUtils.getXmlSchemaContent(namespace,
-                            gmeUrl);
+                    String content = getXmlSchemaContent(namespace);
+
                     if (content != null) {
                         xmlSchema = new XMLSchema();
                         xmlSchema.setNamespace(namespace);
@@ -114,12 +106,28 @@ public class XMLSchemaUtils {
                 }
             }
         } catch (Exception ex) {
-            // logger.warn("Couldn't get XMLSchema for QName '" + qName + "': "
-            // + ex.getMessage());
+            logger.warn("Couldn't get XMLSchema for QName '" + qName + "': "
+                    + ex.getMessage());
         }
         if (xmlSchema != null) {
             XMLSchemaUtils.logger.debug("######### Found schema for QName: " + qName);
         }
         return xmlSchema;
+    }
+
+    public String getGmeUrl() {
+        return gmeUrl;
+    }
+
+    public void setGmeUrl(String gmeUrl) {
+        this.gmeUrl = gmeUrl;
+    }
+
+    public CaDSRClient getCaDSRClient() {
+        return caDSRClient;
+    }
+
+    public void setCaDSRClient(CaDSRClient caDSRClient) {
+        this.caDSRClient = caDSRClient;
     }
 }

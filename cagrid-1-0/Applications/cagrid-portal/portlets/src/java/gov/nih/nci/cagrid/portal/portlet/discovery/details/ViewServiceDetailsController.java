@@ -9,12 +9,14 @@ import gov.nih.nci.cagrid.portal.portlet.discovery.filter.ServiceFilter;
 import gov.nih.nci.cagrid.portal.portlet.tree.TreeFacade;
 import gov.nih.nci.cagrid.portal.portlet.tree.TreeNode;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.web.portlet.ModelAndView;
 
 import javax.portlet.RenderRequest;
 import java.util.HashMap;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
+ * @author <a href="mailto:manav.kher@semanticbits.com">Manav Kher</a>
  */
 public class ViewServiceDetailsController extends AbstractDiscoveryViewObjectController {
 
@@ -60,6 +62,13 @@ public class ViewServiceDetailsController extends AbstractDiscoveryViewObjectCon
         return rootNode;
     }
 
+    @Override
+    protected void addData(RenderRequest request, ModelAndView mav) {
+        super.addData(request, mav);    //To change body of overridden methods use File | Settings | File Templates.
+        mav.addObject("loginUrl", request.getPreferences().getValue(
+                "loginUrl", ""));
+    }
+
     private TreeNode createRootNode(GridService gridService) {
         TreeNode rootNode = new TreeNode(null, "gridService");
         getServiceMetadataTreeNodeListener().handleGridServiceNode(rootNode, new HashMap(), gridService);
@@ -101,4 +110,5 @@ public class ViewServiceDetailsController extends AbstractDiscoveryViewObjectCon
     public void setServicefilter(ServiceFilter servicefilter) {
         this.servicefilter = servicefilter;
     }
+
 }

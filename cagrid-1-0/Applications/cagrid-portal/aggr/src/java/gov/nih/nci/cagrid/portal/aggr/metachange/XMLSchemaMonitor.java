@@ -28,13 +28,11 @@ import java.util.List;
 public class XMLSchemaMonitor implements TrackableMonitor {
 
     private HibernateTemplate hibernateTemplate;
-    private String cadsrUrl;
-    private String gmeUrl;
-
     private static final Log logger = LogFactory
             .getLog(XMLSchemaMonitor.class);
 
     private TimestampProvider timestampProvider;
+    private XMLSchemaUtils xmlSchemaUtils;
 
     /**
      *
@@ -55,8 +53,8 @@ public class XMLSchemaMonitor implements TrackableMonitor {
                 for (XMLSchema xmlSchema : domainModel.getXmlSchemas()) {
                     namespaces.add(xmlSchema.getNamespace());
                 }
-                List<XMLSchema> xmlSchemas = XMLSchemaUtils.getXMLSchemas(
-                        domainModel, getCadsrUrl(), getGmeUrl());
+                List<XMLSchema> xmlSchemas = xmlSchemaUtils.getXMLSchemas(
+                        domainModel);
                 for (XMLSchema xmlSchema : xmlSchemas) {
                     if (!namespaces.contains(xmlSchema.getNamespace())) {
                         getHibernateTemplate().save(xmlSchema);
@@ -71,9 +69,9 @@ public class XMLSchemaMonitor implements TrackableMonitor {
                 for (ContextProperty contextProperty : context
                         .getContextPropertyCollection()) {
                     if (contextProperty.getXmlSchema() == null) {
-                        XMLSchema xmlSchema = XMLSchemaUtils.getXMLSchemaForQName(
+                        XMLSchema xmlSchema = xmlSchemaUtils.getXMLSchemaForQName(
                                 getHibernateTemplate(), contextProperty
-                                        .getName(), getGmeUrl());
+                                        .getName());
                         if (xmlSchema != null) {
                             if (xmlSchema.getId() == null) {
                                 getHibernateTemplate().save(xmlSchema);
@@ -86,8 +84,8 @@ public class XMLSchemaMonitor implements TrackableMonitor {
                 for (Operation op : context.getOperationCollection()) {
                     for (InputParameter input : op.getInputParameterCollection()) {
                         if (input.getXmlSchema() == null) {
-                            XMLSchema xmlSchema = XMLSchemaUtils.getXMLSchemaForQName(
-                                    getHibernateTemplate(), input.getQName(), getGmeUrl());
+                            XMLSchema xmlSchema = xmlSchemaUtils.getXMLSchemaForQName(
+                                    getHibernateTemplate(), input.getQName());
                             if (xmlSchema != null) {
                                 if (xmlSchema.getId() == null) {
                                     getHibernateTemplate().save(xmlSchema);
@@ -100,8 +98,8 @@ public class XMLSchemaMonitor implements TrackableMonitor {
 
                     Output output = op.getOutput();
                     if (output != null && output.getXmlSchema() == null) {
-                        XMLSchema xmlSchema = XMLSchemaUtils.getXMLSchemaForQName(
-                                getHibernateTemplate(), output.getQName(), getGmeUrl());
+                        XMLSchema xmlSchema = xmlSchemaUtils.getXMLSchemaForQName(
+                                getHibernateTemplate(), output.getQName());
                         if (xmlSchema != null) {
                             if (xmlSchema.getId() == null) {
                                 getHibernateTemplate().save(xmlSchema);
@@ -136,20 +134,12 @@ public class XMLSchemaMonitor implements TrackableMonitor {
         this.hibernateTemplate = hibernateTemplate;
     }
 
-    public String getCadsrUrl() {
-        return cadsrUrl;
+    public XMLSchemaUtils getXmlSchemaUtils() {
+        return xmlSchemaUtils;
     }
 
-    public void setCadsrUrl(String cadsrUrl) {
-        this.cadsrUrl = cadsrUrl;
-    }
-
-    public String getGmeUrl() {
-        return gmeUrl;
-    }
-
-    public void setGmeUrl(String gmeUrl) {
-        this.gmeUrl = gmeUrl;
+    public void setXmlSchemaUtils(XMLSchemaUtils xmlSchemaUtils) {
+        this.xmlSchemaUtils = xmlSchemaUtils;
     }
 
     public TimestampProvider getTimestampProvider() {
