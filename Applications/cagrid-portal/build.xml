@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<project name="cagrid-portal" basedir="."
+<project name="cagrid-portal" basedir="." default="all"
          xmlns:ivy="antlib:org.apache.ivy.ant">
 
     <property name="build.dir" value="${basedir}/build"/>
@@ -13,9 +13,6 @@
     <import file="${ivy.dir}/ivy-targets.xml"/>
     <import file="${antfiles.dir}/build-test.xml"/>
     <import file="${antfiles.dir}/build-report.xml"/>
-
-    <property name="liferay.autodeploy.dir" value="${liferay.jboss.dir}/deploy"/>
-
 
     <target name="prepare" depends="prepare-ant-tasks, ivy:load">
         <tstamp/>
@@ -88,7 +85,7 @@
     </target>
 
 
-    <target name="config-trust" depends="prepare" description="Configure Globus trust store">
+    <target name="config-trust" depends="prepare">
         <trycatch>
             <try>
                 <ant target="config-trust"
@@ -100,7 +97,7 @@
         </trycatch>
     </target>
 
-    <target name="deploy-all" depends="prepare" description="Deploy all Portlets to Liferay Portal.">
+    <target name="liferay:deploy-portlets" depends="prepare" description="Deploy customizations(themes,security,la to liferay Portal">
         <trycatch>
             <try>
                 <ant target="deploy-all"
@@ -112,15 +109,18 @@
         </trycatch>
     </target>
 
-    <target name="deploy-portlets" depends="prepare">
+    <target name="cagrid:deploy-portlets" depends="prepare" description="Deploy all caGrid Portlets to the Portlet server">
         <ant inheritall="false" target="deploy-portlets"
              dir="${projects.dir}/portlets">
-            <property name="target.dir" value="${liferay.autodeploy.dir}"/>
         </ant>
     </target>
 
+    <target name="deploy-all-portlets" depends="prepare" description="Deploy all caGrid Portlets">
+        <antcall  target="cagrid:deploy-portlets"/>
+        <antcall  target="liferay:deploy-portlets"/>
+    </target>
 
-    <target name="install-liferay" depends="prepare" description="Install the Liferay Portal(war).">
+    <target name="install-liferay" depends="prepare" description="Install the Liferay Portal.">
         <ant inheritall="false" target="install-liferay"
              dir="${projects.dir}/portals">
         </ant>
@@ -134,8 +134,8 @@
                 <antcall target="load-schema"/>
                 <antcall target="load-workspaces"/>
                 <antcall target="install-liferay"/>
-                <antcall target="deploy-all"/>
-                <antcall target="deploy-portlets"/>
+                <antcall target="liferay:deploy-portlets"/>
+                <antcall target="cagrid:deploy-portlets"/>
             </try>
             <catch>
                 <fail message="Please build the project first or run 'ant all'"/>
@@ -178,7 +178,7 @@
         </for>
     </target>
 
-    <target name="all" depends="clean,build-all"/>
+    <target name="all" depends="clean,build-all" description="Build the Portal project."/>
 
     <!--for automatated build-->
     <target name="test" depends="all, test:test" description="Run all unit tests for the project."/>

@@ -27,7 +27,7 @@
                     <try>
                         <ant inheritAll="false" dir="${projects.dir}/@{project.name}"
                              target="test" inheritrefs="false">
-                            <property name="test.junit.reports.dir" value="${test.junit.reports.dir}"/>
+                            <property name="junit.reports.dir" value="${test.junit.reports.dir}"/>
                         </ant>
                     </try>
                     <catch>
