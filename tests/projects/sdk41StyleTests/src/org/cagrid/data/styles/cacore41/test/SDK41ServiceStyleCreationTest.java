@@ -21,7 +21,7 @@ import org.cagrid.data.test.creation.DataTestCaseInfo;
  * @author David Ervin
  * 
  * @created Jan 29, 2008 9:09:34 AM
- * @version $Id: SDK41ServiceStyleCreationTest.java,v 1.1 2009-01-08 21:31:20 dervin Exp $ 
+ * @version $Id: SDK41ServiceStyleCreationTest.java,v 1.2 2009-04-10 15:15:24 dervin Exp $ 
  */
 public class SDK41ServiceStyleCreationTest extends Story {
     private DataTestCaseInfo styleTestCaseInfo = null;
@@ -42,7 +42,7 @@ public class SDK41ServiceStyleCreationTest extends Story {
     
     
     public boolean storySetUp() throws Throwable {
-        styleTestCaseInfo = SDK41ServiceStyleSystemTestConstants.SERVICE_TEST_CASE_INFO;
+        styleTestCaseInfo = SDK41ServiceStyleSystemTestConstants.getTestServiceInfo();
         
         File serviceDir = new File(styleTestCaseInfo.getDir());
         serviceDir.mkdirs();

@@ -24,7 +24,7 @@ import org.cagrid.data.test.creation.DataTestCaseInfo;
  * @author David Ervin
  * 
  * @created Jan 29, 2008 1:18:44 PM
- * @version $Id: SDK41StyleCreationStep.java,v 1.1 2009-01-08 21:31:20 dervin Exp $ 
+ * @version $Id: SDK41StyleCreationStep.java,v 1.2 2009-04-10 15:15:24 dervin Exp $ 
  */
 public class SDK41StyleCreationStep extends CreationStep {
     
@@ -85,7 +85,6 @@ public class SDK41StyleCreationStep extends CreationStep {
         File serviceModelFile = new File(serviceInfo.getDir() + File.separator + IntroduceConstants.INTRODUCE_XML_FILE);
         ServiceDescription serviceDesc = getServiceInformation().getServiceDescriptor();
         
-        // get the extension data, set service style to cacore31
         ExtensionType[] extensions = serviceDesc.getExtensions().getExtension();
         ExtensionType dataExtension = null;
         for (int i = 0; i < extensions.length; i++) {
@@ -94,10 +93,10 @@ public class SDK41StyleCreationStep extends CreationStep {
                 break;
             }
         }
+        assertNotNull("Data service extension was not found in the service model", dataExtension);
         if (dataExtension.getExtensionData() == null) {
             dataExtension.setExtensionData(new ExtensionTypeExtensionData());
         }
-        assertNotNull("Data service extension was not found in the service model", dataExtension);
         ExtensionDataUtils.storeExtensionData(dataExtension.getExtensionData(), data);
         Utils.serializeDocument(serviceModelFile.getAbsolutePath(), serviceDesc, IntroduceConstants.INTRODUCE_SKELETON_QNAME);
     }

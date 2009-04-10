@@ -29,7 +29,7 @@ import org.cagrid.data.test.creation.DataTestCaseInfo;
  * @author David Ervin
  * 
  * @created Feb 1, 2008 7:49:44 AM
- * @version $Id: SDK41ServiceStyleInvocationTest.java,v 1.1 2009-01-08 21:31:20 dervin Exp $ 
+ * @version $Id: SDK41ServiceStyleInvocationTest.java,v 1.2 2009-04-10 15:15:24 dervin Exp $ 
  */
 public class SDK41ServiceStyleInvocationTest extends Story {
     
@@ -52,7 +52,7 @@ public class SDK41ServiceStyleInvocationTest extends Story {
     
     
     public boolean storySetUp() throws Throwable {
-        serviceTestInfo = SDK41ServiceStyleSystemTestConstants.SERVICE_TEST_CASE_INFO;
+        serviceTestInfo = SDK41ServiceStyleSystemTestConstants.getTestServiceInfo();
         
         // TODO: use "container of the day"
         container = ServiceContainerFactory.createContainer(ServiceContainerType.GLOBUS_CONTAINER);
