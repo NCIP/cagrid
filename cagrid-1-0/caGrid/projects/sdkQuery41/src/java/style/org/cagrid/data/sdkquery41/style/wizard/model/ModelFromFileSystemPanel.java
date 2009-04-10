@@ -1,18 +1,9 @@
 package org.cagrid.data.sdkquery41.style.wizard.model;
 
-import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.common.portal.validation.IconFeedbackPanel;
-import gov.nih.nci.cagrid.data.DataServiceConstants;
-import gov.nih.nci.cagrid.data.extension.ModelClass;
-import gov.nih.nci.cagrid.data.extension.ModelInformation;
-import gov.nih.nci.cagrid.data.extension.ModelPackage;
-import gov.nih.nci.cagrid.data.extension.ModelSourceType;
 import gov.nih.nci.cagrid.data.ui.wizard.OneTimeInfoDialogUtil;
-import gov.nih.nci.cagrid.introduce.beans.resource.ResourcePropertyType;
-import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.common.FileFilters;
 import gov.nih.nci.cagrid.introduce.common.ResourceManager;
-import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 import gov.nih.nci.cagrid.metadata.MetadataUtils;
 import gov.nih.nci.cagrid.metadata.dataservice.DomainModel;
 import gov.nih.nci.cagrid.metadata.dataservice.UMLClass;
@@ -26,11 +17,6 @@ import java.awt.Insets;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -45,17 +31,13 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import org.cagrid.data.sdkquery41.style.common.SDK41StyleConstants;
 import org.cagrid.data.sdkquery41.style.wizard.DomainModelSourcePanel;
 import org.cagrid.data.sdkquery41.style.wizard.DomainModelSourceValidityListener;
 import org.cagrid.data.sdkquery41.style.wizard.config.DomainModelConfigurationStep;
-import org.cagrid.data.sdkquery41.style.wizard.config.SharedConfiguration;
 import org.cagrid.data.sdkquery41.style.wizard.config.DomainModelConfigurationStep.DomainModelConfigurationSource;
 import org.cagrid.grape.utils.CompositeErrorDialog;
-import org.cagrid.mms.domain.UMLProjectIdentifer;
 
 import com.jgoodies.validation.Severity;
-import com.jgoodies.validation.ValidationMessage;
 import com.jgoodies.validation.ValidationResult;
 import com.jgoodies.validation.ValidationResultModel;
 import com.jgoodies.validation.message.SimpleValidationMessage;
@@ -97,104 +79,6 @@ public class ModelFromFileSystemPanel extends DomainModelSourcePanel {
     
     public DomainModelConfigurationSource getSourceType() {
         return DomainModelConfigurationSource.FILE_SYSTEM;
-    }
-
-
-    public ModelInformation getModelInformation() throws Exception {
-        if (validationModel.hasErrors()) {
-            StringBuffer errors = new StringBuffer();
-            errors.append("Domain model cannot be generated while in an error state:\n");
-            for (ValidationMessage message : validationModel.getResult().getErrors()) {
-                errors.append(message.formattedText()).append("\n");
-            }
-            throw new IllegalStateException(errors.toString());
-        }
-        
-        // copy the domain model to the service's etc dir
-        File etcDir = new File(
-            SharedConfiguration.getInstance().getServiceInfo().getBaseDirectory(), "etc");
-        String applicationName = SharedConfiguration.getInstance()
-            .getSdkDeployProperties().getProperty(
-                SDK41StyleConstants.DeployProperties.PROJECT_NAME);
-        File domainModelFile = new File(etcDir, applicationName + "_domainModel.xml");
-        Utils.copyFile(new File(getModelFilenameTextField().getText()), domainModelFile);
-        
-        // get / create the domain model resource property
-        ServiceInformation serviceInfo = SharedConfiguration.getInstance().getServiceInfo();
-        ResourcePropertyType domainModelResourceProperty = null;
-        ResourcePropertyType[] domainModelProps = CommonTools.getResourcePropertiesOfType(
-            serviceInfo.getServices().getService(0), DataServiceConstants.DOMAIN_MODEL_QNAME);
-        if (domainModelProps.length != 0) {
-            domainModelResourceProperty = domainModelProps[0];
-            // if old file exists, delete it
-            File oldFile = new File(
-                etcDir, domainModelResourceProperty.getFileLocation());
-            if (oldFile.exists()) {
-                oldFile.delete();
-            }
-        } else {
-            domainModelResourceProperty = new ResourcePropertyType();
-            domainModelResourceProperty.setPopulateFromFile(true);
-            domainModelResourceProperty.setRegister(true);
-            domainModelResourceProperty.setQName(DataServiceConstants.DOMAIN_MODEL_QNAME);
-        }
-        
-        // set value of resource property
-        domainModelResourceProperty.setFileLocation(domainModelFile.getName());
-        
-        // possibly put the resource property in the service for the first time
-        if (domainModelProps.length == 0) {
-            CommonTools.addResourcePropety(
-                serviceInfo.getServices().getService(0), domainModelResourceProperty);
-        }
-        
-        // deserialize the domain model
-        DomainModel model = null;
-        FileReader reader = new FileReader(domainModelFile);
-        model = MetadataUtils.deserializeDomainModel(reader);
-        reader.close();
-        
-        // set the cadsr information to NOT generate a new model
-        ModelInformation modelInfo = new ModelInformation();
-        modelInfo.setSource(ModelSourceType.preBuilt);
-        // TODO: mms identifier for local file system projects
-        UMLProjectIdentifer id = new UMLProjectIdentifer();
-        id.setIdentifier(model.getProjectShortName());
-        id.setVersion(model.getProjectVersion());
-        modelInfo.setUMLProjectIdentifer(id);
-        
-        // map classes by packages
-        Map<String, List<UMLClass>> classesByPackage = new HashMap<String, List<UMLClass>>();
-        for (UMLClass modelClass : model.getExposedUMLClassCollection().getUMLClass()) {
-            List<UMLClass> packageClasses = classesByPackage.get(modelClass.getPackageName());
-            if (packageClasses == null) {
-                packageClasses = new LinkedList<UMLClass>();
-                classesByPackage.put(modelClass.getPackageName(), packageClasses);
-            }
-            packageClasses.add(modelClass);
-        }
-        
-        List<ModelPackage> modelPackages = new ArrayList<ModelPackage>();
-        for (String packageName : classesByPackage.keySet()) {
-            List<UMLClass> classes = classesByPackage.get(packageName);
-            ModelPackage pack = new ModelPackage();
-            pack.setPackageName(packageName);
-            List<ModelClass> modelClasses = new ArrayList<ModelClass>();
-            for (UMLClass clazz : classes) {
-                ModelClass modelClass = new ModelClass();
-                modelClass.setShortClassName(clazz.getClassName());
-                // NOT populating element names until Schema Mapping Panel
-                modelClass.setSelected(true);
-                modelClass.setTargetable(true);
-                modelClasses.add(modelClass);
-            }
-            ModelClass[] mappingArray = (ModelClass[]) modelClasses.toArray();
-            pack.setModelClass(mappingArray);
-            modelPackages.add(pack);
-        }
-        ModelPackage[] packageArray = (ModelPackage[]) modelPackages.toArray();
-        modelInfo.setModelPackage(packageArray);
-        return modelInfo;
     }
 
 
