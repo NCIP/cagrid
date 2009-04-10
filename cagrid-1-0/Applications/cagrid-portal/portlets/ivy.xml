@@ -24,9 +24,8 @@
     <dependencies>
         <dependency rev="1.0.4" org="acegisecurity" name="acegisecurity"/>
 
-        <dependency rev="latest.integration" org="caGrid" name="portal-security" conf="default"/>
-        <dependency rev="latest.integration" org="caGrid" name="portal-db" conf="default,test"/>
-        <dependency rev="latest.integration" org="caGrid" name="introduce-clienttools"
+        <dependency rev="latest.integration" org="caGrid" name="portal-security" conf="default;test"/>
+        <dependency rev="${cagrid.integration.version}" org="caGrid" name="introduce-clienttools"
                     conf="default->default"/>
 
 
@@ -42,7 +41,7 @@
         <dependency rev="2.5.1" org="poi" name="poi"/>
         <dependency rev="2.5.1" org="poi" name="poi-contrib"/>
         <dependency rev="2.5.1" org="poi" name="poi-scratchpad"/>
-        <dependency rev="2.3" org="sun" name="servlet"/>
+        <dependency rev="2.3" org="sun" name="servlet" conf="compile->default"/>
         <dependency rev="1.0" org="sun" name="portlet" conf="compile->default"/>
         <dependency rev="1.1" org="sun" name="jstl"/>
         <dependency rev="latest.integration" org="yahoo" name="yui"/>

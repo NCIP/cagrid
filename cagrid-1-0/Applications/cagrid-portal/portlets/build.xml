@@ -34,6 +34,7 @@
     <property name="ext.test.xml.dir" value="${ext.dir}/test/xml"/>
 
     <property name="portlets.debug" value="${javac.debug.flag}"/>
+    <property name="target.deploy.dir" value="${liferay.jboss.dir}/deploy"/>
 
 
     <path id="compile.cp">
@@ -109,8 +110,8 @@
         </javac>
     </target>
 
-    <target name="deploy-portlets" depends="clean,war">
-        <copy file="${cagrid.portlets.war.file}" tofile="${target.dir}/cagridportlets.war"
+    <target name="deploy-portlets" depends="clean,war" description="Will deploy caGrid Portlets.">
+        <copy file="${cagrid.portlets.war.file}" tofile="${target.deploy.dir}/cagridportlets.war"
               overwrite="true"/>
     </target>
 
@@ -161,6 +162,21 @@
                     <include name="**/*Test.java"/>
                 </fileset>
             </batchtest>
+
+        </junit>
+    </target>
+
+    <target name="test-single">
+         
+        <junit dir="${basedir}" printsummary="yes" showoutput="yes" fork="true" haltonfailure="yes">
+            <sysproperty key="basedir" value="${basedir}"/>
+
+            <classpath>
+                <path refid="test.run.cp"/>
+                <pathelement location="${test.build.classes.dir}"/>
+            </classpath>
+
+               <test name="gov.nih.nci.cagrid.portal.portlet.query.cql.CrtierionBean"/>
 
         </junit>
     </target>

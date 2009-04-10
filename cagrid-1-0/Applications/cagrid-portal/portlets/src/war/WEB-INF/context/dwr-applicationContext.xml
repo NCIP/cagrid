@@ -151,5 +151,7 @@
         </property>
     </bean>
 
+    <bean id="notificationSubscriptionService" class="gov.nih.nci.cagrid.portal.portlet.notification.NotificationSubscriptionService"
+          autowire="byName"/>
 
 </beans>

@@ -11,6 +11,9 @@
 <script type="text/javascript" src='<c:url value="/dwr/interface/metadataDiagnostic.js"/>'></script>
 
 <c:set var="prefix"><portlet:namespace/></c:set>
+<c:set var="ipcRquested" value="${diagnosticsBean.ipcRequest}"/>
+<c:set var="wikiURL" value="${diagnosticsBean.wikiURL}"/>
+
 
 <div class="row">
     <div class="label">
@@ -59,6 +62,11 @@
     var totalTests = 4;
     var counter = 0;
     $("${prefix}diagnoseBtn").enable();
+
+    <%--if the request is from another portlet. Process it immediately--%>
+    if(${ipcRquested}){
+       ${prefix}beginDiagnose($("${prefix}url").value)
+    }
 
     function ${prefix}beginDiagnose(validateUrl){
 
@@ -125,7 +133,7 @@
         document.getElementById("${prefix}resultsDiv").innerHTML+="<br/>";
         document.getElementById("${prefix}resultsDiv").innerHTML+="<hr/>";
         document.getElementById("${prefix}resultsDiv").innerHTML+="<div>";
-        document.getElementById("${prefix}resultsDiv").innerHTML+="See <a href='http://www.cagrid.org/wiki/CaGrid:How-To:TroubleshootIndexService' target='_blank'>this guide</a> to troubleshoot potential problems";
+        document.getElementById("${prefix}resultsDiv").innerHTML+="See <a href='${wikiURL}' target='_blank'>this guide</a> to troubleshoot potential problems";
         document.getElementById("${prefix}resultsDiv").innerHTML+="</div>";
     }
 

@@ -310,9 +310,11 @@
             <short-title>Discovery</short-title>
             <keywords>cagrid,discovery</keywords>
         </portlet-info>
-
         <portlet-preferences>
-
+            <preference>
+                <name>loginUrl</name>
+                <value>/web/guest/login</value>
+            </preference>
             <preference>
                 <name>discoveryDirectorySelectMode</name>
                 <value>INTERPORTLET</value>

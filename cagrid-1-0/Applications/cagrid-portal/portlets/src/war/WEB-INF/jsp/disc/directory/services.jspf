@@ -25,7 +25,7 @@
             </c:otherwise>
         </c:choose>
 
-        <tr class="<c:out value="${rowClass}"/>">
+        <tr>
             <td class="dataCellText">
                 <c:set var="serviceDetailsURL"><portlet:actionURL><portlet:param name="operation"
                                                                                  value="selectService"/><portlet:param
