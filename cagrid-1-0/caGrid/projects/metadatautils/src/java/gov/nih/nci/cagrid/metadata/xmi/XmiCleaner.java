@@ -32,7 +32,7 @@ import org.jdom.filter.Filter;
  * @author David Ervin
  * 
  * @created Dec 10, 2007 12:51:39 PM
- * @version $Id: XmiCleaner.java,v 1.3 2009-04-07 14:30:14 dervin Exp $ 
+ * @version $Id: XmiCleaner.java,v 1.4 2009-04-10 15:58:18 dervin Exp $ 
  */
 public class XmiCleaner {
     private static Log log = LogFactory.getLog(XmiCleaner.class);
@@ -119,7 +119,7 @@ public class XmiCleaner {
     }
     
     
-    private static void cleanBrokenBrackets(StringBuffer xmiContents) throws IOException {
+    private static void cleanBrokenBrackets(StringBuffer xmiContents) {
         int removed = 0;
         StringBuffer cleaned = new StringBuffer();
         StringTokenizer tokenizer = new StringTokenizer(xmiContents.toString(), "\n");
@@ -148,10 +148,10 @@ public class XmiCleaner {
             throw ioe;
         }
         
-        Iterator<Element> filterElements = xmiElement.getDescendants(filter);
+        Iterator filterElements = xmiElement.getDescendants(filter);
         List<Element> removeElements = new LinkedList<Element>();
         while (filterElements.hasNext()) {
-            removeElements.add(filterElements.next());
+            removeElements.add((Element) filterElements.next());
         }
         for (Element removeMe : removeElements) {
             removeMe.detach();
