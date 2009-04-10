@@ -22,11 +22,6 @@
                 <artifact pattern="http://software.cagrid.org/repository-1.3/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"/>
                 <artifact pattern="http://software.cagrid.org/repository-1.3/[organisation]/[module]/[revision]/[artifact].[ext]"/>
             </url>
-              <url name="remote-caGrid-1.2-ivy-resolver">
-                <ivy pattern="http://software.cagrid.org/repository-1.2/[organisation]/[module]/ivy-[revision].xml"/>
-                <artifact pattern="http://software.cagrid.org/repository-1.2/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"/>
-                <artifact pattern="http://software.cagrid.org/repository-1.2/[organisation]/[module]/[revision]/[artifact].[ext]"/>
-            </url>
             <ibiblio name="ibiblio-libraries" m2compatible="true" />
         </chain>
 
