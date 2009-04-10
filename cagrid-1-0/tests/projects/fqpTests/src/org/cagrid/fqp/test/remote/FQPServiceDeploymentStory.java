@@ -6,6 +6,7 @@ import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerFactory;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerType;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.CopyServiceStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.DeployServiceStep;
+import gov.nih.nci.cagrid.testing.system.deployment.steps.SetIndexRegistrationStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.StartContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.UnpackContainerStep;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
@@ -29,7 +30,7 @@ import org.cagrid.fqp.test.remote.steps.ChangeJndiSweeperDelayStep;
  * @author David Ervin
  * 
  * @created Jul 15, 2008 12:46:02 PM
- * @version $Id: FQPServiceDeploymentStory.java,v 1.9 2009-01-27 17:56:48 dervin Exp $ 
+ * @version $Id: FQPServiceDeploymentStory.java,v 1.10 2009-04-10 20:52:25 dervin Exp $ 
  */
 public class FQPServiceDeploymentStory extends Story implements ServiceContainerSource {
     
@@ -105,6 +106,7 @@ public class FQPServiceDeploymentStory extends Story implements ServiceContainer
         TargetDataServiceQueryBehavior defaultBehavior = FQPConstants.DEFAULT_TARGET_QUERY_BEHAVIOR;
         steps.add(new ChangeFqpServiceProperties(tempFqpServiceDir, 
             1, defaultBehavior.getTimeoutPerRetry().intValue(), 12, 5));
+        steps.add(new SetIndexRegistrationStep(tempFqpServiceDir.getAbsolutePath(), false));
         // deploy FQP
         List<String> args = Arrays.asList(new String[] {"-Dno.deployment.validation=true"});
         steps.add(new DeployServiceStep(fqpServiceContainer, tempFqpServiceDir.getAbsolutePath(), args));
@@ -113,8 +115,9 @@ public class FQPServiceDeploymentStory extends Story implements ServiceContainer
         if (transferServiceDirectory != null) {
             // copy Transfer to a temp dir
             File tempTransferServiceDir = new File("tmp/TempTransferService");
-            System.out.println("Copying Transfer for pre-deployment to " + tempFqpServiceDir.getAbsolutePath());
+            System.out.println("Copying Transfer for pre-deployment to " + tempTransferServiceDir.getAbsolutePath());
             steps.add(new CopyServiceStep(transferServiceDirectory, tempTransferServiceDir));
+            steps.add(new SetIndexRegistrationStep(tempTransferServiceDir.getAbsolutePath(), false));
             // deploy transfer
             steps.add(new DeployServiceStep(fqpServiceContainer, tempTransferServiceDir.getAbsolutePath(), args));
         }        
