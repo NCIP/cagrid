@@ -56,7 +56,7 @@ import javax.swing.SwingConstants;
  * 
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  * @created Aug 1, 2006
- * @version $Id: DataServiceCreationDialog.java,v 1.8 2009-01-29 21:35:57 dervin Exp $
+ * @version $Id: DataServiceCreationDialog.java,v 1.9 2009-04-10 14:46:30 dervin Exp $
  */
 public class DataServiceCreationDialog extends CreationExtensionUIDialog {
     // default service style is "None / Custom Data Source"
@@ -64,20 +64,22 @@ public class DataServiceCreationDialog extends CreationExtensionUIDialog {
     
     // extension names needed for additional features
     public static final String WS_ENUM_EXTENSION_NAME = "cagrid_wsEnum";
-    public static final String BDT_EXTENSIONS_NAME = "bdt";
+    public static final String BDT_EXTENSION_NAME = "bdt";
+    public static final String TRANSFER_EXTENSION_NAME = "caGrid_Transfer";
 
     private JPanel mainPanel = null;
     private JCheckBox wsEnumCheckBox = null;
-    private JButton okButton = null;
-    private JPanel featuresPanel = null;
     private JCheckBox gridIdentCheckBox = null;
     private JCheckBox bdtCheckBox = null;
+    private JCheckBox transferCheckBox = null;
+    private JButton okButton = null;
+    private JPanel featuresPanel = null;
     private JPanel stylePanel = null;
     private JLabel styleNameLabel = null;
     private JComboBox styleComboBox = null;
     private JTextArea styleDescriptionTextArea = null;
     private JScrollPane styleDescriptionScrollPane = null;
-
+    
 
     public DataServiceCreationDialog(Frame f, ServiceExtensionDescriptionType desc, ServiceInformation info) {
         super(f, desc, info);
@@ -158,6 +160,64 @@ public class DataServiceCreationDialog extends CreationExtensionUIDialog {
 
 
     /**
+     * This method initializes bdtCheckBox
+     * 
+     * @return javax.swing.JCheckBox
+     */
+    private JCheckBox getBdtCheckBox() {
+        if (this.bdtCheckBox == null) {
+            this.bdtCheckBox = new JCheckBox();
+            this.bdtCheckBox.setText("caGrid BDT");
+            // can only enable BDT if it has been installed
+            boolean bdtInstalled = bdtExtensionInstalled();
+            this.bdtCheckBox.setEnabled(bdtInstalled);
+            bdtCheckBox.setHorizontalAlignment(SwingConstants.CENTER);
+            if (!bdtInstalled) {
+                bdtCheckBox.setToolTipText("The BDT service extension is not installed");
+            }
+        }
+        return this.bdtCheckBox;
+    }
+    
+    
+    /**
+     * This method initializes transferCheckBox 
+     *  
+     * @return javax.swing.JCheckBox    
+     */
+    private JCheckBox getTransferCheckBox() {
+        if (transferCheckBox == null) {
+            transferCheckBox = new JCheckBox();
+            transferCheckBox.setText("caGrid Transfer");
+            transferCheckBox.setHorizontalAlignment(SwingConstants.CENTER);
+            // can only enable if Transfer has been installed
+            boolean transferInstalled = transferExtensionInstalled();
+            transferCheckBox.setEnabled(transferInstalled);
+            if (!transferInstalled) {
+                transferCheckBox.setToolTipText("The Transfer service extension is not installed");
+            }
+        }
+        return transferCheckBox;
+    }
+
+
+    /**
+     * This method initializes jCheckBox
+     * 
+     * @return javax.swing.JCheckBox
+     */
+    private JCheckBox getGridIdentCheckBox() {
+        if (this.gridIdentCheckBox == null) {
+            this.gridIdentCheckBox = new JCheckBox();
+            this.gridIdentCheckBox.setEnabled(false);
+            this.gridIdentCheckBox.setHorizontalAlignment(SwingConstants.CENTER);
+            this.gridIdentCheckBox.setText("Grid Identifier");
+        }
+        return this.gridIdentCheckBox;
+    }
+
+
+    /**
      * This method initializes jButton
      * 
      * @return javax.swing.JButton
@@ -168,8 +228,11 @@ public class DataServiceCreationDialog extends CreationExtensionUIDialog {
             this.okButton.setText("OK");
             this.okButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
+                    // enable / disable features the developer has selected
                     setFeatureStatus();
+                    // see what (if any) style has been selected
                     if (getStyleComboBox().getSelectedItem() instanceof ServiceStyleContainer) {
+                        // stop the user from hitting OK again
                         getOkButton().setEnabled(false);
                         ServiceStyleContainer container = (ServiceStyleContainer) 
                             getStyleComboBox().getSelectedItem();
@@ -221,30 +284,14 @@ public class DataServiceCreationDialog extends CreationExtensionUIDialog {
                 javax.swing.border.TitledBorder.DEFAULT_POSITION, null, PortalLookAndFeel.getPanelLabelColor()));
             featuresPanel.add(getWsEnumCheckBox());
             featuresPanel.add(getBdtCheckBox());
+            featuresPanel.add(getTransferCheckBox());
             featuresPanel.add(getGridIdentCheckBox());
         }
         return this.featuresPanel;
     }
 
 
-    /**
-     * This method initializes jCheckBox
-     * 
-     * @return javax.swing.JCheckBox
-     */
-    private JCheckBox getGridIdentCheckBox() {
-        if (this.gridIdentCheckBox == null) {
-            this.gridIdentCheckBox = new JCheckBox();
-            this.gridIdentCheckBox.setEnabled(false);
-            gridIdentCheckBox.setHorizontalAlignment(SwingConstants.CENTER);
-            this.gridIdentCheckBox.setText("Grid Identifier");
-        }
-        return this.gridIdentCheckBox;
-    }
-
-
     private void setFeatureStatus() {
-
         // set the selected service features
         ExtensionTypeExtensionData data = getExtensionTypeExtensionData();
         ServiceFeatures features = new ServiceFeatures();
@@ -252,6 +299,7 @@ public class DataServiceCreationDialog extends CreationExtensionUIDialog {
             features.setUseGridIdeitifiers(getGridIdentCheckBox().isSelected());
             features.setUseWsEnumeration(getWsEnumCheckBox().isSelected());
             features.setUseBdt(getBdtCheckBox().isSelected());
+            features.setUseTransfer(getTransferCheckBox().isSelected());
             
             // service style
             if (getStyleComboBox().getSelectedItem() != DEFAULT_SERVICE_STYLE) {
@@ -287,32 +335,23 @@ public class DataServiceCreationDialog extends CreationExtensionUIDialog {
         List extensionDescriptors = ExtensionsLoader.getInstance().getServiceExtensions();
         for (int i = 0; i < extensionDescriptors.size(); i++) {
             ServiceExtensionDescriptionType desc = (ServiceExtensionDescriptionType) extensionDescriptors.get(i);
-            if (desc.getName().equals(BDT_EXTENSIONS_NAME)) {
+            if (desc.getName().equals(BDT_EXTENSION_NAME)) {
                 return true;
             }
         }
         return false;
     }
-
-
-    /**
-     * This method initializes bdtCheckBox
-     * 
-     * @return javax.swing.JCheckBox
-     */
-    private JCheckBox getBdtCheckBox() {
-        if (this.bdtCheckBox == null) {
-            this.bdtCheckBox = new JCheckBox();
-            this.bdtCheckBox.setText("caGrid BDT");
-            // can only enable BDT if it has been installed
-            boolean bdtInstalled = bdtExtensionInstalled();
-            this.bdtCheckBox.setEnabled(bdtInstalled);
-            bdtCheckBox.setHorizontalAlignment(SwingConstants.CENTER);
-            if (!bdtInstalled) {
-                bdtCheckBox.setToolTipText("The BDT service extension is not installed");
+    
+    
+    private boolean transferExtensionInstalled() {
+        List extensionDescriptors = ExtensionsLoader.getInstance().getServiceExtensions();
+        for (int i = 0; i < extensionDescriptors.size(); i++) {
+            ServiceExtensionDescriptionType desc = (ServiceExtensionDescriptionType) extensionDescriptors.get(i);
+            if (desc.getName().equals(TRANSFER_EXTENSION_NAME)) {
+                return true;
             }
         }
-        return this.bdtCheckBox;
+        return false;
     }
 
 
