@@ -4,6 +4,9 @@ import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.dcqlresult.DCQLQueryResultsCollection;
 import gov.nih.nci.cagrid.dcqlresult.DCQLResult;
 import gov.nih.nci.cagrid.fqp.client.FederatedQueryProcessorClient;
+import gov.nih.nci.cagrid.testing.system.deployment.ContainerPorts;
+import gov.nih.nci.cagrid.testing.system.deployment.NoAvailablePortException;
+import gov.nih.nci.cagrid.testing.system.deployment.PortFactory;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainer;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
 import gov.nih.nci.cagrid.testing.system.haste.Story;
@@ -28,7 +31,8 @@ import org.cagrid.fqp.test.remote.steps.PartialResultsQueryStep;
 public class PartialResultsStory extends Story {
     
     public static final String SERVICE_NAME_BASE = "cagrid/ExampleSdkService";
-    public static final String NON_CONNECT_SERVICE = "http://localhost/non-existant/data/service";
+    public static final String NON_CONNECT_SERVICE_HOSTNAME = "localhost";
+    public static final String NON_CONNECT_SERVICE_LOCATION = "non-existant/data/service";
     
     private ServiceContainerSource[] dataContainers = null;
     private ServiceContainerSource fqpContainerSource = null;
@@ -76,10 +80,20 @@ public class PartialResultsStory extends Story {
             }
         }
         
+        // create a data service URL that won't connect to anything
+        ContainerPorts nonConnectPorts = null;
+        try {
+            nonConnectPorts = PortFactory.getContainerPorts();
+        } catch (NoAvailablePortException ex) {
+            ex.printStackTrace();
+            fail("Could not obtain an unused network port!");
+        }
+        String nonConnectUrl = "http://" + NON_CONNECT_SERVICE_HOSTNAME 
+            + ":" + nonConnectPorts.getPort().toString() + "/" + NON_CONNECT_SERVICE_LOCATION;
         // array of all URLs involved in the query
-        String[] serviceUrlsNonConnect = (String[]) Utils.appendToArray(serviceUrls, NON_CONNECT_SERVICE);
+        String[] serviceUrlsNonConnect = (String[]) Utils.appendToArray(serviceUrls, nonConnectUrl);
         // array of URLs of target data services
-        String[] targetUrlsNonConnect = new String[] {serviceUrls[0], NON_CONNECT_SERVICE};
+        String[] targetUrlsNonConnect = new String[] {serviceUrls[0], nonConnectUrl};
         
         TargetServiceStatus okStatus = new TargetServiceStatus();
         okStatus.setConnectionStatus(ServiceConnectionStatus.OK);
