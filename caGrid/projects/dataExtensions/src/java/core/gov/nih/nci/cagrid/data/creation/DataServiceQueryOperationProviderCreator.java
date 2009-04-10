@@ -49,9 +49,9 @@ import org.apache.commons.logging.LogFactory;
 
 
 /**
- * DataServiceQueryOperationProviderCreator Adds the operation provider for the
- * data service query operation to an introduce created service at post-create
- * time
+ * DataServiceQueryOperationProviderCreator 
+ * Adds the operation provider for the data service query operation to 
+ * an introduce created service at post-create time
  * 
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  * @created Jun 15, 2006
@@ -84,7 +84,8 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
             try {
                 CQLResultTypesGenerator.generateCQLResultTypesXSD(typeInfo);
             } catch (CodegenExtensionException ex) {
-                throw new CreationExtensionException("Problen creating initial permissible result type XSD.", ex);
+                throw new CreationExtensionException(
+                    "Problen creating initial permissible result type XSD.", ex);
             }
             // add the data namespaces
             addDataServiceNamespaces(serviceInfo);
@@ -111,8 +112,9 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
                     + DataServiceConstants.DATA_SERVICE_PACKAGE);
         }
         if (DataServiceConstants.DATA_SERVICE_NAMESPACE.equals(mainService.getNamespace())) {
-            throw new CreationExtensionException("The data service infrastructure already makes use of the namespace "
-                + DataServiceConstants.DATA_SERVICE_NAMESPACE);
+            throw new CreationExtensionException(
+                "The data service infrastructure already makes use of the namespace "
+                    + DataServiceConstants.DATA_SERVICE_NAMESPACE);
         }
     }
 
@@ -133,8 +135,8 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
             }
         };
         // get schemas for data services
-        File baseSchemaDir = new File(ExtensionsLoader.getInstance().getExtensionsDir(), "data" + File.separator
-            + "schema");
+        File baseSchemaDir = new File(ExtensionsLoader.getInstance().getExtensionsDir(),
+            "data" + File.separator + "schema");
         File dataSchemaDir = new File(baseSchemaDir, "Data");
         List<File> dataSchemaFiles = Utils.recursiveListFiles(dataSchemaDir, dataXsdFilter);
         // also copy the WSDL for data services
@@ -147,7 +149,8 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
                 Utils.copyFile(schemaFile, schemaOut);
             }
         } catch (Exception ex) {
-            throw new CreationExtensionException("Error copying data service schemas: " + ex.getMessage(), ex);
+            throw new CreationExtensionException(
+                "Error copying data service schemas: " + ex.getMessage(), ex);
         }
     }
 
@@ -160,7 +163,8 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
             namespaces = new NamespacesType();
         }
         // add some namespaces to the service
-        List<NamespaceType> dsNamespaces = new ArrayList<NamespaceType>(Arrays.asList(namespaces.getNamespace()));
+        List<NamespaceType> dsNamespaces = 
+            new ArrayList<NamespaceType>(Arrays.asList(namespaces.getNamespace()));
         NamespaceType queryNamespace = null;
         NamespaceType resultNamespace = null;
         NamespaceType resultRestrictionNamespace = null;
@@ -188,15 +192,16 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
                 + DataServiceConstants.CAGRID_METADATA_SCHEMA, schemaDirFile);
         } catch (Exception ex) {
             ex.printStackTrace();
-            throw new CreationExtensionException("Error creating namespace for data service: " + ex.getMessage(), ex);
+            throw new CreationExtensionException(
+                "Error creating namespace for data service: " + ex.getMessage(), ex);
         }
         // prevent the metadata beans from being generated
         cagridMdNamespace.setGenerateStubs(Boolean.FALSE);
         dsExceptionsNamespace.setGenerateStubs(Boolean.FALSE);
 
         // set package mappings for result restriction types
-        resultRestrictionNamespace.setPackageName(serviceInfo.getServiceDescriptor().getServices().getService(0)
-            .getPackageName()
+        resultRestrictionNamespace.setPackageName(
+            serviceInfo.getServiceDescriptor().getServices().getService(0).getPackageName()
             + ".cqlresulttypes");
 
         // set package mappings for exceptions
@@ -242,12 +247,13 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
         // from the lib directory
         // FIXME: These depend on the caGrid version, and should probably read
         // it from a file
-        File libDir = new File(ExtensionsLoader.getInstance().getExtensionsDir() + File.separator + "lib");
+        File libDir = new File(ExtensionsLoader.getInstance().getExtensionsDir(), "lib");
         File[] libs = libDir.listFiles(new FileFilter() {
             public boolean accept(File pathname) {
                 String name = pathname.getName();
-                return (name.endsWith(".jar") && (name.startsWith("caGrid-data-") || name.startsWith("caGrid-core-")
-                    || name.startsWith("caGrid-caDSR-") || name.startsWith("caGrid-metadata-")));
+                return (name.endsWith(".jar") && (name.startsWith("caGrid-data-") 
+                    || name.startsWith("caGrid-core-") || name.startsWith("caGrid-caDSR-") 
+                    || name.startsWith("caGrid-metadata-")));
             }
         });
         File[] copiedLibs = new File[libs.length];
@@ -260,31 +266,35 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
                 }
             }
         } catch (Exception ex) {
-            throw new CreationExtensionException("Error copying data service libraries: " + ex.getMessage(), ex);
+            throw new CreationExtensionException(
+                "Error copying data service libraries: " + ex.getMessage(), ex);
         }
         try {
             modifyClasspathFile(copiedLibs, serviceInfo);
         } catch (Exception ex) {
-            throw new CreationExtensionException("Error modifying eclipse .classpath file: " + ex.getMessage(), ex);
+            throw new CreationExtensionException(
+                "Error modifying eclipse .classpath file: " + ex.getMessage(), ex);
         }
     }
 
 
     private String getServiceSchemaDir(ServiceInformation serviceInfo) {
-        String schemaDir = serviceInfo.getBaseDirectory().getAbsolutePath() + File.separator + "schema";
+        String schemaDir = serviceInfo.getBaseDirectory().getAbsolutePath()
+            + File.separator + "schema";
         String serviceName = serviceInfo.getServiceDescriptor().getServices().getService(0).getName();
         return schemaDir + File.separator + serviceName;
     }
 
 
     private String getServiceLibDir(ServiceInformation serviceInfo) {
-        String libDir = serviceInfo.getBaseDirectory().getAbsolutePath() + File.separator + "lib";
+        String libDir = serviceInfo.getBaseDirectory().getAbsolutePath() 
+            + File.separator + "lib";
         return libDir;
     }
 
 
     private void modifyClasspathFile(File[] libs, ServiceInformation serviceInfo) throws Exception {
-        File classpathFile = new File(serviceInfo.getBaseDirectory().getAbsolutePath() + File.separator + ".classpath");
+        File classpathFile = new File(serviceInfo.getBaseDirectory(), ".classpath");
         if (classpathFile.exists()) {
             ExtensionUtilities.syncEclipseClasspath(classpathFile, libs);
         } else {
@@ -300,8 +310,8 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
         if (!CommonTools.servicePropertyExists(desc, DataServiceConstants.QUERY_PROCESSOR_CLASS_PROPERTY)) {
             // set the service property to the stub query processor class name
             String stubQpClassname = ExtensionDataUtils.getQueryProcessorStubClassName(info);
-            CommonTools.setServiceProperty(desc, DataServiceConstants.QUERY_PROCESSOR_CLASS_PROPERTY, stubQpClassname,
-                false);
+            CommonTools.setServiceProperty(desc, DataServiceConstants.QUERY_PROCESSOR_CLASS_PROPERTY,
+                stubQpClassname, false);
         } else {
             try {
                 String value = CommonTools.getServicePropertyValue(desc,
@@ -315,8 +325,8 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
         }
         // does the server config location property exist?
         if (!CommonTools.servicePropertyExists(desc, DataServiceConstants.SERVER_CONFIG_LOCATION)) {
-            CommonTools.setServiceProperty(desc, DataServiceConstants.SERVER_CONFIG_LOCATION, "server-config.wsdd",
-                true, "The location of the server-config.wsdd file");
+            CommonTools.setServiceProperty(desc, DataServiceConstants.SERVER_CONFIG_LOCATION, 
+                "server-config.wsdd", true, "The location of the server-config.wsdd file");
         }
         // validation properties
         CommonTools.setServiceProperty(desc, DataServiceConstants.CQL_VALIDATOR_CLASS, DEFAULT_CQL_VALIDATOR_CLASS,
@@ -324,10 +334,12 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
         CommonTools.setServiceProperty(desc, DataServiceConstants.DOMAIN_MODEL_VALIDATOR_CLASS,
             DEFAULT_DOMAIN_MODEL_VALIDATOR, false,
             "The name of the class to use for CQL validation against a domain model");
-        CommonTools.setServiceProperty(desc, DataServiceConstants.VALIDATE_CQL_FLAG, DataServiceConstants.DEFAULT_VALIDATE_CQL_FLAG,
-            false, "A flag to indicate that CQL should be validated for structural correctness");
-        CommonTools.setServiceProperty(desc, DataServiceConstants.VALIDATE_DOMAIN_MODEL_FLAG, DataServiceConstants.DEFAULT_VALIDATE_DOMAIN_MODEL_FLAG,
-            false, "A flag to indicate that CQL should be validated for correctness against the domain model");
+        CommonTools.setServiceProperty(desc, DataServiceConstants.VALIDATE_CQL_FLAG,
+            DataServiceConstants.DEFAULT_VALIDATE_CQL_FLAG, false,
+            "A flag to indicate that CQL should be validated for structural correctness");
+        CommonTools.setServiceProperty(desc, DataServiceConstants.VALIDATE_DOMAIN_MODEL_FLAG,
+            DataServiceConstants.DEFAULT_VALIDATE_DOMAIN_MODEL_FLAG, false,
+            "A flag to indicate that CQL should be validated for correctness against the domain model");
         // filename of class to qname mapping property
         CommonTools.setServiceProperty(desc, DataServiceConstants.CLASS_MAPPINGS_FILENAME,
             DataServiceConstants.CLASS_TO_QNAME_XML, true,
@@ -355,27 +367,32 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
                 FeatureCreator bdtCreator = new BDTFeatureCreator(info, service);
                 bdtCreator.addFeature();
             }
+            // transfer
+            if (features.isUseTransfer()) {
+                FeatureCreator transferCreator = new TransferFeatureCreator(info, service);
+                transferCreator.addFeature();
+            }
             // service style
             if (features.getServiceStyle() != null) {
                 try {
                     ServiceStyleContainer styleContainer = ServiceStyleLoader.getStyle(features.getServiceStyle());
                     if (styleContainer == null) {
-                        throw new CreationExtensionException("Could not load service style " + features.getServiceStyle());
+                        throw new CreationExtensionException("Could not load service style "
+                            + features.getServiceStyle());
                     }
                     // copy libraries from the style into the service's lib
                     // directory
                     File[] styleLibs = styleContainer.getStyleLibraries();
-                    File serviceLibDir = new File(info.getBaseDirectory().getAbsolutePath() + File.separator + "lib");
+                    File serviceLibDir = new File(info.getBaseDirectory(), "lib");
                     for (File lib : styleLibs) {
-                        Utils.copyFile(lib, new File(serviceLibDir.getAbsolutePath() + File.separator + lib.getName()));
+                        Utils.copyFile(lib, new File(serviceLibDir, lib.getName()));
                     }
                     StyleCreationPostProcessor processor = styleContainer.loadCreationPostProcessor();
                     if (processor != null) {
                         processor.creationPostProcessStyle(extensionDesc, info);
                     }
                     // sync up the eclipse .classpath file
-                    ExtensionUtilities.resyncWithLibDir(new File(info.getBaseDirectory().getAbsolutePath()
-                        + File.separator + ".classpath"));
+                    ExtensionUtilities.resyncWithLibDir(new File(info.getBaseDirectory(), ".classpath"));
                 } catch (Exception ex) {
                     throw new CreationExtensionException("Error executing style creation post processor: "
                         + ex.getMessage(), ex);

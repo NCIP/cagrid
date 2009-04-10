@@ -14,7 +14,7 @@ import java.util.List;
  * @author David Ervin
  * 
  * @created May 6, 2008 10:37:03 AM
- * @version $Id: DataServiceFeatureDefinition.java,v 1.1 2008-05-06 15:10:10 dervin Exp $ 
+ * @version $Id: DataServiceFeatureDefinition.java,v 1.2 2009-04-10 14:51:31 dervin Exp $ 
  */
 public enum DataServiceFeatureDefinition {
 
@@ -87,7 +87,7 @@ public enum DataServiceFeatureDefinition {
                 creator = new WsEnumerationFeatureCreator(info, mainService);
                 break;
             case TRANSFER_FEATURE:
-                // TODO: transfer feature implementation
+                creator = new TransferFeatureCreator(info, mainService);
                 break;
             default:
                 handleUnknown();
