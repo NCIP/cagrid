@@ -5,8 +5,6 @@ import gov.nih.nci.cagrid.encoding.SDKSerializerFactory;
 
 import javax.xml.namespace.QName;
 
-import org.cagrid.transfer.context.client.TransferServiceContextClient;
-
 
 /** 
  *  DataServiceConstants
@@ -145,7 +143,7 @@ public class DataServiceConstants {
     public static final String TRANSFER_QUERY_METHOD_OUTPUT_DESCRIPTION = "The transfer context reference containing the EPR of the transfer resource";
     public static final String TRANSFER_DATA_SERVICE_NAMESPACE = "http://gov.nih.nci.cagrid.data.transfer/TransferDataService";
     public static final String TRANSFER_DATA_SERVICE_PACKAGE_NAME = DATA_SERVICE_PACKAGE + ".transfer";
-    public static final String TRANSFER_CONTEXT_CLIENT = TransferServiceContextClient.class.getName();
+    public static final String TRANSFER_CONTEXT_CLIENT = "org.cagrid.transfer.context.client.TransferServiceContextClient";
     public static final QName TRANSFER_CONTEXT_REFERENCE_QNAME = new QName("http://transfer.cagrid.org/TransferService/Context/types", "TransferServiceContextReference");
     public static final QName TRANSFER_QUERY_METHOD_INPUT_MESSAGE = new QName(TRANSFER_DATA_SERVICE_NAMESPACE, "TransferQueryRequest");
     public static final QName TRANSFER_QUERY_METHOD_OUTPUT_MESSAGE = new QName(TRANSFER_DATA_SERVICE_NAMESPACE, "TransferQueryResponse");
