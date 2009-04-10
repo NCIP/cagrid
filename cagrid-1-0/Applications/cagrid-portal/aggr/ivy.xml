@@ -61,9 +61,9 @@
         <dependency rev="${cagrid.integration.version}" org="caGrid" name="syncgts" conf="default->client"/>
         <dependency rev="${cagrid.integration.version}" org="caGrid" name="wsEnum" conf="default->stubs"/>
         <dependency rev="${target.grid}" org="caGrid" name="target_grid" conf="target_grid->trust"/>
-        <dependency rev="1.2" org="caGrid" name="cadsr" conf="default->client" transitive="false"/>
+        <!--<dependency rev="1.2" org="caGrid" name="cadsr" conf="default->client" transitive="false"/>-->
 
-        <dependency rev="4.0" org="cacore" name="cadsr" conf="default"/>
+        <dependency rev="4.0" org="cacore" name="cadsr-api" />
         <dependency rev="4.0" org="cacore" name="evs" conf="default->client"/>
         <dependency rev="4.0.3-bigindex" org="globus" name="mds" conf="default->jars"/>
         <dependency rev="4.0.3" org="globus" name="globus" conf="default;compile->crypto"/>

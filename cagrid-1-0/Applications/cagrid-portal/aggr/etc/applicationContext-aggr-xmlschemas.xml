@@ -16,8 +16,6 @@
 
     <bean id="xmlSchemaMonitor"
           class="gov.nih.nci.cagrid.portal.aggr.metachange.XMLSchemaMonitor" autowire="byName">
-        <property name="gmeUrl" ref="gmeUrl"/>
-        <property name="cadsrUrl" ref="cadsrUrl"/>
         <property name="timestampProvider">
             <bean class="gov.nih.nci.cagrid.portal.util.InMemoryTimestampProvider"/>
         </property>

@@ -228,6 +228,9 @@
     <bean id="notificationSubscriptionDao" parent="daoTemplate"
           class="gov.nih.nci.cagrid.portal.dao.NotificationSubscriptionDao"/>
 
+    <bean id="notificationSubscriberDao" parent="daoTemplate"
+          class="gov.nih.nci.cagrid.portal.dao.NotificationSubscriberDao"/>
+
     <bean id="openSessionInViewForTesting"
           class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor"
           autowire="byName">

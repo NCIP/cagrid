@@ -5,7 +5,7 @@ import org.hibernate.annotations.Parameter;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -24,7 +24,7 @@ public class NotificationSubscriber extends AbstractDomainObject {
 
     private PortalUser portalUser;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "user_id")
     public PortalUser getPortalUser() {
         return portalUser;
