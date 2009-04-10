@@ -3,10 +3,6 @@
  */
 package gov.nih.nci.cagrid.portal.util;
 
-import gov.nih.nci.cadsr.domain.Context;
-import gov.nih.nci.cadsr.umlproject.domain.Project;
-import gov.nih.nci.cagrid.cadsr.client.CaDSRServiceClient;
-import gov.nih.nci.cagrid.cadsr.common.CaDSRServiceI;
 import gov.nih.nci.cagrid.metadata.MetadataUtils;
 import gov.nih.nci.cagrid.portal.aggr.MetadataThread;
 import gov.nih.nci.cagrid.portal.domain.metadata.dataservice.SourceUMLAssociationEdge;
@@ -15,8 +11,6 @@ import gov.nih.nci.cagrid.portal.domain.metadata.dataservice.UMLAssociation;
 import gov.nih.nci.cagrid.portal.domain.metadata.dataservice.UMLAssociationEdge;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.cagrid.gme.client.GlobalModelExchangeClient;
-import org.cagrid.gme.domain.XMLSchemaNamespace;
 import org.hibernate.FlushMode;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
