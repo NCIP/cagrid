@@ -13,55 +13,10 @@
     <%@ include file="/css/styleSheet.css" %>
     -->
 
-    .fdTableSortTrigger {
-        text-decoration: none;
-        font-size: 1.1em;
-        color: #FFFFFF; /* constant: black */
-        font-weight: bold;
-        padding: 0.1cm;
-    }
-
-    .pageTxtBtn {
-        display: block;
-        width: 2em;
-        line-height: 2em;
-        text-align: center;
-        background: #FFFFFF url("<c:url value='/images/scroller/gradient.gif'/>") repeat-x 0 -20px;
-    }
-
-    ul.fdtablePaginater li div {
-        opacity: 0.5;
-    }
-
-    a.currentPage {
-        font-weight: bolder;
-        border-color: #A84444 !important
-    }
-
-    ul li {
-        width: auto;
-        float: left;
-        list-style: none;
-        padding-top: 5px;
-        padding-bottom: 5px;
-        padding-right: 3px;
-    }
-
-    ul.fdtablePaginater li a, ul.fdtablePaginater li div {
-        border: 1px solid #CCCCCC;
-        font-family:georgia,serif;
-        font-size:1em;
-        display: block;
-        outline-color: -moz-use-text-color;
-        outline-style: none;
-        outline-width: medium;
-        padding: 0;
-        width: 2em;
-    }
-
     #${prefix}mainTable {
         width: 100%;
         visibility: collapse;
+        border:antiquewhite thin;
     }
 
 </style>
@@ -94,9 +49,7 @@
             Select an item from either the <i>Directories</i> or <i>Search Resutls</i> drop-down lists, above.
         </p>
     </c:when>
-    <c:when test="${fn:length(listCommand.scroller.page) == 0}">
-        There are no items to display. Perform new search or select a different directory, above.
-    </c:when>
+
     <c:otherwise>
 	
 		<span class="scrollerStyle1">

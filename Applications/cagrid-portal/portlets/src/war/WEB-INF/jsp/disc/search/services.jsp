@@ -15,7 +15,7 @@
 <script type="text/javascript" src='<c:url value="/js/autocomplete.js"/>'></script>
 
 
-<portlet:actionURL var="formAction" windowState="<%= LiferayWindowState.EXCLUSIVE.toString() %>">
+<portlet:actionURL var="formAction">
     <portlet:param name="operation" value="searchServices"/>
 </portlet:actionURL>
 

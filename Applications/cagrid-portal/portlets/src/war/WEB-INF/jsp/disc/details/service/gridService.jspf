@@ -77,7 +77,8 @@
                 <c:choose>
                     <c:when test="${gridService.metadataHash != null}">
                         <input id="reloadMetadataBtn" type="button"
-                               value="Reload Metadata" alt="Will reload the metadata for this service. Can take upt 30 minutes for the metadata to reload"
+                               value="Reload Metadata"
+                               alt="Will reload the metadata for this service. Can take upt 30 minutes for the metadata to reload"
                                onclick="${prefix}reloadMetadata('<c:out value="${gridService.id}"/>')"
                                 />
                     </c:when>
@@ -94,6 +95,7 @@
             </c:if>
         </td>
     </tr>
+
     <tr>
         <td class="detailslabelcell">Description:</td>
         <td><c:out value="${sd.description}"/></td>
@@ -102,6 +104,16 @@
         <td class="detailslabelcell">Version:</td>
         <td><c:out value="${sd.version}"/></td>
     </tr>
+
+    <tr>
+        <td class="detailslabelcell">
+            Notifications:
+            </td>
+        <td>
+            <%@ include file="notification.jspf" %>
+        </td>
+    </tr>
+
     <c:if test="${!empty sd.caDSRRegistration.registrationStatus}">
         <tr>
             <td class="detailslabelcell">caDSR Registration Status:</td>

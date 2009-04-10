@@ -15,7 +15,7 @@
     <bean id="propertyConfigurer"
           class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="location"
-                  value="classpath:cagridportal.properties"/>
+                  value="classpath:cagridportlets.properties"/>
     </bean>
 
     <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
@@ -33,7 +33,7 @@
                 <property name="inputQueuePreferenceName" value="selectedServiceInputQueueName"/>
             </bean>
         </property>
-
+        <property name="wikiURL"  value="${cagrid.metadata.diagnostics.wikiURL}"/>
     </bean>
 
     <bean id="portletModeHandlerMapping"
