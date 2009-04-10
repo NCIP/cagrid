@@ -28,8 +28,7 @@
         </dependency>
 
 
-        <dependency rev="latest.integration" org="caGrid" name="portal-aggr" conf="default"/>
-        <dependency rev="latest.integration" org="caGrid" name="portal-aggr" conf="test"/>
+        <dependency rev="latest.integration" org="caGrid" name="portal-aggr" conf="default;test"/>
 
         <!--global exclude-->
         <exclude artifact="jprov" type="jar"/>
