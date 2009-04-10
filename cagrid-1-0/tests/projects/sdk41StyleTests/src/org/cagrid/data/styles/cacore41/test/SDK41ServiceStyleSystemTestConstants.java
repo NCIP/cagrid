@@ -9,7 +9,7 @@ import org.cagrid.data.test.creation.DataTestCaseInfo;
  * @author David Ervin
  * 
  * @created Feb 1, 2008 7:58:01 AM
- * @version $Id: SDK41ServiceStyleSystemTestConstants.java,v 1.1 2009-01-08 21:31:20 dervin Exp $ 
+ * @version $Id: SDK41ServiceStyleSystemTestConstants.java,v 1.2 2009-04-10 15:15:24 dervin Exp $ 
  */
 public class SDK41ServiceStyleSystemTestConstants {
     // the service style's internal name
@@ -23,12 +23,22 @@ public class SDK41ServiceStyleSystemTestConstants {
     public static final String SERVICE_NAME = "TestSDK41StyleDataService";
     public static final String SERVICE_NAMESPACE = "http://" + SERVICE_PACKAGE + "/" + SERVICE_NAME;
     
-    public static DataTestCaseInfo SERVICE_TEST_CASE_INFO = 
-        new SDK41TestServiceInfo();
+    public static SDK41TestServiceInfo getTestServiceInfo() {
+        String suffix = String.valueOf(System.currentTimeMillis());
+        return new SDK41TestServiceInfo(suffix);
+    }
+    
     
     private static class SDK41TestServiceInfo extends DataTestCaseInfo {
+        private String dirSuffix;
+        
+        public SDK41TestServiceInfo(String dirSuffix) {
+            this.dirSuffix = dirSuffix;
+        }
+        
+        
         public String getServiceDirName() {
-            return SDK41ServiceStyleSystemTestConstants.SERVICE_NAME;
+            return SDK41ServiceStyleSystemTestConstants.SERVICE_NAME + "_" + dirSuffix;
         }
 
 
