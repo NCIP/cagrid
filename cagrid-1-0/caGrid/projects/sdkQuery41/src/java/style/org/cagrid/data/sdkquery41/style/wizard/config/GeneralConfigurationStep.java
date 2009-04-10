@@ -107,19 +107,19 @@ public class GeneralConfigurationStep extends AbstractStyleConfigurationStep {
         // grab the castor marshalling and unmarshalling xml mapping files
         // from the config dir and copy them into the service's package structure
         try {
-            LOG.debug("Extracting castor marshalling and unmarshalling files");
-            StringBuffer marshallingMappingFile = Utils.fileToStringBuffer(
-                new File(remoteConfigDir, CastorMappingUtil.CASTOR_MARSHALLING_MAPPING_FILE));
-            StringBuffer unmarshallingMappingFile = Utils.fileToStringBuffer(
-                new File(remoteConfigDir, CastorMappingUtil.CASTOR_UNMARSHALLING_MAPPING_FILE));
+            LOG.debug("Copying castor marshalling and unmarshalling files");
+            File marshallingMappingFile = 
+                new File(remoteConfigDir, CastorMappingUtil.CASTOR_MARSHALLING_MAPPING_FILE);
+            File unmarshallingMappingFile = 
+                new File(remoteConfigDir, CastorMappingUtil.CASTOR_UNMARSHALLING_MAPPING_FILE);
             // copy the mapping files to the service's source dir + base package name
             String marshallOut = CastorMappingUtil.getMarshallingCastorMappingFileName(getServiceInformation());
             String unmarshallOut = CastorMappingUtil.getUnmarshallingCastorMappingFileName(getServiceInformation());
-            Utils.stringBufferToFile(marshallingMappingFile, marshallOut);
-            Utils.stringBufferToFile(unmarshallingMappingFile, unmarshallOut);
+            Utils.copyFile(marshallingMappingFile, new File(marshallOut));
+            Utils.copyFile(unmarshallingMappingFile, new File(unmarshallOut));
         } catch (IOException ex) {
             ex.printStackTrace();
-            CompositeErrorDialog.showErrorDialog("Error extracting castor mapping files", ex.getMessage(), ex);
+            CompositeErrorDialog.showErrorDialog("Error copying castor mapping files", ex.getMessage(), ex);
         }
         
         // set up the shared configuration
