@@ -84,4 +84,12 @@
             </column>
         </addColumn>
     </changeSet>
+
+    <changeSet id="9" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="notification_subscriptions" columnName="statusesContainer"/>
+        </preConditions>
+        <dropColumn tableName="notification_subscriptions" columnName="statusesContainer"/>
+    </changeSet>
+
 </databaseChangeLog>

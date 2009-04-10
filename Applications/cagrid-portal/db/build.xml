@@ -64,10 +64,10 @@
     </path>
 
     <path id="test.run.cp">
-        <path refid="test.compile.cp"/>
-        <pathelement location="${build.xml.dir}"/>
-        <pathelement location="${test.build.classes.dir}"/>
         <pathelement location="${test.etc.dir}"/>
+        <pathelement location="${test.build.classes.dir}"/>
+        <pathelement location="${build.xml.dir}"/>
+        <path refid="test.compile.cp"/>
     </path>
 
     <target name="prepare" depends="prepare-ant-tasks"/>
@@ -188,11 +188,7 @@
         </javac>
     </target>
 
-    <target  name="prepare-test-cp" depends="resources,compile-test">
-
-    </target>
-
-    <target name="test" depends="prepare-test-cp" description="Run all tests in the project">
+    <target name="test" depends="jar" description="Run all tests in the project">
         <mkdir dir="${junit.reports.dir}"/>
 
         <junit dir="${basedir}" printsummary="yes" showoutput="true" fork="true">
@@ -214,11 +210,12 @@
         </junit>
     </target>
 
-    <target name="test-single" depends="prepare-test-cp">
+    <target name="test-single">
 
         <junit dir="${basedir}" printsummary="yes" showoutput="yes" fork="true" haltonfailure="yes">
             <sysproperty key="basedir" value="${basedir}"/>
 
+              <formatter type="xml"/>
             <classpath>
                 <path refid="test.run.cp"/>
             </classpath>
@@ -285,6 +282,6 @@
         <delete dir="${test.build.dir}"/>
     </target>
 
-    <target name="all" depends="jar"></target>
+    <target name="all" depends="jar,gen-ddl"></target>
 
 </project>
