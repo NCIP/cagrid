@@ -277,7 +277,7 @@ public abstract class TavernaWorkflowServiceImplResourceBase extends ReflectionR
                 + getConfiguration().getRegistrationTemplateFile());
 
             if (registrationFile.exists() && registrationFile.canRead()) {
-                logger.debug("Loading registration argumentsrmation from:" + registrationFile);
+                logger.debug("Loading registration arguments from:" + registrationFile);
 
                 try {
                     params = ServiceGroupRegistrationClient.readParams(registrationFile.getAbsolutePath());
