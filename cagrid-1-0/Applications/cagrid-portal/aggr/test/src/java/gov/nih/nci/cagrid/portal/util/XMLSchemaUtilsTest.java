@@ -29,7 +29,7 @@ public class XMLSchemaUtilsTest {
 
         schemaUtils = new XMLSchemaUtils();
         schemaUtils.setGmeUrl("badURL");
-        CaDSRDataServiceClient caDSRClient = new CaDSRDataServiceClient();
+        CaDSRClient caDSRClient = new StaticCaDSRClient();
         schemaUtils.setCaDSRClient(caDSRClient);
     }
 
