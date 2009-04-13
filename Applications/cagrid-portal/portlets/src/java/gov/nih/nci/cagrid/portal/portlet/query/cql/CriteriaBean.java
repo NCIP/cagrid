@@ -4,9 +4,9 @@
 package gov.nih.nci.cagrid.portal.portlet.query.cql;
 
 import gov.nih.nci.cagrid.cqlquery.*;
+import gov.nih.nci.cagrid.portal.domain.ServiceInfo;
 import gov.nih.nci.cagrid.portal.domain.metadata.dataservice.UMLAssociationEdge;
 import gov.nih.nci.cagrid.portal.domain.metadata.dataservice.UMLClass;
-import gov.nih.nci.cagrid.portal.domain.ServiceInfo;
 import gov.nih.nci.cagrid.portal.portlet.query.QueryConstants;
 import gov.nih.nci.cagrid.portal.portlet.query.builder.AggregateTargetsCommand;
 import gov.nih.nci.cagrid.portal.portlet.query.dcql.ForeignUMLClassBean;
@@ -15,7 +15,6 @@ import gov.nih.nci.cagrid.portal.portlet.tree.TreeFacade;
 import gov.nih.nci.cagrid.portal.portlet.tree.TreeNode;
 import gov.nih.nci.cagrid.portal.portlet.util.PortletUtils;
 import gov.nih.nci.cagrid.portal.util.PortalUtils;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.HibernateException;
@@ -31,7 +30,9 @@ import java.util.*;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
+ * @author <a href="mailto:manav.kher@semanticbits.com">Manav Kher</a>
  */
+
 @Transactional
 public class CriteriaBean implements ApplicationContextAware {
 
@@ -115,10 +116,9 @@ public class CriteriaBean implements ApplicationContextAware {
         logger.debug("path: " + path);
 
         final String[] parts = PortletUtils.parsePath(path);
+
         if (parts.length == 1) {
-            String op = delete ? "Deleting" : "Adding";
-            logger.debug(op + " criterion " + getUmlClass().getClassName()
-                    + "." + path + ": " + criterion);
+
             if (!delete) {
                 getCriteria().add(criterion);
             } else {
@@ -184,20 +184,20 @@ public class CriteriaBean implements ApplicationContextAware {
                                     UMLClass klass2 = (UMLClass) session.get(klass
                                             .getClass(), klass.getId());
                                     UMLClass superClass = klass2;
-									while (superClass != null) {
-										for (UMLAssociationEdge edge : PortalUtils
-												.getOtherEdges(
-														superClass
-																.getClassName(),
-														superClass
-																.getAssociations())) {
-											if (parts[0].equals(edge.getRole())) {
-												assocType2 = edge.getType();
-												break;
-											}
-										}
-										superClass = superClass.getSuperClass();
-									}
+                                    while (superClass != null) {
+                                        for (UMLAssociationEdge edge : PortalUtils
+                                                .getOtherEdges(
+                                                        superClass
+                                                                .getClassName(),
+                                                        superClass
+                                                                .getAssociations())) {
+                                            if (parts[0].equals(edge.getRole())) {
+                                                assocType2 = edge.getType();
+                                                break;
+                                            }
+                                        }
+                                        superClass = superClass.getSuperClass();
+                                    }
                                     return assocType2;
                                 }
                             });
