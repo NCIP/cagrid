@@ -165,6 +165,7 @@ public class SyncTools {
                     ServiceType service = this.info.getServices().getService(serviceI);
 
                     Emitter parser = new Emitter();
+                    parser.setTimeout(180000);
                     SymbolTable table = null;
 
                     parser.setQuiet(true);
