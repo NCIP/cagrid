@@ -51,6 +51,10 @@ public class EVSServiceSystemTest extends PortletIntegrationTestBase {
 
     }
 
+    private void assertNotNull(String s, Set<EVSConceptDTO> resultSet) {
+        //To change body of created methods use File | Settings | File Templates.
+    }
+
     public void testCaseEVSSearch() {
         caseSearch(caCoreConceptService);
         caseSearch(lexbigEVSService);
