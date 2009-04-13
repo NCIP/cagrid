@@ -59,7 +59,7 @@ public class EditServiceStatusManagerTest extends TestCase {
             public Object answer(InvocationOnMock invocation) {
                 Object[] args = invocation.getArguments();
                 GridService savedGridService = (GridService) args[0];
-                assertNull(savedGridService.getMetadataHash());
+                assertNotNull("Cannot save null metadata hash",savedGridService.getMetadataHash());
                 return null;
             }
         }).when(_mockDao).save(new GridService());
