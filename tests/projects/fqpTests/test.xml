@@ -16,6 +16,8 @@
 	<property name="fqp.service.dir" value="${cagrid.projects.dir}/fqp"/>
 	<property name="transfer.service.dir" value="${cagrid.projects.dir}/transfer"/>
 	<property name="cds.service.dir" value="${cagrid.projects.dir}/cds"/>
+	<!-- debugging stuff -->
+	<property name="debug.packages" value="gov.nih.nci.cagrid.fqp"/>
 	
 	<target name="prepareClasspaths">
 		<path id="all.test.classpath">
@@ -33,6 +35,7 @@
 			<sysproperty key="fqp.service.dir" value="${fqp.service.dir}"/>
 			<sysproperty key="transfer.service.dir" value="${transfer.service.dir}"/>
 			<sysproperty key="cds.service.dir" value="${cds.service.dir}"/>
+			<sysproperty key="testing.container.debug.packages" value="${debug.packages}"/>
 			<classpath refid="all.test.classpath" />
 			<formatter type="xml" />
 			<test if="testcase" name="${testcase}" fork="no" todir="${junit.results.dir}" />
