@@ -91,7 +91,7 @@ public class UpdateManager {
                     // need to set the patch version in the
                     // introduce.engine.properties file
                     File engineProps = new File("." + File.separator + "conf" + File.separator
-                        + "introduce.engine.properties");
+                        + "introduce.properties");
                     Properties props = new Properties();
                     try {
                         props.load(new FileInputStream(engineProps));
@@ -106,7 +106,7 @@ public class UpdateManager {
                         logger.error(e);
                     }
                     File enginePropsT = new File("." + File.separator + "conf" + File.separator
-                        + "introduce.engine.properties.template");
+                        + "introduce.properties.template");
                     Properties propsT = new Properties();
                     try {
                         propsT.load(new FileInputStream(enginePropsT));
