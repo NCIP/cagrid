@@ -5,13 +5,16 @@ package gov.nih.nci.cagrid.portal.portlet.discovery.details;
 
 import gov.nih.nci.cagrid.portal.dao.GridServiceDao;
 import gov.nih.nci.cagrid.portal.domain.GridService;
+import gov.nih.nci.cagrid.portal.domain.PortalUser;
 import gov.nih.nci.cagrid.portal.portlet.discovery.filter.ServiceFilter;
 import gov.nih.nci.cagrid.portal.portlet.tree.TreeFacade;
 import gov.nih.nci.cagrid.portal.portlet.tree.TreeNode;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.web.portlet.ModelAndView;
 
+import javax.portlet.PortletSession;
 import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
 import java.util.HashMap;
 
 /**
@@ -27,6 +30,8 @@ public class ViewServiceDetailsController extends AbstractDiscoveryViewObjectCon
 
     private GridServiceDao gridServiceDao;
     private ServiceFilter servicefilter;
+    private String portalUserAttributeName;
+    private String loginUrl;
 
     /**
      *
@@ -65,8 +70,15 @@ public class ViewServiceDetailsController extends AbstractDiscoveryViewObjectCon
     @Override
     protected void addData(RenderRequest request, ModelAndView mav) {
         super.addData(request, mav);    //To change body of overridden methods use File | Settings | File Templates.
-        mav.addObject("loginUrl", request.getPreferences().getValue(
-                "loginUrl", ""));
+        PortalUser user = (PortalUser) request.getPortletSession()
+                .getAttribute(getPortalUserAttributeName(),
+                        PortletSession.APPLICATION_SCOPE);
+        if (user != null) {
+            mav.addObject("portalUser", user);
+        } else {
+            mav.addObject("loginUrl", request.getPreferences().getValue(
+                    "loginUrl", getLoginUrl()));
+        }
     }
 
     private TreeNode createRootNode(GridService gridService) {
@@ -111,4 +123,19 @@ public class ViewServiceDetailsController extends AbstractDiscoveryViewObjectCon
         this.servicefilter = servicefilter;
     }
 
+    public String getPortalUserAttributeName() {
+        return portalUserAttributeName;
+    }
+
+    public void setPortalUserAttributeName(String portalUserAttributeName) {
+        this.portalUserAttributeName = portalUserAttributeName;
+    }
+
+    public String getLoginUrl() {
+        return loginUrl;
+    }
+
+    public void setLoginUrl(String loginUrl) {
+        this.loginUrl = loginUrl;
+    }
 }

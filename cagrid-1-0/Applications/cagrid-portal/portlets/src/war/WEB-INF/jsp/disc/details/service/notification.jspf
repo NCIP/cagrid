@@ -6,7 +6,7 @@
 
     <div>
         <c:choose>
-          <c:when test="${empty liferayUser}">
+          <c:when test="${empty portalUser}">
                 Please <a href='<c:out value="${loginUrl}"/>'>sign in</a> to set Notifications for thie service.
             </c:when>
 
