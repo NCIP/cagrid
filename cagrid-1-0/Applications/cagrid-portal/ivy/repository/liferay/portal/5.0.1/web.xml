@@ -386,9 +386,10 @@
          <filter-name>Custom User Attribute Populator</filter-name>
          <filter-class>gov.nih.nci.cagrid.portal.liferay.security.LiferayUserPopulatorFilter</filter-class>
      </filter>
+    <!--filter only useful in the /web context-->
      <filter-mapping>
          <filter-name>Custom User Attribute Populator</filter-name>
-         <url-pattern>/user/*</url-pattern>
+         <url-pattern>/web/*</url-pattern>
      </filter-mapping>
 
      <filter>
