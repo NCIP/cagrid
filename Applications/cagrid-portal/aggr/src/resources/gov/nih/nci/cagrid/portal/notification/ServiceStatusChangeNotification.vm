@@ -1,0 +1,6 @@
+The service ${serviceUrl} has changed status from ${oldStatus} to ${newStatus}. You are receiving
+        this notification, becuase you registered to receive notifications for this service. Please
+        visit the Portal for more information.
+
+        Thanks,
+        Portal Admin
