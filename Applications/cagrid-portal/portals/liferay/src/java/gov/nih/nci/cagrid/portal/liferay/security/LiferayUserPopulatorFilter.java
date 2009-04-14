@@ -29,20 +29,16 @@ public class LiferayUserPopulatorFilter implements Filter {
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain filterChain) throws IOException, ServletException {
 
         HttpServletRequest httpReq = (HttpServletRequest) req;
-        String remoteUser = (String) httpReq.getSession().getAttribute("j_username");
+        String remoteUser =  httpReq.getRemoteUser();
 
         //will only be true if user is logged into liferay
         if (remoteUser != null) {
             try {
                 //only do it if object not in session
-                if (httpReq.getSession().getAttribute(LiferayUser.HTTP_SESSION_ATTR_KEY_USER_ROLE) == null) {
-                    logger.debug("Adding liferay user groups to Request");
                     if (isAdmin(Long.parseLong(remoteUser))) {
-                        logger.debug("Found admin user rule. Setting it in session");
                         httpReq.getSession().setAttribute(LiferayUser.HTTP_SESSION_ATTR_KEY_USER_ROLE, LiferayUser.HTTP_SESSION_ATTR_VALUE_ROLE_ADMIN);
                     } else {
                         httpReq.getSession().setAttribute(LiferayUser.HTTP_SESSION_ATTR_KEY_USER_ROLE, LiferayUser.HTTP_SESSION_ATTR_VALUE_ROLE_USER);
-                    }
                 }
             } catch (Exception e) {
                 logger.warn(e);
@@ -54,7 +50,8 @@ public class LiferayUserPopulatorFilter implements Filter {
     private boolean isAdmin(long userId) throws Exception {
         List<Role> roles = RoleServiceUtil.getUserRoles(userId);
         for (Role role : roles) {
-            if (role.getName().equals(RoleImpl.ADMINISTRATOR))
+            if (RoleImpl.ADMINISTRATOR.equals(role.getName())
+                    ||   RoleImpl.POWER_USER.equals(role.getName()))
                 return true;
         }
         return false;
