@@ -13,6 +13,7 @@
 
     <property name="classes.dir" value="${build.dir}/classes"/>
     <property name="src.java.dir" value="${basedir}/src/java"/>
+    <property name="src.resources.dir" value="${basedir}/src/resources"/>
 
     <property name="test.dir" value="${basedir}/test"/>
     <property name="test.etc.dir" value="${test.dir}/etc"/>
@@ -87,6 +88,8 @@
                 <include name="*.properties"/>
                 <include name="*.wsdd"/>
             </fileset>
+            <fileset dir="${src.resources.dir}"/>
+
         </copy>
 
         <!--spring configs-->
@@ -155,7 +158,7 @@
     </target>
 
     <target name="test-single" depends="compile-test">
-
+          <mkdir dir="${junit.reports.dir}"/>
         <junit dir="${basedir}" printsummary="yes" showoutput="yes" fork="true" haltonfailure="yes">
             <sysproperty key="basedir" value="${basedir}"/>
 
@@ -164,7 +167,8 @@
                 <path refid="test.run.cp"/>
             </classpath>
 
-            <test name="gov.nih.nci.cagrid.portal.util.PortalUtilsIntegrationTest"/>
+            <test name="gov.nih.nci.cagrid.portal.util.InMemoryTimestampProviderTest"
+                  todir="${junit.reports.dir}"/>
 
         </junit>
     </target>
@@ -213,52 +217,61 @@
         </copy>
     </target>
 
-    <target name="run-regsvc">
+    <target name="run-regsvc" depends="jar">
         <java classname="gov.nih.nci.cagrid.portal.util.RunRegSvc" classpathref="run.cp" fork="true"
                 />
     </target>
 
-    <target name="run-metachange">
+    <target name="run-metachange" depends="jar">
         <java classname="gov.nih.nci.cagrid.portal.util.RunMetaChange" classpathref="run.cp"
               fork="true"/>
     </target>
 
-    <target name="run-status">
+    <target name="run-status" depends="jar">
         <java classname="gov.nih.nci.cagrid.portal.util.RunStatusChange" classpathref="run.cp"
               fork="true"/>
     </target>
 
-    <target name="run-trust">
+    <target name="run-trust" depends="jar">
         <java classname="gov.nih.nci.cagrid.portal.util.RunTrust" classpathref="run.cp" fork="true"
                 />
     </target>
 
-    <target name="run-geocode">
+    <target name="run-geocode" depends="jar">
         <java classname="gov.nih.nci.cagrid.portal.util.RunGeocode" classpathref="run.cp"
               fork="true"/>
     </target>
 
-    <target name="run-xmlschemas">
+    <target name="run-xmlschemas" depends="jar">
         <java classname="gov.nih.nci.cagrid.portal.util.RunXmlSchemas" classpathref="run.cp"
               fork="true"/>
     </target>
 
-    <target name="run-kill-svc-meta">
+    <target name="run-kill-svc-meta" depends="jar">
         <java classname="gov.nih.nci.cagrid.portal.util.KillServiceMetadata" classpathref="run.cp"/>
     </target>
 
-    <target name="run-kill-grid-svcs">
+    <target name="run-kill-grid-svcs" depends="jar">
         <java classname="gov.nih.nci.cagrid.portal.util.KillGridServices" classpathref="run.cp"/>
     </target>
 
-    <target name="run-load-workspaces">
+    <target name="report-svcs-with-status" depends="jar" description="Will report all services with the given status">
+        <input message="Enter Service Status to report on:" validargs="DORMANT,BANNED,ACTIVE,INACTIVE" defaultvalue="DORMANT" addproperty="status"/>
+          <java classname="gov.nih.nci.cagrid.portal.util.ReportServicesWithStatus" classpathref="run.cp">
+                <arg value="${status}"/>
+              </java>
+      </target>
+
+
+    <target name="run-load-workspaces" depends="jar">
         <java classname="gov.nih.nci.cagrid.portal.util.WorkspacesLoader" classpathref="run.cp"
               fork="true">
             <arg value="${basedir}/etc/caBIG_Workspaces_participants.xls"/>
         </java>
     </target>
 
-    <target name="run-ban-mgr">
+
+    <target name="run-ban-mgr" depends="jar">
         <input message="Enter operation:" validargs="ban,unban" addproperty="banOp"/>
         <input message="Enter service URL:" addproperty="banOpUrl"/>
         <java classname="gov.nih.nci.cagrid.portal.util.ServiceBanManager" classpathref="run.cp">

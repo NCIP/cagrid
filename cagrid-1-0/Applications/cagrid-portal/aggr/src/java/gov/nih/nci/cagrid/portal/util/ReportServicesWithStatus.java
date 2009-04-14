@@ -18,9 +18,21 @@ import java.util.List;
  *
  * @author kherm manav.kher@semanticbits.com
  */
-public class ReportBannedServices {
+public class ReportServicesWithStatus {
 
     public static void main(String[] args) throws Exception {
+        ReportServicesWithStatus util = new ReportServicesWithStatus();
+        if (args.length < 1) {
+            System.out.println("Usage is ReportServicesWithStatus <service status>. Eg. ReportServicesWithStatus Dormant");
+        }
+
+        System.out.println("Generating a list of services with status: " + args[0]);
+        util.printServiceWithStatus(ServiceStatus.valueOf(args[0]));
+
+    }
+
+
+    private void printServiceWithStatus(final ServiceStatus status) {
         ApplicationContext ctx = new ClassPathXmlApplicationContext(
                 new String[]{"classpath:applicationContext-db.xml"});
 
@@ -35,7 +47,7 @@ public class ReportBannedServices {
                 List services = session.createQuery("from GridService").list();
                 for (Iterator i = services.iterator(); i.hasNext();) {
                     GridService svc = (GridService) i.next();
-                    if (svc.getCurrentStatus().equals(ServiceStatus.BANNED))
+                    if (svc.getCurrentStatus().equals(status))
                         System.out.println(svc.getUrl());
                 }
 
