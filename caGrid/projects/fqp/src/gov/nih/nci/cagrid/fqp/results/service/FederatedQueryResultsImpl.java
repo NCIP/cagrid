@@ -19,10 +19,7 @@ import gov.nih.nci.cagrid.fqp.stubs.types.FederatedQueryProcessingFault;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.rmi.RemoteException;
-
-import javax.xml.rpc.holders.ByteWrapperHolder;
 
 import org.cagrid.transfer.context.service.helper.TransferServiceHelper;
 import org.cagrid.transfer.context.stubs.types.TransferServiceContextReference;
@@ -131,6 +128,7 @@ public class FederatedQueryResultsImpl extends FederatedQueryResultsImplBase {
         try {
             Utils.serializeObject(dcqlResults, DCQLConstants.DCQL_RESULTS_QNAME, writer);
             writer.flush();
+            writer.close();
         } catch (Exception ex) {
             FaultHelper helper = new FaultHelper(new InternalErrorFault());
             helper.addFaultCause(ex);
@@ -153,7 +151,7 @@ public class FederatedQueryResultsImpl extends FederatedQueryResultsImplBase {
             helper.addFaultCause(ex);
             throw (InternalErrorFault) helper.getFault();
         }
-
+        
         return transferReference;
     }
     
