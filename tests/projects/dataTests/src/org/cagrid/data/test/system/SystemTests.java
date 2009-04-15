@@ -5,6 +5,7 @@ import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerFactory;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerType;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.DeployServiceStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.DestroyContainerStep;
+import gov.nih.nci.cagrid.testing.system.deployment.steps.SetIndexRegistrationStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.StartContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.StopContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.UnpackContainerStep;
@@ -30,7 +31,7 @@ import org.cagrid.data.test.creation.DeleteOldServiceStep;
  * 
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A> *
  * @created Nov 7, 2006
- * @version $Id: SystemTests.java,v 1.5 2008-10-31 14:30:27 dervin Exp $
+ * @version $Id: SystemTests.java,v 1.6 2009-04-15 15:20:53 dervin Exp $
  */
 public class SystemTests extends BaseSystemTest {
     
@@ -104,6 +105,8 @@ public class SystemTests extends BaseSystemTest {
         steps.add(new RebuildServiceStep(info, getIntroduceBaseDir()));
         // Enable CQL validation, disable model validation
         steps.add(new SetCqlValidationStep(info, true, false));
+        // turn off index service registration
+        steps.add(new SetIndexRegistrationStep(info.getDir(), false));
         // deploy data service
         steps.add(new DeployServiceStep(container, info.getDir()));
         // start globus

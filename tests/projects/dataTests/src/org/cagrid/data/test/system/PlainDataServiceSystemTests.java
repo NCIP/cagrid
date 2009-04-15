@@ -5,6 +5,7 @@ import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerFactory;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerType;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.DeployServiceStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.DestroyContainerStep;
+import gov.nih.nci.cagrid.testing.system.deployment.steps.SetIndexRegistrationStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.StartContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.StopContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.UnpackContainerStep;
@@ -23,7 +24,7 @@ import org.cagrid.data.test.creation.DataTestCaseInfo;
  * @author David Ervin
  * 
  * @created Sep 28, 2007 12:22:29 PM
- * @version $Id: PlainDataServiceSystemTests.java,v 1.1 2008-05-16 19:25:25 dervin Exp $ 
+ * @version $Id: PlainDataServiceSystemTests.java,v 1.2 2009-04-15 15:20:53 dervin Exp $ 
  */
 public class PlainDataServiceSystemTests extends BaseSystemTest {
     
@@ -56,7 +57,7 @@ public class PlainDataServiceSystemTests extends BaseSystemTest {
             fail("Failed to create container: " + ex.getMessage());
         }
         
-        // 1) set up a clean, temporary service container
+        // set up a clean, temporary service container
         Step step = new UnpackContainerStep(container);
         try {
             step.runStep();
@@ -73,25 +74,27 @@ public class PlainDataServiceSystemTests extends BaseSystemTest {
         Vector<Step> steps = new Vector<Step>();
         // data service presumed to have been created
         // by the data service creation tests
-        // 2) Rebuild the service
+        // Rebuild the service
         steps.add(new RebuildServiceStep(info, getIntroduceBaseDir()));
-        // 3) deploy data service
+        // turn off index registration
+        steps.add(new SetIndexRegistrationStep(info.getDir(), false));
+        // deploy data service
         steps.add(new DeployServiceStep(container, info.getDir()));
-        // 4) start the container
+        //  start the container
         steps.add(new StartContainerStep(container));
         return steps;
     }
     
     
     protected void storyTearDown() throws Throwable {
-        // 5) stop globus
+        // stop the container
         Step stopStep = new StopContainerStep(container);
         try {
             stopStep.runStep();
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
-        // 6) throw away globus
+        // throw away the container
         Step destroyStep = new DestroyContainerStep(container);
         try {
             destroyStep.runStep();

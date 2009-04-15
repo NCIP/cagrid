@@ -5,6 +5,7 @@ import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerFactory;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerType;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.DeployServiceStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.DestroyContainerStep;
+import gov.nih.nci.cagrid.testing.system.deployment.steps.SetIndexRegistrationStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.StartContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.StopContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.UnpackContainerStep;
@@ -93,6 +94,8 @@ public class EnumerationSystemTests extends BaseSystemTest {
 		steps.add(new RebuildServiceStep(info, getIntroduceBaseDir()));
         // Turn on query validation, turn off model validation
         steps.add(new SetCqlValidationStep(info, true, false));
+        // disable index service registration
+        steps.add(new SetIndexRegistrationStep(info.getDir(), false));
 		// deploy data service
 		steps.add(new DeployServiceStep(container, info.getDir()));
 		// start container
@@ -105,14 +108,14 @@ public class EnumerationSystemTests extends BaseSystemTest {
 
 	protected void storyTearDown() throws Throwable {
 		super.storyTearDown();
-		// stop globus
+		// stop the container
 		Step stopStep = new StopContainerStep(container);
 		try {
 			stopStep.runStep();
 		} catch (Throwable ex) {
 			ex.printStackTrace();
 		}
-		// throw away globus
+		// throw away the container
 		Step destroyStep = new DestroyContainerStep(container);
 		try {
 			destroyStep.runStep();
