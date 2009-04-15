@@ -31,10 +31,8 @@ import org.cagrid.fqp.results.metadata.ProcessingStatus;
 import org.cagrid.fqp.test.common.QueryResultsVerifier;
 import org.cagrid.fqp.test.common.UrlReplacer;
 import org.cagrid.fqp.test.common.steps.BaseQueryExecutionStep;
-import org.cagrid.notification.SubscriptionHelper;
 import org.cagrid.notification.SubscriptionListener;
 import org.globus.ws.enumeration.ClientEnumIterator;
-import org.globus.wsrf.impl.notification.SubscriptionCreationException;
 import org.globus.wsrf.utils.AnyHelper;
 import org.oasis.wsrf.properties.ResourcePropertyValueChangeNotificationType;
 
@@ -100,14 +98,19 @@ public class EnumerationQueryExecutionStep extends BaseQueryExecutionStep {
         
         // wait for results
         long start = System.currentTimeMillis();
-        while (!resultsClient.isProcessingComplete() && ((System.currentTimeMillis() - start) < (WAIT_TIME * 1000))) {
+        boolean complete = resultsClient.isProcessingComplete();
+        while (!complete && ((System.currentTimeMillis() - start) < (WAIT_TIME * 1000))) {
             try {
                 Thread.sleep(500);
+                System.out.print('.');
+                complete = resultsClient.isProcessingComplete();
             } catch (Exception ex) {
                 // ?
             }
         }
         
+        assertTrue("Federated query processing did not complete in the allowed time of " + WAIT_TIME + " sec", complete);
+                
         enumerateAndVerify(resultsClient);
         
         // release the results resource
