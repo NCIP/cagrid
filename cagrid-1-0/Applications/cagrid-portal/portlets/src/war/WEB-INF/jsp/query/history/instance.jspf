@@ -15,7 +15,14 @@
     <option value="reloadQueryInstance">Re-Load</option>
     <option value="deleteQueryInstance">Delete</option>
     </select></td>
-<td style="padding-right:5px"><c:out value="${instance.state}"/></td>
+<td style="padding-right:5px">
+    <span>
+<c:if test="${instance.state == 'RUNNING'}">
+  <tags:image name="indicator.gif"/>
+</c:if>
+    <c:out value="${instance.state}"/>
+    </span>
+</td>
 <td style="padding-right:5px"><c:if test="${!empty instance.startTime}">
     <fmt:formatDate value="${instance.startTime}" type="both"/>
 </c:if></td>

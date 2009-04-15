@@ -64,6 +64,7 @@
                 <filter token="LIFERAY_ADMIN_USERNAME" value="${liferay.admin.username}"/>
                 <filter token="WEBSSO_SERVER_URL" value="${webSSO.server.base.url}"/>
                 <filter token="CAGRID_PORTAL_URL" value="${cagrid.portal.base.url}"/>
+                <filter token="CAGRID_PORTAL_HOST_TRUSTSTORE" value="${cagrid.portal.host.truststore}"/>
             </filterset>
 
         </copy>
