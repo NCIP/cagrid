@@ -125,36 +125,6 @@ public class TransferDataServiceImpl extends BaseServiceImpl {
             }
         };
         
-        /*
-        LOG.debug("CQL query processing started");
-        CQLQueryResults results = processor.processQuery(query);
-        LOG.debug("CQL query processing complete.");
-        OutputStreamWriter writer = new OutputStreamWriter(byteQueue.getByteOutputStream());
-        try {
-            LOG.debug("Serializing CQL results to byte queue for transfer");
-            InputStream serverConfigWsdd = getServerConfigWsdd();
-            Utils.serializeObject(results, 
-                DataServiceConstants.CQL_RESULT_SET_QNAME, writer, serverConfigWsdd);
-            serverConfigWsdd.close();
-        } catch (Exception ex) {
-            String error = "Error serializing CQL query results to byte queue: " + ex.getMessage();
-            LOG.error(error, ex);
-            ex.printStackTrace();
-            throw new QueryProcessingException(error, ex);
-        } finally {
-            try {
-                writer.flush();
-                writer.close();
-            } catch (IOException ex) {
-                LOG.error(
-                    "Unable to flush and close serialization output stream: " + ex.getMessage(), ex);
-                ex.printStackTrace();
-                // not throwing a query processing exception here since 
-                // presumably that part actually worked ok
-            }
-        }
-        */
-        
         // actually execute the query and serialize task
         try {
             Executors.newSingleThreadExecutor().submit(queryTask).get();
