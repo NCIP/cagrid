@@ -158,13 +158,24 @@
 	</if>
 
 </target>
+	
+
+	
+<target name="configure-tomcat-sutdown-ports">
+
+  <xmltask source="${tomcat.home}/conf/server.xml" dest="${tomcat.home}/conf/server.xml">
+
+	<attr path="/Server" attr="port" value="${shutdown.port}" />
+
+  </xmltask>
+
+</target>
 
 
+	
 <target name="configure-tomcat-ports">
 
 	<xmltask source="${tomcat.home}/conf/server.xml" dest="${tomcat.home}/conf/server.xml">
-
-		<attr path="/Server" attr="port" value="${tomcat.shutdown.port}" />
 
 		<attr path="/Server/Service[@name='Catalina' or @name='jboss.web']/Connector[@port='${old.http.port}' and @redirectPort='${old.https.port}']" attr="port" value="${http.port}" />
 
