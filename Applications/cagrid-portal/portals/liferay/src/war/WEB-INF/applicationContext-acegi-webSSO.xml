@@ -83,13 +83,10 @@
     <bean id="casProxyTicketValidator"
           class="org.acegisecurity.providers.cas.ticketvalidator.CasProxyTicketValidator">
         <property name="casValidate" value="${cas.server.url}/proxyValidate"/>
-        <!--<property name="proxyCallbackUrl"
-              value="https://nci-garmillas-1:8443/contacts-cas/casProxy/receptor" /> -->
         <property name="serviceProperties">
             <ref local="serviceProperties"/>
         </property>
-        <property name="trustStore">
-            <value>/Library/Java/Home/lib/security/cacerts</value>
+        <property name="trustStore" value="${cagrid.portal.host.truststore}">
         </property>
     </bean>
 
@@ -108,8 +105,6 @@
         </property>
     </bean>
 
-    <!-- must be modified accordingly to the client User Detail Service -->
-    <!-- must be modified accordingly to the client User Detail Service -->
     <bean id="webSSOUserDetailsService" class="gov.nih.nci.cagrid.portal.liferay.websso.WebSSOUserDetailsService"/>
 
     <bean id="casAuthoritiesPopulator"
@@ -124,9 +119,6 @@
         <property name="sendRenew" value="false"/>
     </bean>
 
-    <!-- ===================== HTTP CHANNEL REQUIREMENTS ==================== -->
-
-    <!-- Enabled by default for CAS, as a CAS deployment uses HTTPS -->
     <bean id="channelProcessingFilter" class="org.acegisecurity.securechannel.ChannelProcessingFilter">
         <property name="channelDecisionManager">
             <ref local="channelDecisionManager"/>
