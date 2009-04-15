@@ -3,3 +3,4 @@ build
 cagrid-poral:db.iml
 poral:db.iml
 ext
+bin
