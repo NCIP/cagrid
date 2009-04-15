@@ -6,6 +6,7 @@ import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerFactory;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerType;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.DeployServiceStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.DestroyContainerStep;
+import gov.nih.nci.cagrid.testing.system.deployment.steps.SetIndexRegistrationStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.StartContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.StopContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.UnpackContainerStep;
@@ -35,7 +36,7 @@ import org.cagrid.data.test.system.SetQueryProcessorStep;
  * @author David Ervin
  * 
  * @created Mar 14, 2007 2:19:42 PM
- * @version $Id: BDTDataServiceSystemTests.java,v 1.5 2008-10-28 22:50:57 dervin Exp $ 
+ * @version $Id: BDTDataServiceSystemTests.java,v 1.6 2009-04-15 15:20:53 dervin Exp $ 
  */
 public class BDTDataServiceSystemTests extends BaseSystemTest {
     
@@ -102,6 +103,8 @@ public class BDTDataServiceSystemTests extends BaseSystemTest {
 		steps.add(new RebuildServiceStep(testServiceInfo, getIntroduceBaseDir()));
         // Turn on query validation, turn off model validation
         steps.add(new SetCqlValidationStep(testServiceInfo, true, false));
+        // disable index service registration
+        steps.add(new SetIndexRegistrationStep(testServiceInfo.getDir(), false));
 		// deploy data service
 		steps.add(new DeployServiceStep(container, testServiceInfo.getDir()));
 		// start the container
@@ -114,14 +117,14 @@ public class BDTDataServiceSystemTests extends BaseSystemTest {
 	
 	protected void storyTearDown() throws Throwable {
 		super.storyTearDown();
-		// stop globus
+		// stop the container
 		Step stopStep = new StopContainerStep(container);
 		try {
 			stopStep.runStep();
 		} catch (Throwable ex) {
 			ex.printStackTrace();
 		}
-		// throw away globus
+		// throw away the container
 		Step destroyStep = new DestroyContainerStep(container);
 		try {
 			destroyStep.runStep();
