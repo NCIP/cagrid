@@ -161,7 +161,7 @@
 	
 
 	
-<target name="configure-tomcat-sutdown-ports">
+<target name="configure-tomcat-shutdown-ports">
 
   <xmltask source="${tomcat.home}/conf/server.xml" dest="${tomcat.home}/conf/server.xml">
 
