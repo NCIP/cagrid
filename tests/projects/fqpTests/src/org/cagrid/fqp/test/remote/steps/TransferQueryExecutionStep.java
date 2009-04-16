@@ -23,13 +23,11 @@ import org.cagrid.fqp.results.metadata.ProcessingStatus;
 import org.cagrid.fqp.test.common.QueryResultsVerifier;
 import org.cagrid.fqp.test.common.UrlReplacer;
 import org.cagrid.fqp.test.common.steps.BaseQueryExecutionStep;
-import org.cagrid.notification.SubscriptionHelper;
 import org.cagrid.notification.SubscriptionListener;
 import org.cagrid.transfer.context.client.TransferServiceContextClient;
 import org.cagrid.transfer.context.client.helper.TransferClientHelper;
 import org.cagrid.transfer.context.stubs.types.TransferServiceContextReference;
 import org.cagrid.transfer.descriptor.DataTransferDescriptor;
-import org.globus.wsrf.impl.notification.SubscriptionCreationException;
 import org.globus.wsrf.utils.AnyHelper;
 import org.oasis.wsrf.properties.ResourcePropertyValueChangeNotificationType;
 
@@ -93,19 +91,26 @@ public class TransferQueryExecutionStep extends BaseQueryExecutionStep {
         
         // wait for results
         long start = System.currentTimeMillis();
-        while (!resultsClient.isProcessingComplete() && ((System.currentTimeMillis() - start) < (WAIT_TIME * 1000))) {
+        boolean complete = resultsClient.isProcessingComplete();
+        while (!complete && ((System.currentTimeMillis() - start) < (WAIT_TIME * 1000))) {
             try {
                 Thread.sleep(500);
+                System.out.print(".");
+                complete = resultsClient.isProcessingComplete();
             } catch (Exception ex) {
                 // ?
             }
         }
         
+        assertTrue("Federated query processing did not complete in the allowed time of " + WAIT_TIME + " sec", complete);
+        
         // verify the results
         transferAndVerify(resultsClient);
         
         // release the results resource
+		LOG.debug("Trying to destroy transfer results resource");
         resultsClient.destroy();
+        LOG.debug("Transfer results resource destroyed");
         
         // check for success...
         /*
@@ -231,7 +236,7 @@ public class TransferQueryExecutionStep extends BaseQueryExecutionStep {
         String xml = textWriter.getBuffer().toString();
         if (LOG.isDebugEnabled()) {
             LOG.debug("Got data from transfer context:");
-            System.out.println(xml);
+            LOG.debug(xml);
         }
         LOG.debug("Deserializing text from transfer service to CQL Query Results");
         
