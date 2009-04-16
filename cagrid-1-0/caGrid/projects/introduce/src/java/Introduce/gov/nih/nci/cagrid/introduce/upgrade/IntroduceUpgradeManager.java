@@ -147,7 +147,7 @@ public class IntroduceUpgradeManager {
 
             } else {
                 throw new Exception("ERROR: The service"
-                    + " is not upgradable because it's version cannot be determined or is corupt");
+                    + " is not upgradable because it's version cannot be determined or is corrupt");
             }
 
         } else {
