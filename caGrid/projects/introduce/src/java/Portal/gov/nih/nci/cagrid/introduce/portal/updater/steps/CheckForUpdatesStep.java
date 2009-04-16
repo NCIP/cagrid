@@ -227,7 +227,7 @@ public class CheckForUpdatesStep extends PanelWizardStep {
                     statusLabel.setText("ERROR: Unable to connect or read from update site!");
                     ex.printStackTrace();
                 } catch (Exception ex) {
-                    statusLabel.setText("ERROR: Update site information is corupt");
+                    statusLabel.setText("ERROR: Update site information is corrupt");
                     ex.printStackTrace();
                 }
                 SwingUtilities.invokeLater(new Runnable() {
