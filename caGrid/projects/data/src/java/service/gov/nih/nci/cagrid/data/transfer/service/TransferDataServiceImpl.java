@@ -19,6 +19,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.rmi.RemoteException;
 import java.util.concurrent.Callable;
@@ -96,16 +97,20 @@ public class TransferDataServiceImpl extends BaseServiceImpl {
                 HelperAxisEngine.setCurrentMessageContext(threadMessageContext);
                 LOG.debug("CQL query processing started");
                 CQLQueryResults results = processor.processQuery(query);
+                fireAuditQueryResults(query, results);
                 LOG.debug("CQL query processing complete.");
-                OutputStreamWriter writer = new OutputStreamWriter(byteQueue.getByteOutputStream());
+                OutputStream byteOutput = byteQueue.getByteOutputStream();
+                OutputStreamWriter writer = new OutputStreamWriter(byteOutput);
                 try {
                     LOG.debug("Serializing CQL results to byte queue for transfer");
                     InputStream serverConfigWsdd = getServerConfigWsdd();
                     Utils.serializeObject(results, 
-                        DataServiceConstants.CQL_RESULT_COLLECTION_QNAME, writer, serverConfigWsdd);
+                        DataServiceConstants.CQL_RESULT_SET_QNAME, 
+                        writer, serverConfigWsdd);
                     serverConfigWsdd.close();
                 } catch (Exception ex) {
-                    String error = "Error serializing CQL query results to byte queue: " + ex.getMessage();
+                    String error = "Error serializing CQL query results to byte queue: " 
+                        + ex.getMessage();
                     LOG.error(error, ex);
                     ex.printStackTrace();
                     throw new QueryProcessingException(error, ex);
@@ -113,12 +118,14 @@ public class TransferDataServiceImpl extends BaseServiceImpl {
                     try {
                         writer.flush();
                         writer.close();
+                        byteOutput.flush();
+                        byteOutput.close();
+                        LOG.debug("CQL results serialized into byte queue");
                     } catch (IOException ex) {
-                        LOG.error(
-                            "Unable to flush and close serialization output stream: " + ex.getMessage(), ex);
-                        ex.printStackTrace();
-                        // not throwing a query processing exception here since 
-                        // presumably that part actually worked ok
+                        String error = "Unable to flush and close serialization output stream: " 
+                            + ex.getMessage();
+                        LOG.error(error, ex);
+                        throw new QueryProcessingException(error, ex);
                     }
                 }
                 return null;
@@ -127,6 +134,7 @@ public class TransferDataServiceImpl extends BaseServiceImpl {
         
         // actually execute the query and serialize task
         try {
+            LOG.debug("Starting query execution task");
             Executors.newSingleThreadExecutor().submit(queryTask).get();
         } catch (ExecutionException ex) {
             Throwable cause = ex.getCause();
@@ -150,6 +158,7 @@ public class TransferDataServiceImpl extends BaseServiceImpl {
         // create the reference using the transfer service helper
         TransferServiceContextReference transferReference = null;
         try {
+            LOG.debug("Creating transfer context");
             transferReference = TransferServiceHelper.createTransferContext(
                 byteQueue.getByteInputStream(), descriptor);
         } catch (RemoteException ex) {
@@ -163,6 +172,7 @@ public class TransferDataServiceImpl extends BaseServiceImpl {
     
     private InputStream getServerConfigWsdd() throws IOException {
         if (serverConfigWsddBytes == null) {
+            LOG.debug("Reading and caching server config wsdd file");
             String serverConfigLocation = null;
             try {
                 serverConfigLocation = ServiceConfigUtil.getConfigProperty(
