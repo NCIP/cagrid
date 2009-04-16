@@ -10,6 +10,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.fqp.test.common.AggregationStory;
 import org.cagrid.fqp.test.common.DataServiceDeploymentStory;
+import org.cagrid.fqp.test.common.FQPTestingConstants;
 import org.cagrid.fqp.test.common.FederatedQueryProcessorHelper;
 import org.cagrid.fqp.test.common.QueryStory;
 import org.cagrid.fqp.test.common.ServiceContainerSource;
@@ -24,14 +25,11 @@ import org.junit.Test;
  * @author David Ervin
  * 
  * @created Jul 10, 2008 10:57:40 AM
- * @version $Id: RemoteFqpSystemTests.java,v 1.20 2009-01-27 17:56:47 dervin Exp $ 
+ * @version $Id: RemoteFqpSystemTests.java,v 1.21 2009-04-16 15:34:14 dervin Exp $ 
  */
 public class RemoteFqpSystemTests {
     
     public static final Log logger = LogFactory.getLog(RemoteFqpSystemTests.class);
-    
-    public static final String FQP_DIR_PROPERTY = "fqp.service.dir";
-    public static final String TRANSFER_SERVICE_DIR_PROPERTY = "transfer.service.dir";
     
     private DataServiceDeploymentStory[] dataServiceDeployments;
     private FQPServiceDeploymentStory standardFqpDeployment;
@@ -111,16 +109,16 @@ public class RemoteFqpSystemTests {
     
     
     private File getFqpDir() {
-        String value = System.getProperty(FQP_DIR_PROPERTY);
-        Assert.assertNotNull("System property " + FQP_DIR_PROPERTY + " was not set!", value);
+        String value = System.getProperty(FQPTestingConstants.FQP_DIR_PROPERTY);
+        Assert.assertNotNull("System property " + FQPTestingConstants.FQP_DIR_PROPERTY + " was not set!", value);
         File dir = new File(value);
         return dir;
     }
     
     
     private File getTransferDir() {
-        String value = System.getProperty(TRANSFER_SERVICE_DIR_PROPERTY);
-        Assert.assertNotNull("System property " + TRANSFER_SERVICE_DIR_PROPERTY + " was not set!", value);
+        String value = System.getProperty(FQPTestingConstants.TRANSFER_SERVICE_DIR_PROPERTY);
+        Assert.assertNotNull("System property " + FQPTestingConstants.TRANSFER_SERVICE_DIR_PROPERTY + " was not set!", value);
         File dir = new File(value);
         return dir;
     }
