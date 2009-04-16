@@ -297,7 +297,7 @@
             <replace path="/server/mbean[@code='org.jboss.logging.Log4jService']/attribute[1]/text()"
                      withText="resource:jboss-log4j.xml"/>
         </xmltask>
-        <copy file="${liferay.jboss.home}/server/${liferay.jboss.server.name}/conf/jboss-log4j.xml"
+        <copy file="${liferay.jboss.home}/server/${liferay.jboss.server.name}/conf/log4j.xml"
               tofile="${liferay.jboss.home}/server/${liferay.jboss.server.name}/conf/jboss-log4j.xml"
               failonerror="false"/>
 
