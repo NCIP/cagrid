@@ -30,7 +30,7 @@ import org.cagrid.fqp.test.remote.steps.ChangeJndiSweeperDelayStep;
  * @author David Ervin
  * 
  * @created Jul 15, 2008 12:46:02 PM
- * @version $Id: FQPServiceDeploymentStory.java,v 1.10 2009-04-10 20:52:25 dervin Exp $ 
+ * @version $Id: FQPServiceDeploymentStory.java,v 1.11 2009-04-16 14:42:04 dervin Exp $ 
  */
 public class FQPServiceDeploymentStory extends Story implements ServiceContainerSource {
     
@@ -108,7 +108,8 @@ public class FQPServiceDeploymentStory extends Story implements ServiceContainer
             1, defaultBehavior.getTimeoutPerRetry().intValue(), 12, 5));
         steps.add(new SetIndexRegistrationStep(tempFqpServiceDir.getAbsolutePath(), false));
         // deploy FQP
-        List<String> args = Arrays.asList(new String[] {"-Dno.deployment.validation=true"});
+        List<String> args = Arrays.asList(new String[] {
+            "-Dno.deployment.validation=true", "-Dperform.index.service.registration=false"});
         steps.add(new DeployServiceStep(fqpServiceContainer, tempFqpServiceDir.getAbsolutePath(), args));
         
         // transfer?
