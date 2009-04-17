@@ -111,7 +111,7 @@
         </javac>
     </target>
 
-    <target name="deploy-portlets" depends="clean,war" description="Will deploy caGrid Portlets.">
+    <target name="deploy-portlets" description="Will deploy pre-built caGrid Portlets war">
         <copy file="${cagrid.portlets.war.file}" tofile="${target.deploy.dir}/cagridportlets.war"
               overwrite="true"/>
     </target>
@@ -143,7 +143,7 @@
 
     <target name="test" depends="compile-test, build-war-dir" description="Run all the tests for this porject.">
         <mkdir dir="${junit.reports.dir}"/>
-    
+
         <junit dir="${basedir}" printsummary="yes" showoutput="true" fork="true" forkmode="once">
             <sysproperty key="basedir" value="${basedir}"/>
             <!--needed to hook into main reporting task-->
@@ -154,23 +154,45 @@
             <formatter type="xml"/>
 
             <batchtest todir="${junit.reports.dir}">
-                <fileset dir="${test.src.java.dir}">
-                    <include name="**/*Test.java"/>
-                    <exclude name="**/*IntegrationTest.java"/>
+                <fileset id="test.fileset" dir="${test.src.java.dir}">
+                    <patternset refid="unit.test.pattern"/>
                 </fileset>
             </batchtest>
 
         </junit>
     </target>
 
+    <target name="test-system" depends="compile-test, build-war-dir" description="Run all the System tests for this porject.">
+           <mkdir dir="${junit.reports.dir}"/>
+
+           <junit dir="${basedir}" printsummary="yes" showoutput="true" fork="true" forkmode="once">
+               <sysproperty key="basedir" value="${basedir}"/>
+               <!--needed to hook into main reporting task-->
+               <sysproperty key="net.sourceforge.cobertura.datafile"
+                            file="${cobertura.datafile}"/>
+
+               <classpath refid="test.run.cp"/>
+               <formatter type="xml"/>
+
+               <batchtest todir="${junit.reports.dir}">
+                   <fileset id="test.fileset" dir="${test.src.java.dir}">
+                       <patternset>
+                           <include name="*SystemTest.java"/>
+                           </patternset>
+                   </fileset>
+               </batchtest>
+
+           </junit>
+       </target>
+
     <target name="test-single">
-        <mkdir dir="${junit.reports.dir}"/>  
+        <mkdir dir="${junit.reports.dir}"/>
         <junit dir="${basedir}" printsummary="yes" showoutput="yes" fork="true" haltonfailure="yes">
             <sysproperty key="basedir" value="${basedir}"/>
 
             <classpath refid="test.run.cp"/>
-               <formatter type="xml"/>
-               <test name="gov.nih.nci.cagrid.portal.portlet.disc.EVSServiceSystemTest" todir="${junit.reports.dir}"/>
+            <formatter type="xml"/>
+            <test name="gov.nih.nci.cagrid.portal.portlet.disc.EVSServiceSystemTest" todir="${junit.reports.dir}"/>
         </junit>
     </target>
 
