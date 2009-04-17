@@ -70,9 +70,9 @@
         <dependency rev="4.0.3-bigindex" org="globus" name="mds" conf="default->jars"/>
         <dependency rev="4.0.3" org="globus" name="globus" conf="default;compile->crypto"/>
 
-        <dependency rev="2.5.1" org="poi" name="poi" conf="compile->default"/>
-        <dependency rev="2.5.1" org="poi" name="poi-contrib" conf="compile->default"/>
-        <dependency rev="2.5.1" org="poi" name="poi-scratchpad" conf="compile->default"/>
+        <dependency rev="3.2" org="poi" name="poi" conf="compile->default"/>
+        <dependency rev="3.2" org="poi" name="poi-contrib" conf="compile->default"/>
+        <dependency rev="3.2" org="poi" name="poi-scratchpad" conf="compile->default"/>
 
         <!--global exclude-->
         <exclude artifact="jprov" type="jar"/>
