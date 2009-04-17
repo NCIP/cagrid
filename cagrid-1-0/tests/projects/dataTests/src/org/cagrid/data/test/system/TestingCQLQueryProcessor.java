@@ -6,7 +6,6 @@ import gov.nih.nci.cagrid.data.InitializationException;
 import gov.nih.nci.cagrid.data.MalformedQueryException;
 import gov.nih.nci.cagrid.data.QueryProcessingException;
 import gov.nih.nci.cagrid.data.cql.LazyCQLQueryProcessor;
-import gov.nih.nci.cagrid.data.mapping.ClassToQname;
 import gov.nih.nci.cagrid.data.mapping.Mappings;
 import gov.nih.nci.cagrid.data.utilities.CQLResultsCreationUtil;
 import gov.nih.nci.cagrid.data.utilities.ResultsCreationException;
@@ -17,8 +16,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
-import javax.xml.namespace.QName;
-
 import org.projectmobius.bookstore.Book;
 import org.projectmobius.bookstore.BookStore;
 
@@ -28,23 +25,13 @@ import org.projectmobius.bookstore.BookStore;
  * 
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A> 
  * @created Nov 7, 2006 
- * @version $Id: TestingCQLQueryProcessor.java,v 1.1 2008-05-16 19:25:25 dervin Exp $ 
+ * @version $Id: TestingCQLQueryProcessor.java,v 1.2 2009-04-17 19:21:12 dervin Exp $ 
  */
 public class TestingCQLQueryProcessor extends LazyCQLQueryProcessor {
 	public static final String PROPERTY_STARTS_WITH_LOWERCASE = "thisPropertyStartsWithLowercase";
 	public static final String PROPERTY_STARTS_WITH_UPPERCASE = "ThisPropertyStartsWithUppercase";
 	public static final String LC_DEFAULT_VALUE = "lowercase";
 	public static final String UC_DEFAULT_VALUE = "UPPERCASE";
-	
-	public static int BOOK_COUNT = 4;
-	
-	public static String[] BOOK_TITLES = {
-		"Eclipse", "XML Schema", "Hibernate In Action", "Hibernate Quickly"
-	};
-	public static String[] BOOK_AUTHORS = {
-		"Jim D'Anjou, et al", "Eric van der Vlist", 
-		"Christian Bauer, Gavin King", "Patrick Peak, Nick, Heudecker"
-	};
 	
 	
 	public void initialize(Properties props, InputStream wsddStream) throws InitializationException {
@@ -71,14 +58,7 @@ public class TestingCQLQueryProcessor extends LazyCQLQueryProcessor {
 
 	public CQLQueryResults processQuery(CQLQuery cqlQuery) throws MalformedQueryException, QueryProcessingException {
 		List results = getResultsList(cqlQuery);
-		Mappings mapping = new Mappings();
-		ClassToQname bookMap = new ClassToQname();
-		bookMap.setClassName(Book.class.getName());
-		bookMap.setQname(new QName("gme://projectmobius.org/1/BookStore", "Book").toString());
-		ClassToQname storeMap = new ClassToQname();
-		storeMap.setClassName(BookStore.class.getName());
-		storeMap.setQname(new QName("gme://projectmobius.org/1/BookStore", "Book").toString());
-		mapping.setMapping(new ClassToQname[] {bookMap, storeMap});
+		Mappings mapping = TestQueryResultsGenerator.getClassToQnameMappings();
 		try {
 			CQLQueryResults queryResults = CQLResultsCreationUtil.createObjectResults(results, cqlQuery.getTarget().getName(), mapping);
 			return queryResults;
@@ -89,17 +69,11 @@ public class TestingCQLQueryProcessor extends LazyCQLQueryProcessor {
 	
 	
 	private List getResultsList(CQLQuery query) throws QueryProcessingException {
-		List<Object> results = new LinkedList<Object>();
+		List results = new LinkedList();
 		if (query.getTarget().getName().equals(Book.class.getName())) {
-			for (int i = 0; i < BOOK_COUNT; i++) {			
-				Book book = new Book();
-				book.setTitle(BOOK_TITLES[i]);
-				book.setAuthor(BOOK_AUTHORS[i]);
-				results.add(book);
-			}
+			results = TestQueryResultsGenerator.getResultBooks();
 		} else if (query.getTarget().getName().equals(BookStore.class.getName())) {
-				BookStore store = new BookStore();
-				results.add(store);
+			results = TestQueryResultsGenerator.getResultBookStore();
 		} else {
 			throw new QueryProcessingException("Target " + query.getTarget().getName() + " is not valid!");
 		}

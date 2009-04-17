@@ -18,9 +18,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.rmi.RemoteException;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.apache.axis.types.URI;
+import org.cagrid.data.test.system.TestQueryResultsGenerator;
 import org.cagrid.transfer.context.client.TransferServiceContextClient;
 import org.cagrid.transfer.context.client.helper.TransferClientHelper;
 import org.cagrid.transfer.context.stubs.types.TransferServiceContextReference;
@@ -33,7 +38,7 @@ import org.projectmobius.bookstore.Book;
  * 
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>  * 
  * @created Nov 23, 2006 
- * @version $Id: InvokeTransferDataServiceStep.java,v 1.1 2009-04-16 20:59:28 dervin Exp $ 
+ * @version $Id: InvokeTransferDataServiceStep.java,v 1.2 2009-04-17 19:21:12 dervin Exp $ 
  */
 public class InvokeTransferDataServiceStep extends Step {
 	
@@ -188,15 +193,42 @@ public class InvokeTransferDataServiceStep extends Step {
         }
         
         // validate results from transfer
-        // FIXME: compare results to known-gold results
-        int resultCount = 0;
-        CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results, true);
+        List<Object> returnedObjects = new LinkedList<Object>();
+        CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
         while (iter.hasNext()) {
-            resultCount++;
-            iter.next();
+            returnedObjects.add(iter.next());
         }
-        
-        assertTrue("No results were returned from the enumeration", resultCount != 0);
+        List goldObjects = TestQueryResultsGenerator.getResultBooks();
+        // same number of results?
+        assertEquals("Unexpected number of results returned from the transfer", goldObjects.size(), returnedObjects.size());
+        // verify each returned object matches one of the expected objects
+        Iterator returnedObjectIter = returnedObjects.iterator();
+        while (returnedObjectIter.hasNext()) {
+            Book returnedBook = (Book) returnedObjectIter.next();
+            boolean bookFound = goldObjects.contains(returnedBook);
+            if (!bookFound) {
+                // serialize it so we can see what happened
+                StringWriter writer = new StringWriter();
+                Utils.serializeObject(returnedBook, Book.getTypeDesc().getXmlType(), writer);
+                System.err.println("Unexpected object found in results:");
+                System.err.println(writer.getBuffer().toString());
+                fail("Unexpected object found in results");
+            }
+        }
+        // verify every gold object exists in the results
+        Iterator goldObjectIter = goldObjects.iterator();
+        while (goldObjectIter.hasNext()) {
+            Book goldBook = (Book) goldObjectIter.next();
+            boolean bookFound = returnedObjects.contains(goldBook);
+            if (!bookFound) {
+                // serialize it so we can see what happened
+                StringWriter writer = new StringWriter();
+                Utils.serializeObject(goldBook, Book.getTypeDesc().getXmlType(), writer);
+                System.err.println("Expected object NOT found in results:");
+                System.err.println(writer.getBuffer().toString());
+                fail("Expected object NOT found in results");
+            }
+        }
 	}
 	
 	
