@@ -17,12 +17,14 @@
     <target name="test:test" depends="test:prepare">
         <antcall target="test-base">
             <param name="project.list" value="${unit.testable.projects}"/>
+            <param name="test.target" value="test"/>
         </antcall>
     </target>
 
     <target name="test:system" depends="test:prepare">
         <antcall target="test-base">
             <param name="project.list" value="${system.testable.projects}"/>
+            <param name="test.target" value="test-system"/>
         </antcall>
     </target>
 
@@ -38,7 +40,7 @@
                 <trycatch property="@{project.name}.unit.test.failed.message">
                     <try>
                         <ant inheritAll="false" dir="${projects.dir}/@{project.name}"
-                             target="test" inheritrefs="false">
+                             target="${test.target}" inheritrefs="false">
                             <property name="junit.reports.dir" value="${test.junit.reports.dir}"/>
                         </ant>
                     </try>
