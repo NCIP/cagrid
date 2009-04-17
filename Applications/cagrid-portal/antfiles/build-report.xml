@@ -33,7 +33,7 @@
     <target name="reports:instrument" depends="reports:prepare">
         <mkdir dir="${cobertura.instrumented.dir}"/>
 
-        <for list="${reportable.projects.list}" parallel="false" param="project.name" trim="true">
+        <for list="${reportable.projects}" parallel="false" param="project.name" trim="true">
             <sequential>
                 <cobertura-instrument todir="${projects.dir}/@{project.name}/build/classes"
                                       datafile="${cobertura.instrumented.dir}/@{project.name}-cobertura.ser">
@@ -51,7 +51,7 @@
 
         <mkdir dir="${reports.codecoverage.dir}"/>
 
-        <for list="${reportable.projects.list}" parallel="false" param="project.name"  keepgoing="true" trim="true">
+        <for list="${reportable.projects}" parallel="false" param="project.name"  keepgoing="true" trim="true">
             <sequential>
                 <mkdir dir="${reports.codecoverage.dir}/@{project.name}"/>
                 <echo message="${projects.dir}/@{project.name}/src/java"/>
@@ -74,7 +74,7 @@
         <mkdir dir="${reports.junit.dir}"/>
 
         <!--test all projects. Even though they might not generate reports-->
-        <for list="${unit.testable.projects.list}" parallel="false" param="project.name" trim="true">
+        <for list="${unit.testable.projects}" parallel="false" param="project.name" trim="true">
 
             <sequential>
                 <stopwatch name="@{project.name}"/>
@@ -104,7 +104,7 @@
     <target name="reports:javadoc" depends="build-projects-list">
         <mkdir dir="${reports.javadocs.dir}"/>
 
-        <for list="${reportable.projects.list}" parallel="false" param="project.name" trim="true">
+        <for list="${reportable.projects}" parallel="false" param="project.name" trim="true">
             <sequential>
 
                 <ant inheritAll="false" dir="${projects.dir}/@{project.name}"
