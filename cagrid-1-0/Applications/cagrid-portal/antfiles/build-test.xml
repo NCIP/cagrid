@@ -15,11 +15,23 @@
     </target>
 
     <target name="test:test" depends="test:prepare">
+        <antcall target="test-base">
+            <param name="project.list" value="${unit.testable.projects}"/>
+        </antcall>
+    </target>
+
+    <target name="test:system" depends="test:prepare">
+        <antcall target="test-base">
+            <param name="project.list" value="${system.testable.projects}"/>
+        </antcall>
+    </target>
+
+    <target name="test-base">
 
         <delete dir="${test.junit.reports.dir}" failonerror="false"/>
         <mkdir dir="${test.junit.reports.dir}"/>
 
-        <for list="${unit.testable.projects.list}" parallel="false" param="project.name" trim="true">
+        <for list="${project.list}" parallel="false" param="project.name" trim="true">
 
             <sequential>
                 <stopwatch name="@{project.name}"/>
@@ -42,4 +54,6 @@
         </for>
         <fail message="Unit Tests failed! Consult the logs for details." if="unit.test.failed"/>
     </target>
+
+
 </project>
