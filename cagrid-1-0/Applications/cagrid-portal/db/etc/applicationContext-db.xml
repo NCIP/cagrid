@@ -82,6 +82,7 @@
                 <value>gov.nih.nci.cagrid.portal.domain.IndexService</value>
                 <value>gov.nih.nci.cagrid.portal.domain.NotificationSubscriber</value>
                 <value>gov.nih.nci.cagrid.portal.domain.NotificationSubscription</value>
+                <value>gov.nih.nci.cagrid.portal.domain.NotificationLogMessage</value>
                 <value>gov.nih.nci.cagrid.portal.domain.ServiceAnnotation</value>
                 <value>gov.nih.nci.cagrid.portal.domain.StatusChange</value>
 
@@ -230,6 +231,9 @@
 
     <bean id="notificationSubscriberDao" parent="daoTemplate"
           class="gov.nih.nci.cagrid.portal.dao.NotificationSubscriberDao"/>
+
+    <bean id="notificationLogMessageDao" parent="daoTemplate"
+          class="gov.nih.nci.cagrid.portal.dao.NotificationLogMessageDao"/>
 
     <bean id="openSessionInViewForTesting"
           class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor"

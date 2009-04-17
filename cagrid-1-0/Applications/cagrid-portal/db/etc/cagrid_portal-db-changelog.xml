@@ -92,4 +92,37 @@
         <dropColumn tableName="notification_subscriptions" columnName="statusesContainer"/>
     </changeSet>
 
+    <changeSet id="10" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="notification_subscriber" columnName="haltSubscriptions"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="notification_subscriber">
+            <column name="haltSubscriptions" type="bit" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+
+    <changeSet id="11" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="notification_log"/>
+            </not>
+        </preConditions>
+        <createTable tableName="notification_log">
+            <column name="id" type="integer" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="notificationType" type="varchar(255)"/>
+            <column name="sendSuccessful" type="bit"/>
+            <column name="timestamp" type="datetime"/>
+            <column name="subscriber_id" type="integer">
+                <constraints references="notification_subscriber(id)" foreignKeyName="FKDA99AEA26E4B3B1D"/>
+            </column>
+        </createTable>
+    </changeSet>
+
 </databaseChangeLog>

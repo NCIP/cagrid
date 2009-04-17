@@ -202,8 +202,7 @@
 
             <batchtest todir="${junit.reports.dir}">
                 <fileset dir="${test.src.java.dir}">
-                    <include name="**/*Test.java"/>
-                    <exclude name="**/Abstract*.java"/>
+                     <patternset refid="unit.test.pattern"/>
                 </fileset>
             </batchtest>
 
@@ -211,7 +210,7 @@
     </target>
 
     <target name="test-single">
-
+          <mkdir dir="${junit.reports.dir}"/>
         <junit dir="${basedir}" printsummary="yes" showoutput="yes" fork="true" haltonfailure="yes">
             <sysproperty key="basedir" value="${basedir}"/>
 
@@ -220,7 +219,8 @@
                 <path refid="test.run.cp"/>
             </classpath>
 
-               <test name="gov.nih.nci.cagrid.portal.util.ActivateFilterAspectTest"/>
+               <test name="gov.nih.nci.cagrid.portal.dao.QueryInstanceDaoTest"
+                       todir="${junit.reports.dir}"/>
 
         </junit>
     </target>

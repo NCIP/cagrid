@@ -30,6 +30,8 @@
         <artifact name="applicationContext-aggr-status" type="xml"/>
         <artifact name="applicationContext-aggr-xmlschemas" type="xml"/>
         <artifact name="applicationContext-aggr" type="xml"/>
+        <artifact name="applicationContext-notification" type="xml"/>
+        <artifact name="applicationContext-notification-aspects" type="xml"/>
         <artifact name="applicationContext-trust" type="xml"/>
         <artifact name="sync-description" type="xml"/>
 
