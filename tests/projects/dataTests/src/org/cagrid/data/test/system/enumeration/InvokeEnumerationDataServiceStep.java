@@ -16,7 +16,11 @@ import gov.nih.nci.cagrid.wsenum.utils.EnumerationResponseHelper;
 
 import java.io.InputStream;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.rmi.RemoteException;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import javax.xml.soap.SOAPElement;
@@ -24,6 +28,7 @@ import javax.xml.soap.SOAPElement;
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.types.URI;
 import org.apache.axis.utils.ClassUtils;
+import org.cagrid.data.test.system.TestQueryResultsGenerator;
 import org.globus.ws.enumeration.ClientEnumIterator;
 import org.projectmobius.bookstore.Book;
 import org.xmlsoap.schemas.ws._2004._09.enumeration.DataSource;
@@ -35,7 +40,7 @@ import org.xmlsoap.schemas.ws._2004._09.enumeration.Release;
  * 
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>  * 
  * @created Nov 23, 2006 
- * @version $Id: InvokeEnumerationDataServiceStep.java,v 1.2 2008-08-21 15:07:25 dervin Exp $ 
+ * @version $Id: InvokeEnumerationDataServiceStep.java,v 1.3 2009-04-17 19:41:52 dervin Exp $ 
  */
 public class InvokeEnumerationDataServiceStep extends Step {
 	
@@ -149,7 +154,7 @@ public class InvokeEnumerationDataServiceStep extends Step {
 		 * remote exceptions from the user and throws an empty NoSuchElement exception.
 		 */
 		ClientEnumIterator iter = new ClientEnumIterator(dataSource, enumContainer.getContext());
-        int resultCount = 0;
+        List<Object> returnedObjects = new LinkedList<Object>();
         try {
             while (iter.hasNext()) {
                 SOAPElement elem = (SOAPElement) iter.next();
@@ -168,10 +173,10 @@ public class InvokeEnumerationDataServiceStep extends Step {
                 }
                 assertTrue("Deserialized object was not an instance of " 
                     + Book.class.getName(), instance instanceof Book);
-                resultCount++;
+                returnedObjects.add(instance);
             }
         } catch (NoSuchElementException ex) {
-            if (resultCount == 0) {
+            if (returnedObjects.size() == 0) {
                 throw ex;
             }
         } finally {
@@ -186,44 +191,37 @@ public class InvokeEnumerationDataServiceStep extends Step {
                 fail("Exception other than NoSuchElementException thrown: " + ex.getClass().getName());
             }
         }
-        assertTrue("No results were returned from the enumeration", resultCount != 0);
-		
-		// this is my own impl to show and handle the exceptions
-		/*
-		Pull pull = new Pull(); // who made these names?
-		pull.setEnumerationContext(response.getEnumerationContext());
-		int resultCount = 0;
-		boolean stop = false;
-		try {
-			while (!stop) {
-				PullResponse res = dataSource.pullOp(pull);
-				stop = res.getEndOfSequence() != null; // seriously, why not use a boolean?
-				ItemListType items = res.getItems();
-				if (items != null) {
-					SOAPElement[] elems = items.get_any();
-					for (int i = 0; i < elems.length; i++) {
-						String elemText = elems[i].toString();
-						int bookIndex = elemText.indexOf("Book");
-						if (bookIndex == -1) {
-							throw new NoSuchElementException("Element returned was not of type book!");
-						}
-						resultCount++;
-					}
-				}
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			Release release = new Release();
-			release.setEnumerationContext(response.getEnumerationContext());
-			try {
-				dataSource.releaseOp(release);
-			} catch (Exception exx) {
-				System.err.println("ERROR IN RELEASE:");
-				exx.printStackTrace();
-			}
-			throw ex;
-		}
-		*/
+        List goldObjects = TestQueryResultsGenerator.getResultBooks();
+        // same number of results?
+        assertEquals("Unexpected number of results returned from the enumeration", goldObjects.size(), returnedObjects.size());
+        // verify each returned object matches one of the expected objects
+        Iterator returnedObjectIter = returnedObjects.iterator();
+        while (returnedObjectIter.hasNext()) {
+            Book returnedBook = (Book) returnedObjectIter.next();
+            boolean bookFound = goldObjects.contains(returnedBook);
+            if (!bookFound) {
+                // serialize it so we can see what happened
+                StringWriter writer = new StringWriter();
+                Utils.serializeObject(returnedBook, Book.getTypeDesc().getXmlType(), writer);
+                System.err.println("Unexpected object found in results:");
+                System.err.println(writer.getBuffer().toString());
+                fail("Unexpected object found in results");
+            }
+        }
+        // verify every gold object exists in the results
+        Iterator goldObjectIter = goldObjects.iterator();
+        while (goldObjectIter.hasNext()) {
+            Book goldBook = (Book) goldObjectIter.next();
+            boolean bookFound = returnedObjects.contains(goldBook);
+            if (!bookFound) {
+                // serialize it so we can see what happened
+                StringWriter writer = new StringWriter();
+                Utils.serializeObject(goldBook, Book.getTypeDesc().getXmlType(), writer);
+                System.err.println("Expected object NOT found in results:");
+                System.err.println(writer.getBuffer().toString());
+                fail("Expected object NOT found in results");
+            }
+        }
 	}
 	
 	
