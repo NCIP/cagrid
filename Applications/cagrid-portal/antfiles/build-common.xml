@@ -14,6 +14,13 @@
     <property file="${projects.dir}/build.properties"/>
     <property file="${cagrid-portal-common.basedir}/project.properties"/>
 
+    <patternset id="unit.test.pattern">
+        <include name="**/*Test.java"/>
+        <exclude name="**/*IntegrationTest.java"/>
+        <exclude name="**/Abstract*.java"/>
+        <exclude name="**/*System*.java"/>
+    </patternset>
+
     <target name="prepare-ant-tasks" unless="defined.anttaskes">
         <path id="xmltaskdef.cp">
             <pathelement location="${tools.ant.lib}/xmltask-v1.14.jar"/>
@@ -80,10 +87,15 @@
             <entry key="cagrid.portal.fast.aggr.defaultPeriod" value="${cagrid.portal.fast.aggr.defaultPeriod}"/>
             <entry key="cagrid.portal.maxDowntimeHours" value="${cagrid.portal.maxDowntimeHours}"/>
             <entry key="cagrid.portal.build.stamp" value="${cagrid.portal.build.stamp}"/>
-            <entry  key="cagrid.portal.host.cert" value="${cagrid.portal.host.cert}"/>
-            <entry  key="cagrid.portal.host.key" value="${cagrid.portal.host.key}"/>
+            <entry key="cagrid.portal.host.cert" value="${cagrid.portal.host.cert}"/>
+            <entry key="cagrid.portal.host.key" value="${cagrid.portal.host.key}"/>
+            <entry key="cagrid.portal.base.url" value="${cagrid.portal.base.url}"/>
+            <entry key="cagrid.portal.notifications.enabled" value="${cagrid.portal.notifications.enabled}"/>
+            <entry key="cagrid.portal.notifications.mail.server" value="${cagrid.portal.notifications.mail.server}"/>
+            <entry key="cagrid.portal.notifications.mail.address" value="${cagrid.portal.notifications.mail.address}"/>
         </propertyfile>
     </target>
 
+    
 
 </project>
