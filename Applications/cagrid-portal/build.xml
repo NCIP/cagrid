@@ -109,6 +109,18 @@
         </trycatch>
     </target>
 
+     <target name="liferay:deploy-authn" depends="prepare" description="Deploy the authentication module to Liferay">
+        <trycatch>
+            <try>
+                <ant target="deploy-authn"
+                     dir="${projects.dir}/portals"/>
+            </try>
+            <catch>
+                <fail message="Please build the project first or run 'ant all'"/>
+            </catch>
+        </trycatch>
+    </target>
+
     <target name="cagrid:deploy-portlets" depends="prepare" description="Deploy all caGrid Portlets to the Portlet server">
         <ant inheritall="false" target="deploy-portlets"
              dir="${projects.dir}/portlets">
@@ -162,6 +174,11 @@
         </ant>
     </target>
 
+    <target name="report-svcs-with-status" depends="prepare" description="Will generate a list of services with the given status.">
+        <ant inheritall="false" target="report-svcs-with-status"
+             dir="${projects.dir}/aggr">
+        </ant>
+    </target>
 
     <target name="build-all" depends="build-projects-list"
             description="Do dependency management">

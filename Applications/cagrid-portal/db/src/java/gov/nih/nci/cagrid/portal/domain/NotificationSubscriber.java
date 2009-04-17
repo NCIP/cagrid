@@ -23,6 +23,7 @@ import javax.persistence.Table;
 public class NotificationSubscriber extends AbstractDomainObject {
 
     private PortalUser portalUser;
+    private boolean haltSubscriptions;
 
     @OneToOne
     @JoinColumn(name = "user_id")
@@ -32,5 +33,13 @@ public class NotificationSubscriber extends AbstractDomainObject {
 
     public void setPortalUser(PortalUser portalUser) {
         this.portalUser = portalUser;
+    }
+
+    public boolean isHaltSubscriptions() {
+        return haltSubscriptions;
+    }
+
+    public void setHaltSubscriptions(boolean haltSubscriptions) {
+        this.haltSubscriptions = haltSubscriptions;
     }
 }
