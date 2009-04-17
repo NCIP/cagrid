@@ -162,28 +162,29 @@
         </junit>
     </target>
 
-    <target name="test-system" depends="compile-test, build-war-dir" description="Run all the System tests for this porject.">
-           <mkdir dir="${junit.reports.dir}"/>
+    <target name="test-system" depends="compile-test, build-war-dir"
+            description="Run all the System tests for this porject.">
+        <mkdir dir="${junit.reports.dir}"/>
 
-           <junit dir="${basedir}" printsummary="yes" showoutput="true" fork="true" forkmode="once">
-               <sysproperty key="basedir" value="${basedir}"/>
-               <!--needed to hook into main reporting task-->
-               <sysproperty key="net.sourceforge.cobertura.datafile"
-                            file="${cobertura.datafile}"/>
+        <junit dir="${basedir}" printsummary="yes" showoutput="true" fork="true" forkmode="once">
+            <sysproperty key="basedir" value="${basedir}"/>
+            <!--needed to hook into main reporting task-->
+            <sysproperty key="net.sourceforge.cobertura.datafile"
+                         file="${cobertura.datafile}"/>
 
-               <classpath refid="test.run.cp"/>
-               <formatter type="xml"/>
+            <classpath refid="test.run.cp"/>
+            <formatter type="xml"/>
 
-               <batchtest todir="${junit.reports.dir}">
-                   <fileset id="test.fileset" dir="${test.src.java.dir}">
-                       <patternset>
-                           <include name="*SystemTest.java"/>
-                           </patternset>
-                   </fileset>
-               </batchtest>
+            <batchtest todir="${junit.reports.dir}">
+                <fileset id="test.fileset" dir="${test.src.java.dir}">
+                    <patternset>
+                        <include name="**/*SystemTest.java"/>
+                    </patternset>
+                </fileset>
+            </batchtest>
 
-           </junit>
-       </target>
+        </junit>
+    </target>
 
     <target name="test-single">
         <mkdir dir="${junit.reports.dir}"/>
