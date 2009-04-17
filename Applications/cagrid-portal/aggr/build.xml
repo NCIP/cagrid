@@ -7,6 +7,7 @@
     <property name="etc.dir" value="${basedir}/etc"/>
     <property name="lib.dir" value="${basedir}/lib"/>
     <property name="build.dir" value="${basedir}/build"/>
+    <property name="build.reports.dir" value="${build.dir}/reports"/>
     <property name="build.jar.dir" value="${build.dir}/jars"/>
     <property name="build.xmls.dir" value="${build.dir}/xmls"/>
     <property name="javadocs.dest.dir" value="${build.dir}/javadocs"/>
@@ -130,9 +131,7 @@
 
             <batchtest todir="${junit.reports.dir}">
                 <fileset dir="${test.src.java.dir}">
-                    <include name="**/*Test.java"/>
-                    <exclude name="**/Abstract*"/>
-                    <exclude name="**/*Integration*"/>
+                    <patternset refid="unit.test.pattern"/>
                 </fileset>
             </batchtest>
 
@@ -158,7 +157,7 @@
     </target>
 
     <target name="test-single" depends="compile-test">
-          <mkdir dir="${junit.reports.dir}"/>
+        <mkdir dir="${junit.reports.dir}"/>
         <junit dir="${basedir}" printsummary="yes" showoutput="yes" fork="true" haltonfailure="yes">
             <sysproperty key="basedir" value="${basedir}"/>
 
@@ -167,7 +166,7 @@
                 <path refid="test.run.cp"/>
             </classpath>
 
-            <test name="gov.nih.nci.cagrid.portal.util.InMemoryTimestampProviderTest"
+            <test name="gov.nih.nci.cagrid.portal.notification.UserNotificationFilterTest"
                   todir="${junit.reports.dir}"/>
 
         </junit>
@@ -255,13 +254,25 @@
         <java classname="gov.nih.nci.cagrid.portal.util.KillGridServices" classpathref="run.cp"/>
     </target>
 
-    <target name="report-svcs-with-status" depends="jar" description="Will report all services with the given status">
-        <input message="Enter Service Status to report on:" validargs="DORMANT,BANNED,ACTIVE,INACTIVE" defaultvalue="DORMANT" addproperty="status"/>
-          <java classname="gov.nih.nci.cagrid.portal.util.ReportServicesWithStatus" classpathref="run.cp">
-                <arg value="${status}"/>
-              </java>
-      </target>
+    <target name="report:svcs-with-status" depends="jar" description="Will report all services with the given status">
+        <input message="Enter Service Status to report on:" validargs="DORMANT,BANNED,ACTIVE,INACTIVE"
+               defaultvalue="DORMANT" addproperty="status"/>
+        <java classname="gov.nih.nci.cagrid.portal.util.ReportServicesWithStatus" classpathref="run.cp">
+            <arg value="${status}"/>
+        </java>
+    </target>
 
+    <target name="report:dormant-inactive-svcs" depends="jar"
+            description="Will generate an excel report in the build/reports directory for all services with DORMANT and INACTIVE status">
+        <mkdir dir="${build.reports.dir}"/>
+        <java fork="true" dir="${build.reports.dir}"
+              classname="gov.nih.nci.cagrid.portal.util.ServiceStatusReportGenerator" classpathref="run.cp">
+            <arg value="DORMANT"/>
+            <arg value="INACTIVE"/>
+            <arg value="-output"/>
+            <arg value="Service_Status_Report.xls"/>
+        </java>
+    </target>
 
     <target name="run-load-workspaces" depends="jar">
         <java classname="gov.nih.nci.cagrid.portal.util.WorkspacesLoader" classpathref="run.cp"
