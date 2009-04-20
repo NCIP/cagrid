@@ -10,11 +10,7 @@
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
 	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
-    <bean id="propertyConfigurer"
-          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="location"
-                  value="classpath:cagridportal.properties"/>
-    </bean>
+    <import resource="classpath:applicationContext-aggr.xml"/>
 
     <bean id="serviceStatusChangeNotifier" class="gov.nih.nci.cagrid.portal.notification.ServiceStatusChangeNotifier"
           p:notificationSender-ref="serviceStatusNotificationSender">
@@ -23,9 +19,8 @@
 
     <bean id="baseNotificationSender" class="gov.nih.nci.cagrid.portal.notification.BaseNotificationSender"
           abstract="true">
-        <property name="mailSender">
-            <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl"
-                  p:host="${cagrid.portal.notifications.mail.server}"/>
+        <property name="mailSender" ref="portalMailSender">
+
         </property>
     </bean>
 
@@ -37,7 +32,7 @@
     <!--customized to generate service status message-->
     <bean id="serviceStatusChangeGenerator"
           class="gov.nih.nci.cagrid.portal.notification.VelocityNotificationGenerator"
-          p:fromAddress="${cagrid.portal.notifications.mail.address}"
+          p:fromAddress-ref="portalAdminMailAddress"
           p:view="gov/nih/nci/cagrid/portal/notification/ServiceStatusChangeNotification.vm"
           p:subject="Portal Notification">
         <property name="velocityEngine">

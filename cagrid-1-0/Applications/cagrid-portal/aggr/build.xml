@@ -265,12 +265,19 @@
     <target name="report:dormant-inactive-svcs" depends="jar"
             description="Will generate an excel report in the build/reports directory for all services with DORMANT and INACTIVE status">
         <mkdir dir="${build.reports.dir}"/>
+
+        <property name="report.service.statuses" value="DORMANT,INACTIVE"/>
+        <property name="report.filename" value="Portal_Servcie_Status_Report.xls"/>
+        <property name="report.emails" value=""/>
+
         <java fork="true" dir="${build.reports.dir}"
               classname="gov.nih.nci.cagrid.portal.util.ServiceStatusReportGenerator" classpathref="run.cp">
-            <arg value="DORMANT"/>
-            <arg value="INACTIVE"/>
-            <arg value="-output"/>
-            <arg value="Service_Status_Report.xls"/>
+            <arg value="-status"/>
+            <arg value="${report.service.statuses}"/>
+            <arg value="-filename"/>
+            <arg value="${report.filename}"/>
+            <arg value="-email"/>
+            <arg value="${report.emails}"/>
         </java>
     </target>
 
