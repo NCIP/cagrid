@@ -6,20 +6,29 @@ import gov.nih.nci.cagrid.portal.domain.ServiceStatus;
 import gov.nih.nci.cagrid.portal.domain.StatusChange;
 import gov.nih.nci.cagrid.portal.domain.metadata.common.ResearchCenter;
 import gov.nih.nci.cagrid.portal.domain.metadata.common.ResearchCenterPointOfContact;
+import org.apache.commons.cli.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.poi.hssf.usermodel.*;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
+import javax.mail.internet.MimeMessage;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * Utility to create a report (excel)
@@ -48,9 +57,13 @@ import java.util.List;
  */
 public class ServiceStatusReportGenerator {
     private HSSFWorkbook wb;
-    public static final String DATE_FORMAT = "m/d/yy";
     public final HSSFCellStyle dateStyle;
+    public static Log log = LogFactory.getLog(ServiceStatusReportGenerator.class);
 
+    public static final String DATE_FORMAT = "m/d/yy";
+    public static final String FILENAME_OPTION = "filename";
+    public static final String STATUS_OPTION = "status";
+    public static final String EMAIL_OPTION = "email";
 
     /**
      * Main method
@@ -58,24 +71,65 @@ public class ServiceStatusReportGenerator {
      * @param args If no arguments supplied, will generate an excel report for DORMANT service
      * @throws Exception
      */
-    public static void main(String[] args) throws Exception {
-        if (args.length < 2 || !args[args.length - 2].equalsIgnoreCase("-output")) {
-            System.err.format("Usage: java  ServiceStatusReportGenerator <ServiceStatus...ServiceStatus> -output filename");
-            System.err.format("For eg: java  ServiceStatusReportGenerator ACTIVE INACTIVE -output report.xls");
+    public static void main(String... args) throws Exception {
 
-            return;
+        Options options = new Options();
+        CommandLineParser parser = new GnuParser();
+        options.addOption(FILENAME_OPTION, true, "Enter filename to output ther report");
+        options.addOption(STATUS_OPTION, true, "(optional)comman seperated list of Status(s) to include in the report");
+        options.addOption(EMAIL_OPTION, true, "(optional)Send email to following comma seperated email addresses");
+
+        CommandLine cmd = null;
+        try {
+            cmd = parser.parse(options, args);
+        } catch (ParseException e) {
+            HelpFormatter formatter = new HelpFormatter();
+            formatter.printHelp("java ServiceStatusReportGenerator", options);
         }
 
-        String filename = args[args.length - 1];
+
+        ApplicationContext ctx = new ClassPathXmlApplicationContext(
+                new String[]{
+                        "classpath:applicationContext-db.xml", "classpath:applicationContext-aggr.xml"});
+
+        String filename = cmd.getOptionValue(FILENAME_OPTION);
+
 
         List<ServiceStatus> statuses = new ArrayList<ServiceStatus>();
-        for (int i = 0; i < args.length - 2; i++) {
-            statuses.add(ServiceStatus.valueOf(args[i]));
-        }
-        if (args.length < 1)
+        if (cmd.hasOption(STATUS_OPTION)) {
+            StringTokenizer statusTokens = new StringTokenizer(cmd.getOptionValue(STATUS_OPTION), ",");
+            while (statusTokens.hasMoreTokens())
+                statuses.add(ServiceStatus.valueOf(statusTokens.nextToken()));
+        } else
             statuses.add(ServiceStatus.DORMANT);
 
         new ServiceStatusReportGenerator().createReport(filename, statuses);
+
+        if (cmd.hasOption(EMAIL_OPTION) && cmd.getOptionValue(EMAIL_OPTION).length() > 1) {
+
+            JavaMailSenderImpl sender = (JavaMailSenderImpl) ctx.getBean("portalMailSender");
+            String portalAdminMailAddress = (String) ctx.getBean("portalAdminMailAddress");
+
+            MimeMessage message = sender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.setSubject("Portal service status report");
+            helper.setText("Automated report generated from the Portal. Attached is the list of " + statuses.toString() + "  services \n\n");
+            helper.setFrom(portalAdminMailAddress);
+            FileSystemResource file = new FileSystemResource(new File(filename));
+            helper.addAttachment(filename, file);
+
+
+            StringTokenizer emails = new StringTokenizer(cmd.getOptionValue(EMAIL_OPTION), ",");
+            if (emails.countTokens() > 0) {
+                while (emails.hasMoreTokens()) {
+                    helper.addTo(emails.nextToken());
+                }
+                log.info("Will send email as requested");
+                sender.send(message);
+            }
+
+
+        }
     }
 
     /**
@@ -164,10 +218,12 @@ public class ServiceStatusReportGenerator {
     }
 
     public void writeWorkbook(String filename) throws IOException {
+        log.info("Writing workbook to " + filename);
 
         FileOutputStream fileOut = new FileOutputStream(filename);
         wb.write(fileOut);
         fileOut.close();
+        log.info("Wrote workbook to " + filename);
 
     }
 
