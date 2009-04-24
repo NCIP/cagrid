@@ -120,12 +120,12 @@
 
 	<target name="dist-installer" depends="jar" description="Generates an installer release.">
 
-		<mkdir dir="build/installer/lib" />
-		<mkdir dir="build/installer/scripts/resources" />
+		<mkdir dir="build/installer/${project.artificat.name}/lib" />
+		<mkdir dir="build/installer/${project.artificat.name}/scripts/resources" />
 
-		<copy todir="build/installer" file="${build.jars}/${project.jar.name}" overwrite="true" />
+		<copy todir="build/installer/${project.artificat.name}" file="${build.jars}/${project.jar.name}" overwrite="true" />
 
-		<copy todir="build/installer/lib">
+		<copy todir="build/installer/${project.artificat.name}/lib">
 			<fileset refid="globus.jars" />
 
 			<fileset dir="${java.home}/lib">
@@ -137,8 +137,8 @@
 			</fileset>
 		</copy>
 
-		<copy file="scripts/build.xml" todir="build/installer/scripts" />
-		<copy todir="build/installer/scripts/resources">
+		<copy file="scripts/build.xml" todir="build/installer/${project.artificat.name}/scripts" />
+		<copy todir="build/installer/${project.artificat.name}/scripts/resources">
 			<fileset dir="src/resources">
 				<include name="**" />
 			</fileset>
@@ -158,7 +158,7 @@
 	<target name="run-installer" depends="dist-installer">
 		<mkdir dir="${build}/temp" />
 		<unzip src="build/${project.zip.name}" dest="${build}/temp" />
-		<java jar="${build}/temp/${project.jar.name}" fork="true" dir="${build}/temp" failonerror="true"/>
+		<java jar="${build}/temp/${project.artificat.name}/${project.jar.name}" fork="true" dir="${build}/temp" failonerror="true"/>
 	</target>
 
 </project>
