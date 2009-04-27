@@ -1,19 +1,26 @@
 package org.cagrid.gaards.websso.test.system.steps;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.security.KeyStore;
+
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
 
 import gov.nih.nci.cagrid.testing.system.haste.Step;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.gaards.websso.test.system.WebSSOSystemTest;
 import org.springframework.core.io.ClassPathResource;
 import org.xml.sax.SAXException;
 import sun.net.www.protocol.https.HttpsURLConnectionImpl;
 
 import com.meterware.httpunit.GetMethodWebRequest;
-import com.meterware.httpunit.HTMLElement;
 import com.meterware.httpunit.HttpNotFoundException;
-import com.meterware.httpunit.HttpUnitOptions;
 import com.meterware.httpunit.WebConversation;
 import com.meterware.httpunit.WebForm;
 import com.meterware.httpunit.WebLink;
@@ -29,6 +36,8 @@ public class AssertWebSSOApplicationStep extends Step {
 	private int webssoHttpsPort;
 	private int jasigHttpsPort;
 	private int acegiHttpsPort;
+	
+	private final Log log = LogFactory.getLog(getClass());
 
 	public AssertWebSSOApplicationStep(String webssoClient1URL,
 			String webssoClient2URL,int webssoHttpsPort,int jasigHttpsPort,int acegiHttpsPort) {
@@ -38,6 +47,8 @@ public class AssertWebSSOApplicationStep extends Step {
 		this.acegiHttpsPort=acegiHttpsPort;
 		this.webssoHttpsPort=webssoHttpsPort;
 		
+		log.info("WebSSOClient1URL  " + webssoClient1URL + "WebSSOClient2URL  "
+				+ webssoClient2URL); 
 		HostnameVerifier hostnameVerifier = new HostnameVerifier() {
 			public boolean verify(String hostname, SSLSession session) {
 				return true;
@@ -48,18 +59,34 @@ public class AssertWebSSOApplicationStep extends Step {
 
 	@Override
 	public void runStep() throws Throwable {
-		ClassPathResource pathResource=new ClassPathResource("cacerts.cert");
-		InstallCertStep jasigCertStep=new InstallCertStep(pathResource.getFile(),"localhost",jasigHttpsPort,2);
-		jasigCertStep.runStep();
-		InstallCertStep acegiCertStep=new InstallCertStep(pathResource.getFile(),"localhost",acegiHttpsPort,3);
-		acegiCertStep.runStep();
-		InstallCertStep webssoCertStep=new InstallCertStep(pathResource.getFile(),"localhost",webssoHttpsPort,4);
-		webssoCertStep.runStep();
+		String passPhrase="changeit";
+		ClassPathResource resource=new ClassPathResource("cacerts.cert");
 		
-		System.setProperty("javax.net.ssl.trustStore", pathResource.getFile().getAbsolutePath());
-		System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
-
+		File certsFile=createCertsFile(resource,passPhrase);
+		InstallCertStep jasigCertStep=new InstallCertStep(certsFile,"localhost",jasigHttpsPort,2);
+		jasigCertStep.runStep();
+		InstallCertStep acegiCertStep=new InstallCertStep(certsFile,"localhost",acegiHttpsPort,3);
+		acegiCertStep.runStep();
+		InstallCertStep webssoCertStep=new InstallCertStep(certsFile,"localhost",webssoHttpsPort,4);
+		webssoCertStep.runStep();
+		log.info("OutputCerts file "+certsFile.getAbsolutePath());
+		System.setProperty("javax.net.ssl.trustStore", certsFile.getAbsolutePath());
+		System.setProperty("javax.net.ssl.trustStorePassword", passPhrase);
 		multipleApplicationsLoginAndLogout();
+	}
+	
+	private File createCertsFile(ClassPathResource resource,String passPhrase) throws Exception{
+		String certsFile = "cacerts-httpunit.cert";
+		InputStream in = new FileInputStream(resource.getFile());
+		KeyStore ks = KeyStore.getInstance(KeyStore.getDefaultType());
+		ks.load(in, passPhrase.toCharArray());
+		in.close();
+		
+		File outputFile = new File("resources",certsFile);
+		OutputStream out = new FileOutputStream(outputFile);
+		ks.store(out, passPhrase.toCharArray());
+		out.close();
+		return outputFile;
 	}
 
 	private void multipleApplicationsLoginAndLogout() throws Exception {
@@ -141,15 +168,15 @@ public class AssertWebSSOApplicationStep extends Step {
 		try {
 			response = conversation.getResponse(request);
 		} catch (HttpNotFoundException nfe) {
-			System.err.println("The URL '" + request.getURL()+ "' is not active any more");
+			log.error("The URL '" + request.getURL()+ "' is not active any more");
 			throw nfe;
 		}
 		return response;
 	}
 	
 	public static void main(String[] args) throws Throwable{
-		String jasigURL="http://localhost:44698/webssoclientjasigexample-"+WebSSOSystemTest.getProjectVersion()+"/protected";
-		String acegiURL="http://localhost:44902/webssoclientacegiexample-"+WebSSOSystemTest.getProjectVersion()+"/protected";
+		String jasigURL="http://localhost:44546/webssoclientjasigexample-"+WebSSOSystemTest.getProjectVersion()+"/protected";
+		String acegiURL="http://localhost:44842/webssoclientacegiexample-"+WebSSOSystemTest.getProjectVersion()+"/protected";
 		AssertWebSSOApplicationStep applicationStep=new AssertWebSSOApplicationStep(jasigURL,acegiURL,18443,28443,38443);
 		applicationStep.runStep();
 	}
