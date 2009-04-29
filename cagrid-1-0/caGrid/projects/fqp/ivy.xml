@@ -23,6 +23,7 @@
     <conf name="service" visibility="public" extends="client"/>
     <conf name="test" visibility="public" extends="service,impl-test"/>
 
+	<conf name="dcql-schemas" visibility="public"/>
   </configurations>
 
 
@@ -32,6 +33,9 @@
     <artifact name="caGrid-${ivy.module}-client" conf="client" type="jar"/>
     <artifact name="caGrid-${ivy.module}-service" conf="service" type="jar"/>
     <artifact name="caGrid-${ivy.module}-tests" conf="test" type="jar"/>
+    
+    <artifact name="Distributed_CQL_schema_2.0" conf="dcql-schemas" type="xsd"/>
+	<artifact name="Distributed_CQL_Results_schema_2.0" conf="dcql-schemas" type="xsd"/>
   </publications>
 
   <dependencies>
