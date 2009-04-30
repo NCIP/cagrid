@@ -29,7 +29,7 @@
 			<xsd:documentation>Features of data services which can be enabled / disabled</xsd:documentation>
 		</xsd:annotation>
 		<xsd:attribute name="useWsEnumeration" type="xsd:boolean" use="required"/>
-		<xsd:attribute name="useGridIdeitifiers" type="xsd:boolean" use="required"/>
+		<xsd:attribute name="useGridIdentifiers" type="xsd:boolean" use="required"/>
 		<xsd:attribute name="useBdt" type="xsd:boolean" use="required"/>
 		<xsd:attribute name="useTransfer" type="xsd:boolean" use="required"/>
 		<xsd:attribute name="serviceStyle" type="xsd:string" use="optional"/>

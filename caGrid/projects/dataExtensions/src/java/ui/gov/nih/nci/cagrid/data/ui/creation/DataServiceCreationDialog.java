@@ -56,7 +56,7 @@ import javax.swing.SwingConstants;
  * 
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  * @created Aug 1, 2006
- * @version $Id: DataServiceCreationDialog.java,v 1.9 2009-04-10 14:46:30 dervin Exp $
+ * @version $Id: DataServiceCreationDialog.java,v 1.10 2009-04-30 16:16:25 dervin Exp $
  */
 public class DataServiceCreationDialog extends CreationExtensionUIDialog {
     // default service style is "None / Custom Data Source"
@@ -296,7 +296,7 @@ public class DataServiceCreationDialog extends CreationExtensionUIDialog {
         ExtensionTypeExtensionData data = getExtensionTypeExtensionData();
         ServiceFeatures features = new ServiceFeatures();
         try {
-            features.setUseGridIdeitifiers(getGridIdentCheckBox().isSelected());
+            features.setUseGridIdentifiers(getGridIdentCheckBox().isSelected());
             features.setUseWsEnumeration(getWsEnumCheckBox().isSelected());
             features.setUseBdt(getBdtCheckBox().isSelected());
             features.setUseTransfer(getTransferCheckBox().isSelected());
