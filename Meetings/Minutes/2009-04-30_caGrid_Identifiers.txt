@@ -3,7 +3,7 @@
 * Date: 	2009-04-30
 * Venue:	CBIIT 2115/5001 & Teleconference
 * Attendees: 	John Eisenschmidt, Ian Fore, Stephen Goldstein, John Koisch, 
-		Juli Klemm, Calixto Melean, Scott Oster, Libby Prince,  Kevin Puscas		
+*		Juli Klemm, Calixto Melean, Scott Oster, Libby Prince,  Kevin Puscas		
 ****************************************************************************
 
 Agenda
@@ -13,11 +13,11 @@ Agenda
 
 Notes
 -----
-1a) Regeneration of GIDs: (JK) caBIO's bigID always issues new IDs, even if there is a typo (SO) Different communities in caBIG(r) will have different needs 
-1b) (IF & SO) multiple ids on one object is ok, multiple objects for one id is NOT ok.
-1c) (JK) No mention of Correlation or Co-identification (SO) If you use identifiers in your application, not a big deal. If you use central identifiers, more difficult.
-1d) (JK) Identifiers should take two additional inputs: OIDs and IIs (ISO datatypes)
-1e) (JK) It may be valid for us to produce a series of frameworks, not just one. (SO) generally agreed provided they were unique and resolvable across the grid. 
+1a) Regeneration of GIDs: (Juli) caBIO's bigID always issues new IDs, even if there is a typo (Scott) Different communities in caBIG(r) will have different needs 
+1b) (Ian & Scott) multiple ids on one object is ok, multiple objects for one id is NOT ok.
+1c) (John K) No mention of Correlation or Co-identification (Scott) If you use identifiers in your application, not a big deal. If you use central identifiers, more difficult.
+1d) (John K) Identifiers should take two additional inputs: OIDs and IIs (ISO datatypes)
+1e) (John K) It may be valid for us to produce a series of frameworks, not just one. (Scott) generally agreed provided they were unique and resolvable across the grid. 
 
 Action Items
 ------------
