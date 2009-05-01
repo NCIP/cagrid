@@ -43,7 +43,6 @@ jQuery(document).ready(function() {
 
 var baseIcon = new GIcon();
 baseIcon.iconSize = new GSize(34, 24);
-baseIcon.shadowSize = new GSize(34, 24);
 baseIcon.iconAnchor = new GPoint(17, 12);
 baseIcon.infoWindowAnchor = new GPoint(9, 2);
 baseIcon.infoShadowAnchor = new GPoint(18, 25);
