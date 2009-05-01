@@ -13,11 +13,11 @@ Agenda
 
 Notes
 -----
-1a) Regeneration of GIDs: (Juli) caBIO's bigID always issues new IDs, even if there is a typo (Scott) Different communities in caBIG(r) will have different needs 
-1b) (Ian & Scott) multiple ids on one object is ok, multiple objects for one id is NOT ok.
-1c) (John K) No mention of Correlation or Co-identification (Scott) If you use identifiers in your application, not a big deal. If you use central identifiers, more difficult.
+1a) Regeneration of GIDs: (Juli) caBIO's bigID always issues new IDs when "key" fields change, even if there is just a typo (Scott) Different communities in caBIG(r) will have different needs 
+1b) (Ian & Scott) multiple ids on one object is ok, multiple objects for one id is NOT ok (but multiple metadata objects is fine: such as alternate sources, etc).
+1c) (John K) No mention of Correlation or Co-identification (Scott) If you use identifiers co-located in your application (naming authority == data provider), not a big deal. If you use central identifiers, more difficult.
 1d) (John K) Identifiers should take two additional inputs: OIDs and IIs (ISO datatypes)
-1e) (John K) It may be valid for us to produce a series of frameworks, not just one. (Scott) generally agreed provided they were unique and resolvable across the grid. 
+1e) (John K) It may be valid for us to produce a series of frameworks, not just one. (Scott) generally agreed provided they were unique and resolvable across the grid; the existence of an ID framework doesn't mean all applications doing "identification" need to use it, but ideally any application identifying "data" across the grid should.
 
 Action Items
 ------------
