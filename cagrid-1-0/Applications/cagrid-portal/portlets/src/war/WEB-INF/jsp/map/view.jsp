@@ -35,32 +35,30 @@
     //<![CDATA[
     var map;
     var baseIcon = new GIcon();
-    baseIcon.iconSize = new GSize(34, 24);
-    baseIcon.shadowSize = new GSize(34, 24);
-    baseIcon.iconAnchor = new GPoint(17, 12);
-    baseIcon.infoWindowAnchor = new GPoint(9, 2);
-    baseIcon.infoShadowAnchor = new GPoint(18, 25);
+    baseIcon.iconAnchor = new GPoint(9, 28);
+    baseIcon.infoWindowAnchor = new GPoint(9, 28);
+    baseIcon.infoShadowAnchor = new GPoint(0, 0);
     baseIcon.shadow = "<c:url value="/images/shadow.png"/>";
 
     var aSvcUp = new GIcon(baseIcon);
-    aSvcUp.image = "<c:url value="/images/analytical_services.gif"/>";
+    aSvcUp.image = "<c:url value="/images/analytical_services.png"/>";
     var aSvcDown = new GIcon(baseIcon);
-    aSvcDown.image = "<c:url value="/images/analytical_services-inactive.gif"/>";
+    aSvcDown.image = "<c:url value="/images/analytical_services-inactive.png"/>";
 
     var dSvcUp = new GIcon(baseIcon);
-    dSvcUp.image = "<c:url value="/images/data-services.gif"/>";
+    dSvcUp.image = "<c:url value="/images/data-services.png"/>";
     var dSvcDown = new GIcon(baseIcon);
-    dSvcDown.image = "<c:url value="/images/data-services-inactive.gif"/>";
+    dSvcDown.image = "<c:url value="/images/data-services-inactive.png"/>";
 
     var ctrUp = new GIcon(baseIcon);
-    ctrUp.image = "<c:url value="/images/hosting-research-center.gif"/>";
+    ctrUp.image = "<c:url value="/images/hosting-research-center.png"/>";
     var ctrPartial = new GIcon(baseIcon);
     ctrPartial.image = "<c:url value="/images/hosting-research-center-partial.gif"/>";
     var ctrDown = new GIcon(baseIcon);
-    ctrDown.image = "<c:url value="/images/hosting-research-center-inactive.gif"/>";
+    ctrDown.image = "<c:url value="/images/hosting-research-center-inactive.png"/>";
 
     var partCtr = new GIcon(baseIcon);
-    partCtr.image = "<c:url value="/images/participant_institute.gif"/>";
+    partCtr.image = "<c:url value="/images/participant_institute.png"/>";
 
 
 jQuery(document).ready(function() {
