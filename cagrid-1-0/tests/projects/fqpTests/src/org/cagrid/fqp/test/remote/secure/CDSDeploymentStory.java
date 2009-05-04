@@ -5,6 +5,7 @@ import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerFactory;
 import gov.nih.nci.cagrid.testing.system.deployment.ServiceContainerType;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.CopyServiceStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.DeployServiceStep;
+import gov.nih.nci.cagrid.testing.system.deployment.steps.SetIndexRegistrationStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.StartContainerStep;
 import gov.nih.nci.cagrid.testing.system.deployment.steps.UnpackContainerStep;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
@@ -73,7 +74,9 @@ public class CDSDeploymentStory extends Story implements ServiceContainerSource 
         File tempCdsDir = new File("tmp/TempCDS");
         steps.add(new UnpackContainerStep(serviceContainer));
         steps.add(new CopyServiceStep(cdsDir, tempCdsDir));
-        List<String> args = Arrays.asList(new String[] {"-Dno.deployment.validation=true"});
+        List<String> args = Arrays.asList(new String[] {
+            "-Dno.deployment.validation=true", "-Dperform.index.service.registration=false"});
+        steps.add(new SetIndexRegistrationStep(tempCdsDir.getAbsolutePath(), false));
         steps.add(new DeployServiceStep(serviceContainer, tempCdsDir.getAbsolutePath(), args));
         steps.add(new StartContainerStep(serviceContainer));
         return steps;
