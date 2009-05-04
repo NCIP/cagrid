@@ -1,5 +1,9 @@
 package gov.nih.nci.cagrid.portal;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 /**
  * User: kherm
  *
@@ -20,5 +24,17 @@ public class PortalTestUtils {
         byte[] _arr = new byte[length];
         return new String(_arr);
 
+    }
+
+    public static String readFileASString(String file) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        BufferedReader br = new BufferedReader(new FileReader(file));
+
+        String line = null;
+			while ((line = br.readLine()) != null) {
+				sb.append(line);
+			}
+
+        return sb.toString();
     }
 }
