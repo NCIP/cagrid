@@ -14,7 +14,6 @@ import org.cagrid.fqp.test.common.FederatedQueryProcessorHelper;
 import org.cagrid.fqp.test.common.QueryStory;
 import org.cagrid.fqp.test.remote.FQPServiceDeploymentStory;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -110,7 +109,11 @@ public class SecureRemoteFqpSystemTests {
     
     private File getFqpDir() {
         String value = System.getProperty(FQPTestingConstants.FQP_DIR_PROPERTY);
-        Assert.assertNotNull("System property " + FQPTestingConstants.FQP_DIR_PROPERTY + " was not set!", value);
+        if (value == null) {
+            value = FQPTestingConstants.DEFAULT_FQP_DIR;
+            logger.warn("System property " + FQPTestingConstants.FQP_DIR_PROPERTY + " was not set!");
+            logger.warn("Using default value of " + value);
+        }
         File dir = new File(value);
         return dir;
     }
@@ -118,7 +121,11 @@ public class SecureRemoteFqpSystemTests {
     
     private File getCdsDir() {
         String value = System.getProperty(FQPTestingConstants.CDS_SERVICE_DIR_PROPERTY);
-        Assert.assertNotNull("System property " + FQPTestingConstants.CDS_SERVICE_DIR_PROPERTY + " was not set!", value);
+        if (value == null) {
+            value = FQPTestingConstants.DEFAULT_CDS_DIR;
+            logger.warn("System property " + FQPTestingConstants.CDS_SERVICE_DIR_PROPERTY + " was not set!");
+            logger.warn("Using default value of " + value);
+        }
         File dir = new File(value);
         return dir;
     }
