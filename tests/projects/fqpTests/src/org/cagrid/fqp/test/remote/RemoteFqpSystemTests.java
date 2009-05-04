@@ -6,6 +6,10 @@ import gov.nih.nci.cagrid.testing.system.deployment.steps.StopContainerStep;
 
 import java.io.File;
 
+import junit.framework.TestResult;
+import junit.framework.TestSuite;
+import junit.textui.TestRunner;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.cagrid.fqp.test.common.AggregationStory;
@@ -15,7 +19,6 @@ import org.cagrid.fqp.test.common.FederatedQueryProcessorHelper;
 import org.cagrid.fqp.test.common.QueryStory;
 import org.cagrid.fqp.test.common.ServiceContainerSource;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Test;
 
 /** 
@@ -25,7 +28,7 @@ import org.junit.Test;
  * @author David Ervin
  * 
  * @created Jul 10, 2008 10:57:40 AM
- * @version $Id: RemoteFqpSystemTests.java,v 1.21 2009-04-16 15:34:14 dervin Exp $ 
+ * @version $Id: RemoteFqpSystemTests.java,v 1.22 2009-05-04 20:13:36 dervin Exp $ 
  */
 public class RemoteFqpSystemTests {
     
@@ -110,7 +113,11 @@ public class RemoteFqpSystemTests {
     
     private File getFqpDir() {
         String value = System.getProperty(FQPTestingConstants.FQP_DIR_PROPERTY);
-        Assert.assertNotNull("System property " + FQPTestingConstants.FQP_DIR_PROPERTY + " was not set!", value);
+        if (value == null) {
+            value = FQPTestingConstants.DEFAULT_FQP_DIR;
+            logger.warn("System property " + FQPTestingConstants.FQP_DIR_PROPERTY + " was not set!");
+            logger.warn("Using default value of " + value);
+        }
         File dir = new File(value);
         return dir;
     }
@@ -118,7 +125,11 @@ public class RemoteFqpSystemTests {
     
     private File getTransferDir() {
         String value = System.getProperty(FQPTestingConstants.TRANSFER_SERVICE_DIR_PROPERTY);
-        Assert.assertNotNull("System property " + FQPTestingConstants.TRANSFER_SERVICE_DIR_PROPERTY + " was not set!", value);
+        if (value == null) {
+            value = FQPTestingConstants.DEFAULT_TRANSFER_DIR;
+            logger.warn("System property " + FQPTestingConstants.TRANSFER_SERVICE_DIR_PROPERTY + " was not set!");
+            logger.warn("Using default value of " + value);
+        }
         File dir = new File(value);
         return dir;
     }
@@ -160,5 +171,12 @@ public class RemoteFqpSystemTests {
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
+    }
+
+ 
+    public static void main(String[] args) {
+        TestRunner runner = new TestRunner();
+        TestResult result = runner.doRun(new TestSuite(RemoteFqpSystemTests.class));
+        System.exit(result.errorCount() + result.failureCount());
     }
 }
