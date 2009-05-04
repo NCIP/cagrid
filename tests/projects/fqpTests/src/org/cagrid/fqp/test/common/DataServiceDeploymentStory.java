@@ -25,7 +25,7 @@ import org.cagrid.fqp.test.common.steps.UnzipServiceStep;
  * @author David Ervin
  * 
  * @created Jul 9, 2008 11:46:02 AM
- * @version $Id: DataServiceDeploymentStory.java,v 1.8 2009-04-10 20:52:25 dervin Exp $ 
+ * @version $Id: DataServiceDeploymentStory.java,v 1.9 2009-05-04 20:13:59 dervin Exp $ 
  */
 public class DataServiceDeploymentStory extends Story implements ServiceContainerSource {
     
@@ -101,7 +101,7 @@ public class DataServiceDeploymentStory extends Story implements ServiceContaine
         steps.add(new UnpackContainerStep(dataServiceContainer));
         steps.add(new UnzipServiceStep(dataServiceZip, temp));
         List<String> args = Arrays.asList(new String[] {
-            "-Dno.deployment.validation=true"
+            "-Dno.deployment.validation=true", "-Dperform.index.service.registration=false"
         });
         steps.add(new SetIndexRegistrationStep(temp.getAbsolutePath(), false));
         steps.add(new DeployServiceStep(dataServiceContainer, temp.getAbsolutePath(), args));
