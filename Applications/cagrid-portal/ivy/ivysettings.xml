@@ -7,7 +7,7 @@
 
     <resolvers>
         <chain name="caGrid-portal-ivy-resolver" returnFirst="true">
-            <filesystem name="integration-repository" local="true">
+            <filesystem name="integration-repository" local="true" checkmodified="true">
                 <ivy pattern="${ivy.integration.repository.dir}/[organisation]/[module]/ivy-[revision].xml"/>
                 <artifact pattern="${ivy.integration.repository.dir}/[organisation]/[module]/[revision]/[artifact].[ext]"/>
                 <artifact pattern="${ivy.integration.repository.dir}/[organisation]/[module]/[revision]/[artifact].[ext]"/>
