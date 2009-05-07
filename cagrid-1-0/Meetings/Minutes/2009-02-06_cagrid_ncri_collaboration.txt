@@ -1,6 +1,6 @@
 ****************************************************************************
 * Meeting: 	caGrid NCRI Collaboration
-* Date: 	2009-01-09
+* Date: 	2009-02-06
 * Venue:	Teleconference
 * Attendees: 	Alan Hogg, Manav Kher, Joshua Phillips, Max Wilson,
 *               Edward Zukowski, John Eisenschmidt, See Wah Cheng,
