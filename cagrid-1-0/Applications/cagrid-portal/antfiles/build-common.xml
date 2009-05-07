@@ -2,22 +2,21 @@
 
 <project name="cagrid-portal-common" basedir=".">
 
-    <dirname property="cagrid-portal-common" file="${ant.file.cagrid-portal-common}"/>
-
     <property name="target.env" value="local"/>
-    <dirname property="cagrid-portal-common.basedir" file="${ant.file.cagrid-portal-common}"/>
 
-    <property name="projects.dir" value="${cagrid-portal-common.basedir}/.."/>
+    <dirname property="antfiles.dir" file="${ant.file.cagrid-portal-common}"/>
+    <property name="projects.dir" value="${antfiles.dir}/.."/>
     <property name="tools.ant.lib" value="${projects.dir}/tools/ant/lib"/>
 
-    <property file="${projects.dir}/build-${target.env}.properties"/>
+    <property name="target.property.file" value="${projects.dir}/build-${target.env}.properties"/>
+    <property file="${target.property.file}"/>
     <property file="${projects.dir}/build.properties"/>
-    <property file="${cagrid-portal-common.basedir}/project.properties"/>
+    <property file="${antfiles.dir}/project.properties"/>
 
     <patternset id="unit.test.pattern">
         <include name="**/*Test.java"/>
-        <exclude name="**/*IntegrationTest.java"/>
         <exclude name="**/Abstract*.java"/>
+        <exclude name="**/*TestBase.java"/>
         <exclude name="**/*System*.java"/>
     </patternset>
 
@@ -87,6 +86,7 @@
             <entry key="cagrid.portal.fast.aggr.defaultPeriod" value="${cagrid.portal.fast.aggr.defaultPeriod}"/>
             <entry key="cagrid.portal.maxDowntimeHours" value="${cagrid.portal.maxDowntimeHours}"/>
             <entry key="cagrid.portal.build.stamp" value="${cagrid.portal.build.stamp}"/>
+            <entry key="cagrid.portal.authenticationMode" value="${cagrid.portal.authenticationMode}"/>
             <entry key="cagrid.portal.host.cert" value="${cagrid.portal.host.cert}"/>
             <entry key="cagrid.portal.host.key" value="${cagrid.portal.host.key}"/>
             <entry key="cagrid.portal.base.url" value="${cagrid.portal.base.url}"/>
@@ -96,6 +96,5 @@
         </propertyfile>
     </target>
 
-    
 
 </project>

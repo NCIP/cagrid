@@ -25,7 +25,7 @@ public class ProxyUtilTest {
         }
 
         try {
-            InputStream is = new FileInputStream("data/proxy.pem");
+            InputStream is = new FileInputStream("test/data/proxy.pem");
             GlobusCredential cred = new GlobusCredential(is);
             assertNotNull(ProxyUtil.getProxyString(cred));
         } catch (Exception e) {

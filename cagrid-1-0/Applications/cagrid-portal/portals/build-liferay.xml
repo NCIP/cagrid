@@ -4,9 +4,9 @@
 
     <property name="liferay.version" value="${liferay.portal.version}"/>
     <property name="liferay.jboss.download.url"
-              value="http://switch.dl.sourceforge.net/sourceforge/jboss/jboss-4.0.5.GA.zip"/>
-    <property name="liferay.jboss.dir.name" value="jboss-4.0.5.GA"/>
-    <property name="liferay.jboss.zip" value="${liferay.jboss.dir}/jboss-4.0.5.GA.zip"/>
+              value="http://switch.dl.sourceforge.net/sourceforge/jboss/${jboss.server.name}.zip"/>
+    <property name="liferay.jboss.dir.name" value="${jboss.server.name}"/>
+    <property name="liferay.jboss.zip" value="${liferay.jboss.dir}/${jboss.server.name}.zip"/>
     <property name="liferay.jboss.home" value="${liferay.jboss.dir}/${liferay.jboss.dir.name}"/>
     <property name="liferay.jboss.deploy.dest.dir"
               value="${liferay.jboss.home}/server/${liferay.jboss.server.name}/deploy"/>
@@ -44,6 +44,10 @@
     </xmlcatalog>
 
     <target name="copy-properties">
+        <condition property="cas.auth.enabled" value="true" else="false">
+            <equals arg1="${cagrid.portal.authenticationMode}" arg2="webSSO"/>
+        </condition>
+
         <fail message="Please specify a target directory">
             <condition>
                 <not>
@@ -59,6 +63,7 @@
             <filterset>
                 <filter token="LIFERAY_JBOSS_DEPLOY_DEST_DIR"
                         value="${liferay.jboss.deploy.dest.dir}"/>
+                <filter token="CAS_AUTH_ENABLED" value="${cas.auth.enabled}"/>
                 <filter token="LIFERAY_AUTODEPLOY_DIR" value="${liferay.autodeploy.dir}"/>
                 <filter token="LIFERAY_ADMIN_PASSWORD" value="${liferay.admin.password}"/>
                 <filter token="LIFERAY_ADMIN_USERNAME" value="${liferay.admin.username}"/>
@@ -260,12 +265,12 @@
 
     <target name="configure-jboss-jaas" depends="prepare">
         <!-- Downloaded DTD to tools/ant/resources/security_config.dtd -->
-        <property name="config.file"
-                  value="${liferay.jboss.home}/server/${liferay.jboss.server.name}/conf/login-config.xml"/>
-        <xmltask preservetype="true" source="${config.file}" dest="${config.file}">
-            <xmlcatalog refid="portal.catalog"/>
-            <remove path="/policy/application-policy[@name='other']"/>
-        </xmltask>
+        <!--<property name="config.file"-->
+        <!--value="${liferay.jboss.home}/server/${liferay.jboss.server.name}/conf/login-config.xml"/>-->
+        <!--<xmltask preservetype="true" source="${config.file}" dest="${config.file}">-->
+        <!--<xmlcatalog refid="portal.catalog"/>-->
+        <!--<remove path="/policy/application-policy[@name='other']"/>-->
+        <!--</xmltask>-->
     </target>
 
 
@@ -500,11 +505,6 @@
 
         <copy todir="${liferay.build.themes.dir}">
             <fileset dir="${src.themes.dir}"/>
-        </copy>
-        <copy todir="${liferay.build.themes.lib.dir}">
-            <fileset dir="${ext.themes.lib.dir}">
-                <include name="*.jar"/>
-            </fileset>
         </copy>
 
         <jar destfile="${build.dir}/${liferay.theme.name}.war"

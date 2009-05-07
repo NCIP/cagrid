@@ -7,7 +7,6 @@
        xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="
 	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
-	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
 	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
 	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
@@ -208,7 +207,11 @@
             autowire="byName">
         <property name="validators">
             <list>
-                <bean class="gov.nih.nci.cagrid.portal.portlet.query.cql.CQLQueryCommandValidator" autowire="byName"/>
+                <bean class="gov.nih.nci.cagrid.portal.portlet.query.cql.CQLQueryCommandValidator" autowire="byName">
+                    </bean>
+                <bean class="gov.nih.nci.cagrid.portal.portlet.query.cql.CQLQuerySchemaValidator"
+                        p:dcqlSchema="Distributed_CQL_schema_2.0.xsd"
+                        p:cqlSchema="1_gov.nih.nci.cagrid.CQLQuery-1.3.xsd"/>
             </list>
         </property>
 
@@ -733,7 +736,7 @@
     </bean>
 
     <bean id="queryTabModel"
-          class="gov.nih.nci.cagrid.portal.portlet.tab.TabModel" scope="session">
+          class="gov.nih.nci.cagrid.portal.portlet.tab.TabModel">
 
         <aop:scoped-proxy proxy-target-class="true"/>
 
@@ -796,22 +799,7 @@
                         class="gov.nih.nci.cagrid.portal.portlet.tab.Tab">
                     <property name="name" value="results"/>
                     <property name="label" value="Results"/>
-                    <!-- 
-                    <property name="children">
-                        <list>
-                            <bean
-                                    class="gov.nih.nci.cagrid.portal.portlet.tab.Tab">
-                                <property name="name" value="tabular"/>
-                                <property name="label" value="Tabular"/>
-                            </bean>
-                            <bean
-                                    class="gov.nih.nci.cagrid.portal.portlet.tab.Tab">
-                                <property name="name" value="xml"/>
-                                <property name="label" value="XML"/>
-                            </bean>
-                        </list>
-                    </property>
-                     -->
+
                 </bean>
                 <bean
                         class="gov.nih.nci.cagrid.portal.portlet.tab.Tab">

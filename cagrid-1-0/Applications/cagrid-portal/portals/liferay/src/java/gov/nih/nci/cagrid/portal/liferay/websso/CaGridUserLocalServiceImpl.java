@@ -9,7 +9,7 @@ import com.liferay.portal.security.pwd.PwdToolkitUtil;
 import com.liferay.portal.service.PasswordPolicyLocalServiceUtil;
 import com.liferay.portal.service.impl.UserLocalServiceImpl;
 import com.liferay.portal.util.PrefsPropsUtil;
-import com.liferay.portal.util.PropsUtil;
+import com.liferay.portal.util.PropsKeys;
 import com.liferay.portal.util.PropsValues;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -60,7 +60,7 @@ public class CaGridUserLocalServiceImpl extends UserLocalServiceImpl {
                }*/
 
             String[] reservedEmailAddresses = PrefsPropsUtil.getStringArray(
-                    companyId, PropsUtil.ADMIN_RESERVED_EMAIL_ADDRESSES, StringPool.NEW_LINE,
+                    companyId, PropsKeys.ADMIN_RESERVED_EMAIL_ADDRESSES, StringPool.NEW_LINE,
                     PropsValues.ADMIN_RESERVED_EMAIL_ADDRESSES);
 
             for (int i = 0; i < reservedEmailAddresses.length; i++) {

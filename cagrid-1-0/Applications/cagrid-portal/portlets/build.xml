@@ -1,6 +1,6 @@
 <project name="cagrid-portal-portlets" basedir=".">
 
-    <import file="${basedir}/../antfiles/build-common.xml"/>
+    <import file="${basedir}/../antfiles/build-common-test.xml"/>
 
     <property name="portlets.dir" value="${basedir}"/>
     <property name="build.dir" value="${basedir}/build"/>
@@ -13,15 +13,6 @@
 
     <property name="src.java.dir" value="${basedir}/src/java"/>
     <property name="src.war.dir" value="${basedir}/src/war"/>
-
-    <property name="test.dir" value="${basedir}/test"/>
-    <property name="test.lib.dir" value="${test.dir}/lib"/>
-    <property name="test.build.dir" value="${test.dir}/build"/>
-    <property name="test.build.classes.dir" value="${test.build.dir}/classes"/>
-    <property name="test.src.java.dir" value="${test.dir}/src/java"/>
-    <property name="junit.reports.dir" value="${test.build.dir}/junit-reports"/>
-    <property name="cobertura.datafile" value="${test.build.dir}/build/cobertura.datafile"/>
-
     <property name="build.wars.dir" value="${build.dir}/wars"/>
     <property name="cagrid.portlets.war.file" value="${build.wars.dir}/cagridportlets.war"/>
     <property name="portlets.context.name" value="${portlets.context.name}"/>
@@ -30,8 +21,10 @@
     <property name="ext.compile.lib.dir" value="${ext.dir}/compile/jars"/>
     <property name="ext.lib.dir" value="${ext.dir}/default/jars"/>
     <property name="ext.xml.dir" value="${ext.dir}/default/xmls"/>
+    <property name="ext.xsd.dir" value="${ext.dir}/default/xsds"/>
     <property name="ext.test.lib.dir" value="${ext.dir}/test/jars"/>
     <property name="ext.test.xml.dir" value="${ext.dir}/test/xml"/>
+    <property name="ext.test.xsd.dir" value="${ext.dir}/test/xsd"/>
 
     <property name="portlets.debug" value="${javac.debug.flag}"/>
     <property name="target.deploy.dir" value="${liferay.jboss.dir}/deploy"/>
@@ -55,7 +48,9 @@
         <pathelement location="${test.build.classes.dir}"/>
         <path refid="test.compile.cp"/>
         <pathelement location="${ext.test.xml.dir}"/>
+        <pathelement location="${ext.test.xsd.dir}"/>
         <pathelement location="${build.war.build.classes.dir}"/>
+        <path  path="${test.etc.dir}"/>
     </path>
 
     <target name="build-war-dir" depends="compile">
@@ -78,6 +73,10 @@
             <fileset dir="${ext.xml.dir}">
                 <include name="*.xml"/>
             </fileset>
+             <fileset dir="${ext.xsd.dir}">
+                <include name="*.xsd"/>
+                 <exclude name="*Results*.xsd"/>
+            </fileset>
             <fileset dir="${build.classes.dir}">
                 <include name="**/*"/>
             </fileset>
@@ -97,21 +96,9 @@
         </javac>
     </target>
 
-    <target name="compile-test" depends="compile">
-        <mkdir dir="${test.build.classes.dir}"/>
 
-        <copy todir="${test.build.classes.dir}">
-            <fileset dir="${test.dir}/src">
-                <include name="applicationContext-portlets-test.xml"/>
-            </fileset>
-        </copy>
 
-        <javac srcdir="${test.src.java.dir}" destdir="${test.build.classes.dir}" debug="${portlets.debug}">
-            <classpath refid="test.compile.cp"/>
-        </javac>
-    </target>
-
-    <target name="deploy-portlets" description="Will deploy pre-built caGrid Portlets war">
+    <target name="deploy-portlets" depends="war" description="Will deploy pre-built caGrid Portlets war">
         <copy file="${cagrid.portlets.war.file}" tofile="${target.deploy.dir}/cagridportlets.war"
               overwrite="true"/>
     </target>
@@ -141,67 +128,13 @@
         <jar destfile="${cagrid.portlets.war.file}" basedir="${build.war.dir}"/>
     </target>
 
-    <target name="test" depends="compile-test, build-war-dir" description="Run all the tests for this porject.">
-        <mkdir dir="${junit.reports.dir}"/>
-
-        <junit dir="${basedir}" printsummary="yes" showoutput="true" fork="true" forkmode="once">
-            <sysproperty key="basedir" value="${basedir}"/>
-            <!--needed to hook into main reporting task-->
-            <sysproperty key="net.sourceforge.cobertura.datafile"
-                         file="${cobertura.datafile}"/>
-
-            <classpath refid="test.run.cp"/>
-            <formatter type="xml"/>
-
-            <batchtest todir="${junit.reports.dir}">
-                <fileset id="test.fileset" dir="${test.src.java.dir}">
-                    <patternset refid="unit.test.pattern"/>
-                </fileset>
-            </batchtest>
-
-        </junit>
-    </target>
-
-    <target name="test-system" depends="compile-test, build-war-dir"
-            description="Run all the System tests for this porject.">
-        <mkdir dir="${junit.reports.dir}"/>
-
-        <junit dir="${basedir}" printsummary="yes" showoutput="true" fork="true" forkmode="once">
-            <sysproperty key="basedir" value="${basedir}"/>
-            <!--needed to hook into main reporting task-->
-            <sysproperty key="net.sourceforge.cobertura.datafile"
-                         file="${cobertura.datafile}"/>
-
-            <classpath refid="test.run.cp"/>
-            <formatter type="xml"/>
-
-            <batchtest todir="${junit.reports.dir}">
-                <fileset id="test.fileset" dir="${test.src.java.dir}">
-                    <patternset>
-                        <include name="**/*SystemTest.java"/>
-                    </patternset>
-                </fileset>
-            </batchtest>
-
-        </junit>
-    </target>
-
-    <target name="test-single">
-        <mkdir dir="${junit.reports.dir}"/>
-        <junit dir="${basedir}" printsummary="yes" showoutput="yes" fork="true" haltonfailure="yes">
-            <sysproperty key="basedir" value="${basedir}"/>
-
-            <classpath refid="test.run.cp"/>
-            <formatter type="xml"/>
-            <test name="gov.nih.nci.cagrid.portal.portlet.disc.EVSServiceSystemTest" todir="${junit.reports.dir}"/>
-        </junit>
-    </target>
 
     <target name="clean">
         <delete dir="${build.dir}"/>
         <delete dir="${test.build.dir}"/>
     </target>
 
+    <!--all called from main build. Will build tests-->
     <target name="all" depends="war"/>
 
 </project>

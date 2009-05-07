@@ -1,6 +1,6 @@
 <project name="caGrid-portal-security" basedir=".">
 
-    <import file="${basedir}/../antfiles/build-common.xml"/>
+    <import file="${basedir}/../antfiles/build-common-test.xml"/>
 
     <property name="etc.dir" value="${basedir}/etc"/>
     <property name="lib.dir" value="${basedir}/lib"/>
@@ -16,13 +16,6 @@
     <property name="ext.lib.dir" value="${ext.dir}/default/jars"/>
     <property name="ext.test.lib.dir" value="${ext.dir}/test/jars"/>
 
-    <property name="test.dir" value="${basedir}/test"/>
-    <property name="test.lib.dir" value="${test.dir}/lib"/>
-    <property name="test.build.dir" value="${test.dir}/build"/>
-    <property name="test.build.classes.dir" value="${test.build.dir}/classes"/>
-    <property name="test.src.java.dir" value="${test.dir}/src/java"/>
-    <property name="junit.reports.dir" value="${test.build.dir}/junit-reports"/>
-    <property name="cobertura.datafile" value="${test.build.dir}/build/cobertura.datafile"/>
 
 
     <property name="security.debug" value="true"/>
@@ -42,6 +35,7 @@
     <path id="test.run.cp">
         <path refid="test.compile.cp"/>
         <path path="${test.build.classes.dir}"/>
+        <path path="${test.data.dir}"/>
     </path>
 
 
@@ -57,36 +51,6 @@
                 <include name="*.xml"/>
             </fileset>
         </copy>
-    </target>
-
-    <target name="compile-test" depends="compile">
-        <mkdir dir="${test.build.classes.dir}"/>
-        <javac srcdir="${test.src.java.dir}" destdir="${test.build.classes.dir}" debug="true">
-            <classpath refid="test.compile.cp"/>
-        </javac>
-    </target>
-
-
-    <target name="test" depends="compile-test" description="Run all tests in the project">
-        <mkdir dir="${junit.reports.dir}"/>
-
-        <junit dir="${test.dir}" printsummary="yes" showoutput="true" fork="true">
-
-            <!--needed to hook into main reporting task-->
-            <sysproperty key="net.sourceforge.cobertura.datafile"
-                         file="${cobertura.datafile}"/>
-
-            <classpath refid="test.run.cp"/>
-            <formatter type="xml"/>
-
-            <batchtest todir="${junit.reports.dir}">
-                <fileset dir="${test.src.java.dir}">
-                    <include name="**/*Test.java"/>
-                    <exclude name="**/Abstract*.java"/>
-                </fileset>
-            </batchtest>
-
-        </junit>
     </target>
 
     <target name="jar" depends="compile">

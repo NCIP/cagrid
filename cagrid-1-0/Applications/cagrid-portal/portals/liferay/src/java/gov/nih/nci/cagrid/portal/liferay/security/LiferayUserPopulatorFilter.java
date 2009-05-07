@@ -1,7 +1,7 @@
 package gov.nih.nci.cagrid.portal.liferay.security;
 
-import com.liferay.portal.model.impl.RoleImpl;
 import com.liferay.portal.model.Role;
+import com.liferay.portal.model.RoleConstants;
 import com.liferay.portal.service.RoleServiceUtil;
 import gov.nih.nci.cagrid.portal.domain.LiferayUser;
 import org.apache.commons.logging.Log;
@@ -29,16 +29,16 @@ public class LiferayUserPopulatorFilter implements Filter {
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain filterChain) throws IOException, ServletException {
 
         HttpServletRequest httpReq = (HttpServletRequest) req;
-        String remoteUser =  httpReq.getRemoteUser();
+        String remoteUser = httpReq.getRemoteUser();
 
         //will only be true if user is logged into liferay
         if (remoteUser != null) {
             try {
                 //only do it if object not in session
-                    if (isAdmin(Long.parseLong(remoteUser))) {
-                        httpReq.getSession().setAttribute(LiferayUser.HTTP_SESSION_ATTR_KEY_USER_ROLE, LiferayUser.HTTP_SESSION_ATTR_VALUE_ROLE_ADMIN);
-                    } else {
-                        httpReq.getSession().setAttribute(LiferayUser.HTTP_SESSION_ATTR_KEY_USER_ROLE, LiferayUser.HTTP_SESSION_ATTR_VALUE_ROLE_USER);
+                if (isAdmin(Long.parseLong(remoteUser))) {
+                    httpReq.getSession().setAttribute(LiferayUser.HTTP_SESSION_ATTR_KEY_USER_ROLE, LiferayUser.HTTP_SESSION_ATTR_VALUE_ROLE_ADMIN);
+                } else {
+                    httpReq.getSession().setAttribute(LiferayUser.HTTP_SESSION_ATTR_KEY_USER_ROLE, LiferayUser.HTTP_SESSION_ATTR_VALUE_ROLE_USER);
                 }
             } catch (Exception e) {
                 logger.warn(e);
@@ -50,8 +50,8 @@ public class LiferayUserPopulatorFilter implements Filter {
     private boolean isAdmin(long userId) throws Exception {
         List<Role> roles = RoleServiceUtil.getUserRoles(userId);
         for (Role role : roles) {
-            if (RoleImpl.ADMINISTRATOR.equals(role.getName())
-                    ||   RoleImpl.POWER_USER.equals(role.getName()))
+            if (RoleConstants.ADMINISTRATOR.equals(role.getName())
+                    || RoleConstants.POWER_USER.equals(role.getName()))
                 return true;
         }
         return false;

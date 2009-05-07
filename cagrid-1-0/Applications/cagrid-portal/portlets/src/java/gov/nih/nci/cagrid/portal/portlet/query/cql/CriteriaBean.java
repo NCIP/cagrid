@@ -281,7 +281,7 @@ public class CriteriaBean implements ApplicationContextAware {
             if (predicate.equals(Predicate.IS_NULL)
                     || predicate.equals(Predicate.IS_NOT_NULL)) {
                 attEls.add(new Attribute(crit.getUmlAttribute().getName(),
-                        predicate, null));
+                        predicate, ""));
             } else {
                 String[] values = crit.getValue().split(",");
                 if (values.length == 1) {

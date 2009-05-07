@@ -1,10 +1,12 @@
 package gov.nih.nci.cagrid.portal.liferay.security;
 
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.Company;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.auth.AutoLogin;
 import com.liferay.portal.security.auth.AutoLoginException;
 import com.liferay.portal.service.CompanyLocalServiceUtil;
+import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import gov.nih.nci.cagrid.portal.dao.PersonDao;
 import gov.nih.nci.cagrid.portal.dao.PortalUserDao;
@@ -53,28 +55,34 @@ public abstract class AbstractAutoLogin implements AutoLogin {
         int birthdayDay = 1;
         int birthdayYear = 1;
         String jobTitle = null;
-        long[] organizationId = new long[0];
+        String openId = StringPool.BLANK;
+        long[] organizationIds = new long[0];
+        long[] groupIds = new long[0];
+        long[] roleIds = new long[0];
+        long[] userGroupIds = new long[0];
         boolean sendEmail = false;
+        ServiceContext serviceContext = new ServiceContext();
 
         Company company = CompanyLocalServiceUtil
-                         .getCompanyByWebId(getCompanyWebId());
+                .getCompanyByWebId(getCompanyWebId());
         if (company == null) {
-                     throw new AutoLoginException("No Company found for webid: "
-                             + getCompanyWebId());
-                 }
+            throw new AutoLoginException("No Company found for webid: "
+                    + getCompanyWebId());
+        }
         companyId = company.getCompanyId();
         User omniuser = UserLocalServiceUtil.getUserByEmailAddress(companyId,
-                         getOmniUserEmail());
+                getOmniUserEmail());
         if (omniuser == null) {
-                     throw new AutoLoginException("No omniuser found for email: "
-                             + getOmniUserEmail());
-                 }
+            throw new AutoLoginException("No omniuser found for email: "
+                    + getOmniUserEmail());
+        }
         creatorUserId = omniuser.getUserId();
         user = UserLocalServiceUtil.addUser(creatorUserId, companyId,
-                         autoPassword, password1, password2, autoScreenName, screenName,
-                         emailAddress, locale, firstName, middleName, lastName,
-                         prefixId, suffixId, male, birthdayMonth, birthdayDay,
-                         birthdayYear, jobTitle, organizationId, sendEmail);
+                autoPassword, password1, password2, autoScreenName, screenName,
+                emailAddress, openId, locale, firstName, middleName, lastName,
+                prefixId, suffixId, male, birthdayMonth, birthdayDay,
+                birthdayYear, jobTitle, groupIds, organizationIds,
+                roleIds, userGroupIds, sendEmail, serviceContext);
 
         return user;
     }

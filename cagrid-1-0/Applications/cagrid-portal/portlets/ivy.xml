@@ -27,7 +27,10 @@
         <dependency rev="latest.integration" org="caGrid" name="portal-security" conf="default;test"/>
         <dependency rev="${cagrid.integration.version}" org="caGrid" name="introduce-clienttools"
                     conf="default->default"/>
-
+           <dependency rev="${cagrid.integration.version}" transitive="false" org="caGrid" name="data"
+                    conf="default->validation"/>
+        <dependency rev="${cagrid.integration.version}" transitive="false" org="caGrid" name="cql"
+                 conf="default->cql-schemas"  />
 
         <dependency rev="2.0.3" org="getahead" name="dwr"/>
         <dependency rev="3.4.GA" org="javassist" name="javassist"/>

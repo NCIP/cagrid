@@ -5,7 +5,7 @@ import gov.nih.nci.cagrid.portal.domain.NotificationSubscriber;
 import gov.nih.nci.cagrid.portal.domain.Person;
 import gov.nih.nci.cagrid.portal.domain.PortalUser;
 import gov.nih.nci.cagrid.portal.domain.ServiceStatus;
-import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
+import gov.nih.nci.cagrid.portal.util.PortalAggrIntegrationTestBase;
 
 /**
  * Integration test initializes the spring container.
@@ -17,7 +17,7 @@ import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
  *
  * @author kherm manav.kher@semanticbits.com
  */
-public class NotificationCtxIntegrationTest extends AbstractDependencyInjectionSpringContextTests {
+public class NotificationCtxIntegrationTest extends PortalAggrIntegrationTestBase {
 
 
     public void testLoadContext() {
@@ -44,12 +44,14 @@ public class NotificationCtxIntegrationTest extends AbstractDependencyInjectionS
 
         notificationSender.sendMessage(sub, evt);
 
+
+
     }
 
     @Override
     protected String[] getConfigLocations() {
         return new String[]{
-                "classpath*:applicationContext-notification.xml",
+                "classpath*:applicationContext-notification-aspects.xml",
                 "classpath*:applicationContext-db.xml"
 
         };

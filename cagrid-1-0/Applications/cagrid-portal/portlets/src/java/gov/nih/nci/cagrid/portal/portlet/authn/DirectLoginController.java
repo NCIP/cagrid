@@ -1,200 +1,197 @@
 /**
- * 
+ *
  */
 package gov.nih.nci.cagrid.portal.portlet.authn;
-
-import java.net.URLEncoder;
 
 import gov.nih.nci.cagrid.authentication.stubs.types.InvalidCredentialFault;
 import gov.nih.nci.cagrid.portal.domain.AuthnTicket;
 import gov.nih.nci.cagrid.portal.security.AuthnService;
-import gov.nih.nci.cagrid.portal.security.AuthnServiceException;
-import gov.nih.nci.cagrid.portal.security.AuthnTimeoutException;
 import gov.nih.nci.cagrid.portal.security.EncryptionService;
-
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.PortletSession;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
-
 import org.springframework.validation.BindException;
 import org.springframework.web.portlet.ModelAndView;
 import org.springframework.web.portlet.mvc.AbstractCommandController;
 
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
+import java.net.URLEncoder;
+
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
- * 
  */
 public class DirectLoginController extends AbstractCommandController {
 
-	private AuthnService authnService;
-	private EncryptionService encryptionService;
-	private String redirectUrlPreferenceName;
-	private String ticketParameterName;
-	private String errorsAttributeName;
-	private String ifsUrl;
-	private String errorOperationName;
-	private String viewOperationName;
-	private String portalUserAttributeName;
+    private AuthnService authnService;
+    private EncryptionService encryptionService;
+    private String redirectUrlPreferenceName;
+    private String ticketParameterName;
+    private String errorsAttributeName;
+    private String ifsUrl;
+    private String errorOperationName;
+    private String viewOperationName;
+    private String portalUserAttributeName;
 
-	/**
-	 * 
-	 */
-	public DirectLoginController() {
+    /**
+     *
+     */
+    public DirectLoginController() {
 
-	}
+    }
 
-	/**
-	 * @param commandClass
-	 */
-	public DirectLoginController(Class commandClass) {
-		super(commandClass);
+    /**
+     * @param commandClass
+     */
+    public DirectLoginController(Class commandClass) {
+        super(commandClass);
 
-	}
+    }
 
-	/**
-	 * @param commandClass
-	 * @param commandName
-	 */
-	public DirectLoginController(Class commandClass, String commandName) {
-		super(commandClass, commandName);
+    /**
+     * @param commandClass
+     * @param commandName
+     */
+    public DirectLoginController(Class commandClass, String commandName) {
+        super(commandClass, commandName);
 
-	}
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.springframework.web.portlet.mvc.AbstractCommandController#handleAction(javax.portlet.ActionRequest,
-	 *      javax.portlet.ActionResponse, java.lang.Object,
-	 *      org.springframework.validation.BindException)
-	 */
-	@Override
-	protected void handleAction(ActionRequest request, ActionResponse response,
-			Object obj, BindException errors) throws Exception {
+    /*
+      * (non-Javadoc)
+      *
+      * @see org.springframework.web.portlet.mvc.AbstractCommandController#handleAction(javax.portlet.ActionRequest,
+      *      javax.portlet.ActionResponse, java.lang.Object,
+      *      org.springframework.validation.BindException)
+      */
+    @Override
+    protected void handleAction(ActionRequest request, ActionResponse response,
+                                Object obj, BindException errors) throws Exception {
 
-		if (errors.hasErrors()) {
-			request.setAttribute(getErrorsAttributeName(), errors);
-			response.setRenderParameter("operation", getErrorOperationName());
-			return;
-		}
+        if (errors.hasErrors()) {
+            request.setAttribute(getErrorsAttributeName(), errors);
+            response.setRenderParameter("operation", getErrorOperationName());
+            return;
+        }
 
-		DirectLoginCommand command = (DirectLoginCommand) obj;
-		AuthnTicket ticket = null;
-		try {
-			ticket = getAuthnService().authenticate(command.getUsername(),
-					command.getPassword(), command.getIdpUrl(), getIfsUrl());
-		} catch (InvalidCredentialFault ex) {
-			errors.reject("authn.badCredentials",
-					"Invalid username and/or password.");
-			request.setAttribute(getErrorsAttributeName(), errors);
-			response.setRenderParameter("operation", getErrorOperationName());
-			return;
-		}
+        DirectLoginCommand command = (DirectLoginCommand) obj;
+        AuthnTicket ticket = null;
+        try {
+            ticket = getAuthnService().authenticate(command.getUsername(),
+                    command.getPassword(), command.getIdpUrl(), getIfsUrl());
+        } catch (InvalidCredentialFault ex) {
+            errors.reject("authn.badCredentials",
+                    "Invalid username and/or password.");
+            request.setAttribute(getErrorsAttributeName(), errors);
+            response.setRenderParameter("operation", getErrorOperationName());
+            return;
+        }
 
-		String ticketEncrypted = getEncryptionService().encrypt(
-				ticket.getTicket());
-		String redirectUrl = request.getPreferences().getValue(
-				getRedirectUrlPreferenceName(), null);
-		if (redirectUrl == null) {
-			throw new Exception("No redirectUrl found under preference '"
-					+ getRedirectUrlPreferenceName());
-		}
+        String ticketEncrypted = getEncryptionService().encrypt(
+                ticket.getTicket());
+        String redirectUrl = request.getPreferences().getValue(
+                getRedirectUrlPreferenceName(), null);
+        if (redirectUrl == null) {
+            throw new Exception("No redirectUrl found under preference '"
+                    + getRedirectUrlPreferenceName());
+        }
 
-		String portalAuthnUrl = command.getPortalAuthnUrl();
-		portalAuthnUrl += getTicketParameterName() + "="
-				+ URLEncoder.encode(ticketEncrypted, "UTF8");
-		logger.debug("portalAuthnUrl = " + portalAuthnUrl);
-		redirectUrl += URLEncoder.encode(portalAuthnUrl, "UTF8");
-		logger.debug("redirectUrl = " + redirectUrl);
-		response.sendRedirect(redirectUrl);
-	}
+        StringBuilder portalAuthnUrl = new StringBuilder(command.getPortalAuthnUrl());
+        portalAuthnUrl.append("&");
+        portalAuthnUrl.append(getTicketParameterName());
+        portalAuthnUrl.append("=");
+        portalAuthnUrl.append(URLEncoder.encode(ticketEncrypted, "UTF8"));
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.springframework.web.portlet.mvc.AbstractCommandController#handleRender(javax.portlet.RenderRequest,
-	 *      javax.portlet.RenderResponse, java.lang.Object,
-	 *      org.springframework.validation.BindException)
-	 */
-	@Override
-	protected ModelAndView handleRender(RenderRequest arg0,
-			RenderResponse arg1, Object arg2, BindException arg3)
-			throws Exception {
-		throw new IllegalStateException(getClass().getName()
-				+ " does not handle render requests.");
-	}
+        logger.debug("portalAuthnUrl = " + portalAuthnUrl);
+        redirectUrl += URLEncoder.encode(portalAuthnUrl.toString(), "UTF8");
+        logger.debug("redirectUrl = " + redirectUrl);
+        response.sendRedirect(redirectUrl);
+    }
 
-	public AuthnService getAuthnService() {
-		return authnService;
-	}
+    /*
+      * (non-Javadoc)
+      *
+      * @see org.springframework.web.portlet.mvc.AbstractCommandController#handleRender(javax.portlet.RenderRequest,
+      *      javax.portlet.RenderResponse, java.lang.Object,
+      *      org.springframework.validation.BindException)
+      */
+    @Override
+    protected ModelAndView handleRender(RenderRequest arg0,
+                                        RenderResponse arg1, Object arg2, BindException arg3)
+            throws Exception {
+        throw new IllegalStateException(getClass().getName()
+                + " does not handle render requests.");
+    }
 
-	public void setAuthnService(AuthnService authnService) {
-		this.authnService = authnService;
-	}
+    public AuthnService getAuthnService() {
+        return authnService;
+    }
 
-	public EncryptionService getEncryptionService() {
-		return encryptionService;
-	}
+    public void setAuthnService(AuthnService authnService) {
+        this.authnService = authnService;
+    }
 
-	public void setEncryptionService(EncryptionService encryptionService) {
-		this.encryptionService = encryptionService;
-	}
+    public EncryptionService getEncryptionService() {
+        return encryptionService;
+    }
 
-	public String getRedirectUrlPreferenceName() {
-		return redirectUrlPreferenceName;
-	}
+    public void setEncryptionService(EncryptionService encryptionService) {
+        this.encryptionService = encryptionService;
+    }
 
-	public void setRedirectUrlPreferenceName(String redirectUrlPreferenceName) {
-		this.redirectUrlPreferenceName = redirectUrlPreferenceName;
-	}
+    public String getRedirectUrlPreferenceName() {
+        return redirectUrlPreferenceName;
+    }
 
-	public String getTicketParameterName() {
-		return ticketParameterName;
-	}
+    public void setRedirectUrlPreferenceName(String redirectUrlPreferenceName) {
+        this.redirectUrlPreferenceName = redirectUrlPreferenceName;
+    }
 
-	public void setTicketParameterName(String ticketParameterName) {
-		this.ticketParameterName = ticketParameterName;
-	}
+    public String getTicketParameterName() {
+        return ticketParameterName;
+    }
 
-	public String getErrorsAttributeName() {
-		return errorsAttributeName;
-	}
+    public void setTicketParameterName(String ticketParameterName) {
+        this.ticketParameterName = ticketParameterName;
+    }
 
-	public void setErrorsAttributeName(String errorsAttributeName) {
-		this.errorsAttributeName = errorsAttributeName;
-	}
+    public String getErrorsAttributeName() {
+        return errorsAttributeName;
+    }
 
-	public String getIfsUrl() {
-		return ifsUrl;
-	}
+    public void setErrorsAttributeName(String errorsAttributeName) {
+        this.errorsAttributeName = errorsAttributeName;
+    }
 
-	public void setIfsUrl(String ifsUrl) {
-		this.ifsUrl = ifsUrl;
-	}
+    public String getIfsUrl() {
+        return ifsUrl;
+    }
 
-	public String getErrorOperationName() {
-		return errorOperationName;
-	}
+    public void setIfsUrl(String ifsUrl) {
+        this.ifsUrl = ifsUrl;
+    }
 
-	public void setErrorOperationName(String errorOperationName) {
-		this.errorOperationName = errorOperationName;
-	}
+    public String getErrorOperationName() {
+        return errorOperationName;
+    }
 
-	public String getViewOperationName() {
-		return viewOperationName;
-	}
+    public void setErrorOperationName(String errorOperationName) {
+        this.errorOperationName = errorOperationName;
+    }
 
-	public void setViewOperationName(String viewOperationName) {
-		this.viewOperationName = viewOperationName;
-	}
+    public String getViewOperationName() {
+        return viewOperationName;
+    }
 
-	public String getPortalUserAttributeName() {
-		return portalUserAttributeName;
-	}
+    public void setViewOperationName(String viewOperationName) {
+        this.viewOperationName = viewOperationName;
+    }
 
-	public void setPortalUserAttributeName(String portalUserAttributeName) {
-		this.portalUserAttributeName = portalUserAttributeName;
-	}
+    public String getPortalUserAttributeName() {
+        return portalUserAttributeName;
+    }
+
+    public void setPortalUserAttributeName(String portalUserAttributeName) {
+        this.portalUserAttributeName = portalUserAttributeName;
+    }
 
 }

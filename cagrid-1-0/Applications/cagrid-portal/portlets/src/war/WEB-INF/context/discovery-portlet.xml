@@ -498,9 +498,7 @@
     </bean>
 
     <bean id="discoveryTabModel"
-          class="gov.nih.nci.cagrid.portal.portlet.tab.TabModel" scope="session">
-
-        <aop:scoped-proxy proxy-target-class="true"/>
+          class="gov.nih.nci.cagrid.portal.portlet.tab.TabModel">
 
         <property name="tabs">
             <list>
