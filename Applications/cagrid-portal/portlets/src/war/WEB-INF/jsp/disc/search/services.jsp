@@ -8,9 +8,6 @@
     -->
 </style>
 
-<script type="text/javascript" src='<c:url value="/dwr/engine.js"/>'></script>
-<script type="text/javascript" src='<c:url value="/dwr/util.js"/>'></script>
-
 <script type="text/javascript" src='<c:url value="/dwr/interface/EVSAutomcompleter.js"/>'></script>
 <script type="text/javascript" src='<c:url value="/js/autocomplete.js"/>'></script>
 

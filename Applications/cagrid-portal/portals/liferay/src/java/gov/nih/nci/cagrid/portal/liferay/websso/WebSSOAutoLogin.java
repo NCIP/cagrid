@@ -6,7 +6,7 @@ import com.liferay.portal.security.auth.AutoLoginException;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PrefsPropsUtil;
-import com.liferay.portal.util.PropsUtil;
+import com.liferay.portal.util.PropsKeys;
 import gov.nih.nci.cagrid.portal.domain.Person;
 import gov.nih.nci.cagrid.portal.domain.PortalUser;
 import gov.nih.nci.cagrid.portal.liferay.security.AbstractAutoLogin;
@@ -36,7 +36,7 @@ public class WebSSOAutoLogin extends AbstractAutoLogin {
         long companyId = PortalUtil.getCompanyId(request);
         try {
 
-            if (!PrefsPropsUtil.getBoolean(companyId, PropsUtil.CAS_AUTH_ENABLED)) {
+            if (!PrefsPropsUtil.getBoolean(companyId, PropsKeys.CAS_AUTH_ENABLED)) {
                 return credentials;
             }
             if (SecurityContextHolder

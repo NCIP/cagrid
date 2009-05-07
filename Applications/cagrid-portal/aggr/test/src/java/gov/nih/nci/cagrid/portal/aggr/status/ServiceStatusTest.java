@@ -6,11 +6,10 @@ package gov.nih.nci.cagrid.portal.aggr.status;
 import gov.nih.nci.cagrid.portal.domain.GridService;
 import gov.nih.nci.cagrid.portal.domain.ServiceStatus;
 import gov.nih.nci.cagrid.portal.domain.StatusChange;
+import junit.framework.TestCase;
 
 import java.util.Calendar;
 import java.util.Date;
-
-import junit.framework.TestCase;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>

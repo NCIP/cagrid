@@ -2,7 +2,7 @@
 
 <project name="cagrid-portal-db" basedir=".">
 
-    <import file="${basedir}/../antfiles/build-common.xml"/>
+    <import file="${basedir}/../antfiles/build-common-test.xml"/>
 
     <property name="ext.dir" value="${basedir}/ext"/>
     <property name="ext.lib.dir" value="${ext.dir}/default/jars"/>
@@ -19,14 +19,6 @@
     <property name="etc.dir" value="${basedir}/etc"/>
     <property name="src.java.dir" value="${basedir}/src/java"/>
     <property name="javadocs.dest.dir" value="${build.dir}/javadocs"/>
-
-    <property name="test.dir" value="${basedir}/test"/>
-    <property name="test.build.dir" value="${test.dir}/build"/>
-    <property name="test.build.classes.dir" value="${test.build.dir}/classes"/>
-    <property name="test.src.java.dir" value="${test.dir}/src/java"/>
-    <property name="test.etc.dir" value="${test.dir}/etc"/>
-    <property name="junit.reports.dir" value="${test.build.dir}/junit-reports"/>
-    <property name="cobertura.datafile" value="${test.build.dir}/build/cobertura.datafile"/>
 
     <property name="tools.hibernate.dir" value="${basedir}/tools/hibernatetools"/>
     <property name="tools.hibernate.config" value="${tools.hibernate.dir}/hibernate.cfg.xml"/>
@@ -161,7 +153,7 @@
         </copy>
     </target>
 
-    <target name="jar" depends="compile-test,resources">
+    <target name="jar" depends="compile,resources">
         <mkdir dir="${build.jar.dir}"/>
         <jar basedir="${build.classes.dir}"
              destfile="${build.jar.dir}/caGrid-portal-db-dao.jar"
@@ -181,51 +173,7 @@
              includes="**/*.class"/>
     </target>
 
-    <target name="compile-test" depends="compile">
-        <mkdir dir="${test.build.classes.dir}"/>
-        <javac srcdir="${test.src.java.dir}" destdir="${test.build.classes.dir}" debug="true">
-            <classpath refid="test.compile.cp"/>
-        </javac>
-    </target>
-
-    <target name="test" depends="jar" description="Run all tests in the project">
-        <mkdir dir="${junit.reports.dir}"/>
-
-        <junit dir="${basedir}" printsummary="yes" showoutput="true" fork="true">
-
-            <!--needed to hook into main reporting task-->
-            <sysproperty key="net.sourceforge.cobertura.datafile"
-                         file="${cobertura.datafile}"/>
-
-            <classpath refid="test.run.cp"/>
-            <formatter type="xml"/>
-
-            <batchtest todir="${junit.reports.dir}">
-                <fileset dir="${test.src.java.dir}">
-                     <patternset refid="unit.test.pattern"/>
-                </fileset>
-            </batchtest>
-
-        </junit>
-    </target>
-
-    <target name="test-single">
-          <mkdir dir="${junit.reports.dir}"/>
-        <junit dir="${basedir}" printsummary="yes" showoutput="yes" fork="true" haltonfailure="yes">
-            <sysproperty key="basedir" value="${basedir}"/>
-
-              <formatter type="xml"/>
-            <classpath>
-                <path refid="test.run.cp"/>
-            </classpath>
-
-               <test name="gov.nih.nci.cagrid.portal.dao.QueryInstanceDaoTest"
-                       todir="${junit.reports.dir}"/>
-
-        </junit>
-    </target>
-
-
+     
     <target name="load-schema" depends="gen-ddl" description="Will create the Portal DB schema.">
 
         <sql driver="com.mysql.jdbc.Driver" url="${cagrid.portal.db.url}"

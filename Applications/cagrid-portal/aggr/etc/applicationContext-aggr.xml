@@ -69,7 +69,8 @@
              <property name="cqlQueryInstanceDao" ref="cqlQueryInstanceDao"/>
          </bean>
 
-    <bean id="xmlSchemaUtils" class="gov.nih.nci.cagrid.portal.util.XMLSchemaUtils">
+    <bean id="xmlSchemaUtils" class="gov.nih.nci.cagrid.portal.util.XMLSchemaUtils"
+            p:gmeUrl-ref="gmeUrl">
         <property name="caDSRClient">
             <bean class="gov.nih.nci.cagrid.portal.util.StaticCaDSRClient">
                 <property name="context" value="caBIG"/>

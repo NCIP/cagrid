@@ -10,7 +10,6 @@
         <!-- Public Configurations-->
         <conf name="authn" visibility="public"/>
         <conf name="ext" visibility="public"/>
-        <conf name="themes" visibility="public"/>
 
         <conf name="default" extends="authn,ext" visibility="public"/>
         <conf name="test" extends="default" visibility="public"/>
@@ -39,7 +38,7 @@
         <dependency rev="1.5.3" org="aspectj" name="aspectjweaver" conf="authn->default"/>
         <dependency rev="3.3.0" org="hibernate" name="annotations" conf="authn->*"/>
         <dependency rev="${liferay.portal.version}" org="liferay" name="portal"
-                    conf="default->portal;ext->portal-ext;themes->portlet-utils"/>
+                    conf="default->portal;ext->portal-ext"/>
         <dependency rev="5.1.6+" org="mysql" name="mysql-connector-java" conf="ext->*"/>
         <dependency rev="2.3+" org="sun" name="servlet" conf="default"/>
         <dependency rev="2.5.5" org="springframework" name="spring" conf="authn->full"/>

@@ -99,7 +99,7 @@ a.currentPage {
     border-color: #A84444 !important
 }
 
-ul li {
+ul.fdtablePaginater li {
     width: auto;
     float: left;
     list-style: none;

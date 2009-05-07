@@ -52,10 +52,10 @@ public class DCQLFormulator implements QueryFormulator<DCQLQuery> {
 
     private gov.nih.nci.cagrid.dcql.Object toTarget(
             gov.nih.nci.cagrid.dcql.Object targetObject, CriteriaBean bean) {
-    	
+
         targetObject.setName(bean.getUmlClass().getPackageName() + "."
                 + bean.getUmlClass().getClassName());
-        
+
         logger.debug("TARGET: " + targetObject.getName());
 
         List<Attribute> attEls = new ArrayList<Attribute>();
@@ -65,14 +65,14 @@ public class DCQLFormulator implements QueryFormulator<DCQLQuery> {
 
         // Add attributes
         for (CriterionBean criterion : bean.getCriteria()) {
-        	
-        	logger.debug("CRITERION: " + criterion.getPath() + ", " + criterion.getPath() + ", " + criterion.getValue());
+
+            logger.debug("CRITERION: " + criterion.getPath() + ", " + criterion.getPath() + ", " + criterion.getValue());
 
             Predicate predicate = Predicate.fromString(criterion.getPredicate());
             if (predicate.equals(Predicate.IS_NULL)
                     || predicate.equals(Predicate.IS_NOT_NULL)) {
                 attEls.add(new Attribute(criterion.getUmlAttribute().getName(),
-                        predicate, null));
+                        predicate, ""));
             } else {
                 String[] values = criterion.getValue().split(",");
                 if (values.length == 1) {
@@ -94,9 +94,9 @@ public class DCQLFormulator implements QueryFormulator<DCQLQuery> {
 
         // Add associations
         for (AssociationBean assocBean : bean.getAssociations()) {
-        	
-        	logger.debug("ROLE: " + assocBean.getRoleName());
-        	
+
+            logger.debug("ROLE: " + assocBean.getRoleName());
+
             if (assocBean.getRoleName().startsWith(QueryConstants.FOREIGN_UML_CLASS_PREFIX)) {
                 ForeignAssociation assoc = new ForeignAssociation();
                 assoc.setTargetServiceURL(assocBean.getCriteriaBean().getUmlClass().getModel().getService().getUrl());
@@ -105,7 +105,7 @@ public class DCQLFormulator implements QueryFormulator<DCQLQuery> {
                         ForeignPredicate.fromString(assocBean.getCriteriaBean().getJoin().getPredicate()));
 
                 logger.debug("JOIN: " + joinCondition.getLocalAttributeName() + " " + joinCondition.getPredicate().getValue() + " " + joinCondition.getForeignAttributeName());
-                
+
                 assoc.setJoinCondition(joinCondition);
                 gov.nih.nci.cagrid.dcql.Object obj = new gov.nih.nci.cagrid.dcql.Object();
                 assoc.setForeignObject(obj);
@@ -120,64 +120,64 @@ public class DCQLFormulator implements QueryFormulator<DCQLQuery> {
         }
 
         boolean needGroup = needGroup(attEls, groupEls, assocEls, fassocEls);
-        if(needGroup){
-        	
-        	logger.debug("GROUPING");
-        	
+        if (needGroup) {
+
+            logger.debug("GROUPING");
+
             Group targetGroup = new Group();
             targetGroup.setLogicRelation(LogicalOperator.AND);
-        	targetObject.setGroup(targetGroup);
-        	if(attEls.size() > 0){
-				targetGroup.setAttribute((Attribute[]) attEls
-						.toArray(new Attribute[attEls.size()]));
-        	}
-        	if(groupEls.size() > 0){
-				targetGroup.setGroup((Group[]) groupEls
-						.toArray(new Group[groupEls.size()]));
-        	}
-        	if(assocEls.size() > 0){
-				targetGroup.setAssociation((Association[]) assocEls
-						.toArray(new Association[assocEls.size()]));
-        	}
-        	if(fassocEls.size() > 0){
-				targetGroup
-						.setForeignAssociation((ForeignAssociation[]) fassocEls
-								.toArray(new ForeignAssociation[fassocEls
-										.size()]));
-        	}
-        }else{
-        	
-        	logger.debug("NOT GROUPING");
-        	
-        	if(attEls.size() > 0){
-        		targetObject.setAttribute(attEls.get(0));
-        	}
-        	if(groupEls.size() > 0){
-        		targetObject.setGroup(groupEls.get(0));
-        	}
-        	if(assocEls.size() > 0){
-        		targetObject.setAssociation(assocEls.get(0));
-        	}
-        	if(fassocEls.size() > 0){
-        		targetObject.setForeignAssociation(fassocEls.get(0));
-        	}
+            targetObject.setGroup(targetGroup);
+            if (attEls.size() > 0) {
+                targetGroup.setAttribute((Attribute[]) attEls
+                        .toArray(new Attribute[attEls.size()]));
+            }
+            if (groupEls.size() > 0) {
+                targetGroup.setGroup((Group[]) groupEls
+                        .toArray(new Group[groupEls.size()]));
+            }
+            if (assocEls.size() > 0) {
+                targetGroup.setAssociation((Association[]) assocEls
+                        .toArray(new Association[assocEls.size()]));
+            }
+            if (fassocEls.size() > 0) {
+                targetGroup
+                        .setForeignAssociation((ForeignAssociation[]) fassocEls
+                                .toArray(new ForeignAssociation[fassocEls
+                                        .size()]));
+            }
+        } else {
+
+            logger.debug("NOT GROUPING");
+
+            if (attEls.size() > 0) {
+                targetObject.setAttribute(attEls.get(0));
+            }
+            if (groupEls.size() > 0) {
+                targetObject.setGroup(groupEls.get(0));
+            }
+            if (assocEls.size() > 0) {
+                targetObject.setAssociation(assocEls.get(0));
+            }
+            if (fassocEls.size() > 0) {
+                targetObject.setForeignAssociation(fassocEls.get(0));
+            }
         }
-        
+
         return targetObject;
 
     }
-    
+
     private boolean needGroup(List... lists) {
-    	int numSizesGreaterThanOne = 0;
-		int numSizesGreaterThanZero = 0;
-		for(List list : lists){
-			if(list.size() > 0){
-				numSizesGreaterThanZero++;
-			}
-			if(list.size() > 1){
-				numSizesGreaterThanOne++;
-			}
-		}
-		return numSizesGreaterThanZero > 1 || numSizesGreaterThanOne > 0;
-	}
+        int numSizesGreaterThanOne = 0;
+        int numSizesGreaterThanZero = 0;
+        for (List list : lists) {
+            if (list.size() > 0) {
+                numSizesGreaterThanZero++;
+            }
+            if (list.size() > 1) {
+                numSizesGreaterThanOne++;
+            }
+        }
+        return numSizesGreaterThanZero > 1 || numSizesGreaterThanOne > 0;
+    }
 }

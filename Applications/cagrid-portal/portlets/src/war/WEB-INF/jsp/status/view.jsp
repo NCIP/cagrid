@@ -3,6 +3,7 @@
 
 <script type="text/javascript" src='<c:url value="/dwr/engine.js"/>'></script>
 <script type="text/javascript" src='<c:url value="/dwr/interface/StatusService.js"/>'></script>
+<script type="text/javascript" src="<c:url value="/js/scriptaculous/prototype.js"/>"></script>
 
 <portlet:actionURL var="action">
     <portlet:param name="operation" value="selectItemForDiscovery"/>

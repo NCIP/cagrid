@@ -35,8 +35,8 @@
 
 .dataCellText {
 /* for text output cells */
-    font-size: 0.9em;
-    padding: 0em;
+    font-size: 1em;
+    padding: 0.1em 0.2em 0.1em 0.2em;
     line-height: 1.5em;
     vertical-align: middle;
 }
@@ -51,6 +51,7 @@
     font-weight: bold;
     width: 25%;
 }
+
 .txtHighlight {
 /* adds emphasis to text */
     color: #797C9C;

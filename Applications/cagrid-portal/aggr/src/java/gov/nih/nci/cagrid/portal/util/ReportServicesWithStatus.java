@@ -39,7 +39,7 @@ public class ReportServicesWithStatus {
         HibernateTemplate templ = (HibernateTemplate) ctx
                 .getBean("hibernateTemplate");
 
-        System.out.println("Willl print a list of Banned services");
+        System.out.println("Willl print a list of " + status + " services");
         templ.execute(new HibernateCallback() {
             public Object doInHibernate(Session session)
                     throws HibernateException, SQLException {

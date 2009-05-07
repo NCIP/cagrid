@@ -125,6 +125,9 @@
                 <value>gov.nih.nci.cagrid.portal.domain.ConceptHierarchyNode</value>
                 <value>gov.nih.nci.cagrid.portal.domain.SemanticMetadataMapping</value>
 
+               
+                
+
             </list>
         </property>
     </bean>
