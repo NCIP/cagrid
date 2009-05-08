@@ -13,12 +13,6 @@
     <property file="${projects.dir}/build.properties"/>
     <property file="${antfiles.dir}/project.properties"/>
 
-    <patternset id="unit.test.pattern">
-        <include name="**/*Test.java"/>
-        <exclude name="**/Abstract*.java"/>
-        <exclude name="**/*TestBase.java"/>
-        <exclude name="**/*System*.java"/>
-    </patternset>
 
     <target name="prepare-ant-tasks" unless="defined.anttaskes">
         <path id="xmltaskdef.cp">

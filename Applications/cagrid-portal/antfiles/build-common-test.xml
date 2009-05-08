@@ -16,6 +16,19 @@
 
     <property name="test.target.property.file" value="${antfiles.dir}/build-test.properties"/>
 
+    <patternset id="unit.test.pattern">
+        <include name="**/*Test.java"/>
+        <exclude name="**/Abstract*.java"/>
+        <exclude name="**/*TestBase.java"/>
+        <exclude name="**/*System*.java"/>
+    </patternset>
+
+    <patternset id="system.test.pattern">
+        <include name="**/*System*.java"/>
+        <exclude name="**/Abstract*.java"/>
+        <exclude name="**/*TestBase.java"/>
+    </patternset>
+
 
     <target name="prepare-test" depends="compile-test"
             description="Prepare tests so that they can be executed">
@@ -33,6 +46,19 @@
     </target>
 
     <target name="test" depends="prepare-test" description="Execute all tests">
+        <antcall target="test-base">
+            <param name="test.pattern" value="unit.test.pattern"/>
+        </antcall>
+    </target>
+
+    <target name="test-system" depends="prepare-test"
+            description="Run all the System tests for this porject.">
+        <antcall target="test-base">
+            <param name="test.pattern" value="system.test.pattern"/>
+        </antcall>
+    </target>
+
+    <target name="test-base">
         <mkdir dir="${junit.reports.dir}"/>
 
         <junit dir="${basedir}" printsummary="yes" showoutput="true" fork="true">
@@ -46,12 +72,14 @@
 
             <batchtest todir="${junit.reports.dir}">
                 <fileset dir="${test.src.java.dir}">
-                    <patternset refid="unit.test.pattern"/>
+                    <patternset refid="${test.pattern}"/>
                 </fileset>
             </batchtest>
 
         </junit>
+
     </target>
+
 
     <target name="test-integration" depends="prepare-test" description="Execute all Integration tests">
         <mkdir dir="${junit.reports.dir}"/>
