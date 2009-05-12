@@ -19,7 +19,9 @@ public class CheckTavernaWorkflowServiceStep extends Step {
 
 	private final EndpointReferenceType twsEPR;
 	private static final String SCUFL_FILE = "resources/input/input.t2flow";
-	private static final String OUTPUT_FILE = "resources/output/output.xml";
+	//private static final String OUTPUT_FILE = "resources/output/output.xml";
+	private static final String OUTPUT_FILE = System.getProperty("java.io.tmpdir") 
+		+ System.getProperty("file.separator") + "output.xml";
 	private static final String[] INPUTS = {"TavernaWorkflowService", " Test Successful"};
 	
 	
@@ -31,8 +33,6 @@ public class CheckTavernaWorkflowServiceStep extends Step {
 	public void runStep() throws RemoteException {
 		assertNotNull("A non-null EPR must be passed in.", this.twsEPR);
 
-		// check standard metadata
-		//checkStandardMetadata("MetadataModelService");
 
 		// Create a resource with the givne Input Scufl file.
 		System.out.println("1. Creating A Resource with the given Scufl file.\n");
