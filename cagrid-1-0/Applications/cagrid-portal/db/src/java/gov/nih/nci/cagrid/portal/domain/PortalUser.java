@@ -5,6 +5,10 @@ package gov.nih.nci.cagrid.portal.domain;
 
 import gov.nih.nci.cagrid.portal.domain.dataservice.QueryInstance;
 import gov.nih.nci.cagrid.portal.domain.dataservice.SharedCQLQuery;
+import gov.nih.nci.cagrid.portal.domain.catalog.PersonCatalogEntry;
+import gov.nih.nci.cagrid.portal.domain.catalog.Comment;
+import gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntry;
+import gov.nih.nci.cagrid.portal.domain.catalog.Commentable;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -18,7 +22,7 @@ import java.util.List;
 @Entity
 @Table(name = "portal_users")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_portal_users")})
-public class PortalUser extends AbstractDomainObject {
+public class PortalUser extends AbstractDomainObject implements Commentable {
 
     private Person person;
 
@@ -35,6 +39,13 @@ public class PortalUser extends AbstractDomainObject {
     private List<SharedCQLQuery> sharedQueries = new ArrayList<SharedCQLQuery>();
 
     private NotificationSubscriber subscriber;
+
+
+    public PersonCatalogEntry catalogEntry;
+
+    public List<Comment> comments = new ArrayList<Comment>();
+
+    public List<CatalogEntry> catalogEntries = new ArrayList<CatalogEntry>();
 
 
     @ManyToOne
@@ -108,5 +119,34 @@ public class PortalUser extends AbstractDomainObject {
 
     public void setDelegatedEPR(String delegatedEPR) {
         this.delegatedEPR = delegatedEPR;
+    }
+
+    //delete all catalogs for the user
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="catalog_fk")
+    public PersonCatalogEntry getCatalogEntry() {
+        return catalogEntry;
+    }
+
+    public void setCatalogEntry(PersonCatalogEntry catalogEntry) {
+        this.catalogEntry = catalogEntry;
+    }
+
+    @OneToMany(mappedBy="author",cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    @OneToMany(mappedBy="author",cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    public List<CatalogEntry> getCatalogEntries() {
+        return catalogEntries;
+    }
+
+    public void setCatalogEntries(List<CatalogEntry> catalogEntries) {
+        this.catalogEntries = catalogEntries;
     }
 }

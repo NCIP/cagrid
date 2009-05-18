@@ -1,0 +1,250 @@
+package gov.nih.nci.cagrid.portal.domain.catalog;
+
+import gov.nih.nci.cagrid.portal.domain.AbstractDomainObject;
+import gov.nih.nci.cagrid.portal.domain.PortalUser;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+@Entity
+@Table(name = "cat_entry")
+@GenericGenerator(name = "id-generator", strategy = "native",
+ parameters = {
+        @Parameter(name="sequence", value="seq_cat_entry")
+    })
+@DiscriminatorColumn(
+        name = "catalog_type",
+        discriminatorType = DiscriminatorType.STRING
+)
+@DiscriminatorValue("CatalogEntry")
+public class CatalogEntry extends AbstractDomainObject implements Commentable,MutableTemporal {
+
+    public String name;
+
+    public String description;
+
+    public Date createdAt;
+
+    public Date updatedAt;
+
+    public CatalogEntryWorkflowStatus workflowStatus;
+
+    public long numViews;
+
+    public Date lastViewedAt;
+
+    public boolean published;
+
+    public List tags = new ArrayList<String>();
+
+    public List<Citation> citations = new ArrayList<Citation>();
+
+    public List<Term> terms= new ArrayList<Term>();
+
+    public List<Hyperlink> hyperlinks= new ArrayList<Hyperlink>();
+
+    public List<File> files= new ArrayList<File>();
+
+    public List<Rating> ratings= new ArrayList<Rating>();
+
+    public List<Term> areasOfFocus= new ArrayList<Term>();
+
+    public PersonCatalogEntry contributor;
+
+    public PortalUser author;
+
+    public List<FavoriteOfRole> favoriteOfRole= new ArrayList<FavoriteOfRole>();
+
+    public List<CatalogEntryRoleInstance> targetRoles= new ArrayList<CatalogEntryRoleInstance>();
+
+    public List<CatalogEntryRoleInstance> sourceRoles= new ArrayList<CatalogEntryRoleInstance>();
+
+    private List<Comment> comments = new ArrayList<Comment>();
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public CatalogEntryWorkflowStatus getWorkflowStatus() {
+        return workflowStatus;
+    }
+
+    public void setWorkflowStatus(CatalogEntryWorkflowStatus workflowStatus) {
+        this.workflowStatus = workflowStatus;
+    }
+
+    public long getNumViews() {
+        return numViews;
+    }
+
+    public void setNumViews(long numViews) {
+        this.numViews = numViews;
+    }
+
+    public Date getLastViewedAt() {
+        return lastViewedAt;
+    }
+
+    public void setLastViewedAt(Date lastViewedAt) {
+        this.lastViewedAt = lastViewedAt;
+    }
+
+    public boolean isPublished() {
+        return published;
+    }
+
+    public void setPublished(boolean published) {
+        this.published = published;
+    }
+
+    //ToDo map this to something
+//    public List getTags() {
+//        return tags;
+//    }
+//
+//    public void setTags(List tags) {
+//        this.tags = tags;
+//    }
+
+    @ManyToMany(cascade = {CascadeType.ALL})
+    public List<Citation> getCitations() {
+        return citations;
+    }
+
+    public void setCitations(List<Citation> citations) {
+        this.citations = citations;
+    }
+
+    @OneToMany(cascade=CascadeType.ALL)
+    public List<Term> getTerms() {
+        return terms;
+    }
+
+    public void setTerms(List<Term> terms) {
+        this.terms = terms;
+    }
+
+    @OneToMany(cascade=CascadeType.ALL,mappedBy="hyperlinkOf")
+    public List<Hyperlink> getHyperlinks() {
+        return hyperlinks;
+    }
+
+    public void setHyperlinks(List<Hyperlink> hyperlinks) {
+        this.hyperlinks = hyperlinks;
+    }
+
+    @OneToMany(cascade=CascadeType.ALL,mappedBy="fileOf")
+    public List<File> getFiles() {
+        return files;
+    }
+
+    public void setFiles(List<File> files) {
+        this.files = files;
+    }
+
+    @OneToMany(cascade=CascadeType.ALL,mappedBy="ratingOf")
+    public List<Rating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(List<Rating> ratings) {
+        this.ratings = ratings;
+    }
+
+
+    @ManyToOne
+    @JoinColumn(name="contributor_id")
+    public PersonCatalogEntry getContributor() {
+        return contributor;
+    }
+
+    public void setContributor(PersonCatalogEntry contributor) {
+        this.contributor = contributor;
+    }
+
+    @OneToMany(mappedBy="favoriteOf",cascade = CascadeType.ALL)
+    public List<FavoriteOfRole> getFavoriteOfRole() {
+        return favoriteOfRole;
+    }
+
+    public void setFavoriteOfRole(List<FavoriteOfRole> favoriteOfRole) {
+        this.favoriteOfRole = favoriteOfRole;
+    }
+
+    @OneToMany(mappedBy="target")
+    public List<CatalogEntryRoleInstance> getTargetRoles() {
+        return targetRoles;
+    }
+
+    public void setTargetRoles(List<CatalogEntryRoleInstance> targetRoles) {
+        this.targetRoles = targetRoles;
+    }
+
+    @OneToMany(mappedBy="source")
+    public List<CatalogEntryRoleInstance> getSourceRoles() {
+        return sourceRoles;
+    }
+
+    public void setSourceRoles(List<CatalogEntryRoleInstance> sourceRoles) {
+        this.sourceRoles = sourceRoles;
+    }
+
+    @ManyToOne
+    public PortalUser getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(PortalUser author) {
+        this.author = author;
+    }
+
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    public List<Term> getAreasOfFocus() {
+        return areasOfFocus;
+    }
+
+    public void setAreasOfFocus(List<Term> areasOfFocus) {
+        this.areasOfFocus = areasOfFocus;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL)
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+}
