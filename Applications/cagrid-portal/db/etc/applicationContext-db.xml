@@ -125,9 +125,53 @@
                 <value>gov.nih.nci.cagrid.portal.domain.ConceptHierarchyNode</value>
                 <value>gov.nih.nci.cagrid.portal.domain.SemanticMetadataMapping</value>
 
-               
-                
-
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntry</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntryRelationshipType</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntryRoleInstance</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntryRelationshipInstance</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntryRoleType</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.Citation</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.Comment</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.CommunityCatalogEntry</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.CriterionDescriptor</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.DataSetCatalogEntry</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.DesktopToolCatalogEntry</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.FavoriteOfRole</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.FavoriteRole</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.File</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.GridServiceEndPointCatalogEntry</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.GridServiceInterfaceCatalogEntry</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.Hyperlink</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.InformationModelCatalogEntry</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.InputDescriptor</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.InstitutionCatalogEntry</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.KnowledgeCenterCatalogEntry</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.LOVCriterionDescriptor</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.LOVCriterionValues</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.OutputColumnDescriptor</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.OutputDescriptor</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.ProvenanceGraph</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.PersonCatalogEntry</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.PortletCatalogEntry</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.PersonCatalogEntry</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.ProjectCatalogEntry</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.QueryResultColumnDescriptor</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.Rating</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.SharedQueryCatalogEntry</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.SharedQueryToolsRelationship</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.TabularOutputDescriptor</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.TemporalRelationship</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.Term</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.Terminology</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.TerminologyCatalogEntry</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.TerminologyCriterionDescriptor</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.ToolApplications</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.ToolCatalogEntry</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.ToolDeploymentCatalogEntry</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.UMLAttributeCatalogEntry</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.UMLClassCatalogEntry</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.WorkflowCatalogEntry</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.WorkspaceCatalogEntry</value>
             </list>
         </property>
     </bean>
@@ -237,6 +281,40 @@
 
     <bean id="notificationLogMessageDao" parent="daoTemplate"
           class="gov.nih.nci.cagrid.portal.dao.NotificationLogMessageDao"/>
+
+    <bean id="catalogEntryDao" parent="daoTemplate"
+          class="gov.nih.nci.cagrid.portal.dao.catalog.CatalogEntryDao"/>
+
+    <bean id="personCatalogEntryDao" parent="daoTemplate"
+          class="gov.nih.nci.cagrid.portal.dao.catalog.PersonCatalogEntryDao"/>
+
+    <bean id="catalogEntryRoleInstanceDao" parent="daoTemplate"
+          class="gov.nih.nci.cagrid.portal.dao.catalog.CatalogEntryRoleInstanceDao"/>
+
+    <bean id="citationDao" parent="daoTemplate"
+          class="gov.nih.nci.cagrid.portal.dao.catalog.CitationDao"/>
+
+    <bean id="commentDao" parent="daoTemplate"
+          class="gov.nih.nci.cagrid.portal.dao.catalog.CommentDao"/>
+
+    <bean id="favoriteOfRoleDao" parent="daoTemplate"
+          class="gov.nih.nci.cagrid.portal.dao.catalog.FavoriteOfRoleDao"/>
+
+    <bean id="fileDao" parent="daoTemplate"
+          class="gov.nih.nci.cagrid.portal.dao.catalog.FileDao"/>
+
+    <bean id="hyperlinkDao" parent="daoTemplate"
+          class="gov.nih.nci.cagrid.portal.dao.catalog.HyperlinkDao"/>
+
+    <bean id="ratingDao" parent="daoTemplate"
+          class="gov.nih.nci.cagrid.portal.dao.catalog.RatingDao"/>
+
+    <bean id="terminologyDao" parent="daoTemplate"
+          class="gov.nih.nci.cagrid.portal.dao.catalog.TerminologyDao"/>
+
+    <bean id="termDao" parent="daoTemplate"
+           class="gov.nih.nci.cagrid.portal.dao.catalog.TermDao"/>
+
 
     <bean id="openSessionInViewForTesting"
           class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor"
