@@ -8,7 +8,7 @@ import gov.nih.nci.cagrid.portal.domain.catalog.File;
  *
  * @author kherm manav.kher@semanticbits.com
  */
-public class FileDao  extends AbstractDao<File> {
+public class FileDao extends AbstractDao<File> {
 
     public FileDao() {
     }

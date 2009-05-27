@@ -5,7 +5,7 @@ import gov.nih.nci.cagrid.portal.aggr.geocode.Geocoder;
 import gov.nih.nci.cagrid.portal.aggr.geocode.GeocodingException;
 import gov.nih.nci.cagrid.portal.domain.Address;
 import gov.nih.nci.cagrid.portal.util.Metadata;
-import gov.nih.nci.cagrid.portal.util.PortalUtils;
+import gov.nih.nci.cagrid.portal.util.MetadataUtils;
 import org.directwebremoting.annotations.Param;
 import org.directwebremoting.annotations.RemoteProxy;
 import org.directwebremoting.spring.SpringCreator;
@@ -24,12 +24,14 @@ public class MetadataDiagnosticService extends AbstractDiagnosticService {
 
     private long defaultTimeout;
     private Geocoder geocoder;
+    private MetadataUtils metadataUtils;
+
 
     public DiagnosticResult diagnoseInternal(String Url) {
         DiagnosticResult _result = new DiagnosticResult(DiagnosticType.METADATA, DiagnosticResultStatus.FAILED);
         Metadata _meta;
         try {
-            _meta = PortalUtils.getMetadata(Url, defaultTimeout);
+            _meta = metadataUtils.getMetadata(Url, defaultTimeout);
 
             _result.setStatus(DiagnosticResultStatus.PASSED);
             logger.debug("Retrieved metadata sucessfully for " + Url);
@@ -74,5 +76,13 @@ public class MetadataDiagnosticService extends AbstractDiagnosticService {
 
     public void setGeocoder(Geocoder geocoder) {
         this.geocoder = geocoder;
+    }
+
+    public MetadataUtils getMetadataUtils() {
+        return metadataUtils;
+    }
+
+    public void setMetadataUtils(MetadataUtils metadataUtils) {
+        this.metadataUtils = metadataUtils;
     }
 }

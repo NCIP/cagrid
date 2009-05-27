@@ -125,4 +125,859 @@
         </createTable>
     </changeSet>
 
+    <!--catalog tables-->
+    <changeSet id="12" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_citations"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_citations">
+            <column name="id" type="integer" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="citation" type="varchar(255)"/>
+            <column name="pubMedID" type="varchar(255)"/>
+            <column name="createdAt" type="datetime"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="13" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_comments"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_comments">
+            <column name="id" type="integer" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="commentText" type="varchar(255)"/>
+            <column name="commnentor_id" type="integer">
+                <constraints foreignKeyName="FKF71F003DF810F8C8" references="cat_entry(id)"/>
+            </column>
+            <column name="author_id" type="integer">
+                <constraints foreignKeyName="FKF71F003DFBD049DD" references="portal_users(id)"/>
+            </column>
+            <column name="createdAt" type="datetime"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="14" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_entry"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_entry">
+            <column name="id" type="integer" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="catalog_type" type="varchar(31)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(255)"/>
+            <column name="name" type="varchar(255)"/>
+            <column name="numViews" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="published" type="bit">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updatedAt" type="datetime"/>
+            <column name="lastViewedAt" type="datetime"/>
+            <column name="createdAt" type="datetime"/>
+            <column name="workflowStatus" type="integer"/>
+            <column name="addressPublic" type="bit"/>
+            <column name="countryCode" type="varchar(255)"/>
+            <column name="emailAddress" type="varchar(255)"/>
+            <column name="emailAddressPublic" type="bit"/>
+            <column name="latitude" type="float"/>
+            <column name="locality" type="varchar(255)"/>
+            <column name="longitude" type="float"/>
+            <column name="phoneNumber" type="varchar(255)"/>
+            <column name="phoneNumberPublic" type="bit"/>
+            <column name="postalCode" type="varchar(255)"/>
+            <column name="stateProvince" type="varchar(255)"/>
+            <column name="street1" type="varchar(255)"/>
+            <column name="street2" type="varchar(255)"/>
+            <column name="webSite" type="tinyblob"/>
+            <column name="firstName" type="varchar(255)"/>
+            <column name="lastName" type="varchar(255)"/>
+            <column name="middleName" type="varchar(255)"/>
+            <column name="salutation" type="varchar(255)"/>
+            <column name="suffix" type="varchar(255)"/>
+            <column name="end" type="datetime"/>
+            <column name="start" type="datetime"/>
+            <column name="contributor_id" type="integer">
+                <constraints foreignKeyName="FK52FB32C9A44A9FF9" references="portal_users(id)"/>
+            </column>
+            <column name="author_id" type="integer">
+                <constraints foreignKeyName="FK52FB32C9FBD049DD" references="portal_users(id)"/>
+            </column>
+            <column name="terminology_id" type="integer">
+                <constraints foreignKeyName="FK52FB32C9E573C12E" references="cat_terminology(id)"/>
+            </column>
+            <column name="provenance_id" type="integer">
+                <constraints foreignKeyName="FK52FB32C9F60411FA" references="cat_provenance_graph(id)"/>
+            </column>
+            <column name="grid_service_id" type="integer">
+                <constraints foreignKeyName="FK52FB32C940575DB6" references="grid_services(id)"/>
+            </column>
+            <column name="participant_id" type="integer">
+                <constraints foreignKeyName="FK52FB32C91E7B9083" references="participants(id)"/>
+            </column>
+            <column name="person_id" type="integer">
+                <constraints foreignKeyName="FK52FB32C9D6B703D3" references="portal_users(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="15" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_entry_cat_citations"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_entry_cat_citations">
+            <column name="citationOf_id" type="integer">
+                <constraints nullable="false" foreignKeyName="FK152C6A4DF936801" references="cat_entry(id)"/>
+            </column>
+            <column name="citations_id" type="integer">
+                <constraints nullable="false" foreignKeyName="FK152C6A4DD915D2E1" references="cat_citations(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="16" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_entry_cat_comments"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_entry_cat_comments">
+            <column name="cat_entry_id" type="integer">
+                <constraints nullable="false" foreignKeyName="FKBF27C5F3C5A01856" references="cat_entry(id)"/>
+            </column>
+            <!--too should be unique-->
+            <column name="comments_id" type="integer">
+                <constraints unique="true" nullable="false" foreignKeyName="FKBF27C5F3488AC7F9"
+                             references="cat_comments(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="17" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_entry_cat_entry"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_entry_cat_entry">
+            <column name="knowledgeCenterInstitutionOf_id" type="integer">
+                <constraints nullable="false" foreignKeyName="FKA1F138D3599AF85E" references="cat_entry(id)"/>
+            </column>
+            <column name="knowledgeCenterInstitutions_id" type="integer">
+                <constraints nullable="false" foreignKeyName="FKA1F138D3CE47EB71" references="cat_entry(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet id="18" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_entry_cat_terms"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_entry_cat_entry">
+            <column name="cat_entry_id" type="integer">
+                <constraints nullable="false" foreignKeyName="FKA2C079E8BAF5B81" references="cat_entry(id)"/>
+            </column>
+            <column name="typesOfCancer_id" type="integer">
+                <constraints unique="true" nullable="false" foreignKeyName="FKA2C079E8B30323C2"
+                             references="cat_terms(id)"/>
+            </column>
+            <column name="terms_id" type="integer">
+                <constraints unique="true" nullable="false" foreignKeyName="FKA2C079E85D72F16B"
+                             references="cat_terms(id)"/>
+            </column>
+            <column name="areasOfFocus_id" type="integer">
+                <constraints nullable="false" foreignKeyName="FKA2C079E82DB9B157" references="cat_terms(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="19" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_fav_of_role"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_fav_of_role">
+            <column name="id" type="integer" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="description" type="varchar(255)"/>
+            <column name="person_catalog_id" type="integer">
+                <constraints foreignKeyName="FKAD8EEDD166CCEC30" references="cat_entry(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="20" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_fav_role"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_fav_role">
+            <column name="id" type="integer" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="description" type="varchar(255)"/>
+            <column name="catalog_id" type="integer">
+                <constraints foreignKeyName="FK58C78963467B6FFB" references="cat_entry(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="21" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_files"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_files">
+            <column name="id" type="integer" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="catalog_id" type="integer">
+                <constraints foreignKeyName="FK58C78963467B6FFB" references="cat_entry(id)"/>
+            </column>
+            <column name="createdAt" type="datetime"/>
+            <column name="description" type="varchar(255)"/>
+            <column name="fileType" type="varchar(255)"/>
+            <column name="name" type="varchar(255)"/>
+            <column name="sizeInBytes" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="url" type="tinyblob"/>
+            <column name="catalog_id" type="integer">
+                <constraints foreignKeyName="FK5306E4CEA9952906" references="cat_entry(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="22" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_files_cat_comments"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_files_cat_comments">
+            <column name="cat_files_id" type="integer">
+                <constraints nullable="false" foreignKeyName="FK882440E930E6DD4" references="cat_files(id)"/>
+            </column>
+            <column name="comments_id" type="integer">
+                <constraints unique="true" nullable="false" foreignKeyName="FK882440E488AC7F9"
+                             references="cat_comments(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="23" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_hyperlinks"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_hyperlinks">
+            <column name="id" type="integer" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="createdAt" type="datetime"/>
+            <column name="description" type="varchar(255)"/>
+            <column name="updatedAt" type="datetime"/>
+            <column name="url" type="tinyblob"/>
+            <column name="catalog_id" type="integer">
+                <constraints foreignKeyName="FKE1FAE8D6A9952906" references="cat_entry(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="24" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_hyperlinks_cat_comments"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_hyperlinks_cat_comments">
+            <column name="cat_hyperlinks_id" type="integer">
+                <constraints nullable="false" foreignKeyName="FKE1FAE8D6A9952906" references="cat_hyperlinks(id)"/>
+            </column>
+            <column name="comments_id" type="integer">
+                <constraints unique="true" nullable="false" foreignKeyName="FKEC230D06488AC7F9"
+                             references="cat_comments(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="25" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_input_desc"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_input_desc">
+            <column name="id" type="integer" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="description" type="varchar(255)"/>
+            <column name="label" type="varchar(255)"/>
+            <column name="orderLevel" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="umlattribute_fk" type="integer">
+                <constraints foreignKeyName="FKC86761EFB1C98069" references="cat_entry(id)"/>
+            </column>
+            <column name="sharedQueryCatalog_fk" type="integer">
+                <constraints foreignKeyName="FKC86761EFE3BB879E" references="cat_entry(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <!--done till here-->
+
+    <changeSet id="26" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_input_desc_cat_comments"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_input_desc_cat_comments">
+            <column name="cat_input_desc_id" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="comments_id" type="integer">
+                <constraints unique="true" nullable="false" foreignKeyName="FKB82BE48D488AC7F9"
+                             references="cat_comments(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet id="27" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_lov_crit_values"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_lov_crit_values">
+            <column name="id" type="integer" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="help" type="varchar(255)"/>
+            <column name="label" type="varchar(255)"/>
+            <column name="value" type="varchar(255)"/>
+            <column name="descriptor_id" type="integer">
+                <constraints foreignKeyName="FK98E5FDD2D1A239B4" references="cat_input_desc(id)"/>
+            </column>
+            <column name="sharedQueryCatalog_fk" type="integer"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="28" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_output_column_desc"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_output_column_desc">
+            <column name="id" type="integer" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="type" type="varchar(31)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(255)"/>
+            <column name="label" type="varchar(255)"/>
+            <column name="orderLevel" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="query_id" type="integer">
+                <constraints foreignKeyName="FKA91622A527E94122" references="cat_entry(id)"/>
+            </column>
+            <column name="umlAttribute_id" type="integer">
+                <constraints foreignKeyName="FKA91622A5B1C980BF" references="cat_entry(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="29" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_output_column_desc_cat_comments"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_output_column_desc_cat_comments">
+            <column name="cat_output_column_desc_id" type="integer">
+                <constraints nullable="false" foreignKeyName="FKCD227B9722BA2EA7"
+                             references="cat_output_column_desc(id)"/>
+            </column>
+            <column name="comments_id" type="integer">
+                <constraints unique="true" nullable="false" foreignKeyName="FKCD227B97488AC7F9"
+                             references="cat_comments(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="30" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_output_desc"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_output_desc">
+            <column name="id" type="integer" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="type" type="varchar(31)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(255)"/>
+            <column name="output_id" type="integer">
+                <constraints foreignKeyName="FK1203E42697F9807D" references="cat_entry(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="31" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_output_desc_cat_comments"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_output_desc_cat_comments">
+            <column name="cat_output_desc_id" type="integer">
+                <constraints nullable="false" foreignKeyName="FK1318F3B6D3627350" references="cat_output_desc(id)"/>
+            </column>
+            <column name="comments_id" type="integer">
+                <constraints unique="true" nullable="false" foreignKeyName="FK1318F3B6488AC7F9"
+                             references="cat_comments(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="32" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_provenance_graph"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_provenance_graph">
+            <column name="id" type="integer" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="33" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_output_desc_cat_output_column_desc"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_output_desc_cat_output_column_desc">
+            <column name="cat_output_desc_id" type="integer">
+                <constraints nullable="false" foreignKeyName="FK5794D2DEFD6F09B5" references="cat_output_desc(id)"/>
+            </column>
+            <column name="columns_id" type="integer">
+                <constraints unique="true" nullable="false" foreignKeyName="FK5794D2DEDE5E0E6F"
+                             references="cat_output_column_desc(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="34" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_provenance_graph_cat_comments"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_provenance_graph_cat_comments">
+            <column name="id" type="integer" autoIncrement="true">
+
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="cat_provenance_graph_id" type="integer">
+                <constraints foreignKeyName="FKF748B3C312823222" references="cat_provenance_graph(id)"/>
+            </column>
+            <column name="comments_id" type="integer">
+                <constraints unique="true" nullable="false" foreignKeyName="FKF748B3C3488AC7F9"
+                             references="cat_comments(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet id="35" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_ratings"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_ratings">
+            <column name="id" type="integer" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="createdAt" type="datetime"/>
+            <column name="rating" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updatedAt" type="datetime"/>
+            <column name="catalog_id" type="integer">
+                <constraints foreignKeyName="FK1A77730DA9952906" references="cat_entry(id)"/>
+            </column>
+            <column name="person_catalog_id" type="integer">
+                <constraints foreignKeyName="FK1A77730D3B33325" references="cat_entry(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="36" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_ratings_cat_comments"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_ratings_cat_comments">
+            <column name="cat_ratings_id" type="integer" autoIncrement="true">
+                <constraints nullable="false" foreignKeyName="FK727D142FF914A456" references="cat_ratings(id)"/>
+            </column>
+            <column name="comments_id" type="integer">
+                <constraints unique="true" nullable="false" foreignKeyName="FK727D142F488AC7F9"
+                             references="cat_comments(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="37" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_relations_shared_query"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_relations_shared_query">
+            <column name="id" type="integer" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="createdAt" type="datetime"/>
+            <column name="moreInformation" type="varchar(255)"/>
+            <column name="role" type="varchar(255)"/>
+            <column name="updatedAt" type="datetime"/>
+            <column name="tool_id" type="integer">
+                <constraints foreignKeyName="FK6E13443FC3D65EDF" references="cat_entry(id)"/>
+            </column>
+            <column name="sharedQuery_id" type="integer">
+                <constraints foreignKeyName="FK6E13443F7A1B887" references="cat_entry(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="38" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_relations_shared_query_cat_comments"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_relations_shared_query_cat_comments">
+            <column name="cat_relations_shared_query_id" type="integer" autoIncrement="true">
+                <constraints nullable="false" foreignKeyName="FK41AE443DB3DE95D7"
+                             references="cat_relations_shared_query(id)"/>
+            </column>
+            <column name="comments_id" type="integer">
+                <constraints unique="true" nullable="false" foreignKeyName="FK392F2989488AC7F9"
+                             references="cat_comments(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="39" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_relations_temporal"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_relations_temporal">
+            <column name="id" type="integer" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="createdAt" type="datetime"/>
+            <column name="moreInformation" type="varchar(255)"/>
+            <column name="role" type="varchar(255)"/>
+            <column name="updatedAt" type="datetime"/>
+            <column name="since" type="datetime"/>
+            <column name="until" type="datetime"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="40" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_relations_temporal_cat_comments"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_relations_temporal_cat_comments">
+            <column name="cat_relations_temporal_id" type="integer">
+                <constraints nullable="false" foreignKeyName="FK392F298955A0A20D"
+                             references="cat_relations_temporal(id)"/>
+            </column>
+            <column name="comments_id" type="integer">
+                <constraints unique="true" nullable="false" foreignKeyName="FK392F2989488AC7F9"
+                             references="cat_comments(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="41" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_relationship_instance"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_relationship_instance">
+            <column name="id" type="integer" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="createdAt" type="datetime"/>
+            <column name="since" type="datetime"/>
+            <column name="until" type="datetime"/>
+            <column name="updatedAt" type="datetime"/>
+            <column name="catalog_relationship_type_id" type="integer">
+                <constraints foreignKeyName="FKD62B6B131C882B56" references="cat_relationship_type(id)"/>
+            </column>
+            <column name="catalog_instance_roleA" type="integer">
+                <constraints foreignKeyName="FKD62B6B1374778D37" references="cat_role_instance(id)"/>
+            </column>
+            <column name="catalog_instance_roleB" type="integer">
+                <constraints foreignKeyName="FKD62B6B1374778D38" references="cat_role_instance(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="42" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_relationship_instance_cat_comments"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_relationship_instance_cat_comments">
+            <column name="cat_relationship_instance_id" type="integer">
+                <constraints nullable="false" foreignKeyName="FKB82ED5E9971F3A59"
+                             references="cat_relationship_instance(id)"/>
+            </column>
+            <column name="comments_id" type="integer">
+                <constraints nullable="false" foreignKeyName="FKB82ED5E9488AC7F9" references="cat_comments(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="43" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_relationship_type"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_relationship_type">
+            <column name="id" type="integer" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="createdAt" type="datetime"/>
+            <column name="description" type="varchar(255)"/>
+            <column name="name" type="varchar(255)"/>
+            <column name="temporal" type="bit">
+                <constraints nullable="false"/>
+            </column>
+            <column name="catalog_role_typeA" type="integer">
+                <constraints foreignKeyName="FK35C654B8F7FF4939" references="cat_role_type(id)"/>
+            </column>
+            <column name="catalog_role_typeB" type="integer">
+                <constraints foreignKeyName="FK35C654B8F7FF493A" references="cat_role_type(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="44" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_relationship_type_cat_comments"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_relationship_type_cat_comments">
+            <column name="cat_relationship_type_id" type="integer">
+                <constraints nullable="false" foreignKeyName="FK73498064413A33B9"
+                             references="cat_relationship_type(id)"/>
+            </column>
+            <column name="comments_id" type="integer">
+                <constraints unique="true" nullable="false" foreignKeyName="FK73498064488AC7F9"
+                             references="cat_comments(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet id="45" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_role_instance"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_role_instance">
+            <column name="id" type="integer" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="createdAt" type="datetime"/>
+            <column name="description" type="varchar(255)"/>
+            <column name="updatedAt" type="datetime"/>
+            <column name="source_id" type="integer">
+                <constraints foreignKeyName="FK17004D95C22809C4" references="cat_entry(id)"/>
+            </column>
+            <column name="target_id" type="integer">
+                <constraints foreignKeyName="FK17004D95F6C7048E" references="cat_entry(id)"/>
+            </column>
+            <column name="role_type" type="integer">
+                <constraints foreignKeyName="FK17004D95BA5E4358" references="cat_role_type(id)"/>
+            </column>
+            <column name="relationship_fk" type="integer">
+                <constraints foreignKeyName="FK17004D952B5720BE" references="cat_relationship_instance(id)"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+
+    <changeSet id="46" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_role_instance_cat_comments"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_relationship_type_cat_comments">
+            <column name="cat_role_instance_id" type="integer">
+                <constraints nullable="false" foreignKeyName="FKEE7996A76B6E91D5" references="cat_role_instance(id)"/>
+            </column>
+            <column name="comments_id" type="integer">
+                <constraints unique="true" nullable="false" foreignKeyName="FKEE7996A7488AC7F9"
+                             references="cat_comments(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="47" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_role_type"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_role_type">
+            <column name="id" type="integer" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="createdAt" type="datetime"/>
+            <column name="description" type="varchar(255)"/>
+            <column name="maxCardinality" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="minCardinality" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)"/>
+            <column name="updatedAt" type="datetime"/>
+            <column name="type_id" type="integer">
+                <constraints foreignKeyName="FK59E4C83A3B62D1F7" references="cat_relationship_type(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet id="48" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_role_type_cat_comments"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_role_type_cat_comments">
+            <column name="cat_role_type_id" type="integer">
+                <constraints nullable="false" foreignKeyName="FKC41E5022488AC7F9" references="cat_role_type(id)"/>
+            </column>
+            <column name="comments_id" type="integer">
+                <constraints unique="true" nullable="false" foreignKeyName="FKC41E5022488AC7F9"
+                             references="cat_comments(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="49" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_terminology"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_terminology">
+            <column name="id" type="integer" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="identifier" type="varchar(255)"/>
+            <column name="label" type="varchar(255)"/>
+            <column name="serviceUrl" type="tinyblob"/>
+            <column name="sharedQueryCriteria" type="tinyblob"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="50" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_terms"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_terms">
+            <column name="id" type="integer" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="description" type="varchar(255)"/>
+            <column name="identifer" type="varchar(255)"/>
+            <column name="label" type="varchar(255)"/>
+            <column name="terminology" type="integer">
+                <constraints foreignKeyName="FK53CA73DE289535BA" references="cat_terminology(id)"/>
+            </column>
+            <column name="terms_fk" type="integer">
+                <constraints foreignKeyName="FK53CA73DEE5AF2F22" references="cat_entry(id)"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+
+    <changeSet id="51" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_tool_applications"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_tool_applications">
+            <column name="id" type="integer" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="tool_type" type="varchar(31)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(255)"/>
+            <column name="term_id" type="integer">
+                <constraints foreignKeyName="FK1C385C414EFCD066" references="cat_terms(id)"/>
+            </column>
+            <column name="tool_catalog_id" type="integer">
+                <constraints foreignKeyName="FK1C385C411B32C9C5" references="cat_entry(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+
 </databaseChangeLog>

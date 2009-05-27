@@ -2,10 +2,10 @@ package gov.nih.nci.cagrid.portal;
 
 import gov.nih.nci.cagrid.portal.dao.AbstractDao;
 import org.junit.Before;
-import org.junit.BeforeClass;
-import org.springframework.context.ApplicationContext;
 
 /**
+ * Will create a test DB and insert sample data
+ * <p/>
  * User: kherm
  *
  * @author kherm manav.kher@semanticbits.com

@@ -18,7 +18,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class ServiceStatusInfo {
 
-
     public static void main(String[] args) {
         ApplicationContext ctx = new ClassPathXmlApplicationContext(
                 new String[]{
@@ -52,7 +51,8 @@ public class ServiceStatusInfo {
 //        if(_status.equals(ServiceStatus.ACTIVE)){
         System.out.println("Will try and query metadata");
         try {
-            PortalUtils.getMetadata(serviceUrl, 20000);
+            MetadataUtils metadataUtils = new MetadataUtils();
+            metadataUtils.getMetadata(serviceUrl, 20000);
             System.out.println("Metadata retreived Sucessfully");
         } catch (Exception e) {
             System.out.println("PROBLEM: Couldn't get Metadata" + e.getMessage());
@@ -66,7 +66,7 @@ public class ServiceStatusInfo {
             System.out.println("PROBLEM: Service not found in index.");
         else
             System.out.println("Service found in the Index");
-
-
     }
+
+
 }
