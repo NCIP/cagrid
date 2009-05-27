@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author kherm manav.kher@semanticbits.com
  */
-public class CatalogEntryDaoTest extends DaoTestBase<AboutCatalogEntryDao> {
+public class CatalogEntryDaoTest extends DaoTestBase<CatalogEntryDao> {
 
     @Test
     public void save() {
@@ -26,12 +26,6 @@ public class CatalogEntryDaoTest extends DaoTestBase<AboutCatalogEntryDao> {
 
     }
 
-    @Test
-    public void savePersonCatalog() {
-        PersonCatalogEntry pCatalog = new PersonCatalogEntry();
-        getDao().save(pCatalog);
-
-    }
 
     @Test
     public void saveGraph() {
