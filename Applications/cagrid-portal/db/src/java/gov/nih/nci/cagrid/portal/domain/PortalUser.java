@@ -3,12 +3,12 @@
  */
 package gov.nih.nci.cagrid.portal.domain;
 
+import gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntry;
+import gov.nih.nci.cagrid.portal.domain.catalog.Comment;
+import gov.nih.nci.cagrid.portal.domain.catalog.Commentable;
+import gov.nih.nci.cagrid.portal.domain.catalog.PersonCatalogEntry;
 import gov.nih.nci.cagrid.portal.domain.dataservice.QueryInstance;
 import gov.nih.nci.cagrid.portal.domain.dataservice.SharedCQLQuery;
-import gov.nih.nci.cagrid.portal.domain.catalog.PersonCatalogEntry;
-import gov.nih.nci.cagrid.portal.domain.catalog.Comment;
-import gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntry;
-import gov.nih.nci.cagrid.portal.domain.catalog.Commentable;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -41,7 +41,7 @@ public class PortalUser extends AbstractDomainObject implements Commentable {
     private NotificationSubscriber subscriber;
 
 
-    public PersonCatalogEntry catalogEntry;
+    public PersonCatalogEntry catalog;
 
     public List<Comment> comments = new ArrayList<Comment>();
 
@@ -122,17 +122,16 @@ public class PortalUser extends AbstractDomainObject implements Commentable {
     }
 
     //delete all catalogs for the user
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="catalog_fk")
-    public PersonCatalogEntry getCatalogEntry() {
-        return catalogEntry;
+    @OneToOne(mappedBy = "about", cascade = CascadeType.ALL)
+    public PersonCatalogEntry getCatalog() {
+        return catalog;
     }
 
-    public void setCatalogEntry(PersonCatalogEntry catalogEntry) {
-        this.catalogEntry = catalogEntry;
+    public void setCatalog(PersonCatalogEntry catalog) {
+        this.catalog = catalog;
     }
 
-    @OneToMany(mappedBy="author",cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "author", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     public List<Comment> getComments() {
         return comments;
     }
@@ -141,7 +140,7 @@ public class PortalUser extends AbstractDomainObject implements Commentable {
         this.comments = comments;
     }
 
-    @OneToMany(mappedBy="author",cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "author", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     public List<CatalogEntry> getCatalogEntries() {
         return catalogEntries;
     }

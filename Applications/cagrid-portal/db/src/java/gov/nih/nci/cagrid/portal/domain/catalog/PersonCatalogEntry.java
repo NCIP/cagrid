@@ -197,16 +197,18 @@ public class PersonCatalogEntry extends CatalogEntry implements Contactable {
     }
 
 
-    @OneToOne(mappedBy = "catalogEntry")
+    @OneToOne
+    @JoinColumn(name = "person_id")
     public PortalUser getAbout() {
         return about;
     }
 
     public void setAbout(PortalUser about) {
+        about.setCatalog(this);
         this.about = about;
     }
 
-    @OneToMany(mappedBy = "ratingContributor",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "ratingContributor", cascade = CascadeType.ALL)
     public List<Rating> getContributorRatings() {
         return contributorRatings;
     }
@@ -216,7 +218,7 @@ public class PersonCatalogEntry extends CatalogEntry implements Contactable {
     }
 
     // Will delete comments when user is deleted
-    @OneToMany(mappedBy = "commentor",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "commentor", cascade = CascadeType.ALL)
     public List<Comment> getCommentsOf() {
         return commentsOf;
     }

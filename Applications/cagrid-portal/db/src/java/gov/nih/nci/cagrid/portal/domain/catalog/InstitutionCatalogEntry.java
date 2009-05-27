@@ -1,8 +1,8 @@
 package gov.nih.nci.cagrid.portal.domain.catalog;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
+import gov.nih.nci.cagrid.portal.domain.Participant;
+
+import javax.persistence.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +40,9 @@ public class InstitutionCatalogEntry extends CommunityCatalogEntry implements Co
 
     public boolean addressPublic;
 
-    public List<KnowledgeCenterCatalogEntry> knowledgeCenterInstitutionOf = new ArrayList<KnowledgeCenterCatalogEntry>(); 
+    public Participant about;
+
+    public List<KnowledgeCenterCatalogEntry> knowledgeCenterInstitutionOf = new ArrayList<KnowledgeCenterCatalogEntry>();
 
     public String getStreet1() {
         return street1;
@@ -155,12 +157,23 @@ public class InstitutionCatalogEntry extends CommunityCatalogEntry implements Co
         this.addressPublic = addressPublic;
     }
 
-    @ManyToMany(mappedBy="knowledgeCenterInstitutions")
+    @ManyToMany(mappedBy = "knowledgeCenterInstitutions")
     public List<KnowledgeCenterCatalogEntry> getKnowledgeCenterInstitutionOf() {
         return knowledgeCenterInstitutionOf;
     }
 
     public void setKnowledgeCenterInstitutionOf(List<KnowledgeCenterCatalogEntry> knowledgeCenterInstitutionOf) {
         this.knowledgeCenterInstitutionOf = knowledgeCenterInstitutionOf;
+    }
+
+    @OneToOne
+    @JoinColumn(name = "participant_id")
+    public Participant getAbout() {
+        return about;
+    }
+
+    public void setAbout(Participant about) {
+        about.setCatalog(this);
+        this.about = about;
     }
 }
