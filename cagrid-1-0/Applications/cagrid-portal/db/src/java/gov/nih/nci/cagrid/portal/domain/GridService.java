@@ -3,6 +3,7 @@
  */
 package gov.nih.nci.cagrid.portal.domain;
 
+import gov.nih.nci.cagrid.portal.domain.catalog.GridServiceEndPointCatalogEntry;
 import gov.nih.nci.cagrid.portal.domain.metadata.ServiceMetadata;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.ForceDiscriminator;
@@ -39,7 +40,7 @@ public class GridService extends AbstractDomainObject {
     private List<SemanticMetadataMapping> semanticMetadataMappings = new ArrayList<SemanticMetadataMapping>();
     private String conceptIndexHash;
     private List<NotificationSubscription> subscriptions = new ArrayList<NotificationSubscription>();
-    ;
+    private GridServiceEndPointCatalogEntry catalog;
 
     @OneToMany(mappedBy = "service", cascade = CascadeType.ALL)
     public List<ServiceAnnotation> getAnnotations() {
@@ -137,5 +138,14 @@ public class GridService extends AbstractDomainObject {
 
     public void setSubscriptions(List<NotificationSubscription> subscriptions) {
         this.subscriptions = subscriptions;
+    }
+
+    @OneToOne(mappedBy = "about", cascade = CascadeType.ALL)
+    public GridServiceEndPointCatalogEntry getCatalog() {
+        return catalog;
+    }
+
+    public void setCatalog(GridServiceEndPointCatalogEntry catalog) {
+        this.catalog = catalog;
     }
 }
