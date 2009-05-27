@@ -10,7 +10,7 @@ import org.junit.Test;
  *
  * @author kherm manav.kher@semanticbits.com
  */
-public class CaDSRDataServiceClientTest {
+public class CaDSRDataServiceSystemTest {
 
     @Test
     public void basic() throws Exception {

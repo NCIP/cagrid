@@ -1,7 +1,7 @@
 package gov.nih.nci.cagrid.portal.util;
 
 
-public class XMLSchemaUtilsIntegrationTest extends
+public class XMLSchemaUtilsSystemTest extends
         PortalAggrIntegrationTestBase {
 
 
