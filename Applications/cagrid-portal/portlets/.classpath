@@ -14,7 +14,6 @@
 	<classpathentry kind="lib" path="ext/default/jars/c3p0-0.8.5.2.jar"/>
 	<classpathentry kind="lib" path="ext/default/jars/cabio40-beans.jar"/>
 	<classpathentry kind="lib" path="ext/default/jars/cabio40-client-framework.jar"/>
-	<classpathentry kind="lib" path="ext/default/jars/cadsrapi40-beans.jar"/>
 	<classpathentry kind="lib" path="ext/default/jars/caGrid-advertisement-1.3.jar"/>
 	<classpathentry kind="lib" path="ext/default/jars/caGrid-authentication-service-client-1.3.jar"/>
 	<classpathentry kind="lib" path="ext/default/jars/caGrid-authentication-service-common-1.3.jar"/>
@@ -157,5 +156,12 @@
 	<classpathentry kind="lib" path="ext/test/jars/servlet-2.3.jar"/>
 	<classpathentry kind="lib" path="ext/test/jars/portlet.jar"/>
 	<classpathentry kind="lib" path="ext/test/jars/mockito-all-1.6.jar"/>
+	<classpathentry kind="lib" path="ext/default/jars/cadsrapi40-beans-4.0.jar"/>
+	<classpathentry kind="lib" path="ext/default/jars/caGrid-data-validation-1.3.jar"/>
+	<classpathentry kind="lib" path="ext/default/jars/commons-cli-1.0.jar"/>
+	<classpathentry kind="lib" path="ext/default/jars/sdk-client-framework-4.0.jar"/>
+	<classpathentry kind="lib" path="ext/test/jars/caGrid-portal-db-test.jar"/>
+	<classpathentry kind="lib" path="ext/default/jars/portal-impl.jar"/>
+	<classpathentry kind="lib" path="ext/default/jars/portal-kernel.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
