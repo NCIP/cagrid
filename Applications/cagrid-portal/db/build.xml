@@ -133,7 +133,7 @@
         </hibernatetool>
     </target>
 
-    <target name="compile">
+    <target name="compile" depends="resources">
         <mkdir dir="${build.classes.dir}"/>
         <javac srcdir="${src.java.dir}" destdir="${build.classes.dir}" debug="${db.debug}">
             <classpath refid="compile.cp"/>
@@ -143,7 +143,7 @@
 
     <target name="resources">
         <mkdir dir="${build.dir}/xmls"/>
-        <copy todir="${build.dir}/xmls">
+        <copy todir="${build.dir}/xmls" overwrite="true">
             <fileset dir="${etc.dir}">
                 <include name="applicationContext*.xml"/>
             </fileset>
@@ -153,7 +153,7 @@
         </copy>
     </target>
 
-    <target name="jar" depends="compile-test,resources">
+    <target name="jar" depends="compile-test">
         <mkdir dir="${build.jar.dir}"/>
         <jar basedir="${build.classes.dir}"
              destfile="${build.jar.dir}/caGrid-portal-db-dao.jar"
@@ -173,7 +173,7 @@
              includes="**/*.class"/>
     </target>
 
-     
+
     <target name="load-schema" depends="gen-ddl" description="Will create the Portal DB schema.">
 
         <sql driver="com.mysql.jdbc.Driver" url="${cagrid.portal.db.url}"

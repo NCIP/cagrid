@@ -1,14 +1,14 @@
-/**
- *
- */
 package gov.nih.nci.cagrid.portal.util;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
- * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
+ * User: kherm
+ *
+ * @author kherm manav.kher@semanticbits.com
  */
-public class RunRegSvc {
+public class RunCatalog {
+
 
     /**
      * @param args
@@ -17,8 +17,9 @@ public class RunRegSvc {
 
         new ClassPathXmlApplicationContext(new String[]{
                 "classpath:applicationContext-db-aspects.xml",
-                "classpath:applicationContext-aggr-regsvc.xml"});
+                "classpath:applicationContext-aggr-catalog.xml"});
 
     }
 
 }
+ 

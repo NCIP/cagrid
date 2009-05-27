@@ -1,6 +1,5 @@
-package gov.nih.nci.cagrid.portal.util;
+package gov.nih.nci.cagrid.portal;
 
-import gov.nih.nci.cagrid.portal.TestDB;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.orm.hibernate3.HibernateJdbcException;
@@ -14,9 +13,9 @@ import org.springframework.web.context.request.WebRequest;
  *
  * @author kherm manav.kher@semanticbits.com
  */
-public class PortalAggrIntegrationTestBase extends AbstractDependencyInjectionSpringContextTests {
+public class DBIntegrationTestBase extends AbstractDependencyInjectionSpringContextTests {
 
-    public PortalAggrIntegrationTestBase() {
+    public DBIntegrationTestBase() {
         super();
         setPopulateProtectedVariables(true);
     }
@@ -24,8 +23,7 @@ public class PortalAggrIntegrationTestBase extends AbstractDependencyInjectionSp
     @Override
     protected String[] getConfigLocations() {
         return new String[]{
-                "classpath*:applicationContext-aggr.xml",
-                "applicationContext-db.xml"
+                "classpath:applicationContext-db-aspects.xml"
         };
     }
 
@@ -97,3 +95,5 @@ public class PortalAggrIntegrationTestBase extends AbstractDependencyInjectionSp
 
 
 }
+
+ 

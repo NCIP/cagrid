@@ -1,8 +1,9 @@
-package gov.nih.nci.cagrid.portal.util;
+package gov.nih.nci.cagrid.portal.dao.aspects;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.hibernate.Filter;
 import org.hibernate.Session;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -13,7 +14,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
  * @author kherm manav.kher@semanticbits.com
  */
 @Aspect
-public class ActivateFilterAspect  extends HibernateDaoSupport {
+public class ActivateFilterAspect extends HibernateDaoSupport {
 
     String filterName;
     String parameterName;
@@ -23,21 +24,19 @@ public class ActivateFilterAspect  extends HibernateDaoSupport {
             .getLog(ActivateFilterAspect.class);
 
 
-    public void enableFilter(){
+    @Before("execution(* gov.nih.nci.cagrid.portal.dao.GridServiceDao.get*(..))")
+    public void enableFilter() {
         logger.debug("Activating filter :" + filterName);
-        try {
-            Session session = getSession(false);
-            if(session!=null){
-                Filter filter = session.getEnabledFilter(filterName);
-                if (filter == null) {
-                    filter = session.enableFilter(getFilterName()).setParameter(parameterName, parameterValue);
-                }
-            }
-            else
-                logger.debug("No hibernate session available. Will not apply filters");
-        } catch (Exception e) {
 
-        }
+        Session session = getSession(false);
+        if (session != null) {
+            Filter filter = session.getEnabledFilter(filterName);
+            if (filter == null) {
+                filter = session.enableFilter(getFilterName()).setParameter(parameterName, parameterValue);
+            }
+        } else
+            logger.debug("No hibernate session available. Will not apply filters");
+
     }
 
     public String getFilterName() {

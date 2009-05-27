@@ -282,12 +282,6 @@
     <bean id="notificationLogMessageDao" parent="daoTemplate"
           class="gov.nih.nci.cagrid.portal.dao.NotificationLogMessageDao"/>
 
-    <bean id="catalogEntryDao" parent="daoTemplate"
-          class="gov.nih.nci.cagrid.portal.dao.catalog.CatalogEntryDao"/>
-
-    <bean id="personCatalogEntryDao" parent="daoTemplate"
-          class="gov.nih.nci.cagrid.portal.dao.catalog.PersonCatalogEntryDao"/>
-
     <bean id="catalogEntryRoleInstanceDao" parent="daoTemplate"
           class="gov.nih.nci.cagrid.portal.dao.catalog.CatalogEntryRoleInstanceDao"/>
 
@@ -313,7 +307,24 @@
           class="gov.nih.nci.cagrid.portal.dao.catalog.TerminologyDao"/>
 
     <bean id="termDao" parent="daoTemplate"
-           class="gov.nih.nci.cagrid.portal.dao.catalog.TermDao"/>
+          class="gov.nih.nci.cagrid.portal.dao.catalog.TermDao"/>
+
+    <bean id="catalogEntryDao" class="gov.nih.nci.cagrid.portal.dao.catalog.CatalogEntryDao"
+          parent="daoTemplate"/>
+
+    <bean id="aboutCatalogEntryDao" class="gov.nih.nci.cagrid.portal.dao.catalog.AboutCatalogEntryDao"
+          abstract="true" p:timestampProvider-ref="timestampProvider" parent="daoTemplate"/>
+
+    <bean id="institutionCatalogEntryDao" parent="aboutCatalogEntryDao"
+          class="gov.nih.nci.cagrid.portal.dao.catalog.InstitutionCatalogEntryDao"/>
+
+    <bean id="gridServiceEndPointCatalogEntryDao" parent="aboutCatalogEntryDao"
+          class="gov.nih.nci.cagrid.portal.dao.catalog.GridServiceEndPointCatalogEntryDao"/>
+
+    <bean id="personCatalogEntryDao" parent="aboutCatalogEntryDao"
+          class="gov.nih.nci.cagrid.portal.dao.catalog.PersonCatalogEntryDao"/>
+
+    <bean id="timestampProvider" class="gov.nih.nci.cagrid.portal.util.StaticTimestampProvider"/>
 
 
     <bean id="openSessionInViewForTesting"

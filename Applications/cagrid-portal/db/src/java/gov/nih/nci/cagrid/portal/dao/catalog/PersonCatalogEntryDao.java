@@ -1,6 +1,5 @@
 package gov.nih.nci.cagrid.portal.dao.catalog;
 
-import gov.nih.nci.cagrid.portal.dao.AbstractDao;
 import gov.nih.nci.cagrid.portal.domain.PortalUser;
 import gov.nih.nci.cagrid.portal.domain.catalog.PersonCatalogEntry;
 
@@ -9,7 +8,7 @@ import gov.nih.nci.cagrid.portal.domain.catalog.PersonCatalogEntry;
  *
  * @author kherm manav.kher@semanticbits.com
  */
-public class PersonCatalogEntryDao extends AbstractDao<PersonCatalogEntry> {
+public class PersonCatalogEntryDao extends AboutCatalogEntryDao<PersonCatalogEntry, PortalUser> {
 
     public PersonCatalogEntryDao() {
     }
@@ -22,9 +21,15 @@ public class PersonCatalogEntryDao extends AbstractDao<PersonCatalogEntry> {
         return PersonCatalogEntry.class;
     }
 
-    public PersonCatalogEntry getByUser(PortalUser user){
-        PersonCatalogEntry entry = new PersonCatalogEntry();
-        entry.setAbout(user);
-        return getByExample(entry);
+    public void createCatalogAbout(PortalUser user) {
+        PersonCatalogEntry entry = isAbout(user);
+        if (entry == null) {
+            entry = new PersonCatalogEntry();
+            entry.setAbout(user);
+        } else
+            logger.debug("Catalog entry already exists. Will not create a new one");
+        save(entry);
     }
+
+
 }

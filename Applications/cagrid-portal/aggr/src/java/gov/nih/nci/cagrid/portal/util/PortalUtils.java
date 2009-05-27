@@ -4,7 +4,6 @@
 package gov.nih.nci.cagrid.portal.util;
 
 import gov.nih.nci.cagrid.metadata.MetadataUtils;
-import gov.nih.nci.cagrid.portal.aggr.MetadataThread;
 import gov.nih.nci.cagrid.portal.domain.metadata.dataservice.SourceUMLAssociationEdge;
 import gov.nih.nci.cagrid.portal.domain.metadata.dataservice.TargetUMLAssociationEdge;
 import gov.nih.nci.cagrid.portal.domain.metadata.dataservice.UMLAssociation;
@@ -96,28 +95,6 @@ public class PortalUtils {
                     + ex.getMessage(), ex);
         }
         return out;
-    }
-
-    public static Metadata getMetadata(String serviceUrl, long timeout) {
-        Metadata meta = new Metadata();
-        MetadataThread t = new MetadataThread(serviceUrl);
-        t.start();
-        try {
-            t.join(timeout);
-        } catch (InterruptedException ex) {
-            throw new RuntimeException("Metadata thread interrupted");
-        }
-        if (t.getEx() != null) {
-            throw new RuntimeException("Metadata thread encountered error: "
-                    + t.getEx().getMessage(), t.getEx());
-        } else if (!t.isFinished()) {
-            throw new RuntimeException("Metadata query to " + serviceUrl
-                    + " timed out.");
-        }
-        meta.smeta = t.getServiceMetadata();
-        meta.dmodel = t.getDomainModel();
-
-        return meta;
     }
 
     public static String createHashFromMetadata(Metadata meta) {
