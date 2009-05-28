@@ -203,6 +203,12 @@
             <classpath refid="test.run.cp"/>
         </java>
     </target>
+	
+	<target name="run-load" depends="prepare-test">
+        <java classname="gov.nih.nci.cagrid.portal.LoadCatalogEntryData">
+            <classpath refid="test.run.cp"/>
+        </java>
+    </target>
 
     <target name="javadoc"
             description="Generate javadocs for this project. To be called from main build.">
