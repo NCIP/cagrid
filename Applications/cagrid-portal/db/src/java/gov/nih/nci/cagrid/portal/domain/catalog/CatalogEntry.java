@@ -59,9 +59,7 @@ public class CatalogEntry extends AbstractDomainObject implements Commentable,Mu
 
     public List<FavoriteOfRole> favoriteOfRole= new ArrayList<FavoriteOfRole>();
 
-    public List<CatalogEntryRoleInstance> targetRoles= new ArrayList<CatalogEntryRoleInstance>();
-
-    public List<CatalogEntryRoleInstance> sourceRoles= new ArrayList<CatalogEntryRoleInstance>();
+    public List<CatalogEntryRoleInstance> roles= new ArrayList<CatalogEntryRoleInstance>();
 
     private List<Comment> comments = new ArrayList<Comment>();
 
@@ -203,22 +201,13 @@ public class CatalogEntry extends AbstractDomainObject implements Commentable,Mu
         this.favoriteOfRole = favoriteOfRole;
     }
 
-    @OneToMany(mappedBy="target")
-    public List<CatalogEntryRoleInstance> getTargetRoles() {
-        return targetRoles;
+    @OneToMany(mappedBy="catalogEntry")
+    public List<CatalogEntryRoleInstance> getRoles() {
+        return roles;
     }
 
-    public void setTargetRoles(List<CatalogEntryRoleInstance> targetRoles) {
-        this.targetRoles = targetRoles;
-    }
-
-    @OneToMany(mappedBy="source")
-    public List<CatalogEntryRoleInstance> getSourceRoles() {
-        return sourceRoles;
-    }
-
-    public void setSourceRoles(List<CatalogEntryRoleInstance> sourceRoles) {
-        this.sourceRoles = sourceRoles;
+    public void setRoles(List<CatalogEntryRoleInstance> roles) {
+        this.roles = roles;
     }
 
     @ManyToOne

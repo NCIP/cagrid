@@ -19,8 +19,7 @@ public class CatalogEntryRoleInstance extends AbstractDomainObject implements Co
 
     public String description;
 
-    public CatalogEntry source;
-    public CatalogEntry target;
+    public CatalogEntry catalogEntry;
     public CatalogEntryRoleType type;
     public CatalogEntryRelationshipInstance relationship;
 
@@ -38,23 +37,13 @@ public class CatalogEntryRoleInstance extends AbstractDomainObject implements Co
     }
 
     @ManyToOne
-    @JoinColumn(name="source_id")
-    public CatalogEntry getSource() {
-        return source;
+    @JoinColumn(name="entry_id")
+    public CatalogEntry getCatalogEntry() {
+        return catalogEntry;
     }
 
-    public void setSource(CatalogEntry source) {
-        this.source = source;
-    }
-
-    @ManyToOne
-    @JoinColumn(name="target_id")
-    public CatalogEntry getTarget() {
-        return target;
-    }
-
-    public void setTarget(CatalogEntry target) {
-        this.target = target;
+    public void setCatalogEntry(CatalogEntry catalogEntry) {
+        this.catalogEntry = catalogEntry;
     }
 
     @ManyToOne

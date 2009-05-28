@@ -3,6 +3,7 @@ package gov.nih.nci.cagrid.portal.domain.catalog;
 import gov.nih.nci.cagrid.portal.domain.PortalUser;
 
 import javax.persistence.*;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -245,6 +246,7 @@ public class PersonCatalogEntry extends CatalogEntry implements Contactable {
         this.favoriteRole = favoriteRole;
     }
 
+    //TODO: create UserType for this
     public URL getWebSite() {
         return webSite;
     }

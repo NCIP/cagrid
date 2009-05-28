@@ -27,7 +27,7 @@
     <property name="ext.test.xsd.dir" value="${ext.dir}/test/xsd"/>
 
     <property name="portlets.debug" value="${javac.debug.flag}"/>
-    <property name="target.deploy.dir" value="${liferay.jboss.dir}/deploy"/>
+    <property name="target.deploy.dir" value="${liferay.install.dir}/deploy"/>
 
 
     <path id="compile.cp">
