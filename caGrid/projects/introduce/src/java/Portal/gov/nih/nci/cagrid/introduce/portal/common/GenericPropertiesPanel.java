@@ -1,4 +1,5 @@
 package gov.nih.nci.cagrid.introduce.portal.common;
+
 import java.awt.GridBagConstraints;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,8 +9,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-
-import org.cagrid.grape.ApplicationComponent;
 
 
 /**
