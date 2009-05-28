@@ -3,7 +3,6 @@ package gov.nih.nci.cagrid.data.ui.auditors;
 import gov.nih.nci.cagrid.data.service.auditing.DataServiceAuditor;
 
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -32,7 +31,7 @@ import org.cagrid.grape.utils.CompositeErrorDialog;
  * @author David Ervin
  * 
  * @created May 21, 2007 11:38:54 AM
- * @version $Id: AuditorSelectionPanel.java,v 1.6 2009-01-29 19:23:56 dervin Exp $ 
+ * @version $Id: AuditorSelectionPanel.java,v 1.7 2009-05-28 19:27:06 dervin Exp $ 
  */
 public class AuditorSelectionPanel extends JPanel {
 
