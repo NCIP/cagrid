@@ -38,19 +38,22 @@
 </head>
 
 <body class="$css_class">
-
+<div id="bg-vertical"></div>
+<div id="bg-center"></div>
 $theme.include($top_messages_include)
 
 <div id="wrapper">
 	<div id="banner">
 		<h1 class="logo">
-			<a class="png" href="$company_url">$company_name</a>
+			<a class="png caGRID" href="$company_url">$company_name</a>
 
 			<span class="current-community">
 				$community_name
 			</span>
 		</h1>
-
+		#if ($has_navigation)
+			#parse ("$full_templates_path/navigation.vm")
+		#end
 		#parse ("$full_templates_path/dock.vm")
 
 		#if ($update_available_url)
@@ -60,9 +63,7 @@ $theme.include($top_messages_include)
 		#end
 	</div>
 
-	#if ($has_navigation)
-		#parse ("$full_templates_path/navigation.vm")
-	#end
+
 
 	#if ($selectable)
 		$theme.include($content_include)

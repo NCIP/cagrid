@@ -549,6 +549,176 @@
             </preference>
         </portlet-preferences>
     </portlet>
+    
+    <portlet>
+        <description>High-level Navigation Portlet</description>
+        <portlet-name>HighLevelNavigationPortlet</portlet-name>
+        <display-name>High-level Navigation Portlet</display-name>
+        <portlet-class>
+            org.springframework.web.portlet.DispatcherPortlet
+        </portlet-class>
+        <init-param>
+            <name>contextConfigLocation</name>
+            <value>/WEB-INF/context/content-portlet.xml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+            <portlet-mode>edit</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>High-level Navigation Portlet</title>
+            <short-title>High-level Navigation Portlet</short-title>
+            <keywords>navigation</keywords>
+        </portlet-info>
+        <portlet-preferences>
+            <preference>
+                <name>jsp</name>
+                <value>highLevelNavigation</value>
+            </preference>
+        </portlet-preferences>
+    </portlet>
+    
+    <portlet>
+        <description>Top Contributors Portlet</description>
+        <portlet-name>TopContributorsPortlet</portlet-name>
+        <display-name>Top Contributors Portlet</display-name>
+        <portlet-class>
+            org.springframework.web.portlet.DispatcherPortlet
+        </portlet-class>
+        <init-param>
+            <name>contextConfigLocation</name>
+            <value>/WEB-INF/context/content-portlet.xml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+            <portlet-mode>edit</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>Top Contributors Portlet</title>
+            <short-title>Top Contributors Portlet</short-title>
+            <keywords>top contributors</keywords>
+        </portlet-info>
+        <portlet-preferences>
+            <preference>
+                <name>jsp</name>
+                <value>topContributors</value>
+            </preference>
+        </portlet-preferences>
+    </portlet>
+    
+	<portlet>
+        <description>Top Ranked Content Portlet</description>
+        <portlet-name>TopRankedContentPortlet</portlet-name>
+        <display-name>Top Ranked Content Portlet</display-name>
+        <portlet-class>
+            org.springframework.web.portlet.DispatcherPortlet
+        </portlet-class>
+        <init-param>
+            <name>contextConfigLocation</name>
+            <value>/WEB-INF/context/content-portlet.xml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+            <portlet-mode>edit</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>Top Ranked Content Portlet</title>
+            <short-title>Top Ranked Content Portlet</short-title>
+            <keywords>top ranked content</keywords>
+        </portlet-info>
+        <portlet-preferences>
+            <preference>
+                <name>jsp</name>
+                <value>topContributors</value>
+            </preference>
+        </portlet-preferences>
+    </portlet>
+    
+	<portlet>
+        <description>Featured Content Portlet</description>
+        <portlet-name>FeaturedContentPortlet</portlet-name>
+        <display-name>Featured Content Portlet</display-name>
+        <portlet-class>
+            org.springframework.web.portlet.DispatcherPortlet
+        </portlet-class>
+        <init-param>
+            <name>contextConfigLocation</name>
+            <value>/WEB-INF/context/content-portlet.xml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+            <portlet-mode>edit</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>Featured Content Portlet</title>
+            <short-title>Featured Content Portlet</short-title>
+            <keywords>featured content</keywords>
+        </portlet-info>
+        <portlet-preferences>
+            <preference>
+                <name>jsp</name>
+                <value>topContributors</value>
+            </preference>
+        </portlet-preferences>
+    </portlet>
+    
+	<portlet>
+        <description>Browse Portlet</description>
+        <portlet-name>BrowsePortlet</portlet-name>
+        <display-name>Browse Portlet</display-name>
+        <portlet-class>
+            org.springframework.web.portlet.DispatcherPortlet
+        </portlet-class>
+        <init-param>
+            <name>contextConfigLocation</name>
+            <value>/WEB-INF/context/browse-portlet.xml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>edit</portlet-mode>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>Browse Portlet</title>
+            <short-title>Browse Portlet</short-title>
+            <keywords>browse</keywords>
+        </portlet-info>
+        <portlet-preferences>
+            <preference>
+                <name>browseType</name>
+                <value>DATASET</value>
+            </preference>
+        </portlet-preferences>
+    </portlet>
+    
+	<portlet>
+        <description>Test Friendly URL Portlet</description>
+        <portlet-name>TestFriendlyURLPortlet</portlet-name>
+        <display-name>TestFriendlyURLPortlet</display-name>
+        <portlet-class>
+            org.springframework.web.portlet.DispatcherPortlet
+        </portlet-class>
+        <init-param>
+            <name>contextConfigLocation</name>
+            <value>/WEB-INF/context/test-friendlyurl-portlet.xml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>edit</portlet-mode>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>TestFriendlyURLPortlet</title>
+            <short-title>TestFriendlyURLPortlet</short-title>
+            <keywords>test</keywords>
+        </portlet-info>
+    </portlet>    
+    
+    
 
     <!--Added to bypass liferay 5.0.1 bug
         http://support.liferay.com/browse/LEP-5832

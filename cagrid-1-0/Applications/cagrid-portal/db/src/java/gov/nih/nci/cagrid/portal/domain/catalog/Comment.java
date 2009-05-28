@@ -55,7 +55,7 @@ public class Comment extends AbstractDomainObject implements Temporal {
     }
 
     @ManyToOne
-    @JoinColumn(name = "commnentor_id")
+    @JoinColumn(name = "commentor_id")
     public PersonCatalogEntry getCommentor() {
         return commentor;
     }

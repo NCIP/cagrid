@@ -97,22 +97,46 @@
     </target>
 
     <target name="liferay:deploy-portlets" depends="prepare" description="Deploy customizations(themes,security,la to liferay Portal">
-        <trycatch>
+        <trycatch property="errorMsg">
             <try>
                 <ant target="deploy-all"
-                     dir="${projects.dir}/portals"/>
+                     dir="${projects.dir}/portals" antfile="build-liferay-${liferay.server.type}.xml"/>
             </try>
             <catch>
-                <fail message="Please build the project first or run 'ant all'"/>
+                <fail message="Please build the project first or run 'ant all': ${errorMsg}"/>
             </catch>
         </trycatch>
     </target>
+	
+	<target name="liferay:deploy-theme" depends="prepare" description="Deploy customizations(themes,security,la to liferay Portal">
+	        <trycatch property="errorMsg">
+	            <try>
+	                <ant target="deploy-theme"
+	                     dir="${projects.dir}/portals" antfile="build-liferay-${liferay.server.type}.xml"/>
+	            </try>
+	            <catch>
+	                <fail message="Please build the project first or run 'ant all': ${errorMsg}"/>
+	            </catch>
+	        </trycatch>
+	    </target>
+	
+	<target name="liferay:deploy-layouts" depends="prepare" description="Deploy customizations(themes,security,la to liferay Portal">
+        <trycatch property="errorMsg">
+            <try>
+                <ant target="deploy-layouts"
+                     dir="${projects.dir}/portals" antfile="build-liferay-${liferay.server.type}.xml"/>
+            </try>
+            <catch>
+                <fail message="Please build the project first or run 'ant all': ${errorMsg}"/>
+            </catch>
+        </trycatch>
+    </target>	
 
      <target name="liferay:deploy-authn" depends="prepare" description="Deploy the authentication module to Liferay">
         <trycatch>
             <try>
                 <ant target="deploy-authn"
-                     dir="${projects.dir}/portals"/>
+                     dir="${projects.dir}/portals" antfile="build-liferay-${liferay.server.type}.xml"/>
             </try>
             <catch>
                 <fail message="Please build the project first or run 'ant all'"/>
@@ -132,14 +156,15 @@
     </target>
 
     <target name="install-liferay" depends="prepare" description="Install the Liferay Portal.">
-        <ant inheritall="false" target="install-liferay"
-             dir="${projects.dir}/portals">
+    	<echo message="Server Type: ${server.type}"/>
+        <ant inheritall="true" target="${liferay.server.type}:install-liferay"
+             dir="${projects.dir}/portals" antfile="build-liferay-${liferay.server.type}.xml">
         </ant>
     </target>
 
     <target name="install" depends="prepare"
             description="Install caGrid Portal">
-        <trycatch>
+        <trycatch property="errorMsg">
             <try>
                 <antcall target="config-trust"/>
                 <antcall target="load-schema"/>
@@ -149,7 +174,7 @@
                 <antcall target="cagrid:deploy-portlets"/>
             </try>
             <catch>
-                <fail message="Please build the project first or run 'ant all'"/>
+                <fail message="Please build the project first or run 'ant all': ${errorMsg}"/>
             </catch>
         </trycatch>
     </target>
