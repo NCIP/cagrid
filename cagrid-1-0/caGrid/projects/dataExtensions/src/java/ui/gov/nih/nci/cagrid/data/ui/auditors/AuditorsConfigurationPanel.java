@@ -12,7 +12,6 @@ import gov.nih.nci.cagrid.data.service.auditing.DataServiceAuditor;
 import gov.nih.nci.cagrid.data.ui.DataServiceModificationSubPanel;
 import gov.nih.nci.cagrid.introduce.common.ServiceInformation;
 
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
@@ -34,7 +33,7 @@ import org.cagrid.grape.utils.ErrorDialog;
  * @author David Ervin
  * 
  * @created May 21, 2007 10:40:27 AM
- * @version $Id: AuditorsConfigurationPanel.java,v 1.6 2009-01-29 19:23:56 dervin Exp $ 
+ * @version $Id: AuditorsConfigurationPanel.java,v 1.7 2009-05-28 19:27:06 dervin Exp $ 
  */
 public class AuditorsConfigurationPanel extends DataServiceModificationSubPanel {
     

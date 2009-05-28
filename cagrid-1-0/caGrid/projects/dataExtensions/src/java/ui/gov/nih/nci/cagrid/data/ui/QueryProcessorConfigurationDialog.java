@@ -2,7 +2,6 @@ package gov.nih.nci.cagrid.data.ui;
 
 import gov.nih.nci.cagrid.data.cql.ui.CQLQueryProcessorConfigUI;
 
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -24,7 +23,7 @@ import org.cagrid.grape.GridApplication;
  * @author David Ervin
  * 
  * @created Apr 6, 2007 1:25:32 PM
- * @version $Id: QueryProcessorConfigurationDialog.java,v 1.3 2009-01-29 19:23:56 dervin Exp $ 
+ * @version $Id: QueryProcessorConfigurationDialog.java,v 1.4 2009-05-28 19:26:49 dervin Exp $ 
  */
 public class QueryProcessorConfigurationDialog extends JDialog {
     private CQLQueryProcessorConfigUI configUi = null;

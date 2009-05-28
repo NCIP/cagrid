@@ -2,7 +2,6 @@ package gov.nih.nci.cagrid.data.ui.auditors;
 
 import gov.nih.nci.cagrid.data.auditing.MonitoredEvents;
 
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -19,7 +18,7 @@ import javax.swing.JPanel;
  * @author David Ervin
  * 
  * @created May 21, 2007 10:50:26 AM
- * @version $Id: MonitoredEventsPanel.java,v 1.3 2009-01-29 19:23:56 dervin Exp $ 
+ * @version $Id: MonitoredEventsPanel.java,v 1.4 2009-05-28 19:27:06 dervin Exp $ 
  */
 public class MonitoredEventsPanel extends JPanel {
 
