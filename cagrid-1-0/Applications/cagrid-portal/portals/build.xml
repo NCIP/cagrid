@@ -27,8 +27,6 @@
     <property name="ext.authn.xml.dir" value="${ext.dir}/authn/xmls"/>
     <property name="ext.test.lib.dir" value="${ext.dir}/test/jars"/>
 
-    <import file="${basedir}/build-liferay.xml"/>
-
     <path id="compile.cp">
         <fileset dir="${ext.default.lib.dir}">
             <include name="*.jar"/>
