@@ -1,6 +1,6 @@
 #General Introduce Properties
 introduce.version=1.2
-introduce.patch.version=0
+introduce.patch.version=5
 introduce.update.site=@introduce.update.site@
 
 #Statistics Related
