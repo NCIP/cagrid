@@ -42,7 +42,7 @@ import org.tigris.gef.event.GraphSelectionListener;
  * @author David Ervin
  * 
  * @created Mar 30, 2007 10:23:05 AM
- * @version $Id: DomainModelVisualizationPanel.java,v 1.6 2009-01-12 16:52:39 oster Exp $ 
+ * @version $Id: DomainModelVisualizationPanel.java,v 1.7 2009-05-29 20:50:22 dervin Exp $ 
  */
 public class DomainModelVisualizationPanel extends JPanel {
 
@@ -145,14 +145,15 @@ public class DomainModelVisualizationPanel extends JPanel {
         graphClassToUML.clear();
         getUmlDiagram().clear();
         
-        if(model==null){
+        if (model == null) {
             return;
         }
         
         // verify the model contains classes
         DomainModelExposedUMLClassCollection exposedClassCollection = 
             model.getExposedUMLClassCollection();
-        if (exposedClassCollection == null || exposedClassCollection.getUMLClass() == null) {
+        if (exposedClassCollection == null || exposedClassCollection.getUMLClass() == null
+            || exposedClassCollection.getUMLClass().length == 0) {
             // no classes == nothing to do!
             return;
         }
@@ -160,10 +161,12 @@ public class DomainModelVisualizationPanel extends JPanel {
         // put the classes into the graph
         UMLClass[] modelClasses = exposedClassCollection.getUMLClass();
         for (UMLClass currentModelClass : modelClasses) {
+            String fqClassName = currentModelClass.getClassName();
+            if (currentModelClass.getPackageName() != null && currentModelClass.getPackageName().length() != 0) {
+                fqClassName = currentModelClass.getPackageName() + "." + fqClassName;
+            }
             gov.nih.nci.cagrid.graph.uml.UMLClass graphClass = 
-                new gov.nih.nci.cagrid.graph.uml.UMLClass(
-                    currentModelClass.getPackageName() + 
-                    "." + currentModelClass.getClassName());
+                new gov.nih.nci.cagrid.graph.uml.UMLClass(fqClassName);
             
             // add attributes to the graph class
             UMLAttribute[] attribs = currentModelClass.getUmlAttributeCollection().getUMLAttribute();
@@ -176,6 +179,7 @@ public class DomainModelVisualizationPanel extends JPanel {
             // add the class to the model
             getUmlDiagram().addClass(graphClass);
             
+            // keep a handle to the graph class by way of the model class' ID
             idsToGraphClasses.put(currentModelClass.getId(), graphClass);
             graphClassToUML.put(graphClass, currentModelClass);
         }
@@ -221,7 +225,8 @@ public class DomainModelVisualizationPanel extends JPanel {
                    (targetMaxCardinality == -1 ? "*" : String.valueOf(targetMaxCardinality));
                
                getUmlDiagram().addAssociation(sourceClass, targetClass,
-                   sourceRoleName, sourceCardinality, targetRoleName, targetCardinality);
+                   sourceRoleName, sourceCardinality, targetRoleName, targetCardinality,
+                   currentAssociation.isBidirectional());
            }
         }
         getUmlDiagram().refresh();
@@ -270,9 +275,9 @@ public class DomainModelVisualizationPanel extends JPanel {
                             
                             // create the association instance
                             UMLAssociation association = new UMLAssociation();
-                            // TODO: determine bidirectionality of the association
                             association.setSourceUMLAssociationEdge(new UMLAssociationSourceUMLAssociationEdge(sourceEdge));
                             association.setTargetUMLAssociationEdge(new UMLAssociationTargetUMLAssociationEdge(targetEdge));
+                            association.setBidirectional(graphAssociation.bidirectional);
                             
                             // fire the event
                             fireAssociationSelected(association);
