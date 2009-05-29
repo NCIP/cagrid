@@ -26,13 +26,13 @@
 
 
         <dependency rev="latest.integration" org="caGrid" name="portal-security" conf="default;test"/>
-         
+
         <dependency rev="${cagrid.integration.version}" org="caGrid" name="introduce-clienttools"
                     conf="default->default"/>
-           <dependency rev="${cagrid.integration.version}" transitive="false" org="caGrid" name="data"
+        <dependency rev="${cagrid.integration.version}" transitive="false" org="caGrid" name="data"
                     conf="default->validation"/>
         <dependency rev="${cagrid.integration.version}" transitive="false" org="caGrid" name="cql"
-                 conf="default->cql-schemas"  />
+                    conf="default->cql-schemas"/>
 
         <dependency rev="2.0.3" org="getahead" name="dwr"/>
         <dependency rev="3.4.GA" org="javassist" name="javassist"/>
@@ -41,7 +41,7 @@
         <dependency rev="4.0.2" org="jboss" name="jboss-jmx"/>
         <dependency rev="4.0.2" org="jboss" name="jboss-common"/>
         <dependency rev="1.4.1.GA" org="jboss" name="jboss-cache"/>
-        
+
         <dependency rev="2.4" org="purplecloud" name="messaging"/>
         <dependency rev="2.5.1" org="poi" name="poi"/>
         <dependency rev="2.5.1" org="poi" name="poi-contrib"/>
@@ -50,9 +50,10 @@
         <dependency rev="1.0" org="sun" name="portlet" conf="compile->default"/>
         <dependency rev="1.1" org="sun" name="jstl"/>
         <dependency rev="latest.integration" org="yahoo" name="yui"/>
-        
-		<dependency rev="${liferay.portal.version}" org="liferay" name="portal"
-                    conf="default->*"/>        
+
+        <dependency rev="${liferay.portal.version}" org="liferay" name="portal"
+                    conf="default->portlet;compile->portal-ext">
+        </dependency>
 
     </dependencies>
 
