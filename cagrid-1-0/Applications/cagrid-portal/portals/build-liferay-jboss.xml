@@ -15,11 +15,12 @@
 
     <property name="liferay.portal.war.dir"
               value="${liferay.root.context.dir}"/>
-              
-    <property name="liferay.autodeploy.dir" value="${liferay.install.dir}/deploy"/>
-    
+
     <import file="${basedir}/build-liferay-common.xml"/>
     <import file="${basedir}/build.xml"/>
+
+    <property name="liferay.autodeploy.dir" value="${liferay.install.dir}/deploy"/>
+
 
     <target name="test-jboss-zip">
         <condition property="liferay.jboss.zip.available">
@@ -318,7 +319,7 @@
         <mkdir dir="${liferay.portal.war.dir}"/>
         <unzip src="${liferay.downloads.dir}/${liferay.war}" dest="${liferay.portal.war.dir}"/>
 
-		<!-- Why? -->
+        <!-- Why? -->
         <move todir="${liferay.jboss.home}/lib">
             <fileset dir="${liferay.portal.war.dir}/WEB-INF/lib">
                 <include name="dom4j.jar"/>
@@ -353,7 +354,6 @@
         <antcall target="add-cagrid-category"/>
         <antcall target="configure-liferay-messages"/>
     </target>
-
 
 
 </project>
