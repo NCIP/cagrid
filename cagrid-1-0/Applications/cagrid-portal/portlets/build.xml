@@ -50,7 +50,7 @@
         <pathelement location="${ext.test.xml.dir}"/>
         <pathelement location="${ext.test.xsd.dir}"/>
         <pathelement location="${build.war.build.classes.dir}"/>
-        <path  path="${test.etc.dir}"/>
+        <path path="${test.etc.dir}"/>
     </path>
 
     <target name="build-war-dir" depends="compile">
@@ -63,19 +63,24 @@
                 <include name="*.jar"/>
             </fileset>
         </copy>
-        <copy todir="${build.war.dir}" overwrite="true" filtering="true">
+        <copy todir="${build.war.dir}" overwrite="true" filtering="false">
             <fileset dir="${src.war.dir}"/>
+        </copy>
+        <copy todir="${build.war.dir}" overwrite="true" filtering="true">
+            <fileset dir="${src.war.dir}">
+                <include name="**/application-config-client.xml"/>
+            </fileset>
             <filterset>
-                <filter token="evs40.remoteAPI.url" value="${evs40.remoteAPI.url}"/>
+                <filter token="evs40.remoteAPI.url" value="${evs.remoteAPI.url}"/>
             </filterset>
         </copy>
         <copy todir="${build.war.build.classes.dir}">
             <fileset dir="${ext.xml.dir}">
                 <include name="*.xml"/>
             </fileset>
-             <fileset dir="${ext.xsd.dir}">
+            <fileset dir="${ext.xsd.dir}">
                 <include name="*.xsd"/>
-                 <exclude name="*Results*.xsd"/>
+                <exclude name="*Results*.xsd"/>
             </fileset>
             <fileset dir="${build.classes.dir}">
                 <include name="**/*"/>
@@ -95,7 +100,6 @@
             <classpath refid="compile.cp"/>
         </javac>
     </target>
-
 
 
     <target name="deploy-portlets" depends="war" description="Will deploy pre-built caGrid Portlets war">
