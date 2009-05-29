@@ -21,7 +21,6 @@ import org.tigris.gef.presentation.Fig;
 public class UMLDiagram extends JLayeredPane {
     protected Diagram diagram;
     public UMLViewer viewer;
-    protected UMLMenuBar menubar;
     protected UMLStatusBar statusBar;
 
     ClassdiagramLayouter layouter = new ClassdiagramLayouter();
@@ -46,11 +45,9 @@ public class UMLDiagram extends JLayeredPane {
         viewer.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
         viewer.setBorder(BorderFactory.createEmptyBorder());
 
-        this.menubar = new UMLMenuBar();
         this.statusBar = new UMLStatusBar();
 
         this.add(this.viewer);
-        this.add(menubar);
         this.add(statusBar);
 
         this.addComponentListener(new UMLDiagramComponentListener());
@@ -69,7 +66,7 @@ public class UMLDiagram extends JLayeredPane {
         UMLClass bar = new UMLClass("Bar");
         diagram.addClass(foo);
         diagram.addClass(bar);
-        diagram.addAssociation(foo, bar, "src", "0..1", "target", "1..5");
+        diagram.addAssociation(foo, bar, "src", "0..1", "target", "1..5", true);
 
         diagram.performLayout();
         diagram.refresh();
@@ -115,9 +112,9 @@ public class UMLDiagram extends JLayeredPane {
 
 
     public boolean addAssociation(UMLClass gc1, UMLClass gc2, String sourceRoleName, String sourceMultiplicity,
-        String targetRoleName, String targetMultiplicity) {
+        String targetRoleName, String targetMultiplicity, boolean bidirectional) {
         UMLClassAssociation edge = new UMLClassAssociation(sourceRoleName, sourceMultiplicity, targetRoleName,
-            targetMultiplicity);
+            targetMultiplicity, bidirectional);
 
         edge.setSourceFigNode(gc1);
         edge.setSourcePortFig(gc1);

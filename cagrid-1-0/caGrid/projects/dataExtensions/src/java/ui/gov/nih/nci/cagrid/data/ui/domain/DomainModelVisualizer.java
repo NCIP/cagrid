@@ -11,32 +11,41 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
+import org.apache.axis.message.addressing.Address;
+import org.apache.axis.message.addressing.EndpointReferenceType;
+
 /** 
  *  DomainModelVisualizer
- *  TODO:DOCUMENT ME
+ *  GUI app for visualizing a domain model
  * 
  * @author David Ervin
  * 
  * @created Mar 19, 2008 11:13:47 AM
- * @version $Id: DomainModelVisualizer.java,v 1.2 2008-11-25 15:55:20 dervin Exp $ 
+ * @version $Id: DomainModelVisualizer.java,v 1.3 2009-05-29 20:50:20 dervin Exp $ 
  */
 public class DomainModelVisualizer extends JFrame {
     
     private DomainModelVisualizationPanel dmVizPanel = null;
-    private JButton loadButton = null;
-    private JButton closeButton = null;
+    private JButton loadFileButton = null;
+    private JButton saveButton = null;
     private JPanel buttonPanel = null;
     private JPanel mainPanel = null;
+    private JButton loadFromServiceButton = null;
+    
+    private DomainModel currentModel = null;
 
     public DomainModelVisualizer() {
         super();
@@ -48,6 +57,12 @@ public class DomainModelVisualizer extends JFrame {
     private void initialize() {
         this.setContentPane(getMainPanel());
         setSize(600,600);
+    }
+    
+    
+    private void setCurrentModel(DomainModel model) {
+        getDmVizPanel().setDomainModel(model);
+        this.currentModel = model;
     }
     
     
@@ -63,15 +78,15 @@ public class DomainModelVisualizer extends JFrame {
     
     
     /**
-     * This method initializes loadButton	
+     * This method initializes loadFileButton	
      * 	
      * @return javax.swing.JButton	
      */
-    private JButton getLoadButton() {
-        if (loadButton == null) {
-            loadButton = new JButton();
-            loadButton.setText("Load File");
-            loadButton.addActionListener(new java.awt.event.ActionListener() {
+    private JButton getLoadFileButton() {
+        if (loadFileButton == null) {
+            loadFileButton = new JButton();
+            loadFileButton.setText("Load File");
+            loadFileButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     JFileChooser chooser = new JFileChooser();
                     chooser.setFileFilter(FileFilters.XML_FILTER);
@@ -81,7 +96,7 @@ public class DomainModelVisualizer extends JFrame {
                             FileReader reader = new FileReader(chooser.getSelectedFile());
                             DomainModel model = MetadataUtils.deserializeDomainModel(reader);
                             reader.close();
-                            getDmVizPanel().setDomainModel(model);
+                            setCurrentModel(model);
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
@@ -89,26 +104,69 @@ public class DomainModelVisualizer extends JFrame {
                 }
             });
         }
-        return loadButton;
+        return loadFileButton;
     }
 
 
     /**
-     * This method initializes closeButton	
+     * This method initializes saveButton	
      * 	
      * @return javax.swing.JButton	
      */
-    private JButton getCloseButton() {
-        if (closeButton == null) {
-            closeButton = new JButton();
-            closeButton.setText("Close");
-            closeButton.addActionListener(new java.awt.event.ActionListener() {
+    private JButton getSaveButton() {
+        if (saveButton == null) {
+            saveButton = new JButton();
+            saveButton.setText("Save File");
+            saveButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    dispose();
+                    if (currentModel != null) {
+                        JFileChooser chooser = new JFileChooser();
+                        chooser.setFileFilter(FileFilters.XML_FILTER);
+                        int choice = chooser.showSaveDialog(DomainModelVisualizer.this);
+                        if (choice == JFileChooser.APPROVE_OPTION) {
+                            File saveme = chooser.getSelectedFile();
+                            try {
+                                FileWriter writer = new FileWriter(saveme);
+                                MetadataUtils.serializeDomainModel(currentModel, writer);
+                                writer.flush();
+                                writer.close();
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+                    }
                 }
             });
         }
-        return closeButton;
+        return saveButton;
+    }
+    
+    
+    /**
+     * This method initializes loadFromServiceButton    
+     *  
+     * @return javax.swing.JButton  
+     */
+    private JButton getLoadFromServiceButton() {
+        if (loadFromServiceButton == null) {
+            loadFromServiceButton = new JButton();
+            loadFromServiceButton.setText("Load From Service");
+            loadFromServiceButton.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    String url = JOptionPane.showInputDialog("Enter Service URL");
+                    if (url != null && url.length() != 0) {
+                        try {
+                            EndpointReferenceType epr = new EndpointReferenceType(new Address(url));
+                            DomainModel model = MetadataUtils.getDomainModel(epr);
+                            setCurrentModel(model);
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+                }
+            });
+        }
+        return loadFromServiceButton;
     }
 
 
@@ -122,11 +180,12 @@ public class DomainModelVisualizer extends JFrame {
             GridLayout gridLayout = new GridLayout();
             gridLayout.setRows(1);
             gridLayout.setHgap(4);
-            gridLayout.setColumns(2);
+            gridLayout.setColumns(3);
             buttonPanel = new JPanel();
             buttonPanel.setLayout(gridLayout);
-            buttonPanel.add(getLoadButton(), null);
-            buttonPanel.add(getCloseButton(), null);
+            buttonPanel.add(getLoadFromServiceButton(), null);
+            buttonPanel.add(getLoadFileButton(), null);
+            buttonPanel.add(getSaveButton(), null);
         }
         return buttonPanel;
     }

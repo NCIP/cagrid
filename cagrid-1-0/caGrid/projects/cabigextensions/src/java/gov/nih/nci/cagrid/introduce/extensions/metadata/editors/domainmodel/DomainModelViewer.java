@@ -192,19 +192,13 @@ public class DomainModelViewer extends ResourcePropertyEditorPanel {
                             System.err.println("Source ID:" + sourceEdge.getUMLClassReference().getRefid());
                             System.err.println("Target ID:" + targetEdge.getUMLClassReference().getRefid());
                         } else {
+                            String sourceMultiplicity = sourceEdge.getMinCardinality() + ".." + 
+                                (sourceEdge.getMaxCardinality() == -1 ? "*" : String.valueOf(sourceEdge.getMaxCardinality()));
+                            String targetMultiplicity = targetEdge.getMinCardinality() + ".." + 
+                                (targetEdge.getMaxCardinality() == -1 ? "*" : String.valueOf(targetEdge.getMaxCardinality()));
                             getUMLDiagram().addAssociation(
-                                source,
-                                target,
-                                sourceEdge.getRoleName(),
-                                sourceEdge.getMinCardinality()
-                                    + ".."
-                                    + (sourceEdge.getMaxCardinality() == -1 ? "*" : String.valueOf(sourceEdge
-                                        .getMaxCardinality())),
-                                targetEdge.getRoleName(),
-                                targetEdge.getMinCardinality()
-                                    + ".."
-                                    + (targetEdge.getMaxCardinality() == -1 ? "*" : String.valueOf(targetEdge
-                                        .getMaxCardinality())));
+                                source, target, sourceEdge.getRoleName(), sourceMultiplicity,
+                                targetEdge.getRoleName(), targetMultiplicity, assoc.isBidirectional());
                         }
                     }
                 }
