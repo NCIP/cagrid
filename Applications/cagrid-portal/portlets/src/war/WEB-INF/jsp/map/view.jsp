@@ -1,5 +1,8 @@
 <%@ include file="/WEB-INF/jsp/include/includes.jspf" %>
 
+<script type="text/javascript" src='<c:url value="/dwr/engine.js"/>'></script>
+<script type="text/javascript" src="<c:url value="/js/scriptaculous/prototype.js"/>"></script>
+
 <script type="text/javascript" src='<c:url value="/dwr/interface/MapService.js"/>'></script>
 <script src="<c:out value="${mapBean.baseUrl}" escapeXml="false"/><c:out value="${mapBean.apiKey}" escapeXml="false"/>"
         type="text/javascript"></script>
