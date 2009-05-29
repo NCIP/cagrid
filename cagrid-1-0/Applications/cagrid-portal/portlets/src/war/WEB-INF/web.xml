@@ -33,6 +33,7 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
+            classpath*:applicationContext-db-run.xml
             classpath*:applicationContext-*.xml
             /WEB-INF/context/common.xml
             /WEB-INF/context/facades.xml
