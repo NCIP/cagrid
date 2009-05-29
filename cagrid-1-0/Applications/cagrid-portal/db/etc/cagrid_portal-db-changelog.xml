@@ -283,11 +283,49 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="17a" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_terminology"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_terminology">
+            <column name="id" type="integer" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="identifier" type="varchar(255)"/>
+            <column name="label" type="varchar(255)"/>
+            <column name="serviceUrl" type="tinyblob"/>
+            <column name="sharedQueryCriteria" type="tinyblob"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="17b" author="kherm">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cat_terms"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cat_terms">
+            <column name="id" type="integer" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="description" type="varchar(255)"/>
+            <column name="identifer" type="varchar(255)"/>
+            <column name="label" type="varchar(255)"/>
+            <column name="terminology" type="integer">
+                <constraints foreignKeyName="FK53CA73DE289535BA" references="cat_terminology(id)"/>
+            </column>
+            <column name="terms_fk" type="integer">
+                <constraints foreignKeyName="FK53CA73DEE5AF2F22" references="cat_entry(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
 
     <changeSet id="18" author="kherm">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="cat_entry_cat_terms"/>
+                <tableExists tableName="cat_entry_cat_entry"/>
             </not>
         </preConditions>
         <createTable tableName="cat_entry_cat_entry">
@@ -351,9 +389,6 @@
         <createTable tableName="cat_files">
             <column name="id" type="integer" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="catalog_id" type="integer">
-                <constraints foreignKeyName="FK58C78963467B6FFB" references="cat_entry(id)"/>
             </column>
             <column name="createdAt" type="datetime"/>
             <column name="description" type="varchar(255)"/>
@@ -858,7 +893,7 @@
     <changeSet id="46" author="kherm">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="cat_role_instance_cat_comments"/>
+                <tableExists tableName="cat_relationship_type_cat_comments"/>
             </not>
         </preConditions>
         <createTable tableName="cat_relationship_type_cat_comments">
@@ -916,45 +951,6 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="49" author="kherm">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <tableExists tableName="cat_terminology"/>
-            </not>
-        </preConditions>
-        <createTable tableName="cat_terminology">
-            <column name="id" type="integer" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="identifier" type="varchar(255)"/>
-            <column name="label" type="varchar(255)"/>
-            <column name="serviceUrl" type="tinyblob"/>
-            <column name="sharedQueryCriteria" type="tinyblob"/>
-        </createTable>
-    </changeSet>
-
-    <changeSet id="50" author="kherm">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <tableExists tableName="cat_terms"/>
-            </not>
-        </preConditions>
-        <createTable tableName="cat_terms">
-            <column name="id" type="integer" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="description" type="varchar(255)"/>
-            <column name="identifer" type="varchar(255)"/>
-            <column name="label" type="varchar(255)"/>
-            <column name="terminology" type="integer">
-                <constraints foreignKeyName="FK53CA73DE289535BA" references="cat_terminology(id)"/>
-            </column>
-            <column name="terms_fk" type="integer">
-                <constraints foreignKeyName="FK53CA73DEE5AF2F22" references="cat_entry(id)"/>
-            </column>
-
-        </createTable>
-    </changeSet>
 
     <changeSet id="51" author="kherm">
         <preConditions onFail="MARK_RAN">
