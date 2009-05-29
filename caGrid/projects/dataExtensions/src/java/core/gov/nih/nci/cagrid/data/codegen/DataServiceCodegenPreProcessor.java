@@ -13,7 +13,6 @@ import gov.nih.nci.cagrid.data.style.StyleCodegenPreProcessor;
 import gov.nih.nci.cagrid.introduce.IntroduceConstants;
 import gov.nih.nci.cagrid.introduce.beans.extension.ExtensionTypeExtensionData;
 import gov.nih.nci.cagrid.introduce.beans.extension.ServiceExtensionDescriptionType;
-import gov.nih.nci.cagrid.introduce.beans.resource.ResourcePropertiesListType;
 import gov.nih.nci.cagrid.introduce.beans.resource.ResourcePropertyType;
 import gov.nih.nci.cagrid.introduce.beans.service.ServiceType;
 import gov.nih.nci.cagrid.introduce.common.CommonTools;
@@ -39,11 +38,9 @@ import org.apache.commons.logging.LogFactory;
  * 
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  * @created May 11, 2006
- * @version $Id: DataServiceCodegenPreProcessor.java,v 1.6 2009-01-13 15:55:19 dervin Exp $
+ * @version $Id: DataServiceCodegenPreProcessor.java,v 1.7 2009-05-29 19:57:47 dervin Exp $
  */
 public class DataServiceCodegenPreProcessor implements CodegenExtensionPreProcessor {
-
-	private static final String DEFAULT_DOMAIN_MODEL_XML_FILE = "domainModel.xml";
     
 	private static final Log LOG = LogFactory.getLog(DataServiceCodegenPreProcessor.class);
 
@@ -131,12 +128,13 @@ public class DataServiceCodegenPreProcessor implements CodegenExtensionPreProces
 
 	private void modifyMetadata(ServiceExtensionDescriptionType desc, ServiceInformation info)
 		throws CodegenExtensionException {
-		String localDomainModelFilename = getDestinationDomainModelFilename(info);
-
-		// find the service's etc directory, where the domain model goes
-		String domainModelFile = new File(info.getBaseDirectory(), 
+        // determine the name for the domain model document
+        String localDomainModelFilename = getDestinationDomainModelFilename(info);
+        
+        // find the service's etc directory, where the domain model goes on the file system
+        String domainModelFile = new File(info.getBaseDirectory(), 
             "etc" + File.separator + localDomainModelFilename).getAbsolutePath();
-
+        
 		// get the model information
 		ModelInformation modelInfo = null;
 		try {
@@ -147,22 +145,27 @@ public class DataServiceCodegenPreProcessor implements CodegenExtensionPreProces
 		
 		// get the resource property for the domain model
 		ResourcePropertyType dmResourceProp = getDomainModelResourceProp(info);
-		
-        if (ModelSourceType.preBuilt.equals(modelInfo.getSource())) {
+        
+        LOG.debug("Domain model source determined to be " + modelInfo.getSource());
+		if (ModelSourceType.preBuilt.equals(modelInfo.getSource())) {
 			// the model is already in the service's etc dir with the name specified
 			// in the resource property.  Make sure the resource property has
-			// the populate from file flag set, and we're done
+			// the filename and populate from file flag set
 			dmResourceProp.setPopulateFromFile(true);
+            dmResourceProp.setFileLocation(localDomainModelFilename);
 		} else if (ModelSourceType.mms.equals(modelInfo.getSource())) {
-			// the domain model is to be generated from the MMS
-			LOG.info("No domain model supplied, generating from MMS");
+            // the domain model is to be generated from the MMS
+            LOG.info("Generating domain model from MMS");
+            
+            // set the domain model file name
+            dmResourceProp.setFileLocation(localDomainModelFilename);
+            
+            // generate the domain model document
 			generateDomainModel(modelInfo, info, domainModelFile);
-			// set the domain model file name
-			dmResourceProp.setFileLocation(localDomainModelFilename);
 		}
 
-		// if the domainModel.xml doesn't exist, don't try to populate the
-		// domain model metadata on service startup
+		// if the domain model XML fiel doesn't exist, don't try to 
+        // populate the domain model metadata on service startup
 		File dmFile = new File(domainModelFile);
 		dmResourceProp.setPopulateFromFile(dmFile.exists());
 	}
@@ -181,22 +184,12 @@ public class DataServiceCodegenPreProcessor implements CodegenExtensionPreProces
 	 * 		The local domain model xml file name
 	 */
 	private String getDestinationDomainModelFilename(ServiceInformation info) {
-		ServiceType mainServ = info.getServiceDescriptor().getServices().getService()[0];
-		if (mainServ.getResourcePropertiesList() != null
-			&& mainServ.getResourcePropertiesList().getResourceProperty() != null) {
-			ResourcePropertyType[] resourceProperty = mainServ.getResourcePropertiesList().getResourceProperty();
-			for (int i = 0; i < resourceProperty.length; i++) {
-				ResourcePropertyType rp = resourceProperty[i];
-				if (rp.getQName().equals(DataServiceConstants.DOMAIN_MODEL_QNAME)) {
-					String fileLocation = rp.getFileLocation();
-					if (fileLocation == null || fileLocation.trim().equals("")) {
-						rp.setFileLocation(DEFAULT_DOMAIN_MODEL_XML_FILE);
-					}
-					return rp.getFileLocation();
-				}
-			}
-		}
-		return null;
+        ResourcePropertyType domainModelResourceProperty = getDomainModelResourceProp(info);
+        String filename = domainModelResourceProperty.getFileLocation();
+        if (filename == null || filename.trim().length() == 0) {
+            filename = "domainModel.xml";
+        }
+        return filename;
 	}
 
 
@@ -210,8 +203,8 @@ public class DataServiceCodegenPreProcessor implements CodegenExtensionPreProces
                 throw new CodegenExtensionException("Error creating domain model: " + ex.getMessage(), ex);
             }
             
-            System.out.println("Created data service Domain Model!");
-            LOG.info("Created data service Domain Model!");
+            System.out.println("Created data service Domain Model");
+            LOG.info("Created data service Domain Model");
             
 			// get the data service's description
             ServiceType dataService = null;
@@ -226,7 +219,7 @@ public class DataServiceCodegenPreProcessor implements CodegenExtensionPreProces
             }
             if (dataService == null) {
                 // this REALLY should never happen...
-                throw new CodegenExtensionException("No data service found in service information");
+                throw new CodegenExtensionException("No data service found in service information!!");
             }
 
 			LOG.debug("Serializing domain model to file " + domainModelFile);
@@ -235,32 +228,11 @@ public class DataServiceCodegenPreProcessor implements CodegenExtensionPreProces
 				MetadataUtils.serializeDomainModel(model, domainModelFileWriter);
 				domainModelFileWriter.flush();
 				domainModelFileWriter.close();
-				LOG.debug("Serialized domain model");
+				LOG.debug("Serialized domain model to file " + domainModelFile);
 			} catch (Exception ex) {
 				throw new CodegenExtensionException("Error serializing the domain model to disk: " 
 					+ ex.getMessage(), ex);
 			}
-
-			// add the metadata to the service information as a resource property
-			ResourcePropertyType domainModelResourceProperty = new ResourcePropertyType();
-			domainModelResourceProperty.setPopulateFromFile(true);
-			domainModelResourceProperty.setQName(DataServiceConstants.DOMAIN_MODEL_QNAME);
-			domainModelResourceProperty.setRegister(true);
-			ResourcePropertiesListType propertyList = dataService.getResourcePropertiesList();
-			if (propertyList == null) {
-				propertyList = new ResourcePropertiesListType();
-			}
-			ResourcePropertyType[] propertyArray = propertyList.getResourceProperty();
-			if (propertyArray == null) {
-				propertyArray = new ResourcePropertyType[]{domainModelResourceProperty};
-			} else {
-				ResourcePropertyType[] newProperties = new ResourcePropertyType[propertyArray.length];
-				System.arraycopy(propertyArray, 0, newProperties, 0, propertyArray.length);
-				propertyArray = newProperties;
-			}
-			// start packing up the resource property info
-			propertyList.setResourceProperty(propertyArray);
-			dataService.setResourcePropertiesList(propertyList);
 		}
 	}
 	
@@ -275,8 +247,10 @@ public class DataServiceCodegenPreProcessor implements CodegenExtensionPreProces
 			dmProp.setQName(DataServiceConstants.DOMAIN_MODEL_QNAME);
 			dmProp.setRegister(true);
 			CommonTools.addResourcePropety(baseService, dmProp);
+            LOG.debug("Created new resource property for domain model");
 			return dmProp;
 		} else {
+            LOG.debug("Found existing domain model resource property");
 			return typedProps[0];
 		}
 	}
