@@ -1,0 +1,50 @@
+<!-- Citations -->
+<c:if test="${!empty catalogEntryViewBean.orderedCitations}">
+Citations<br/>
+<ul>
+	<c:forEach var="citation" items="${catalogEntryViewBean.orderedCitations}">
+		<li>
+			<c:out value="${citation.citation}"/><br/>
+			<c:out value="${citation.pubMedID}"/>
+		</li>
+	</c:forEach>
+</ul>
+</c:if>
+
+<!-- Links -->
+<c:if test="${!empty catalogEntryViewBean.orderedHyperlinks}">
+Hyperlinks<br/>
+<ul>
+	<c:forEach var="hyperlinkVB" items="${catalogEntryViewBean.orderedHyperlinks}">
+		<li>
+			<c:out value="${hyperlinkVB.commentable.description}"/><br/>
+			<c:out value="${hyperlinkVB.commentable.url}"/><br/>
+			<c:if test="${!empty hyperlinkVB.orderedComments}">
+				<c:set var="comments" value="${hyperlinksVB.orderedComments}"/>
+				<%@ include file="/WEB-INF/jsp/browse/comments.jspf" %>
+			</c:if>
+		</li>
+	</c:forEach>
+</ul>
+</c:if>
+
+<!-- Files -->
+<c:if test="${!empty catalogEntryViewBean.orderedFiles}">
+Uploaded Files<br/>
+<ul>
+	<c:forEach var="fileVB" items="${catalogEntryViewBean.orderedFiles}">
+		<li>
+			<c:out value="${fileVB.commentable.description}"/><br/>
+			Type: <c:out value="${fileVB.commentable.fileType}"/><br/>
+			Size: <c:out value="${fileVB.commentable.sizeInBytes}"/> bytes<br/>
+			<c:if test="${!empty fileVB.orderedComments}">
+				<c:set var="comments" value="${fileVB.orderedComments}"/>
+				<%@ include file="/WEB-INF/jsp/browse/comments.jspf" %>
+			</c:if>
+		</li>
+	</c:forEach>
+</ul>
+</c:if>
+
+<!-- Tags -->
+<!-- Terms -->

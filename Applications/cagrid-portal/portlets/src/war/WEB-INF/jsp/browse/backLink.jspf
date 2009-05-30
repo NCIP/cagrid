@@ -1,0 +1,4 @@
+<portlet:renderURL var="viewUrl">
+	<portlet:param name="operation" value="view"/>
+</portlet:renderURL>
+<a href="<c:out value="${viewUrl}"/>">Back to search results</a>

@@ -23,8 +23,14 @@
 	<bean id="browseViewDetailsController"
 		class="gov.nih.nci.cagrid.portal.portlet.browse.BrowseViewDetailsController"
 		autowire="byName">
-		<property name="objectName" value="catalogEntry"/>
-        <property name="successViewName" value="viewDetails"/>
+		<property name="objectName" value="catalogEntryViewBean"/>
+		<property name="emptyViewName" value="emptyView"/>
+        <property name="entryTypeViewMap">
+        	<map>
+        		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.PersonCatalogEntry" value="personView"/>
+        		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.DataSetCatalogEntry" value="datasetView"/>
+        	</map>
+        </property>
 	</bean>
 
 	<bean id="browseViewController"
@@ -57,6 +63,15 @@
 		class="gov.nih.nci.cagrid.portal.portlet.browse.BrowseHandlerMapping">		 
 		<property name="order" value="1" />
 		<property name="parameterName" value="operation"/>
+		
+		
+		<property name="applyWebRequestInterceptorsToRenderPhaseOnly" value="false"/>
+		
+		<property name="interceptors">
+			<list>
+				<ref bean="openSessionInViewInterceptor" />
+			</list>
+		</property>	
 
 		<property name="portletModeParameterMap">
 			<map>
@@ -79,6 +94,12 @@
 		class="org.springframework.web.portlet.handler.PortletModeHandlerMapping">
 		
 		<property name="order" value="2" />
+		
+		<property name="interceptors">
+			<list>
+				<ref bean="openSessionInViewInterceptor" />
+			</list>
+		</property>	
 		
 		<property name="portletModeMap">
 			<map>

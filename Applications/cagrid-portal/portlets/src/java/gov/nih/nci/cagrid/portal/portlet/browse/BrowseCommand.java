@@ -17,12 +17,12 @@ public class BrowseCommand {
 	private String browseType;
 	
 	public BrowseCommand(){
-		browseTypes.add("ALL");
-		browseTypes.add("DATASET");
-		browseTypes.add("PERSON");
-		browseTypes.add("TOOL");
-		browseTypes.add("INSTITUTION");
-		browseTypes.add("COMMUNITY");
+		browseTypes.add(BrowseTypeEnum.ALL.toString());
+		browseTypes.add(BrowseTypeEnum.DATASET.toString());
+		browseTypes.add(BrowseTypeEnum.PERSON.toString());
+		browseTypes.add(BrowseTypeEnum.TOOL.toString());
+		browseTypes.add(BrowseTypeEnum.INSTITUTION.toString());
+		browseTypes.add(BrowseTypeEnum.COMMUNITY.toString());
 	}
 
 	public List<String> getBrowseTypes() {

@@ -1,0 +1,18 @@
+<%-- TODO: This needs to process comments recursively. --%>
+
+<ul>
+<c:forEach var="comment" items="${comments}">
+	<li>
+		<c:out value="${comment.commentText}"/>
+		[
+		<portlet:renderURL var="viewCommentorUrl">
+			<portlet:param name="operation" value="viewDetails"/>
+			<portlet:param name="entryId" value="${comment.commentor.id}"/>
+		</portlet:renderURL>
+		<a href="<c:out value="${viewCommentorUrl}"/>">
+			<c:out value="${comment.commentor.firstName}"/> <c:out value="${comment.commentor.lastName}"/>
+		</a>
+		]
+	</li>
+</c:forEach>
+</ul>

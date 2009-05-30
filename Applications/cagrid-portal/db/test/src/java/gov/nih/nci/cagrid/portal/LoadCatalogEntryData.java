@@ -43,10 +43,10 @@ public class LoadCatalogEntryData {
 	 */
 	public static void main(String[] args) {
 		LoadCatalogEntryData d = new LoadCatalogEntryData();
-		d.run("test/data/CatalogEntryData.xml");
+		d.run();
 	}
 
-	public void run(String dataFilePath) {
+	public void run() {
 		try {
 			TestDB.create();
 
@@ -60,7 +60,7 @@ public class LoadCatalogEntryData {
 					// Create catalog entry for John Doe
 
 					Person person1 = new Person();
-					session.save(person1);
+					session.saveOrUpdate(person1);
 
 					PortalUser portalUser1 = new PortalUser();
 					portalUser1.setPerson(person1);
@@ -94,6 +94,7 @@ public class LoadCatalogEntryData {
 					person1ce.setAddressPublic(true);
 					person1ce.setEmailAddressPublic(true);
 					person1ce.setPhoneNumberPublic(true);
+					person1ce.setAbout(portalUser1);
 
 					session.save(person1ce);
 					addComment(session, person1ce, person1ce,
@@ -241,6 +242,7 @@ public class LoadCatalogEntryData {
 		roleAInst.setType(roleTypeA);
 		roleAInst.setDescription(roleTypeADesc);
 		roleAInst.setRelationship(relInst);
+		roleAInst.setCreatedAt(new Date());
 		session.save(roleAInst);
 		ceA.getRoles().add(roleAInst);
 		session.update(ceA);
@@ -250,6 +252,7 @@ public class LoadCatalogEntryData {
 		roleBInst.setType(roleTypeB);
 		roleBInst.setDescription(roleTypeBDesc);
 		roleBInst.setRelationship(relInst);
+		roleBInst.setCreatedAt(new Date());
 		session.save(roleBInst);
 		ceB.getRoles().add(roleBInst);
 		session.update(ceB);
@@ -298,6 +301,7 @@ public class LoadCatalogEntryData {
 		file1.setDescription(desc);
 		file1.setSizeInBytes(sizeInBytes);
 		file1.setCreatedAt(new Date());
+		file1.setFileOf(entry);
 		session.save(file1);
 
 		entry.getFiles().add(file1);
@@ -316,6 +320,7 @@ public class LoadCatalogEntryData {
 		} catch (MalformedURLException ex) {
 			throw new RuntimeException("bad URL: " + ex.getMessage(), ex);
 		}
+		hyp1.setHyperlinkOf(entry);
 		session.save(hyp1);
 
 		entry.getHyperlinks().add(hyp1);
