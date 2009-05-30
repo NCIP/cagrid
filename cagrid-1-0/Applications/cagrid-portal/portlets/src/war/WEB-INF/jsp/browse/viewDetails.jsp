@@ -1,6 +1,16 @@
 <%@ include file="/WEB-INF/jsp/include/includes.jspf" %>
 
-<h1>Viewing: <c:out value="${catalogEntry.id}"/></h1>
-<p>
-Link: <a href="<c:out value="${friendlyUrl}"/>"></a>
-</p>
+
+<portlet:renderURL var="viewUrl">
+	<portlet:param name="operation" value="view"/>
+</portlet:renderURL>
+<a href="<c:out value="${viewUrl} }"/>">Back to search results</a>
+
+<div id="catalogEntry.name">
+<c:out value="${catalogEntry.name"/>
+</div>
+
+<div id="catalogEntry.description">
+<c:out value="${catalogEntry.description"/>
+</div>
+

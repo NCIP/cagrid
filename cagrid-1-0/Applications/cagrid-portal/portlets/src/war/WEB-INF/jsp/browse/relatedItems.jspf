@@ -1,0 +1,46 @@
+        	<table>
+        		<tbody>
+        			<tr>
+        				<th><c:out value="${entryTypeLabel}"/></th><th>Relationship Type</th><th>Relationship Description</th>
+        			</tr>
+        			<c:forEach var="roleType" items="${roleTypes}">
+        				<c:forEach var="role" items="${roleType.orderedRoleInstances}">
+        				<tr>
+        					<td>
+        						<portlet:renderURL var="viewRelatedItemUrl">
+									<portlet:param name="operation" value="viewDetails"/>
+									<portlet:param name="entryId" value="${role.roleInstance.catalogEntry.id}"/>
+								</portlet:renderURL>
+								<a href="<c:out value="${viewRelatedItemUrl}"/>">
+        							<c:out value="${role.roleInstance.catalogEntry.name}"/>
+        						</a>
+        					</td>
+        					<td>
+        						<c:out value="${role.roleInstance.type.name}"/>
+        					</td>
+        					<td>
+        						<c:out value="${role.roleInstance.description}"/>
+        					</td>
+        				</tr>
+        				<c:if test="${!empty role.orderedComments}">
+        					<tr>
+        						<td colspan="3">
+        						Comments<br/>
+        						
+        						<ul>
+        							<c:forEach var="comment" items="${role.orderedComments}">
+        							<li>
+        								<c:out value="${comment.commentor.name}"/>&nbsp;
+        								<i>[<fmt:formatDate value="${comment.createdAt}" type="both"/>]</i><br/>
+        								<c:out value="${comment.commentText}"/>
+        							</li>
+        							</c:forEach>
+        						</ul>
+        						
+        						</td>
+        					</tr>
+        				</c:if>
+        				</c:forEach>
+        			</c:forEach>
+        		</tbody>
+        	</table>
