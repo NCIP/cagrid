@@ -10,9 +10,11 @@
 		<friendly-url-mapper-class>gov.nih.nci.cagrid.portal.portlet.browse.BrowseFriendlyURLMapper</friendly-url-mapper-class>
 		<instanceable>true</instanceable>
 	</portlet>
+	<!-- 
 	<portlet>
 		<portlet-name>TestFriendlyURLPortlet</portlet-name>
 		<friendly-url-mapper-class>gov.nih.nci.cagrid.portal.portlet.browse.BrowseFriendlyURLMapper</friendly-url-mapper-class>
 		<instanceable>false</instanceable>
-	</portlet>	
+	</portlet>
+	 -->	
 </liferay-portlet-app>

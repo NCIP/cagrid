@@ -37,12 +37,13 @@ public class CatalogEntryRoleTypeViewBean {
 	}
 
 	public void addRoleInstance(CatalogEntryRoleInstance roleInstance) {
-		if (!roleInstance.getType().getId().equals(
-				getCatalogEntryRoleType().getId())) {
-			throw new IllegalArgumentException(
-					"This view bean is for roles of type: "
-							+ getCatalogEntryRoleType().getName());
-		}
+		//TODO: enable sub types
+//		if (!roleInstance.getType().getId().equals(
+//				getCatalogEntryRoleType().getId())) {
+//			throw new IllegalArgumentException(
+//					"This view bean is for roles of type: "
+//							+ getCatalogEntryRoleType().getName());
+//		}
 		roleInstances.add(new CatalogEntryRoleInstanceViewBean(roleInstance));
 	}
 }

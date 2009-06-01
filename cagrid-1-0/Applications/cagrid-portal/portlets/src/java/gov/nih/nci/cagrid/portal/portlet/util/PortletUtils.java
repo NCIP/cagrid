@@ -5,6 +5,7 @@ package gov.nih.nci.cagrid.portal.portlet.util;
 
 import gov.nih.nci.cagrid.portal.domain.GridService;
 import gov.nih.nci.cagrid.portal.domain.ServiceStatus;
+import gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntry;
 import gov.nih.nci.cagrid.portal.portlet.query.results.QueryResultToTableHandler;
 import gov.nih.nci.cagrid.portal.portlet.query.results.QueryResultToWorkbookHandler;
 import gov.nih.nci.cagrid.portal.util.PortalUtils;
@@ -13,8 +14,10 @@ import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.portlet.PortletRequest;
@@ -110,7 +113,7 @@ public class PortletUtils {
 		return parts;
 	}
 
-    public static String getTargetUMLClassName(String cqlQuery) {
+	public static String getTargetUMLClassName(String cqlQuery) {
 		String targetClassName = null;
 		try {
 
@@ -139,19 +142,23 @@ public class PortletUtils {
 	}
 
 	public static void main(String[] args) throws Exception {
-		Set<String> urls = new HashSet<String>();
-		Document doc = DocumentBuilderFactory.newInstance()
-				.newDocumentBuilder().parse(
-						new FileInputStream("tissueQuery.xml"));
-		XPathFactory xpFact = XPathFactory.newInstance();
-		NodeList urlEls = (NodeList) xpFact.newXPath().compile(
-				"/DCQLQuery/targetServiceURL").evaluate(doc,
-				XPathConstants.NODESET);
-		for (int i = 0; i < urlEls.getLength(); i++) {
-			Element el = (Element) urlEls.item(i);
-			urls.add(el.getTextContent());
-		}
-		System.out.println(urls);
+
+		// Set<String> urls = new HashSet<String>();
+		// Document doc = DocumentBuilderFactory.newInstance()
+		// .newDocumentBuilder().parse(
+		// new FileInputStream("tissueQuery.xml"));
+		// XPathFactory xpFact = XPathFactory.newInstance();
+		// NodeList urlEls = (NodeList) xpFact.newXPath().compile(
+		// "/DCQLQuery/targetServiceURL").evaluate(doc,
+		// XPathConstants.NODESET);
+		// for (int i = 0; i < urlEls.getLength(); i++) {
+		// Element el = (Element) urlEls.item(i);
+		// urls.add(el.getTextContent());
+		// }
+		// System.out.println(urls);
+
+
+
 	}
 
 	public static Set<String> getTargetServiceUrls(String dcql)
@@ -170,7 +177,20 @@ public class PortletUtils {
 		}
 		return urls;
 	}
-	
 
-
+	public static Object getMapValueForType(Class klass, Map map) {
+		Object value = null;
+		Class superclass = klass;
+		while (true) {
+			value = map.get(superclass.getName());
+			if (value != null) {
+				break;
+			}
+			superclass = superclass.getSuperclass();
+			if (superclass == null) {
+				break;
+			}
+		}
+		return value;
+	}
 }

@@ -12,6 +12,7 @@
 
 <%@ include file="/WEB-INF/jsp/browse/pocs.jspf" %>
 
+<%@ include file="/WEB-INF/jsp/browse/members.jspf" %>
+
 
 <%@ include file="/WEB-INF/jsp/browse/relatedItemsAndOtherInfo.jspf" %>
-

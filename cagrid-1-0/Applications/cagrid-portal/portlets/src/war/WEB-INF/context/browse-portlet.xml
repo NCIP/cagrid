@@ -29,8 +29,28 @@
         	<map>
         		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.PersonCatalogEntry" value="personView"/>
         		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.DataSetCatalogEntry" value="datasetView"/>
+        		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.CommunityCatalogEntry" value="communityView"/>
+        		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.ToolCatalogEntry" value="toolView"/>
         	</map>
         </property>
+        
+	</bean>
+	
+	<bean id="catalogEntryViewBeanFactory" class="gov.nih.nci.cagrid.portal.portlet.browse.CatalogEntryViewBeanFactory">
+		<property name="entryTypeViewBeanMap">
+			<map>
+				<entry key="gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntry" value="catalogEntryViewBean"/>
+        		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.CommunityCatalogEntry" value="communityViewBean"/>
+        	</map>
+		</property>
+	</bean>
+	
+	<bean id="catalogEntryViewBean" class="gov.nih.nci.cagrid.portal.portlet.browse.CatalogEntryViewBean" scope="prototype">
+		<property name="pocRelationshipTypeName" value="PointOfContact"/>
+	</bean>
+	
+	<bean id="communityViewBean" class="gov.nih.nci.cagrid.portal.portlet.browse.CommunityCatalogEntryViewBean" scope="prototype">
+		<property name="memberRelationshipTypeName" value="CommunityPersonMember"/>
 	</bean>
 
 	<bean id="browseViewController"
