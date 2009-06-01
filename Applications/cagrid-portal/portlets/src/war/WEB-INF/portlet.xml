@@ -695,6 +695,7 @@
         </portlet-preferences>
     </portlet>
     
+    <!-- 
 	<portlet>
         <description>Test Friendly URL Portlet</description>
         <portlet-name>TestFriendlyURLPortlet</portlet-name>
@@ -717,7 +718,7 @@
             <keywords>test</keywords>
         </portlet-info>
     </portlet>    
-    
+     -->
     
 
     <!--Added to bypass liferay 5.0.1 bug

@@ -14,4 +14,3 @@
 
 
 <%@ include file="/WEB-INF/jsp/browse/relatedItemsAndOtherInfo.jspf" %>
-
