@@ -14,7 +14,9 @@ import gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntryWorkflowStatus;
 import gov.nih.nci.cagrid.portal.domain.catalog.Citation;
 import gov.nih.nci.cagrid.portal.domain.catalog.Comment;
 import gov.nih.nci.cagrid.portal.domain.catalog.Commentable;
+import gov.nih.nci.cagrid.portal.domain.catalog.CommunityCatalogEntry;
 import gov.nih.nci.cagrid.portal.domain.catalog.DataSetCatalogEntry;
+import gov.nih.nci.cagrid.portal.domain.catalog.DesktopToolCatalogEntry;
 import gov.nih.nci.cagrid.portal.domain.catalog.File;
 import gov.nih.nci.cagrid.portal.domain.catalog.Hyperlink;
 import gov.nih.nci.cagrid.portal.domain.catalog.PersonCatalogEntry;
@@ -114,7 +116,8 @@ public class LoadCatalogEntryData {
 
 					File file1 = addFile(session, person1ce, "some_file.txt",
 							"A comment on my own file.", ".txt", 1000L);
-					addComment(session, person1ce, file1, "A comment on this file.");
+					addComment(session, person1ce, file1,
+							"A comment on this file.");
 
 					// Create catalog entry for Some Dataset
 					DataSetCatalogEntry dataset1ce = new DataSetCatalogEntry();
@@ -151,9 +154,11 @@ public class LoadCatalogEntryData {
 							"An example dataset file.", ".xml", 1000L);
 					addComment(session, person1ce, file2,
 							"A comment on this dataset file.");
-					
-					Rating rating1 = addRating(session, person1ce, dataset1ce, 5);
-					addComment(session, person1ce, rating1, "A comment on this rating.");
+
+					Rating rating1 = addRating(session, person1ce, dataset1ce,
+							5);
+					addComment(session, person1ce, rating1,
+							"A comment on this rating.");
 
 					// Create relationship types
 
@@ -190,6 +195,271 @@ public class LoadCatalogEntryData {
 							"comment on just the Some Dataset -> John Doe role");
 					addComment(session, person1ce, relInst1.getRoleB(),
 							"comment on just the John Doe -> Some Dataset role");
+					
+					
+
+					// Tool to vizualize dataset
+					DesktopToolCatalogEntry tool1ce = new DesktopToolCatalogEntry();
+					tool1ce.setCreatedAt(new Date());
+					tool1ce.setName("Some Dataset Vizualization Tool");
+					tool1ce
+							.setDescription("Description of this tool (e.g. its feature set).");
+					tool1ce.setAuthor(portalUser1);
+					tool1ce.setContributor(person1ce);
+
+					session.save(tool1ce);
+
+					portalUser1.getCatalogEntries().add(tool1ce);
+					session.update(portalUser1);
+
+					person1ce.getContributions().add(tool1ce);
+					session.update(person1ce);
+
+					addCitation(session, tool1ce,
+							"some citation for this data tool", "PM8873045");
+					addComment(session, person1ce, tool1ce,
+							"A comment on this tool.");
+
+					Hyperlink hyp3 = addHyperlink(session, tool1ce,
+							"Homepage for this tool.",
+							"http://some.host.com/atool.html");
+					addComment(session, person1ce, hyp3,
+							"A comment on this tool hyperlink.");
+
+					File file3 = addFile(session, tool1ce,
+							"some_example_file_for_tool.dat",
+							"An example file for tool.", ".dat", 1000L);
+					addComment(session, person1ce, file3,
+							"A comment on this tool example file.");
+
+					Rating rating2 = addRating(session, person1ce, tool1ce, 3);
+					addComment(session, person1ce, rating2,
+							"A comment on this rating of the tool.");
+					
+					
+
+					CatalogEntryRelationshipType toolPersonRelType = createRelationshipType(
+							session,
+							null,
+							"ToolPerson",
+							"A person can be related to a tool and vice versa.",
+							"ToolPersonRole",
+							"A tool can be related to a person.",
+							"ToolPersonOfRole",
+							"A person can be related to a tool.");
+
+					CatalogEntryRelationshipType toolPersonCreatorRelType = createRelationshipType(
+							session,
+							toolPersonRelType,
+							"ToolPersonCreator",
+							"A person creates a tool and a tool is created by a person.",
+							"ToolPersonCreatorRole",
+							"A tool is created by a person.",
+							"ToolPersonCreatorOfRole",
+							"A person creates a tool.");
+
+					CatalogEntryRelationshipInstance relInst2 = assertRelationship(
+							session,
+							person1ce,
+							tool1ce,
+							toolPersonCreatorRelType.getRoleTypeA(),
+							"John Doe is the creator of Some Dataset Visualization Tool",
+							toolPersonCreatorRelType.getRoleTypeB(),
+							"Some Dataset Vizualization Tool is created by John Doe.");
+					
+
+					addComment(session, person1ce, relInst2,
+							"comment on the whole relationship instance");
+					addComment(session, person1ce, relInst2.getRoleA(),
+							"comment on just the Some Dataset Vizualization Tool -> John Doe role");
+					addComment(session, person1ce, relInst2.getRoleB(),
+							"comment on just the John Doe -> Some Dataset Vizualization Tool role");
+					
+					
+
+					CatalogEntryRelationshipType datasetToolRelType = createRelationshipType(
+							session,
+							null,
+							"DataSetTool",
+							"A dataset can be related to a tool and vice versa.",
+							"DataSetToolRole",
+							"A dataset can be related to a tool.",
+							"DataSetToolOfRole",
+							"A tool can be related to a dataset.");
+
+					CatalogEntryRelationshipType datasetVizualizationToolRelType = createRelationshipType(
+							session,
+							datasetToolRelType,
+							"DataSetVizualizationTool",
+							"A dataset can be vizualized by a tool and a tool is used to visualize a dataset.",
+							"DataSetVizualizationToolRole",
+							"A dataset is visualized by a tool.",
+							"DataSetVizualizationToolOfRole",
+							"A tool vizualizes a dataset.");
+
+					CatalogEntryRelationshipInstance relInst3 = assertRelationship(
+							session,
+							dataset1ce,
+							tool1ce,
+							datasetVizualizationToolRelType.getRoleTypeA(),
+							"Some Dataset is visualized by Some Dataset Visualization Tool",
+							datasetVizualizationToolRelType.getRoleTypeB(),
+							"Some Dataset Vizualization Tool vizualizes Some Dataset.");
+
+					Comment c1 = addComment(session, person1ce, relInst3,
+							"comment on the whole relationship instance");
+					// TODO: Comment should be commentable
+					// addComment(session, person1ce, c1, "comment on a
+					// comment");
+
+					addComment(session, person1ce, relInst3.getRoleA(),
+							"comment on just the Some Dataset Vizualization Tool -> Some Dataset role");
+					addComment(session, person1ce, relInst3.getRoleB(),
+							"comment on just the Some Dataset -> Some Dataset Vizualization Tool role");
+
+					// Community that uses tool and maintains data set
+					CommunityCatalogEntry community1ce = new CommunityCatalogEntry();
+					community1ce.setName("Community 1");
+					community1ce
+							.setDescription("Description of the interests of the community");
+
+					community1ce.setAuthor(portalUser1);
+					community1ce.setContributor(person1ce);
+
+					session.save(community1ce);
+
+					portalUser1.getCatalogEntries().add(community1ce);
+					session.update(portalUser1);
+
+					person1ce.getContributions().add(community1ce);
+					session.update(person1ce);
+
+					addCitation(session, community1ce,
+							"some citation for this community", "PM44444");
+					addComment(session, person1ce, community1ce,
+							"A comment on this community.");
+
+					Hyperlink hyp4 = addHyperlink(session, community1ce,
+							"Homepage for this community.",
+							"http://some.host.com/acommunity.html");
+					addComment(session, person1ce, hyp4,
+							"A comment on this community hyperlink.");
+
+					Rating rating3 = addRating(session, person1ce,
+							community1ce, 4);
+					addComment(session, person1ce, rating3,
+							"A comment on this rating of the community.");
+
+					CatalogEntryRelationshipType communityPersonRelType = createRelationshipType(
+							session,
+							null,
+							"CommunityPerson",
+							"A community can be related to a person and vice versa.",
+							"CommunityPersonRole",
+							"A community can be related to a person.",
+							"CommunityPersonOfRole",
+							"A person can be related to a community.");
+
+					CatalogEntryRelationshipType communityPersonMemberRelType = createRelationshipType(
+							session,
+							communityPersonRelType,
+							"CommunityPersonMember",
+							"A community has persons as members and persons are members of communities.",
+							"CommunityPersonMemberRole",
+							"A community has members persons.",
+							"CommunityPersonMemberOfRole",
+							"Persons are members of communities.");
+
+					CatalogEntryRelationshipInstance relInst4 = assertRelationship(
+							session, community1ce, person1ce,
+							communityPersonMemberRelType.getRoleTypeA(),
+							"Community 1 has John Doe as a member.",
+							communityPersonMemberRelType.getRoleTypeB(),
+							"John Doe is a member of Community 1.");
+
+					addComment(session, person1ce, relInst4,
+							"comment on the whole relationship instance");
+
+					addComment(session, person1ce, relInst4.getRoleA(),
+							"comment on just the Community 1 -> John Doe role");
+					addComment(session, person1ce, relInst4.getRoleB(),
+							"comment on just the John Doe -> Community 1 role");
+					
+					
+					//Make John Doe POC for tool, dataset, and community
+					CatalogEntryRelationshipType pocRelType = createRelationshipType(
+							session,
+							null,
+							"PointOfContact",
+							"A person can be a POC for any catalog entry.",
+							"PointOfContactRole",
+							"A person is POC for some catalog entry.",
+							"PointOfContactOfRole",
+							"A catalog entry has one or more persons as POCs.");
+
+					CatalogEntryRelationshipType pocOpRelType = createRelationshipType(
+							session,
+							pocRelType,
+							"OperationalPointOfContact",
+							"A person can be the operational POC for some catalog entry.",
+							"OperationalPointOfContactRole",
+							"A person is the operation POC for some catalog entry.",
+							"OperationalPontOfContactOfRole",
+							"A catalog entry has some person as the operational POC.");
+					
+					CatalogEntryRelationshipInstance relInst5 = assertRelationship(
+							session, person1ce, dataset1ce,
+							pocOpRelType.getRoleTypeA(),
+							"John Doe is the operational POC for Some Dataset.",
+							pocOpRelType.getRoleTypeB(),
+							"Some Dataset has John Doe as operational POC.");					
+					
+					CatalogEntryRelationshipType pocOrgRelType = createRelationshipType(
+							session,
+							pocRelType,
+							"OrganizationalPointOfContact",
+							"A person can be the organizational POC for some catalog entry.",
+							"OrganizationalPointOfContactRole",
+							"A person is the organizational POC for some catalog entry.",
+							"OrganizationalPontOfContactOfRole",
+							"A catalog entry has some person as the organizational POC.");
+					
+					CatalogEntryRelationshipInstance relInst6 = assertRelationship(
+							session, person1ce, community1ce,
+							pocOrgRelType.getRoleTypeA(),
+							"John Doe is the organizational POC for Community 1.",
+							pocOrgRelType.getRoleTypeB(),
+							"Community 1 has John Doe as organizational POC.");
+					
+					CatalogEntryRelationshipType pocTechRelType = createRelationshipType(
+							session,
+							pocRelType,
+							"TechnicalPointOfContact",
+							"A person can be the technical POC for some catalog entry.",
+							"TechnicalPointOfContactRole",
+							"A person is the technical POC for some catalog entry.",
+							"TechnicalPontOfContactOfRole",
+							"A catalog entry has some person as the technical POC.");
+					
+					CatalogEntryRelationshipInstance relInst7 = assertRelationship(
+							session, person1ce, tool1ce,
+							pocTechRelType.getRoleTypeA(),
+							"John Doe is the technical POC for Some Dataset Vizualization Tool.",
+							pocOrgRelType.getRoleTypeB(),
+							"Some Dataset Vizualization Tool has John Doe as technical POC.");
+
+					//Create an institution
+					
+					
+					
+					addComment(session, person1ce, relInst1,
+							"comment on the whole relationship instance");
+					addComment(session, person1ce, relInst1.getRoleA(),
+							"comment on just the Some Dataset -> John Doe role");
+					addComment(session, person1ce, relInst1.getRoleB(),
+							"comment on just the John Doe -> Some Dataset role");
+					
+					
 
 					List entries = session.createQuery("from CatalogEntry")
 							.list();
@@ -202,16 +472,14 @@ public class LoadCatalogEntryData {
 					return null;
 				}
 
-				
-
 			});
 		} catch (Exception ex) {
 			throw new RuntimeException("Error loading data: " + ex.getMessage());
 		}
 	}
-	
-	public Rating addRating(Session session,
-			PersonCatalogEntry pce, CatalogEntry ce, int score) {
+
+	public Rating addRating(Session session, PersonCatalogEntry pce,
+			CatalogEntry ce, int score) {
 
 		Rating rating = new Rating();
 		rating.setRating(score);
@@ -219,10 +487,10 @@ public class LoadCatalogEntryData {
 		rating.setRatingContributor(pce);
 		rating.setRatingOf(ce);
 		session.save(rating);
-		
+
 		ce.getRatings().add(rating);
 		session.update(ce);
-		
+
 		return rating;
 	}
 
@@ -328,7 +596,8 @@ public class LoadCatalogEntryData {
 		return hyp1;
 	}
 
-	public Comment addComment(Session s, PersonCatalogEntry pce, Commentable c, String commentText) {
+	public Comment addComment(Session s, PersonCatalogEntry pce, Commentable c,
+			String commentText) {
 		Comment comment = new Comment();
 		comment.setCreatedAt(new Date());
 		comment.setCommentText(commentText);
