@@ -7,7 +7,7 @@
     <hudson.plugins.disk__usage.DiskUsageProperty/>
   </properties>
   <scm class="hudson.scm.CVSSCM">
-    <cvsroot>:ext:anonymous@cbiocvs2.nci.nih.gov:/share/content/gforge/cagrid-1-0</cvsroot>
+    <cvsroot>:ext:CaGridUser@cbiocvs2.nci.nih.gov:/share/content/gforge/cagrid-1-0</cvsroot>
     <module>cagrid-1-0</module>
     <branch>caGrid-1_1_release</branch>
     <cvsRsh>/tmp/wraplink.sh</cvsRsh>
