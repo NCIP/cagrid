@@ -1,0 +1,108 @@
+<dataConfig>
+    <dataSource driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost:3306/portal2"
+                user="portalacct" password="portalacct"/>
+
+    <document name="CatalogEntry">
+        <entity name="GridServiceEndPointCatalog"
+                deltaQuery="select id from cat_entry where where catalog_type='tool_grid_service_endpoint'
+                            and updatedAt > '${dataimporter.last_index_time}'"
+                query="select * from cat_entry where catalog_type='tool_grid_service_endpoint'">
+            <field column="id" name="id"/>
+            <entity name="GridService"
+                    query="select * from grid_services where id='${GridServiceEndPointCatalog.grid_service_id}'">
+                <field column="id" name="id"/>
+                <field column="url" name="homepageUrl"/>
+                <field column="catalog_type" name="catalog_type"/>
+                <entity name="ServiceMetadata" query="select * from svc_meta where service_id='${grid_service.id}'">
+                    <entity name="ResearchCenter"
+                            query="select * from res_ctr where id='${ServiceMetadata.host_res_ctr_id}'">
+                        <field column="displayName" name="displayName"/>
+                        <field column="shortName" name="shortName"/>
+                        <field column="description" name="description"/>
+                        <field column="homepageUrl" name="homepageUrl"/>
+                        <field column="description" name="description"/>
+                    </entity>
+                    <entity name="ServiceDescription"
+                            query="select * from svc where id='${ServiceMetadata.service_desc_id}'">
+                        <field column="description" name="description"/>
+                        <field column="name" name="name"/>
+                    </entity>
+                </entity>
+            </entity>
+        </entity>
+
+
+        <entity name="InstitutionCatalog"
+                query="select * from cat_entry where catalog_type='institution'"
+                deltaQuery="select id from cat_entry where where catalog_type='institution'
+                            and updatedAt > '${dataimporter.last_index_time}'">
+            <field column="id" name="id"/>
+            <field column="catalog_type" name="catalog_type"/>
+
+            <entity name="Participant"
+                    query="select * from participants where id='${InstitutionCatalog.participant_id}'">
+                <field column="id" name="id"/>
+                <field column="name" name="name"/>
+                <field column="institution" name="displayName"/>
+                <field column="phone" name="number"/>
+                <field column="emailAddress" name="emailAddress"/>
+                <field column="homepageUrl" name="homepageUrl"/>
+                <entity name="address"
+                        query="select * from addresses where id='${Participant.address_id}'">
+                    <field column="street1" name="street1"/>
+                    <field column="locality" name="locality"/>
+                    <field column="stateProvince" name="stateProvince"/>
+                    <field column="country" name="country"/>
+                </entity>
+                <entity name="participation"
+                        query="select * from participation where participant_id='${Participant.id}'">
+                    <entity name="Workspace"
+                            query="select * from workspaces where id='${participation.workspace_id}'">
+                    <field column="name" name="name"/>
+                    <field column="abbreviation" name="shortName"/>
+                    <field column="description" name="description"/>
+                    <field column="homepageUrl" name="homepageUrl"/>
+                        </entity>
+                </entity>
+            </entity>
+        </entity>
+
+        <entity name="PersonCatalogEntry" query="select * from cat_entry where catalog_type='person'"
+                deltaQuery="select id from cat_entry where where catalog_type='person'
+                            and updatedAt > '${dataimporter.last_index_time}'">
+            <field column="id" name="id"/>
+            <field column="catalog_type" name="catalog_type"/>
+
+            <entity name="person" query="select * from persons where id='${PersonCatalogEntry.person_id}'">
+                <field column="id" name="id"/>
+                <field column="firstName" name="firstName"/>
+                <field column="lastName" name="lastName"/>
+                <field column="emailAddress" name="emailAddress"/>
+                <field column="namedesc" template="{person.firstName},${person.lastName}"/>
+                <entity name="poc" query="select * from pocs where person_id='${person.id}'">
+                    <field column="role" name="role"/>
+                    <entity name="researchCenter"
+                            query="select * from res_ctr where id='${poc.center_id}'">
+                        <field column="id" name="id"/>
+                        <field column="displayName" name="displayName"/>
+                        <field column="homepageUrl" name="homepageUrl"/>
+                        <field column="shortName" name="shortName"/>
+                    </entity>
+                </entity>
+                <entity name="person_addresses"
+                        query="select address_id from person_addresses where person_id='${person.id}'">
+                    <entity name="address"
+                            query="select * from addresses where id='${person_addresses.address_id}'"
+                            deltaQuery="select id from addresses where last_modified > '${dataimporter.last_index_time}'">
+                        <field column="id" name="id"/>
+                        <field column="street1" name="street1"/>
+                        <field column="locality" name="locality"/>
+                        <field column="stateProvince" name="stateProvince"/>
+                        <field column="country" name="country"/>
+                    </entity>
+                </entity>
+            </entity>
+        </entity>
+    </document>
+
+</dataConfig>
