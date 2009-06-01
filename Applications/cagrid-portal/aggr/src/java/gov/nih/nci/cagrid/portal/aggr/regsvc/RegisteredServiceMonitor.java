@@ -9,6 +9,7 @@ import gov.nih.nci.cagrid.portal.aggr.TrackableMonitor;
 import gov.nih.nci.cagrid.portal.util.TimestampProvider;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,7 +18,9 @@ import java.util.Set;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
+ * @author <a href="mailto:manav.kher@semanticbits.com">Manav Kher</a>
  */
+@Transactional
 public class RegisteredServiceMonitor extends AbstractMonitor implements TrackableMonitor {
 
     private static final Log logger = LogFactory
