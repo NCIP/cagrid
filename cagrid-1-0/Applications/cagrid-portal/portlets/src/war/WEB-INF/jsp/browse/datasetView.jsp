@@ -9,6 +9,9 @@
 <c:out value="${catalogEntry.description}"/>
 <p/>
 
+<%--
+<%@ include file="/WEB-INF/jsp/browse/pocs.jspf" %>
+ --%>
 
 <%@ include file="/WEB-INF/jsp/browse/relatedItemsAndOtherInfo.jspf" %>
 

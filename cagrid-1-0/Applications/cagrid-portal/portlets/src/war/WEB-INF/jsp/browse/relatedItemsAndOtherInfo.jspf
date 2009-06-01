@@ -21,8 +21,24 @@
         	
         	
         	<!-- Related Institutions -->
+        	<c:if test="${!empty catalogEntryViewBean.institutionRoleTypes}">
+        	<b>Related Institutions</b>
+        	
+        	<c:set var="entryTypeLabel" value="Institution"/>
+        	<c:set var="roleTypes" value="${catalogEntryViewBean.institutionRoleTypes}"/>
+        	<%@ include file="/WEB-INF/jsp/browse/relatedItems.jspf" %>
+        	
+        	</c:if>
         	
         	<!-- Related Communities -->
+        	<c:if test="${!empty catalogEntryViewBean.communityRoleTypes}">
+        	<b>Related Communities</b>
+        	
+        	<c:set var="entryTypeLabel" value="Community"/>
+        	<c:set var="roleTypes" value="${catalogEntryViewBean.communityRoleTypes}"/>
+        	<%@ include file="/WEB-INF/jsp/browse/relatedItems.jspf" %>
+        	
+        	</c:if>
         	
         	<!-- Related Datasets -->
         	<c:if test="${!empty catalogEntryViewBean.dataSetRoleTypes}">
@@ -36,6 +52,15 @@
         	</c:if>
         	
         	<!-- Related Tools -->
+        	<c:if test="${!empty catalogEntryViewBean.toolRoleTypes}">
+        	<b>Related Tools</b>
+        	
+        	<c:set var="entryTypeLabel" value="Tool"/>
+        	<c:set var="roleTypes" value="${catalogEntryViewBean.toolRoleTypes}"/>
+        	<%@ include file="/WEB-INF/jsp/browse/relatedItems.jspf" %>
+        	
+        	</c:if>
+        	
         	</p>
         </div> 
         <div>
