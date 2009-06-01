@@ -37,8 +37,8 @@
     </path>
 
     <path id="run.cp">
-        <path refid="compile.cp"/>
         <pathelement location="${classes.dir}"/>
+        <path refid="compile.cp"/>
         <pathelement location="${build.xmls.dir}"/>
         <pathelement location="${ext.default.xml.dir}"/>
     </path>
@@ -216,6 +216,11 @@
               fork="true">
             <arg value="${basedir}/etc/caBIG_Workspaces_participants.xls"/>
         </java>
+    </target>
+
+    <target name="run-catalog" depends="jar" description="Will create catalog items">
+        <java  classname="gov.nih.nci.cagrid.portal.util.RunCatalog" classpathref="run.cp"
+               fork="true"/>
     </target>
 
 
