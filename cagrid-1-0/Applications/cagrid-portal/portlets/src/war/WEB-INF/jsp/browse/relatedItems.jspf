@@ -4,8 +4,8 @@
             <portlet:param name="operation" value="viewDetails"/>
 			<portlet:param name="entryId" value="${role.roleInstance.catalogEntry.id}"/>
         </portlet:renderURL>
-		<div>
-			<img src="#" alt="<c:out value="${role.roleInstance.catalogEntry.name}"/> Icon" class="oneRelatedItemIcon" />
+		<div class="oneRelatedItem">
+			<a href="<c:out value="${viewRelatedItemUrl}"/>"><img src="#" alt="<c:out value="${role.roleInstance.catalogEntry.name}"/> Icon" class="oneRelatedItemIcon" /></a>
 				<div class="oneRelatedItemContent">
 					<a class="oneRelatedItemLink" href="<c:out value="${viewRelatedItemUrl}"/>"><c:out value="${role.roleInstance.catalogEntry.name}"/></a>
 					<c:out value="${role.roleInstance.type.name}"/>
