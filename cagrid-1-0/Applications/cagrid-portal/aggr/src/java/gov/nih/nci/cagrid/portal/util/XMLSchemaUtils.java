@@ -75,7 +75,7 @@ public class XMLSchemaUtils {
             org.cagrid.gme.domain.XMLSchema schema = client.getXMLSchema(ns);
             content = schema.getRootDocument().getSchemaText();
         } catch (Exception ex) {
-            logger.warn("Error getting XML schema with namespace '" +
+            logger.info("Error getting XML schema with namespace '" +
                     namespace
                     + "': " + ex.getMessage());
         }
@@ -106,7 +106,7 @@ public class XMLSchemaUtils {
                 }
             }
         } catch (Exception ex) {
-            logger.warn("Couldn't get XMLSchema for QName '" + qName + "': "
+            logger.info("Couldn't get XMLSchema for QName '" + qName + "': "
                     + ex.getMessage());
         }
         if (xmlSchema != null) {
