@@ -1,30 +1,37 @@
 <%@ include file="/WEB-INF/jsp/include/includes.jspf" %>
-
 <%@ include file="/WEB-INF/jsp/browse/backLink.jspf" %>
-<p/>
-
-
 <c:set var="catalogEntry" value="${catalogEntryViewBean.catalogEntry}"/>
-<c:out value="${catalogEntry.name}"/>
-<p/>
-<c:out value="${catalogEntry.description}"/>
-<p/>
-Contact Information<br/>
-
-<c:if test="${catalogEntry.phoneNumberPublic}">
-Phone: <c:out value="${catalogEntry.phoneNumber}"/><br/>
-</c:if>
-<c:if test="${catalogEntry.emailAddressPublic}">
-Email Address: <c:out value="${catalogEntry.emailAddress}"/><br/>
-</c:if>
-<c:if test="${catalogEntry.addressPublic}">
-Street1: <c:out value="${catalogEntry.street1}"/><br/>
-Street2: <c:out value="${catalogEntry.street2}"/><br/>
-Locality: <c:out value="${catalogEntry.locality}"/><br/>
-State/Province: <c:out value="${catalogEntry.stateProvince}"/><br/>
-Country: <c:out value="${catalogEntry.countryCode}"/><br/>
-</c:if>
-Website: <c:out value="${catalogEntry.webSite}"/>
-
+<div class="photoRow">
+	<div class="photo">
+		<img src="../../../images/photo-unavailable.png" alt="Photo of <c:out value="${catalogEntry.name}"/>" />
+	</div>
+	<div class="photoRightContent">
+		<h1 class="entryName"><c:out value="${catalogEntry.name}"/></h1>
+		<p class="entryDescription">
+		<c:out value="${catalogEntry.description}"/>
+		</p>
+	</div>
+	<!-- The following line is for formatting purposes -->
+	<hr style="clear:both; visibility:hidden;"/>
+</div>
+<div class="contactInfoRow">
+	<c:if test="${catalogEntry.phoneNumberPublic}">
+		<c:set var="rowLabel" value="Phone"/>
+		<c:set var="rowValue" value="${catalogEntry.phoneNumber}"/>
+	    <%@ include file="/WEB-INF/jsp/browse/row.jspf" %>
+	</c:if>
+	<c:if test="${catalogEntry.emailAddressPublic}">
+	    <c:set var="rowLabel" value="e-mail"/>
+		<c:set var="rowValue" value="${catalogEntry.emailAddress}"/>
+	    <%@ include file="/WEB-INF/jsp/browse/row.jspf" %>
+	</c:if>
+	<c:if test="${catalogEntry.addressPublic}">
+		<%@ include file="/WEB-INF/jsp/browse/address.jspf" %>
+	</c:if>
+	<c:if test="${catalogEntry.webSite}">
+		<c:set var="rowLabel" value="Website"/>
+		<c:set var="rowValue" value="${catalogEntry.webSite}"/>
+	    <%@ include file="/WEB-INF/jsp/browse/row.jspf" %>
+	</c:if>
+</div>
 <%@ include file="/WEB-INF/jsp/browse/relatedItemsAndOtherInfo.jspf" %>
-

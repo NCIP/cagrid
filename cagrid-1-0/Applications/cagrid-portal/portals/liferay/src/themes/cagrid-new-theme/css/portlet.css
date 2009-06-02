@@ -19,7 +19,7 @@ body.portlet {
 }
 
 .portlet-title {
-	display: block;
+	display: none;
 	font-weight: bold;
 	min-width: 50%;
 }
