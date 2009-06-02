@@ -39,8 +39,14 @@ public class DomainModelUtilsTestCase extends TestCase {
         classForConcept = DomainModelUtils.getUMLClassForConcept(getDomainModel(DOMAIN_MODEL_FILE), "C45377", true);
         assertNotNull(classForConcept);
         assertEquals(2, classForConcept.length);
-        assertEquals("GeneRelativeLocation", classForConcept[0].getClassName());
-        assertEquals("CloneRelativeLocation", classForConcept[1].getClassName());
+        String[] classNames = new String[classForConcept.length];
+        int index = 0;
+        for (UMLClass clazz : classForConcept) {
+            classNames[index] = clazz.getClassName();
+            index++;
+        }
+        assertTrue(arrayContains(classNames, "GeneRelativeLocation"));
+        assertTrue(arrayContains(classNames, "CloneRelativeLocation"));
 
     }
 
@@ -73,9 +79,9 @@ public class DomainModelUtilsTestCase extends TestCase {
 
             assertEquals(cde.getIdentifier(), cde2.getIdentifier());
             assertEquals(cde.getUmlAttribute().getPublicID(), cde2.getUmlAttribute().getPublicID());
-            assertEquals(cde.getUmlAttribute().getVersion(), cde2.getUmlAttribute().getVersion());
+            assertEquals(Float.valueOf(cde.getUmlAttribute().getVersion()),
+                Float.valueOf(cde2.getUmlAttribute().getVersion()));
         }
-
     }
 
 
@@ -93,10 +99,20 @@ public class DomainModelUtilsTestCase extends TestCase {
 
         return domainModel;
     }
+    
+    
+    private <T> boolean arrayContains(T[] array, T item) {
+        for (T arrayItem : array) {
+            if (arrayItem == item ||
+                (arrayItem != null && arrayItem.equals(item))) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 
     public static void main(String args[]) {
-
         TestRunner runner = new TestRunner();
         TestResult result = runner.doRun(new TestSuite(DomainModelUtilsTestCase.class));
         System.exit(result.errorCount() + result.failureCount());
