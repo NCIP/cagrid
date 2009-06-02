@@ -6,8 +6,6 @@
     </ul>             
     <div class="yui-content"> 
         <div>
-        	<p>
-        	
         	<!-- Related People -->
         	<c:if test="${!empty catalogEntryViewBean.personRoleTypes}">
 	        	<div>
@@ -63,17 +61,9 @@
 		        	<%@ include file="/WEB-INF/jsp/browse/relatedItems.jspf" %>
 	        	</div>
         	</c:if>
-        	
-        	</p>
         </div> 
         <div>
-        	<p>
-        	
         	<%@ include file="/WEB-INF/jsp/browse/otherInfo.jspf" %>
-        	
-        		
-        	
-        	</p>
         </div> 
     </div> 
 </div>
