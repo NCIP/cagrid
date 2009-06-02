@@ -23,7 +23,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.List;
 
-public abstract class BaseMetadataChangeTest {
+public abstract class AbstractMetadataChangeTestBase {
     private GridServiceDao gridServiceDao;
     private TestMetadataListener metadataListener;
     private MetadataChangeListener changeListener;
@@ -31,7 +31,7 @@ public abstract class BaseMetadataChangeTest {
     private CQLQueryInstanceDao cqlQueryInstanceDao;
     private SharedCQLQueryDao sharedCqlQueryDao;
 
-    public BaseMetadataChangeTest() {
+    public AbstractMetadataChangeTestBase() {
     }
 
     @Before
