@@ -10,55 +10,58 @@
         	
         	<!-- Related People -->
         	<c:if test="${!empty catalogEntryViewBean.personRoleTypes}">
-        	
-        	<b>Related People</b>
-        	
-        	<c:set var="entryTypeLabel" value="Person"/>
-        	<c:set var="roleTypes" value="${catalogEntryViewBean.personRoleTypes}"/>
-        	<%@ include file="/WEB-INF/jsp/browse/relatedItems.jspf" %>
-        	
+	        	<div>
+		        	<h3><img src="#" alt="People Icon" /> Related People</h3>
+		        	
+		        	<c:set var="entryTypeLabel" value="Person"/>
+		        	<c:set var="roleTypes" value="${catalogEntryViewBean.personRoleTypes}"/>
+		        	<%@ include file="/WEB-INF/jsp/browse/relatedItems.jspf" %>
+	        	</div>
         	</c:if>
         	
         	
         	<!-- Related Institutions -->
         	<c:if test="${!empty catalogEntryViewBean.institutionRoleTypes}">
-        	<b>Related Institutions</b>
-        	
-        	<c:set var="entryTypeLabel" value="Institution"/>
-        	<c:set var="roleTypes" value="${catalogEntryViewBean.institutionRoleTypes}"/>
-        	<%@ include file="/WEB-INF/jsp/browse/relatedItems.jspf" %>
-        	
+	        	<div>
+		        	<h3><img src="#" alt="Institution Icon" /> Related Institutions</h3>
+		        	
+		        	<c:set var="entryTypeLabel" value="Institution"/>
+		        	<c:set var="roleTypes" value="${catalogEntryViewBean.institutionRoleTypes}"/>
+		        	<%@ include file="/WEB-INF/jsp/browse/relatedItems.jspf" %>
+	        	</div>
         	</c:if>
         	
         	<!-- Related Communities -->
         	<c:if test="${!empty catalogEntryViewBean.communityRoleTypes}">
-        	<b>Related Communities</b>
-        	
-        	<c:set var="entryTypeLabel" value="Community"/>
-        	<c:set var="roleTypes" value="${catalogEntryViewBean.communityRoleTypes}"/>
-        	<%@ include file="/WEB-INF/jsp/browse/relatedItems.jspf" %>
-        	
+	        	<div>
+		        	<h3><img src="#" alt="Communities Icon" /> Related Communities</h3>
+		        	
+		        	<c:set var="entryTypeLabel" value="Community"/>
+		        	<c:set var="roleTypes" value="${catalogEntryViewBean.communityRoleTypes}"/>
+		        	<%@ include file="/WEB-INF/jsp/browse/relatedItems.jspf" %>
+	        	</div>
         	</c:if>
         	
         	<!-- Related Datasets -->
         	<c:if test="${!empty catalogEntryViewBean.dataSetRoleTypes}">
-        	
-        	<b>Related Datasets</b>
-        	
-        	<c:set var="entryTypeLabel" value="Dataset"/>
-        	<c:set var="roleTypes" value="${catalogEntryViewBean.dataSetRoleTypes}"/>
-        	<%@ include file="/WEB-INF/jsp/browse/relatedItems.jspf" %>
-        	
+	        	<div>
+		        	<h3><img src="#" alt="Dataset Icon" /> Related Datasets</h3>
+		        	
+		        	<c:set var="entryTypeLabel" value="Dataset"/>
+		        	<c:set var="roleTypes" value="${catalogEntryViewBean.dataSetRoleTypes}"/>
+		        	<%@ include file="/WEB-INF/jsp/browse/relatedItems.jspf" %>
+	        	</div>
         	</c:if>
         	
         	<!-- Related Tools -->
         	<c:if test="${!empty catalogEntryViewBean.toolRoleTypes}">
-        	<b>Related Tools</b>
-        	
-        	<c:set var="entryTypeLabel" value="Tool"/>
-        	<c:set var="roleTypes" value="${catalogEntryViewBean.toolRoleTypes}"/>
-        	<%@ include file="/WEB-INF/jsp/browse/relatedItems.jspf" %>
-        	
+	        	<div>
+		        	<h3><img src="#" alt="Tool Icon" /> Related Tools</h3>
+		        	
+		        	<c:set var="entryTypeLabel" value="Tool"/>
+		        	<c:set var="roleTypes" value="${catalogEntryViewBean.toolRoleTypes}"/>
+		        	<%@ include file="/WEB-INF/jsp/browse/relatedItems.jspf" %>
+	        	</div>
         	</c:if>
         	
         	</p>
