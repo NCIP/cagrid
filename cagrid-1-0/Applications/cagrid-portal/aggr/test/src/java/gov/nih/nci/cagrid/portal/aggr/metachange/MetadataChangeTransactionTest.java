@@ -25,7 +25,7 @@ import java.io.FileReader;
  * @author <a href="mailto:manav.kher@semanticbits.com">Manav Kher</a>
  */
 
-public class MetadataChangeTransactionTest extends BaseMetadataChangeTest {
+public class MetadataChangeTransactionTest extends AbstractMetadataChangeTestBase {
 
     @Test
     public void testTransaction() throws Exception {
