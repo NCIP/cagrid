@@ -61,10 +61,10 @@ col.text {
                                         <col class="text">
                     <tr>
                         <td>
-                            <a href="/web/guest/catalog/browse"><img src="<c:url value="/images/foop/folder.png"/>" alt="" /></a>
+                            <a href="/web/guest/catalog/all"><img src="<c:url value="/images/foop/folder.png"/>" alt="" /></a>
                         </td>
                         <td>
-                            <a href="/web/guest/catalog/browse">Browse</a>
+                            <a href="/web/guest/catalog/all">Browse</a>
                             <span>Browse through caBIG data sets, tools, people, institutions, communities, and more.</span>
                         </td>
                         <td>
