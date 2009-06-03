@@ -1,0 +1,14 @@
+<ivy-module version="2.0">
+
+    <!-- for more information see this page
+    http://www.cagrid.org/wiki/CaGrid:How-To:DependOnCaGridLibraries
+    -->
+
+    <info organisation="cagrid" module="cagrid-taverna-sample-portlet"/>
+
+    <dependencies>
+        <dependency org="caGrid" name="TavernaWorkflowService" rev="latest.integration"/>
+   </dependencies>
+    
+</ivy-module>
+
