@@ -6,6 +6,7 @@
 	<property environment="env" />
 	<property file="${basedir}/build.properties" />
 	<property file="${basedir}/project.properties" />
+	<property file="${basedir}/cql_namespace_excludes.properties"/>
 
 	<property name="globus.dir" location="${env.GLOBUS_LOCATION}" />
 
@@ -30,17 +31,20 @@
 	<property name="build.dir" location="build" />
 	<property name="build.cql.1.0.stubs.dest" location="${build.dir}/stubs/cql1.0/classes" />
 	<property name="build.cql.2.0.stubs.dest" location="${build.dir}/stubs/cql2.0/classes" />
+	<property name="build.dcql.2.0.stubs.dest" location="${build.dir}/stibs/dcql2.0/classes"/>
 	<property name="build.test.dest" location="${build.dir}/test/classes" />
 	<property name="build.jars.dir" location="build/lib" />
 
 	<!-- jar names -->
 	<property name="cql.1.0.jar.name" value="${project.jar.prefix}cql.1.0${project.jar.suffix}" />
 	<property name="cql.2.0.jar.name" value="${project.jar.prefix}cql.2.0${project.jar.suffix}" />
+	<property name="dcql.2.0.jar.name" value="${project.jar.prefix}dcql.2.0${project.jar.suffix}" />
 	<property name="test.jar.name" value="${project.jar.prefix}tests${project.jar.suffix}" />
 
 	<!-- jar files -->
 	<property name="cql.1.0.jar.file" value="${build.jars.dir}/${cql.1.0.jar.name}" />
 	<property name="cql.2.0.jar.file" value="${build.jars.dir}/${cql.2.0.jar.name}" />
+	<property name="dcql.2.0.jar.file" value="${build.jars.dir}/${dcql.2.0.jar.name}" />
 	<property name="test.jar.file" value="${build.jars.dir}/${test.jar.name}" />
 
 	<!-- build file for stub generation -->
@@ -50,8 +54,10 @@
 	<property name="globus.schema.src" location="${globus.dir}/share/schema" />
 	<property name="cql.1.0.schema.dest" location="${build.dir}/schema/cql1.0" />
 	<property name="cql.2.0.schema.dest" location="${build.dir}/schema/cql2.0" />
+	<property name="dcql.2.0.schema.dest" location="${build.dir}/schema/dcql2.0" />
 	<property name="cql.1.0.stubs.src" location="${build.dir}/stubs/cql1.0/source" />
 	<property name="cql.2.0.stubs.src" location="${build.dir}/stubs/cql2.0/source" />
+	<property name="dcql.2.0.stubs.src" location="${build.dir}/stubs/dcql2.0/source" />
 	<property name="mapping.src" value="${basedir}/NStoPkg.properties" />
 
 	<import file="test/test.xml" />
@@ -75,6 +81,7 @@
 		<mkdir dir="${build.jars.dir}" />
 		<mkdir dir="${build.cql.1.0.stubs.dest}" />
 		<mkdir dir="${build.cql.2.0.stubs.dest}" />
+		<mkdir dir="${build.dcql.2.0.stubs.dest}" />
 		<mkdir dir="${build.test.dest}" />
 		<!-- copy schemas to the output directory -->
 		<copy toDir="${cql.1.0.schema.dest}">
@@ -87,6 +94,16 @@
 			<fileset dir="schema/cql2.0" casesensitive="yes">
 				<include name="**/*.xsd" />
 				<include name="**/*.wsdl" />
+			</fileset>
+		</copy>
+		<copy toDir="${dcql.2.0.schema.dest}">
+			<fileset dir="schema/dcql2.0" casesensitive="yes">
+				<include name="**/*.xsd" />
+				<include name="**/*.wsdl" />
+			</fileset>
+			<!-- DCQL depends on CQL, so copy those schemas in too -->
+			<fileset dir="schema/cql2.0" casesensitive="yes">
+				<include name="**/*.xsd"/>
 			</fileset>
 		</copy>
 	</target>
@@ -118,6 +135,13 @@
 			<property name="wsdl.file" value="CQL2.0-Beans.wsdl" />
 			<property name="target.stubs.dir" location="${cql.2.0.stubs.src}" />
 		</ant>
+		<!-- generate beans for DCQL 2.0 -->
+		<ant antfile="${ant.build.stubs}" target="generateStubs">
+			<property name="source.stubs.dir" location="${dcql.2.0.schema.dest}" />
+			<property name="wsdl.file" value="DCQL2.0-Beans.wsdl" />
+			<property name="target.stubs.dir" location="${dcql.2.0.stubs.src}" />
+			<property name="ns.excludes" value="${cql.2.0.namespace.excludes}" />
+		</ant>	
 	</target>
 
 
@@ -141,6 +165,16 @@
 				</fileset>
 			</classpath>
 		</javac>
+		<javac srcdir="${dcql.2.0.stubs.src}" destdir="${build.dcql.2.0.stubs.dest}" debug="${java.debug}" source="${java.source}">
+			<include name="**/*.java" />
+			<classpath>
+				<fileset dir="${globus.dir}/lib">
+					<include name="*.jar" />
+	                <exclude name="junit.jar"/>
+				</fileset>
+				<pathelement location="${build.cql.2.0.stubs.dest}"/>
+			</classpath>
+		</javac>	
 	</target>
 
 
@@ -158,6 +192,7 @@
 				</fileset>
 				<pathelement location="${build.cql.1.0.stubs.dest}" />
 				<pathelement location="${build.cql.2.0.stubs.dest}" />
+				<pathelement location="${build.dcql.2.0.stubs.dest}" />
 			</classpath>
 		</javac>
 	</target>
@@ -178,6 +213,14 @@
 				<include name="**/*.class" />
 			</fileset>
 			<fileset dir="${cql.2.0.stubs.src}">
+				<include name="**/*.java" />
+			</fileset>
+		</jar>
+		<jar destfile="${dcql.2.0.jar.file}">
+			<fileset dir="${build.dcql.2.0.stubs.dest}">
+				<include name="**/*.class" />
+			</fileset>
+			<fileset dir="${dcql.2.0.stubs.src}">
 				<include name="**/*.java" />
 			</fileset>
 		</jar>
