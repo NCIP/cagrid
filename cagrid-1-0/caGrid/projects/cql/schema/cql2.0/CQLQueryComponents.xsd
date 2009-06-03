@@ -58,8 +58,10 @@
 	<xsd:complexType name="CQLQuery">
 		<xsd:sequence>
 			<xsd:element ref="com:CQLTargetObject" minOccurs="1" maxOccurs="1"/>
-			<xsd:element ref="mods:CQLQueryModifier" minOccurs="0" maxOccurs="1"/>
-			<xsd:element ref="assoc:AssociationPopulationSpecification" minOccurs="0" maxOccurs="1"/>
+			<xsd:choice>
+				<xsd:element ref="mods:CQLQueryModifier" minOccurs="0" maxOccurs="1"/>
+				<xsd:element ref="assoc:AssociationPopulationSpecification" minOccurs="0" maxOccurs="1"/>
+		</xsd:choice>
 		</xsd:sequence>
 	</xsd:complexType>
 </xsd:schema>
