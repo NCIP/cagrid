@@ -27,7 +27,7 @@ import java.util.TreeSet;
  */
 public class CatalogEntryViewBean {
 
-	private Map<BrowseTypeEnum, SortedSet<CatalogEntryRoleTypeViewBean>> entryTypeMap = new HashMap<BrowseTypeEnum, SortedSet<CatalogEntryRoleTypeViewBean>>();
+	private Map<BrowseTypeEnum, SortedSet<RelatedCatalogEntryViewBean>> entryTypeMap = new HashMap<BrowseTypeEnum, SortedSet<RelatedCatalogEntryViewBean>>();
 	private SortedSet<Citation> orderedCitations;
 	private CatalogEntry catalogEntry;
 	private SortedSet<TemporalCommentableViewBean<Hyperlink>> orderedHyperlinks;
@@ -37,8 +37,8 @@ public class CatalogEntryViewBean {
 
 	public CatalogEntryViewBean() {
 	}
-	
-	public void initialize(){
+
+	public void initialize() {
 		for (CatalogEntryRoleInstance sourceRole : getCatalogEntry().getRoles()) {
 			CatalogEntryRoleInstance targetRole = sourceRole.getRelationship()
 					.getRoleA();
@@ -61,40 +61,41 @@ public class CatalogEntryViewBean {
 				} else if (targetCe instanceof CommunityCatalogEntry) {
 					entryType = BrowseTypeEnum.COMMUNITY;
 				}
-
-				SortedSet<CatalogEntryRoleTypeViewBean> roleTypes = entryTypeMap
+				// Get target of relationship
+				// Find in entries set
+				SortedSet<RelatedCatalogEntryViewBean> entries = entryTypeMap
 						.get(entryType);
-				if (roleTypes == null) {
-					roleTypes = new TreeSet<CatalogEntryRoleTypeViewBean>(
-							new Comparator<CatalogEntryRoleTypeViewBean>() {
+				if (entries == null) {
+					entries = new TreeSet<RelatedCatalogEntryViewBean>(
+							new Comparator<RelatedCatalogEntryViewBean>() {
+
 								public int compare(
-										CatalogEntryRoleTypeViewBean c1,
-										CatalogEntryRoleTypeViewBean c2) {
-									return c1
-											.getCatalogEntryRoleType()
-											.getName()
+										RelatedCatalogEntryViewBean r1,
+										RelatedCatalogEntryViewBean r2) {
+									return r1.getCatalogEntry().getName()
 											.compareTo(
-													c2
-															.getCatalogEntryRoleType()
+													r2.getCatalogEntry()
 															.getName());
 								}
+
 							});
-					entryTypeMap.put(entryType, roleTypes);
+					entryTypeMap.put(entryType, entries);
 				}
-				CatalogEntryRoleTypeViewBean roleTypeVB = null;
-				for (CatalogEntryRoleTypeViewBean aRoleTypeVB : roleTypes) {
-					if (aRoleTypeVB.getCatalogEntryRoleType().getName().equals(
-							targetRole.getType().getName())) {
-						roleTypeVB = aRoleTypeVB;
+				RelatedCatalogEntryViewBean rceVB = null;
+				for (RelatedCatalogEntryViewBean aRceVB : entries) {
+					if (aRceVB.getCatalogEntry().getId().equals(
+							targetRole.getCatalogEntry().getId())) {
+						rceVB = aRceVB;
 						break;
 					}
 				}
-				if (roleTypeVB == null) {
-					roleTypeVB = new CatalogEntryRoleTypeViewBean(targetRole
-							.getType());
-					roleTypes.add(roleTypeVB);
+				if (rceVB == null) {
+					rceVB = new RelatedCatalogEntryViewBean(targetRole
+							.getCatalogEntry());
+					entries.add(rceVB);
 				}
-				roleTypeVB.addRoleInstance(targetRole);
+				rceVB.addRoleInstance(targetRole);
+
 			}
 
 		}
@@ -117,21 +118,20 @@ public class CatalogEntryViewBean {
 				new TemporalComparator());
 		for (File f : catalogEntry.getFiles()) {
 			orderedFiles.add(new TemporalCommentableViewBean<File>(f));
-		}		
+		}
 	}
-	
-	protected boolean handleSpecialRole(CatalogEntryRoleInstance role){
+
+	protected boolean handleSpecialRole(CatalogEntryRoleInstance role) {
 		boolean handle = false;
-		
-		//TODO: Enable handling of sub types of relationships
-//		if(role.getRelationship().getType().getName().equals(
-//				getPocRelationshipTypeName())){
-		if(role.getType().getName().indexOf("Contact") != -1){
+
+		// TODO: Enable handling of sub types of relationships
+		// if(role.getRelationship().getType().getName().equals(
+		// getPocRelationshipTypeName())){
+		if (role.getType().getName().indexOf("Contact") != -1) {
 			handle = true;
 			// Don't add to set of related items
 			if (pocRoleType == null) {
-				pocRoleType = new CatalogEntryRoleTypeViewBean(role
-						.getType());
+				pocRoleType = new CatalogEntryRoleTypeViewBean(role.getType());
 			}
 			pocRoleType.addRoleInstance(role);
 		}
@@ -142,23 +142,23 @@ public class CatalogEntryViewBean {
 		return catalogEntry;
 	}
 
-	public SortedSet<CatalogEntryRoleTypeViewBean> getPersonRoleTypes() {
+	public SortedSet<RelatedCatalogEntryViewBean> getRelatedPersons() {
 		return entryTypeMap.get(BrowseTypeEnum.PERSON);
 	}
 
-	public SortedSet<CatalogEntryRoleTypeViewBean> getInstitutionRoleTypes() {
+	public SortedSet<RelatedCatalogEntryViewBean> getRelatedInstitutions() {
 		return entryTypeMap.get(BrowseTypeEnum.INSTITUTION);
 	}
 
-	public SortedSet<CatalogEntryRoleTypeViewBean> getToolRoleTypes() {
+	public SortedSet<RelatedCatalogEntryViewBean> getRelatedTools() {
 		return entryTypeMap.get(BrowseTypeEnum.TOOL);
 	}
 
-	public SortedSet<CatalogEntryRoleTypeViewBean> getDataSetRoleTypes() {
+	public SortedSet<RelatedCatalogEntryViewBean> getRelatedDataSets() {
 		return entryTypeMap.get(BrowseTypeEnum.DATASET);
 	}
 
-	public SortedSet<CatalogEntryRoleTypeViewBean> getCommunityRoleTypes() {
+	public SortedSet<RelatedCatalogEntryViewBean> getRelatedCommunities() {
 		return entryTypeMap.get(BrowseTypeEnum.COMMUNITY);
 	}
 
