@@ -3,8 +3,9 @@
 <ul>
 <c:forEach var="comment" items="${comments}">
 	<li>
-		<c:out value="${comment.commentText}"/>
-		[
+		<c:out value="${comment.commentText}"/><br/>
+		<i>
+		[by 
 		<portlet:renderURL var="viewCommentorUrl">
 			<portlet:param name="operation" value="viewDetails"/>
 			<portlet:param name="entryId" value="${comment.commentor.id}"/>
@@ -12,7 +13,8 @@
 		<a href="<c:out value="${viewCommentorUrl}"/>">
 			<c:out value="${comment.commentor.firstName}"/> <c:out value="${comment.commentor.lastName}"/>
 		</a>
-		]
+		on <fmt:formatDate value="${comment.createdAt}" type="both"/>]
+		</i>
 	</li>
 </c:forEach>
 </ul>

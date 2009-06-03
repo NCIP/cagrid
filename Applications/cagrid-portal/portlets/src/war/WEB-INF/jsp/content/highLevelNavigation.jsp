@@ -68,26 +68,26 @@ col.text {
                             <span>Browse through caBIG data sets, tools, people, institutions, communities, and more.</span>
                         </td>
                         <td>
-                            <a href="/web/guest/contribute"><img src="<c:url value="/images/foop/pencil.png"/>" alt="" /></a>
+                            <a href="/web/guest/catalog/contribute"><img src="<c:url value="/images/foop/pencil.png"/>" alt="" /></a>
                         </td>
                         <td>
-                            <a href="/web/guest/contribute">Contribute</a>
+                            <a href="/web/guest/catalog/contribute">Contribute</a>
                             <span>Share your knowledge, data, and tools with the community.</span>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <a href="/web/guest/search"><img src="<c:url value="/images/foop/magnifying-glass.png"/>" alt="" /></a>
+                            <a href="/web/guest/tools/search"><img src="<c:url value="/images/foop/magnifying-glass.png"/>" alt="" /></a>
                         </td>
                         <td>
-                            <a href="/web/guest/search">Search</a>
+                            <a href="/web/guest/tools/search">Search</a>
                             <span>Search through all caBIG data sources.</span>
                         </td>
                         <td>
-                            <a href="/web/guest/collaborate"><img src="<c:url value="/images/foop/people.png"/>" alt="" /></a>
+                            <a href="/web/guest/communities/collaborate"><img src="<c:url value="/images/foop/people.png"/>" alt="" /></a>
                         </td>
                         <td>
-                            <a href="/web/guest/collaborate">Collaborate</a>
+                            <a href="/web/guest/communities/collaborate">Collaborate</a>
                             <span>Organize communities around your interests.</span>
                         </td>
                     </tr>
