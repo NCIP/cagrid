@@ -18,6 +18,7 @@
 				<artifacts pattern="${ivy.generated.artifacts.dir}/lib/[artifact]-[revision].[ext]" />
 				<artifacts pattern="${basedir}/schema/cql1.0/[artifact].[ext]" />
 				<artifacts pattern="${basedir}/schema/cql2.0/[artifact].[ext]" />
+				<artifacts pattern="${basedir}/schema/dcql2.0/[artifact].[ext]" />
 			</artifacts-list>
 		</publish-artifacts>
 	</target>
