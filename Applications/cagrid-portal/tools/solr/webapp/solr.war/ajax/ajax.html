@@ -1,0 +1,209 @@
+<html>
+<head>
+    <title>Solr Ajax Example</title>
+
+    <link type="text/css" rel="stylesheet"
+          href="http://yui.yahooapis.com/2.7.0/build/datatable/assets/skins/sam/datatable.css">
+
+    <script type="text/javascript" src="js/prototype.js"></script>
+
+    <!-- Dependencies -->
+    <script type="text/javascript"
+            src="http://yui.yahooapis.com/2.7.0/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/element/element-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/datasource/datasource-min.js"></script>
+    <!-- OPTIONAL: JSON Utility (for DataSource) -->
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/json/json-min.js"></script>
+    <!-- OPTIONAL: Connection Manager (enables XHR for DataSource) -->
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/connection/connection-min.js"></script>
+
+    <!-- Source file -->
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/logger/logger-min.js"></script>
+
+    <!-- Required CSS -->
+    <link type="text/css" rel="stylesheet"
+          href="http://yui.yahooapis.com/2.7.0/build/treeview/assets/skins/sam/treeview.css">
+    <!-- Optional dependency source file -->
+    <script src="http://yui.yahooapis.com/2.5.2/build/animation/animation-min.js" type="text/javascript"></script>
+    <!-- TreeView source file -->
+    <script src="http://yui.yahooapis.com/2.7.0/build/treeview/treeviewed-min.js"></script>
+
+    <script language="Javascript">
+
+        var solrURL = "/solr/select?";
+
+        function getDS(_solrUrl) {
+            var xmlDataSource = new YAHOO.util.XHRDataSource(_solrUrl);
+            xmlDataSource.responseType = YAHOO.util.XHRDataSource.JSON;
+            return xmlDataSource;
+        }
+
+
+        var Catalog = Class.create({
+            initialize: function(name, count) {
+                this.name = name;
+                this.count = count;
+            },
+            count: function() {
+                return count;
+            }
+        });
+
+        function xmlhttpPost() {
+            var params = getstandardargs().concat(getquerystring());
+            var strData = params.join('&');
+
+            YAHOO.log("will send request to " + solrURL + strData, "debug");
+
+
+            //xmlDataSource.responseSchema = {
+            //    resultsList : "response.docs", // String pointer to result data
+            //    fields : [
+            //                        {key:"catalog_type"},
+            //                        {key:"country"},
+            //                        {key:"description"},
+            //                        {key:"displayName"},
+            //                        {key:"emailAddress"},
+            //                        {key:"homepageUrl"},
+            //                        {key:"id"},
+            //                        {key:"locality"},
+            //                        {key:"name"},
+            //                        {key:"number"},
+            //                        {key:"shortName"},
+            //                        {key:"stateProvince"},
+            //                        {key:"street1"},
+            //                        {key:"timestamp"}
+            //
+            //    ],
+            //    metaFields : {
+            // 	        // oParsedResponse.meta.totalRecords === 1358
+            // 	        totalRecords : "response.numFound"
+            //
+            //    }
+            //};
+
+            var processCallback = {
+                success : function (oRequest, oParsedResponse, oPayload) {
+                    YAHOO.log("RAW JSON DATA: " + oParsedResponse.results.responseText);
+
+                    // Process the JSON data returned from the server
+                    var messages = [];
+                    try {
+                        var jsonStr = YAHOO.lang.JSON.parse(oParsedResponse.results.responseText);
+                        resultList = jsonStr.response.docs;
+
+                        // The returned data was parsed into an array of objects.
+                        // Add a P element for each received message
+                        for (var i = 0, len = resultList.length; i < len; ++i) {
+                            YAHOO.log(resultList[i].description);
+                            var catalog = resultList[i]
+
+                            var p = document.createElement('p');
+                            var myDIV = new DIV("Catalog Type:" + catalog.catalog_type);
+
+                            p.appendChild(document.createTextNode("Name: " + catalog.name));
+                            p.appendChild(document.createTextNode("Description: " + catalog.description));
+                            $('result').appendChild(p);
+                        }
+                    }
+                    catch (x) {
+                        alert("JSON Parse failed!" + x);
+                        return;
+                    }
+
+
+                },
+
+                failure : function (o) {
+                    alert("Async call failed!");
+                    if (!YAHOO.util.Connect.isCallInProgress(o)) {
+                        alert("Async call failed!");
+                    }
+                },
+
+                timeout : 3000
+            };
+
+            getDS(solrURL).sendRequest(strData, processCallback);
+
+            YAHOO.log("Sent request", "debug");
+
+        }
+
+        var DIV = Class.create({
+            initialize: function(label, value) {
+                this.label = label;
+                this.value = value;
+            },
+            html: function() {
+                var mainDiv = document.createElement("div");
+                mainDiv.appendChild(document.createElement("div").appendChild(this.label));
+                mainDiv.appendChild(document.createElement("div").appendChild(this.value));
+                return mainDiv;
+            }
+        });
+
+
+        function getstandardargs() {
+            var params = [
+                'wt=json'
+                , 'indent=on'
+                , 'hl=true'
+                , 'hl.fl=name,features'
+            ];
+
+            return params;
+        }
+        function getquerystring() {
+            var query = $('searchField').value;
+            qstr = 'q=' + escape(query);
+            return qstr;
+        }
+
+    </script>
+
+
+</head>
+<body>
+
+<!--CSS file (default YUI Sam Skin) -->
+
+Search: <input id="searchField" name="searchField" type="text"/>
+<input value="Go" type="button" onclick='xmlhttpPost()'/>
+
+
+Result:
+<div id="result" class="yui-skin-sam">
+
+    log
+</div>
+
+<div id="myLogger"></div>
+<script type="text/javascript">
+    //    <!--var myLogReader = new YAHOO.widget.LogReader("myLogger");-->
+
+    function initTree() {
+        tree = new YAHOO.widget.TreeView("Catalog");
+        var root = tree.getRoot();
+
+        var iCat = new Catalog("Institutions", 23);
+        var pCat = new Catalog("People", 23);
+        var sCat = new Catalog("Grid Services", 23);
+
+
+        var iCatNode = new YAHOO.widget.TextNode(iCat.name + "(" + iCat.count + ")", root, false);
+        var pCatNode = new YAHOO.widget.TextNode(pCat.name + "(" + pCat.count + ")", root, false);
+        var sCatNode = new YAHOO.widget.TextNode(sCat.name + "(" + sCat.count + ")", root, false);
+
+        tree.render();
+    }
+
+    initTree()
+
+</script>
+
+
+</body>
+
+
+</html>
