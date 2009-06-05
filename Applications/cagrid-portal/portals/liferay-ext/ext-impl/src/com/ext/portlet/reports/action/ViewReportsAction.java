@@ -51,7 +51,7 @@ public class ViewReportsAction extends PortletAction {
 			ActionMapping mapping, ActionForm form, PortletConfig portletConfig,
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws Exception {
-
+		
 		if (renderRequest.getWindowState().equals(WindowState.NORMAL)) {
 			return mapping.findForward("portlet.ext.reports.view");
 		}

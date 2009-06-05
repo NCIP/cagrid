@@ -224,6 +224,13 @@
 	<classpathentry kind="lib" path="lib/portal/xpp3.jar"/>
 	<classpathentry kind="lib" path="lib/portal/xstream.jar"/>
 	<classpathentry kind="lib" path="modules/portal-impl.jar"/>
+	<classpathentry kind="lib" path="ext-lib/portal/caGrid-portal-db-domain.jar"/>
+	<classpathentry kind="lib" path="ext-lib/portal/caGrid-portal-db-utils.jar"/>
+	<classpathentry kind="lib" path="ext-lib/portal/ejb3-persistence.jar"/>
+	<classpathentry kind="lib" path="ext-lib/portal/hibernate-annotations.jar"/>
+	<classpathentry kind="lib" path="ext-lib/portal/hibernate-commons-annotations.jar"/>
+	<classpathentry kind="lib" path="ext-lib/portal/hibernate-search.jar"/>
+	<classpathentry kind="lib" path="ext-lib/portal/caGrid-portal-db-dao.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="output"/>
 </classpath>
