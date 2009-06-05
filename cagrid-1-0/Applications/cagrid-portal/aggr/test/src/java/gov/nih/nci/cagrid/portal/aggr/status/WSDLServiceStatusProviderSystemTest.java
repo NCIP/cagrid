@@ -12,21 +12,22 @@ public class WSDLServiceStatusProviderSystemTest extends PortalAggrIntegrationTe
 
 
     private String _nonCagridService = "http://www.google.com";
-    private String gmeUrl;
+    private String cadsrUrl;
 
 
     @Override
     protected void onSetUp() throws Exception {
         super.onSetUp();
-        gmeUrl = (String) getApplicationContext().getBean("gmeUrl");
+        cadsrUrl = (String) getApplicationContext().getBean("cadsrUrl");
     }
 
     public void testStatusProvider() {
 
 
         WSDLServiceStatusProvider _provider = new WSDLServiceStatusProvider();
+        _provider.setTimeout(100000);
         assertEquals("Should not get wsdl from this url", ServiceStatus.INACTIVE, _provider.getStatus(_nonCagridService));
-        assertEquals("Should get wsdl from URL", ServiceStatus.ACTIVE, _provider.getStatus(gmeUrl));
+        assertEquals("Should get wsdl from URL", ServiceStatus.ACTIVE, _provider.getStatus(cadsrUrl));
 
         assertEquals(ServiceStatus.INACTIVE, _provider.getStatus("http://wsdl"));
         assertEquals(ServiceStatus.INACTIVE, _provider.getStatus("http://"));
