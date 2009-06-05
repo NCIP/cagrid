@@ -8,10 +8,10 @@ Current view is: <c:out value="${viewName}"/>
 
 <c:set var="prefix"><portlet:namespace/></c:set>
 
-<form id="${prefix}editForm" method="post" action="${prefix}editForm">
+<form id="${prefix}editForm" method="post" action="<portlet:actionURL portletMode="edit"/>">
 	<input id="${prefix}viewName"
            alt="View Name"
-           type="text" name="viewName" value="<c:out value="${viewName} }"/>"/>
+           type="text" name="viewName" value="<c:out value="${viewName}"/>"/>
 	<br/>
 	<button id="${prefix}ModifyBtn" type="submit">Modify</button>
 </form>

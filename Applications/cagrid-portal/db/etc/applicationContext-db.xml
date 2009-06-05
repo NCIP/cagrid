@@ -79,6 +79,8 @@
                 <value>gov.nih.nci.cagrid.portal.domain.Role</value>
                 <value>gov.nih.nci.cagrid.portal.domain.GridService</value>
                 <value>gov.nih.nci.cagrid.portal.domain.GridDataService</value>
+                <value>gov.nih.nci.cagrid.portal.domain.IdentityProvider</value>
+                <value>gov.nih.nci.cagrid.portal.domain.IdPAuthentication</value>
                 <value>gov.nih.nci.cagrid.portal.domain.IndexService</value>
                 <value>gov.nih.nci.cagrid.portal.domain.NotificationSubscriber</value>
                 <value>gov.nih.nci.cagrid.portal.domain.NotificationSubscription</value>

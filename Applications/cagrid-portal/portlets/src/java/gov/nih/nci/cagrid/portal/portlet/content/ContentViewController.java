@@ -5,6 +5,7 @@ package gov.nih.nci.cagrid.portal.portlet.content;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+import javax.portlet.PortletSession;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
@@ -28,6 +29,14 @@ public class ContentViewController extends AbstractContentViewController {
 
 	public ModelAndView handleRenderRequest(RenderRequest request,
 			RenderResponse response) throws Exception {
+
+		String userId = (String) request.getPortletSession().getAttribute(
+				"CAGRIDPORTAL_ATTS_liferayUserId",
+				PortletSession.APPLICATION_SCOPE);
+		System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+		System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+		System.out.println("userId: " + userId);
+
 		String viewNameParam = getViewNameParam();
 		String viewNameDefault = getViewNameDefault();
 		logger.info("Looking for preference " + viewNameParam

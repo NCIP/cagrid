@@ -720,6 +720,36 @@
     </portlet>    
      -->
     
+    <portlet>
+        <description>Content Portlet</description>
+        <portlet-name>ContentPortlet</portlet-name>
+        <display-name>Content Portlet</display-name>
+        <portlet-class>
+            org.springframework.web.portlet.DispatcherPortlet
+        </portlet-class>
+        <init-param>
+            <name>contextConfigLocation</name>
+            <value>/WEB-INF/context/content-portlet.xml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+            <portlet-mode>edit</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>Content Portlet</title>
+            <short-title>Content Portlet</short-title>
+            <keywords>content</keywords>
+        </portlet-info>
+        <portlet-preferences>
+            <preference>
+                <name>jsp</name>
+                <value>no-content</value>
+            </preference>
+        </portlet-preferences>
+    </portlet>
+    
+    
 
     <!--Added to bypass liferay 5.0.1 bug
         http://support.liferay.com/browse/LEP-5832
