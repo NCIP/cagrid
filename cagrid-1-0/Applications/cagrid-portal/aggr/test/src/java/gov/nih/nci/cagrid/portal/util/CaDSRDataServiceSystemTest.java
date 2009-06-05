@@ -10,22 +10,29 @@ import org.junit.Test;
  *
  * @author kherm manav.kher@semanticbits.com
  */
-public class CaDSRDataServiceSystemTest {
+public class CaDSRDataServiceSystemTest extends PortalAggrIntegrationTestBase{
 
-    @Test
-    public void basic() throws Exception {
+
+    private CaDSRClient caDSRClient;
+
+    public void testContext() throws Exception {
         DomainModel model = new DomainModel();
-        model.setProjectShortName("caBIO");
+        model.setProjectShortName("caTIES");
         model.setProjectVersion("3.2");
-        CaDSRDataServiceClient client = new CaDSRDataServiceClient();
-        client.setCadsrUrl("http://cadsr-dataservice.nci.nih.gov:80/wsrf/services/cagrid/CaDSRDataService");
         try {
-            assertNotNull(client.getContext(model));
+            assertNotNull(caDSRClient.getContext(model));
         } catch (Exception e) {
             fail(e.getMessage());
         }
 
     }
 
+    public CaDSRClient getCaDSRClient() {
+        return caDSRClient;
+    }
+
+    public void setCaDSRClient(CaDSRClient caDSRClient) {
+        this.caDSRClient = caDSRClient;
+    }
 }
  
