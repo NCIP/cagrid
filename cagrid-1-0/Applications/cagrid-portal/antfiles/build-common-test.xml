@@ -25,6 +25,7 @@
 
     <patternset id="system.test.pattern">
         <include name="**/*System*.java"/>
+        <exclude name="**/*SecureSystem*.java"/>
         <exclude name="**/Abstract*.java"/>
         <exclude name="**/*TestBase.java"/>
     </patternset>
