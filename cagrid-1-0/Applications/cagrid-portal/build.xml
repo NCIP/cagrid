@@ -224,6 +224,41 @@
     <!--for automatated build-->
     <target name="test" depends="all, test:test" description="Run all unit tests for the project."/>
     <target name="reports" depends="all, reports:reports" description="Generate reports for the project."/>
+	
+	<target name="deploy-web-fast" depends="prepare">
+		
+		<if>
+			<equals arg1="${liferay.server.type}" arg2="tomcat" />
+			<then>
+				<if>
+					<available file="${liferay.install.dir}/${tomcat.server.name}/temp/0-cagridportlets" type="dir"/>
+					<then>
+						<property name="portlets.temp.dir" value="${liferay.install.dir}/${tomcat.server.name}/temp/0-cagridportlets"/>
+					</then>
+					<else>
+						<property name="portlets.temp.dir" value="${liferay.install.dir}/${tomcat.server.name}/temp/1-cagridportlets"/>
+					</else>
+				</if>
+				
+				<tstamp/>
+				<copy todir="${portlets.temp.dir}">
+					<fileset dir="portlets/src/war">
+						<include name="**/*.css" />
+						<include name="**/*.dtd" />
+						<include name="**/*.gif" />
+						<include name="**/*.jpg" />
+						<include name="**/*.js" />
+						<include name="**/*.jsp" />
+						<include name="**/*.jspf" />
+						<include name="**/*.png" />
+						<include name="**/*.tld" />
+						<include name="**/*.vm" />
+					</fileset>
+				</copy>
+
+			</then>
+		</if>		
+	</target>
 
 
 </project>
