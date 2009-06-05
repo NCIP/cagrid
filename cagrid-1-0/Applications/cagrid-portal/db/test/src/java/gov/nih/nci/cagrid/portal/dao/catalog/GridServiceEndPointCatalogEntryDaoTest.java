@@ -17,16 +17,17 @@ import org.junit.Test;
 public class GridServiceEndPointCatalogEntryDaoTest extends DaoTestBase<GridServiceEndPointCatalogEntryDao> {
 
     GridServiceDao pDao;
-
+    GridService p;
 
     @Before
     public void setup() {
         pDao = (GridServiceDao) getApplicationContext().getBean("gridServiceDao");
+        p = new GridService();
+
     }
 
     @Test
-    public void testAbout() {
-        GridService p = new GridService();
+    public void createAbout() {
         pDao.save(p);
 
         GridServiceEndPointCatalogEntry catalog = new GridServiceEndPointCatalogEntry();
@@ -34,14 +35,13 @@ public class GridServiceEndPointCatalogEntryDaoTest extends DaoTestBase<GridServ
         getDao().save(catalog);
 
         assertNotNull(getDao().isAbout(p));
-
     }
 
 
     // test to see if deleting the Participant deletes the catalog as well
     @Test
     public void delete() {
-        GridService p = new GridService();
+
         pDao.save(p);
 
         GridServiceEndPointCatalogEntry catalog = new GridServiceEndPointCatalogEntry();

@@ -3,6 +3,7 @@ package gov.nih.nci.cagrid.portal.domain.catalog;
 import gov.nih.nci.cagrid.portal.domain.Participant;
 
 import javax.persistence.*;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -123,6 +124,11 @@ public class InstitutionCatalogEntry extends CommunityCatalogEntry implements Co
 
     public void setWebSite(URL webSite) {
         this.webSite = webSite;
+    }
+
+    @Transient
+    public void setWebSite(String webSite) throws MalformedURLException {
+        setWebSite(new URL(webSite));
     }
 
     public String getPhoneNumber() {
