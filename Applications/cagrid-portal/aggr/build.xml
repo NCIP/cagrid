@@ -218,11 +218,15 @@
         </java>
     </target>
 
-    <target name="run-catalog" depends="jar" description="Will create catalog items">
-        <java  classname="gov.nih.nci.cagrid.portal.util.RunCatalog" classpathref="run.cp"
-               fork="true"/>
+    <target name="create-catalogs" depends="jar" description="Will create catalog items">
+        <java classname="gov.nih.nci.cagrid.portal.util.CreateCatalogs" classpathref="run.cp"
+              fork="true"/>
     </target>
 
+    <target name="delete-catalogs" depends="jar" description="Will delete all catalog items">
+        <java classname="gov.nih.nci.cagrid.portal.util.Delete" classpathref="run.cp"
+              fork="true"/>
+    </target>
 
     <target name="run-ban-mgr" depends="jar">
         <input message="Enter operation:" validargs="ban,unban" addproperty="banOp"/>
