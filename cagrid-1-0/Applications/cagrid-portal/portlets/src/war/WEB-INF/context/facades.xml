@@ -89,5 +89,14 @@
             </list>
         </property>
     </bean>
+    
+    <bean id="credentialManagerFacade" class="gov.nih.nci.cagrid.portal.portlet.credmgr.CredentialManagerFacade">
+        <property name="authenticationHelper">
+        	<bean class="gov.nih.nci.cagrid.portal.security.AuthenticationHelper"/>
+        </property>
+        <property name="ifsUrl" value="${cagrid.portal.ifsUrl}"/>
+		<property name="encryptionService" ref="encryptionServicePrototype"/>
+		<property name="hibernateTemplate" ref="hibernateTemplate"/>
+    </bean>
 
 </beans>

@@ -19,6 +19,10 @@
         <create creator="spring" javascript="QueryHistoryFacade">
             <param name="beanName" value="cqlQueryHistoryFacade"/>
         </create>
+        
+        <create creator="spring" javascript="CredentialManagerFacade">
+            <param name="beanName" value="credentialManagerFacade"/>
+        </create>
 
         <!--other creators are created with annotations-->
 
@@ -37,6 +41,9 @@
         <convert converter="enum" match="gov.nih.nci.cagrid.portal.domain.ServiceStatus"/>
         <convert converter="bean" match="gov.nih.nci.cagrid.portal.domain.ServiceInfo"/>
         <convert converter="enum" match="gov.nih.nci.cagrid.portal.domain.ServiceType"/>
+        
+        <convert converter="bean" match="gov.nih.nci.cagrid.portal.portlet.credmgr.IdPBean"/>
+        <convert converter="bean" match="gov.nih.nci.cagrid.portal.portlet.credmgr.CredentialBean"/>
 
     </allow>
 </dwr>

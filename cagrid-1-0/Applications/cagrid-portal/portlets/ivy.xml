@@ -52,8 +52,7 @@
         <dependency rev="latest.integration" org="yahoo" name="yui"/>
 
         <dependency rev="${liferay.portal.version}" org="liferay" name="portal"
-                    conf="default->portlet;compile->portal-ext">
-        </dependency>
+                    conf="default->portlet;compile->portal-ext"/>
 
     </dependencies>
 
