@@ -13,7 +13,7 @@
     <property file="${projects.dir}/build.properties"/>
     <property file="${antfiles.dir}/project.properties"/>
 
-
+    
     <target name="prepare-ant-tasks" unless="defined.anttaskes">
         <path id="xmltaskdef.cp">
             <pathelement location="${tools.ant.lib}/xmltask-v1.14.jar"/>
@@ -88,6 +88,8 @@
             <entry key="cagrid.portal.notifications.enabled" value="${cagrid.portal.notifications.enabled}"/>
             <entry key="cagrid.portal.notifications.mail.server" value="${cagrid.portal.notifications.mail.server}"/>
             <entry key="cagrid.portal.notifications.mail.address" value="${cagrid.portal.notifications.mail.address}"/>
+            <entry key="cagrid.portal.autorun.db.updater" value="${autorun.db.updater}"/>
+            <entry key="cagrid.portal.solr.http.url" value="${cagrid.portal.solr.http.url}"/>
         </propertyfile>
     </target>
 

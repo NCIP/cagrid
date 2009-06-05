@@ -23,6 +23,7 @@ public class BrowseViewController implements InitializingBean, Controller {
 
 	private HibernateTemplate hibernateTemplate;
 	private String successViewName;
+    private String solrServiceUrl;
 
 	/*
 	 * (non-Javadoc)
@@ -58,18 +59,24 @@ public class BrowseViewController implements InitializingBean, Controller {
 				.getPreferences().getValue("browseType",
 						BrowseTypeEnum.DATASET.toString()));
 		mav.addObject("browseType", browseType.toString());
+        mav.addObject("solrServiceUrl", getSolrServiceUrl());
 
-		String entryTypeName = null;
+    	String entryTypeName = null;
 		if (browseType.equals(BrowseTypeEnum.DATASET)) {
 			entryTypeName = "DataSetCatalogEntry";
+            mav.addObject("catalogType", "dataset");
 		} else if (browseType.equals(BrowseTypeEnum.COMMUNITY)) {
 			entryTypeName = "CommunityCatalogEntry";
+            mav.addObject("catalogType", "community");
 		} else if (browseType.equals(BrowseTypeEnum.INSTITUTION)) {
 			entryTypeName = "InstitutionCatalogEntry";
+            mav.addObject("catalogType", "institution");
 		} else if (browseType.equals(BrowseTypeEnum.PERSON)) {
 			entryTypeName = "PersonCatalogEntry";
+              mav.addObject("catalogType", "person");
 		} else if (browseType.equals(BrowseTypeEnum.TOOL)) {
 			entryTypeName = "ToolCatalogEntry";
+            mav.addObject("catalogType", "tool");
 		} else if (browseType.equals(BrowseTypeEnum.ALL)) {
 			entryTypeName = "CatalogEntry";
 		} else {
@@ -82,7 +89,15 @@ public class BrowseViewController implements InitializingBean, Controller {
 		return mav;
 	}
 
-	public String getSuccessViewName() {
+    public String getSolrServiceUrl() {
+        return solrServiceUrl;
+    }
+
+    public void setSolrServiceUrl(String solrServiceUrl) {
+        this.solrServiceUrl = solrServiceUrl;
+    }
+
+    public String getSuccessViewName() {
 		return successViewName;
 	}
 
