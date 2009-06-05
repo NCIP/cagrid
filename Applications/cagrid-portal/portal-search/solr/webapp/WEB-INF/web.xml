@@ -36,7 +36,7 @@
 
     <env-entry>
        <env-entry-name>solr/home</env-entry-name>
-       <env-entry-value>/Users/kherm/portal-liferay/jboss-4.0.5.GA/server/default/solr</env-entry-value>
+       <env-entry-value>@SOLR_HOME@</env-entry-value>
        <env-entry-type>java.lang.String</env-entry-type>
     </env-entry>
 

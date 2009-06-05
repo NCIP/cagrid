@@ -62,7 +62,7 @@
     <target name="solr:deploy-solr-home" description="Will deploy and configure SOLR home">
 
         <!--deploy solr.home-->
-        <copy todir="${solr.home.deploy.dest.dir}">
+        <copy todir="${solr.home.deploy.dest.dir}" overwrite="true">
             <fileset dir="${solr.home.src.dir}"/>
         </copy>
 
@@ -78,6 +78,8 @@
     <target name="solr:deploy" depends="solr:deploy-webapp,solr:deploy-solr-home"
             description="Will deploy SOLR application"/>
 
+    <target name="deploy" depends="all,solr:deploy"/>
+    
     <target name="all" depends="clean,solr:build-war"/>
 
 </project>
