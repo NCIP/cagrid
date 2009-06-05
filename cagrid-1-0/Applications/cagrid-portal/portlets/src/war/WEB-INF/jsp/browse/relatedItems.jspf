@@ -1,4 +1,22 @@
-
+<script type="text/javascript">
+var state = 'open';
+jQuery(document).ready(function(){
+    jQuery('a#comments-toggle').click(function(){
+        switch (state) {
+            case 'closed':
+                jQuery('#comments').show();
+				jQuery('#comments-toggle').html('Hide Comments');
+                state = 'open';
+                break;
+            case 'open':
+                jQuery('#comments').hide();
+				jQuery('#comments-toggle').html('Show Comments');
+                state = 'closed';
+                break;
+        }
+    });
+});
+</script>
 <c:forEach var="relatedEntry" items="${relatedEntries}">
 
 	<portlet:renderURL var="viewRelatedItemUrl">
@@ -9,17 +27,19 @@
 	<div class="oneRelatedItem">
 		<a href="<c:out value="${viewRelatedItemUrl}"/>"><img src="#" alt="<c:out value="${role.roleInstance.catalogEntry.name}"/> Icon" class="oneRelatedItemIcon" /></a>
 		<div class="oneRelatedItemContent">
-			<a class="oneRelatedItemLink" href="<c:out value="${viewRelatedItemUrl}"/>"><c:out value="${relatedEntry.catalogEntry.name}"/></a>
+			<div><a class="oneRelatedItemLink" href="<c:out value="${viewRelatedItemUrl}"/>"><c:out value="${relatedEntry.catalogEntry.name}"/></a></div>
 
 			<c:forEach var="roleType" items="${relatedEntry.orderedRoleTypes}">
 			    <c:forEach var="role" items="${roleType.orderedRoleInstances}">
 
 					<%--c:out value="${role.roleInstance.type.name}"/ --%>
 					<c:out value="${role.roleInstance.description}"/><br/>
-			        <c:if test="${!empty role.orderedComments}"><br/>
-			            Comments</br>
-			            <c:set var="comments" value="${role.orderedComments}"/>
-			            <%@ include file="/WEB-INF/jsp/browse/comments.jspf" %>
+			        <c:if test="${!empty role.orderedComments}">
+			            <a style="cursor:pointer" id="comments-toggle">Hide Comments</a>
+						<div id="comments">
+				            <c:set var="comments" value="${role.orderedComments}"/>
+				            <%@ include file="/WEB-INF/jsp/browse/comments.jspf" %>
+						</div>
 			        </c:if>
 
     			</c:forEach>

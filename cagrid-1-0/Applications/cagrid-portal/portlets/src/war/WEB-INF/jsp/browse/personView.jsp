@@ -3,7 +3,7 @@
 <c:set var="catalogEntry" value="${catalogEntryViewBean.catalogEntry}"/>
 <div class="photoRow">
 	<div class="photo">
-		<img src="../../../images/photo-unavailable.png" alt="Photo of <c:out value="${catalogEntry.name}"/>" />
+		<img src='<c:url value="/images/photo-unavailable.png"/>' alt='Photo of <c:out value="${catalogEntry.name}"/>' />
 	</div>
 	<div class="photoRightContent">
 		<h1 class="entryName"><c:out value="${catalogEntry.name}"/></h1>
