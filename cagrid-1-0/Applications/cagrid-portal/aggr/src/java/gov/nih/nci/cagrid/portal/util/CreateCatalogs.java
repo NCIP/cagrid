@@ -7,7 +7,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  *
  * @author kherm manav.kher@semanticbits.com
  */
-public class RunCatalog {
+public class CreateCatalogs {
 
 
     /**

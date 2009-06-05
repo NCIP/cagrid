@@ -4,12 +4,14 @@ import gov.nih.nci.cagrid.portal.dao.ParticipantDao;
 import gov.nih.nci.cagrid.portal.dao.catalog.InstitutionCatalogEntryDao;
 import gov.nih.nci.cagrid.portal.domain.Participant;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * User: kherm
  *
  * @author kherm manav.kher@semanticbits.com
  */
+@Transactional
 public class InstitutionCatalogCreator extends AbstractCatalogCreator {
 
     InstitutionCatalogEntryDao institutionCatalogEntryDao;

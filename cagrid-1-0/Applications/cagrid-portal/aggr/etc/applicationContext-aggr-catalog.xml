@@ -12,19 +12,24 @@
 
     <bean id="abstractCatalogCreator"
           abstract="true" class="gov.nih.nci.cagrid.portal.aggr.catalog.AbstractCatalogCreator"
-          autowire="byName"
-          init-method="afterPropertiesSet"/>
+          autowire="byName"/>
 
     <bean id="gridServiceEndPointCatalogCreator" parent="abstractCatalogCreator"
           class="gov.nih.nci.cagrid.portal.aggr.catalog.GridServiceEndPointCatalogCreator"
+          p:gridServiceDao-ref="gridServiceDao"
+          p:gridServiceEndPointCatalogEntryDao-ref="gridServiceEndPointCatalogEntryDao"
           autowire="byName"/>
 
     <bean id="institutionCatalogCreator" parent="abstractCatalogCreator"
           class="gov.nih.nci.cagrid.portal.aggr.catalog.InstitutionCatalogCreator"
+          p:institutionCatalogEntryDao-ref="institutionCatalogEntryDao"
+          p:participantDao-ref="participantDao"
           autowire="byName"/>
 
     <bean id="personCatalogCreator" parent="abstractCatalogCreator"
           class="gov.nih.nci.cagrid.portal.aggr.catalog.PersonCatalogCreator"
+          p:personCatalogEntryDao-ref="personCatalogEntryDao"
+          p:portalUserDao-ref="portalUserDao"
           autowire="byName"/>
 
 </beans>

@@ -1,0 +1,83 @@
+<project name="cagrid-portal-search" basedir="." default="all">
+
+    <import file="${basedir}/../antfiles/build-common.xml"/>
+
+    <property name="liferay.autodeploy.dir" value="${liferay.install.dir}/deploy"/>
+
+    <property name="solr.home.deploy.dest.dir"
+              value="${liferay.install.dir}/solr"/>
+    <property name="solr.webapp.deploy.destdir"
+              value="${liferay.autodeploy.dir}"/>
+
+    <property name="build.dir" value="${basedir}/build"/>
+    <property name="build.war.dir" value="${build.dir}/war"/>
+    <property name="build.wars.dir" value="${build.dir}/wars"/>
+
+    <property name="solr.dir" value="${basedir}/solr"/>
+    <property name="solr.webapp.dir" value="${solr.dir}/webapp"/>
+    <property name="solr.home.src.dir" value="${solr.dir}/home"/>
+    <property name="solr.war.name" value="solr.war"/>
+
+
+    <target name="clean" description="Cleans the project">
+        <delete dir="${build.dir}"/>
+    </target>
+
+
+    <target name="solr:build-war" description="Build the SOLR war">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${build.wars.dir}"/>
+
+        <filterset id="solr.home.filterset">
+            <!--properties defined in server specific build files-->
+            <filter token="SOLR_HOME" value="${solr.home.deploy.dest.dir}"/>
+            <filter token="cagrid.portal.db.username" value="${cagrid.portal.db.username}"/>
+            <filter token="cagrid.portal.db.password" value="${cagrid.portal.db.password}"/>
+            <filter token="cagrid.portal.db.url" value="${cagrid.portal.db.url}"/>
+        </filterset>
+        <!--deploy the webapp. ToDo make war and hot deploy-->
+        <copy todir="${build.war.dir}">
+            <fileset dir="${solr.webapp.dir}"/>
+        </copy>
+
+        <copy todir="${build.war.dir}" overwrite="true" filtering="true">
+            <fileset dir="${solr.webapp.dir}">
+                <include name="**/web.xml">
+                </include>
+            </fileset>
+            <filterset refid="solr.home.filterset"/>
+        </copy>
+
+        <jar basedir="${build.war.dir}"
+             destfile="${build.wars.dir}/${solr.war.name}"/>
+
+    </target>
+
+    <target name="solr:deploy-webapp" depends="solr:build-war"
+             description="Will deploy SOLR webapp">
+        <copy todir="${liferay.autodeploy.dir}" file="${build.wars.dir}/${solr.war.name}"/>
+    </target>
+
+
+    <target name="solr:deploy-solr-home" description="Will deploy and configure SOLR home">
+
+        <!--deploy solr.home-->
+        <copy todir="${solr.home.deploy.dest.dir}">
+            <fileset dir="${solr.home.src.dir}"/>
+        </copy>
+
+        <copy todir="${solr.home.deploy.dest.dir}" overwrite="true" filtering="true">
+            <fileset dir="${solr.home.src.dir}">
+                <include name="**/portal-db-data-config.xml">
+                </include>
+            </fileset>
+            <filterset refid="solr.home.filterset"/>
+        </copy>
+    </target>
+
+    <target name="solr:deploy" depends="solr:deploy-webapp,solr:deploy-solr-home"
+            description="Will deploy SOLR application"/>
+
+    <target name="all" depends="clean,solr:build-war"/>
+
+</project>

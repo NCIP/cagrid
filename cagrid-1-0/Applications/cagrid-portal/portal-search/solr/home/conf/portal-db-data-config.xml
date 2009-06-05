@@ -1,0 +1,40 @@
+<dataConfig>
+    <dataSource driver="com.mysql.jdbc.Driver" url="@cagrid.portal.db.url@"
+                user="@cagrid.portal.db.username@" password="@cagrid.portal.db.password@"/>
+
+    <document name="CatalogEntry">
+        <entity name="GridServiceEndPointCatalog"
+                deltaQuery="select id from cat_entry where where catalog_type='tool_grid_service_endpoint'
+                            and updatedAt > '${dataimporter.last_index_time}'"
+                query="select * from cat_entry where catalog_type='tool_grid_service_endpoint'">
+            <field column="id" name="id"/>
+            <field column="catalog_type" name="catalog_type"/>
+            <field column="name" name="name"/>
+            <field column="description" name="description"/>
+            <entity name="Hyperlink"
+                    query="select * from cat_hyperlinks where catalog_id='${GridServiceEndPointCatalog.id}'">
+                <field name="homepageUrl" column="url"/>
+            </entity>
+        </entity>
+
+        <entity name="AllCatalogs"
+                query="select * from cat_entry"
+                deltaQuery="select id from cat_entry where where updatedAt > '${dataimporter.last_index_time}'">
+            <field column="id" name="id"/>
+            <field column="catalog_type" name="catalog_type"/>
+            <field column="name" name="name"/>
+            <field column="firstName" name="firstName"/>
+            <field column="lastName" name="lastName"/>
+            <field column="description" name="description"/>
+            <field column="street1" name="street1"/>
+            <field column="locality" name="locality"/>
+            <field column="stateProvince" name="stateProvince"/>
+            <field column="country" name="country"/>
+            <field column="homepageUrl" name="homepageUrl"/>
+            <field column="phoneNumber" name="phoneNumber"/>
+        </entity>
+
+
+    </document>
+
+</dataConfig>
