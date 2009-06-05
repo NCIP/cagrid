@@ -67,12 +67,11 @@
           p:sharedCqlQueryDao-ref="sharedCqlQueryDao" p:gridServiceDao-ref="gridServiceDao"/>
 
     <bean id="xmlSchemaUtils" class="gov.nih.nci.cagrid.portal.util.XMLSchemaUtils"
-          p:gmeUrl-ref="gmeUrl">
-        <property name="caDSRClient">
-            <bean class="gov.nih.nci.cagrid.portal.util.StaticCaDSRClient">
-                <property name="context" value="caBIG"/>
-            </bean>
-        </property>
+          p:gmeUrl-ref="gmeUrl" p:caDSRClient-ref="caDSRClient">
+    </bean>
+
+    <bean id="caDSRClient" class="gov.nih.nci.cagrid.portal.util.StaticCaDSRClient">
+        <property name="context" value="caBIG"/>
     </bean>
 
     <bean id="metadataUtils" class="gov.nih.nci.cagrid.portal.util.MetadataUtils"/>
