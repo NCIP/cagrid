@@ -7,9 +7,17 @@ public class XMLSchemaUtilsSystemTest extends
 
     public void testGme() {
         XMLSchemaUtils xmlSchemaUtils = (XMLSchemaUtils) getApplicationContext().getBean("xmlSchemaUtils");
-        String xmlSchema = xmlSchemaUtils.getXmlSchemaContent("http://model1/model");
+        String xmlSchema = xmlSchemaUtils.getXmlSchemaContent("gme://b");
         assertNotNull(xmlSchema);
     }
 
+    @Override
+       protected String[] getConfigLocations() {
+           return new String[]{
+                   "classpath*:applicationContext-aggr.xml",
+                   "classpath*:applicationContext-db.xml"
+
+           };
+       }
 
 }
