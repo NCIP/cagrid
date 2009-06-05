@@ -69,12 +69,11 @@
 </div>
 </div>
 
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.7.0/build/tabview/assets/skins/sam/tabview.css"> 
-<script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
-<script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/element/element-min.js"></script> 
-<script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/connection/connection-min.js"></script> 
-<script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/tabview/tabview-min.js"></script> 
-
+<link rel="stylesheet" type="text/css" href="<c:url value="/js/yui/tabview/assets/skins/sam/tabview.css"/>"/>
+<script type="text/javascript" src="<c:url value="/js/yui/yahoo-dom-event/yahoo-dom-event.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/yui/element/element-min.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/yui/connection/connection-min.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/yui/tabview/tabview-min.js"/>"></script>
 <script type="text/javascript">
  
 jQuery(document).ready(function() {

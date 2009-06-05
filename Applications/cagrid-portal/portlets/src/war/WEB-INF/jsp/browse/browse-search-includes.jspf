@@ -1,0 +1,88 @@
+<link type="text/css" rel="stylesheet"
+        href="<c:url value="/js/yui/datatable/assets/skins/sam/datatable.css"/>"/>
+
+<script type="text/javascript" src="<c:url value="/js/scriptaculous/prototype.js"/>">
+    </script>
+
+<script type="text/javascript"
+        src="<c:url value="/js/yui/yahoo-dom-event/yahoo-dom-event.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/yui/element/element-min.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/yui/datasource/datasource-min.js"/>"></script>
+
+<!-- OPTIONAL: JSON Utility (for DataSource) -->
+<script type="text/javascript" src="<c:url value="/js/yui/json/json-min.js"/>"></script>
+
+<!-- OPTIONAL: Connection Manager (enables XHR for DataSource) -->
+<script type="text/javascript" src="<c:url value="/js/yui/connection/connection-min.js"/>"></script>
+
+<!-- OPTIONAL: Get Utility (enables dynamic script nodes for DataSource) -->
+<script type="text/javascript" src="<c:url value="/js/yui/get/get-min.js"/>"></script>
+
+<!-- Source file -->
+<script type="text/javascript" src="<c:url value="/js/yui/logger/logger-min.js"/>"></script>
+
+<!--tree-->
+<!-- Required CSS -->
+<link type="text/css" rel="stylesheet" href="<c:url value="/js/yui/treeview/assets/skins/sam/treeview.css"/>"/>
+
+<!-- Optional dependency source file -->
+<script type="text/javascript" src="<c:url value="/js/yui/animation/animation-min.js"/>"></script>
+<!-- TreeView source file -->
+<script src="<c:url value="/js/yui/treeview/treeview-min.js"/>"></script>
+
+<div id="myLogger"></div>
+
+<script src="<c:url value="/js/browse-catalog.js"/>"></script>
+
+<script type="text/javascript">
+//    var myLogReader = new YAHOO.widget.LogReader("myLogger");
+    YAHOO.log("Initializing SOLR data source", "debug");
+  var solrDatasource = new YAHOO.util.XHRDataSource("<c:out value="${solrServiceUrl}"/>/select?");
+  solrDatasource.responseType = YAHOO.util.XHRDataSource.JSON;
+
+
+ var processSearchResults = {
+         success : function (oRequest, oParsedResponse, oPayload) {
+             YAHOO.log("RAW JSON DATA: " + oParsedResponse.results.responseText, "debug");
+             // Process the JSON data returned from the server
+             var messages = [];
+             try {
+                 var jsonStr = YAHOO.lang.JSON.parse(oParsedResponse.results.responseText);
+                 resultList = jsonStr.response.docs;
+                 // The returned data was parsed into an array of objects.
+                 // Add a P element for each received message
+                 var searchResults = new SearchResults();
+                 for (var i = 0, len = resultList.length; i < len; ++i) {
+                     var _catalog = resultList[i];
+                     <!--add to search results-->
+                     searchResults.add(_catalog);
+                     pageCallback(resultList[i]);
+                }
+             }
+             catch (x) {
+                 alert("JSON Parse failed!" + x);
+                 return;
+             }
+         },
+
+         failure : function (o) {
+             alert("Async call failed!");
+             if (!YAHOO.util.Connect.isCallInProgress(o)) {
+                 alert("Async call failed!");
+             }
+         },
+         timeout : 3000
+     };
+
+
+   function loadCatalogs(keyword, catatalog_type) {
+      var query = new solrQuery(keyword);
+      if (catatalog_type)
+          query.addFacet("catalog_type", catatalog_type);
+
+      YAHOO.log("Sending query to SOLR " + query.getQuery());
+      solrDatasource.sendRequest(query.getQuery(), processSearchResults);
+  }
+    
+</script>
+
