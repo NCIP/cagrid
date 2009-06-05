@@ -138,12 +138,6 @@ a {
 a:hover {
 	text-decoration:underline;
 }
-img {
-	font-size:7pt;
-	background:#BFBFBF;
-	color:#666;
-	line-height:12px;
-}
 div.row label{
 	display:block;
 	float:left;
@@ -155,12 +149,13 @@ div.row label{
 div.row div.value, div.row address {
 	margin-left:190px;
 }
+div.photorow {
+	margin-top:10px;
+}
 div.photo {
 	width:180px;
-	height:220px;
 	margin:0 10px 0 0;
 	float:left;
-	background:#bfbfbf;
 }
 div.photoRightContent {
 	float:left;
@@ -198,7 +193,6 @@ h3 {
 }
 .oneRelatedItemLink {
 	font-size:14pt;
-	display:block;
 }
 
 /*******************************************
