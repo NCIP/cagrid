@@ -7,6 +7,7 @@ package gov.nih.nci.cagrid.portal.util;
  */
 public class StringUtils {
 
+
     /**
      * Will take out special characters from postal code.
      *
@@ -25,6 +26,7 @@ public class StringUtils {
             return "";
         else return str;
     }
+
 
 }
 

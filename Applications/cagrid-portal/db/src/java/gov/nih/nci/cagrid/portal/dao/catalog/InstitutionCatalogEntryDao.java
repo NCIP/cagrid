@@ -1,7 +1,10 @@
 package gov.nih.nci.cagrid.portal.dao.catalog;
 
+import gov.nih.nci.cagrid.portal.domain.Address;
 import gov.nih.nci.cagrid.portal.domain.Participant;
 import gov.nih.nci.cagrid.portal.domain.catalog.InstitutionCatalogEntry;
+
+import java.net.MalformedURLException;
 
 /**
  * User: kherm
@@ -27,7 +30,30 @@ public class InstitutionCatalogEntryDao extends AboutCatalogEntryDao<Institution
             entry = new InstitutionCatalogEntry();
             entry.setAbout(participant);
         } else
-            logger.debug("Catalog entry already exists. Will not create a new one");
+            logger.debug("Catalog entry already exists. Will update the existing one");
+        if (!entry.isPublished()) {
+            logger.debug("Catalog not published. Will sync with domain object");
+            entry.setName(participant.getName());
+            entry.setEmailAddress(participant.getEmailAddress());
+            try {
+                entry.setWebSite(participant.getHomepageUrl());
+            } catch (MalformedURLException e) {
+                logger.warn("Cannot create URL for institution catalog entry");
+            }
+            entry.setDescription(participant.getInstitution());
+            Address address = participant.getAddress();
+            if (address != null) {
+                entry.setCountryCode(address.getCountry());
+                entry.setPostalCode(address.getPostalCode());
+                entry.setStreet1(address.getStreet1());
+                entry.setStreet2(address.getStreet2());
+                entry.setLatitude(address.getLatitude());
+                entry.setLongitude(address.getLongitude());
+                entry.setStateProvince(address.getStateProvince());
+            }
+
+        }
+
         save(entry);
     }
 
