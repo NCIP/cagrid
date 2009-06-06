@@ -1,6 +1,7 @@
 package gov.nih.nci.cagrid.portal.dao.catalog;
 
 import gov.nih.nci.cagrid.portal.domain.Address;
+import gov.nih.nci.cagrid.portal.domain.Person;
 import gov.nih.nci.cagrid.portal.domain.PortalUser;
 import gov.nih.nci.cagrid.portal.domain.catalog.PersonCatalogEntry;
 import gov.nih.nci.cagrid.portal.util.BeanUtils;
@@ -35,15 +36,18 @@ public class PersonCatalogEntryDao extends AboutCatalogEntryDao<PersonCatalogEnt
             entry.setEmailAddress(BeanUtils.traverse(user, "person.emailAddress"));
             entry.setLastName(BeanUtils.traverse(user, "person.lastName"));
             entry.setFirstName(BeanUtils.traverse(user, "person.firstName"));
-            if (user.getPerson().getAddresses() != null && user.getPerson().getAddresses().size() > 0) {
-                Address address = user.getPerson().getAddresses().get(0);
-                entry.setCountryCode(address.getCountry());
-                entry.setPostalCode(address.getPostalCode());
-                entry.setStreet1(address.getStreet1());
-                entry.setStreet2(address.getStreet2());
-                entry.setLatitude(address.getLatitude());
-                entry.setLongitude(address.getLongitude());
-                entry.setStateProvince(address.getStateProvince());
+            Person p = user.getPerson();
+            if (p != null) {
+                if (p.getAddresses() != null && p.getAddresses().size() > 0) {
+                    Address address = user.getPerson().getAddresses().get(0);
+                    entry.setCountryCode(address.getCountry());
+                    entry.setPostalCode(address.getPostalCode());
+                    entry.setStreet1(address.getStreet1());
+                    entry.setStreet2(address.getStreet2());
+                    entry.setLatitude(address.getLatitude());
+                    entry.setLongitude(address.getLongitude());
+                    entry.setStateProvince(address.getStateProvince());
+                }
             }
         }
         save(entry);
