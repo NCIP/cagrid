@@ -1,6 +1,6 @@
 ****************************************************************************
 * Meeting: 	caGrid Infrastructure Status
-* Date: 	2009-04-13
+* Date: 	2009-05-04
 * Venue:	Teleconference
 * Attendees: 	John Eisenschmidt, Scott Oster		
 ****************************************************************************
