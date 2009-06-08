@@ -9,6 +9,9 @@ import java.util.StringTokenizer;
 
 /**
  * User: kherm
+ * <p/>
+ * Utility to traverse bean graphs without running
+ * into NPE.
  *
  * @author kherm manav.kher@semanticbits.com
  */
@@ -45,7 +48,8 @@ public class BeanUtils {
 
             }
         } catch (Exception e) {
-            logger.warn("Failed to traverse object with path " + path);
+            logger.warn("Failed to traverse object with path. Will return null  " + path);
+            value = null;
         }
         // will assume that final property value is a String
         return (String) value;
@@ -78,7 +82,8 @@ public class BeanUtils {
 
             }
         } catch (Exception e) {
-            logger.warn("Failed to traverse object with path " + path);
+            logger.warn("Failed to traverse object with path. Will return null  " + path);
+            value = null;
         }
         return (T) value;
 
