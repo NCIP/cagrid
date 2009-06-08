@@ -3,6 +3,8 @@
  */
 package gov.nih.nci.cagrid.portal.portlet.browse;
 
+import gov.nih.nci.cagrid.portal.portlet.UserModel;
+
 import java.util.List;
 
 import javax.portlet.ActionRequest;
@@ -24,6 +26,7 @@ public class BrowseViewController implements InitializingBean, Controller {
 	private HibernateTemplate hibernateTemplate;
 	private String successViewName;
     private String solrServiceUrl;
+    private UserModel userModel;
 
 	/*
 	 * (non-Javadoc)
@@ -86,6 +89,11 @@ public class BrowseViewController implements InitializingBean, Controller {
 		List entries = getHibernateTemplate().find("from " + entryTypeName);
 		mav.addObject("entries", entries);
 		
+		if(getUserModel().getPortalUser() != null){
+			mav.addObject("portalUser", getUserModel().getPortalUser());
+		}
+
+		
 		return mav;
 	}
 
@@ -111,6 +119,14 @@ public class BrowseViewController implements InitializingBean, Controller {
 
 	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
 		this.hibernateTemplate = hibernateTemplate;
+	}
+
+	public UserModel getUserModel() {
+		return userModel;
+	}
+
+	public void setUserModel(UserModel userModel) {
+		this.userModel = userModel;
 	}
 
 }

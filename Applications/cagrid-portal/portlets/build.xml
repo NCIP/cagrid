@@ -55,7 +55,7 @@
 
     <target name="build-war-dir" depends="compile">
 
-        <mkdir dir="${build.war.webinf.dir}/lib"/>
+    	<mkdir dir="${build.war.webinf.dir}/lib"/>
         <mkdir dir="${build.war.build.classes.dir}"/>
 
         <copy todir="${build.war.webinf.dir}/lib" overwrite="true" flatten="true">

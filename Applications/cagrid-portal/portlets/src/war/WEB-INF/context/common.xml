@@ -34,6 +34,11 @@
           autowire="byName">
         <aop:scoped-proxy proxy-target-class="true"/>
     </bean>
+    
+    <bean id="userModel" class="gov.nih.nci.cagrid.portal.portlet.UserModel" scope="globalSession"
+          autowire="byName">
+        <aop:scoped-proxy proxy-target-class="true"/>
+    </bean>
 
 
     <bean id="cqlQueryInstanceExecutorPrototype"
@@ -121,6 +126,10 @@
                 <constructor-arg value="liferayUser"/>
             </bean>
         </property>
+    </bean>
+    <bean id="portalUserInterceptor2" class="gov.nih.nci.cagrid.portal.portlet.PortalUserInterceptor2"
+          autowire="byName">
+        <property name="portalUserSessionAttributeName" value="CAGRIDPORTAL_ATTS_liferayUserId"/>
     </bean>
 
     <bean id="servicefilter"

@@ -5,6 +5,7 @@ package gov.nih.nci.cagrid.portal.portlet.browse;
 
 import gov.nih.nci.cagrid.portal.dao.catalog.CatalogEntryDao;
 import gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntry;
+import gov.nih.nci.cagrid.portal.portlet.UserModel;
 import gov.nih.nci.cagrid.portal.portlet.util.PortletUtils;
 
 import java.util.HashMap;
@@ -31,10 +32,12 @@ public class BrowseViewDetailsController extends AbstractController {
 	private Map<String, String> entryTypeViewMap = new HashMap<String, String>();
 	private String emptyViewName;
 	private CatalogEntryViewBeanFactory catalogEntryViewBeanFactory;
+	private UserModel userModel;
 
 	protected ModelAndView handleRenderRequestInternal(RenderRequest request,
 			RenderResponse response) throws Exception {
 
+		ModelAndView mav = null;
 		CatalogEntry entry = null;
 
 		Integer entryId = null;
@@ -45,23 +48,28 @@ public class BrowseViewDetailsController extends AbstractController {
 		}
 		if (entryId != null) {
 			entry = getCatalogEntryDao().getById(entryId);
+		} else {
+			entry = getUserModel().getCurrentCatalogEntry();
 		}
 
 		String viewName = null;
 		if (entry == null) {
-			viewName = getEmptyViewName();
-		} else {
-			viewName = (String) PortletUtils.getMapValueForType(entry
-					.getClass(), getEntryTypeViewMap());
+			throw new RuntimeException("No catalog entry found.");
 		}
+		viewName = (String) PortletUtils.getMapValueForType(entry.getClass(),
+				getEntryTypeViewMap());
+
 		if (viewName == null) {
 			throw new RuntimeException("Couldn't determine view name for: "
 					+ entry);
 		}
 
-		ModelAndView mav = new ModelAndView(viewName);
+		mav = new ModelAndView(viewName);
 		mav.addObject(getObjectName(), getCatalogEntryViewBeanFactory()
 				.newCatalogEntryViewBean(entry));
+		if(request.getParameter("viewMode") != null){
+			mav.addObject("viewMode", request.getParameter("viewMode"));
+		}
 
 		return mav;
 	}
@@ -105,6 +113,14 @@ public class BrowseViewDetailsController extends AbstractController {
 	public void setCatalogEntryViewBeanFactory(
 			CatalogEntryViewBeanFactory catalogEntryViewBeanFactory) {
 		this.catalogEntryViewBeanFactory = catalogEntryViewBeanFactory;
+	}
+
+	public UserModel getUserModel() {
+		return userModel;
+	}
+
+	public void setUserModel(UserModel userModel) {
+		this.userModel = userModel;
 	}
 
 }

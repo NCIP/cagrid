@@ -19,31 +19,26 @@
 	</bean>
 	
 	<bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
-
-	<bean id="browseViewDetailsController"
-		class="gov.nih.nci.cagrid.portal.portlet.browse.BrowseViewDetailsController"
-		autowire="byName">
-		<property name="objectName" value="catalogEntryViewBean"/>
-		<property name="emptyViewName" value="emptyView"/>
-        <property name="entryTypeViewMap">
-        	<map>
-        		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.PersonCatalogEntry" value="personView"/>
-        		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.DataSetCatalogEntry" value="datasetView"/>
-        		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.CommunityCatalogEntry" value="communityView"/>
-        		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.ToolCatalogEntry" value="toolView"/>
-        	</map>
-        </property>
-
-	</bean>
 	
-	<bean id="catalogEntryViewBeanFactory" class="gov.nih.nci.cagrid.portal.portlet.browse.CatalogEntryViewBeanFactory">
-		<property name="entryTypeViewBeanMap">
-			<map>
-				<entry key="gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntry" value="catalogEntryViewBean"/>
-        		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.CommunityCatalogEntry" value="communityViewBean"/>
-        	</map>
-		</property>
-	</bean>
+	<util:map id="entryTypeMap">
+		<entry key="DATASET" value="gov.nih.nci.cagrid.portal.domain.catalog.DataSetCatalogEntry"/>
+  		<entry key="PERSON" value="gov.nih.nci.cagrid.portal.domain.catalog.PersonCatalogEntry"/>
+   		<entry key="TOOL" value="gov.nih.nci.cagrid.portal.domain.catalog.ToolCatalogEntry"/>
+   		<entry key="COMMUNITY" value="gov.nih.nci.cagrid.portal.domain.catalog.CommunityCatalogEntry"/>
+   		<entry key="INSTITUTION" value="gov.nih.nci.cagrid.portal.domain.catalog.InstitutionCatalogEntry"/>
+   	</util:map>	
+	
+	<util:map id="entryTypeViewMap">
+   		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.PersonCatalogEntry" value="personView"/>
+   		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.DataSetCatalogEntry" value="datasetView"/>
+   		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.CommunityCatalogEntry" value="communityView"/>
+   		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.ToolCatalogEntry" value="toolView"/>
+   	</util:map>
+   	
+	<util:map id="entryTypeViewBeanMap">
+		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntry" value="catalogEntryViewBean"/>
+        <entry key="gov.nih.nci.cagrid.portal.domain.catalog.CommunityCatalogEntry" value="communityViewBean"/>
+    </util:map>
 	
 	<bean id="catalogEntryViewBean" class="gov.nih.nci.cagrid.portal.portlet.browse.CatalogEntryViewBean" scope="prototype">
 		<property name="pocRelationshipTypeName" value="PointOfContact"/>
@@ -51,7 +46,25 @@
 	
 	<bean id="communityViewBean" class="gov.nih.nci.cagrid.portal.portlet.browse.CommunityCatalogEntryViewBean" scope="prototype">
 		<property name="memberRelationshipTypeName" value="CommunityPersonMember"/>
+	</bean>   	
+
+	<bean id="browseViewDetailsController"
+		class="gov.nih.nci.cagrid.portal.portlet.browse.BrowseViewDetailsController"
+		autowire="byName">
+		<property name="objectName" value="catalogEntryViewBean"/>
 	</bean>
+	
+	<bean id="catalogEntryViewBeanFactory" 
+		class="gov.nih.nci.cagrid.portal.portlet.browse.CatalogEntryViewBeanFactory" 
+		autowire="byName"/>
+		
+	<bean id="catalogEntryFactory" class="gov.nih.nci.cagrid.portal.portlet.browse.CatalogEntryFactory" autowire="byName"/>
+
+	
+	
+	<bean id="createCatalogEntryController"
+		class="gov.nih.nci.cagrid.portal.portlet.browse.CreateCatalogEntryController"
+		autowire="byName"/>
 
 	<bean id="browseViewController"
 		class="gov.nih.nci.cagrid.portal.portlet.browse.BrowseViewController"
@@ -74,14 +87,11 @@
 		<property name="commandClass" value="gov.nih.nci.cagrid.portal.portlet.browse.BrowseCommand"/>
 	</bean>
 	
-	<!-- 
+
 	<bean
 	 id="portletModeParameterHandlerMapping"
 		class="org.springframework.web.portlet.handler.PortletModeParameterHandlerMapping">
-		 -->
-	<bean
-	 id="portletModeParameterHandlerMapping"
-		class="gov.nih.nci.cagrid.portal.portlet.browse.BrowseHandlerMapping">		 
+
 		<property name="order" value="1" />
 		<property name="parameterName" value="operation"/>
 		<property name="applyWebRequestInterceptorsToRenderPhaseOnly" value="false"/>
@@ -90,6 +100,7 @@
 			<list>
                  <ref bean="parameterMappingInterceptor"/>
 				<ref bean="openSessionInViewInterceptor" />
+				<ref bean="portalUserInterceptor2" />
 			</list>
 		</property>	
 
@@ -103,6 +114,7 @@
 				<entry key="view">
 					<map>
 						<entry key="viewDetails" value-ref="browseViewDetailsController" />
+						<entry key="createCatalogEntry" value-ref="createCatalogEntryController" />
 				    </map>
 				</entry>				
 	 		</map>
@@ -120,6 +132,7 @@
 			<list>
                 <ref bean="parameterMappingInterceptor"/>
 				<ref bean="openSessionInViewInterceptor" />
+				<ref bean="portalUserInterceptor2" />
 			</list>
 		</property>	
 		
