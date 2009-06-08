@@ -13,15 +13,15 @@ import java.util.List;
 @Entity
 @Table(name = "cat_entry")
 @GenericGenerator(name = "id-generator", strategy = "native",
- parameters = {
-        @Parameter(name="sequence", value="seq_cat_entry")
-    })
+        parameters = {
+                @Parameter(name = "sequence", value = "seq_cat_entry")
+        })
 @DiscriminatorColumn(
         name = "catalog_type",
         discriminatorType = DiscriminatorType.STRING
 )
 @DiscriminatorValue("CatalogEntry")
-public class CatalogEntry extends AbstractDomainObject implements Commentable,MutableTemporal {
+public class CatalogEntry extends AbstractDomainObject implements Commentable, MutableTemporal {
 
     public String name;
 
@@ -43,23 +43,23 @@ public class CatalogEntry extends AbstractDomainObject implements Commentable,Mu
 
     public List<Citation> citations = new ArrayList<Citation>();
 
-    public List<Term> terms= new ArrayList<Term>();
+    public List<Term> terms = new ArrayList<Term>();
 
-    public List<Hyperlink> hyperlinks= new ArrayList<Hyperlink>();
+    public List<Hyperlink> hyperlinks = new ArrayList<Hyperlink>();
 
-    public List<File> files= new ArrayList<File>();
+    public List<File> files = new ArrayList<File>();
 
-    public List<Rating> ratings= new ArrayList<Rating>();
+    public List<Rating> ratings = new ArrayList<Rating>();
 
-    public List<Term> areasOfFocus= new ArrayList<Term>();
+    public List<Term> areasOfFocus = new ArrayList<Term>();
 
     public PersonCatalogEntry contributor;
 
     public PortalUser author;
 
-    public List<FavoriteOfRole> favoriteOfRole= new ArrayList<FavoriteOfRole>();
+    public List<FavoriteOfRole> favoriteOfRole = new ArrayList<FavoriteOfRole>();
 
-    public List<CatalogEntryRoleInstance> roles= new ArrayList<CatalogEntryRoleInstance>();
+    public List<CatalogEntryRoleInstance> roles = new ArrayList<CatalogEntryRoleInstance>();
 
     private List<Comment> comments = new ArrayList<Comment>();
 
@@ -71,6 +71,7 @@ public class CatalogEntry extends AbstractDomainObject implements Commentable,Mu
         this.name = name;
     }
 
+    @Column(length = 4000)
     public String getDescription() {
         return description;
     }
@@ -145,7 +146,7 @@ public class CatalogEntry extends AbstractDomainObject implements Commentable,Mu
         this.citations = citations;
     }
 
-    @OneToMany(cascade=CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     public List<Term> getTerms() {
         return terms;
     }
@@ -154,7 +155,7 @@ public class CatalogEntry extends AbstractDomainObject implements Commentable,Mu
         this.terms = terms;
     }
 
-    @OneToMany(cascade=CascadeType.ALL,mappedBy="hyperlinkOf")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "hyperlinkOf")
     public List<Hyperlink> getHyperlinks() {
         return hyperlinks;
     }
@@ -163,7 +164,7 @@ public class CatalogEntry extends AbstractDomainObject implements Commentable,Mu
         this.hyperlinks = hyperlinks;
     }
 
-    @OneToMany(cascade=CascadeType.ALL,mappedBy="fileOf")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fileOf")
     public List<File> getFiles() {
         return files;
     }
@@ -172,7 +173,7 @@ public class CatalogEntry extends AbstractDomainObject implements Commentable,Mu
         this.files = files;
     }
 
-    @OneToMany(cascade=CascadeType.ALL,mappedBy="ratingOf")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ratingOf")
     public List<Rating> getRatings() {
         return ratings;
     }
@@ -183,7 +184,7 @@ public class CatalogEntry extends AbstractDomainObject implements Commentable,Mu
 
 
     @ManyToOne
-    @JoinColumn(name="contributor_id")
+    @JoinColumn(name = "contributor_id")
     public PersonCatalogEntry getContributor() {
         return contributor;
     }
@@ -192,7 +193,7 @@ public class CatalogEntry extends AbstractDomainObject implements Commentable,Mu
         this.contributor = contributor;
     }
 
-    @OneToMany(mappedBy="favoriteOf",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "favoriteOf", cascade = CascadeType.ALL)
     public List<FavoriteOfRole> getFavoriteOfRole() {
         return favoriteOfRole;
     }
@@ -201,7 +202,7 @@ public class CatalogEntry extends AbstractDomainObject implements Commentable,Mu
         this.favoriteOfRole = favoriteOfRole;
     }
 
-    @OneToMany(mappedBy="catalogEntry")
+    @OneToMany(mappedBy = "catalogEntry")
     public List<CatalogEntryRoleInstance> getRoles() {
         return roles;
     }

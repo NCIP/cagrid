@@ -976,4 +976,13 @@
     </changeSet>
 
 
+    <changeSet id="52" author="kherm">
+        <preConditions>
+            <columnExists tableName="cat_entry" columnName="description"/>
+        </preConditions>
+        <modifyColumn tableName="cat_entry">
+            <column name="description" type="text"/>
+        </modifyColumn>
+    </changeSet>
+
 </databaseChangeLog>
