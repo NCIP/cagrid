@@ -33,6 +33,40 @@
 	<bean id="contentViewController" parent="contentControllerTemplate"
 		class="gov.nih.nci.cagrid.portal.portlet.content.ContentViewController"/>
 
+    <bean id="catalogSearchController" class="gov.nih.nci.cagrid.portal.portlet.content.BrowseSearchController">
+          <property name="redirectUrlPreferenceName" value="catalogSearchUrl"/>
+          <property name="commandClass" value="gov.nih.nci.cagrid.portal.portlet.content.BrowseSearchCommand"/>
+          <property name="interPortletMessageSender">
+              <bean class="gov.nih.nci.cagrid.portal.portlet.InterPortletMessageAdapter" autowire="byName">
+                  <property name="modePreferenceName" value="catalogSearchMode"/>
+                  <property name="outputQueuePreferenceName" value="catalogSearchOutputQueue"/>
+              </bean>
+          </property>
+      </bean>
+
+    <bean
+            id="portletModeParameterHandlerMapping"
+            class="org.springframework.web.portlet.handler.PortletModeParameterHandlerMapping">
+        <property name="order" value="1"/>
+        <property name="parameterName" value="operation"/>
+
+        <property name="interceptors">
+            <list>
+                <ref bean="parameterMappingInterceptor"/>
+            </list>
+        </property>
+
+        <property name="portletModeParameterMap">
+            <map>
+                <entry key="view">
+                    <map>
+                        <entry key="catalogSearch" value-ref="catalogSearchController"/>
+                    </map>
+                </entry>
+            </map>
+        </property>
+    </bean>
+    
 	<bean id="portletModeHandlerMapping"
 		class="org.springframework.web.portlet.handler.PortletModeHandlerMapping">
 		<property name="portletModeMap">
