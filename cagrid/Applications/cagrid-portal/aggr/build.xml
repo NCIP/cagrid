@@ -224,7 +224,7 @@
     </target>
 
     <target name="delete-catalogs" depends="jar" description="Will delete all catalog items">
-        <java classname="gov.nih.nci.cagrid.portal.util.Delete" classpathref="run.cp"
+        <java classname="gov.nih.nci.cagrid.portal.util.DeleteCatalogs" classpathref="run.cp"
               fork="true"/>
     </target>
 
