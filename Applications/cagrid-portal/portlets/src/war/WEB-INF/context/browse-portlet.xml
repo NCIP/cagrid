@@ -33,6 +33,7 @@
    		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.DataSetCatalogEntry" value="datasetView"/>
    		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.CommunityCatalogEntry" value="communityView"/>
    		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.ToolCatalogEntry" value="toolView"/>
+        <entry key="gov.nih.nci.cagrid.portal.domain.catalog.GridServiceEndPointCatalogEntry" value="toolView"/>
    	</util:map>
    	
 	<util:map id="entryTypeViewBeanMap">
@@ -71,6 +72,12 @@
 		autowire="byName">
 		<property name="successViewName" value="view"/>
         <property name="solrServiceUrl" value="${cagrid.portal.solr.http.url}"/>
+        <property name="interPortletMessageReceiver">
+            <bean class="gov.nih.nci.cagrid.portal.portlet.InterPortletMessageAdapter" autowire="byName">
+                <property name="modePreferenceName" value="catalogSearchMode"/>
+                <property name="inputQueuePreferenceName" value="catalogSearchInputQueue"/>
+            </bean>
+        </property>
 	</bean>
 	
 	<bean id="browseEditController"

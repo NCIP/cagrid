@@ -11,28 +11,71 @@
         return null;
     };
 
+
+   Array.prototype.find = function(searchStr) {
+        var idx=-1;
+        for (i = 0; i < this.length; i++) {
+                if (this[i].match(searchStr)) {
+                   idx=i;
+                    break;
+                }
+        }
+        return idx;
+    };
+
     <!--class represents a SOLR query. Can push and search parameters -->
     var solrQuery = Class.create({
-        initialize: function(searchTerm) {
+        initialize: function(searchTerm,rows) {
+        YAHOO.log("In constructor of SOLR Query");
+        this.start=0;
+        this.rows=10;
+        if(rows)
+           this.rows=rows;
+
             this.params = [
                 'wt=json'
                 , 'indent=on'
                 , 'hl=true'
-                ,'rows=1000'
                 , 'hl.fl=name,features'
             ];
+            this.params[this.params.length] = "rows=" + this.rows;
+            this.params[this.params.length] = "start=" + this.start;
             this.params[this.params.length] = "q=" + searchTerm;
         },
         addParam: function(param) {
             this.params.push(param);
         },
-        removeParam: function(param) {
-            this.params.pop(param);
 
+        removeParam: function(param) {
+            var index = this.params.find(param);
+            if(index>-1){
+                this.params.splice(index,1);
+            }
         },
+
         addFacet: function(arg, value) {
+            this.removeParam("\^fq=" + arg);
             this.addParam("fq=" + arg + ":" + value);
         },
+        nextPage: function(){
+            this.removeParam("start="+this.start);
+            this.start=this.start+this.rows;
+            this.addParam("start="+ this.start);
+            YAHOO.log("Moved to next page");
+        },
+
+        setRows: function(rows){
+             this.removeParam("rows="+this.rows);
+            this.rows=rows;
+            this.addParam("rows="+ this.rows);
+        },
+         setStartValue: function(startValue){
+            this.removeParam("start="+this.start);
+            this.start=startValue;
+            this.addParam("start="+ this.start);
+            YAHOO.log("Moved to specified start value " + startValue);
+        },
+
         getQuery: function() {
             return this.params.join('&');
         }
@@ -41,8 +84,8 @@
     <!--represents a catalog item-->
     var SearchTreeNode = Class.create({
         initialize: function(initLabel) {
-            YAHOO.log("adding item with label" + initLabel);
             this.initLabel = initLabel;
+            this.type=initLabel;
             this.count = 1;
             this.updateLabel();
         },
@@ -50,12 +93,10 @@
             this.label = this.initLabel + " (" + this.count + ")";
         },
         addCount: function() {
-            YAHOO.log("Count is" + this.count);
             this.count++;
             this.updateLabel();
         }
     });
-
     <!--represents search results. Will build a search tree as results are added-->
     var SearchResults = Class.create({
         initialize: function() {
@@ -65,14 +106,11 @@
             var typeLabel = result.catalog_type;
             var categoryNode = this.searchTree.findByLabel(typeLabel);
 
-            YAHOO.log("Searching for node returned " + categoryNode);
             if (null == categoryNode) {
-                YAHOO.log("Node is null. Will create node for " + typeLabel);
                 this.searchTree.push(new SearchTreeNode(typeLabel));
             }
             <!--else update the count-->
             else {
-                YAHOO.log(categoryNode.label);
                 categoryNode.addCount();
             }
 
@@ -86,23 +124,8 @@
     });
 
 
-    var tree;
-    var categoryNode;
-    function initTree() {
-        tree = new YAHOO.widget.TreeView("CatalogTree");
-        var root = tree.getRoot();
-        categoryNode = new YAHOO.widget.TextNode({label:"Category"}, root, true);
-        tree.render();
-    }
 
-    <!--will show the search menu tree given a properly initialized SearchResults object -->
-    function showSearchTree(results) {
-        YAHOO.log("Updating tree", "debug");
-        tree.removeChildren(categoryNode);
-        results.addNodesToTree(categoryNode);
-        categoryNode.refresh();
-        categoryNode.expand();
 
-    }
 
-  
+
+

@@ -692,6 +692,14 @@
                 <name>browseType</name>
                 <value>DATASET</value>
             </preference>
+              <preference>
+                <name>catalogSearchMode</name>
+                <value>INTERPORTLET</value>
+            </preference>
+            <preference>
+                <name>catalogSearchInputQueue</name>
+                <value>browse:searchKeyword</value>
+            </preference>
         </portlet-preferences>
     </portlet>
     
@@ -749,7 +757,49 @@
         </portlet-preferences>
     </portlet>
     
-    
+    <portlet>
+        <description>Catalog Search</description>
+        <portlet-name>catalogsearch</portlet-name>
+        <display-name>Catalog Search</display-name>
+        <portlet-class>
+            org.springframework.web.portlet.DispatcherPortlet
+        </portlet-class>
+        <init-param>
+            <name>contextConfigLocation</name>
+            <value>/WEB-INF/context/content-portlet.xml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>Catalog Search</title>
+            <short-title>search</short-title>
+            <keywords>cagrid,search,catalog</keywords>
+        </portlet-info>
+        <portlet-preferences>
+            <preference>
+                <name>jsp</name>
+                <value>search</value>
+            </preference>
+             <preference>
+                <name>catalogSearchUrl</name>
+                <value>/web/guest/catalog/all</value>
+            </preference>
+            <preference>
+                <name>catalogSearchMode</name>
+                <value>INTERPORTLET</value>
+            </preference>
+            <preference>
+                <name>catalogSearchOutputQueue</name>
+                <value>browse:searchKeyword</value>
+            </preference>
+             <preference>
+                <name>browse:searchKeyword</name>
+                <value>browse:searchKeyword</value>
+            </preference>
+        </portlet-preferences>
+    </portlet>
 
     <!--Added to bypass liferay 5.0.1 bug
         http://support.liferay.com/browse/LEP-5832
