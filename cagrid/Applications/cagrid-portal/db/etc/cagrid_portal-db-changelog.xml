@@ -985,14 +985,14 @@
     </changeSet>
 
      <changeSet id="53" author="kherm">
-        <preConditions>
+        <preConditions onFail="MARK_RAN"> 
             <columnExists tableName="cat_entry" columnName="end"/>
         </preConditions>
          <renameColumn tableName="cat_entry" oldColumnName="end" newColumnName="endDate"/>
     </changeSet>
 
     <changeSet id="54" author="kherm">
-       <preConditions>
+       <preConditions onFail="MARK_RAN">
            <columnExists tableName="cat_entry" columnName="start"/>
        </preConditions>
         <renameColumn tableName="cat_entry" oldColumnName="start" newColumnName="startDate"/>
