@@ -75,6 +75,10 @@
 <script type="text/javascript">
 
     var wildcard="${searchKeyword}";
+    if(!wildcard){
+        wildcard="*:*";
+    }
+
     function search(keyword) {
         if ("${catalogType}") {
             $("${ns}tree").style.visibility = "collapse";
@@ -87,7 +91,6 @@
         new Catalogs({keyword:keyword,catalogType:"${catalogType}",paginatorDiv:"${ns}paginatorDiv",treeDiv:"${ns}tree",rowsPerPage:10});
         resultEvent.subscribe(pageCallback);
     }
-
     search(wildcard);
 
 </script>
