@@ -18,7 +18,7 @@
             <input type="hidden" name="searchKeyword" id="searchKeyword"/>
             <input type="hidden" name="operation" id="operation" value="catalogSearch">
 
-            Search:<input id="keyword" type="text" size="20"/>
+            Search: <input id="keyword" type="text" size="20"/>
             <input type="button" value="Search" onclick="search();"/>
         </div>
     </div>
