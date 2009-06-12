@@ -758,8 +758,8 @@
     </portlet>
     
     <portlet>
-        <description>Catalog Search</description>
-        <portlet-name>catalogsearch</portlet-name>
+        <description>Catalog Search Portlet</description>
+        <portlet-name>CatalogSearchPortlet</portlet-name>
         <display-name>Catalog Search</display-name>
         <portlet-class>
             org.springframework.web.portlet.DispatcherPortlet
