@@ -7,7 +7,7 @@ package gov.nih.nci.cagrid.metadata.xmi;
  * @author David Ervin
  * 
  * @created Oct 22, 2007 10:28:52 AM
- * @version $Id: XMIConstants.java,v 1.5 2008-01-16 21:13:37 dervin Exp $ 
+ * @version $Id: XMIConstants.java,v 1.6 2009/06/11 19:01:44 dervin Exp $ 
  */
 public class XMIConstants {
     // common? constants
@@ -51,6 +51,10 @@ public class XMIConstants {
     public static final String XMI_UML_TAGGED_VALUE_TAG = "tag";
     public static final String XMI_UML_TAGGED_VALUE_MODEL_ELEMENT = "modelElement";
     public static final String XMI_UML_TAGGED_VALUE_VALUE = "value";
+    
+    // cadsr ID tag values
+    public static final String XMI_TAG_CADSR_DE_ID = "CADSR_DE_ID";
+    public static final String XMI_TAG_CADSR_DE_VERSION = "CADSR_DE_VERSION";
     
     // tag values
     public static final String XMI_TAG_PROPERTY = "Property";
