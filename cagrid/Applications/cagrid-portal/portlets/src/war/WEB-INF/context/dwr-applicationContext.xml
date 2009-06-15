@@ -111,7 +111,7 @@
     </bean>
 
     <bean id="ajaxMapService"
-          class="gov.nih.nci.cagrid.portal.portlet.map.AjaxMapService"
+          class="gov.nih.nci.cagrid.portal.portlet.map.ajax.AjaxMapService"
           p:view="/WEB-INF/jsp/map/ajaxMap.jsp"
           autowire="byName">
     </bean>
@@ -121,6 +121,12 @@
           autowire="byName" parent="filteredContentGenerator">
     </bean>
 
+     <bean id="latestContentService"
+          class="gov.nih.nci.cagrid.portal.portlet.map.ajax.LatestContentService"
+          p:latestContentLimit="5"
+          p:view="/WEB-INF/jsp/map/latestContent-ajax.jsp"
+          autowire="byName">
+    </bean>
 
     <!--Timers to update caches-->
     <bean id="ajaxstatusTimerFactory"

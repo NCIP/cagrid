@@ -7,10 +7,9 @@ div.mapLoadingMsg {
 }
 
 div.mapNode {
+    width:75%;
     border: 4px solid #5C5C5C;
     margin-left: auto;
-    margin-right: auto;
-    width: 95%;
     height: 300px;
 }
 
