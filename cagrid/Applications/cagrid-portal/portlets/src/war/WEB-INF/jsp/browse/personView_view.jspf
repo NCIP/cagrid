@@ -1,0 +1,25 @@
+<%@ include file="/WEB-INF/jsp/browse/common_view_edit_controls.jspf" %>
+		
+<%@ include file="/WEB-INF/jsp/browse/common_view_photo_row.jspf" %>
+
+		<div class="contactInfoRow">
+			<c:if test="${catalogEntry.phoneNumberPublic}">
+				<c:set var="rowLabel" value="Phone"/>
+				<c:set var="rowValue" value="${catalogEntry.phoneNumber}"/>
+			    <%@ include file="/WEB-INF/jsp/browse/row.jspf" %>
+			</c:if>
+			<c:if test="${catalogEntry.emailAddressPublic}">
+			    <c:set var="rowLabel" value="e-mail"/>
+				<c:set var="rowValue" value="${catalogEntry.emailAddress}"/>
+			    <%@ include file="/WEB-INF/jsp/browse/row.jspf" %>
+			</c:if>
+			<c:if test="${catalogEntry.addressPublic}">
+				<%@ include file="/WEB-INF/jsp/browse/address.jspf" %>
+			</c:if>
+			<c:if test="${!empty catalogEntry.webSite}">
+				<c:set var="rowLabel" value="Website"/>
+				<c:set var="rowValue" value="${catalogEntry.webSite}"/>
+			    <%@ include file="/WEB-INF/jsp/browse/row.jspf" %>
+			</c:if>
+		</div>
+<%@ include file="/WEB-INF/jsp/browse/relatedItemsAndOtherInfo.jspf" %>

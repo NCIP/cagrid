@@ -1,0 +1,13 @@
+		<div class="photoRow">
+			<div class="photo">
+				<img src='<c:url value="/images/photo-unavailable.png"/>' alt='Photo of <c:out value="${catalogEntry.name}"/>' />
+			</div>
+			<div class="photoRightContent">
+				<h1 class="entryName"><c:out value="${catalogEntry.name}"/></h1>
+				<p class="entryDescription">
+				<c:out value="${catalogEntry.description}"/>
+				</p>
+			</div>
+			<!-- The following line is for formatting purposes -->
+			<hr style="clear:both; visibility:hidden;"/>
+		</div>
