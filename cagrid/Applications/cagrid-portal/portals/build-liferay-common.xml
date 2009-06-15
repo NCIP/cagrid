@@ -66,6 +66,17 @@
 
 
     <target name="deploy-authn" depends="jar" description="Will deploy caGrid Authentication Portlet">
+    	
+    	<copy todir="${liferay.root.context.dir}/WEB-INF/classes" overwrite="true">
+    	    <fileset dir="${src.war.dir}/WEB-INF/classes">
+    	        <include name="**/*"/>
+    	    </fileset>
+    	</copy>
+    	<copy todir="${liferay.root.context.dir}/WEB-INF/classes/META-INF">
+    		<fileset dir="${ext.authn.xml.dir}">
+    		      <include name="applicationContext-db.xml"/>
+    		</fileset>    	
+    	</copy>
 
         <antcall target="copy-properties">
             <param name="target.dir" value="${liferay.root.context.dir}/WEB-INF/classes"/>
@@ -77,6 +88,12 @@
             </fileset>
             <fileset dir="${build.jar.dir}">
                 <include name="*.jar"/>
+            </fileset>
+        </copy>
+    	
+    	<copy todir="${liferay.root.context.dir}/html" overwrite="true">
+            <fileset dir="${src.war.dir}/html">
+                <include name="**/*"/>
             </fileset>
         </copy>
 
