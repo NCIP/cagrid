@@ -24,11 +24,11 @@
     <property name="tools.hibernate.config" value="${tools.hibernate.dir}/hibernate.cfg.xml"/>
 
     <property name="db.changelog.file" value="cagrid_portal-db-changelog.xml"/>
-    <!-- Should the generated DDL include table DROP statements? -->
-    <property name="db.drop.tables" value="false"/>
-
     <!-- Should db layer be compiled with debug on? -->
     <property name="db.debug" value="${javac.debug.flag}"/>
+
+    <import file="${basedir}/antfiles/build-liquibase.xml"/>
+
 
     <path id="compile.cp">
         <fileset dir="${ext.lib.dir}">
@@ -53,6 +53,7 @@
     <path id="run.cp">
         <path refid="compile.cp"/>
         <pathelement location="${build.classes.dir}"/>
+        <pathelement location="${build.xml.dir}"/>
     </path>
 
     <path id="test.run.cp">
@@ -65,13 +66,12 @@
     <target name="prepare" depends="prepare-ant-tasks"/>
 
     <target name="prepare-ant-tasks" unless="defined.anttaskes">
-
-        <taskdef name="xmltask" classname="com.oopsconsultancy.xmltask.ant.XmlTask"
-                 classpathref="schema.cp"/>
-
         <taskdef resource="liquibasetasks.properties">
             <classpath refid="run.cp"/>
         </taskdef>
+
+        <taskdef name="xmltask" classname="com.oopsconsultancy.xmltask.ant.XmlTask"
+                 classpathref="schema.cp"/>
 
         <xmlcatalog id="portal.catalog">
             <dtd publicId="-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
@@ -149,6 +149,7 @@
             </fileset>
             <fileset dir="${etc.dir}">
                 <include name="cagrid_portal-db-changelog.xml"/>
+                <include name="cagrid_portal-db-20-changelog.xml"/>
             </fileset>
         </copy>
     </target>
@@ -184,27 +185,14 @@
 
     </target>
 
-    <target name="updateDB" depends="prepare">
-        <updateDatabase
-                changeLogFile="${etc.dir}/${db.changelog.file}"
-                driver="${cagrid.portal.db.driver}"
-                url="${cagrid.portal.db.url}"
-                username="${cagrid.portal.db.username}"
-                password="${cagrid.portal.db.password}"
-                promptOnNonLocalDatabase="true"
-                dropFirst="false"
-                classpathref="run.cp"
-                />
-    </target>
-
 
     <target name="run">
         <java classname="gov.nih.nci.cagrid.portal.TestDB">
             <classpath refid="test.run.cp"/>
         </java>
     </target>
-	
-	<target name="run-load" depends="prepare-test">
+
+    <target name="run-load" depends="prepare-test">
         <java classname="gov.nih.nci.cagrid.portal.LoadCatalogEntryData">
             <classpath refid="test.run.cp"/>
         </java>
