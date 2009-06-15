@@ -1,11 +1,13 @@
 package gov.nih.nci.cagrid.portal.domain.catalog;
 
-import gov.nih.nci.cagrid.portal.domain.PortalUser;
-
-import javax.persistence.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 
 @Entity
 @DiscriminatorValue("person")
@@ -49,8 +51,6 @@ public class PersonCatalogEntry extends CatalogEntry implements Contactable {
     public String emailAddress;
 
     public URL webSite;
-
-    public PortalUser about;
 
     public List<Rating> contributorRatings = new ArrayList<Rating>();
 
@@ -196,18 +196,6 @@ public class PersonCatalogEntry extends CatalogEntry implements Contactable {
         this.emailAddress = emailAddress;
     }
 
-
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "person_id")
-    public PortalUser getAbout() {
-        return about;
-    }
-
-    public void setAbout(PortalUser about) {
-        about.setCatalog(this);
-        this.about = about;
-    }
-
     @OneToMany(mappedBy = "ratingContributor", cascade = CascadeType.ALL)
     public List<Rating> getContributorRatings() {
         return contributorRatings;
@@ -261,4 +249,5 @@ public class PersonCatalogEntry extends CatalogEntry implements Contactable {
     public void setStreet2(String street2) {
         this.street2 = street2;
     }
+
 }

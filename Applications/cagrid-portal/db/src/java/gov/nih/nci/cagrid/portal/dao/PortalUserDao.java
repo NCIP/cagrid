@@ -26,9 +26,16 @@ public class PortalUserDao extends AbstractDao<PortalUser> {
         super.save(domainObject);    //To change body of overridden methods use File | Settings | File Templates.
     }
 
-    public PortalUser getByPortalId(Long userId) {
+    public PortalUser getByPortalId(String userId) {
+    	try {
+			String[] parts = userId.split(":");
+			Long.valueOf(parts[0]);
+			Long.valueOf(parts[1]);
+		} catch (Exception ex) {
+			throw new RuntimeException("Invalid portal ID: " + userId);
+		}
         PortalUser user = null;
-        List l = getHibernateTemplate().find("from PortalUser where portalId = '" + userId + "'");
+        List l = getHibernateTemplate().find("from PortalUser where portalId = ?", userId);
         if (l.size() > 1) {
             throw new NonUniqueResultException("More than one PortalUser found for portalId = " + userId);
         }

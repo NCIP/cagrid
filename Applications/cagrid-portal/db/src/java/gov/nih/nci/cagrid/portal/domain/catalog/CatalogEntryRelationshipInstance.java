@@ -1,6 +1,8 @@
 package gov.nih.nci.cagrid.portal.domain.catalog;
 
 import gov.nih.nci.cagrid.portal.domain.AbstractDomainObject;
+import gov.nih.nci.cagrid.portal.domain.PortalUser;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -30,6 +32,8 @@ public class CatalogEntryRelationshipInstance extends AbstractDomainObject imple
     public CatalogEntryRoleInstance roleB;
     public CatalogEntryRelationshipType type;
     private List<Comment> comments = new ArrayList<Comment>();
+    
+    private PortalUser author;
 
 
     public Date getCreatedAt() {
@@ -103,4 +107,14 @@ public class CatalogEntryRelationshipInstance extends AbstractDomainObject imple
     public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
+
+    @ManyToOne
+    @JoinColumn(name="author_id")
+	public PortalUser getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(PortalUser author) {
+		this.author = author;
+	}
 }

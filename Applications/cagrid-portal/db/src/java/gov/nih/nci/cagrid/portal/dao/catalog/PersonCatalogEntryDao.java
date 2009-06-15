@@ -24,13 +24,14 @@ public class PersonCatalogEntryDao extends AboutCatalogEntryDao<PersonCatalogEnt
         return PersonCatalogEntry.class;
     }
 
-    public void createCatalogAbout(PortalUser user) {
-        PersonCatalogEntry entry = isAbout(user);
+    public PersonCatalogEntry createCatalogAbout(PortalUser user) {
+//        PersonCatalogEntry entry = isAbout(user);
+    	PersonCatalogEntry entry = user.getCatalog();
         if (entry == null) {
             entry = new PersonCatalogEntry();
-            entry.setAbout(user);
-        } else
+        } else {
             logger.debug("Catalog entry already exists. Will update the existing entry");
+        }
         if (!entry.isPublished()) {
             logger.debug("Catalog entry has not been published. Will sync with domain object");
             entry.setEmailAddress(BeanUtils.traverse(user, "person.emailAddress"));
@@ -51,6 +52,7 @@ public class PersonCatalogEntryDao extends AboutCatalogEntryDao<PersonCatalogEnt
             }
         }
         save(entry);
+        return entry;
     }
 
 

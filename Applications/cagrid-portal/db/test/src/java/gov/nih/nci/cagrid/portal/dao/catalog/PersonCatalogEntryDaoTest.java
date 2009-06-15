@@ -85,7 +85,7 @@ public class PersonCatalogEntryDaoTest extends DaoTestBase<PersonCatalogEntryDao
     public void about() {
 
         PersonCatalogEntry catalog = new PersonCatalogEntry();
-        catalog.setAbout(p);
+//        catalog.setAbout(p);
         getDao().save(catalog);
 
         assertNotNull(getDao().isAbout(p));
@@ -99,7 +99,7 @@ public class PersonCatalogEntryDaoTest extends DaoTestBase<PersonCatalogEntryDao
 
 
         PersonCatalogEntry catalog = new PersonCatalogEntry();
-        catalog.setAbout(p);
+//        catalog.setAbout(p);
         getDao().save(catalog);
 
         assertEquals(1, getDao().getAll().size());

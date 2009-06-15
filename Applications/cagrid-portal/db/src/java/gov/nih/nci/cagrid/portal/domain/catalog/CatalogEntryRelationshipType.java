@@ -28,6 +28,9 @@ public class CatalogEntryRelationshipType extends AbstractDomainObject implement
     public CatalogEntryRoleType roleTypeB;
     public CatalogEntryRoleType roleTypeA;
     private List<Comment> comments = new ArrayList<Comment>();
+    
+    private CatalogEntryRelationshipType parent;
+    private List<CatalogEntryRelationshipType> children = new ArrayList<CatalogEntryRelationshipType>();
 
     public Date getCreatedAt() {
         return createdAt;
@@ -90,4 +93,23 @@ public class CatalogEntryRelationshipType extends AbstractDomainObject implement
     public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
+
+    @ManyToOne
+    @JoinColumn(name="parent_id")
+	public CatalogEntryRelationshipType getParent() {
+		return parent;
+	}
+
+	public void setParent(CatalogEntryRelationshipType parent) {
+		this.parent = parent;
+	}
+
+	@OneToMany(mappedBy="parent")
+	public List<CatalogEntryRelationshipType> getChildren() {
+		return children;
+	}
+
+	public void setChildren(List<CatalogEntryRelationshipType> children) {
+		this.children = children;
+	}
 }

@@ -33,7 +33,7 @@ public abstract class AboutCatalogEntryDao<T extends CatalogEntry, D extends Dom
      *
      * @param domainObject
      */
-    public abstract void createCatalogAbout(D domainObject);
+    public abstract T createCatalogAbout(D domainObject);
 
 
     /**
