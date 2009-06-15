@@ -17,7 +17,6 @@
 	<portlet>
 		<portlet-name>BrowsePortlet</portlet-name>
 		<friendly-url-mapper-class>gov.nih.nci.cagrid.portal.portlet.browse.BrowseFriendlyURLMapper</friendly-url-mapper-class>
-		<instanceable>true</instanceable>
 		<private-session-attributes>true</private-session-attributes>
 	</portlet>
 	<!-- 
