@@ -20,14 +20,14 @@ public class PersonCatalogCreator extends AbstractCatalogCreator {
 
     public void afterPropertiesSet() throws Exception {
 
-        for (PortalUser user : portalUserDao.getAll()) {
-
-            if (personCatalogEntryDao.isAbout(user) == null) {
-                logger.debug("Person catalog not found. WIll create for id " + user.getId());
-                personCatalogEntryDao.createCatalogAbout(user);
-
-            }
-        }
+//        for (PortalUser user : portalUserDao.getAll()) {
+//
+//            if (personCatalogEntryDao.isAbout(user) == null) {
+//                logger.debug("Person catalog not found. WIll create for id " + user.getId());
+//                personCatalogEntryDao.createCatalogAbout(user);
+//
+//            }
+//        }
     }
 
     public PersonCatalogEntryDao getPersonCatalogEntryDao() {
