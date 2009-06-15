@@ -162,5 +162,6 @@
 	<classpathentry kind="lib" path="ext/default/jars/sdk-client-framework-4.0.jar"/>
 	<classpathentry kind="lib" path="ext/test/jars/caGrid-portal-db-test.jar"/>
 	<classpathentry kind="lib" path="ext/compile/jars/portal-kernel.jar"/>
+	<classpathentry kind="lib" path="ext/compile/jars/portal-service.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

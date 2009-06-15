@@ -1,7 +1,30 @@
 <%@ include file="/WEB-INF/jsp/include/includes.jspf" %>
 <%@ include file="browse-search-includes.jspf" %>
+<%@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %>
+<portlet:defineObjects />
+<liferay-theme:defineObjects />
 
-<c:set var="ns"><portlet:namespace/></c:set>
+<%--
+TODO: Need to get local button CSS working.
+--%>
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.7.0/build/button/assets/skins/sam/button.css" />
+<link rel="stylesheet" type="text/css" href="<c:url value="/js/yui/container/assets/skins/sam/container.css"/>" />
+
+
+<script type="text/javascript" src="<c:url value="/js/yui/yahoo-dom-event/yahoo-dom-event.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/yui/connection/connection-min.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/yui/element/element-min.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/yui/button/button-min.js"/>"></script>
+<%--
+TODO: Need to download dragdrop.
+--%>
+<script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/dragdrop/dragdrop-min.js"></script>
+<script type="text/javascript" src="<c:url value="/js/yui/container/container-min.js"/>"></script>
+
+<portlet:renderURL var="viewDetailsUrl">
+    <portlet:param name="operation" value="viewDetails"/>
+</portlet:renderURL>
+<c:set var="ns"><portlet:namespace/></c:set>  
 
 <script language="JavaScript">
 
@@ -10,65 +33,151 @@
         $("${ns}catalogDetailsForm").action = '<portlet:renderURL/>';
         $("${ns}catalogDetailsForm").submit();
     }
+    
+    function pageCallback(result) {
+        var resultDiv = document.createElement('div');
 
-    function pageCallback(type, args) {
-        $("${ns}catalogs").innerHTML = '';
+        var detailsLnk = document.createElement('a');
+        detailsLnk.setAttribute('href', 'javascript:${ns}viewDetails(' + result.id + ')');
+        detailsLnk.setAttribute('name', 'Details');
+        detailsLnk.innerHTML = result.name;
 
-        var resultList = args[0];
-        for (var i = 0, len = resultList.length; i < len; ++i) {
-            var result = resultList[i];
+        var nameDiv = document.createElement('div');
+        nameDiv.appendChild(document.createTextNode("Name:"));
+        nameDiv.appendChild(detailsLnk);
+        resultDiv.appendChild(nameDiv);
 
-        <%--this is where results are rendered. Needs to be styled--%>
-            var resultDiv = document.createElement('div');
-            var detailsLnk = document.createElement('a');
-            detailsLnk.setAttribute('href', 'javascript:${ns}viewDetails(' + result.id + ')');
-            detailsLnk.setAttribute('name', 'Details');
-            detailsLnk.innerHTML = result.name;
-
-            var nameDiv = document.createElement('div');
-            nameDiv.appendChild(document.createTextNode("Name:"));
-            nameDiv.appendChild(detailsLnk);
-            resultDiv.appendChild(nameDiv);
-
-            if (null != result.description) {
-                var descDiv = document.createElement('div');
-                descDiv.appendChild(document.createTextNode(" Description: " + result.description));
-                resultDiv.appendChild(descDiv);
-            }
-
-            resultDiv.appendChild(document.createElement('br'));
-
-            $("${ns}catalogs").appendChild(resultDiv);
-
+        if (null != result.description) {
+            var descDiv = document.createElement('div');
+            descDiv.appendChild(document.createTextNode(" Description: " + result.description));
+            resultDiv.appendChild(descDiv);
         }
-    }
 
+        resultDiv.appendChild(document.createElement('br'));
+
+        $("catalogs").appendChild(resultDiv);
+
+
+    }
 
 </script>
 
+<h1>Browsing: <c:out value="${browseType}"/></h1>
+
+<p>
+<c:choose>
+	<c:when test="${empty entries}">
+		No entries of this type.
+	</c:when>
+	<c:otherwise>
+		<ul>
+			<c:forEach var="entry" items="${entries}">
+			<li>
+				<portlet:renderURL var="viewDetailsUrl">
+					<portlet:param name="operation" value="viewDetails"/>
+					<portlet:param name="entryId" value="${entry.id}"/>
+				</portlet:renderURL>
+				<a href="<c:out value="${viewDetailsUrl}"/>">
+					<c:out value="${entry.name}"/>
+				</a>				
+			</li>
+			</c:forEach>
+		</ul>	
+	</c:otherwise>
+</c:choose>
+</p>
+
+<% 
+String actionId = "ADD_CATALOG_ENTRY";
+%>
+<c:set var="canCreate" value="<%= permissionChecker.hasPermission(scopeGroupId, portletDisplay.getRootPortletId(), portletDisplay.getResourcePK(), actionId) %>"/>
+<c:if test="${canCreate}">
+<portlet:actionURL var="addCatalogEntryUrl">
+	<portlet:param name="operation" value="createCatalogEntry"/>
+</portlet:actionURL>
+<div class="yui-skin-sam">
+	<div id="${ns}addButtonContainer"></div>
+	<div id="${ns}createDialog" style="display: none">
+		<div class="hd">Please select the type of entry to create.</div>
+		<div class="bd">
+			<form name="${ns}addCatalogEntryForm" method="POST" action="<c:out value="${addCatalogEntryUrl}"/>">
+				<label for="entryType" value="Type"/>
+				<select name="entryType" size="5">
+					<option value="DATASET">Dataset</option>
+					<option value="PERSON">Person</option>
+					<option value="TOOL">Tool</option>
+					<option value="COMMUNITY">Community</option>
+					<option value="INSTITUTION">Institution</option>
+				</select>
+			</form>	
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+
+var ${ns}createDialog = null;
+var ${ns}addButton = null;
+ 
+function ${ns}createCatalogEntry(){
+	if(${ns}createDialog.validate()){
+		${ns}createDialog.form.submit();
+	}
+}
+
+function ${ns}cancelCreateCatalogEntry(){
+	${ns}createDialog.cancel();
+}
+
+jQuery(document).ready(function() {
+	
+	${ns}createDialog = 
+		new YAHOO.widget.Dialog("${ns}createDialog",  
+            { width : "300px", 
+              fixedcenter : true, 
+	          visible : false,  
+	          constraintoviewport : true,
+	          modal : true, 
+	          buttons : [ 
+	          	{ text:"Submit", handler:${ns}createCatalogEntry, isDefault:true }, 
+	            { text:"Cancel", handler:${ns}cancelCreateCatalogEntry } 
+	          ]
+	        });
+	        
+	${ns}createDialog.validate = function(){
+		var data = this.getData();
+		if(data.entryType == ""){
+			alert("Please select an entry type to create.");
+			return false;
+		}else{
+			return true;
+		}
+	};
+	
+	${ns}createDialog.render();
+	document.getElementById('${ns}createDialog').style.display='block';
+	
+	${ns}addButton = new YAHOO.widget.Button({
+			label: "Add New Catalog Entry",
+			id: "${ns}addButton",
+			container: "${ns}addButtonContainer"
+		});
+	
+	${ns}addButton.on("click", function(evt){
+		${ns}createDialog.show();
+	});
+	
+
+});
+</script>
+
+</c:if>
 
 <form:form id="${ns}catalogDetailsForm" name="catalogDetailsForm">
     <input type="hidden" name="entryId" value="">
     <input type="hidden" name="operation" value="viewDetails">
 
-    <div>
-        <div style="width:100%;height:20px;">
-            <div style="float:right;">
-                Search Keyword:<input id="${ns}keyword" type="text" size="20"/>
-                <input type="button" value="Search" onclick="search($('${ns}keyword').value);"/>
-            </div>
-        </div>
-
-        <div>
-            <h1>Browsing: <c:out value="${browseType}"/></h1>
-
-            <div class="yui-skin-sam" style="width:100%;float:none;">
-                <div id="${ns}paginatorDiv"><!-- pagination controls will go here --></div>
-            </div>
-            <div id="${ns}tree" style="height:100%;width:30%;float:left;"></div>
-            <div id="${ns}catalogs" style="height:100%;width:60%;float:right;">
-            </div>
-        </div>
+    <div id="catalogs">
     </div>
 </form:form>
 
@@ -96,3 +205,6 @@
 </script>
 
 
+<p>
+
+</p>

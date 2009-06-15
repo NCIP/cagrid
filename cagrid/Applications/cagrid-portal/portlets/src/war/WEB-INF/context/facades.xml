@@ -98,5 +98,36 @@
 		<property name="encryptionService" ref="encryptionServicePrototype"/>
 		<property name="hibernateTemplate" ref="hibernateTemplate"/>
     </bean>
+    
+    <!-- This is essentially abstract 
+    <bean id="catalogEntryManagerFacade" 
+    	class="gov.nih.nci.cagrid.portal.portlet.browse.CatalogEntryManagerFacade" 
+    	autowire="byName"/>
+     -->
+    	
+    <bean id="personCatalogEntryManagerFacade" 
+    	class="gov.nih.nci.cagrid.portal.portlet.browse.PersonCatalogEntryManagerFacade" 
+    	autowire="byName"/>
+    	
+    <bean id="toolCatalogEntryManagerFacade" 
+    	class="gov.nih.nci.cagrid.portal.portlet.browse.ToolCatalogEntryManagerFacade" 
+    	autowire="byName"/>
+    	
+    <bean id="dataSetCatalogEntryManagerFacade" 
+    	class="gov.nih.nci.cagrid.portal.portlet.browse.DataSetCatalogEntryManagerFacade" 
+    	autowire="byName"/>
+    	
+    <bean id="communityCatalogEntryManagerFacade" 
+    	class="gov.nih.nci.cagrid.portal.portlet.browse.CommunityCatalogEntryManagerFacade" 
+    	autowire="byName"/>
+    	
+    <bean id="institutionCatalogEntryManagerFacade" 
+    	class="gov.nih.nci.cagrid.portal.portlet.browse.InstitutionCatalogEntryManagerFacade" 
+    	autowire="byName"/>
+    	
+    <bean id="catalogEntryRelationshipTypeManagerFacade" 
+    	class="gov.nih.nci.cagrid.portal.portlet.browse.CatalogEntryRelationshipTypeManagerFacade" 
+    	autowire="byName"/>
+
 
 </beans>

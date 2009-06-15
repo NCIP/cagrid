@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<resource-action-mapping>
+	<portlet-resource>
+		<portlet-name>BrowsePortlet</portlet-name>
+		<supports>
+			<action-key>ADD_CATALOG_ENTRY</action-key>
+			<action-key>ADD_RELATED_CATALOG_ENTRY</action-key>
+			<action-key>VIEW</action-key>
+		</supports>
+		<community-defaults>
+			<action-key>VIEW</action-key>
+		</community-defaults>
+		<guest-defaults>
+			<action-key>VIEW</action-key>
+		</guest-defaults>
+		<guest-unsupported />
+	</portlet-resource>
+</resource-action-mapping>

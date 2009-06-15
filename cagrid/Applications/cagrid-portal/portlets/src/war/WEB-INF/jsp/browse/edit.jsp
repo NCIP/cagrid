@@ -27,6 +27,29 @@ No browse types</br>
 	
 </form:form>
 
+<portlet:actionURL var="addRelTypeUrl">
+	<portlet:param name="operation" value="createRelationshipType"/>
+</portlet:actionURL>
+<a href="${addRelTypeUrl}">Add New Relationship Type</a><br/>
+<c:choose>
+	<c:when test="${empty relationshipTypes}">
+No relationship types.	
+	</c:when>
+	<c:otherwise>
+		<ul>
+			<c:forEach var="relType" items="${relationshipTypes}">
+				<li>
+					<portlet:renderURL var="viewRelTypeUrl">
+						<portlet:param name="operation" value="viewRelationshipType"/>
+						<portlet:param name="relTypeId" value="${relType.id}"/>
+					</portlet:renderURL>
+					<a href="${viewRelTypeUrl}"><c:out value="${relType.name}"/></a>
+				</li>
+			</c:forEach>
+		</ul>
+	</c:otherwise>
+</c:choose>
+
 
 <br/>
 Back to <a href="<portlet:renderURL portletMode="view"/>">View Mode</a>

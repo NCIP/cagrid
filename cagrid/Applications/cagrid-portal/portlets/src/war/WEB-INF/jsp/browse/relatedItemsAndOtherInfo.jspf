@@ -78,8 +78,5 @@
  
 jQuery(document).ready(function() {
 	var myTabs = new YAHOO.widget.TabView("<portlet:namespace/>tabs");
-	//TODO: Populate tabs with AJAX
-	//myTabs.getTab(0).addListener('contentChange' showRelatedItems)
-	//myTabs.getTab(1).addListener('contentChange' showOtherInfo)
 });
 </script>

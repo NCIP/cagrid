@@ -17,6 +17,16 @@ jQuery(document).ready(function(){
     });
 });
 </script>
+
+<%
+String addRelatedItemActionId = "ADD_RELATED_ITEM";
+%>
+<c:if test="<%= permissionChecker.hasPermission(scopeGroupId, portletDisplay.getRootPortletId(), portletDisplay.getResourcePK(), addRelatedItemActionId) %>">
+<div id="${ns}editRelatedItemsDiv">
+	
+</div>
+</c:if>
+
 <c:forEach var="relatedEntry" items="${relatedEntries}">
 
 	<portlet:renderURL var="viewRelatedItemUrl">
