@@ -1,0 +1,68 @@
+
+#latestContent{
+    padding-top:10px;
+    width:25%;
+    float:left;
+}
+
+#latestContentTitle{
+    font-size:1.2em;
+    font-weight:bold;
+    padding-bottom:10px;
+}
+
+div.row {
+    padding: 2px;
+    margin: 1px 0;
+}
+
+div.row div.label, div.row div.value {
+    line-height: 1.5em;
+    font-weight: normal;
+}
+
+div.row div.label {
+    font-weight: bold;
+    float: left;
+}
+
+div.row div.value {
+    margin-left: 11em; /* individual pages need to override */
+}
+
+/* Automatically clear after each row
+Based on http://www.positioniseverything.net/easyclearing.html */
+div.row:after, .autoclear:after {
+    display: block;
+    content: ' ';
+    clear: both;
+    height: 0;
+    visibility: hidden;
+}
+
+div.row div.threeCols{
+    width:33%;
+    float:left;
+}
+
+div.row div.twoCols{
+    width:50%;
+    float:left;
+}
+
+.errorMsg{
+    color:#ff0000;
+    font-style:italic;
+    font-weight:bold;
+}
+
+.hidden{
+    visibility:hidden;
+}
+
+.versionStamp{
+    font-size:8px;
+    color:#6f6f6f;
+}
+
+

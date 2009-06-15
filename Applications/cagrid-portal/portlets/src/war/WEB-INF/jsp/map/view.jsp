@@ -1,9 +1,11 @@
 <%@ include file="/WEB-INF/jsp/include/includes.jspf" %>
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <script type="text/javascript" src='<c:url value="/dwr/engine.js"/>'></script>
 <script type="text/javascript" src="<c:url value="/js/scriptaculous/prototype.js"/>"></script>
 
 <script type="text/javascript" src='<c:url value="/dwr/interface/MapService.js"/>'></script>
+
 <script src="<c:out value="${mapBean.baseUrl}" escapeXml="false"/><c:out value="${mapBean.apiKey}" escapeXml="false"/>"
         type="text/javascript"></script>
 
@@ -21,7 +23,10 @@
 
 <%@ include file="/WEB-INF/jsp/map/mapDirectory.jspf" %>
 
+<div style="width:100%;">
+<%@ include file="/WEB-INF/jsp/map/latestContent-view.jspf" %>
 <div id="<c:out value="${mapNodeId}"/>" class="mapNode"><!-- for ie --></div>
+     </div>
 
 <div style="display:none;">
     <div id="${prefix}loadingDiv" class="mapLoadingMsg">
@@ -29,7 +34,7 @@
     </div>
 </div>
 
-<div id="${prefix}mapDiv" style="padding-bottom:10px;">
+<div id="${prefix}mapDiv">
     <%----%>
 </div>
 
