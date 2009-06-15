@@ -1,0 +1,7 @@
+<%@ include file="/WEB-INF/jsp/browse/common_view_edit_controls.jspf" %>
+		
+<%@ include file="/WEB-INF/jsp/browse/common_view_photo_row.jspf" %>
+
+<%@ include file="/WEB-INF/jsp/browse/pocs.jspf" %>
+
+<%@ include file="/WEB-INF/jsp/browse/relatedItemsAndOtherInfo.jspf" %>

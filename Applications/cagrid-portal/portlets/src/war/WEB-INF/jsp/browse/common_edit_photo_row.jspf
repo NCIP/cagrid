@@ -1,0 +1,14 @@
+		<div class="photoRow">
+			<%-- TODO: support upload of photos --%>
+			<div class="photo">
+				<img src='<c:url value="/images/photo-unavailable.png"/>' alt='Photo of <c:out value="${catalogEntry.name}"/>' />
+			</div>
+			<div class="photoRightContent">
+				<label for="name">Name</label>
+				<input class="required" type="text" name="name" value="<c:out value="${catalogEntry.name}"/>"><span style="color: red"></span><br/>
+				<label for="description">Description</label>
+				<textarea class="required" name="description"><c:out value="${catalogEntry.description}"/></textarea><span style="color: red"></span><br/>
+			</div>
+			<!-- The following line is for formatting purposes -->
+			<hr style="clear:both; visibility:hidden;"/>
+		</div>
