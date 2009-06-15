@@ -71,7 +71,7 @@ public class BrowseViewController implements InitializingBean, Controller {
 
         // wildcard by default
         String searchKeyword = "*:*";
-        if (getInterPortletMessageReceiver().handles(request)) {
+        if (getInterPortletMessageReceiver() != null && getInterPortletMessageReceiver().handles(request)) {
             searchKeyword = (String) getInterPortletMessageReceiver().receive(request);
             logger.debug("Received IPC keyword for search.");
         }
