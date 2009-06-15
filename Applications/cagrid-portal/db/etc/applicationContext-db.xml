@@ -325,6 +325,9 @@
 
     <bean id="personCatalogEntryDao" parent="aboutCatalogEntryDao"
           class="gov.nih.nci.cagrid.portal.dao.catalog.PersonCatalogEntryDao"/>
+          
+	<bean id="catalogEntryRelationshipTypeDao" parent="daoTemplate"
+          class="gov.nih.nci.cagrid.portal.dao.catalog.CatalogEntryRelationshipTypeDao"/>
 
     <bean id="timestampProvider" class="gov.nih.nci.cagrid.portal.util.StaticTimestampProvider"/>
 
