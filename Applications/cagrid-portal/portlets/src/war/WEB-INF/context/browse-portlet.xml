@@ -33,7 +33,6 @@
    		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.DataSetCatalogEntry" value="datasetView"/>
    		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.CommunityCatalogEntry" value="communityView"/>
    		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.ToolCatalogEntry" value="toolView"/>
-        <entry key="gov.nih.nci.cagrid.portal.domain.catalog.GridServiceEndPointCatalogEntry" value="toolView"/>
    	</util:map>
    	
 	<util:map id="entryTypeViewBeanMap">
@@ -66,18 +65,42 @@
 	<bean id="createCatalogEntryController"
 		class="gov.nih.nci.cagrid.portal.portlet.browse.CreateCatalogEntryController"
 		autowire="byName"/>
+		
+	<bean id="editCatalogEntryController"
+		class="gov.nih.nci.cagrid.portal.portlet.browse.EditCatalogEntryController"
+		autowire="byName"/>
+		
+	<bean id="deleteCatalogEntryController"
+		class="gov.nih.nci.cagrid.portal.portlet.browse.DeleteCatalogEntryController"
+		autowire="byName"/>
+		
+		
+	<bean id="viewRelationshipTypeController"
+		class="gov.nih.nci.cagrid.portal.portlet.browse.ViewRelationshipTypeController"
+		autowire="byName">
+		<property name="objectName" value="relType"/>
+		<property name="viewName" value="relationshipTypeView"/>
+	</bean>
+		
+	<bean id="createRelationshipTypeController"
+		class="gov.nih.nci.cagrid.portal.portlet.browse.CreateRelationshipTypeController"
+		autowire="byName"/>
+		
+	<bean id="editRelationshipTypeController"
+		class="gov.nih.nci.cagrid.portal.portlet.browse.EditRelationshipTypeController"
+		autowire="byName"/>
+		
+	<bean id="deleteRelationshipTypeController"
+		class="gov.nih.nci.cagrid.portal.portlet.browse.DeleteRelationshipTypeController"
+		autowire="byName"/>
+	
+		
 
 	<bean id="browseViewController"
 		class="gov.nih.nci.cagrid.portal.portlet.browse.BrowseViewController"
 		autowire="byName">
 		<property name="successViewName" value="view"/>
         <property name="solrServiceUrl" value="${cagrid.portal.solr.http.url}"/>
-        <property name="interPortletMessageReceiver">
-            <bean class="gov.nih.nci.cagrid.portal.portlet.InterPortletMessageAdapter" autowire="byName">
-                <property name="modePreferenceName" value="catalogSearchMode"/>
-                <property name="inputQueuePreferenceName" value="catalogSearchInputQueue"/>
-            </bean>
-        </property>
 	</bean>
 	
 	<bean id="browseEditController"
@@ -94,10 +117,14 @@
 		<property name="commandClass" value="gov.nih.nci.cagrid.portal.portlet.browse.BrowseCommand"/>
 	</bean>
 	
-
+<!-- 
 	<bean
 	 id="portletModeParameterHandlerMapping"
 		class="org.springframework.web.portlet.handler.PortletModeParameterHandlerMapping">
+	-->	
+	<bean
+	 id="portletModeParameterHandlerMapping"
+		class="gov.nih.nci.cagrid.portal.portlet.browse.BrowseHandlerMapping">		
 
 		<property name="order" value="1" />
 		<property name="parameterName" value="operation"/>
@@ -105,7 +132,7 @@
 		
 		<property name="interceptors">
 			<list>
-                 <ref bean="parameterMappingInterceptor"/>
+                <ref bean="parameterMappingInterceptor"/>
 				<ref bean="openSessionInViewInterceptor" />
 				<ref bean="portalUserInterceptor2" />
 			</list>
@@ -116,12 +143,19 @@
 				<entry key="edit">
 					<map>
 						<entry key="update" value-ref="browseUpdateController" />
+						<entry key="viewRelationshipType" value-ref="viewRelationshipTypeController" />
+						<entry key="createRelationshipType" value-ref="createRelationshipTypeController" />
+						<entry key="editRelationshipType" value-ref="editRelationshipTypeController" />
+						<entry key="deleteRelationshipType" value-ref="deleteRelationshipTypeController" />
 				    </map>
 				</entry>
 				<entry key="view">
 					<map>
+						<entry key="view" value-ref="browseViewController" />
 						<entry key="viewDetails" value-ref="browseViewDetailsController" />
 						<entry key="createCatalogEntry" value-ref="createCatalogEntryController" />
+						<entry key="editCatalogEntry" value-ref="editCatalogEntryController" />
+						<entry key="deleteCatalogEntry" value-ref="deleteCatalogEntryController" />
 				    </map>
 				</entry>				
 	 		</map>
@@ -165,6 +199,9 @@
 
 	<bean id="defaultExceptionHandler"
 		parent="defaultExceptionHandlerTemplate" />
+		
+	
+	
 
 		
 </beans>

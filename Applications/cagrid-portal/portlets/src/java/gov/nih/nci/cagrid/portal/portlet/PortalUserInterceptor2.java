@@ -72,7 +72,7 @@ public class PortalUserInterceptor2 implements WebRequestInterceptor {
 							PortletSession.APPLICATION_SCOPE);
 			logger.debug("portalUserId = " + portalUserId);
 			if (portalUserId != null) {
-				PortalUser portalUser = getPortalUserDao().getByPortalId(Long.getLong(portalUserId));
+				PortalUser portalUser = getPortalUserDao().getByPortalId(portalUserId);
 				if(portalUser == null){
 					throw new Exception("No user found for portal ID: " + portalUserId);
 				}

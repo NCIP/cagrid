@@ -23,10 +23,39 @@
         <create creator="spring" javascript="CredentialManagerFacade">
             <param name="beanName" value="credentialManagerFacade"/>
         </create>
+        
+        <create creator="spring" javascript="PersonCatalogEntryManagerFacade">
+            <param name="beanName" value="personCatalogEntryManagerFacade"/>
+        </create>
+        
+        <create creator="spring" javascript="DataSetCatalogEntryManagerFacade">
+            <param name="beanName" value="dataSetCatalogEntryManagerFacade"/>
+        </create>
+        
+        <create creator="spring" javascript="ToolCatalogEntryManagerFacade">
+            <param name="beanName" value="toolCatalogEntryManagerFacade"/>
+        </create>
+        
+        <create creator="spring" javascript="CommunityCatalogEntryManagerFacade">
+            <param name="beanName" value="communityCatalogEntryManagerFacade"/>
+        </create>
+        
+        <create creator="spring" javascript="InstitutionCatalogEntryManagerFacade">
+            <param name="beanName" value="institutionCatalogEntryManagerFacade"/>
+        </create>
+        
+        <create creator="spring" javascript="CatalogEntryRelationshipTypeManagerFacade">
+            <param name="beanName" value="catalogEntryRelationshipTypeManagerFacade"/>
+        </create>        
 
         <!--other creators are created with annotations-->
 
         <!--converters-->
+        
+        <convert match="java.lang.Exception" converter="exception">
+  			<param name='include' value='message,lineNumber'/>
+		</convert>
+		        
         <convert converter="enum" match="gov.nih.nci.cagrid.portal.domain.dataservice.QueryInstanceState"/>
 
         <convert converter="bean" match="gov.nih.nci.cagrid.portal.domain.dataservice.CQLQueryInstance">
