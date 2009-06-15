@@ -29,6 +29,7 @@ public class InstitutionCatalogEntryDao extends AboutCatalogEntryDao<Institution
         if (entry == null) {
             entry = new InstitutionCatalogEntry();
             entry.setAbout(participant);
+            participant.setCatalog(entry);
         } else
             logger.debug("Catalog entry already exists. Will update the existing one");
         if (!entry.isPublished()) {

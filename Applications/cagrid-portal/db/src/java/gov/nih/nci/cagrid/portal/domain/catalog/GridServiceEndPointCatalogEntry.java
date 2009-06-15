@@ -1,17 +1,31 @@
 package gov.nih.nci.cagrid.portal.domain.catalog;
 
+import gov.nih.nci.cagrid.portal.domain.GridDataService;
 import gov.nih.nci.cagrid.portal.domain.GridService;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Entity
 @DiscriminatorValue("tool_grid_service_endpoint")
 public class GridServiceEndPointCatalogEntry extends ToolDeploymentCatalogEntry {
 
     public GridService about;
+    public boolean data;
+
+    @Transient
+    public boolean isData() {
+        GridService service = getAbout();
+
+        if (service != null) {
+            if (service instanceof GridDataService)
+                return true;
+        }
+        return false;
+    }
+
+    public void setData(boolean data) {
+        this.data = data;
+    }
 
     @OneToOne
     @JoinColumn(name = "grid_service_id")
@@ -20,7 +34,6 @@ public class GridServiceEndPointCatalogEntry extends ToolDeploymentCatalogEntry 
     }
 
     public void setAbout(GridService about) {
-        about.setCatalog(this);
         this.about = about;
     }
 }

@@ -2,6 +2,7 @@ package gov.nih.nci.cagrid.portal.domain.catalog;
 
 import gov.nih.nci.cagrid.portal.domain.AbstractDomainObject;
 import gov.nih.nci.cagrid.portal.domain.PortalUser;
+import gov.nih.nci.cagrid.portal.util.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -24,6 +25,8 @@ import java.util.List;
 public class CatalogEntry extends AbstractDomainObject implements Commentable, MutableTemporal {
 
     public String name;
+
+    public String nameAbbrv;
 
     public String description;
 
@@ -63,12 +66,24 @@ public class CatalogEntry extends AbstractDomainObject implements Commentable, M
 
     private List<Comment> comments = new ArrayList<Comment>();
 
+    public static final int NAME_MAX_LENGTH_ALLOWED = 18;
+
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Transient
+    public String getNameAbbrv() {
+        return StringUtils.abbreviate(name, NAME_MAX_LENGTH_ALLOWED);
+    }
+
+    public void setNameAbbrv(String nameAbbrv) {
+        this.nameAbbrv = nameAbbrv;
     }
 
     @Column(length = 4000)

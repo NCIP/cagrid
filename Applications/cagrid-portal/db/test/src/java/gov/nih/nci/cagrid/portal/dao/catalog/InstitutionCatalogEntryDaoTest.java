@@ -30,12 +30,23 @@ public class InstitutionCatalogEntryDaoTest extends DaoTestBase<InstitutionCatal
     }
 
     @Test
+    public void createWithNoAbout() {
+        InstitutionCatalogEntry entry = new InstitutionCatalogEntry();
+        getDao().save(entry);
+        InstitutionCatalogEntry loaded = getDao().getById(1);
+        assertNotNull(loaded);
+        assertNull(loaded.getAbout());
+    }
+
+    @Test
     public void createAbout() {
 
         pDao.save(p);
 
         InstitutionCatalogEntry catalog = new InstitutionCatalogEntry();
         catalog.setAbout(p);
+        // has to be set on both sides
+        p.setCatalog(catalog);
         getDao().save(catalog);
 
         assertNotNull(getDao().isAbout(p));
@@ -71,6 +82,7 @@ public class InstitutionCatalogEntryDaoTest extends DaoTestBase<InstitutionCatal
 
         InstitutionCatalogEntry catalog = new InstitutionCatalogEntry();
         catalog.setAbout(p);
+        p.setCatalog(catalog);
         getDao().save(catalog);
 
         assertEquals(1, getDao().getAll().size());

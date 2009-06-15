@@ -4,8 +4,7 @@ import gov.nih.nci.cagrid.portal.DaoTestBase;
 import gov.nih.nci.cagrid.portal.dao.GridServiceDao;
 import gov.nih.nci.cagrid.portal.domain.GridService;
 import gov.nih.nci.cagrid.portal.domain.catalog.GridServiceEndPointCatalogEntry;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,11 +26,23 @@ public class GridServiceEndPointCatalogEntryDaoTest extends DaoTestBase<GridServ
     }
 
     @Test
+    public void createWithNoAbout() {
+        GridServiceEndPointCatalogEntry entry = new GridServiceEndPointCatalogEntry();
+        getDao().save(entry);
+        GridServiceEndPointCatalogEntry loaded = getDao().getById(1);
+        assertNotNull(loaded);
+        assertNull(loaded.getAbout());
+    }
+
+
+    @Test
     public void createAbout() {
         pDao.save(p);
 
         GridServiceEndPointCatalogEntry catalog = new GridServiceEndPointCatalogEntry();
         catalog.setAbout(p);
+        p.setCatalog(catalog);
+        pDao.save(p);
         getDao().save(catalog);
 
         assertNotNull(getDao().isAbout(p));
@@ -46,6 +57,8 @@ public class GridServiceEndPointCatalogEntryDaoTest extends DaoTestBase<GridServ
 
         GridServiceEndPointCatalogEntry catalog = new GridServiceEndPointCatalogEntry();
         catalog.setAbout(p);
+        p.setCatalog(catalog);
+        pDao.save(p);
         getDao().save(catalog);
 
         assertEquals(1, getDao().getAll().size());

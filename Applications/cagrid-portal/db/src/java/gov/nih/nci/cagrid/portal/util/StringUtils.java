@@ -28,6 +28,10 @@ public class StringUtils {
     }
 
 
+    public static String abbreviate(String longStr, int maxLength) {
+        String _longStr = getEmptyIfNull(longStr);
+        return _longStr.length() > maxLength ? _longStr.substring(0, maxLength - 2) + ".." : _longStr;
+    }
 }
 
 
