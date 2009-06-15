@@ -30,8 +30,10 @@ public class CatalogEntryRoleType extends AbstractDomainObject implements Mutabl
 
     public List<CatalogEntryRoleInstance> instances = new ArrayList<CatalogEntryRoleInstance>();
 
-    public CatalogEntryRelationshipType type;
+    public CatalogEntryRelationshipType relationshipType;
     private List<Comment> comments = new ArrayList<Comment>();
+    
+    private String type;
 
     public String getName() {
         return name;
@@ -51,12 +53,12 @@ public class CatalogEntryRoleType extends AbstractDomainObject implements Mutabl
 
     @ManyToOne( cascade = {CascadeType.ALL} )
     @JoinColumn(name="type_id")
-    public CatalogEntryRelationshipType getType() {
-        return type;
+    public CatalogEntryRelationshipType getRelationshipType() {
+        return relationshipType;
     }
 
-    public void setType(CatalogEntryRelationshipType type) {
-        this.type = type;
+    public void setRelationshipType(CatalogEntryRelationshipType relationshipType) {
+        this.relationshipType = relationshipType;
     }
 
     public int getMinCardinality() {
@@ -108,4 +110,12 @@ public class CatalogEntryRoleType extends AbstractDomainObject implements Mutabl
     public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 }

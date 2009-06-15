@@ -23,7 +23,7 @@ public class GridServiceEndPointCatalogEntryDao extends AboutCatalogEntryDao<Gri
     }
 
 
-    public void createCatalogAbout(GridService service) {
+    public GridServiceEndPointCatalogEntry createCatalogAbout(GridService service) {
         GridServiceEndPointCatalogEntry entry = isAbout(service);
         if (entry == null) {
             entry = new GridServiceEndPointCatalogEntry();
@@ -36,6 +36,7 @@ public class GridServiceEndPointCatalogEntryDao extends AboutCatalogEntryDao<Gri
             entry.setDescription(BeanUtils.traverse(service, "serviceMetadata.serviceDescription.description"));
         }
         save(entry);
+        return entry;
     }
 
 

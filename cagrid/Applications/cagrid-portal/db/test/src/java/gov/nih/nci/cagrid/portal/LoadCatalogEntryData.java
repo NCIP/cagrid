@@ -96,7 +96,7 @@ public class LoadCatalogEntryData {
 					person1ce.setAddressPublic(true);
 					person1ce.setEmailAddressPublic(true);
 					person1ce.setPhoneNumberPublic(true);
-					person1ce.setAbout(portalUser1);
+//					person1ce.setAbout(portalUser1);
 
 					session.save(person1ce);
 					addComment(session, person1ce, person1ce,
@@ -167,8 +167,10 @@ public class LoadCatalogEntryData {
 							null,
 							"DataSetPerson",
 							"A person can be related to a dataset and vice versa.",
+							"gov.nih.nci.cagrid.portal.portlet.domain.catalog.DataSetCatalogEntry",
 							"DataSetPersonRole",
 							"A dataset can be related to a person.",
+							"gov.nih.nci.cagrid.portal.portlet.domain.catalog.PersonCatalogEntry",
 							"DataSetPersonOfRole",
 							"A person can be related to a dataset.");
 
@@ -177,8 +179,10 @@ public class LoadCatalogEntryData {
 							dataSetPersonRelType,
 							"DataUserSetPerson",
 							"A person uses a dataset and a dataset is used by a person.",
+							"gov.nih.nci.cagrid.portal.portlet.domain.catalog.DataSetCatalogEntry",
 							"DataSetUserPersonRole",
 							"A dataset is used by a person.",
+							"gov.nih.nci.cagrid.portal.portlet.domain.catalog.PersonCatalogEntry",
 							"DataSetUserPersonOfRole",
 							"A person uses a dataset.");
 
@@ -243,8 +247,10 @@ public class LoadCatalogEntryData {
 							null,
 							"ToolPerson",
 							"A person can be related to a tool and vice versa.",
+							"gov.nih.nci.cagrid.portal.portlet.domain.catalog.ToolCatalogEntry",
 							"ToolPersonRole",
 							"A tool can be related to a person.",
+							"gov.nih.nci.cagrid.portal.portlet.domain.catalog.PersonCatalogEntry",
 							"ToolPersonOfRole",
 							"A person can be related to a tool.");
 
@@ -253,8 +259,10 @@ public class LoadCatalogEntryData {
 							toolPersonRelType,
 							"ToolPersonCreator",
 							"A person creates a tool and a tool is created by a person.",
+							"gov.nih.nci.cagrid.portal.portlet.domain.catalog.ToolCatalogEntry",
 							"ToolPersonCreatorRole",
 							"A tool is created by a person.",
+							"gov.nih.nci.cagrid.portal.portlet.domain.catalog.PersonCatalogEntry",
 							"ToolPersonCreatorOfRole",
 							"A person creates a tool.");
 
@@ -282,8 +290,10 @@ public class LoadCatalogEntryData {
 							null,
 							"DataSetTool",
 							"A dataset can be related to a tool and vice versa.",
+							"gov.nih.nci.cagrid.portal.portlet.domain.catalog.DataSetCatalogEntry",
 							"DataSetToolRole",
 							"A dataset can be related to a tool.",
+							"gov.nih.nci.cagrid.portal.portlet.domain.catalog.ToolCatalogEntry",
 							"DataSetToolOfRole",
 							"A tool can be related to a dataset.");
 
@@ -292,8 +302,10 @@ public class LoadCatalogEntryData {
 							datasetToolRelType,
 							"DataSetVizualizationTool",
 							"A dataset can be vizualized by a tool and a tool is used to visualize a dataset.",
+							"gov.nih.nci.cagrid.portal.portlet.domain.catalog.DataSetCatalogEntry",
 							"DataSetVizualizationToolRole",
 							"A dataset is visualized by a tool.",
+							"gov.nih.nci.cagrid.portal.portlet.domain.catalog.DataSetVisualizationToolCatalogEntry",
 							"DataSetVizualizationToolOfRole",
 							"A tool vizualizes a dataset.");
 
@@ -355,8 +367,10 @@ public class LoadCatalogEntryData {
 							null,
 							"CommunityPerson",
 							"A community can be related to a person and vice versa.",
+							"gov.nih.nci.cagrid.portal.portlet.domain.catalog.CommunityCatalogEntry",
 							"CommunityPersonRole",
 							"A community can be related to a person.",
+							"gov.nih.nci.cagrid.portal.portlet.domain.catalog.PersonCatalogEntry",
 							"CommunityPersonOfRole",
 							"A person can be related to a community.");
 
@@ -365,8 +379,10 @@ public class LoadCatalogEntryData {
 							communityPersonRelType,
 							"CommunityPersonMember",
 							"A community has persons as members and persons are members of communities.",
+							"gov.nih.nci.cagrid.portal.portlet.domain.catalog.CommunityCatalogEntry",
 							"CommunityPersonMemberRole",
 							"A community has members persons.",
+							"gov.nih.nci.cagrid.portal.portlet.domain.catalog.PersonCatalogEntry",
 							"CommunityPersonMemberOfRole",
 							"Persons are members of communities.");
 
@@ -392,8 +408,10 @@ public class LoadCatalogEntryData {
 							null,
 							"PointOfContact",
 							"A person can be a POC for any catalog entry.",
+							"gov.nih.nci.cagrid.portal.portlet.domain.catalog.CatalogEntry",
 							"PointOfContactRole",
 							"A person is POC for some catalog entry.",
+							"gov.nih.nci.cagrid.portal.portlet.domain.catalog.PersonCatalogEntry",
 							"PointOfContactOfRole",
 							"A catalog entry has one or more persons as POCs.");
 
@@ -402,8 +420,10 @@ public class LoadCatalogEntryData {
 							pocRelType,
 							"OperationalPointOfContact",
 							"A person can be the operational POC for some catalog entry.",
+							"gov.nih.nci.cagrid.portal.portlet.domain.catalog.CatalogEntry",
 							"OperationalPointOfContactRole",
 							"A person is the operation POC for some catalog entry.",
+							"gov.nih.nci.cagrid.portal.portlet.domain.catalog.PersonCatalogEntry",
 							"OperationalPontOfContactOfRole",
 							"A catalog entry has some person as the operational POC.");
 					
@@ -419,8 +439,10 @@ public class LoadCatalogEntryData {
 							pocRelType,
 							"OrganizationalPointOfContact",
 							"A person can be the organizational POC for some catalog entry.",
+							"gov.nih.nci.cagrid.portal.portlet.domain.catalog.CatalogEntry",
 							"OrganizationalPointOfContactRole",
 							"A person is the organizational POC for some catalog entry.",
+							"gov.nih.nci.cagrid.portal.portlet.domain.catalog.PersonCatalogEntry",
 							"OrganizationalPontOfContactOfRole",
 							"A catalog entry has some person as the organizational POC.");
 					
@@ -436,8 +458,10 @@ public class LoadCatalogEntryData {
 							pocRelType,
 							"TechnicalPointOfContact",
 							"A person can be the technical POC for some catalog entry.",
+							"gov.nih.nci.cagrid.portal.portlet.domain.catalog.CatalogEntry",
 							"TechnicalPointOfContactRole",
 							"A person is the technical POC for some catalog entry.",
+							"gov.nih.nci.cagrid.portal.portlet.domain.catalog.PersonCatalogEntry",
 							"TechnicalPontOfContactOfRole",
 							"A catalog entry has some person as the technical POC.");
 					
@@ -502,7 +526,7 @@ public class LoadCatalogEntryData {
 		CatalogEntryRelationshipInstance relInst = new CatalogEntryRelationshipInstance();
 		relInst.setCreatedAt(new Date());
 		relInst.setSince(new Date());
-		relInst.setType(roleTypeA.getType());
+		relInst.setType(roleTypeA.getRelationshipType());
 		session.save(relInst);
 
 		CatalogEntryRoleInstance roleAInst = new CatalogEntryRoleInstance();
@@ -535,25 +559,28 @@ public class LoadCatalogEntryData {
 
 	public CatalogEntryRelationshipType createRelationshipType(Session session,
 			CatalogEntryRelationshipType parentRel, String relTypeName,
-			String relTypeDesc, String roleAName, String roleADesc,
-			String roleBName, String roleBDesc) {
+			String relTypeDesc, String roleAType, String roleAName, String roleADesc,
+			String roleBType, String roleBName, String roleBDesc) {
 
 		CatalogEntryRelationshipType ceRelType1 = new CatalogEntryRelationshipType();
 		ceRelType1.setName(relTypeName);
 		ceRelType1.setDescription(relTypeDesc);
 		ceRelType1.setTemporal(true);
+		ceRelType1.setParent(parentRel);
 		session.save(ceRelType1);
 
 		CatalogEntryRoleType ceRoleType1 = new CatalogEntryRoleType();
+		ceRoleType1.setName(roleAType);
 		ceRoleType1.setName(roleAName);
 		ceRoleType1.setDescription(roleADesc);
-		ceRoleType1.setType(ceRelType1);
+		ceRoleType1.setRelationshipType(ceRelType1);
 		session.save(ceRoleType1);
 
 		CatalogEntryRoleType ceRoleType2 = new CatalogEntryRoleType();
+		ceRoleType2.setName(roleBType);
 		ceRoleType2.setName(roleBName);
 		ceRoleType2.setDescription(roleBDesc);
-		ceRoleType2.setType(ceRelType1);
+		ceRoleType2.setRelationshipType(ceRelType1);
 		session.save(ceRoleType2);
 
 		ceRelType1.setRoleTypeA(ceRoleType1);

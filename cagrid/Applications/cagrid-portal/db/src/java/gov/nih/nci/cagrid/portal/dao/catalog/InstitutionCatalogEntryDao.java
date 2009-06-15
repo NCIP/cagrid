@@ -24,7 +24,7 @@ public class InstitutionCatalogEntryDao extends AboutCatalogEntryDao<Institution
         return InstitutionCatalogEntry.class;
     }
 
-    public void createCatalogAbout(Participant participant) {
+    public InstitutionCatalogEntry createCatalogAbout(Participant participant) {
         InstitutionCatalogEntry entry = isAbout(participant);
         if (entry == null) {
             entry = new InstitutionCatalogEntry();
@@ -55,6 +55,7 @@ public class InstitutionCatalogEntryDao extends AboutCatalogEntryDao<Institution
         }
 
         save(entry);
+        return entry;
     }
 
 
