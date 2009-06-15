@@ -41,6 +41,14 @@ public class PersonCatalogEntryDaoTest extends DaoTestBase<PersonCatalogEntryDao
     }
 
     @Test
+    public void createWithNoAbout() {
+        PersonCatalogEntry entry = new PersonCatalogEntry();
+        getDao().save(entry);
+        PersonCatalogEntry loaded = getDao().getById(1);
+        assertNotNull(loaded);
+    }
+
+    @Test
     public void createWithAddress() {
         try {
             Person person = p.getPerson();
@@ -86,6 +94,7 @@ public class PersonCatalogEntryDaoTest extends DaoTestBase<PersonCatalogEntryDao
 
         PersonCatalogEntry catalog = new PersonCatalogEntry();
 //        catalog.setAbout(p);
+        p.setCatalog(catalog);
         getDao().save(catalog);
 
         assertNotNull(getDao().isAbout(p));
@@ -100,6 +109,7 @@ public class PersonCatalogEntryDaoTest extends DaoTestBase<PersonCatalogEntryDao
 
         PersonCatalogEntry catalog = new PersonCatalogEntry();
 //        catalog.setAbout(p);
+        p.setCatalog(catalog);
         getDao().save(catalog);
 
         assertEquals(1, getDao().getAll().size());

@@ -179,7 +179,6 @@ public class InstitutionCatalogEntry extends CommunityCatalogEntry implements Co
     }
 
     public void setAbout(Participant about) {
-        about.setCatalog(this);
         this.about = about;
     }
 }

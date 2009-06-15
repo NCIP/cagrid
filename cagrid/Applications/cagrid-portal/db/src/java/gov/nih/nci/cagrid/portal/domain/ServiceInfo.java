@@ -3,14 +3,13 @@
  */
 package gov.nih.nci.cagrid.portal.domain;
 
-import gov.nih.nci.cagrid.portal.domain.GridDataService;
-import gov.nih.nci.cagrid.portal.domain.GridService;
 import gov.nih.nci.cagrid.portal.domain.metadata.common.ResearchCenter;
+import gov.nih.nci.cagrid.portal.util.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import java.net.URL;
 import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
@@ -72,7 +71,7 @@ public class ServiceInfo {
 
     public void setCenter(String center) {
         this.center = center;
-        setCenterAbbrv(abbreviate(center,NAME_MAX_LENGTH_ALLOWED));
+        setCenterAbbrv(abbreviate(center, NAME_MAX_LENGTH_ALLOWED));
     }
 
     public String getName() {
@@ -81,7 +80,7 @@ public class ServiceInfo {
 
     public void setName(String name) {
         this.name = name;
-        setNameAbbrv(abbreviate(name,NAME_MAX_LENGTH_ALLOWED));
+        setNameAbbrv(abbreviate(name, NAME_MAX_LENGTH_ALLOWED));
     }
 
     public String getStatus() {
@@ -136,9 +135,9 @@ public class ServiceInfo {
         }
     }
 
-    private String formulateNameFromUrl(String Url){
+    private String formulateNameFromUrl(String Url) {
         try {
-            if(Url.lastIndexOf("/")>-1){
+            if (Url.lastIndexOf("/") > -1) {
                 return Url.substring(Url.lastIndexOf("/"));
             }
         } catch (Exception e) {
@@ -179,8 +178,7 @@ public class ServiceInfo {
         this.version = version;
     }
 
-    private String abbreviate(String longStr,int maxLength){
-        return longStr.length() > maxLength ? longStr.substring(0, maxLength) + ".." : longStr;
-
+    private String abbreviate(String longStr, int maxLength) {
+        return StringUtils.abbreviate(longStr, maxLength);
     }
 }

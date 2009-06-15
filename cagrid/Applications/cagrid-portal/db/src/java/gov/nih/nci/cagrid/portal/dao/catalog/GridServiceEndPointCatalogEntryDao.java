@@ -28,6 +28,7 @@ public class GridServiceEndPointCatalogEntryDao extends AboutCatalogEntryDao<Gri
         if (entry == null) {
             entry = new GridServiceEndPointCatalogEntry();
             entry.setAbout(service);
+            service.setCatalog(entry);
         } else
             logger.debug("Catalog entry already exists. Will update the existing one");
         if (!entry.isPublished()) {

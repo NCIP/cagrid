@@ -1,9 +1,13 @@
 package gov.nih.nci.cagrid.portal.dao.catalog;
 
 import gov.nih.nci.cagrid.portal.DaoTestBase;
+import gov.nih.nci.cagrid.portal.LoadCatalogEntryData;
 import gov.nih.nci.cagrid.portal.dao.AbstractDao;
 import gov.nih.nci.cagrid.portal.domain.PortalUser;
 import gov.nih.nci.cagrid.portal.domain.catalog.*;
+import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -90,5 +94,41 @@ public class CatalogEntryDaoTest extends DaoTestBase<CatalogEntryDao> {
 
 
         getDao().save(catalog);
+    }
+
+    @Test
+    public void nameAbbrv() {
+        LoadCatalogEntryData loader = new LoadCatalogEntryData();
+        loader.run();
+        assertTrue(getDao().getAll().size() > 0);
+
+        for (int i = 1; i < getDao().getAll().size(); i++) {
+            List<CatalogEntry> entries = getDao().getLatestContent(i);
+            assertTrue(entries.size() > 0);
+            for (CatalogEntry entry : entries) {
+                assertNotNull(entry);
+                assertNotNull(entry.getNameAbbrv());
+                assertTrue("Abbreviated length exceeds max", entry.getNameAbbrv().length() <= CatalogEntry.NAME_MAX_LENGTH_ALLOWED);
+            }
+        }
+
+    }
+
+
+    @Test
+    public void getLatest() {
+        LoadCatalogEntryData loader = new LoadCatalogEntryData();
+        loader.run();
+        assertTrue(getDao().getAll().size() > 0);
+
+        for (int i = 1; i < getDao().getAll().size(); i++) {
+            List<CatalogEntry> entries = getDao().getLatestContent(i);
+            assertEquals(i, entries.size());
+            for (CatalogEntry entry : entries) {
+                assertNotNull(entry);
+                assertNotNull(entry.getId());
+            }
+        }
+
     }
 }
