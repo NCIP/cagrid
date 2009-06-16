@@ -13,7 +13,6 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +46,7 @@ public class PortalUser extends AbstractDomainObject implements Commentable {
     public List<Comment> comments = new ArrayList<Comment>();
 
     public List<CatalogEntry> catalogEntries = new ArrayList<CatalogEntry>();
-    
+
     public List<IdPAuthentication> authentications = new ArrayList<IdPAuthentication>();
 
 
@@ -125,9 +124,7 @@ public class PortalUser extends AbstractDomainObject implements Commentable {
     }
 
     //delete all catalogs for the user
-    //@OneToOne(mappedBy = "about", cascade = CascadeType.ALL)
-    @ManyToOne
-    @JoinColumn(name="catalog_id")
+    @OneToOne(mappedBy = "about", cascade = CascadeType.ALL)
     public PersonCatalogEntry getCatalog() {
         return catalog;
     }
@@ -155,11 +152,11 @@ public class PortalUser extends AbstractDomainObject implements Commentable {
     }
 
     @OneToMany(mappedBy = "portalUser", cascade = CascadeType.ALL)
-	public List<IdPAuthentication> getAuthentications() {
-		return authentications;
-	}
-	
-	public void setAuthentications(List<IdPAuthentication> authentications) {
-		this.authentications = authentications;
-	}
+    public List<IdPAuthentication> getAuthentications() {
+        return authentications;
+    }
+
+    public void setAuthentications(List<IdPAuthentication> authentications) {
+        this.authentications = authentications;
+    }
 }

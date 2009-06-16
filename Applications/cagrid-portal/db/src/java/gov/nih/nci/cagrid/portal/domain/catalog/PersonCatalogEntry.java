@@ -197,7 +197,7 @@ public class PersonCatalogEntry extends CatalogEntry implements Contactable {
     }
 
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne
     @JoinColumn(name = "person_id")
     public PortalUser getAbout() {
         return about;
