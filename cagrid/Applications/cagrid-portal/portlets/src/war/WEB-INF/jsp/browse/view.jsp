@@ -29,9 +29,9 @@ TODO: Need to download dragdrop.
 <script language="JavaScript">
 
     function ${ns}viewDetails(id) {
-        $("${ns}catalogDetailsForm").entryId.value = id;
-        $("${ns}catalogDetailsForm").action = '<portlet:renderURL/>';
-        $("${ns}catalogDetailsForm").submit();
+        $jQuery("${ns}catalogDetailsForm").entryId.value = id;
+        $jQuery("${ns}catalogDetailsForm").action = '<portlet:renderURL/>';
+        $jQuery("${ns}catalogDetailsForm").submit();
     }
     
     function pageCallback(result) {
@@ -55,7 +55,7 @@ TODO: Need to download dragdrop.
 
         resultDiv.appendChild(document.createElement('br'));
 
-        $("catalogs").appendChild(resultDiv);
+        $jQuery("catalogs").appendChild(resultDiv);
 
 
     }
