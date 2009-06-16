@@ -3,9 +3,9 @@ package gov.nih.nci.cagrid.portal.portlet.sample;
 import java.util.Map;
 
 /**
- * User: kherm
+ * User: sulakhe
  *
- * @author kherm manav.kher@semanticbits.com
+ * @author sulakhe@mcs.anl.gov
  */
 public class WorkflowBean {
 

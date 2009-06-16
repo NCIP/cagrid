@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
-	http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="cache" value="true"/>
@@ -19,14 +26,32 @@
         </property>
     </bean>
 
-    <bean id="tavernaWorkflowController" class="gov.nih.nci.cagrid.portal.portlet.sample.TavernaPortletController">
+	<bean id="portletModeParameterHandlerMapping" class="org.springframework.web.portlet.handler.PortletModeParameterHandlerMapping">
+        <property name="portletModeParameterMap">
+            <map>
+                <entry key="view">
+	                <map>
+	                    <entry key="selectWorkflow">
+	                        <ref local="tavernaWorkflowController-2"/>
+	                    </entry>
+	                    <entry key="submitWorkflow">
+	                        <ref local="tavernaWorkflowController-3"/>
+	                    </entry>
+	                </map>
+                </entry>
+            </map>
+        </property>
+    </bean>
+	
+	<bean id="tavernaWorkflowController-2" class="gov.nih.nci.cagrid.portal.portlet.sample.TavernaPortletController2">
         <property name="commandClass" value="gov.nih.nci.cagrid.portal.portlet.sample.WorkflowBean"/>
         <property name="commandName" value="cmd"/>
-        <property name="formView" value="view"/>
+        <property name="formView" value="test"/>
         <property name="successView" value="result"/>
         <property name="twsHelper">
             <bean class="gov.nih.nci.cagrid.portal.portlet.sample.TavernaWorkflowServiceHelper">
                 <property name="tavernaWorkflowServiceUrl" value="http://localhost:8081/wsrf/services/cagrid/TavernaWorkflowService"/>
+                <property name="sessionEprsRef" ref="sessionEprs"/>
             </bean>
         </property>
         <property name="workflowList">
@@ -37,21 +62,64 @@
         </property>
     </bean>
     
+    <bean id="tavernaWorkflowController-3" class="gov.nih.nci.cagrid.portal.portlet.sample.TavernaPortletController">
+        <property name="commandClass" value="gov.nih.nci.cagrid.portal.portlet.sample.WorkflowBean"/>
+        <property name="commandName" value="cmd"/>
+        <property name="formView" value="view"/>
+        <property name="successView" value="result"/>
+        <property name="twsHelper">
+            <bean class="gov.nih.nci.cagrid.portal.portlet.sample.TavernaWorkflowServiceHelper">
+                <property name="tavernaWorkflowServiceUrl" value="http://localhost:8081/wsrf/services/cagrid/TavernaWorkflowService"/>
+                <property name="sessionEprsRef" ref="sessionEprs"/>
+            </bean>
+        </property>
+        <property name="workflowList">
+            <map>
+                <entry key="workflow-1"><ref local="workflow-1"/></entry>
+                <entry key="workflow-2"><ref local="workflow-2"/></entry>
+            </map>
+        </property>
+    </bean>
+    
+    
+    <bean id="tavernaWorkflowController" class="gov.nih.nci.cagrid.portal.portlet.sample.TavernaPortletController">
+        <property name="commandClass" value="gov.nih.nci.cagrid.portal.portlet.sample.WorkflowBean"/>
+        <property name="commandName" value="cmd"/>
+        <property name="formView" value="view"/>
+        <property name="successView" value="result"/>
+        <property name="twsHelper">
+            <bean class="gov.nih.nci.cagrid.portal.portlet.sample.TavernaWorkflowServiceHelper">
+                <property name="tavernaWorkflowServiceUrl" value="http://localhost:8081/wsrf/services/cagrid/TavernaWorkflowService"/>
+                <property name="sessionEprsRef" ref="sessionEprs"/>
+            </bean>
+        </property>
+        <property name="workflowList">
+            <map>
+                <entry key="workflow-1"><ref local="workflow-1"/></entry>
+                <entry key="workflow-2"><ref local="workflow-2"/></entry>
+            </map>
+        </property>
+    </bean>
+    
+    <bean id="sessionEprs" class="gov.nih.nci.cagrid.portal.portlet.sample.SessionEprs" scope="session">
+		        <aop:scoped-proxy/>
+    </bean>
+    
     <bean id="workflow-1" class="gov.nih.nci.cagrid.portal.portlet.sample.WorkflowDescription">
         <property name="workflowId" value="workflow-1"/>
         <property name="name" value="FishSoup Workflow"/>
         <property name="inputPorts" value="2"/>
         <property name="description" value="It is a simple workflow that takes two strings as input and returns a concatenated string as output."/>
-        <property name="scuflLocation" value="/Users/sulakhe/portal-liferay/workflow-files/fishsoup.t2flow"/>
         <property name="author" value="Dinanath Sulakhe"/>
+        <property name="filePath" value="classpath:fishsoup.t2flow"/>
     </bean>
     <bean id="workflow-2" class="gov.nih.nci.cagrid.portal.portlet.sample.WorkflowDescription">
         <property name="workflowId" value="workflow-2"/>
         <property name="name" value="caDSR Workflow"/>
         <property name="inputPorts" value="1"/>
         <property name="description" value="This workflow runs against the caDSR Service deployed by the caGrid. It is to test if we can run any caGrid services."/>
-        <property name="scuflLocation" value="/Users/sulakhe/portal-liferay/workflow-files/cadsr.t2flow"/>
         <property name="author" value="Wei Tan"/>
-    </bean>
+        <property name="filePath" value="classpath:cadsr.t2flow"/>
+   </bean>
 
 </beans>
