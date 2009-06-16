@@ -14,15 +14,16 @@
            <c:if test="${cmd.formState == 2}">
 
                 <span style="font-weight:bold; font-color:blue">
-				Output 3:<BR>
+				Output :<BR>
 				<hr/>
 				</span>
                 <span style="font-weight:bold">
                      <c:out value="${cmd.result}"/>
+                     <!--
 					<c:out value="${cmd.formState}"/>
 					<c:out value="${cmd.keyword}"/>
 
-               </span>
+               --></span>
             </c:if>
 			<c:if test="${cmd.result == null}">
 				<span style="font-weight:bold; font-color:blue">
