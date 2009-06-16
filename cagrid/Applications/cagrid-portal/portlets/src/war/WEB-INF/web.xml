@@ -109,7 +109,8 @@
                 gov.nih.nci.cagrid.portal.portlet.diagnostics.IdxDiagnosticService,
                 gov.nih.nci.cagrid.portal.portlet.diagnostics.MetadataDiagnosticService,
                 gov.nih.nci.cagrid.portal.portlet.status.AjaxStatusService,
-                gov.nih.nci.cagrid.portal.portlet.map.AjaxMapService,
+                gov.nih.nci.cagrid.portal.portlet.map.ajax.AjaxMapService,
+                gov.nih.nci.cagrid.portal.portlet.map.ajax.LatestContentService,
                 gov.nih.nci.cagrid.portal.portlet.discovery.evs.DefaultConceptAutocompleterService,
                 gov.nih.nci.cagrid.portal.portlet.status.EditServiceStatusManager,
                 gov.nih.nci.cagrid.portal.portlet.notification.NotificationSubscriptionService
@@ -187,7 +188,7 @@
         <servlet-name>export</servlet-name>
         <url-pattern>/export/*</url-pattern>
     </servlet-mapping>
-    
+
     <servlet>
         <servlet-name>credmgr</servlet-name>
         <servlet-class>
@@ -199,7 +200,7 @@
     <servlet-mapping>
         <servlet-name>credmgr</servlet-name>
         <url-pattern>/credmgr/*</url-pattern>
-    </servlet-mapping>    
+    </servlet-mapping>
 
     <servlet>
         <servlet-name>view-servlet</servlet-name>
@@ -211,7 +212,6 @@
         <servlet-name>view-servlet</servlet-name>
         <url-pattern>/WEB-INF/servlet/view</url-pattern>
     </servlet-mapping>
-
 
 
 </web-app>
