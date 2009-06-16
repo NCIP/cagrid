@@ -12,10 +12,6 @@
 <liferay-theme:defineObjects/>
 <c:set var="ns"><portlet:namespace/></c:set>
 
-<link type="text/css" rel="stylesheet"
-      href="<c:url value="/css/infoPopup.css"/>"/>
-
-
 <liferay-portlet:renderURL var="catalogLink" portletName="BrowsePortlet_WAR_cagridportlets"
                            portletMode="view">
     <liferay-portlet:param name="operation" value="viewDetails"/>

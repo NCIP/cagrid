@@ -1,5 +1,7 @@
 <%@ include file="/WEB-INF/jsp/include/includes.jspf" %>
 
+<script type="text/javascript" src="<c:url value="/js/scriptaculous/prototype.js"/>"></script>
+
 <script src="<c:url value="/js/script.js"/>" type="text/javascript"></script>
 <script src="<c:url value="/js/tablesort.js"/>" type="text/javascript"></script>
 <script src="<c:url value="/js/pagination.js"/>" type="text/javascript"></script>
