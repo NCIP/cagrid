@@ -35,7 +35,7 @@ function ${ns}cancelEdit(id){
 		<portlet:param name="id" value="CPREPLACE"/>
 	</portlet:renderURL>		
 </c:if>
-	var viewDetailsUrl = "<c:out value="${viewDetailsUrl}"/>".replace("CPREPLACE", id);
+	var viewDetailsUrl = "${viewDetailsUrl}".replace("CPREPLACE", id);
 	window.location = viewDetailsUrl;
 }
 

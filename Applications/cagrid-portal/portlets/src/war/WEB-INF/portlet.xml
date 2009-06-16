@@ -703,17 +703,17 @@
         </portlet-preferences>
     </portlet>
     
-    <!-- 
+<!-- 
 	<portlet>
-        <description>Test Friendly URL Portlet</description>
-        <portlet-name>TestFriendlyURLPortlet</portlet-name>
-        <display-name>TestFriendlyURLPortlet</display-name>
+        <description>Test Friendly Urls Portlet</description>
+        <portlet-name>TestFriendlyUrlsPortlet</portlet-name>
+        <display-name>TestFriendlyUrlsPortlet</display-name>
         <portlet-class>
             org.springframework.web.portlet.DispatcherPortlet
         </portlet-class>
         <init-param>
             <name>contextConfigLocation</name>
-            <value>/WEB-INF/context/test-friendlyurl-portlet.xml</value>
+            <value>/WEB-INF/context/friendlyurls-portlet.xml</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -721,12 +721,12 @@
             <portlet-mode>view</portlet-mode>
         </supports>
         <portlet-info>
-            <title>TestFriendlyURLPortlet</title>
-            <short-title>TestFriendlyURLPortlet</short-title>
+            <title>TestFriendlyUrlsPortlet</title>
+            <short-title>TestFriendlyUrlsPortlet</short-title>
             <keywords>test</keywords>
         </portlet-info>
     </portlet>    
-     -->
+ -->
     
     <portlet>
         <description>Content Portlet</description>

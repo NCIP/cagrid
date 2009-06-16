@@ -16,14 +16,14 @@
 	</portlet>
 	<portlet>
 		<portlet-name>BrowsePortlet</portlet-name>
-		<friendly-url-mapper-class>gov.nih.nci.cagrid.portal.portlet.browse.BrowseFriendlyURLMapper</friendly-url-mapper-class>
 		<private-session-attributes>true</private-session-attributes>
 	</portlet>
+	
 	<!-- 
 	<portlet>
-		<portlet-name>TestFriendlyURLPortlet</portlet-name>
-		<friendly-url-mapper-class>gov.nih.nci.cagrid.portal.portlet.browse.BrowseFriendlyURLMapper</friendly-url-mapper-class>
+		<portlet-name>TestFriendlyUrlsPortlet</portlet-name>
+		<friendly-url-mapper-class>gov.nih.nci.cagrid.portal.portlet.TestFriendlyURLMapper</friendly-url-mapper-class>
 		<instanceable>false</instanceable>
 	</portlet>
-	 -->	
+ -->
 </liferay-portlet-app>
