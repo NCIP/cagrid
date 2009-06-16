@@ -235,8 +235,20 @@
 					<then>
 						<property name="portlets.temp.dir" value="${liferay.install.dir}/${tomcat.server.name}/temp/0-cagridportlets"/>
 					</then>
+					<elseif>
+						<available file="${liferay.install.dir}/${tomcat.server.name}/temp/1-cagridportlets" type="dir"/>
+						<then>
+							<property name="portlets.temp.dir" value="${liferay.install.dir}/${tomcat.server.name}/temp/1-cagridportlets"/>
+						</then>
+					</elseif>
+					<elseif>
+						<available file="${liferay.install.dir}/${tomcat.server.name}/temp/2-cagridportlets" type="dir"/>
+						<then>
+							<property name="portlets.temp.dir" value="${liferay.install.dir}/${tomcat.server.name}/temp/2-cagridportlets"/>
+						</then>
+					</elseif>					
 					<else>
-						<property name="portlets.temp.dir" value="${liferay.install.dir}/${tomcat.server.name}/temp/1-cagridportlets"/>
+						<property name="portlets.temp.dir" value="${liferay.install.dir}/${tomcat.server.name}/temp/3-cagridportlets"/>
 					</else>
 				</if>
 				
