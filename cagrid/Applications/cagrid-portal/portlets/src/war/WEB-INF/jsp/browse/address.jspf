@@ -2,11 +2,11 @@
 	<label>Address</label>
 	<address>
 		<c:if test="${not empty catalogEntry.street1}">
-			<c:out value="${catalogEntry.street1}"/>
-		</c:if><br/>
+			<c:out value="${catalogEntry.street1}"/><br/>
+		</c:if>
 		<c:if test="${not empty catalogEntry.street2}">
-			<c:out value="${catalogEntry.street2}"/>
-		</c:if><br/>
+			<c:out value="${catalogEntry.street2}"/><br/>
+		</c:if>
 		<c:if test="${not empty catalogEntry.locality}">
 			<c:out value="${catalogEntry.locality}"/>,
 		</c:if>

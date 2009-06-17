@@ -8,39 +8,54 @@
 <div id="debug_log"></div>
 <div id="${ns}dirty"></div>
 <form name="${ns}editForm">	
-
+<div class="row">
 <label for="name">Name</label>
 <input name="name" class="required" type="text" value="${relType.name}"/>
-<span style="color: red"></span><br/>
+<span style="color: red"></span>
+</div>
 
-<label for="description">Description</label>
+<div class="row">
+	<label for="description">Description</label>
 <textarea name="description" class="required" type="text"><c:out value="${relType.description}"/></textarea>
-<span style="color: red"></span><br/>
+<span style="color: red"></span>
+</div>
 
 
-<label for="roleAType">Role A Type</label>
+<div class="row">
+	<label for="roleAType">Role A Type</label>
 <tags:select name="roleAType" cssClass="required" currentValue="${relType.roleTypeA.type}" optionValues="${roleTypes}"/>
-<span style="color: red"></span><br/>
+<span style="color: red"></span>
+</div>
 
-<label for="roleAName">Role A Name</label>
+<div class="row">
+	<label for="roleAName">Role A Name</label>
 <input name="roleAName" class="required" type="text" value="${relType.roleTypeA.name}"/>
-<span style="color: red"></span><br/>
+<span style="color: red"></span>
+</div>
 
-<label for="roleADescription">Role A Description</label>
+<div class="row">
+	<label for="roleADescription">Role A Description</label>
 <textarea name="roleADescription" class="required">${relType.roleTypeA.description}</textarea>
-<span style="color: red"></span><br/>
+<span style="color: red"></span>
+</div>
 
-<label for="roleBType">Role B Type</label>
+<div class="row">
+	<label for="roleBType">Role B Type</label>
 <tags:select name="roleBType" cssClass="required" currentValue="${relType.roleTypeB.type}" optionValues="${roleTypes}"/>
-<span style="color: red"></span><br/>
+<span style="color: red"></span>
+</div>
 
-<label for="roleBName">Role B Name</label>
+<div class="row">
+	<label for="roleBName">Role B Name</label>
 <input name="roleBName" class="required" type="text" value="${relType.roleTypeB.name}"/>
-<span style="color: red"></span><br/>
+<span style="color: red"></span>
+</div>
 
-<label for="roleBDescription">Role B Description</label>
+<div class="row">
+	<label for="roleBDescription">Role B Description</label>
 <textarea name="roleBDescription" class="required">${relType.roleTypeB.description}</textarea>
-<span style="color: red"></span><br/>
+<span style="color: red"></span>
+</div>
 
 		<input type="hidden" name="id" value="${relType.id}"/>
 </form>

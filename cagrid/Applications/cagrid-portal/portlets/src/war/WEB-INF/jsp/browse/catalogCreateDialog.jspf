@@ -64,13 +64,13 @@
             modal : true,
             buttons : [
                 {
-                    text:"Submit",
-                    handler:${ns}createCatalogEntry,
-                    isDefault:true
+					text:"Cancel",
+                    handler:${ns}cancelCreateCatalogEntry
                 },
                 {
-                    text:"Cancel",
-                    handler:${ns}cancelCreateCatalogEntry
+                    text:"Create",
+                    handler:${ns}createCatalogEntry,
+                    isDefault:true
                 }
             ]
         });
