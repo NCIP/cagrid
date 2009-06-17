@@ -117,7 +117,7 @@
     </bean>
 
     <bean id="cachedMap"
-          class="gov.nih.nci.cagrid.portal.portlet.map.CachedMap" scope="singleton"
+          class="gov.nih.nci.cagrid.portal.portlet.map.ajax.CachedMap" scope="singleton"
           autowire="byName" parent="filteredContentGenerator">
     </bean>
 
@@ -127,6 +127,10 @@
           p:view="/WEB-INF/jsp/map/latestContent-ajax.jsp"
           autowire="byName">
     </bean>
+
+
+     <bean id="summaryService"
+          class="gov.nih.nci.cagrid.portal.portlet.map.ajax.SummaryService" p:cachedMap-ref="cachedMap"/>
 
     <!--Timers to update caches-->
     <bean id="ajaxstatusTimerFactory"

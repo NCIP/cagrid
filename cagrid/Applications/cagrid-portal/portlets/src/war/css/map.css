@@ -16,3 +16,8 @@ div.mapNode {
 div.mapInfoPopup {
     font-size: 9px;
 }
+
+span.summary{
+    font-size:11px;
+    padding-left:3px;
+}

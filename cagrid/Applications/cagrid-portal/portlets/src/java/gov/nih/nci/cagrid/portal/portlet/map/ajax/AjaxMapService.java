@@ -8,7 +8,7 @@ import gov.nih.nci.cagrid.portal.portlet.discovery.dir.DiscoveryDirectory;
 import gov.nih.nci.cagrid.portal.portlet.discovery.dir.ParticipantDirectory;
 import gov.nih.nci.cagrid.portal.portlet.discovery.dir.ServiceDirectory;
 import gov.nih.nci.cagrid.portal.portlet.discovery.map.MapBean;
-import gov.nih.nci.cagrid.portal.portlet.map.CachedMap;
+import gov.nih.nci.cagrid.portal.portlet.map.ajax.CachedMap;
 import org.directwebremoting.annotations.Param;
 import org.directwebremoting.annotations.RemoteMethod;
 import org.directwebremoting.annotations.RemoteProxy;
@@ -62,6 +62,11 @@ public class AjaxMapService extends AjaxViewGenerator {
         }});
     }
 
+
+    @RemoteMethod
+    public SummaryBean getSummary(){
+        return cachedMap.getSummary();
+    }
 
     public CachedMap getCachedMap() {
         return cachedMap;
