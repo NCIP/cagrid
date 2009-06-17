@@ -16,25 +16,10 @@
 			<span style="color: red"></span><br/>
         </div>
         <div class="row">
-            <textarea class="required" name="description" style="height:100px;width:590px;">
-                <c:out value="${catalogEntry.description}"/>
-            </textarea>
+            <textarea id="input-description" class="required" wrap="virtual" name="description" style="height:100px;width:590px;<c:if test="${empty catalogEntry.description}">color:#afafaf;</c:if>"><c:choose><c:when test="${empty catalogEntry.description}">Description</c:when><c:otherwise><c:out value="${catalogEntry.description}"/></c:otherwise></c:choose></textarea>
 			<span style="color: red"></span>
         </div>
 	</div>
 	<!-- The following line is for formatting purposes -->
 	<hr style="clear:both; visibility:hidden;"/>
 </div>
-<script>
-	jQuery("#input-name").click( function() {
-		jQuery(this).css({'color' : '#000000'});
-		jQuery(this).attr("value", "");
-	});
-	jQuery("#input-name").blur( function() {
-		if (jQuery(this).attr("value")== "") {
-			jQuery(this).attr("value", "Name");
-			jQuery(this).css({'color' : '#afafaf'});
-		}
-		
-	});
-</script>

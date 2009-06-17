@@ -181,6 +181,10 @@ div.photoRightContent {
 	margin-bottom:10px;
 	margin-top:0;
 }
+.entryDescription {
+	width:700px;
+	line-height:17px;
+}
 h3 {
 	border-bottom: 2px solid #A3B9E2;
 	font-size:15pt;
@@ -211,6 +215,30 @@ h3 {
 	margin:20px 0;
 	text-align:right;
 }
+.oneResultDiv {
+	margin-bottom:15px;
+	overflow:auto;
+}
+.oneResultDiv a {
+	font-size:14pt;
+}
+.oneResultDescription{
+	padding-left:50px;
+}
+.oneResultNoDescription{
+	color:#666666;
+	font-style:italic;
+	padding-left:50px;
+}
+.pagination {
+	text-align:center;
+}
+.oneResultIcon {
+	float:left;
+	margin-right:5px;
+}
+
+
 /*******************************************
  *****      YUI Customization       ********
  *******************************************/
@@ -266,7 +294,19 @@ background:none;
 .yui-skin-sam .button-red .yui-button {
 	
 }
-
+.tree-container {
+	height:100%;
+	width:35%;
+	float:left;
+	background-color:#E5E8EF;
+	-moz-border-radius:10px;
+	-webkit-border-radius:10px;
+	border-radius:10px;
+	padding:10px;
+}
+body .ygtvfocus {
+	background-color:transparent;
+}
 /*additions for caGrid Portal*/
 link-extenal {
     background: transparent url( ../images/linkext_icon.gif ) no-repeat scroll right center;
