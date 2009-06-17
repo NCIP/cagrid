@@ -16,7 +16,7 @@
             <label for="emailAddress">
                 e-mail
             </label>
-            <input type="text" name="emailAddress" value="<c:out value="${catalogEntry.emailAddress}"/>" style="width: 235px;"/><span style="color: red
+            <input type="text" name="emailAddress" value="<c:out value="${catalogEntry.emailAddress}"/>" style="width: 230px;"/><span style="color: red
             "></span>
 
         </div>

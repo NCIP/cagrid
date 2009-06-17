@@ -140,5 +140,35 @@ jQuery(document).ready(function() {
 	});
 
 	
-});			
+});	
+/*  Edit name and description interactivity  */
+jQuery("#input-name").click(function(){
+	if (jQuery("#input-name").attr("value") == "Name") {
+		jQuery(this).css({
+			'color': '#000000'
+		});
+		jQuery(this).attr("value", "");
+	}
+});
+jQuery("#input-name").blur( function() {
+	if (jQuery(this).attr("value")== "") {
+		jQuery(this).attr("value", "Name");
+		jQuery(this).css({'color' : '#afafaf'});
+	}
+});
+jQuery("#input-description").click(function(){
+	if (jQuery("#input-description").attr("value") == "Description") {
+		jQuery(this).css({
+			'color': '#000000'
+		});
+		jQuery(this).attr("value", "");
+	}
+});
+jQuery("#input-description").blur( function() {
+	if (jQuery(this).attr("value")== "") {
+		jQuery(this).attr("value", "Description");
+		jQuery(this).css({'color' : '#afafaf'});
+	}
+	
+});		
 </script>	

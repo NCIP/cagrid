@@ -1528,7 +1528,7 @@ Paginator.ui.FirstPageLink.init = function (p) {
      * @default '&lt;&lt;&nbsp;first'
      */
     p.setAttributeConfig('firstPageLinkLabel', {
-        value : '&lt;&lt;&nbsp;first',
+        value : '&lt;&lt;&nbsp; First',
         validator : l.isString
     });
 

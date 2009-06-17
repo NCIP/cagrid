@@ -17,9 +17,12 @@
 				<%@ include file="/WEB-INF/jsp/browse/address.jspf" %>
 			</c:if>
 			<c:if test="${!empty catalogEntry.webSite}">
-				<c:set var="rowLabel" value="Website"/>
-				<c:set var="rowValue" value="${catalogEntry.webSite}"/>
-			    <%@ include file="/WEB-INF/jsp/browse/row.jspf" %>
+            <div class="row">
+                <label for="website">
+                    Website
+                </label>
+                <a href="${catalogEntry.webSite}" target="_blank">${catalogEntry.webSite}</a>
+            </div>
 			</c:if>
 		</div>
 <%@ include file="/WEB-INF/jsp/browse/relatedItemsAndOtherInfo.jspf" %>
