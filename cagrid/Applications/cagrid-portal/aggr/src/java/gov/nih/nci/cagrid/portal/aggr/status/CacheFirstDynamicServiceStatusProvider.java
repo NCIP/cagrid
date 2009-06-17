@@ -4,10 +4,7 @@ import gov.nih.nci.cagrid.portal.aggr.ServiceUrlProvider;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Set;
+import java.util.*;
 
 /**
  * This will first use the local cahce to return URLs
@@ -39,7 +36,7 @@ public class CacheFirstDynamicServiceStatusProvider implements ServiceUrlProvide
             logger.debug("Will use cache to return URL's");
 
             Set<String> _cachedUrls = cache.get(indexServiceUrl);
-            Set _urls = new HashSet<String>();
+            Set _urls = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
             synchronized (_cachedUrls) {
                 _urls.addAll(_cachedUrls);
             }

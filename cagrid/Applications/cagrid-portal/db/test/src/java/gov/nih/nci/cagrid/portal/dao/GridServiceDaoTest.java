@@ -62,6 +62,18 @@ public class GridServiceDaoTest extends DBTestBase<GridServiceDao> {
 
     }
 
+
+    @Test
+    // make sure case insenitive queries will work
+    public void caseInSensitive() {
+        for (GridService service : getDao().getAll()) {
+            assertNotNull(getDao().getByUrl(service.getUrl()));
+            assertNotNull(getDao().getByUrl(service.getUrl().toUpperCase()));
+            assertNotNull(getDao().getByUrl(service.getUrl().toLowerCase()));
+
+        }
+    }
+
     @Test
     public void testGetLatestServices() {
 
@@ -149,10 +161,10 @@ public class GridServiceDaoTest extends DBTestBase<GridServiceDao> {
     }
 
     @Test
-    public void testCachePerformance(){
-        GridService newService  = new GridService();
+    public void testCachePerformance() {
+        GridService newService = new GridService();
 
-        for(int i=0;i<10000;i++){
+        for (int i = 0; i < 10000; i++) {
             StatusChange sc = new StatusChange();
             sc.setService(newService);
             sc.setStatus(ServiceStatus.ACTIVE);
@@ -160,11 +172,11 @@ public class GridServiceDaoTest extends DBTestBase<GridServiceDao> {
         }
         getDao().save(newService);
 
-        for(int i=0;i<10;i++){
+        for (int i = 0; i < 10; i++) {
             interruptSession();
             long init = System.currentTimeMillis();
             GridService service = getDao().getById(1);
-            assertEquals(ServiceStatus.ACTIVE,service.getCurrentStatus());
+            assertEquals(ServiceStatus.ACTIVE, service.getCurrentStatus());
             System.out.println("Time taken for 10000 Status changes " + (System.currentTimeMillis() - init) + " miliseconds");
         }
 
@@ -172,15 +184,15 @@ public class GridServiceDaoTest extends DBTestBase<GridServiceDao> {
 
 
     @Test
-    public void testPerformance(){
+    public void testPerformance() {
         long init = System.currentTimeMillis();
-        GridService service = (GridService)getDao().getById(-1);
+        GridService service = (GridService) getDao().getById(-1);
         service.getCurrentStatus();
         System.out.println("Time taken for 0 status changes " + (System.currentTimeMillis() - init) + " miliseconds");
 
-        GridService newService  = new GridService();
+        GridService newService = new GridService();
         newService.setUrl("http://new1");
-        for(int i=0;i<100;i++){
+        for (int i = 0; i < 100; i++) {
             StatusChange sc = new StatusChange();
             sc.setService(newService);
             sc.setStatus(ServiceStatus.DORMANT);
@@ -190,13 +202,13 @@ public class GridServiceDaoTest extends DBTestBase<GridServiceDao> {
         getDao().save(newService);
         interruptSession();
         init = System.currentTimeMillis();
-        service = (GridService)getDao().getByUrl("http://new1");
-        assertEquals(ServiceStatus.DORMANT,service.getCurrentStatus());
-        System.out.println("Time taken for 100 status changes " + (System.currentTimeMillis()- init) + " miliseconds");
+        service = (GridService) getDao().getByUrl("http://new1");
+        assertEquals(ServiceStatus.DORMANT, service.getCurrentStatus());
+        System.out.println("Time taken for 100 status changes " + (System.currentTimeMillis() - init) + " miliseconds");
 
         GridService newService2 = new GridService();
         newService2.setUrl("http://new2");
-        for(int i=0;i<10000;i++){
+        for (int i = 0; i < 10000; i++) {
             StatusChange sc = new StatusChange();
             sc.setService(newService2);
             sc.setStatus(ServiceStatus.ACTIVE);
@@ -205,19 +217,19 @@ public class GridServiceDaoTest extends DBTestBase<GridServiceDao> {
         getDao().save(newService2);
         interruptSession();
         init = System.currentTimeMillis();
-        service = (GridService)getDao().getByUrl("http://new2");
-        assertEquals(ServiceStatus.ACTIVE,service.getCurrentStatus());
+        service = (GridService) getDao().getByUrl("http://new2");
+        assertEquals(ServiceStatus.ACTIVE, service.getCurrentStatus());
         System.out.println("Time taken for 10000 Status changes " + (System.currentTimeMillis() - init) + " miliseconds");
 
 
     }
 
     @Test
-    public void testFilterPerformance(){
+    public void testFilterPerformance() {
 
-        GridService newService3  = new GridService();
+        GridService newService3 = new GridService();
         newService3.setUrl("http://new3");
-        for(int i=0;i<10000;i++){
+        for (int i = 0; i < 10000; i++) {
             StatusChange sc = new StatusChange();
             sc.setArchived(true);
             sc.setService(newService3);
@@ -234,8 +246,8 @@ public class GridServiceDaoTest extends DBTestBase<GridServiceDao> {
         getDao().save(newService3);
         interruptSession();
 
-        GridService loadedService =  getDao().getByUrl("http://new3");
-        assertNotSame("Filter should not have applied",loadedService.getStatusHistory().size(),1);
+        GridService loadedService = getDao().getByUrl("http://new3");
+        assertNotSame("Filter should not have applied", loadedService.getStatusHistory().size(), 1);
 
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
                 new String[]{"classpath:applicationContext-db-aspects.xml"});
@@ -248,11 +260,11 @@ public class GridServiceDaoTest extends DBTestBase<GridServiceDao> {
 
 
         try {
-            GridServiceDao aspectDao = (GridServiceDao)applicationContext.getBean("gridServiceDao");
+            GridServiceDao aspectDao = (GridServiceDao) applicationContext.getBean("gridServiceDao");
             long init = System.currentTimeMillis();
-            loadedService =  aspectDao.getByUrl("http://new3");
-            assertSame("Filter should have been applied",loadedService.getStatusHistory().size(),1);
-            assertEquals(ServiceStatus.INACTIVE,loadedService.getStatusHistory().get(0).getStatus());
+            loadedService = aspectDao.getByUrl("http://new3");
+            assertSame("Filter should have been applied", loadedService.getStatusHistory().size(), 1);
+            assertEquals(ServiceStatus.INACTIVE, loadedService.getStatusHistory().get(0).getStatus());
             System.out.println("Time taken for 10000 Status changes with filter " + (System.currentTimeMillis() - init) + " miliseconds");
         } catch (BeansException e) {
             fail("Transaction failed" + e);
@@ -262,7 +274,6 @@ public class GridServiceDaoTest extends DBTestBase<GridServiceDao> {
             SessionFactoryUtils.closeSession(session);
         }
     }
-
 
 
 }
