@@ -1,14 +1,40 @@
-		<div class="photoRow">
-			<%-- TODO: support upload of photos --%>
-			<div class="photo">
-				<img src='<c:url value="/images/photo-unavailable.png"/>' alt='Photo of <c:out value="${catalogEntry.name}"/>' />
-			</div>
-			<div class="photoRightContent">
-				<label for="name">Name</label>
-				<input class="required" type="text" name="name" value="<c:out value="${catalogEntry.name}"/>"><span style="color: red"></span><br/>
-				<label for="description">Description</label>
-				<textarea class="required" name="description"><c:out value="${catalogEntry.description}"/></textarea><span style="color: red"></span><br/>
-			</div>
-			<!-- The following line is for formatting purposes -->
-			<hr style="clear:both; visibility:hidden;"/>
-		</div>
+<div class="photoRow">
+	<%-- TODO: support upload of photos --%>
+	<div class="photo">
+		<img src='<c:url value="/images/photo-unavailable.png"/>' alt='Photo of <c:out value="${catalogEntry.name}"/>' />
+	</div>
+    <div class="photoRightContent">
+        <div class="row">
+            <input id="input-name" class="required" style="font-size:23pt;
+				<c:if test="${empty catalogEntry.name}">color:#afafaf;</c:if>
+			" type="text" name="name" value="
+			<c:choose>
+				<c:when test="${empty catalogEntry.name}">Name</c:when>
+				<c:otherwise><c:out value="${catalogEntry.name}"/></c:otherwise>
+			</c:choose>
+			">
+			<span style="color: red"></span><br/>
+        </div>
+        <div class="row">
+            <textarea class="required" name="description" style="height:100px;width:590px;">
+                <c:out value="${catalogEntry.description}"/>
+            </textarea>
+			<span style="color: red"></span>
+        </div>
+	</div>
+	<!-- The following line is for formatting purposes -->
+	<hr style="clear:both; visibility:hidden;"/>
+</div>
+<script>
+	jQuery("#input-name").click( function() {
+		jQuery(this).css({'color' : '#000000'});
+		jQuery(this).attr("value", "");
+	});
+	jQuery("#input-name").blur( function() {
+		if (jQuery(this).attr("value")== "") {
+			jQuery(this).attr("value", "Name");
+			jQuery(this).css({'color' : '#afafaf'});
+		}
+		
+	});
+</script>
