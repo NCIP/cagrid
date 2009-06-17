@@ -1,4 +1,4 @@
-package gov.nih.nci.cagrid.portal.portlet.map;
+package gov.nih.nci.cagrid.portal.portlet.map.ajax;
 
 import gov.nih.nci.cagrid.portal.dao.GridServiceDao;
 import gov.nih.nci.cagrid.portal.dao.ParticipantDao;
@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
 /**
  * Bean that caches the map of
@@ -26,9 +27,14 @@ public class CachedMap extends FilteredContentGenerator {
 
     private GridServiceDao gridServiceDao;
     private ParticipantDao participantDao;
+    private SummaryBean summary;
 
     private Map<ServiceDirectoryType, MapBean> cachedServiceMap = Collections.synchronizedMap(new HashMap<ServiceDirectoryType, MapBean>());
 
+
+    public CachedMap() {
+        summary = new SummaryBean();
+    }
 
     public MapBean get(ServiceDirectoryType type) {
         if (cachedServiceMap.containsKey(type))
@@ -48,18 +54,25 @@ public class CachedMap extends FilteredContentGenerator {
         MapBean _dsMap = createMap();
         MapBean _anMap = createMap();
 
-        for (GridService service : getFilter().filter(getGridServiceDao().getAllAnalyticalServices())) {
+        List<GridService> _aServices = getFilter().filter(getGridServiceDao().getAllAnalyticalServices());
+        summary.setAnalyticalServices(_aServices.size());
+        for (GridService service : _aServices) {
             _defaulMap.addService(service);
             _allMap.addService(service);
             _anMap.addService(service);
         }
-        for (GridService service : getFilter().filter(getGridServiceDao().getAllDataServices())) {
+
+        List<GridService> _dServices = getFilter().filter(getGridServiceDao().getAllDataServices());
+        summary.setDataServices(_dServices.size());
+        for (GridService service :_dServices) {
             _defaulMap.addService(service);
             _allMap.addService(service);
             _dsMap.addService(service);
         }
 
-        for (Participant participant : getParticipantDao().getAll())
+        List<Participant> _pList = getParticipantDao().getAll();
+        summary.setParticipants(_pList.size());
+        for (Participant participant : _pList )
             _defaulMap.addParticipant(participant);
 
         cachedServiceMap.put(null, _defaulMap);
@@ -72,6 +85,10 @@ public class CachedMap extends FilteredContentGenerator {
 
     private MapBean createMap() {
         return (MapBean) getApplicationContext().getBean("mapBeanPrototype");
+    }
+
+    public SummaryBean getSummary() {
+        return summary;
     }
 
     public GridServiceDao getGridServiceDao() {
