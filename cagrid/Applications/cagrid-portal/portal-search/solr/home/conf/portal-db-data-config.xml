@@ -15,11 +15,16 @@
                     query="select * from cat_hyperlinks where catalog_id='${GridServiceEndPointCatalog.id}'">
                 <field name="homepageUrl" column="url"/>
             </entity>
+              <entity name="GridService"
+                    query="select * from grid_services where id='${GridServiceEndPointCatalog.grid_service_id}'">
+                <field name="endpoint" column="url"/>
+                  <field name="endpoint" column="url"/>
+            </entity>
         </entity>
 
         <entity name="AllCatalogs"
-                query="select * from cat_entry"
-                deltaQuery="select id from cat_entry where where updatedAt > '${dataimporter.last_index_time}'">
+                query="select * from cat_entry where catalog_type !='tool_grid_service_endpoint'"
+                deltaQuery="select id from cat_entry where where updatedAt > '${dataimporter.last_index_time}' and catalog_type !='tool_grid_service_endpoint'">
             <field column="id" name="id"/>
             <field column="catalog_type" name="catalog_type"/>
             <field column="name" name="name"/>

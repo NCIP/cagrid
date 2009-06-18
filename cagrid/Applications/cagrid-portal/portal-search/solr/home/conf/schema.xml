@@ -277,6 +277,8 @@ via copyField further on in this schema  -->
         <field name="catalog_type" type="text" indexed="true" stored="true"/>
         <field name="description" type="text" indexed="true" stored="true"/>
         <field name="homepageUrl" type="text" indexed="true" stored="true"/>
+        <field name="endpoint" type="text" indexed="true" stored="true"/>
+        
         <!--will just treat it as a string-->
         <field name="phoneNumber" type="string" indexed="true" stored="true"/>
 
