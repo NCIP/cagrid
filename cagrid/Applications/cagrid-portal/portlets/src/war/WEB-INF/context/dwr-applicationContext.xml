@@ -129,9 +129,6 @@
     </bean>
 
 
-     <bean id="summaryService"
-          class="gov.nih.nci.cagrid.portal.portlet.map.ajax.SummaryService" p:cachedMap-ref="cachedMap"/>
-
     <!--Timers to update caches-->
     <bean id="ajaxstatusTimerFactory"
           class="org.springframework.scheduling.timer.TimerFactoryBean">
