@@ -36,18 +36,9 @@
         <entry key="gov.nih.nci.cagrid.portal.domain.catalog.GridServiceEndPointCatalogEntry" value="toolView"/>
    	</util:map>
    	
-	<util:map id="entryTypeViewBeanMap">
-		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntry" value="catalogEntryViewBean"/>
-        <entry key="gov.nih.nci.cagrid.portal.domain.catalog.CommunityCatalogEntry" value="communityViewBean"/>
-    </util:map>
 	
-	<bean id="catalogEntryViewBean" class="gov.nih.nci.cagrid.portal.portlet.browse.CatalogEntryViewBean" scope="prototype">
-		<property name="pocRelationshipTypeName" value="PointOfContact"/>
-	</bean>
 	
-	<bean id="communityViewBean" class="gov.nih.nci.cagrid.portal.portlet.browse.CommunityCatalogEntryViewBean" scope="prototype">
-		<property name="memberRelationshipTypeName" value="CommunityPersonMember"/>
-	</bean>   	
+	   	
 
 	<bean id="browseViewDetailsController"
 		class="gov.nih.nci.cagrid.portal.portlet.browse.BrowseViewDetailsController"
@@ -55,9 +46,7 @@
 		<property name="objectName" value="catalogEntryViewBean"/>
 	</bean>
 
-	<bean id="catalogEntryViewBeanFactory"
-		class="gov.nih.nci.cagrid.portal.portlet.browse.CatalogEntryViewBeanFactory" 
-		autowire="byName"/>
+	
 		
 	<bean id="catalogEntryFactory" class="gov.nih.nci.cagrid.portal.portlet.browse.CatalogEntryFactory" autowire="byName"/>
 

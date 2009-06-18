@@ -6,12 +6,14 @@ package gov.nih.nci.cagrid.portal.portlet.util;
 import gov.nih.nci.cagrid.portal.domain.GridService;
 import gov.nih.nci.cagrid.portal.domain.ServiceStatus;
 import gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntry;
+import gov.nih.nci.cagrid.portal.domain.catalog.PersonCatalogEntry;
 import gov.nih.nci.cagrid.portal.portlet.query.results.QueryResultToTableHandler;
 import gov.nih.nci.cagrid.portal.portlet.query.results.QueryResultToWorkbookHandler;
 import gov.nih.nci.cagrid.portal.util.PortalUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,6 +32,11 @@ import javax.xml.xpath.XPathFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
+import org.springframework.core.type.classreading.MetadataReader;
+import org.springframework.core.type.classreading.MetadataReaderFactory;
+import org.springframework.core.type.filter.TypeFilter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -141,23 +148,47 @@ public class PortletUtils {
 		return targetClassName;
 	}
 
+	public static List<Class> getSubclasses(String packageName,
+			final Class superclass) {
+		String pkgName = packageName;
+		if(pkgName == null){
+			pkgName = superclass.getPackage().getName();
+		}
+		List<Class> subclasses = new ArrayList<Class>();
+		ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(
+				false);
+		provider.addIncludeFilter(new TypeFilter() {
+			public boolean match(MetadataReader reader,
+					MetadataReaderFactory factory) throws IOException {
+				boolean match = false;
+				try {
+					Class klass = Class.forName(reader.getClassMetadata()
+							.getClassName());
+					match = superclass.isAssignableFrom(klass);
+				} catch (Exception ex) {
+					throw new RuntimeException("Error matching: "
+							+ ex.getMessage(), ex);
+				}
+				return match;
+			}
+		});
+		try {
+			for (BeanDefinition def : provider
+					.findCandidateComponents(pkgName)) {
+				subclasses.add(Class.forName(def.getBeanClassName()));
+			}
+		} catch (Exception ex) {
+			throw new RuntimeException("Error loading classes: "
+					+ ex.getMessage(), ex);
+		}
+		return subclasses;
+	}
+
 	public static void main(String[] args) throws Exception {
 
-		// Set<String> urls = new HashSet<String>();
-		// Document doc = DocumentBuilderFactory.newInstance()
-		// .newDocumentBuilder().parse(
-		// new FileInputStream("tissueQuery.xml"));
-		// XPathFactory xpFact = XPathFactory.newInstance();
-		// NodeList urlEls = (NodeList) xpFact.newXPath().compile(
-		// "/DCQLQuery/targetServiceURL").evaluate(doc,
-		// XPathConstants.NODESET);
-		// for (int i = 0; i < urlEls.getLength(); i++) {
-		// Element el = (Element) urlEls.item(i);
-		// urls.add(el.getTextContent());
-		// }
-		// System.out.println(urls);
-
-
+		for(Class klass : getSubclasses("gov.nih.nci.cagrid.portal.domain.catalog", CatalogEntry.class)){
+			System.out.println(klass.getName());
+		}
 
 	}
 

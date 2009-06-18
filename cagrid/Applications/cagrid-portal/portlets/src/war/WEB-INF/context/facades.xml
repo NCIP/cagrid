@@ -99,11 +99,15 @@
 		<property name="hibernateTemplate" ref="hibernateTemplate"/>
     </bean>
     
-    <!-- This is essentially abstract 
+
     <bean id="catalogEntryManagerFacade" 
     	class="gov.nih.nci.cagrid.portal.portlet.browse.CatalogEntryManagerFacade" 
-    	autowire="byName"/>
-     -->
+    	autowire="byName">
+    	<property name="roleTypeRenderServletUrl" value="/browse/role_type_selection.html"/>
+    	<property name="newRelatedItemFormRenderServletUrl" value="/browse/new_related_item_form.html"/>
+    	<property name="relatedItemsRenderServletUrl" value="/browse/related_items_content_view.html"/>
+    </bean>
+
     	
     <bean id="personCatalogEntryManagerFacade" 
     	class="gov.nih.nci.cagrid.portal.portlet.browse.PersonCatalogEntryManagerFacade" 

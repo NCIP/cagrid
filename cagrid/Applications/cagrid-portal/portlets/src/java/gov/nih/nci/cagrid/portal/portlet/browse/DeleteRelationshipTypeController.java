@@ -5,11 +5,13 @@ package gov.nih.nci.cagrid.portal.portlet.browse;
 
 import gov.nih.nci.cagrid.portal.dao.catalog.CatalogEntryRelationshipTypeDao;
 import gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntryRelationshipType;
+import gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntryRoleType;
 import gov.nih.nci.cagrid.portal.portlet.UserModel;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 
+import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.web.portlet.mvc.AbstractController;
 
 /**
@@ -45,7 +47,22 @@ public class DeleteRelationshipTypeController extends AbstractController {
 			throw new RuntimeException(
 					"Couldn't find relationship type for id: " + relTypeId);
 		}
-		getCatalogEntryRelationshipTypeDao().delete(relType);
+		HibernateTemplate templ = getCatalogEntryRelationshipTypeDao().getHibernateTemplate();
+		CatalogEntryRoleType roleTypeA = relType.getRoleTypeA();
+		roleTypeA.setRelationshipType(null);
+		relType.setRoleTypeA(null);
+		templ.save(roleTypeA);
+		
+		CatalogEntryRoleType roleTypeB = relType.getRoleTypeB();
+		roleTypeB.setRelationshipType(null);
+		relType.setRoleTypeB(null);
+		templ.save(roleTypeB);
+		
+		templ.save(relType);
+		
+		templ.delete(roleTypeA);
+		templ.delete(roleTypeB);
+		templ.delete(relType);
 		getCatalogEntryRelationshipTypeDao().getHibernateTemplate().flush();
 		getUserModel().setCurrentRelationshipType(null);
 

@@ -1,0 +1,10 @@
+<%
+Object[] entryTypes = new Object[]{
+		new String[]{"gov.nih.nci.cagrid.portal.domain.catalog.DataSetCatalogEntry", "Dataset"},		
+		new String[]{"gov.nih.nci.cagrid.portal.domain.catalog.PersonCatalogEntry", "Person"},
+		new String[]{"gov.nih.nci.cagrid.portal.domain.catalog.ToolCatalogEntry", "Tool"},
+		new String[]{"gov.nih.nci.cagrid.portal.domain.catalog.CommunityCatalogEntry", "Community"},
+		new String[]{"gov.nih.nci.cagrid.portal.domain.catalog.InstitutionCatalogEntry", "Institution"},		
+};
+pageContext.setAttribute("entryTypes", entryTypes);
+%>
