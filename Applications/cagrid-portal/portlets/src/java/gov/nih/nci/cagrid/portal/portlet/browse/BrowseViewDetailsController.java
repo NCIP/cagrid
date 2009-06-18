@@ -58,6 +58,7 @@ public class BrowseViewDetailsController extends AbstractController {
 		}
 		if(entry.getId() != null){
 			entry = getCatalogEntryDao().getById(entry.getId());
+			getUserModel().setCurrentCatalogEntry(entry);
 		}
 		
 		viewName = (String) PortletUtils.getMapValueForType(entry.getClass(),

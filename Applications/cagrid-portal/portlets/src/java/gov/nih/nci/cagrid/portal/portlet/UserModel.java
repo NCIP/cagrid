@@ -5,6 +5,7 @@ package gov.nih.nci.cagrid.portal.portlet;
 
 import gov.nih.nci.cagrid.portal.domain.PortalUser;
 import gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntry;
+import gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntryRelationshipInstance;
 import gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntryRelationshipType;
 
 /**
@@ -16,6 +17,7 @@ public class UserModel {
 	private PortalUser portalUser;
 	private CatalogEntry currentCatalogEntry;
 	private CatalogEntryRelationshipType currentRelationshipType;
+	private CatalogEntryRelationshipInstance currentRelationshipInstance;
 
 	/**
 	 * 
@@ -47,6 +49,15 @@ public class UserModel {
 	public void setCurrentRelationshipType(
 			CatalogEntryRelationshipType currentRelationshipType) {
 		this.currentRelationshipType = currentRelationshipType;
+	}
+
+	public CatalogEntryRelationshipInstance getCurrentRelationshipInstance() {
+		return currentRelationshipInstance;
+	}
+
+	public void setCurrentRelationshipInstance(
+			CatalogEntryRelationshipInstance currentRelationshipInstance) {
+		this.currentRelationshipInstance = currentRelationshipInstance;
 	}
 
 }

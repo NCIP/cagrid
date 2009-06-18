@@ -308,5 +308,22 @@
         <value>LESS_THAN_EQUAL_TO</value>
         <value>NOT_EQUAL_TO</value>
     </util:list>
+    
+    <bean id="catalogEntryViewBeanFactory"
+		class="gov.nih.nci.cagrid.portal.portlet.browse.CatalogEntryViewBeanFactory" 
+		autowire="byName"/>
+		
+	<util:map id="entryTypeViewBeanMap">
+		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntry" value="catalogEntryViewBean"/>
+        <entry key="gov.nih.nci.cagrid.portal.domain.catalog.CommunityCatalogEntry" value="communityViewBean"/>
+    </util:map>
+    
+	<bean id="catalogEntryViewBean" class="gov.nih.nci.cagrid.portal.portlet.browse.CatalogEntryViewBean" scope="prototype">
+		<property name="pocRelationshipTypeName" value="PointOfContact"/>
+	</bean>
+	
+	<bean id="communityViewBean" class="gov.nih.nci.cagrid.portal.portlet.browse.CommunityCatalogEntryViewBean" scope="prototype">
+		<property name="memberRelationshipTypeName" value="CommunityPersonMember"/>
+	</bean>    
 
 </beans>

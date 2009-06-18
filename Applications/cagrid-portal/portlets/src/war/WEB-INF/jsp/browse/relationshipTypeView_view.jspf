@@ -17,16 +17,16 @@
 Name: <c:out value="${relType.name}"/><br/>
 Description: <c:out value="${relType.description}"/><br/>
 Role A Type:
-<c:forEach var="roleType" items="${roleTypes}">
-	<c:if test="${roleType[0] eq relType.roleTypeA.type}">${role[1]}</c:if>
+<c:forEach var="roleType" items="${entryTypes}">
+	<c:if test="${roleType[0] eq relType.roleTypeA.type}">${roleType[1]}</c:if>
 </c:forEach>
 <br/>
 Role A Name: <c:out value="${relType.roleTypeA.name}"/><br/>
 Role A Description: <c:out value="${relType.roleTypeA.description}"/><br/>
 
 Role B Type:
-<c:forEach var="roleType" items="${roleTypes}">
-	<c:if test="${roleType[0] eq relType.roleTypeB.type}">${role[1]}</c:if>
+<c:forEach var="roleType" items="${entryTypes}">
+	<c:if test="${roleType[0] eq relType.roleTypeB.type}">${roleType[1]}</c:if>
 </c:forEach>
 <br/>
 Role B Name: <c:out value="${relType.roleTypeB.name}"/><br/>

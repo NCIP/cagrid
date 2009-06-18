@@ -8,8 +8,11 @@ import gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntryRelationshipType;
 import gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntryRoleType;
 import gov.nih.nci.cagrid.portal.portlet.UserModel;
 
+import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,8 +23,20 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class CatalogEntryRelationshipTypeManagerFacade {
 
+	private static final Log logger = LogFactory
+			.getLog(CatalogEntryRelationshipTypeManagerFacade.class);
+
 	private UserModel userModel;
 	private CatalogEntryRelationshipTypeDao catalogEntryRelationshipTypeDao;
+
+	private String name;
+	private String description;
+	private String roleAType;
+	private String roleBType;
+	private String roleAName;
+	private String roleBName;
+	private String roleADescription;
+	private String roleBDescription;
 
 	/**
 	 * 
@@ -33,7 +48,7 @@ public class CatalogEntryRelationshipTypeManagerFacade {
 	public String setName(String name) {
 		String message = null;
 		try {
-			CatalogEntryRelationshipType relType = null;
+
 			List l = getCatalogEntryRelationshipTypeDao()
 					.getHibernateTemplate().find(
 							"from CatalogEntryRelationshipType where name = ?",
@@ -41,8 +56,8 @@ public class CatalogEntryRelationshipTypeManagerFacade {
 			if (l.size() > 0) {
 				message = "A relationship type with that name already exists.";
 			} else {
-				relType = getUserModel().getCurrentRelationshipType();
-				relType.setName(name);
+				this.name = name;
+
 			}
 		} catch (Exception ex) {
 			throw new RuntimeException(
@@ -54,146 +69,139 @@ public class CatalogEntryRelationshipTypeManagerFacade {
 	public String setDescription(String description) {
 		String message = null;
 		try {
-
-			getUserModel().getCurrentRelationshipType().setDescription(
-					description);
-
+			this.description = description;
 		} catch (Exception ex) {
 			throw new RuntimeException("Error setting description: "
 					+ ex.getMessage(), ex);
 		}
 		return message;
 	}
-	
+
 	public String setRoleAType(String roleAType) {
 		String message = null;
 		try {
-			CatalogEntryRoleType roleTypeA = getUserModel().getCurrentRelationshipType().getRoleTypeA();
-			if(roleTypeA == null){
-				roleTypeA = new CatalogEntryRoleType();
-				getUserModel().getCurrentRelationshipType().setRoleTypeA(roleTypeA);
-			}
-			roleTypeA.setType(roleAType);
-			
+			this.roleAType = roleAType;
+
 		} catch (Exception ex) {
 			throw new RuntimeException("Error setting role A type: "
 					+ ex.getMessage(), ex);
 		}
 		return message;
 	}
-	
+
 	public String setRoleBType(String roleBType) {
 		String message = null;
 		try {
-			CatalogEntryRoleType roleTypeB = getUserModel().getCurrentRelationshipType().getRoleTypeB();
-			if(roleTypeB == null){
-				roleTypeB = new CatalogEntryRoleType();
-				getUserModel().getCurrentRelationshipType().setRoleTypeA(roleTypeB);
-			}
-			roleTypeB.setType(roleBType);
-			
+			this.roleBType = roleBType;
+
 		} catch (Exception ex) {
 			throw new RuntimeException("Error setting role B type: "
 					+ ex.getMessage(), ex);
 		}
 		return message;
 	}
-	
+
 	public String setRoleAName(String roleAName) {
 		String message = null;
 		try {
-			CatalogEntryRoleType roleTypeB = getUserModel().getCurrentRelationshipType().getRoleTypeB();
-			if(roleTypeB != null && roleTypeB.getName() != null && roleTypeB.getName().equals(roleAName)){
+
+			if (roleBName != null && roleBName.equals(roleAName)) {
 				return "The name of role A must be different than role B.";
 			}
-			CatalogEntryRoleType roleTypeA = getUserModel().getCurrentRelationshipType().getRoleTypeA();
-			if(roleTypeA == null){
-				roleTypeA = new CatalogEntryRoleType();
-				getUserModel().getCurrentRelationshipType().setRoleTypeA(roleTypeA);
-			}
-			roleTypeA.setName(roleAName);
-			
+			this.roleAName = roleAName;
+
 		} catch (Exception ex) {
 			throw new RuntimeException("Error setting role A name: "
 					+ ex.getMessage(), ex);
 		}
 		return message;
 	}
-	
+
 	public String setRoleBName(String roleBName) {
 		String message = null;
 		try {
-			CatalogEntryRoleType roleTypeA = getUserModel().getCurrentRelationshipType().getRoleTypeA();
-			if(roleTypeA != null && roleTypeA.getName() != null && roleTypeA.getName().equals(roleBName)){
+
+			if (roleAName != null && roleAName.equals(roleBName)) {
 				return "The name of role B must be different than role A.";
 			}
-			CatalogEntryRoleType roleTypeB = getUserModel().getCurrentRelationshipType().getRoleTypeB();
-			if(roleTypeB == null){
-				roleTypeB = new CatalogEntryRoleType();
-				getUserModel().getCurrentRelationshipType().setRoleTypeB(roleTypeB);
-			}
-			roleTypeB.setName(roleBName);
-			
+			this.roleBName = roleBName;
+
 		} catch (Exception ex) {
 			throw new RuntimeException("Error setting role B name: "
 					+ ex.getMessage(), ex);
 		}
 		return message;
 	}
-	
+
 	public String setRoleADescription(String roleADescription) {
 		String message = null;
 		try {
-			CatalogEntryRoleType roleTypeA = getUserModel().getCurrentRelationshipType().getRoleTypeA();
-			if(roleTypeA == null){
-				roleTypeA = new CatalogEntryRoleType();
-				getUserModel().getCurrentRelationshipType().setRoleTypeA(roleTypeA);
-			}
-			roleTypeA.setDescription(roleADescription);
-			
+			this.roleADescription = roleADescription;
+
 		} catch (Exception ex) {
 			throw new RuntimeException("Error setting role A description: "
 					+ ex.getMessage(), ex);
 		}
 		return message;
 	}
-	
+
 	public String setRoleBDescription(String roleBDescription) {
 		String message = null;
 		try {
-			CatalogEntryRoleType roleTypeB = getUserModel().getCurrentRelationshipType().getRoleTypeB();
-			if(roleTypeB == null){
-				roleTypeB = new CatalogEntryRoleType();
-				getUserModel().getCurrentRelationshipType().setRoleTypeB(roleTypeB);
-			}
-			roleTypeB.setDescription(roleBDescription);
-			
+			this.roleBDescription = roleBDescription;
+
 		} catch (Exception ex) {
 			throw new RuntimeException("Error setting role B description: "
 					+ ex.getMessage(), ex);
 		}
 		return message;
 	}
-	
-	public String validate(){
+
+	public String validate() {
 		String message = null;
-		//TODO: do some real validation
+		// TODO: do some real validation
 		return message;
 	}
-	
-	public Integer save(){
+
+	public Integer save() {
 		Integer id = null;
 		try {
-			CatalogEntryRelationshipType relType = getUserModel().getCurrentRelationshipType();
-			HibernateTemplate templ = getCatalogEntryRelationshipTypeDao().getHibernateTemplate();
+			HibernateTemplate templ = getCatalogEntryRelationshipTypeDao()
+					.getHibernateTemplate();
+			CatalogEntryRelationshipType relType = getUserModel()
+					.getCurrentRelationshipType();
+			if (relType.getId() == null) {
+				relType.setCreatedAt(new Date());
+				templ.save(relType);
+				CatalogEntryRoleType roleTypeA = new CatalogEntryRoleType();
+				roleTypeA.setRelationshipType(relType);
+				roleTypeA.setCreatedAt(new Date());
+				templ.save(roleTypeA);
+				relType.setRoleTypeA(roleTypeA);
+				CatalogEntryRoleType roleTypeB = new CatalogEntryRoleType();
+				roleTypeB.setRelationshipType(relType);
+				roleTypeB.setCreatedAt(new Date());
+				templ.save(roleTypeB);
+				relType.setRoleTypeB(roleTypeB);
+			}
+			relType.setName(name);
+			relType.setDescription(description);
+			relType.getRoleTypeA().setName(roleAName);
+			relType.getRoleTypeA().setType(roleAType);
+			relType.getRoleTypeA().setDescription(roleADescription);
+			relType.getRoleTypeB().setName(roleBName);
+			relType.getRoleTypeB().setType(roleBType);
+			relType.getRoleTypeB().setDescription(roleBDescription);
 			templ.saveOrUpdate(relType.getRoleTypeA());
 			templ.saveOrUpdate(relType.getRoleTypeB());
 			templ.saveOrUpdate(relType);
+
 			id = relType.getId();
 		} catch (Exception ex) {
-			throw new RuntimeException("Error saving: "
-					+ ex.getMessage(), ex);
-		}		
+			String msg = "Error saving: " + ex.getMessage();
+			logger.error(msg);
+			throw new RuntimeException(msg, ex);
+		}
 		return id;
 	}
 

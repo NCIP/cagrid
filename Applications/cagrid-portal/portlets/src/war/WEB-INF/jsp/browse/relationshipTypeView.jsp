@@ -21,18 +21,10 @@
 		<portlet:param name="id" value="CPREPLACE"/>
 	</portlet:renderURL>
 	
-<a href="<c:out value="${viewUrl}"/>">Back to search results</a>
+<a href="${viewUrl}">Back to search results</a>
 
-<%
-Object[] roleTypes = new Object[]{
-		new String[]{"gov.nih.nci.cagrid.portal.portlet.domain.catalog.DataSetCatalogEntry", "Dataset"},		
-		new String[]{"gov.nih.nci.cagrid.portal.portlet.domain.catalog.PersonCatalogEntry", "Person"},
-		new String[]{"gov.nih.nci.cagrid.portal.portlet.domain.catalog.ToolCatalogEntry", "Tool"},
-		new String[]{"gov.nih.nci.cagrid.portal.portlet.domain.catalog.CommunityCatalogEntry", "Community"},
-		new String[]{"gov.nih.nci.cagrid.portal.portlet.domain.catalog.InstitutionCatalogEntry", "Institution"},		
-};
-pageContext.setAttribute("roleTypes", roleTypes);
-%>
+<%@ include file="/WEB-INF/jsp/browse/entry_types.jspf" %>
+
 
 <c:choose>
 	<c:when test="${viewMode eq 'edit'}">
