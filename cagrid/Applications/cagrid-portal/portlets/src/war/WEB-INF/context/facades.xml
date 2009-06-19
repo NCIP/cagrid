@@ -162,7 +162,7 @@
     	autowire="byName"/>
     	
     <bean id="gridServiceEndPointCatalogEntryManagerFacade" 
-    	class="gov.nih.nci.cagrid.portal.portlet.browse.GridServiceEndpointCatalogEntryManagerFacade" 
+    	class="gov.nih.nci.cagrid.portal.portlet.browse.GridServiceEndPointCatalogEntryManagerFacade" 
     	autowire="byName"/>
     	
     <bean id="informationModelCatalogEntryManagerFacade" 
