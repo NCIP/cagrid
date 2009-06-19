@@ -27,12 +27,12 @@ function search(e){ //e is event object passed from function invocation
 
 <form:form id="searchForm" method="post">
     <div class="searchBox">
-        <div style="float:right;z-index:31;">
+        <div>
 		
             <input type="hidden" name="searchKeyword" id="searchKeyword"/>
             <input type="hidden" name="operation" id="operation" value="catalogSearch">
 
-            <input id="keyword" type="text" size="20" onkeypress="return search(event);"/>
+            Search: <input id="keyword" type="text" size="20" onkeypress="return search(event);"/>
             
         </div>
     </div>
