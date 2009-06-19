@@ -20,6 +20,8 @@
 	font-size: 36px;
 	text-decoration: none;
 	display: block;
+	line-height:40px;
+	margin-top:6px;
 }
 
 #blue-box a:hover {
