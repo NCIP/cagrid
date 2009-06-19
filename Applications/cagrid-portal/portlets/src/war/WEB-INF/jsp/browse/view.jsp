@@ -1,14 +1,10 @@
 <%@ include file="/WEB-INF/jsp/include/includes.jspf" %>
-
 <%@ include file="browse-search-includes.jspf" %>
-
 <%@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %>
 
 <c:set var="ns"><portlet:namespace/></c:set>
 
 <%@ include file="catalogCreateDialog.jspf"%>
-<%--
-<h1>Browsing: <c:out value="${browseType}"/></h1>
 
 <p>
 <c:choose>
@@ -49,21 +45,23 @@
         for (var i = 0, len = resultList.length; i < len; ++i) {
             var result = resultList[i];
 
-            /* this is where results are rendered. Needs to be styled */
+        <%--/* this is where results are rendered. Needs to be styled */--%>
             var resultDiv = document.createElement('div');
 			resultDiv.className = "oneResultDiv";
             var detailsLnk = document.createElement('a');
             detailsLnk.setAttribute('href', 'javascript:${ns}viewDetails(' + result.id + ')');
             detailsLnk.setAttribute('name', 'Details');
             detailsLnk.innerHTML = result.name;
-
-			var iconDiv = document.createElement('div');
-			iconDiv.className = "oneResultIcon";
+			
+			var iconLnk = document.createElement('a');
+			iconLnk.setAttribute('href', 'javascript:${ns}viewDetails(' + result.id + ')');
+			iconLnk.setAttribute('name', 'Details');
+			iconLnk.className = "oneResultIcon";
 			var icon = document.createElement('img');
 			icon.setAttribute('src', '<c:url value="/images/icon-unavailable_50px.png"/>');
 			icon.setAttribute('alt', '');
-			iconDiv.appendChild(icon);    
-			resultDiv.appendChild(iconDiv);
+			iconLnk.appendChild(icon);    
+			resultDiv.appendChild(iconLnk);
 			
             var nameDiv = document.createElement('div');
 			nameDiv.appendChild(detailsLnk);
@@ -134,5 +132,7 @@
     search(wildcard);
 
 </script>
+
+
 
 

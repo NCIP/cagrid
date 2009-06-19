@@ -53,7 +53,7 @@ body {
 	left:0px;
 }
 .js .interactive-mode {
-    right: -22%;
+    right: -26%;
 }#navigation {
     position: absolute;
     top: 29px;
@@ -126,6 +126,27 @@ body {
 }#navigation ul li.selected a#Catalog, #navigation ul li a#Catalog:active {
     background-position: -629px -80px;
     width: 96px;
+}
+#navigation ul.signIn li a {
+	font-size:10pt;
+	height:auto;
+	text-indent:0;
+	background-image:none;
+}
+#navigation ul.signIn li {
+	margin-left:5px;
+}
+#navigation ul.signIn {
+	position:absolute;
+	right:10px;
+	top:-27px;
+}
+#add-page {
+	position:absolute;
+	top:-27px;
+}
+.searchBox{
+	
 }
 
 /*******************************************
@@ -223,19 +244,19 @@ h3 {
 	font-size:14pt;
 }
 .oneResultDescription{
-	padding-left:50px;
+	padding-left:55px;
 }
 .oneResultNoDescription{
 	color:#666666;
 	font-style:italic;
-	padding-left:50px;
+	padding-left:55px;
 }
 .pagination {
 	text-align:center;
 }
 .oneResultIcon {
 	float:left;
-	margin-right:5px;
+	margin-right:10px;
 }
 
 
