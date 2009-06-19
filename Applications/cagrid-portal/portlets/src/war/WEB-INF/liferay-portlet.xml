@@ -1,6 +1,19 @@
 <?xml version="1.0"?>
 <!DOCTYPE liferay-portlet-app PUBLIC "-//Liferay//DTD Portlet Application 5.2.0//EN" "http://www.liferay.com/dtd/liferay-portlet-app_5_2_0.dtd">
 <liferay-portlet-app>
+
+	<portlet>
+		<portlet-name>BrowsePortlet</portlet-name>
+		<private-session-attributes>true</private-session-attributes>
+	</portlet>
+	<portlet>
+		<portlet-name>ContentPortlet</portlet-name>
+		<private-session-attributes>true</private-session-attributes>
+	</portlet>
+	<portlet>
+		<portlet-name>cagridquery</portlet-name>
+		<private-session-attributes>true</private-session-attributes>
+	</portlet>		
 	<portlet>
 		<portlet-name>cagridauthn</portlet-name>
 		<private-request-attributes>true</private-request-attributes>
@@ -10,20 +23,8 @@
 		<private-request-attributes>true</private-request-attributes>
 		<private-session-attributes>true</private-session-attributes>
 	</portlet>
-	<portlet>
-		<portlet-name>ContentPortlet</portlet-name>
-		<private-session-attributes>true</private-session-attributes>
-	</portlet>
-	<portlet>
-		<portlet-name>BrowsePortlet</portlet-name>
-		<private-session-attributes>true</private-session-attributes>
-	</portlet>
+
+
 	
-	<!-- 
-	<portlet>
-		<portlet-name>TestFriendlyUrlsPortlet</portlet-name>
-		<friendly-url-mapper-class>gov.nih.nci.cagrid.portal.portlet.TestFriendlyURLMapper</friendly-url-mapper-class>
-		<instanceable>false</instanceable>
-	</portlet>
- -->
+
 </liferay-portlet-app>

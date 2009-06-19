@@ -5,7 +5,7 @@
 <c:set var="ns"><portlet:namespace/></c:set>
 
 <%@ include file="catalogCreateDialog.jspf"%>
-
+<%--
 <p>
 <c:choose>
 	<c:when test="${empty entries}">

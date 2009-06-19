@@ -5,6 +5,7 @@ package gov.nih.nci.cagrid.portal.portlet;
 
 import gov.nih.nci.cagrid.portal.dao.PortalUserDao;
 import gov.nih.nci.cagrid.portal.domain.PortalUser;
+import gov.nih.nci.cagrid.portal.portlet.query.QueryModel;
 
 import javax.portlet.PortletSession;
 
@@ -21,9 +22,13 @@ import org.springframework.web.portlet.context.PortletWebRequest;
  */
 public class PortalUserInterceptor2 implements WebRequestInterceptor {
 
-	private static final Log logger = LogFactory.getLog(PortalUserInterceptor2.class);
+	private static final Log logger = LogFactory
+			.getLog(PortalUserInterceptor2.class);
 	private UserModel userModel;
+	private QueryModel queryModel;
+
 	private String portalUserSessionAttributeName;
+	private String portalUserIdSessionAttributeName;
 	private PortalUserDao portalUserDao;
 
 	/**
@@ -36,8 +41,9 @@ public class PortalUserInterceptor2 implements WebRequestInterceptor {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.springframework.web.context.request.WebRequestInterceptor#afterCompletion(org.springframework.web.context.request.WebRequest,
-	 *      java.lang.Exception)
+	 * @see
+	 * org.springframework.web.context.request.WebRequestInterceptor#afterCompletion
+	 * (org.springframework.web.context.request.WebRequest, java.lang.Exception)
 	 */
 	public void afterCompletion(WebRequest arg0, Exception arg1)
 			throws Exception {
@@ -48,8 +54,10 @@ public class PortalUserInterceptor2 implements WebRequestInterceptor {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.springframework.web.context.request.WebRequestInterceptor#postHandle(org.springframework.web.context.request.WebRequest,
-	 *      org.springframework.ui.ModelMap)
+	 * @see
+	 * org.springframework.web.context.request.WebRequestInterceptor#postHandle
+	 * (org.springframework.web.context.request.WebRequest,
+	 * org.springframework.ui.ModelMap)
 	 */
 	public void postHandle(WebRequest arg0, ModelMap arg1) throws Exception {
 		// TODO Auto-generated method stub
@@ -59,25 +67,47 @@ public class PortalUserInterceptor2 implements WebRequestInterceptor {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.springframework.web.context.request.WebRequestInterceptor#preHandle(org.springframework.web.context.request.WebRequest)
+	 * @see
+	 * org.springframework.web.context.request.WebRequestInterceptor#preHandle
+	 * (org.springframework.web.context.request.WebRequest)
 	 */
 	public void preHandle(WebRequest webRequest) throws Exception {
-		if (getUserModel().getPortalUser() == null) {
-			logger.debug("PortalUser is null.");
-			PortletWebRequest portletWebRequest = (PortletWebRequest) webRequest;
-			logger.debug("Fetching portalUserId from session.");
-			String portalUserId = (String) portletWebRequest.getRequest()
-					.getPortletSession().getAttribute(
-							getPortalUserSessionAttributeName(),
-							PortletSession.APPLICATION_SCOPE);
-			logger.debug("portalUserId = " + portalUserId);
-			if (portalUserId != null) {
-				PortalUser portalUser = getPortalUserDao().getByPortalId(portalUserId);
-				if(portalUser == null){
-					throw new Exception("No user found for portal ID: " + portalUserId);
+
+		PortletWebRequest portletWebRequest = (PortletWebRequest) webRequest;
+
+		logger.debug("Fetching portalUserId from session.");
+		PortletSession session = portletWebRequest.getRequest()
+				.getPortletSession();
+		String portalUserId = (String) session.getAttribute(
+				getPortalUserIdSessionAttributeName(),
+				PortletSession.APPLICATION_SCOPE);
+		logger.debug("portalUserId = " + portalUserId);
+		if (portalUserId != null) {
+
+			// See if the same user is in the session
+			PortalUser portalUser = (PortalUser) session
+					.getAttribute(getPortalUserSessionAttributeName(), PortletSession.APPLICATION_SCOPE);
+			if (portalUser != null) {
+				logger.debug("Portal user found in session under: " + getPortalUserSessionAttributeName());
+				if (!portalUser.getPortalId().equals(portalUserId)) {
+					throw new Exception(
+							"A portal user is in the session with a different ID.");
+				}
+			} else {
+				logger
+						.debug("No portal user in session. Fetching from database and putting in session and models.");
+				portalUser = getPortalUserDao().getByPortalId(portalUserId);
+				if (portalUser == null) {
+					throw new Exception("No user found for portal ID: "
+							+ portalUserId);
 				}
 				getUserModel().setPortalUser(portalUser);
+				getQueryModel().setPortalUser(portalUser);
+				logger.debug("Putting portal user in session under: " + getPortalUserSessionAttributeName());
+				session.setAttribute(getPortalUserSessionAttributeName(),
+						portalUser, PortletSession.APPLICATION_SCOPE);
 			}
+
 		}
 	}
 
@@ -104,6 +134,23 @@ public class PortalUserInterceptor2 implements WebRequestInterceptor {
 
 	public void setPortalUserDao(PortalUserDao portalUserDao) {
 		this.portalUserDao = portalUserDao;
+	}
+
+	public QueryModel getQueryModel() {
+		return queryModel;
+	}
+
+	public void setQueryModel(QueryModel queryModel) {
+		this.queryModel = queryModel;
+	}
+
+	public String getPortalUserIdSessionAttributeName() {
+		return portalUserIdSessionAttributeName;
+	}
+
+	public void setPortalUserIdSessionAttributeName(
+			String portalUserIdSessionAttributeName) {
+		this.portalUserIdSessionAttributeName = portalUserIdSessionAttributeName;
 	}
 
 }
