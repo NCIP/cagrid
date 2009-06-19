@@ -132,6 +132,54 @@
     <bean id="catalogEntryRelationshipTypeManagerFacade" 
     	class="gov.nih.nci.cagrid.portal.portlet.browse.CatalogEntryRelationshipTypeManagerFacade" 
     	autowire="byName"/>
+    	
+    <bean id="knowledgeCenterCatalogEntryManagerFacade" 
+    	class="gov.nih.nci.cagrid.portal.portlet.browse.KnowledgeCenterCatalogEntryManagerFacade" 
+    	autowire="byName"/>
+    	
+	<bean id="projectCatalogEntryManagerFacade" 
+    	class="gov.nih.nci.cagrid.portal.portlet.browse.ProjectCatalogEntryManagerFacade" 
+    	autowire="byName"/>
+    	
+    <bean id="workspaceCatalogEntryManagerFacade" 
+    	class="gov.nih.nci.cagrid.portal.portlet.browse.WorkspaceCatalogEntryManagerFacade" 
+    	autowire="byName"/>
+    	
+    <bean id="gridServiceInterfaceCatalogEntryManagerFacade" 
+    	class="gov.nih.nci.cagrid.portal.portlet.browse.GridServiceInterfaceCatalogEntryManagerFacade" 
+    	autowire="byName"/>
+    	
+    <bean id="sharedQueryCatalogEntryManagerFacade" 
+    	class="gov.nih.nci.cagrid.portal.portlet.browse.SharedQueryCatalogEntryManagerFacade" 
+    	autowire="byName"/>
+    	
+    <bean id="workflowCatalogEntryManagerFacade" 
+    	class="gov.nih.nci.cagrid.portal.portlet.browse.WorkflowCatalogEntryManagerFacade" 
+    	autowire="byName"/>
+    	
+    <bean id="toolDeploymentCatalogEntryManagerFacade" 
+    	class="gov.nih.nci.cagrid.portal.portlet.browse.ToolDeploymentCatalogEntryManagerFacade" 
+    	autowire="byName"/>
+    	
+    <bean id="gridServiceEndPointCatalogEntryManagerFacade" 
+    	class="gov.nih.nci.cagrid.portal.portlet.browse.GridServiceEndpointCatalogEntryManagerFacade" 
+    	autowire="byName"/>
+    	
+    <bean id="informationModelCatalogEntryManagerFacade" 
+    	class="gov.nih.nci.cagrid.portal.portlet.browse.InformationModelCatalogEntryManagerFacade" 
+    	autowire="byName"/>
+    	
+    <bean id="terminologyCatalogEntryManagerFacade" 
+    	class="gov.nih.nci.cagrid.portal.portlet.browse.TerminologyCatalogEntryManagerFacade" 
+    	autowire="byName"/>
+    	
+    <bean id="portletCatalogEntryManagerFacade" 
+    	class="gov.nih.nci.cagrid.portal.portlet.browse.PortletCatalogEntryManagerFacade" 
+    	autowire="byName"/>
+    	
+    <bean id="desktopToolCatalogEntryManagerFacade" 
+    	class="gov.nih.nci.cagrid.portal.portlet.browse.DesktopToolCatalogEntryManagerFacade" 
+    	autowire="byName"/>
 
 
 </beans>

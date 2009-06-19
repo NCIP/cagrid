@@ -13,6 +13,7 @@ import gov.nih.nci.cagrid.portal.domain.catalog.Hyperlink;
 import gov.nih.nci.cagrid.portal.domain.catalog.InstitutionCatalogEntry;
 import gov.nih.nci.cagrid.portal.domain.catalog.PersonCatalogEntry;
 import gov.nih.nci.cagrid.portal.domain.catalog.ToolCatalogEntry;
+import gov.nih.nci.cagrid.portal.domain.catalog.ToolDeploymentCatalogEntry;
 import gov.nih.nci.cagrid.portal.portlet.util.TemporalComparator;
 
 import java.util.Comparator;
@@ -60,6 +61,8 @@ public class CatalogEntryViewBean {
 					entryType = BrowseTypeEnum.TOOL;
 				} else if (targetCe instanceof CommunityCatalogEntry) {
 					entryType = BrowseTypeEnum.COMMUNITY;
+				}else if(targetCe instanceof ToolDeploymentCatalogEntry){
+					entryType = BrowseTypeEnum.TOOLDEPLOYMENT;
 				}
 				// Get target of relationship
 				// Find in entries set
@@ -160,6 +163,10 @@ public class CatalogEntryViewBean {
 
 	public SortedSet<RelatedCatalogEntryViewBean> getRelatedCommunities() {
 		return entryTypeMap.get(BrowseTypeEnum.COMMUNITY);
+	}
+	
+	public SortedSet<RelatedCatalogEntryViewBean> getRelatedToolDeployments() {
+		return entryTypeMap.get(BrowseTypeEnum.TOOLDEPLOYMENT);
 	}
 
 	public SortedSet<Citation> getOrderedCitations() {

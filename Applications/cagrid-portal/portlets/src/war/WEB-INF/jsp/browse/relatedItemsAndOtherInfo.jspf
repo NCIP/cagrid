@@ -15,9 +15,9 @@ String addRelatedItemActionId = "ADD_RELATED_ITEM";
 <c:if test="<%= permissionChecker.hasPermission(scopeGroupId, portletDisplay.getRootPortletId(), portletDisplay.getResourcePK(), addRelatedItemActionId) %>">
 
 <div id="${ns}editRelatedItemsDiv">
-	
+<p>
 <div id="${ns}addRelatedItemButtonContainer"></div>	
-
+</p>
 <style type="text/css">
 .match {
     font-weight:bold;
@@ -135,11 +135,10 @@ function ${ns}saveNewRelatedItem(){
 }
 
 function ${ns}renderUpdatedRelatedItemsView(){
-	jQuery("#${ns}relatedItemsDiv").html("Adding new relationship <img src='<c:url value="/images/indicator.gif"/>'/>");
+	jQuery("#${ns}relatedItemsDiv").html("Rendering related items <img src='<c:url value="/images/indicator.gif"/>'/>");
 	CatalogEntryManagerFacade.renderRelatedItems("${ns}",
 	{
 		callback:function(html){
-			alert("done");
 			jQuery("#${ns}relatedItemsDiv").html(html);
 			jQuery("#${ns}addRelatedItemButtonContainer").show();
 		},
@@ -148,9 +147,12 @@ function ${ns}renderUpdatedRelatedItemsView(){
 		}
 	});
 }
-
+function ${ns}cancelNewRelatedItem(){
+	${ns}renderUpdatedRelatedItemsView();
+}
 
 var ${ns}saveNewRelatedItemButton = null;
+var ${ns}cancelNewRelatedItemButton = null;
 var ${ns}entryTypeAC = null;
 function ${ns}initNewRelationshipForm(){
 
@@ -208,6 +210,16 @@ function ${ns}initNewRelationshipForm(){
 		${ns}saveNewRelatedItem();
 	});
 
+	${ns}cancelNewRelatedItemButton = new YAHOO.widget.Button({
+		label: "Cancel",
+		id: "${ns}cancelNewRelatedItemButton",
+		container: "${ns}cancelNewRelatedItemButtonContainer"
+	});
+
+	${ns}cancelNewRelatedItemButton.on("click", function(evt){
+		${ns}cancelNewRelatedItem();
+	});
+
 	jQuery("form[name='${ns}newRelatedItemForm'] :input[class*='required']").bind("keyup", function(evt){
 		${ns}checkEnableSaveNewRelatedItem();
 	});
@@ -253,6 +265,35 @@ jQuery(document).ready(function() {
 		${ns}showEditDialog();
 	});	
 });
+
+function ${ns}deleteRelatedItem(relationshipId){
+
+	CatalogEntryManagerFacade.deleteRelationship(relationshipId,
+	{
+		callback:function(message){
+			if(message == null){
+				/*
+				var el = jQuery("#${ns}_rel_" + relationshipId).get(0);
+				var parentEl = jQuery(el).parents(".oneRelatedItem").get(0);
+				var numChildren = jQuery(parentEl).find(".oneRoleInstance").length;
+				if(numChildren == 1){
+					jQuery(parentEl).remove();
+				}else{
+					jQuery(el).remove();
+				}
+				*/
+				${ns}renderUpdatedRelatedItemsView();
+			}else{
+				alert(message);
+			}
+		},
+		errorHandler:function(errorString, exception){
+			alert("Error deleting related item: " + errorString);
+		}
+	});
+
+}
+
 </script>
 	
 </div>
@@ -273,10 +314,33 @@ jQuery(document).ready(function() {
 <script type="text/javascript" src="<c:url value="/js/yui/element/element-min.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/yui/connection/connection-min.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/yui/tabview/tabview-min.js"/>"></script>
+
+<script type="text/javascript"
+	src="<c:url value="/dwr/interface/CatalogEntryManagerFacade.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/dwr/engine.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/dwr/util.js"/>"></script>
+
 <script type="text/javascript">
- 
+
+
+
+
+var ${ns}newCitationButton = null;
+var ${ns}newHyperlinksButton = null;
+var ${ns}newFileButton = null;
+
+function ${ns}newButton(label, baseName){
+	var b = new YAHOO.widget.Button({
+		label: label,
+		id: baseName + "Button",
+		container: baseName + "ButtonContainer"
+	});
+}
+
 jQuery(document).ready(function() {
 	var myTabs = new YAHOO.widget.TabView("<portlet:namespace/>tabs");
-
+	${ns}newCitationButton = ${ns}newButton("New Citation", "${ns}newCitation");
+	${ns}newHyperlinkButton = ${ns}newButton("New Hyperlink", "${ns}newHyperlink");
+	${ns}newFileButton = ${ns}newButton("New File", "${ns}newFile");
 });
 </script>

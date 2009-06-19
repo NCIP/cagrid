@@ -6,7 +6,7 @@
 
 <c:set var="ns" value="${namespace}"/>
 
-<div id="${ns}saveNewRelatedItemButtonContainer"></div>
+<span id="${ns}saveNewRelatedItemButtonContainer"></span>&nbsp;<span id="${ns}cancelNewRelatedItemButtonContainer"></span>
 <div id="${ns}newRelatedItemFormMsg"></div>
 <form name="${ns}newRelatedItemForm">
 

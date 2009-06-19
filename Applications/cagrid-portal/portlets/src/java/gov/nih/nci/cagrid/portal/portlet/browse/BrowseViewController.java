@@ -99,7 +99,10 @@ public class BrowseViewController implements InitializingBean, Controller {
             throw new RuntimeException("Unknown browse type: " + browseType);
         }
 
+        logger.debug("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+        logger.debug("$$$$$$$$$$$$$$ Retrieving entries...");
         List entries = getHibernateTemplate().find("from " + entryTypeName);
+        logger.debug("$$$$$$$$$$$$$$ ...done.");
         mav.addObject("entries", entries);
 
         if (getUserModel().getPortalUser() != null) {
