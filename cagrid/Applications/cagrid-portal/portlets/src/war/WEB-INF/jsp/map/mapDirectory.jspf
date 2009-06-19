@@ -18,11 +18,11 @@
                     <td width="30%" style="padding:2px" nowrap="nowrap">Data Service<span class="summary" id="${ns}dCount"></span></td>
                     <td width="5%" style="padding:2px"><img src="<c:url value="/images/participant_institute.png"/>"/>
                     </td>
-                    <td width="35%" nowrap="nowrap">Participant Institute<span  class="summary" id="${ns}aCount"></span></td>
+                    <td width="35%" nowrap="nowrap">Participant Institute<span  class="summary" id="${ns}pCount"></span></td>
                 </tr>
                 <tr>
                     <td style="padding:2px"><img src="<c:url value="/images/analytical_services.png"/>"/></td>
-                    <td nowrap="nowrap" style="padding:2px">Analytical Service<span  class="summary" id="${ns}pCount"></span></td>
+                    <td nowrap="nowrap" style="padding:2px">Analytical Service<span  class="summary" id="${ns}aCount"></span></td>
                     <td style="padding:2px"><img src="<c:url value="/images/hosting-research-center.png"/>"/></td>
                     <td nowrap="nowrap" style="padding:2px">Hosting Research Center</td>
                     <td>&nbsp;</td>
