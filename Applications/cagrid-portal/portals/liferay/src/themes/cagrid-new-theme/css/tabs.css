@@ -1,39 +1,45 @@
 /* This CSS sets the default styles for tabs. */
 
 .tabs {
-	border-bottom: 1px solid #8DB2E3;
+	-moz-border-radius-topleft:10px;
+	-moz-border-radius-topright:10px;
+	background:#D0D0D0 none repeat scroll 0 0;
+	border:medium none;
+	display:inline-block;
+	padding:0 2px;
 	margin: 0 0 1.5em 0;
-	padding: 0 0 2.6em 1em;
 }
 
 .tabs li {
-	background: url(../images/common/tabs_bg.png) 100% -50px;
+	background: url(../images/foop/YUI_tab_not_selected.png);
 	display: inline;
 	float: left;
-	line-height: 2.25;
-	margin-right: 0.8em;
+	line-height: 21px;
+	margin:5px;
 	padding: 0;
-	position: relative;
 	text-decoration: none;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
 }
 
 .tabs li a, .tabs li span {
-	background: url(../images/common/tabs_bg.png) 0 -150px;
+	background: url(../images/foop/YUI_tab_not_selected.png);
 	display: block;
 	float: left;
-	padding: 0.35em 1em 0;
+	padding: 2px 15px;
 	text-decoration: none;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
 }
 
 .tabs li.current {
-	background: url(../images/common/tabs_bg.png) 100% 0;
-	font-weight: bold;
+	background: url(../images/foop/YUI_tab_selected.png);
 	top: 0.15em;
 }
 
 .tabs li.current a, .tabs li.current span {
-	background: url(../images/common/tabs_bg.png) 0 -100px;
-	color: #333;
+	background: url(../images/foop/YUI_tab_selected.png);
+	color: #fff;
 	padding: 0.15em 1em;
 }
 

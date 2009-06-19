@@ -2,7 +2,7 @@
 
 
 <table id="${prefix}mainTable" border="0"
-       class="sortable-onload-0 rowstyle-dataRowLight paginate-10 max-pages-7 ">
+       class="sortable-onload-0 rowstyle-dataRowLight paginate-30 max-pages-7 ">
     <thead>
     <tr class="contentTableHeader">
         <th class="sortable-text fd-column-0 contentTableHeaderCell" style="width:25%">Name</th>
