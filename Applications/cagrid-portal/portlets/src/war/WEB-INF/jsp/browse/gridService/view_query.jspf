@@ -23,7 +23,8 @@
 
             var queryLink = "${queryLink}";
             queryLink = queryLink.replace("guest/catalog/tools", "guest/discovery");
-            window.location = queryLink
+            queryLink = queryLink.replace("guest/catalog/all", "guest/discovery");
+            window.location = queryLink;
         });
 
         ${ns}queryTip = new YAHOO.widget.Tooltip("queryTip", {
