@@ -1,0 +1,39 @@
+
+
+<liferay-portlet:renderURL var="diagnoseLink" portletName="cagriddiagnostics_WAR_cagridportlets"
+                           portletMode="view">
+    <liferay-portlet:param name="url" value="${gridService.url}"/>
+    <liferay-portlet:param name="ipcRequest" value="true"/>
+
+</liferay-portlet:renderURL>
+
+    <span id="${ns}diagnoseBtnContainer" class="yui-skin-sam"/>
+    <span id="${ns}diagnoseTipContainer" class="yui-skin-sam"/>
+
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+
+
+        ${ns}diagnoseButton = new YAHOO.widget.Button({
+            label: "Diagnose Service",
+            id: "${ns}diagnoseButton",
+            container: "${ns}diagnoseBtnContainer"
+        });
+
+        ${ns}diagnoseButton.on("click", function(evt) {
+            var diagnoseLink = "${diagnoseLink}";
+            diagnoseLink = diagnoseLink.replace("guest/catalog/tools", "guest/discovery");
+            window.location = diagnoseLink;
+        });
+
+
+        ${ns}diagnoseTip = new YAHOO.widget.Tooltip("diagnoseTip", {
+            context:"${ns}diagnoseBtnContainer",
+            text:"Diagnose why this service is not Active.",
+            container:"${ns}diagnoseTipContainer",
+            showDelay:200 });
+
+    });
+
+</script>

@@ -2,6 +2,8 @@
 		
 <%@ include file="/WEB-INF/jsp/browse/common_view_photo_row.jspf" %>
 
+<%@ include file="/WEB-INF/jsp/browse/gridService/view.jspf" %>
+
 <%@ include file="/WEB-INF/jsp/browse/pocs.jspf" %>
 
 <%@ include file="/WEB-INF/jsp/browse/relatedItemsAndOtherInfo.jspf" %>
