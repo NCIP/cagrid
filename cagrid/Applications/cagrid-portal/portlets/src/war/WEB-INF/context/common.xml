@@ -129,7 +129,8 @@
     </bean>
     <bean id="portalUserInterceptor2" class="gov.nih.nci.cagrid.portal.portlet.PortalUserInterceptor2"
           autowire="byName">
-        <property name="portalUserSessionAttributeName" value="CAGRIDPORTAL_ATTS_liferayUserId"/>
+        <property name="portalUserIdSessionAttributeName" value="CAGRIDPORTAL_ATTS_liferayUserId"/>
+        <property name="portalUserSessionAttributeName" ref="portalUserAttributeName"/>
     </bean>
 
     <bean id="servicefilter"

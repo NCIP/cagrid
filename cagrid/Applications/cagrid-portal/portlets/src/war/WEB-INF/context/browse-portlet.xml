@@ -143,6 +143,7 @@
                 <ref bean="parameterMappingInterceptor"/>
 				<ref bean="openSessionInViewInterceptor" />
 				<ref bean="portalUserInterceptor2" />
+				<ref bean="portalUserRequestInterceptor" />
 			</list>
 		</property>	
 
@@ -182,6 +183,7 @@
                 <ref bean="parameterMappingInterceptor"/>
 				<ref bean="openSessionInViewInterceptor" />
 				<ref bean="portalUserInterceptor2" />
+				<ref bean="portalUserRequestInterceptor" />
 			</list>
 		</property>	
 		
