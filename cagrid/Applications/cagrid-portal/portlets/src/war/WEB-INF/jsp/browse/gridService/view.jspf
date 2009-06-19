@@ -1,0 +1,47 @@
+
+<%@ taglib uri="http://liferay.com/tld/portlet" prefix="liferay-portlet" %>
+<%@ taglib uri="http://liferay.com/tld/security" prefix="liferay-security" %>
+<%@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %>
+<%@ taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
+<%@ taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
+
+<c:if test="${!empty catalogEntry.about}">
+    <c:set var="gridService" value="${catalogEntry.about}"/>
+
+    <div class="row">
+        <div class="label">
+            URL:
+        </div>
+        <div class="value">
+          ${gridService.url}
+           <%@ include file="/WEB-INF/jsp/browse/gridService/view_query.jspf" %>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="label">
+            Status:
+        </div>
+        <div class="value" 
+            <c:choose>
+                <c:when test="${gridService.currentStatus != 'ACTIVE'}">
+                    style="vertical-align:top;color:red">
+                    <c:out value="${gridService.currentStatus}"/>
+                    <%@ include file="/WEB-INF/jsp/browse/gridService/view_diagnose.jspf" %>
+                    &nbsp;
+                </c:when>
+                <c:otherwise>
+                    > <c:out value="${gridService.currentStatus}"/>&nbsp;
+                </c:otherwise>
+            </c:choose>
+        </div>
+    </div>
+
+    <%----%>
+    <%--<%@ include file="/WEB-INF/jsp/disc/details/service/notification.jspf" %>--%>
+    <%@ include file="/WEB-INF/jsp/browse/gridService/view_description.jspf" %>
+
+    
+
+
+</c:if>

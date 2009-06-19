@@ -3,7 +3,7 @@
 <%@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %>
 <portlet:defineObjects />
 <liferay-theme:defineObjects />
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.7.0/build/button/assets/skins/sam/button.css" />
+<link rel="stylesheet" type="text/css" href="<c:url value="/js/yui/button/assets/skins/sam/button.css"/>" />
 <link rel="stylesheet" type="text/css" href="<c:url value="/js/yui/container/assets/skins/sam/container.css"/>" />
 <script type="text/javascript" src="<c:url value="/js/yui/yahoo-dom-event/yahoo-dom-event.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/yui/element/element-min.js"/>"></script>
