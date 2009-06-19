@@ -145,8 +145,41 @@ body {
 	position:absolute;
 	top:-27px;
 }
-.searchBox{
-	
+.searchBox {
+	background-color:#E5E7ED;
+	overflow:auto;
+	padding:4px 5px 6px 8px;
+	width:176px;
+	-moz-border-radius-bottomleft:10px;
+	-webkit-border-bottom-left-radius:10px;
+	right:1px;
+	top:69px;
+	position:absolute;
+	z-index:21;
+}
+.searchBox input.search {
+	font-size:9pt;
+	padding:5px 5px 4px;
+	background-image:url(../images/foop/searchbox_bg.png);
+	background-repeat:repeat-x;
+	border:none;
+	float:left;
+}
+.searchBox input.focus {
+	border:none;
+}
+.searchBox .L-endcap {
+	float:left;
+	height:24px;
+	width:24px;
+	background-image:url(../images/foop/searchbox_endcaps.png);
+}
+.searchBox .R-endcap {
+	float:left;
+	height:24px;
+	width:12px;
+	background-image:url(../images/foop/searchbox_endcaps.png);
+	background-position:-25px 0;
 }
 
 /*******************************************

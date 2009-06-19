@@ -22,18 +22,31 @@ function search(e){ //e is event object passed from function invocation
 		return true
 	}
 }
+
+jQuery("input.search").click(function(){
+	if (jQuery(this).attr("value") == "Search") {
+		jQuery(this).css({'color': '#000000'});
+		jQuery(this).attr("value", "");
+	}
+});
+jQuery("input.search").blur( function() {
+	if (jQuery(this).attr("value")== "") {
+		jQuery(this).attr("value", "Search");
+		jQuery(this).css({'color' : '#afafaf'});
+	}
+});		
 </script>
 
 
 <form:form id="searchForm" method="post">
     <div class="searchBox">
-        <div>
+        
 		
             <input type="hidden" name="searchKeyword" id="searchKeyword"/>
             <input type="hidden" name="operation" id="operation" value="catalogSearch">
-
-            Search: <input id="keyword" type="text" size="20" onkeypress="return search(event);"/>
-            
-        </div>
+			<div class="L-endcap"></div>
+            <input id="keyword" class="search" type="text" size="20" value="Search" style="color:#afafaf;" onkeypress="return search(event);"/>
+            <div class="R-endcap"></div>
+        
     </div>
 </form:form>

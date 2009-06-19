@@ -90,10 +90,10 @@
 <form:form id="${ns}catalogDetailsForm" name="catalogDetailsForm">
     <input type="hidden" name="entryId" value=""><input type="hidden" name="operation" value="viewDetails">
     <div>
-        <div style="width:100%;height:20px;">
-            <div style="float:right;">
-                Search Keyword:<input id="${ns}keyword" type="text" size="20"/><input type="button" value="Search" onclick="search($('${ns}keyword').value);"/>
-            </div>
+        <div class="searchBox">
+            <div class="L-endcap"></div>
+            <input class="search" id="${ns}keyword" type="text" size="20" value="Search" style="color:#afafaf;" onkeypress="return checkEnter($('${ns}keyword').value, event);"/>
+            <div class="R-endcap"></div>
         </div>
         <div>
             <div id="${ns}tree" class="tree-container"></div>
@@ -112,25 +112,50 @@
 
 <script type="text/javascript">
 
-    var wildcard = "${searchKeyword}";
-    if (!wildcard) {
-        wildcard = "*:*";
-    }
+var wildcard = "${searchKeyword}";
+if (!wildcard) {
+    wildcard = "*:*";
+}
 
-    function search(keyword) {
-        if ("${catalogType}") {
+function checkEnter(keyword, e){ //e is event object passed from function invocation
+    var characterCode //literal character code will be stored in this variable
+    if (e && e.which) { //if which property of event object is supported (NN4)
+        e = e;
+        characterCode = e.which;//character code is contained in NN4's which property
+    }
+    else {
+        e = event
+        characterCode = e.keyCode; //character code is contained in IE's keyCode property
+    }
+    if (characterCode == 13) { //if generated character code is equal to ascii 13 (if enter key)
+        search(keyword);
+        return false;
+    }
+    else {
+        return true
+    }
+}
+
+search(wildcard);
+
+function search(keyword) {
+	if ("${catalogType}") {
             $("${ns}tree").style.visibility = "collapse";
             $("${ns}catalogs").style.width = "100%";
         }
-
+        
         if (keyword.length < 1) {
             keyword = wildcard;
         }
-        new Catalogs({keyword:keyword,catalogType:"${catalogType}",paginatorDiv:"${ns}paginatorDiv",treeDiv:"${ns}tree",rowsPerPage:10});
+        new Catalogs({
+            keyword: keyword,
+            catalogType: "${catalogType}",
+            paginatorDiv: "${ns}paginatorDiv",
+            treeDiv: "${ns}tree",
+            rowsPerPage: 10
+        });
         resultEvent.subscribe(pageCallback);
-    }
-    search(wildcard);
-
+}
 </script>
 
 

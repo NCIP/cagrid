@@ -1,4 +1,5 @@
 <c:forEach var="row" items="${discoveryTabModel.rows}">
+<div>
 <ul class="tabs">
 	<c:set var="numTabs" value="${fn:length(row)}"/>
 	<c:forEach var="tab" items="${row}" varStatus="status">		
@@ -13,11 +14,12 @@
 			</c:when>
 			<c:otherwise>
 				<li class="current">
-				<a href="#"><b><c:out value="${tab.label}"/></b></a>
+				<a href="#"><c:out value="${tab.label}"/></a>
 				</li>
 			</c:otherwise>
 		</c:choose>
 	</c:forEach>
-</ul>	
+</ul>
+</div>
 </c:forEach>
 
