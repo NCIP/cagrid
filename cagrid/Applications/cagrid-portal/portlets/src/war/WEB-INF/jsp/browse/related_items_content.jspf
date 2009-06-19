@@ -5,6 +5,13 @@
 	        	<div id="${ns}newRelatedItemDiv">
 	        
 		        </div>
+		        
+		        <c:if test="${empty catalogEntryViewBean.relatedPersons and empty catalogEntryViewBean.relatedInstitutions and empty catalogEntryViewBean.relatedCommunities and empty catalogEntryViewBean.relatedDataSets and empty catalogEntryViewBean.relatedTools and empty catalogEntryViewBean.relatedToolDeployments}">
+					<div>
+			        	<h3>No Related Items</h3>
+						There are no related items. Click the Add Related Items button above to add something.
+		        	</div>        
+		        </c:if>
 	        
 	        	<!-- Related People -->
 	        	<c:if test="${!empty catalogEntryViewBean.relatedPersons}">
@@ -61,5 +68,18 @@
 			        	<%@ include file="/WEB-INF/jsp/browse/relatedItems.jspf" %>
 		        	</div>
 	        	</c:if>
+	        	
+	        	<!-- Related Tool Deployments -->
+	        	<c:if test="${!empty catalogEntryViewBean.relatedToolDeployments}">
+		        	<div>
+			        	<h3><img src="#" alt="Tool Deployment Icon" /> Related Tool Deployments</h3>
+			        	
+			        	<c:set var="entryTypeLabel" value="Tool Deployment"/>
+			        	<c:set var="relatedEntries" value="${catalogEntryViewBean.relatedToolDeployments}"/>
+			        	<%@ include file="/WEB-INF/jsp/browse/relatedItems.jspf" %>
+		        	</div>
+	        	</c:if>
+	        	
+	        	
         	
         	</div>

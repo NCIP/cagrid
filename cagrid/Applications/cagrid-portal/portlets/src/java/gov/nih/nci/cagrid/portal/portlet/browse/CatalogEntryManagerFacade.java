@@ -171,8 +171,7 @@ public class CatalogEntryManagerFacade {
 
 			html = webContext
 					.forwardToString(getNewRelatedItemFormRenderServletUrl());
-			
-			
+
 		} catch (Exception ex) {
 			String msg = "Error rendering role types: " + ex.getMessage();
 			logger.error(msg, ex);
@@ -202,17 +201,19 @@ public class CatalogEntryManagerFacade {
 		}
 		return ldbs;
 	}
-	
-	public String renderRelatedItems(String namespace){
+
+	public String renderRelatedItems(String namespace) {
 		String html = null;
 		try {
 
-			CatalogEntry entry = getCatalogEntryDao().getById(getUserModel().getCurrentCatalogEntry().getId());
-			if(entry == null){
+			CatalogEntry entry = getCatalogEntryDao().getById(
+					getUserModel().getCurrentCatalogEntry().getId());
+			if (entry == null) {
 				throw new RuntimeException("No current catalog entry");
 			}
-			CatalogEntryViewBean catalogEntryViewBean = getCatalogEntryViewBeanFactory().newCatalogEntryViewBean(entry);
-			
+			CatalogEntryViewBean catalogEntryViewBean = getCatalogEntryViewBeanFactory()
+					.newCatalogEntryViewBean(entry);
+
 			WebContext webContext = WebContextFactory.get();
 			HttpServletRequest request = webContext.getHttpServletRequest();
 			request.setAttribute("catalogEntryViewBean", catalogEntryViewBean);
@@ -255,11 +256,15 @@ public class CatalogEntryManagerFacade {
 
 	public String saveRelationship() {
 		String message = null;
+
 		try {
+			
 			CatalogEntry entry = getUserModel().getCurrentCatalogEntry();
 			CatalogEntryRelationshipInstance relInst = getUserModel()
 					.getCurrentRelationshipInstance();
+			
 			if (relInst == null) {
+
 				relInst = new CatalogEntryRelationshipInstance();
 
 				CatalogEntry relatedEntry = (CatalogEntry) getHibernateTemplate()
@@ -298,12 +303,14 @@ public class CatalogEntryManagerFacade {
 
 				getUserModel().setCurrentRelationshipInstance(relInst);
 			}
+
 			CatalogEntryRoleInstance sourceRoleInst = relInst.getRoleA();
 			CatalogEntryRoleInstance targetRoleInst = relInst.getRoleB();
 			if (!sourceRoleInst.getCatalogEntry().getId().equals(entry.getId())) {
 				sourceRoleInst = relInst.getRoleB();
 				targetRoleInst = relInst.getRoleA();
 			}
+			
 			sourceRoleInst.setDescription(sourceRoleDescription);
 			sourceRoleInst.setUpdatedAt(new Date());
 			targetRoleInst.setDescription(targetRoleDescription);
@@ -311,11 +318,36 @@ public class CatalogEntryManagerFacade {
 			getHibernateTemplate().update(sourceRoleInst);
 			getHibernateTemplate().update(targetRoleInst);
 			getHibernateTemplate().update(relInst);
-			
+
 			getHibernateTemplate().flush();
 
 		} catch (Exception ex) {
 			String msg = "Error saving relationship: " + ex.getMessage();
+			logger.error(msg, ex);
+			throw new RuntimeException(msg, ex);
+		}
+		return message;
+	}
+
+	public String deleteRelationship(Integer relationshipId) {
+		String message = null;
+		try {
+			HibernateTemplate templ = getHibernateTemplate();
+			CatalogEntryRelationshipInstance relInst = (CatalogEntryRelationshipInstance) templ
+					.find("from CatalogEntryRelationshipInstance where id = ?",
+							relationshipId).iterator().next();
+			CatalogEntryRoleInstance roleAInst = relInst.getRoleA();
+			CatalogEntryRoleInstance roleBInst = relInst.getRoleB();
+			roleAInst.setRelationship(null);
+			roleBInst.setRelationship(null);
+			relInst.setRoleA(null);
+			relInst.setRoleB(null);
+			templ.delete(roleAInst);
+			templ.delete(roleBInst);
+			templ.delete(relInst);
+			templ.flush();
+		} catch (Exception ex) {
+			String msg = "Error deleting relationship: " + ex.getMessage();
 			logger.error(msg, ex);
 			throw new RuntimeException(msg, ex);
 		}
@@ -375,7 +407,8 @@ public class CatalogEntryManagerFacade {
 		return relatedItemsRenderServletUrl;
 	}
 
-	public void setRelatedItemsRenderServletUrl(String relatedItemsRenderServletUrl) {
+	public void setRelatedItemsRenderServletUrl(
+			String relatedItemsRenderServletUrl) {
 		this.relatedItemsRenderServletUrl = relatedItemsRenderServletUrl;
 	}
 

@@ -60,7 +60,8 @@ function ${ns}save(validated){
 			callback:function(id){
 				jQuery("form[name='${ns}editForm'] > *, :input[name='id']").val(id);
 				${ns}dirty = false;
-				jQuery("#${ns}dirty").html("false");	
+				${ns}cancelEdit(id);
+				//jQuery("#${ns}dirty").html("false");	
     		},
     		errorHandler:function(errorString, exception){
     			alert("Error saving: " + errorString);
@@ -127,7 +128,7 @@ jQuery(document).ready(function() {
 			"		${ns}setInputMessage('" + inputName + "', message);" +
 			"		if(message == null){" +
 			"			${ns}dirty = true;" +
-			"			jQuery('#${ns}dirty').html('true');" +
+			//"			jQuery('#${ns}dirty').html('true');" +
 			"		}" +
 			"	}," +
 			"	errorHandler:function(errorString, exception){" +

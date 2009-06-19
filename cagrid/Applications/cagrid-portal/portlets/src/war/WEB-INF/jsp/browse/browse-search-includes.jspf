@@ -1,5 +1,5 @@
 <link type="text/css" rel="stylesheet"
-      href="<c:url value="/js/yui/datatable/assets/skins/sam/datatable.css"/>"/>
+      href="<c:url value="/js/yui/assets/skins/sam/datatable.css"/>"/>
 <link type="text/css" rel="stylesheet" href="<c:url value="/js/yui/treeview/assets/skins/sam/treeview.css"/>"/>
 <link rel="stylesheet" type="text/css" href="<c:url value="/js/yui/paginator/assets/skins/sam/paginator.css"/>"/>
 

@@ -50,7 +50,55 @@
         
         <create creator="spring" javascript="CatalogEntryRelationshipTypeManagerFacade">
             <param name="beanName" value="catalogEntryRelationshipTypeManagerFacade"/>
-        </create>        
+        </create>
+        
+        <create creator="spring" javascript="KnowledgeCenterCatalogEntryManagerFacade">
+            <param name="beanName" value="knowledgeCenterCatalogEntryManagerFacade"/>
+        </create>
+        
+        <create creator="spring" javascript="ProjectCatalogEntryManagerFacade">
+            <param name="beanName" value="projectCatalogEntryManagerFacade"/>
+        </create>
+        
+        <create creator="spring" javascript="WorkspaceCatalogEntryManagerFacade">
+            <param name="beanName" value="workspaceCatalogEntryManagerFacade"/>
+        </create>
+        
+        <create creator="spring" javascript="DesktopToolCatalogEntryManagerFacade">
+            <param name="beanName" value="desktopToolCatalogEntryManagerFacade"/>
+        </create>
+        
+        <create creator="spring" javascript="PortletCatalogEntryManagerFacade">
+            <param name="beanName" value="portletCatalogEntryManagerFacade"/>
+        </create>
+        
+        <create creator="spring" javascript="GridServiceInterfaceCatalogEntryManagerFacade">
+            <param name="beanName" value="gridServiceInterfaceCatalogEntryManagerFacade"/>
+        </create>
+        
+        <create creator="spring" javascript="SharedQueryCatalogEntryManagerFacade">
+            <param name="beanName" value="sharedQueryCatalogEntryManagerFacade"/>
+        </create>
+        
+        <create creator="spring" javascript="WorkflowCatalogEntryManagerFacade">
+            <param name="beanName" value="workflowCatalogEntryManagerFacade"/>
+        </create>
+        
+        <create creator="spring" javascript="ToolDeploymentCatalogEntryManagerFacade">
+            <param name="beanName" value="toolDeploymentCatalogEntryManagerFacade"/>
+        </create>
+        
+        <create creator="spring" javascript="GridServiceEndPointCatalogEntryManagerFacade">
+            <param name="beanName" value="gridServiceEndPointCatalogEntryManagerFacade"/>
+        </create>
+        
+        <create creator="spring" javascript="InformationModelCatalogEntryManagerFacade">
+            <param name="beanName" value="informationModelCatalogEntryManagerFacade"/>
+        </create>
+        
+        <create creator="spring" javascript="TerminologyCatalogEntryManagerFacade">
+            <param name="beanName" value="terminologyCatalogEntryManagerFacade"/>
+        </create>
 
         <!--other creators are created with annotations-->
 

@@ -27,11 +27,23 @@
                   <form name="${ns}addCatalogEntryForm" method="POST" action="<c:out value="${addCatalogEntryUrl}"/>">
                       <label for="entryType" value="Type"/>
                       <select name="entryType" size="5">
-                          <option value="DATASET">Dataset</option>
-                          <option value="PERSON">Person</option>
-                          <option value="TOOL">Tool</option>
-                          <option value="COMMUNITY">Community</option>
-                          <option value="INSTITUTION">Institution</option>
+                          <option value="COMMUNITY"><spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.CommunityCatalogEntry"/></option>
+                          <option value="DATASET"><spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.DataSetCatalogEntry"/></option>
+                          <option value="DESKTOPTOOL"><spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.DesktopToolCatalogEntry"/></option>
+                          <option value="GRIDSERVICEENDPOINT"><spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.GridServiceEndPointCatalogEntry"/></option>
+                          <option value="GRIDSERVICEINTERFACE"><spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.GridServiceInterfaceCatalogEntry"/></option>
+                          <option value="INFORMATIONMODEL"><spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.InformationModelCatalogEntry"/></option>
+                          <option value="INSTITUTION"><spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.InstitutionCatalogEntry"/></option>
+                          <option value="KNOWLEDGECENTER"><spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.KnowledgeCenterCatalogEntry"/></option>
+                          <option value="PERSON"><spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.PersonCatalogEntry"/></option>
+                          <option value="PORTLET"><spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.PortletCatalogEntry"/></option>
+                          <option value="PROJECT"><spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.ProjectCatalogEntry"/></option>
+                          <option value="SHAREDQUERY"><spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.SharedQueryCatalogEntry"/></option>
+                          <option value="TERMINOLOGY"><spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.TerminologyCatalogEntry"/></option>
+                          <option value="TOOL"><spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.ToolCatalogEntry"/></option>
+                          <option value="TOOLDEPLOYMENT"><spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.ToolDeploymentCatalogEntry"/></option>
+                          <option value="WORKFLOW"><spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.WorkflowCatalogEntry"/></option>
+                          <option value="WORKSPACE"><spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.WorkspaceCatalogEntry"/></option>
                       </select>
                   </form>
               </div>
