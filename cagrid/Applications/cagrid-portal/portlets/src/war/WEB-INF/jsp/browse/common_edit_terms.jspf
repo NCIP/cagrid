@@ -1,0 +1,43 @@
+<div class="termsRow">
+	<div class="leftpanel">
+		<div class="row">
+			<label for="areaOfFocus">Area of Focus</label>
+			
+			<input type="text" name="areaOfFocusLabels" id="${ns}areaOfFocusLabels"
+				value="<tags:joinTermLabels items="${catalogEntry.areasOfFocus}" delimiter=","/>"
+			/>
+			<input class="required" type="hidden" name="areaOfFocusValues" id="${ns}areaOfFocusValues"
+				value="<tags:joinTermIdentifiers items="${catalogEntry.areasOfFocus}" delimiter=","/>"
+			/>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+
+var ${ns}areaOfFocusPopupDialog = null;
+function ${ns}showAreaOfFocusDialog(){
+	${ns}areaOfFocusPopupDialog = new Liferay.Popup({title: "Area of Focus", modal:true, width:500 , height:600}); 
+	jQuery(
+		${ns}areaOfFocusPopupDialog
+	).load(
+		<c:url var="editAreaOfFocusUrl" value="/browse/edit_area_of_focus.html">
+			<c:param name="ns" value="${ns}"/>
+		</c:url>
+	    '${editAreaOfFocusUrl}',
+	    { }
+	);	
+}
+
+function ${ns}addTerms(terms){
+	alert('Adding terms: ' + terms);
+}
+
+jQuery(document).ready(function() {
+	jQuery("#${ns}areaOfFocusLabels").bind('focus', function(){
+		${ns}showAreaOfFocusDialog();
+	});
+});
+
+</script>
+

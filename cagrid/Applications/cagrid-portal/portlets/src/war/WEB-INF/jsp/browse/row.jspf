@@ -1,4 +1,0 @@
-<div class="row">
-	<label for="<c:out value="${rowValue}"/>"><c:out value="${rowLabel}"/></label>
-	<div class="value"><c:out value="${rowValue}"/></div>
-</div>
