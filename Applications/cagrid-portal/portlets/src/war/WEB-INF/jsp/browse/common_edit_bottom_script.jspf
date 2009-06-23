@@ -118,7 +118,7 @@ jQuery(document).ready(function() {
 		${ns}checkEnableSave();
 	});
 
-	jQuery("form[name='${ns}editForm'] > *, :input[name!='id']").bind('blur', function(evt){
+	jQuery("form[name='${ns}editForm'] > *, :input[name!='id'], .autoSet").bind('blur', function(evt){
 		var inputName = evt.target.name;
 		var setterName = "set" + inputName.substring(0, 1).toUpperCase() + inputName.substring(1, inputName.length);
 		eval(

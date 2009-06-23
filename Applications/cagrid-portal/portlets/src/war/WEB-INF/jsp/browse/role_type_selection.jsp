@@ -1,10 +1,5 @@
 <%@ include file="/WEB-INF/jsp/include/servlet_includes.jsp" %>
 
-<%
-java.util.List roleTypes = (java.util.List)request.getAttribute("roleTypes");
-int numRoleTypes = roleTypes.size();
-pageContext.setAttribute("numRoleTypes", numRoleTypes);
-%>
 <c:choose>
 	<c:when test="${empty roleTypes}">
 		There are no relationships that apply to this catalog entry type.

@@ -53,6 +53,8 @@
 
         <dependency rev="${liferay.portal.version}" org="liferay" name="portal"
                     conf="default->portlet;compile->portal-ext"/>
+                    
+        <dependency rev="2.6.0" org="hp" name="jena" conf="*->default"/>
 
     </dependencies>
 

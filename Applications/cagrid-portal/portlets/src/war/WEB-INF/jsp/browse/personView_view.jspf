@@ -4,14 +4,10 @@
 
 		<div class="contactInfoRow">
 			<c:if test="${catalogEntry.phoneNumberPublic}">
-				<c:set var="rowLabel" value="Phone"/>
-				<c:set var="rowValue" value="${catalogEntry.phoneNumber}"/>
-			    <%@ include file="/WEB-INF/jsp/browse/row.jspf" %>
+				<tags:row rowLabel="Phone" rowValue="${catalogEntry.phoneNumber}"/>
 			</c:if>
 			<c:if test="${catalogEntry.emailAddressPublic}">
-			    <c:set var="rowLabel" value="e-mail"/>
-				<c:set var="rowValue" value="${catalogEntry.emailAddress}"/>
-			    <%@ include file="/WEB-INF/jsp/browse/row.jspf" %>
+				<tags:row rowLabel="e-mail" rowValue="${catalogEntry.emailAddress}"/>
 			</c:if>
 			<c:if test="${catalogEntry.addressPublic}">
 				<%@ include file="/WEB-INF/jsp/browse/address.jspf" %>

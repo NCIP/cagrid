@@ -5,7 +5,7 @@
 	</div>
     <div class="photoRightContent">
         <div class="row">
-            <input id="input-name" class="required" style="font-size:23pt;
+            <input id="input-name" class="required autoSet" style="font-size:23pt;
 				<c:if test="${empty catalogEntry.name}">color:#afafaf;</c:if>
 			" type="text" name="name" value="
 			<c:choose>
@@ -16,7 +16,7 @@
 			<span style="color: red"></span><br/>
         </div>
         <div class="row">
-            <textarea id="input-description" class="required" wrap="virtual" name="description" style="height:100px;width:590px;<c:if test="${empty catalogEntry.description}">color:#afafaf;</c:if>"><c:choose><c:when test="${empty catalogEntry.description}">Description</c:when><c:otherwise><c:out value="${catalogEntry.description}"/></c:otherwise></c:choose></textarea>
+            <textarea id="input-description" class="required autoSet" wrap="virtual" name="description" style="height:100px;width:590px;<c:if test="${empty catalogEntry.description}">color:#afafaf;</c:if>"><c:choose><c:when test="${empty catalogEntry.description}">Description</c:when><c:otherwise><c:out value="${catalogEntry.description}"/></c:otherwise></c:choose></textarea>
 			<span style="color: red"></span>
         </div>
 	</div>

@@ -30,94 +30,17 @@ Then, select the kind relationship that you would like to describe.
 <div id="${ns}addRelationshipButtonContainer"></div>
 <form name="${ns}addRelatedItemsForm">
 
+<%@ include file="/WEB-INF/jsp/browse/entry_types.jspf" %>
+
 <b>Kinds of Catalog Entries</b><br/>
-<ul>
-	<li>
-		<input type="radio" name="entryType" value="gov.nih.nci.cagrid.portal.domain.catalog.CommunityCatalogEntry"/>
-		<b><spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.CommunityCatalogEntry"/></b><br/>
-		<spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.CommunityCatalogEntry.description"/>
-	</li>
-	<li>
-		<input type="radio" name="entryType" value="gov.nih.nci.cagrid.portal.domain.catalog.DataSetCatalogEntry" checked="true"/>
-		<b><spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.DataSetCatalogEntry"/></b><br/>
-		<spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.DataSetCatalogEntry.description"/>
-	</li>
-	<li>
-		<input type="radio" name="entryType" value="gov.nih.nci.cagrid.portal.domain.catalog.DesktopToolCatalogEntry"/>
-		<b><spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.DesktopToolCatalogEntry"/></b><br/>
-		<spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.DesktopToolCatalogEntry.description"/>
-	</li>	
-	<li>
-		<input type="radio" name="entryType" value="gov.nih.nci.cagrid.portal.domain.catalog.InformationModelCatalogEntry"/>
-		<b><spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.InformationModelCatalogEntry"/></b><br/>
-		<spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.InformationModelCatalogEntry.description"/>
-	</li>	
-	<li>
-		<input type="radio" name="entryType" value="gov.nih.nci.cagrid.portal.domain.catalog.InstitutionCatalogEntry"/>
-		<b><spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.InstitutionCatalogEntry"/></b><br/>
-		<spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.InstitutionCatalogEntry.description"/>
-	</li>
-	<li>
-		<input type="radio" name="entryType" value="gov.nih.nci.cagrid.portal.domain.catalog.GridServiceEndPointCatalogEntry"/>
-		<b><spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.GridServiceEndPointCatalogEntry"/></b><br/>
-		<spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.GridServiceEndPointCatalogEntry.description"/>
-	</li>	
-	<li>
-		<input type="radio" name="entryType" value="gov.nih.nci.cagrid.portal.domain.catalog.GridServiceInterfaceCatalogEntry"/>
-		<b><spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.GridServiceInterfaceCatalogEntry"/></b><br/>
-		<spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.GridServiceInterfaceCatalogEntry.description"/>
-	</li>	
-	<li>
-		<input type="radio" name="entryType" value="gov.nih.nci.cagrid.portal.domain.catalog.KnowledgeCenterCatalogEntry"/>
-		<b><spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.KnowledgeCenterCatalogEntry"/></b><br/>
-		<spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.KnowledgeCenterCatalogEntry.description"/>
-	</li>	
-	<li>
-		<input type="radio" name="entryType" value="gov.nih.nci.cagrid.portal.domain.catalog.PersonCatalogEntry"/>
-		<b><spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.PersonCatalogEntry"/></b><br/>
-		<spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.PersonCatalogEntry.description"/>
-	</li>
-	<li>
-		<input type="radio" name="entryType" value="gov.nih.nci.cagrid.portal.domain.catalog.PortletCatalogEntry"/>
-		<b><spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.PortletCatalogEntry"/></b><br/>
-		<spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.PortletCatalogEntry.description"/>
-	</li>
-	<li>
-		<input type="radio" name="entryType" value="gov.nih.nci.cagrid.portal.domain.catalog.ProjectCatalogEntry"/>
-		<b><spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.ProjectCatalogEntry"/></b><br/>
-		<spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.ProjectCatalogEntry.description"/>
-	</li>
-	<li>
-		<input type="radio" name="entryType" value="gov.nih.nci.cagrid.portal.domain.catalog.SharedQueryCatalogEntry"/>
-		<b><spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.SharedQueryCatalogEntry"/></b><br/>
-		<spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.SharedQueryCatalogEntry.description"/>
-	</li>	
-	<li>
-		<input type="radio" name="entryType" value="gov.nih.nci.cagrid.portal.domain.catalog.TerminologyCatalogEntry"/>
-		<b><spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.TerminologyCatalogEntry"/></b><br/>
-		<spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.TerminologyCatalogEntry.description"/>
-	</li>	
-	<li>
-		<input type="radio" name="entryType" value="gov.nih.nci.cagrid.portal.domain.catalog.ToolCatalogEntry"/>
-		<b><spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.ToolCatalogEntry"/></b><br/>
-		<spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.ToolCatalogEntry.description"/>
-	</li>
-	<li>
-		<input type="radio" name="entryType" value="gov.nih.nci.cagrid.portal.domain.catalog.ToolDeploymentCatalogEntry"/>
-		<b><spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.ToolDeploymentCatalogEntry"/></b><br/>
-		<spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.ToolDeploymentCatalogEntry.description"/>
-	</li>
-	<li>
-		<input type="radio" name="entryType" value="gov.nih.nci.cagrid.portal.domain.catalog.WorkflowCatalogEntry"/>
-		<b><spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.WorkflowCatalogEntry"/></b><br/>
-		<spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.WorkflowCatalogEntry.description"/>
-	</li>
-	<li>
-		<input type="radio" name="entryType" value="gov.nih.nci.cagrid.portal.domain.catalog.WorkspaceCatalogEntry"/>
-		<b><spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.WorkspaceCatalogEntry"/></b><br/>
-		<spring:message code="gov.nih.nci.cagrid.portal.domain.catalog.WorkspaceCatalogEntry.description"/>
-	</li>
-</ul>	
+
+<c:forEach var="entryType" items="${entryTypes}">
+		<tags:roleTypeSelector 
+			input_name="entryType" 
+			id_prefix="${ns}" 
+			entry_type="${entryType[0]}"/>	
+</c:forEach>
+	
 <br/>
 
 <p>
@@ -133,13 +56,20 @@ Then, select the kind relationship that you would like to describe.
 
 <script type="text/javascript">
 
-
+var ${ns}lastSelectedEntryType = null;
 function ${ns}populateLists(entryType){
 
 	CatalogEntryManagerFacade.renderRoleTypesForType(entryType, "${ns}",
 	{
 		callback:function(html){
-			jQuery("#${ns}roleTypeDiv").html(html);
+			//if(${ns}lastSelectedEntryType != null){
+			//	jQuery("#${ns}" + ${ns}lastSelectedEntryType + "_roleTypesContainer").html("");
+			//}
+			//${ns}lastSelectedEntryType = entryType;
+			//var theId = "#${ns}" + entryType + "_roleTypesContainer";
+			//alert('Looking for ' + theId + ', found: ' + jQuery("#${ns}" + entryType + "_roleTypesContainer").length);
+			//jQuery(theId).html(html);
+			jQuery("${ns}roleTypeDiv").html(html);	
 			if(jQuery("form[name='${ns}addRelatedItemsForm']  :input[name='roleType']").get().length > 0){
 				${ns}addRelationshipButton.set("disabled", false);			
 			}else{
