@@ -1,0 +1,7 @@
+<div class="termsRow">
+	<div class="leftpanel">
+		<c:set var="areasOfFocus"><tags:joinTermLabels items="${catalogEntry.areasOfFocus}" delimiter=","/></c:set>
+		<tags:row rowLabel="Area of Focus" rowValue="${areasOfFocus}"/>
+	</div>
+</div>
+
