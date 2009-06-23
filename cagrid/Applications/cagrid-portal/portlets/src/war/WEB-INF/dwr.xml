@@ -99,6 +99,10 @@
         <create creator="spring" javascript="TerminologyCatalogEntryManagerFacade">
             <param name="beanName" value="terminologyCatalogEntryManagerFacade"/>
         </create>
+        
+        <create creator="spring" javascript="TerminologyService">
+            <param name="beanName" value="terminologyService"/>
+        </create>
 
         <!--other creators are created with annotations-->
 
@@ -128,6 +132,10 @@
         <convert converter="bean" match="gov.nih.nci.cagrid.portal.portlet.browse.LabelDescriptionBean"/>
 
         <convert converter="bean" match="gov.nih.nci.cagrid.portal.portlet.map.ajax.SummaryBean"/>
+        
+        <convert converter="bean" match="gov.nih.nci.cagrid.portal.portlet.terms.TerminologyBean"/>
+        <convert converter="bean" match="gov.nih.nci.cagrid.portal.portlet.terms.TermBean"/>
+        
 
     </allow>
 </dwr>

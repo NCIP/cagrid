@@ -45,7 +45,8 @@
    		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.DataSetCatalogEntry" value="datasetView"/>
    		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.CommunityCatalogEntry" value="communityView"/>
    		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.ToolCatalogEntry" value="toolView"/>
-        <entry key="gov.nih.nci.cagrid.portal.domain.catalog.GridServiceEndPointCatalogEntry" value="toolView"/>
+        <entry key="gov.nih.nci.cagrid.portal.domain.catalog.ToolDeploymentCatalogEntry" value="toolDeploymentView"/>
+        <entry key="gov.nih.nci.cagrid.portal.domain.catalog.GridServiceEndPointCatalogEntry" value="gridServiceEndpointView"/>
    	</util:map>
    	
 	

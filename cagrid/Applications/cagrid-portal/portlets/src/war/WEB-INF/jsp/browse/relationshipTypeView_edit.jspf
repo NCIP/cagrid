@@ -10,50 +10,50 @@
 <form name="${ns}editForm">	
 <div class="row">
 <label for="name">Name</label>
-<input name="name" class="required" type="text" value="${relType.name}"/>
+<input name="name" class="required autoSet" type="text" value="${relType.name}"/>
 <span style="color: red"></span>
 </div>
 
 <div class="row">
 <label for="description">Description</label>
-<textarea name="description" class="required" type="text"><c:out value="${relType.description}"/></textarea>
+<textarea name="description" class="required autoSet" type="text"><c:out value="${relType.description}"/></textarea>
 <span style="color: red"></span>
 </div>
 
 
 <div class="row">
 <label for="roleAType">Role A Type</label>
-<tags:select name="roleAType" cssClass="required" currentValue="${relType.roleTypeA.type}" optionValues="${entryTypes}"/>
+<tags:select name="roleAType" cssClass="required autoSet" currentValue="${relType.roleTypeA.type}" optionValues="${entryTypes}"/>
 <span style="color: red"></span>
 </div>
 
 <div class="row">
 <label for="roleAName">Role A Name</label>
-<input name="roleAName" class="required" type="text" value="${relType.roleTypeA.name}"/>
+<input name="roleAName" class="required autoSet" type="text" value="${relType.roleTypeA.name}"/>
 <span style="color: red"></span>
 </div>
 
 <div class="row">
 <label for="roleADescription">Role A Description</label>
-<textarea name="roleADescription" class="required">${relType.roleTypeA.description}</textarea>
+<textarea name="roleADescription" class="required autoSet">${relType.roleTypeA.description}</textarea>
 <span style="color: red"></span>
 </div>
 
 <div class="row">
 <label for="roleBType">Role B Type</label>
-<tags:select name="roleBType" cssClass="required" currentValue="${relType.roleTypeB.type}" optionValues="${entryTypes}"/>
+<tags:select name="roleBType" cssClass="required autoSet" currentValue="${relType.roleTypeB.type}" optionValues="${entryTypes}"/>
 <span style="color: red"></span>
 </div>
 
 <div class="row">
 <label for="roleBName">Role B Name</label>
-<input name="roleBName" class="required" type="text" value="${relType.roleTypeB.name}"/>
+<input name="roleBName" class="required autoSet" type="text" value="${relType.roleTypeB.name}"/>
 <span style="color: red"></span>
 </div>
 
 <div class="row">
 <label for="roleBDescription">Role B Description</label>
-<textarea name="roleBDescription" class="required">${relType.roleTypeB.description}</textarea>
+<textarea name="roleBDescription" class="required autoSet">${relType.roleTypeB.description}</textarea>
 <span style="color: red"></span>
 </div>
 

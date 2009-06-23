@@ -2,7 +2,9 @@
 		
 <%@ include file="/WEB-INF/jsp/browse/common_view_photo_row.jspf" %>
 
+<c:if test="${catalogEntry.class.simpleName eq 'GridServiceEndPointCatalogEntry'}">
 <%@ include file="/WEB-INF/jsp/browse/gridService/view.jspf" %>
+</c:if>
 
 <%@ include file="/WEB-INF/jsp/browse/pocs.jspf" %>
 

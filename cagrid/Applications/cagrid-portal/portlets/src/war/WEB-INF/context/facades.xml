@@ -180,6 +180,31 @@
     <bean id="desktopToolCatalogEntryManagerFacade" 
     	class="gov.nih.nci.cagrid.portal.portlet.browse.DesktopToolCatalogEntryManagerFacade" 
     	autowire="byName"/>
+	
+	
+	<bean id="terminologyProvider" class="gov.nih.nci.cagrid.portal.portlet.terms.JenaTerminologyProvider">
+		<property name="models">
+			<util:map>
+				<entry>
+					<key>
+						<bean class="java.net.URI">
+							<constructor-arg value="http://cagrid.org/terms/area_of_focus_1_0.owl"/>
+						</bean>
+					</key>
+					<bean class="gov.nih.nci.cagrid.portal.portlet.terms.JenaFileModelFactoryBean">
+						<property name="modelFile" value="/terms/area_of_focus_1_0.owl"/>
+						<property name="modelSpec">
+							<util:constant static-field="com.hp.hpl.jena.ontology.OntModelSpec.OWL_MEM"/>
+						</property>
+					</bean>
+				</entry>
+			</util:map>	
+		</property>
+	</bean>
 
+	<bean id="terminologyService" class="gov.nih.nci.cagrid.portal.portlet.terms.TerminologyService" autowire="byName">
+		<property name="addTermsFormInputsRenderServletUrl" value="/browse/add_terms_form_inputs.html"/>
+	</bean>
 
+	
 </beans>
