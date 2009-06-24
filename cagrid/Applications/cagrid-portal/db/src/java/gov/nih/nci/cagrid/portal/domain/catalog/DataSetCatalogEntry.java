@@ -1,6 +1,7 @@
 package gov.nih.nci.cagrid.portal.domain.catalog;
 
 import javax.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,8 +25,14 @@ public class DataSetCatalogEntry extends CatalogEntry {
         this.provenance = provenance;
     }
 
-    @OneToMany
-    @JoinColumn(name="terms_fk")
+    @ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(
+			name = "cat_entry_tocterms", 
+			joinColumns = @JoinColumn(name = "entry_id"), 
+			inverseJoinColumns = @JoinColumn(name = "term_id"), 
+			uniqueConstraints =	@UniqueConstraint(columnNames = 
+				{"entry_id", "term_id" })
+	)
     public List<Term> getTypesOfCancer() {
         return typesOfCancer;
     }

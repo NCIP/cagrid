@@ -1,7 +1,5 @@
 <%@ include file="/WEB-INF/jsp/include/servlet_includes.jsp" %>
-
-<ul>
+<c:set var="ns" value="${namespace}"/>
 <c:forEach var="term" items="${terms}">
-<li>${term.uri}</li>
+<tags:termSelector input_name="terms" term="${term}" id_prefix="${ns}"/>
 </c:forEach>
-</ul>

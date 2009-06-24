@@ -61,7 +61,6 @@ function ${ns}save(validated){
 				jQuery("form[name='${ns}editForm'] > *, :input[name='id']").val(id);
 				${ns}dirty = false;
 				${ns}cancelEdit(id);
-				//jQuery("#${ns}dirty").html("false");	
     		},
     		errorHandler:function(errorString, exception){
     			alert("Error saving: " + errorString);
@@ -77,6 +76,30 @@ function ${ns}setInputMessage(inputName, message){
 	}
 	jQuery("form[name='${ns}editForm'] > *, :input[name='" + inputName + "']").next().html(newMessage);	
 }
+
+function ${ns}setField(inputName, inputValue){
+	if(!${ns}errorFlag){
+		var setterName = "set" + inputName.substring(0, 1).toUpperCase() + inputName.substring(1, inputName.length);
+		eval(
+			"${managerFacadeName}." + setterName + "('" + inputValue + "'," + 
+			"{" +
+			"	callback:function(message){" +
+			"		${ns}setInputMessage('" + inputName + "', message);" +
+			"		if(message == null){" +
+			"			${ns}dirty = true;" +
+			"			${ns}checkEnableSave();" + 
+			"		}" +
+			"	}," +
+			"	errorHandler:function(errorString, exception){" +
+			"		alert(\"Error setting input '" + inputName + "': \" + errorString);" +
+			"		${ns}errorFlag = true;" +
+   			"	}" +
+			"});"
+		);
+	}
+}
+
+var ${ns}errorFlag = false;
 		
 jQuery(document).ready(function() {
 
@@ -118,28 +141,9 @@ jQuery(document).ready(function() {
 		${ns}checkEnableSave();
 	});
 
-	jQuery("form[name='${ns}editForm'] > *, :input[name!='id'], .autoSet").bind('blur', function(evt){
-		var inputName = evt.target.name;
-		var setterName = "set" + inputName.substring(0, 1).toUpperCase() + inputName.substring(1, inputName.length);
-		eval(
-			"${managerFacadeName}." + setterName + "('" + evt.target.value + "'," + 
-			"{" +
-			"	callback:function(message){" +
-			"		${ns}setInputMessage('" + inputName + "', message);" +
-			"		if(message == null){" +
-			"			${ns}dirty = true;" +
-			//"			jQuery('#${ns}dirty').html('true');" +
-			"		}" +
-			"	}," +
-			"	errorHandler:function(errorString, exception){" +
-    		"		alert(\"Error setting input '" + inputName + "': \" + errorString);" +
-    		"	}" +
-			"});"
-		);
-		
-
+	jQuery("form[name='${ns}editForm'] :input[name!='id'], .autoSet").bind('blur', function(evt){
+		${ns}setField(evt.target.name, evt.target.value);
 	});
-
 	
 });	
 /*  Edit name and description interactivity  */

@@ -25,10 +25,10 @@ public class TermBean {
 			throw new IllegalArgumentException("uri must not be null");
 		}
 		if(label == null){
-			throw new IllegalArgumentException("label must not be null");
+			throw new IllegalArgumentException("label must not be null for " + uri);
 		}
 		if(comment == null){
-			throw new IllegalArgumentException("comment must not be null");
+			throw new IllegalArgumentException("comment must not be null for " + uri);
 		}
 		this.terminology = terminology;
 		this.uri = uri;

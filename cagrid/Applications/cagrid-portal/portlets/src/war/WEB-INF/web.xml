@@ -116,6 +116,10 @@
                 gov.nih.nci.cagrid.portal.portlet.notification.NotificationSubscriptionService
             </param-value>
         </init-param>
+        <init-param>
+            <param-name>debug</param-name>
+            <param-value>true</param-value>
+        </init-param>
     </servlet>
 
     <servlet-mapping>
@@ -215,6 +219,7 @@
         <url-pattern>/browse/*</url-pattern>
     </servlet-mapping>  
     
+
     <servlet>
         <servlet-name>terms</servlet-name>
         <servlet-class>
@@ -226,7 +231,8 @@
     <servlet-mapping>
         <servlet-name>terms</servlet-name>
         <url-pattern>/terms/*</url-pattern>
-    </servlet-mapping>     
+    </servlet-mapping>
+
 
     <servlet>
         <servlet-name>view-servlet</servlet-name>

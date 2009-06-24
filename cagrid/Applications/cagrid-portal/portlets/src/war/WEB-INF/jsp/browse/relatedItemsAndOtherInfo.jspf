@@ -131,6 +131,7 @@ function ${ns}saveNewRelatedItem(){
 		errorHandler:function(errorString, exception){
 			alert("Error saving new related item: " + errorString);
 		}
+		
 	});
 }
 

@@ -28,6 +28,9 @@ public class CreateCatalogEntryController extends AbstractController {
 
 		String entryType = request.getParameter("entryType");
 		CatalogEntry catalogEntry = getCatalogEntryFactory().newCatalogEntry(entryType);
+		if(catalogEntry == null){
+			throw new RuntimeException("Catalog entry is null for type: " + entryType);
+		}
 		getUserModel().setCurrentCatalogEntry(catalogEntry);
 		response.setRenderParameter("operation", "viewDetails");
 		response.setRenderParameter("viewMode", "edit");

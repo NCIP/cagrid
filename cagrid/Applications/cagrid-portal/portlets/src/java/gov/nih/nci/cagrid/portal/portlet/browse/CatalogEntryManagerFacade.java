@@ -4,13 +4,19 @@
 package gov.nih.nci.cagrid.portal.portlet.browse;
 
 import gov.nih.nci.cagrid.portal.dao.catalog.CatalogEntryDao;
+import gov.nih.nci.cagrid.portal.dao.catalog.TermDao;
+import gov.nih.nci.cagrid.portal.dao.catalog.TerminologyDao;
 import gov.nih.nci.cagrid.portal.domain.PortalUser;
 import gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntry;
 import gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntryRelationshipInstance;
 import gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntryRelationshipType;
 import gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntryRoleInstance;
 import gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntryRoleType;
+import gov.nih.nci.cagrid.portal.domain.catalog.Term;
+import gov.nih.nci.cagrid.portal.domain.catalog.Terminology;
 import gov.nih.nci.cagrid.portal.portlet.UserModel;
+import gov.nih.nci.cagrid.portal.portlet.terms.TermBean;
+import gov.nih.nci.cagrid.portal.portlet.terms.TerminologyProvider;
 import gov.nih.nci.cagrid.portal.portlet.util.PortletUtils;
 
 import java.util.ArrayList;
@@ -44,6 +50,10 @@ public class CatalogEntryManagerFacade {
 	private CatalogEntryViewBeanFactory catalogEntryViewBeanFactory;
 	private UserModel userModel;
 	private HibernateTemplate hibernateTemplate;
+	private TerminologyProvider terminologyProvider;
+	private TerminologyDao terminologyDao;
+	private TermDao termDao;
+
 	private String roleTypeRenderServletUrl;
 	private String newRelatedItemFormRenderServletUrl;
 	private String relatedItemsRenderServletUrl;
@@ -52,6 +62,7 @@ public class CatalogEntryManagerFacade {
 	private String targetRoleDescription;
 	private Integer relatedEntryId;
 	private Integer roleTypeId;
+	private String areaOfFocusValues;
 
 	/**
 	 * 
@@ -66,13 +77,21 @@ public class CatalogEntryManagerFacade {
 			PortalUser portalUser = getUserModel().getPortalUser();
 			CatalogEntry ce = getUserModel().getCurrentCatalogEntry();
 			ce.setAuthor(portalUser);
-			getHibernateTemplate().saveOrUpdate(ce);
+			if (ce.getId() == null) {
+				getHibernateTemplate().save(ce);
 
-			String[] portalId = portalUser.getPortalId().split(":");
-			ResourceLocalServiceUtil.addResources(Long.parseLong(portalId[0]),
-					0, Long.parseLong(portalId[1]), CatalogEntry.class
-							.getName(), String.valueOf(ce.getId()), false,
-					false, false);
+				String[] portalId = portalUser.getPortalId().split(":");
+				ResourceLocalServiceUtil.addResources(Long
+						.parseLong(portalId[0]), 0,
+						Long.parseLong(portalId[1]), CatalogEntry.class
+								.getName(), String.valueOf(ce.getId()), false,
+						false, false);
+			} else {
+				getHibernateTemplate().update(ce);
+			}
+
+			saveAreasOfFocus();
+
 			id = saveInternal(ce);
 		} catch (Exception ex) {
 			String msg = "Error saving catalog entry: " + ex.getMessage();
@@ -80,6 +99,51 @@ public class CatalogEntryManagerFacade {
 			throw new RuntimeException(msg, ex);
 		}
 		return id;
+	}
+
+	protected void saveAreasOfFocus() {
+		try {
+			List<Term> areasOfFocus = new ArrayList<Term>();
+			if (areaOfFocusValues != null) {
+
+				for (String uriStr : areaOfFocusValues.split(",")) {
+
+					Term term = getTermDao().getByIdentifier(uriStr);
+					if (term == null) {
+						term = new Term();
+						TermBean termBean = getTerminologyProvider()
+								.getTermForUri(uriStr);
+
+						Terminology terminology = getTerminologyDao()
+								.getByIdentifier(
+										termBean.getTerminology().getUri());
+						if (terminology == null) {
+							terminology = new Terminology();
+							terminology.setIdentifier(termBean.getTerminology()
+									.getUri());
+							terminology.setLabel(termBean.getTerminology()
+									.getLabel());
+							getTerminologyDao().save(terminology);
+						}
+						term.setTerminology(terminology);
+						term.setDescription(termBean.getComment());
+						term.setIdentifier(termBean.getUri());
+						term.setLabel(termBean.getLabel());
+						getTermDao().save(term);
+					}
+					areasOfFocus.add(term);
+				}
+
+			}
+			CatalogEntry ce = getUserModel().getCurrentCatalogEntry();
+			ce.setAreasOfFocus(areasOfFocus);
+			getHibernateTemplate().update(ce);
+		} catch (Exception ex) {
+			String msg = "Error setting area of focus values: "
+					+ ex.getMessage();
+			logger.error(msg, ex);
+			throw new RuntimeException(msg, ex);
+		}
 	}
 
 	public String validate() {
@@ -258,11 +322,11 @@ public class CatalogEntryManagerFacade {
 		String message = null;
 
 		try {
-			
+
 			CatalogEntry entry = getUserModel().getCurrentCatalogEntry();
 			CatalogEntryRelationshipInstance relInst = getUserModel()
 					.getCurrentRelationshipInstance();
-			
+
 			if (relInst == null) {
 
 				relInst = new CatalogEntryRelationshipInstance();
@@ -310,7 +374,7 @@ public class CatalogEntryManagerFacade {
 				sourceRoleInst = relInst.getRoleB();
 				targetRoleInst = relInst.getRoleA();
 			}
-			
+
 			sourceRoleInst.setDescription(sourceRoleDescription);
 			sourceRoleInst.setUpdatedAt(new Date());
 			targetRoleInst.setDescription(targetRoleDescription);
@@ -360,13 +424,32 @@ public class CatalogEntryManagerFacade {
 
 	public String setName(String name) {
 		String message = null;
-		getUserModel().getCurrentCatalogEntry().setName(name);
+		if (getUserModel() == null) {
+			throw new RuntimeException("userModel is null");
+		}
+		if (getUserModel().getCurrentCatalogEntry() == null) {
+			throw new RuntimeException("currentCatalogEntry is null");
+		}
+		try {
+			getUserModel().getCurrentCatalogEntry().setName(name);
+		} catch (Exception ex) {
+			String msg = "Error setting name: " + ex.getMessage();
+			logger.error(msg, ex);
+			throw new RuntimeException(msg, ex);
+		}
 		return message;
 	}
 
 	public String setDescription(String description) {
 		String message = null;
 		getUserModel().getCurrentCatalogEntry().setDescription(description);
+		return message;
+	}
+
+	public String setAreaOfFocusValues(String values) {
+		String message = null;
+		this.areaOfFocusValues = values;
+
 		return message;
 	}
 
@@ -427,6 +510,30 @@ public class CatalogEntryManagerFacade {
 	public void setCatalogEntryViewBeanFactory(
 			CatalogEntryViewBeanFactory catalogEntryViewBeanFactory) {
 		this.catalogEntryViewBeanFactory = catalogEntryViewBeanFactory;
+	}
+
+	public TerminologyProvider getTerminologyProvider() {
+		return terminologyProvider;
+	}
+
+	public void setTerminologyProvider(TerminologyProvider terminologyProvider) {
+		this.terminologyProvider = terminologyProvider;
+	}
+
+	public TerminologyDao getTerminologyDao() {
+		return terminologyDao;
+	}
+
+	public void setTerminologyDao(TerminologyDao terminologyDao) {
+		this.terminologyDao = terminologyDao;
+	}
+
+	public TermDao getTermDao() {
+		return termDao;
+	}
+
+	public void setTermDao(TermDao termDao) {
+		this.termDao = termDao;
 	}
 
 }

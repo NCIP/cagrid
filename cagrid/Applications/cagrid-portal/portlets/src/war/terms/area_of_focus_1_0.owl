@@ -136,6 +136,7 @@
 
     <owl:Class rdf:about="#Pathways">
         <rdfs:label>Pathways</rdfs:label>
+        <rdfs:comment>Pathways</rdfs:comment>
     </owl:Class>
     
 
