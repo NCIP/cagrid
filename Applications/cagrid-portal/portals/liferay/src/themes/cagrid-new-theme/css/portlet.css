@@ -43,7 +43,7 @@ body.portlet {
 }
 
 .portlet-content, .portlet-minimized .portlet-content-container {
-	padding: 2px 10px 10px;
+	padding: 15px 10px 10px;
 }
 
 .portlet-minimized .portlet-content {
