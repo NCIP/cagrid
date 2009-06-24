@@ -2,6 +2,9 @@
 
 <style type="text/css">
 <!--
+.portlet-content {
+	padding:2px 10px 10px;
+}
 
 #blue-box {
 	font-family: Arial, Helvetica, sans-serif;

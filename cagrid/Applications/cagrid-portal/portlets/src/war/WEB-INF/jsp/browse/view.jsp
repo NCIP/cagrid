@@ -58,7 +58,7 @@
 			iconLnk.setAttribute('name', 'Details');
 			iconLnk.className = "oneResultIcon";
 			var icon = document.createElement('img');
-			icon.setAttribute('src', '<c:url value="/images/icon-unavailable_50px.png"/>');
+			icon.setAttribute('src', '<c:url value="/images/person_placeholder_50px.png"/>');
 			icon.setAttribute('alt', '');
 			iconLnk.appendChild(icon);    
 			resultDiv.appendChild(iconLnk);

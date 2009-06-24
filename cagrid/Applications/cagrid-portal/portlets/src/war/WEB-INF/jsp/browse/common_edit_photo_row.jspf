@@ -1,11 +1,11 @@
 <div class="photoRow">
 	<%-- TODO: support upload of photos --%>
 	<div class="photo">
-		<img src='<c:url value="/images/photo-unavailable.png"/>' alt='Photo of <c:out value="${catalogEntry.name}"/>' />
+		<img src='<c:url value="/images/person_placeholder_180px.png"/>' alt='Photo of <c:out value="${catalogEntry.name}"/>' />
 	</div>
     <div class="photoRightContent">
         <div class="row">
-            <input id="input-name" class="required autoSet" style="font-size:23pt;
+            <input id="input-name" class="required" style="font-size:23pt;
 				<c:if test="${empty catalogEntry.name}">color:#afafaf;</c:if>
 			" type="text" name="name" value="
 			<c:choose>
