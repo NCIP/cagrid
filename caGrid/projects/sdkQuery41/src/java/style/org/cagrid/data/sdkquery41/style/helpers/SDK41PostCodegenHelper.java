@@ -28,8 +28,7 @@ import org.cagrid.data.sdkquery41.processor.SDK41QueryProcessor;
  */
 public class SDK41PostCodegenHelper extends PostCodegenHelper {
 
-    // configs for local and remote are very different
-    public static final String LOCAL_CONFIG_FILENAME = "application-config-client.xml";
+    // need to edit the config to use my proxy helper implementation
     public static final String REMOTE_CONFIG_FILENAME = "application-config-client-info.xml";
     
     // SDK provided proxy helper
@@ -56,17 +55,8 @@ public class SDK41PostCodegenHelper extends PostCodegenHelper {
             + applicationName + "-config.jar");
         LOG.debug("Config jar found to be " + configJar.getAbsolutePath());
         
-        // determine local or remote API
-        String useLocalValue = CommonTools.getServicePropertyValue(info.getServiceDescriptor(),
-            DataServiceConstants.QUERY_PROCESSOR_CONFIG_PREFIX + SDK41QueryProcessor.PROPERTY_USE_LOCAL_API);
-        boolean localApi = Boolean.parseBoolean(SDK41QueryProcessor.DEFAULT_USE_LOCAL_API);
-        if (useLocalValue != null && useLocalValue.length() != 0) {
-            localApi = Boolean.parseBoolean(useLocalValue);
-        }
-
         // extract the configuration
-        String configFilename = localApi ? LOCAL_CONFIG_FILENAME : REMOTE_CONFIG_FILENAME;
-        StringBuffer configContents = JarUtilities.getFileContents(new JarFile(configJar), configFilename);
+        StringBuffer configContents = JarUtilities.getFileContents(new JarFile(configJar), REMOTE_CONFIG_FILENAME);
 
         // replace the default bean proxy class with mine
         LOG.debug("Replacing references to bean proxy class");
@@ -78,6 +68,6 @@ public class SDK41PostCodegenHelper extends PostCodegenHelper {
         // add the edited config to the config jar file
         LOG.debug("Inserting edited config in jar");
         byte[] configData = configContents.toString().getBytes();
-        JarUtilities.insertEntry(configJar, configFilename, configData);
+        JarUtilities.insertEntry(configJar, REMOTE_CONFIG_FILENAME, configData);
     }
 }
