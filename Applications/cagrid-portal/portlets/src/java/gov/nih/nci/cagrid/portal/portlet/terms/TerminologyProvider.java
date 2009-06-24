@@ -20,5 +20,7 @@ public interface TerminologyProvider {
 	List<TermBean> getPathToRoot(TermBean term);
 
 	List<TermBean> getDescendants(TermBean term);
+	
+	TermBean getTermForUri(String uri);
 
 }

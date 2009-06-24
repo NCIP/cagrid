@@ -54,11 +54,10 @@ public class JenaTerminologyProvider implements TerminologyProvider {
 		try {
 			return getModels().get(new URI(terminology.getUri()));
 		} catch (URISyntaxException ex) {
-			throw new RuntimeException("Bad terminology URI: " + ex.getMessage(), ex);
+			throw new RuntimeException("Bad terminology URI: "
+					+ ex.getMessage(), ex);
 		}
 	}
-	
-	
 
 	/*
 	 * (non-Javadoc)
@@ -70,7 +69,7 @@ public class JenaTerminologyProvider implements TerminologyProvider {
 	public List<TermBean> getDescendants(TermBean term) {
 		return getSubClasses(term, false);
 	}
-	
+
 	private List<TermBean> getSubClasses(TermBean term, boolean direct) {
 		List<TermBean> descTerms = new ArrayList<TermBean>();
 		OntModel model = getModel(term.getTerminology());
@@ -78,8 +77,7 @@ public class JenaTerminologyProvider implements TerminologyProvider {
 		for (ExtendedIterator<OntClass> i = klass.listSubClasses(direct); i
 				.hasNext();) {
 			OntClass childClass = i.next();
-			descTerms.add(new TermBean(term.getTerminology(), childClass.getURI(),
-					childClass.getLabel(null), childClass.getComment(null)));
+			descTerms.add(newTermBean(term.getTerminology(), childClass));
 		}
 		return descTerms;
 	}
@@ -131,23 +129,27 @@ public class JenaTerminologyProvider implements TerminologyProvider {
 		List<TerminologyBean> terminologyBeans = new ArrayList<TerminologyBean>();
 		for (URI uri : getModels().keySet()) {
 			OntModel model = getModels().get(uri);
-			Ontology ont = model.getOntology(uri.toString());
-			terminologyBeans.add(new TerminologyBean(uri.toString(), ont
-					.getLabel(null), ont.getComment(null)));
+			terminologyBeans.add(newTerminologyBean(uri, model));
 		}
 		return terminologyBeans;
+	}
+
+	protected TerminologyBean newTerminologyBean(URI uri, OntModel model) {
+		Ontology ont = model.getOntology(uri.toString());
+		return new TerminologyBean(uri.toString(), ont.getLabel(null), ont
+				.getComment(null));
 	}
 
 	public static void main(String[] args) {
 		try {
 
-			String modelFile = "file:test-model.owl";
+			String modelFile = "file:src/war/terms/area_of_focus_1_0.owl";
 			OntModel model = ModelFactory
 					.createOntologyModel(OntModelSpec.OWL_MEM);
 			model.read(modelFile);
 
 			Map<URI, OntModel> m = new HashMap<URI, OntModel>();
-			String uri = "uri:test-model.owl";
+			String uri = "http://cagrid.org/terms/area_of_focus_1_0.owl";
 			Ontology ont = model.getOntology(uri);
 			m.put(new URI(uri), model);
 
@@ -197,11 +199,34 @@ public class JenaTerminologyProvider implements TerminologyProvider {
 		for (ExtendedIterator<OntClass> i = model.listHierarchyRootClasses(); i
 				.hasNext();) {
 			OntClass c = i.next();
-			TermBean rootTerm = new TermBean(terminology, c.getURI(), c
-					.getLabel(null), c.getComment(null));
+			TermBean rootTerm = newTermBean(terminology, c);
 			rootTerms.add(rootTerm);
 		}
 		return rootTerms;
+	}
+
+	protected TermBean newTermBean(TerminologyBean terminology, OntClass c) {
+		return new TermBean(terminology, c.getURI(), c.getLabel(null), c
+				.getComment(null));
+	}
+
+	public TermBean getTermForUri(String termUriStr) {
+		TermBean term = null;
+		URI ontUri = null;
+		OntModel ontModel = null;
+		OntClass ontClass = null;
+		for (URI uri : getModels().keySet()) {
+			ontUri = uri;
+			ontModel = getModels().get(uri);
+			ontClass = ontModel.getOntClass(termUriStr);
+			if (ontClass != null) {
+				break;
+			}
+		}
+		if (ontClass != null) {
+			term = newTermBean(newTerminologyBean(ontUri, ontModel), ontClass);
+		}
+		return term;
 	}
 
 }

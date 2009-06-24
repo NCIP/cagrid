@@ -40,15 +40,6 @@ Then, select the kind relationship that you would like to describe.
 			id_prefix="${ns}" 
 			entry_type="${entryType[0]}"/>	
 </c:forEach>
-	
-<br/>
-
-<p>
-<b>Kinds of Relationships</b>
-<div id="${ns}roleTypeDiv">
-
-</div>
-</p>
 
 </form>
 
@@ -56,20 +47,19 @@ Then, select the kind relationship that you would like to describe.
 
 <script type="text/javascript">
 
-var ${ns}lastSelectedEntryType = null;
+var ${ns}prevDisplayDiv = null;
 function ${ns}populateLists(entryType){
-
+	alert("ENTRY TYPE: " + entryType);
 	CatalogEntryManagerFacade.renderRoleTypesForType(entryType, "${ns}",
 	{
 		callback:function(html){
-			//if(${ns}lastSelectedEntryType != null){
-			//	jQuery("#${ns}" + ${ns}lastSelectedEntryType + "_roleTypesContainer").html("");
-			//}
-			//${ns}lastSelectedEntryType = entryType;
-			//var theId = "#${ns}" + entryType + "_roleTypesContainer";
-			//alert('Looking for ' + theId + ', found: ' + jQuery("#${ns}" + entryType + "_roleTypesContainer").length);
-			//jQuery(theId).html(html);
-			jQuery("${ns}roleTypeDiv").html(html);	
+			var theId = "#${ns}" + entryType.replace(/\./g, "_") + "_roleTypesContainer";
+			if(${ns}prevDisplayDiv != null){
+				jQuery(${ns}prevDisplayDiv).html("");
+			}
+			${ns}prevDisplayDiv = theId;
+			alert("HTML: \n" + html);
+			jQuery(theId).html(html);
 			if(jQuery("form[name='${ns}addRelatedItemsForm']  :input[name='roleType']").get().length > 0){
 				${ns}addRelationshipButton.set("disabled", false);			
 			}else{
@@ -87,7 +77,7 @@ var ${ns}addRelationshipButton = null;
 jQuery(document).ready(function() {
 
 
-	${ns}populateLists('gov.nih.nci.cagrid.portal.domain.catalog.DataSetCatalogEntry');
+	${ns}populateLists('gov.nih.nci.cagrid.portal.domain.catalog.CommunityCatalogEntry');
 	
 	jQuery("form[name='${ns}addRelatedItemsForm']  :input[name='entryType']").bind('change', function(evt){
 		${ns}populateLists(evt.target.value);

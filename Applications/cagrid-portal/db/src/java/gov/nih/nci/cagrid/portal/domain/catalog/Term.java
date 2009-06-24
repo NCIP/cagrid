@@ -17,7 +17,7 @@ import javax.persistence.Table;
     })
 public class Term extends AbstractDomainObject {
 
-    public String identifer;
+    public String identifier;
 
     public String label;
 
@@ -26,12 +26,12 @@ public class Term extends AbstractDomainObject {
     public Terminology terminology;
   
 
-    public String getIdentifer() {
-        return identifer;
+    public String getIdentifier() {
+        return identifier;
     }
 
-    public void setIdentifer(String identifer) {
-        this.identifer = identifer;
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
     }
 
     public String getLabel() {

@@ -103,6 +103,7 @@
         <create creator="spring" javascript="TerminologyService">
             <param name="beanName" value="terminologyService"/>
         </create>
+        
 
         <!--other creators are created with annotations-->
 
@@ -111,6 +112,8 @@
         <convert match="java.lang.Exception" converter="exception">
   			<param name='include' value='message,lineNumber'/>
 		</convert>
+		<convert match="java.lang.StackTraceElement" converter="bean"/>
+		
 		        
         <convert converter="enum" match="gov.nih.nci.cagrid.portal.domain.dataservice.QueryInstanceState"/>
 

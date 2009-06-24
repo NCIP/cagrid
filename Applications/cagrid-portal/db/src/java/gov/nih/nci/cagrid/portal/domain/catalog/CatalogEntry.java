@@ -7,6 +7,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -161,7 +162,14 @@ public class CatalogEntry extends AbstractDomainObject implements Commentable, M
         this.citations = citations;
     }
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(
+			name = "cat_entry_terms", 
+			joinColumns = @JoinColumn(name = "entry_id"), 
+			inverseJoinColumns = @JoinColumn(name = "term_id"), 
+			uniqueConstraints =	@UniqueConstraint(columnNames = 
+				{"entry_id", "term_id" })
+	)
     public List<Term> getTerms() {
         return terms;
     }
@@ -235,7 +243,14 @@ public class CatalogEntry extends AbstractDomainObject implements Commentable, M
         this.author = author;
     }
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(
+			name = "cat_entry_aofterms", 
+			joinColumns = @JoinColumn(name = "entry_id"), 
+			inverseJoinColumns = @JoinColumn(name = "term_id"), 
+			uniqueConstraints =	@UniqueConstraint(columnNames = 
+				{"entry_id", "term_id" })
+	)
     public List<Term> getAreasOfFocus() {
         return areasOfFocus;
     }
