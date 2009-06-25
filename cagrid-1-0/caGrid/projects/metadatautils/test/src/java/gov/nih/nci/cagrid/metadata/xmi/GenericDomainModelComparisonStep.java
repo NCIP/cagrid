@@ -4,6 +4,7 @@ import java.io.FileReader;
 
 import gov.nih.nci.cagrid.metadata.MetadataUtils;
 import gov.nih.nci.cagrid.metadata.dataservice.DomainModel;
+import gov.nih.nci.cagrid.metadata.xmi.DomainModelComparator.DomainModelComparisonResult;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
 
 /** 
@@ -20,9 +21,9 @@ public class GenericDomainModelComparisonStep extends Step {
     private String testModelFilename;
     private String goldModelFilename;
     
-    public GenericDomainModelComparisonStep(String testModelFilename, String goldModelFilename) {
-        this.testModelFilename = testModelFilename;
+    public GenericDomainModelComparisonStep(String goldModelFilename, String testModelFilename) {
         this.goldModelFilename = goldModelFilename;
+        this.testModelFilename = testModelFilename;
     }
     
 
@@ -47,6 +48,7 @@ public class GenericDomainModelComparisonStep extends Step {
             fail("Error deserializing test domain model: " + ex.getMessage());    
         }
         
-        assertEquals("Gold model differed from generated one", goldModel, testModel);
+        DomainModelComparisonResult result = DomainModelComparator.testModelEquivalence(goldModel, testModel);
+        assertTrue(result.getMessage(), result.modelsAreEqual());
     }
 }
