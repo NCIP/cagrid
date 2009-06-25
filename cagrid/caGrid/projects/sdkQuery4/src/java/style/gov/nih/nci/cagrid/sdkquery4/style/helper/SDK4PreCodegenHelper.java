@@ -75,7 +75,7 @@ public class SDK4PreCodegenHelper implements StyleCodegenPreProcessor {
             mapper.addBeanTypeDiscoveryEventListener(new BeanTypeDiscoveryEventListener() {
                 public void typeDiscoveryBegins(BeanTypeDiscoveryEvent e) {
                     String message = "Mapping class " + e.getBeanClassname() 
-                    + " (" + e.getCurrentBean() + " of " + e.getTotalBeans() + ")";
+                    + " (" + (e.getCurrentBean() + 1) + " of " + e.getTotalBeans() + ")";
                     LOG.debug(message);
                 }
             });
