@@ -1,9 +1,10 @@
 package org.cagrid.data.sdkquery41.encoding;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import gov.nih.nci.cagrid.common.Utils;
+
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,10 +32,12 @@ public class SDK41EncodingUtils {
     public static final String DEFAULT_UNMARSHALLER_MAPPING = "/unmarshaller-xml-mapping.xml";
     
 	protected static Log LOG = LogFactory.getLog(SDK41EncodingUtils.class.getName());
-
-	// maps <mapping location> to bytes of the Mapping file
-	protected static Map<String, byte[]> mappingCacheMap = 
-        Collections.synchronizedMap(new HashMap<String, byte[]>());
+    
+	// maps resource location to the contents of the resource
+	protected static Map<String, String> resourceMap = 
+        Collections.synchronizedMap(new HashMap<String, String>());
+    
+    protected static EntityResolver dtdResolver = null;
     
     public static Mapping getMarshallerMapping(MessageContext context) {
         return getMapping(context, CASTOR_MARSHALLER_PROPERTY);
@@ -46,20 +49,8 @@ public class SDK41EncodingUtils {
     }
 
 
-	private static Mapping getMapping(MessageContext context, String mappingProperty) {
+	protected static Mapping getMapping(MessageContext context, String mappingProperty) {
 		long startTime = System.currentTimeMillis();
-
-        // simple entity resolver to load the castor dtd from the class loader
-		EntityResolver resolver = new EntityResolver() {
-			public InputSource resolveEntity(String publicId, String systemId) {
-				if (publicId.equals(CASTOR_MAPPING_DTD_ENTITY)) {
-					InputStream in = ClassUtils.getResourceAsStream(
-                        SDK41EncodingUtils.class, CASTOR_MAPPING_DTD);
-					return new InputSource(in);
-				}
-				return null;
-			}
-		};
 
         // determine the mapping location, starting with a default based on the property
 		String mappingLocation = mappingProperty.equals(CASTOR_MARSHALLER_PROPERTY) 
@@ -90,36 +81,14 @@ public class SDK41EncodingUtils {
 		}
 
         // locate the bytes of the mapping file
-        byte[] mappingBytes = null;
-		if (mappingCacheMap.containsKey(mappingLocation)) {
-			LOG.debug("Loading Mapping from cache for location:" + mappingLocation);
-            mappingBytes = mappingCacheMap.get(mappingLocation);
-		} else {
-			LOG.debug("Unable to loading Mapping from cache for location:" + mappingLocation);
-			LOG.debug("Attempting to load mapping from mapping location:" + mappingLocation);
-			InputStream mappingStream = ClassUtils.getResourceAsStream(SDK41EncodingUtils.class, mappingLocation);
-			if (mappingStream == null) {
-				LOG.error("Mapping file [" + mappingLocation + "] was null!");
-			} else {
-                ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                byte[] buffer = new byte[8192];
-                int len = -1;
-                try {
-                    while ((len = mappingStream.read(buffer)) != -1) {
-                        bos.write(buffer, 0, len);
-                    }
-                    mappingBytes = bos.toByteArray();
-                    mappingCacheMap.put(mappingLocation, mappingBytes);
-                    mappingStream.close();
-                } catch (IOException ex) {
-                    LOG.error("Error loading mapping file [" + mappingLocation + "] : "
-                        + ex.getMessage(), ex);
-                }
-			}
-		}
+        String mappingDocument = null;
+        try {
+            mappingDocument = loadResource(mappingLocation);
+        } catch (IOException ex) {
+            LOG.error("Error loading mapping file [" + mappingLocation + "] : " + ex.getMessage(), ex);
+        }
         
-        ByteArrayInputStream mappingStream = new ByteArrayInputStream(mappingBytes);
-        Mapping mapping = loadMappingFromStream(mappingLocation, mappingStream, resolver);
+        Mapping mapping = loadMappingFromString(mappingLocation, mappingDocument, getDtdResolver());
         
 		long duration = System.currentTimeMillis() - startTime;
 		LOG.debug("Time to load mapping file:" + duration + " ms.");
@@ -128,9 +97,9 @@ public class SDK41EncodingUtils {
 	}
     
     
-    private static Mapping loadMappingFromStream(String mappingLocation,
-            InputStream mappingStream, EntityResolver resolver) {
-        InputSource mappIS = new org.xml.sax.InputSource(mappingStream);
+    protected static Mapping loadMappingFromString(String mappingLocation,
+            String mappingContents, EntityResolver resolver) {
+        InputSource mappIS = new org.xml.sax.InputSource(new StringReader(mappingContents));
         Mapping mapping = new Mapping();
         mapping.setEntityResolver(resolver);
         try {
@@ -140,5 +109,42 @@ public class SDK41EncodingUtils {
                 + mappingLocation + "): " + ex.getMessage(), ex);
         }
         return mapping;
+    }
+    
+    
+    protected static String loadResource(String resourceName) throws IOException {
+        String resource = null;
+        synchronized (resourceMap) {
+            if (resourceMap.containsKey(resourceName)) {
+                resource = resourceMap.get(resourceName);
+            } else {
+                InputStream stream = ClassUtils.getResourceAsStream(
+                    SDK41EncodingUtils.class, resourceName);
+                if (stream != null) {
+                    StringBuffer buffer = Utils.inputStreamToStringBuffer(stream);
+                    resource = buffer.toString();
+                    resourceMap.put(resourceName, resource);
+                    stream.close();
+                }
+            }
+        }
+        return resource;
+    }
+    
+    
+    protected static EntityResolver getDtdResolver() {
+        if (dtdResolver == null) {
+            // simple entity resolver to load the castor dtd from the class loader
+            dtdResolver = new EntityResolver() {
+                public InputSource resolveEntity(String publicId, String systemId) throws IOException {
+                    if (publicId.equals(CASTOR_MAPPING_DTD_ENTITY)) {
+                        String dtd = loadResource(CASTOR_MAPPING_DTD);
+                        return new InputSource(new StringReader(dtd));
+                    }
+                    return null;
+                }
+            };
+        }
+        return dtdResolver;
     }
 }
