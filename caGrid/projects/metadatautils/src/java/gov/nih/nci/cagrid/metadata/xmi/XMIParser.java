@@ -1,7 +1,5 @@
 package gov.nih.nci.cagrid.metadata.xmi;
 
-import gov.nih.nci.cagrid.common.Utils;
-import gov.nih.nci.cagrid.metadata.MetadataConstants;
 import gov.nih.nci.cagrid.metadata.dataservice.DomainModel;
 
 import java.io.File;
@@ -10,7 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Hashtable;
 
-import javax.xml.namespace.QName;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -94,12 +91,6 @@ public class XMIParser {
         parse(fis, type);
         fis.close();
         return model;
-    }
-
-
-    public static void writeDomainModel(DomainModel model, File outFile) throws Exception {
-        Utils.serializeDocument(outFile.getAbsolutePath(), model, new QName(
-            MetadataConstants.CAGRID_DATA_MD_NAMESPACE, MetadataConstants.CAGRID_DATA_MD_NAME, "ns1"));
     }
 
 

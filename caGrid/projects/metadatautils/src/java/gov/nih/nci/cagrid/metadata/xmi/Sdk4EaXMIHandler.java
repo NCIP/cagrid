@@ -48,6 +48,7 @@ class Sdk4EaXMIHandler extends BaseXMIHandler {
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
         if (qName.equals(XMIConstants.XMI_UML_PACKAGE)) {
+            // unwind the package name stack one level
             int index = pkg.lastIndexOf('.');
             if (index == -1) {
                 pkg = "";
@@ -55,11 +56,13 @@ class Sdk4EaXMIHandler extends BaseXMIHandler {
                 pkg = pkg.substring(0, index);
             }
         } else if (qName.equals(XMIConstants.XMI_UML_CLASS)) {
+            // done with the current class, attach attributes to it and clear them out of the buffer
             UMLClass cl = getLastClass();
             cl.setUmlAttributeCollection(
                 new UMLClassUmlAttributeCollection(getAttributes()));
             clearAttributeList();
         } else if (qName.equals(XMIConstants.XMI_UML_ASSOCIATION)) {
+            // close up the association, figure out bidirectionality
             UMLAssociation assoc = getLastAssociation();
             if (sourceNavigable && !targetNavigable) {
                 UMLAssociationEdge assocEdge = assoc.getSourceUMLAssociationEdge().getUMLAssociationEdge();
@@ -69,6 +72,7 @@ class Sdk4EaXMIHandler extends BaseXMIHandler {
             }
             assoc.setBidirectional(sourceNavigable && targetNavigable);
         } else if (qName.equals(XMIConstants.XMI_UML_ATTRIBUTE)) {
+            // attribute complete, add it to the list for the current class
             addAttribute(currentAttribute);
             currentAttribute = null;
             handlingAttribute = false;
