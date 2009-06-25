@@ -54,6 +54,9 @@
 	<!-- =============================================================== -->
 	<path id="run.classpath">
 		<path refid="build.classpath" />
+		<fileset dir="${jar.dir}">
+			<include name="*.jar"/>
+		</fileset>
 	</path>
 
 	<!-- =============================================================== -->
@@ -217,7 +220,7 @@
 	</target>
 
 	<target name="runCadsrModelProblemFinder" depends="prepare" description="Runs the caDSR Model Problems finder GUI">
-		<java classname="org.cagrid.cadsr.util.CadsrModelProblemFinder" fork="yes">
+		<java classname="org.cagrid.cadsr.portal.CadsrModelProblemFinder" fork="yes">
 			<classpath refid="run.classpath" />
 		</java>
 	</target>
