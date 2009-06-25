@@ -77,6 +77,8 @@ public class DomainModelCreationUtil {
                             targetableClasses.add(fullClassName);
                         }                    
                     }
+                } else {
+                    LOG.warn("Empty package found in model: " + packName);
                 }
             }
         }
