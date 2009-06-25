@@ -120,8 +120,8 @@ public abstract class BaseCodegenPostProcessorExtension implements CodegenExtens
                             break;
                         }
                     }
-                    if (mappedNamespace != null) {
-                        // walk classes in this package
+                    if (mappedNamespace != null && pack.getModelClass() != null) {
+                        // walk classes in this package, if any exist
                         for (ModelClass clazz : pack.getModelClass()) {
                             if (clazz.isTargetable()) {
                                 // find a schema element type mapped to this class
