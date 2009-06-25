@@ -9,6 +9,8 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -159,8 +161,8 @@ public class CadsrModelProblemsPanel extends JPanel {
                         reloadProjects();
                     } catch (Exception ex) {
                         ex.printStackTrace();
-                        CompositeErrorDialog.showErrorDialog("Error reloading projects from caDSR application", ex
-                            .getMessage(), ex);
+                        CompositeErrorDialog.showErrorDialog("Error reloading projects from caDSR application", 
+                            ex.getMessage(), ex);
                     }
                 }
             });
@@ -319,6 +321,24 @@ public class CadsrModelProblemsPanel extends JPanel {
             .getApplicationServiceFromUrl(getCadsrApplicationUrl());
         Project proj = new Project();
         List projects = appservice.search(Project.class, proj);
+        Comparator projectSorter = new Comparator() {
+            public int compare(Object o1, Object o2) {
+                String val1 = null;
+                String val2 = null;
+                if (o1 instanceof Project) {
+                    val1 = projectAsString((Project) o1).toLowerCase();
+                } else {
+                    val1 = o1.toString();
+                }
+                if (o2 instanceof Project) {
+                    val2 = projectAsString((Project) o2).toLowerCase();
+                } else {
+                    val2 = o2.toString();
+                }
+                return val1.compareTo(val2);
+            }
+        };
+        Collections.sort(projects, projectSorter);
         for (Object p : projects) {
             getProjectsComboBox().addItem(p);
         }
