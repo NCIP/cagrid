@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -255,14 +256,14 @@ public abstract class BaseXMIHandler extends DefaultHandler {
 
 
     private void flattenAttributes() {
-        // build parent table
+        // build table of class reference IDs from subclass -> superclass
         Map<String, String> parentTable = new HashMap<String, String>();
         for (UMLGeneralization gen : generalizationList) {
             parentTable.put(gen.getSubClassReference().getRefid(), 
                 gen.getSuperClassReference().getRefid());
         }
 
-        // flatten each class by ID
+        // flatten attributes of each class
         for (String classId : classTable.keySet()) {
             UMLClass clazz = classTable.get(classId);
             List<UMLAttribute> flatAttributes = 
@@ -275,31 +276,35 @@ public abstract class BaseXMIHandler extends DefaultHandler {
 
     private List<UMLAttribute> flattenAttributesOfClass(
         Map<String, String> parentTable, String classId) {
+        // if no class ID, don't return any attributes
         if (classId == null) {
             return new ArrayList<UMLAttribute>(0);
         }
-        List<UMLAttribute> flat = new ArrayList<UMLAttribute>();
-
-        // my atts
+        List<UMLAttribute> flatAttributes = new ArrayList<UMLAttribute>();
+        
+        // attributes of this class directly
         UMLClass cl = classTable.get(classId);
         if (cl.getUmlAttributeCollection() != null && cl.getUmlAttributeCollection().getUMLAttribute() != null) {
             for (UMLAttribute att : cl.getUmlAttributeCollection().getUMLAttribute()) {
-                flat.add(att);
+                flatAttributes.add(att);
             }
         }
-        // my parent's atts
+        
+        // attributes of my parent class (and so on...)
         for (UMLAttribute att : flattenAttributesOfClass(parentTable, parentTable.get(classId))) {
-            flat.add(att);
+            if (!flatAttributes.contains(att)) {
+                flatAttributes.add(att);
+            }
         }
 
-        return flat;
+        return flatAttributes;
     }
 
 
     private void applyFilters() {
         // build a set of class IDs which are valid to keep references to
         // from oteher components of the model
-        HashSet<String> validClassIds = new HashSet<String>();
+        Set<String> validClassIds = new HashSet<String>();
         
         for (UMLClass clazz : classList) {
             String pack = clazz.getPackageName();
