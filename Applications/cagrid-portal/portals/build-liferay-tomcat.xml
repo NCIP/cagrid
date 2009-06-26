@@ -2,6 +2,8 @@
 
 <project name="liferay-portal-tomcat" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
 
+    <import file="${basedir}/build.xml"/>
+    
     <property name="liferay.tomcat.download.url"
               value="http://apache.seekmeup.com/tomcat/tomcat-5/v5.5.27/bin/${tomcat.server.name}.zip"/>
     <property name="liferay.tomcat.dir.name" value="${tomcat.server.name}"/>
@@ -21,10 +23,11 @@
     
     <property name="ext.ext.lib.dir" value="${basedir}/ext/ext-tomcat/jars"/>
     <property name="ext.ext.xml.dir" value="${basedir}/ext/ext-tomcat/xmls"/>    
+    <property name="portal.search.war.dest" value="${liferay.auto.deploy.dest.dir}/${portal.search.war.name}"/>
     
+
     <import file="${basedir}/build-liferay-common.xml"/>
-    <import file="${basedir}/build.xml"/>
-    
+
 	<target name="test-tomcat-zip" depends="prepare">
         <condition property="liferay.tomcat.zip.available">
             <available file="${liferay.tomcat.zip}" type="file"/>
@@ -229,5 +232,6 @@ com.liferay.portal.kernel.security.jaas.PortalLoginModule  required;
         <antcall target="add-cagrid-category"/>
         <antcall target="configure-liferay-messages"/>
     </target>
-	
+
+     
  </project>
