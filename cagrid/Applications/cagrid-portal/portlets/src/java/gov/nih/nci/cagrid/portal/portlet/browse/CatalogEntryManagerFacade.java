@@ -16,16 +16,12 @@ import gov.nih.nci.cagrid.portal.domain.catalog.Rating;
 import gov.nih.nci.cagrid.portal.domain.catalog.Term;
 import gov.nih.nci.cagrid.portal.domain.catalog.Terminology;
 import gov.nih.nci.cagrid.portal.portlet.UserModel;
+import gov.nih.nci.cagrid.portal.portlet.AjaxViewGenerator;
 import gov.nih.nci.cagrid.portal.portlet.terms.TermBean;
 import gov.nih.nci.cagrid.portal.portlet.terms.TerminologyProvider;
 import gov.nih.nci.cagrid.portal.portlet.util.PortletUtils;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -43,10 +39,10 @@ import com.liferay.portal.service.ResourceLocalServiceUtil;
  * 
  */
 @Transactional
-public class CatalogEntryManagerFacade {
+public class CatalogEntryManagerFacade extends AjaxViewGenerator  {
 
-	private static final Log logger = LogFactory
-			.getLog(CatalogEntryManagerFacade.class);
+	protected final Log logger = LogFactory
+			.getLog(getClass());
 	private CatalogEntryDao catalogEntryDao;
 	private CatalogEntryViewBeanFactory catalogEntryViewBeanFactory;
 	private UserModel userModel;
@@ -197,12 +193,11 @@ public class CatalogEntryManagerFacade {
 				}
 			}
 
-			WebContext webContext = WebContextFactory.get();
-			HttpServletRequest request = webContext.getHttpServletRequest();
-			request.setAttribute("roleTypes", roleTypes);
-			request.setAttribute("namespace", namespace);
+            Map<String,Object> attrMap = new HashMap<String,Object>();
+            attrMap.put("roleTypes", roleTypes);
+            attrMap.put("namespace", namespace);
 
-			html = webContext.forwardToString(getRoleTypeRenderServletUrl());
+			html =  getView(getRoleTypeRenderServletUrl(),attrMap);
 		} catch (Exception ex) {
 			String msg = "Error rendering role types: " + ex.getMessage();
 			logger.error(msg, ex);
@@ -229,15 +224,13 @@ public class CatalogEntryManagerFacade {
 				sourceRoleType = relType.getRoleTypeB();
 			}
 
-			WebContext webContext = WebContextFactory.get();
-			HttpServletRequest request = webContext.getHttpServletRequest();
-			request.setAttribute("targetRoleType", targetRoleType);
-			request.setAttribute("sourceRoleType", sourceRoleType);
-			request.setAttribute("namespace", namespace);
 
-			html = webContext
-					.forwardToString(getNewRelatedItemFormRenderServletUrl());
+             Map<String,Object> attrMap = new HashMap<String,Object>();
+              attrMap.put("targetRoleType", targetRoleType);
+            attrMap.put("sourceRoleType", sourceRoleType);
+             attrMap.put("namespace", namespace);
 
+            html =  getView(getNewRelatedItemFormRenderServletUrl(),attrMap);
 		} catch (Exception ex) {
 			String msg = "Error rendering role types: " + ex.getMessage();
 			logger.error(msg, ex);
@@ -280,13 +273,11 @@ public class CatalogEntryManagerFacade {
 			CatalogEntryViewBean catalogEntryViewBean = getCatalogEntryViewBeanFactory()
 					.newCatalogEntryViewBean(entry);
 
-			WebContext webContext = WebContextFactory.get();
-			HttpServletRequest request = webContext.getHttpServletRequest();
-			request.setAttribute("catalogEntryViewBean", catalogEntryViewBean);
-			request.setAttribute("namespace", namespace);
 
-			html = webContext
-					.forwardToString(getRelatedItemsRenderServletUrl());
+               Map<String,Object> attrMap = new HashMap<String,Object>();
+              attrMap.put("catalogEntryViewBean", catalogEntryViewBean);
+             attrMap.put("namespace", namespace);
+              html =  getView(getRelatedItemsRenderServletUrl(),attrMap);
 		} catch (Exception ex) {
 			String msg = "Error rendering role types: " + ex.getMessage();
 			logger.error(msg, ex);

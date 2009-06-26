@@ -3,9 +3,9 @@ package gov.nih.nci.cagrid.portal.portlet.query.cql;
 import gov.nih.nci.cagrid.common.SchemaValidationException;
 import gov.nih.nci.cagrid.common.SchemaValidator;
 import gov.nih.nci.cagrid.portal.portlet.PortletConstants;
+import gov.nih.nci.cagrid.portal.portlet.query.shared.XMLSchemaValidatorFactory;
 import org.springframework.validation.Errors;
-
-import java.net.URL;
+import org.springframework.beans.factory.annotation.Required;
 
 /**
  * Will validate CQL query against CQL schema
@@ -16,10 +16,7 @@ import java.net.URL;
  */
 public class CQLQuerySchemaValidator extends CQLQueryCommandValidator {
 
-
-    // default values. Will be configured with DI
-    String cqlSchema = "1_gov.nih.nci.cagrid.CQLQuery-1.3.xsd";
-    String dcqlSchema = "Distributed_CQL_schema_2.0.xsd";
+    SchemaValidator cqlXMLSchemaValidator, dcqlXMLSchemaValidator;
 
     @Override
     public void validate(Object target, Errors errors) {
@@ -34,13 +31,11 @@ public class CQLQuerySchemaValidator extends CQLQueryCommandValidator {
         try {
             SchemaValidator validator;
             if (!command.isDcql()) {
-                URL schemaPath = getClass().getClassLoader().getResource(cqlSchema);
-                validator = new SchemaValidator(schemaPath.getFile());
+                validator = cqlXMLSchemaValidator;
 
             } else {
                 logger.debug("Is a DCQL query. WIll validate against DCQL query");
-                URL schemaPath = getClass().getClassLoader().getResource(dcqlSchema);
-                validator = new SchemaValidator(schemaPath.getFile());
+                validator = dcqlXMLSchemaValidator;
             }
             validator.validate(command.getCqlQuery());
         } catch (SchemaValidationException e) {
@@ -56,19 +51,19 @@ public class CQLQuerySchemaValidator extends CQLQueryCommandValidator {
 
     }
 
-    public String getCqlSchema() {
-        return cqlSchema;
+    public SchemaValidator getCqlXMLSchemaValidator() {
+        return cqlXMLSchemaValidator;
     }
 
-    public void setCqlSchema(String cqlSchema) {
-        this.cqlSchema = cqlSchema;
+    public void setCqlXMLSchemaValidator(SchemaValidator cqlXMLSchemaValidator) {
+        this.cqlXMLSchemaValidator = cqlXMLSchemaValidator;
     }
 
-    public String getDcqlSchema() {
-        return dcqlSchema;
+    public SchemaValidator getDcqlXMLSchemaValidator() {
+        return dcqlXMLSchemaValidator;
     }
 
-    public void setDcqlSchema(String dcqlSchema) {
-        this.dcqlSchema = dcqlSchema;
+    public void setDcqlXMLSchemaValidator(SchemaValidator dcqlXMLSchemaValidator) {
+        this.dcqlXMLSchemaValidator = dcqlXMLSchemaValidator;
     }
 }

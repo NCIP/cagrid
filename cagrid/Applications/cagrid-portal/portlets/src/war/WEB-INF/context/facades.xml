@@ -150,7 +150,7 @@
     	autowire="byName"/>
     	
     <bean id="sharedQueryCatalogEntryManagerFacade" 
-    	class="gov.nih.nci.cagrid.portal.portlet.browse.SharedQueryCatalogEntryManagerFacade" 
+    	class="gov.nih.nci.cagrid.portal.portlet.browse.sharedQuery.SharedQueryCatalogEntryManagerFacade" 
     	autowire="byName"/>
     	
     <bean id="workflowCatalogEntryManagerFacade" 
@@ -202,9 +202,14 @@
 		</property>
 	</bean>
 
-	<bean id="terminologyService" class="gov.nih.nci.cagrid.portal.portlet.terms.TerminologyService" autowire="byName">
-		<property name="addTermsFormInputsRenderServletUrl" value="/browse/add_terms_form_inputs.html"/>
-	</bean>
- 
-	
+    <bean id="queryExecutionManager"
+    	class="gov.nih.nci.cagrid.portal.portlet.browse.sharedQuery.QueryExecutionManager"
+        p:cqlQueryService-ref="cqlQueryService"
+    	autowire="byName"/>
+
+    <bean id="terminologyService" class="gov.nih.nci.cagrid.portal.portlet.terms.TerminologyService" autowire="byName">
+            <property name="addTermsFormInputsRenderServletUrl" value="/browse/add_terms_form_inputs.html"/>
+        </bean>
+
+
 </beans>

@@ -1,6 +1,6 @@
 <%@ include file="/WEB-INF/jsp/include/servlet_includes.jsp" %>
 
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.7.0/build/button/assets/skins/sam/button.css" />
+<link type="text/css" rel="stylesheet" href="<c:url value="/js/yui/button/assets/skins/sam/button.css"/>"/>
 <link rel="stylesheet" type="text/css" href="<c:url value="/js/yui/container/assets/skins/sam/container.css"/>" />
 <link type="text/css" rel="stylesheet" href="<c:url value="/js/yui/autocomplete/assets/skins/sam/autocomplete.css"/>">
 

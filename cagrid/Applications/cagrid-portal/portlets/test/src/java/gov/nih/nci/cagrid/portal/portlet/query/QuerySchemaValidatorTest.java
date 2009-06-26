@@ -8,6 +8,7 @@ import static org.mockito.Mockito.*;
 import gov.nih.nci.cagrid.portal.PortalTestUtils;
 import gov.nih.nci.cagrid.portal.portlet.query.cql.CQLQuerySchemaValidator;
 import gov.nih.nci.cagrid.portal.portlet.query.cql.CQLQueryCommand;
+import gov.nih.nci.cagrid.portal.portlet.query.shared.XMLSchemaValidatorFactory;
 
 /**
  * User: kherm
@@ -20,10 +21,10 @@ public class QuerySchemaValidatorTest {
     CQLQuerySchemaValidator validator;
 
     @Before
-    public void setup() {
+    public void setup() throws Exception{
         validator = new CQLQuerySchemaValidator();
-        validator.setCqlSchema("1_gov.nih.nci.cagrid.CQLQuery-1.3.xsd");
-        validator.setDcqlSchema("Distributed_CQL_schema_2.0.xsd");
+        validator.setCqlXMLSchemaValidator(XMLSchemaValidatorFactory.initialize("1_gov.nih.nci.cagrid.CQLQuery-1.3.xsd"));
+        validator.setDcqlXMLSchemaValidator(XMLSchemaValidatorFactory.initialize("Distributed_CQL_schema_2.0.xsd"));
     }
 
     @Test
