@@ -17,7 +17,7 @@ import javax.persistence.Table;
 public class SharedQueryToolsRelationship extends AbstractRelationship {
 
     public SharedQueryCatalogEntry sharedQuery;
-    public ToolCatalogEntry tool;
+    public ToolDeploymentCatalogEntry tool;
 
     @ManyToOne
     @JoinColumn(name = "sharedQuery_id")
@@ -31,11 +31,11 @@ public class SharedQueryToolsRelationship extends AbstractRelationship {
 
     @ManyToOne
     @JoinColumn(name = "tool_id")
-    public ToolCatalogEntry getTool() {
+    public ToolDeploymentCatalogEntry getTool() {
         return tool;
     }
 
-    public void setTool(ToolCatalogEntry tool) {
+    public void setTool(ToolDeploymentCatalogEntry tool) {
         this.tool = tool;
     }
 }

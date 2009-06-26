@@ -301,9 +301,9 @@
         </createTable>
     </changeSet>
     <changeSet author="kherm (generated)" id="16-a">
-        <preConditions onFail="MARK_RAN">
+        <preConditions onFail="MARK_RAN" onError="MARK_RAN">
             <not>
-                <indexExists indexName="cat_entry_cat_comments"/>
+                <indexExists indexName="FKBF27C5F3488AC7F9"/>
             </not>
         </preConditions>
         <createIndex indexName="FKBF27C5F3488AC7F9" tableName="cat_entry_cat_comments" unique="false">
@@ -1029,7 +1029,7 @@
         </addColumn>
     </changeSet>
     <changeSet author="kherm (generated)" id="41-b">
-        <preConditions>
+        <preConditions onError="MARK_RAN" onFail="MARK_RAN">
             <not>
                 <indexExists indexName="FKD62B6B13FBD049DD"/>
             </not>
@@ -1537,16 +1537,20 @@
         </createTable>
     </changeSet>
     <changeSet author="kherm (generated)" id="58-b">
-        <preConditions onFail="MARK_RAN">
-            <columnExists tableName="idp_authn" columnName="idp_id"/>
+        <preConditions onFail="MARK_RAN" onError="MARK_RAN">
+            <not>
+                <indexExists indexName="FK306B35BCD7A2B1AB"/>
+            </not>
         </preConditions>
         <createIndex indexName="FK306B35BCD7A2B1AB" tableName="idp_authn" unique="false">
             <column name="idp_id"/>
         </createIndex>
     </changeSet>
     <changeSet author="kherm (generated)" id="58-a">
-        <preConditions onFail="MARK_RAN">
-            <columnExists tableName="idp_authn" columnName="portal_user_id"/>
+        <preConditions onFail="MARK_RAN" onError="MARK_RAN">
+            <not>
+                <indexExists indexName="FK306B35BC64EE5ACA"/>
+            </not>
         </preConditions>
         <createIndex indexName="FK306B35BC64EE5ACA" tableName="idp_authn" unique="false">
             <column name="portal_user_id"/>
@@ -1571,6 +1575,28 @@
         </preConditions>
         <createIndex indexName="FK3ACE7875467B6FFB" tableName="portal_users" unique="false">
             <column name="catalog_id"/>
+        </createIndex>
+    </changeSet>
+
+
+    <changeSet author="kherm" id="60">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="cat_entry" columnName="cql_id"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="cat_entry">
+            <column name="cql_id" type="INT"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="kherm" id="60-a">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists indexName="FK52FB32C9A0F2F220"/>
+            </not>
+        </preConditions>
+        <createIndex indexName="FK52FB32C9A0F2F220" tableName="cat_entry" unique="false">
+            <column name="cql_id"/>
         </createIndex>
     </changeSet>
 
