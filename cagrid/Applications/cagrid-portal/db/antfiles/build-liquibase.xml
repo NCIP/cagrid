@@ -6,10 +6,7 @@
     <property name="db.drop.tables" value="false"/>
 
 
-    <target name="generateChangelog" description="Will generate a changelog file from a DB">
-        <taskdef resource="liquibasetasks.properties">
-            <classpath refid="run.cp"/>
-        </taskdef>
+    <target name="generateChangelog"  depends="prepare" description="Will generate a changelog file from a DB">
 
         <generateChangeLog
                 outputFile="${etc.dir}/output.xml"
@@ -22,7 +19,7 @@
     </target>
 
 
-    <target name="updateDB" description="Will update the DB with Liquibase">
+    <target name="updateDB"  depends="prepare" description="Will update the DB with Liquibase">
         <updateDatabase
                 changeLogFile="${etc.dir}/${db.changelog.file}"
                 driver="${cagrid.portal.db.driver}"

@@ -71,4 +71,22 @@ public class GridServiceEndPointCatalogEntryDaoTest extends DaoTestBase<GridServ
 
     }
 
+    @Test
+    public void getByPartialUrl() {
+        p.setUrl("http://complete.url");
+        pDao.save(p);
+
+        GridServiceEndPointCatalogEntry catalog = new GridServiceEndPointCatalogEntry();
+        catalog.setAbout(p);
+        p.setCatalog(catalog);
+        getDao().save(catalog);
+
+        assertEquals(1, getDao().getByPartialUrl("http://").size());
+        assertEquals(1, getDao().getByPartialUrl("url").size());
+        assertEquals(1, getDao().getByPartialUrl("complete").size());
+        assertEquals(0, getDao().getByPartialUrl("someother.url").size());
+
+
+    }
+
 }
