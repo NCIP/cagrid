@@ -1,8 +1,21 @@
 package gov.nih.nci.cagrid.portal.dao.catalog;
 
 import gov.nih.nci.cagrid.portal.domain.GridService;
+import gov.nih.nci.cagrid.portal.domain.ConceptHierarchyNode;
 import gov.nih.nci.cagrid.portal.domain.catalog.GridServiceEndPointCatalogEntry;
 import gov.nih.nci.cagrid.portal.util.BeanUtils;
+
+import javax.persistence.NonUniqueResultException;
+import java.util.List;
+import java.sql.SQLException;
+
+import org.springframework.orm.hibernate3.HibernateCallback;
+import org.hibernate.Session;
+import org.hibernate.HibernateException;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 
 /**
  * User: kherm
@@ -20,6 +33,43 @@ public class GridServiceEndPointCatalogEntryDao extends AboutCatalogEntryDao<Gri
     @Override
     public Class domainClass() {
         return GridServiceEndPointCatalogEntry.class;
+    }
+
+
+    /**
+     * Returns CE's for services matching the URL. For autocompleter
+      * @param url
+     * @return
+     */
+    public List<GridServiceEndPointCatalogEntry> getByPartialUrl(final String url){
+		return (List<GridServiceEndPointCatalogEntry>) getHibernateTemplate().execute(
+				new HibernateCallback() {
+					public Object doInHibernate(Session session)
+							throws HibernateException, SQLException {
+
+						return session.createCriteria(
+								GridServiceEndPointCatalogEntry.class).createCriteria("about").
+                                add(
+								Restrictions.like("url", url,
+										MatchMode.ANYWHERE))
+								.setResultTransformer(
+										Criteria.DISTINCT_ROOT_ENTITY).list();
+					}
+				});
+
+	}
+
+    public GridServiceEndPointCatalogEntry getByUrl(String url){
+             GridServiceEndPointCatalogEntry catalog = null;
+        List l = getHibernateTemplate().find("from " + domainClass().getSimpleName() + " where about.url = ?",
+                new Object[]{url});
+        if (l.size() > 1) {
+            throw new NonUniqueResultException("More than one CatalogEntry found for GridServiceEndPointCatalogEntry Object with URL = " + url);
+        }
+        if (l.size() == 1) {
+            catalog = (GridServiceEndPointCatalogEntry) l.iterator().next();
+        }
+        return catalog;
     }
 
 
