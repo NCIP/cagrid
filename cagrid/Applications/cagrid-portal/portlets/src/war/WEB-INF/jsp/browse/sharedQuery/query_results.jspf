@@ -1,0 +1,133 @@
+<script type="text/javascript" src="/html/js/jquery/ui.accordion.js"></script>
+
+
+<link type="text/css" rel="stylesheet" href="<c:url value="/js/yui/resize/assets/skins/sam/resize.css"/>">
+<script type="text/javascript" src="<c:url value="/js/yui/utilities/utilities.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/yui/resize/resize-min.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/yui/datatable/datatable-min.js"/>"></script>
+<link type="text/css" rel="stylesheet" href="<c:url value="/js/yui/datatable/assets/skins/sam/datatable.css"/>">
+
+
+<script type="text/javascript" src="<c:url value="/js/yui/json/json-min.js"/>"></script>
+
+
+<style>
+    span.resultStatus {
+        padding-left: 50px;
+    }
+
+    div.results {
+        width: 100%;
+    }
+</style>
+<div id="${ns}resultsTab" class="yui-navset" style="margin-top:10px;margin-bottom:10px;">
+    <ul class="yui-nav">
+        <li class="selected"><a href="#tab1"><em>Query Results</em></a></li>
+    </ul>
+    <div class="yui-content">
+        <div id="${ns}resultsDiv">
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+
+    function ${ns}loadResults() {
+    <%--load query instances--%>
+        QueryExecutionManager.getQueryInstances($("input-query").value, {
+            callback:function(qInstList) {
+                if (qInstList.length < 1) {
+                    jQuery("#${ns}resultsDiv").html("No queries submitted.");
+                }
+                else {
+                    jQuery("#${ns}resultsDiv").html("");
+
+                    for (var i = 0; i < qInstList.length; i++) {
+                        var qInst = qInstList[i];
+                        jQuery("#${ns}resultsDiv").append("<div class='results'><h3><a id='${ns}resultHref" + qInst.id + "' href='#'>Query " + qInst.id + "<span class='resultStatus' id='${ns}resultStatus" + qInst.id + "'></span></a></h3><span id='${ns}resultContainer" + qInst.id + "'></span></div>");
+
+                        YAHOO.util.Event.addListener("${ns}resultHref" + qInst.id, "click", ${ns}fnCallback, qInst);
+
+                        var statusDiv = "#${ns}resultStatus" + qInst.id;
+                        jQuery(statusDiv).html("<img src='<c:url value="/images/indicator.gif"/>'/>");
+                        ${ns}queryExecutionListener(qInst, statusDiv);
+
+                    }
+                    jQuery("#${ns}resultsDiv").accordion({header:'h3',collapsible: true,active:false });
+
+
+                }
+            },
+            errorHandler:function(errorString, exception) {
+                alert("Error getting query history " + errorString);
+            },
+            async: true
+        });
+    }
+
+    <%--track running queries here--%>
+    function ${ns}queryExecutionListener(qInst, statusDiv) {
+
+        QueryExecutionManager.loadInstance(qInst.id, {
+            callback:function(qInst) {
+                if (qInst.state == 'RUNNING') {
+                    setTimeout(${ns}queryExecutionListener, 2000, qInst, statusDiv);
+                }
+                else if (qInst.state == 'COMPLETE') {
+                    jQuery(statusDiv).html("<img src='<c:url value="/images/diagnostic_passed_icon.jpg"/>'/>");
+                }
+                else {
+                    jQuery(statusDiv).html("<img src='<c:url value="/images/diagnostic_failed_icon.png"/>'/>");
+                }
+
+            },
+            errorHandler:function(errorString, exception) {
+                alert("Error getting query status " + errorString);
+            },
+            async: true
+        });
+
+    }
+
+    <%--load query results/error--%>
+    function ${ns}fnCallback(e, qInst) {
+        var resultsContainer = "#${ns}resultContainer" + qInst.id;
+        
+        if(jQuery(resultsContainer).html()==''){
+
+        if (qInst.state == 'COMPLETE') {
+            QueryExecutionManager.getResults(qInst.id, new ${ns}renderResult(qInst,resultsContainer));
+        }
+        else if (qInst.state != 'RUNNING') {
+            QueryExecutionManager.getError(qInst.id, new ${ns}renderResult(qInst,resultsContainer));
+        }
+        }
+        <%--if already loaded, just change the current instance on the server--%>
+        else{
+           QueryExecutionManager.navigateToInstance(qInst.id);
+        }
+    }
+
+
+    function ${ns}renderResult(qInst,resultsContainer){
+
+        this.callback =function(result) {
+            jQuery(resultsContainer).replaceWith("<div id='" +resultsContainer +"'>" + result + "</div>");
+        };
+        this.errorHandler =function(errorString, exception) {
+            alert("Error getting query result " + errorString);
+        };
+        this.async = true;
+    }
+
+
+    jQuery(document).ready(function() {
+
+           var myTabs = new YAHOO.widget.TabView("${ns}resultsTab");
+           ${ns}loadResults();
+       });
+
+
+
+</script>
