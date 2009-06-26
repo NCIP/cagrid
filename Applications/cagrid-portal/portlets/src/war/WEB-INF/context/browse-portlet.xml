@@ -47,6 +47,8 @@
    		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.ToolCatalogEntry" value="toolView"/>
         <entry key="gov.nih.nci.cagrid.portal.domain.catalog.ToolDeploymentCatalogEntry" value="toolDeploymentView"/>
         <entry key="gov.nih.nci.cagrid.portal.domain.catalog.GridServiceEndPointCatalogEntry" value="gridServiceEndpointView"/>
+        <entry key="gov.nih.nci.cagrid.portal.domain.catalog.SharedQueryCatalogEntry" value="sharedQueryView"/>
+        
    	</util:map>
    	
 	

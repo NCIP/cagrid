@@ -210,8 +210,8 @@
                 <bean class="gov.nih.nci.cagrid.portal.portlet.query.cql.CQLQueryCommandValidator" autowire="byName">
                     </bean>
                 <bean class="gov.nih.nci.cagrid.portal.portlet.query.cql.CQLQuerySchemaValidator"
-                        p:dcqlSchema="Distributed_CQL_schema_2.0.xsd"
-                        p:cqlSchema="1_gov.nih.nci.cagrid.CQLQuery-1.3.xsd"/>
+                       p:cqlXMLSchemaValidator-ref="cqlXMLSchemaValidator"
+                        p:dcqlXMLSchemaValidator-ref="dcqlXMLSchemaValidator"/>
             </list>
         </property>
 

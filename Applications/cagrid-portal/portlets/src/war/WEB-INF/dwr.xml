@@ -105,6 +105,10 @@
         </create>
         
 
+         <create creator="spring" javascript="QueryExecutionManager">
+            <param name="beanName" value="queryExecutionManager"/>
+        </create>
+
         <!--other creators are created with annotations-->
 
         <!--converters-->
@@ -133,6 +137,7 @@
         <convert converter="bean" match="gov.nih.nci.cagrid.portal.portlet.credmgr.IdPBean"/>
         <convert converter="bean" match="gov.nih.nci.cagrid.portal.portlet.credmgr.CredentialBean"/>
         <convert converter="bean" match="gov.nih.nci.cagrid.portal.portlet.browse.LabelDescriptionBean"/>
+        <convert converter="bean" match="gov.nih.nci.cagrid.portal.portlet.browse.GridServiceEndpointDescriptorBean"/>
 
         <convert converter="bean" match="gov.nih.nci.cagrid.portal.portlet.map.ajax.SummaryBean"/>
         

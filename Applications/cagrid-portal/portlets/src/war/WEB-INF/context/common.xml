@@ -318,16 +318,28 @@
 		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntry" value="catalogEntryViewBean"/>
         <entry key="gov.nih.nci.cagrid.portal.domain.catalog.CommunityCatalogEntry" value="communityViewBean"/>
     </util:map>
-    
-	<bean id="catalogEntryViewBean" class="gov.nih.nci.cagrid.portal.portlet.browse.CatalogEntryViewBean" scope="prototype">
-		<property name="pocRelationshipTypeName" value="PointOfContact"/>
-	</bean>
-	
-	<bean id="communityViewBean" class="gov.nih.nci.cagrid.portal.portlet.browse.CommunityCatalogEntryViewBean" scope="prototype">
-		<property name="memberRelationshipTypeName" value="CommunityPersonMember"/>
-	</bean>
-	
-	<!-- 
+
+    <bean id="catalogEntryViewBean" class="gov.nih.nci.cagrid.portal.portlet.browse.CatalogEntryViewBean"
+          scope="prototype">
+        <property name="pocRelationshipTypeName" value="PointOfContact"/>
+    </bean>
+
+    <bean id="communityViewBean" class="gov.nih.nci.cagrid.portal.portlet.browse.CommunityCatalogEntryViewBean"
+          scope="prototype">
+        <property name="memberRelationshipTypeName" value="CommunityPersonMember"/>
+    </bean>
+
+    <bean id="cqlXMLSchemaValidator"
+          class="gov.nih.nci.cagrid.portal.portlet.query.shared.XMLSchemaValidatorFactory" factory-method="initialize">
+        <constructor-arg   type="java.lang.String" value="1_gov.nih.nci.cagrid.CQLQuery-1.3.xsd"/>
+    </bean>
+
+    <bean id="dcqlXMLSchemaValidator"
+          class="gov.nih.nci.cagrid.portal.portlet.query.shared.XMLSchemaValidatorFactory"  factory-method="initialize">
+        <constructor-arg  type="java.lang.String" value="Distributed_CQL_schema_2.0.xsd"/>
+    </bean>
+
+    	<!--
 	<util:list id="catlogEntryAnnotationTypes">
 		<bean class="gov.nih.nci.cagrid.portal.portlet.terms.CatalogEntryAnnotationType">
 			<property name="name" value="annotType1"/>
@@ -345,4 +357,5 @@
 		</bean>
 	</util:list>
 	 -->
+
 </beans>

@@ -47,19 +47,24 @@ public class CQLQueryService {
 
 	}
 
+    @Transactional
+    public CQLQuery loadQuery(String cql){
+		String hash = PortalUtils.createHash(cql);
+		return cqlQueryDao.getByHash(hash);
+    }
+
+
 	@Transactional
 	public CQLQueryInstance submitQuery(PortalUser user, GridDataService service,
 			final String cql) throws Exception {
 
 		logger.debug("Submitted Query: "+ cql);
-		
-		String hash = PortalUtils.createHash(cql);
-		CQLQuery query = cqlQueryDao.getByHash(hash);
+	       CQLQuery query = loadQuery(cql);
 
 		if (query == null) {
 			query = new CQLQuery();
 			query.setXml(cql);
-			query.setHash(hash);
+			query.setHash(PortalUtils.createHash(cql));
 			cqlQueryDao.save(query);
 		}
 
