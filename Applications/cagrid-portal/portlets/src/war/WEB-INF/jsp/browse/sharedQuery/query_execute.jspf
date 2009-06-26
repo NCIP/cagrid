@@ -1,0 +1,49 @@
+<%@ include file="/WEB-INF/jsp/browse/sharedQuery/service_autocompleter.jspf" %>
+<script type='text/javascript' src="<c:url value="/dwr/interface/QueryExecutionManager.js"/>"></script>
+
+
+<div id="${ns}executionContainer" class="yui-skin-sam">
+    <div id="${ns}executeQueryBtnContainer" class="yui-skin-sam">
+
+    </div>
+
+    <%@ include file="/WEB-INF/jsp/browse/sharedQuery/query_results.jspf" %>
+    
+</div>
+
+<script type="text/javascript">
+
+    jQuery(document).ready(function() {
+        ${ns}executeBtn = new YAHOO.widget.Button({
+            label: "Execute Query",
+            id: "${ns}executeQueryBtn",
+            container: "${ns}executeQueryBtnContainer"
+        });
+
+        ${ns}executeBtn.on("click", function(evt) {
+
+            if ($("${ns}serviceId").value == null) {
+                alert("Please select valid service");
+            }
+
+            else {
+                QueryExecutionManager.submitQuery($("${ns}serviceUrl").value,{
+                    callback:function(running) {
+                        if(running==null){
+                            jQuery("#${ns}resultsDiv").html("Running Query <img src='<c:url value="/images/indicator.gif"/>'/>");
+                            ${ns}loadResults();
+                        }
+
+                    },
+                    errorHandler:function(errorString, exception) {
+                        alert("Error running query: " + errorString);
+                    },
+                    async: true
+                });
+            }
+        });
+    });
+
+
+</script>
+ 

@@ -1,0 +1,9 @@
+<%@ include file="/WEB-INF/jsp/browse/common_edit_top.jspf" %>
+
+<%@ include file="/WEB-INF/jsp/browse/common_edit_photo_row.jspf" %>
+
+<c:set var="editMode" value="true"/>
+
+<%@ include file="/WEB-INF/jsp/browse/sharedQuery/query_xml.jspf" %>
+
+<%@ include file="/WEB-INF/jsp/browse/common_edit_bottom.jspf" %>

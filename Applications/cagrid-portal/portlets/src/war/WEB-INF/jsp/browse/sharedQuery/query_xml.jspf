@@ -1,0 +1,38 @@
+<div>
+    <div class="row">
+        <div class="label">
+            CQL Query:
+        </div>
+        <div class="value">
+            <textarea id="input-query"   onblur="${ns}submitQuery();"
+                      <c:if test="${empty editMode}">
+                      readonly="readonly"
+                          </c:if>
+                      wrap="virtual"
+                      class="required"
+                      name="query"
+                      style="height:100px;width:80%;
+                      <c:if test="${empty catalogEntry.about.xml}">color:#afafaf;</c:if>"><c:choose><c:when
+                    test="${empty catalogEntry.about.xml}">
+            </c:when><c:otherwise><c:out
+                    value="${catalogEntry.about.xml}"/></c:otherwise></c:choose></textarea>
+            <span style="color: red"></span>
+        </div>
+    </div>
+</div>
+   <script type="text/javascript">
+
+   function ${ns}submitQuery(){
+        ${managerFacadeName}.setQuery($("input-query").value, {
+            callback:function(response) {
+                if(response!=null)
+                    alert(response);
+            },
+            errorHandler:function(errorString, exception) {
+                alert("Error setting query " + errorString);
+            },
+            async: true
+        });
+    }
+</script>
+  
