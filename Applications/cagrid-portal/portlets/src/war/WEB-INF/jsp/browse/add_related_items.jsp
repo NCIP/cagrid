@@ -49,7 +49,6 @@ Then, select the kind relationship that you would like to describe.
 
 var ${ns}prevDisplayDiv = null;
 function ${ns}populateLists(entryType){
-	alert("ENTRY TYPE: " + entryType);
 	CatalogEntryManagerFacade.renderRoleTypesForType(entryType, "${ns}",
 	{
 		callback:function(html){
@@ -58,7 +57,6 @@ function ${ns}populateLists(entryType){
 				jQuery(${ns}prevDisplayDiv).html("");
 			}
 			${ns}prevDisplayDiv = theId;
-			alert("HTML: \n" + html);
 			jQuery(theId).html(html);
 			if(jQuery("form[name='${ns}addRelatedItemsForm']  :input[name='roleType']").get().length > 0){
 				${ns}addRelationshipButton.set("disabled", false);			

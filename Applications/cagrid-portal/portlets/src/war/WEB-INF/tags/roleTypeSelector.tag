@@ -21,8 +21,6 @@
 
         <span id="${rtsId}-infoPopup-content" class="infoPopup">
         <spring:message code="${entry_type}.description"/><br/>
-        ${rtsId}_roleTypesContainer
-
 
 <span class="infoPopup-pointer">&nbsp;</span></span>
 

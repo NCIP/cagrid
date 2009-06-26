@@ -3,25 +3,27 @@
  */
 package gov.nih.nci.cagrid.portal.portlet.util;
 
-import gov.nih.nci.cagrid.portal.domain.GridService;
-import gov.nih.nci.cagrid.portal.domain.ServiceStatus;
+import gov.nih.nci.cagrid.portal.domain.PortalUser;
 import gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntry;
-import gov.nih.nci.cagrid.portal.domain.catalog.PersonCatalogEntry;
+import gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntryRelationshipInstance;
 import gov.nih.nci.cagrid.portal.portlet.query.results.QueryResultToTableHandler;
 import gov.nih.nci.cagrid.portal.portlet.query.results.QueryResultToWorkbookHandler;
 import gov.nih.nci.cagrid.portal.util.PortalUtils;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.imageio.ImageIO;
 import javax.portlet.PortletRequest;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.SAXParser;
@@ -40,6 +42,11 @@ import org.springframework.core.type.filter.TypeFilter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import com.liferay.portal.PortalException;
+import com.liferay.portal.SystemException;
+import com.liferay.portal.model.ResourceConstants;
+import com.liferay.portal.service.ResourceLocalServiceUtil;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
@@ -151,7 +158,7 @@ public class PortletUtils {
 	public static List<Class> getSubclasses(String packageName,
 			final Class superclass) {
 		String pkgName = packageName;
-		if(pkgName == null){
+		if (pkgName == null) {
 			pkgName = superclass.getPackage().getName();
 		}
 		List<Class> subclasses = new ArrayList<Class>();
@@ -173,8 +180,7 @@ public class PortletUtils {
 			}
 		});
 		try {
-			for (BeanDefinition def : provider
-					.findCandidateComponents(pkgName)) {
+			for (BeanDefinition def : provider.findCandidateComponents(pkgName)) {
 				subclasses.add(Class.forName(def.getBeanClassName()));
 			}
 		} catch (Exception ex) {
@@ -186,10 +192,20 @@ public class PortletUtils {
 
 	public static void main(String[] args) throws Exception {
 
-		for(Class klass : getSubclasses("gov.nih.nci.cagrid.portal.domain.catalog", CatalogEntry.class)){
-			System.out.println(klass.getName());
-		}
+		// for(Class klass :
+		// getSubclasses("gov.nih.nci.cagrid.portal.domain.catalog",
+		// CatalogEntry.class)){
+		// System.out.println(klass.getName());
+		// }
+		String inFilePath = "/Users/joshua/Desktop/person_placeholder_180px.png";
+		String outFilePath = "/Users/joshua/Desktop/person_placeholder_50px.png";
+		BufferedImage image = ImageIO.read(new FileInputStream(inFilePath));
+		System.out.println("Height: " + image.getHeight() + ", Width: "
+				+ image.getWidth());
+		Image thumb = image.getScaledInstance(50, -1, -1);
 
+		ImageIO.write(ImageUtils.toBufferedImage(thumb), "png", new File(
+				outFilePath));
 	}
 
 	public static Set<String> getTargetServiceUrls(String dcql)
@@ -223,5 +239,30 @@ public class PortletUtils {
 			}
 		}
 		return value;
+	}
+
+	public static void addResource(PortalUser portalUser, Class klass, Integer id) {
+		String[] portalId = portalUser.getPortalId().split(":");
+		try {
+			ResourceLocalServiceUtil.addResources(Long.parseLong(portalId[0]),
+					0, Long.parseLong(portalId[1]), klass.getName(),
+					String.valueOf(id), false, false, false);
+		} catch (Exception ex) {
+			throw new RuntimeException("Error creating resource: "
+					+ ex.getMessage(), ex);
+		}
+
+	}
+
+	public static void deleteResource(PortalUser portalUser, Class klass, Integer id) {
+		String[] portalId = portalUser.getPortalId().split(":");
+		try {
+			ResourceLocalServiceUtil.deleteResource(
+					Long.parseLong(portalId[0]), klass.getName(),
+					ResourceConstants.SCOPE_INDIVIDUAL, String.valueOf(id));
+		} catch (Exception ex) {
+			throw new RuntimeException("Error creating resource: "
+					+ ex.getMessage(), ex);
+		}
 	}
 }

@@ -1,9 +1,26 @@
-		<div class="photoRow">
+		<div class="photoRow" >
 			<div class="photo">
-				<img src='<c:url value="/images/person_placeholder_180px.png"/>' alt='Photo of <c:out value="${catalogEntry.name}"/>' />
+				<tags:catalogEntryImage entry="${catalogEntry}" thumbnail="false" id="${ns}catalogEntryImage" title="${catalogEntry.name}" alt="Image of ${catalogEntry.name}"/>
 			</div>
 			<div class="photoRightContent">
 				<h1 class="entryName"><c:out value="${catalogEntry.name}"/></h1>
+				<p> 
+				Average Rating: <span id="${ns}averageRating"></span>
+				<c:if test="${!empty portalUser}">
+					<span id="${ns}rateThis" class="yui-skin-sam"></span>
+					<form id="${ns}ratingForm" class="yui-skin-sam" style="display: none;">
+						<input id="${ns}ratingButton" name="ratingButton" value="Select Rating"/>
+						<select id="${ns}ratingButton_select" name="ratingButton_select">
+							<option value="5">5</option>						
+							<option value="4">4</option>						
+							<option value="3">3</option>						
+							<option value="2">2</option>		
+							<option value="1">1</option>						
+						</select>
+					</form>
+				</c:if>
+				</p>
+				
 				<p class="entryDescription">
 				<c:out value="${catalogEntry.description}"/>
 				</p>
@@ -11,3 +28,82 @@
 			<!-- The following line is for formatting purposes -->
 			<hr style="clear:both; visibility:hidden;"/>
 		</div>
+		
+<script type="text/javascript">
+
+function ${ns}renderRatingForm(){
+	document.getElementById("${ns}ratingForm").style.display = "block";
+	jQuery("#${ns}rateThisButton").hide();
+}
+
+
+
+function ${ns}renderAverageRating(){
+	document.getElementById("${ns}ratingForm").style.display = "none";
+	var f = function(avgRating){
+		if(avgRating == 0){
+			jQuery("#${ns}averageRating").html("No ratings yet.");
+		}else{
+			var html = "";
+			for(var i = 0; i < avgRating; i++){
+				//html += "<img src='<c:url value="/images/star.png"/>'/>";
+				html += "<span class='star'>*</span>"
+			}
+			jQuery("#${ns}averageRating").html(html);
+		}
+		jQuery("#${ns}rateThisButton").show();
+	}
+	
+	${managerFacadeName}.getAverageRating(${catalogEntry.id},
+	{
+		callback: f,
+   		errorHandler:function(errorString, exception){
+   			alert("Error rendering rating: " + errorString);
+   		}
+	});
+
+}
+
+function ${ns}setRating(rating){
+	${managerFacadeName}.setRating(rating,
+	{
+		callback:function(message){
+			if(message != null){
+				alert(message);
+			}else{
+				${ns}renderAverageRating();
+			}
+   		},
+   		errorHandler:function(errorString, exception){
+   			alert("Error setting rating: " + errorString);
+   		}		
+	});
+}
+
+jQuery(document).ready(function() {
+	${ns}renderAverageRating();
+		
+	var ratingButton = 
+		new YAHOO.widget.Button("${ns}ratingButton", 
+		{  
+        	type: "menu",  
+            menu: "${ns}ratingButton_select" 
+        });
+	ratingButton.getMenu().subscribe("click", function(sType, aArgs){
+		
+    	if(aArgs[1]){
+    		${ns}setRating(aArgs[1].value);
+    	}
+	});
+	
+	var rateThisButton = new YAHOO.widget.Button({
+		label: "Rate This",
+		id: "${ns}rateThisButton",
+		container: "${ns}rateThis"
+	});
+	rateThisButton.subscribe("click", function(evt){
+		${ns}renderRatingForm();
+	});
+	
+});
+</script>

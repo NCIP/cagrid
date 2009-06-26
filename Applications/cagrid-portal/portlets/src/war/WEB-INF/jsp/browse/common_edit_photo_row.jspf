@@ -1,11 +1,11 @@
 <div class="photoRow">
-	<%-- TODO: support upload of photos --%>
+
 	<div class="photo">
-		<img src='<c:url value="/images/person_placeholder_180px.png"/>' alt='Photo of <c:out value="${catalogEntry.name}"/>' />
+		<tags:catalogEntryImage entry="${catalogEntry}" thumbnail="false" id="${ns}catalogEntryImage" title="Click to edit this image." cssClass="cagp-tooltip"/>
 	</div>
     <div class="photoRightContent">
         <div class="row">
-            <input id="input-name" class="required" style="font-size:23pt;
+            <input id="input-name" class="required autoSet" style="font-size:23pt;
 				<c:if test="${empty catalogEntry.name}">color:#afafaf;</c:if>
 			" type="text" name="name" value="
 			<c:choose>
@@ -23,3 +23,35 @@
 	<!-- The following line is for formatting purposes -->
 	<hr style="clear:both; visibility:hidden;"/>
 </div>
+
+<script type="text/javascript">
+
+var ${ns}uploadImageDialog = null;
+function ${ns}showUploadImageDialog(){
+	${ns}uploadImageDialog = new Liferay.Popup({title: "Upload Image", modal:true, width:500 , height:200}); 
+	jQuery(
+		${ns}uploadImageDialog
+	).load(
+		<c:url var="uploadImageDialogUrl" value="/img/form.html">
+			<c:param name="ns" value="${ns}"/>
+		</c:url>
+	    '${uploadImageDialogUrl}',
+	    { }
+	);
+}
+function ${ns}displayImage(imageId){
+	var newImageUrl = "<c:url value="/img/get.html"/>" + "?id=" + imageId;
+	jQuery("#${ns}catalogEntryImage").attr("src", newImageUrl);
+	Liferay.Popup.close(${ns}uploadImageDialog);
+}
+
+
+jQuery(document).ready(function() {
+	jQuery("#${ns}catalogEntryImage")
+		.bind("click", function(evt){
+			${ns}showUploadImageDialog();
+		});
+		
+	${ns}initTooltips();
+});
+</script>

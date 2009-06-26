@@ -232,6 +232,19 @@
         <servlet-name>terms</servlet-name>
         <url-pattern>/terms/*</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>img</servlet-name>
+        <servlet-class>
+            org.springframework.web.servlet.DispatcherServlet
+        </servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>img</servlet-name>
+        <url-pattern>/img/*</url-pattern>
+    </servlet-mapping>
 
 
     <servlet>

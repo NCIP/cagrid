@@ -55,6 +55,8 @@
                     conf="default->portlet;compile->portal-ext"/>
                     
         <dependency rev="2.6.0" org="hp" name="jena" conf="*->default"/>
+        
+        <dependency rev="1.2.1" org="apache" name="commons-fileupload"/>
          
 
     </dependencies>

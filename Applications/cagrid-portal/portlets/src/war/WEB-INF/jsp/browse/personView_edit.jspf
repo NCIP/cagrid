@@ -2,6 +2,8 @@
 		
 <%@ include file="/WEB-INF/jsp/browse/common_edit_photo_row.jspf" %>
 
+<%@ include file="/WEB-INF/jsp/browse/common_edit_terms.jspf" %>
+
 <div class="contactInfoRow">
     <div class="leftpanel">
         <div class="row">
