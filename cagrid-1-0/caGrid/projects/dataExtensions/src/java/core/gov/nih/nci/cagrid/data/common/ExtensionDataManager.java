@@ -206,7 +206,7 @@ public class ExtensionDataManager {
         ModelInformation info = getModelInformation();
         if (info.getModelPackage() != null) {
             for (ModelPackage pack : info.getModelPackage()) {
-                if (pack.getPackageName().equals(packageName)) {
+                if (pack.getPackageName().equals(packageName) && pack.getModelClass() != null) {
                     for (ModelClass clazz : pack.getModelClass()) {
                         if (clazz.getShortClassName().equals(shortClassName)) {
                             clazz.setTargetable(targetable);
@@ -225,7 +225,7 @@ public class ExtensionDataManager {
         ModelInformation info = getModelInformation();
         if (info.getModelPackage() != null) {
             for (ModelPackage pack : info.getModelPackage()) {
-                if (pack.getPackageName().equals(packageName)) {
+                if (pack.getPackageName().equals(packageName) && pack.getModelClass() != null) {
                     for (ModelClass clazz : pack.getModelClass()) {
                         if (clazz.getShortClassName().equals(className)) {
                             return clazz.isTargetable();
@@ -255,7 +255,7 @@ public class ExtensionDataManager {
         ModelInformation info = getModelInformation();
         if (info.getModelPackage() != null) {
             for (ModelPackage pack : info.getModelPackage()) {
-                if (pack.getPackageName().equals(packageName)) {
+                if (pack.getPackageName().equals(packageName) && pack.getModelClass() != null) {
                     for (ModelClass clazz : pack.getModelClass()) {
                         if (clazz.getShortClassName().equals(shortClassName)) {
                             clazz.setSelected(selected);
@@ -274,7 +274,7 @@ public class ExtensionDataManager {
         ModelInformation info = getModelInformation();
         if (info.getModelPackage() != null) {
             for (ModelPackage pack : info.getModelPackage()) {
-                if (pack.getPackageName().equals(packageName)) {
+                if (pack.getPackageName().equals(packageName) && pack.getModelClass() != null) {
                     for (ModelClass clazz : pack.getModelClass()) {
                         if (clazz.getShortClassName().equals(className)) {
                             return clazz.isSelected();
