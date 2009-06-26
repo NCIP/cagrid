@@ -26,7 +26,11 @@
     <property name="ext.authn.lib.dir" value="${ext.dir}/authn/jars"/>
     <property name="ext.authn.xml.dir" value="${ext.dir}/authn/xmls"/>
     <property name="ext.test.lib.dir" value="${ext.dir}/test/jars"/>
+    <property name="ext.search.dir" value="${ext.dir}/search"/>
+    <property name="ext.search.wars.dir" value="${ext.search.dir}/wars"/>
 
+    <property name="portal.search.war" value="${ext.search.wars.dir}/${portal.search.war.name}.war"/>
+    
     <path id="compile.cp">
         <fileset dir="${ext.default.lib.dir}">
             <include name="*.jar"/>

@@ -2,7 +2,6 @@
 
 <project name="liferay-portal-jboss" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
     <import file="${basedir}/build.xml"/>
-    <import file="${basedir}/build-liferay-common.xml"/>
 
     <property name="liferay.jboss.download.url"
               value="http://switch.dl.sourceforge.net/sourceforge/jboss/${jboss.server.name}.zip"/>
@@ -14,6 +13,10 @@
     <property name="liferay.root.context.dir"
               value="${liferay.auto.deploy.dest.dir}/liferay-portal.war"/>
 
+    <property name="portal.search.war.dest" value="${liferay.auto.deploy.dest.dir}/${portal.search.war.name}.war"/>     
+
+    <import file="${basedir}/build-liferay-common.xml"/>
+    
     <property name="liferay.portal.war.dir"
               value="${liferay.root.context.dir}"/>
 

@@ -14,6 +14,7 @@
 
         <conf name="default" extends="authn,ext" visibility="public"/>
         <conf name="test" extends="default" visibility="public"/>
+        <conf name="search" visibility="public"/>
 
     </configurations>
 
@@ -26,6 +27,7 @@
     <dependencies>
         <dependency rev="latest.integration" org="caGrid" name="portal-security" conf="authn->runtime"/>
         <dependency rev="latest.integration" org="caGrid" name="portal-db" conf="ext->domain;authn->dao;default;test"/>
+        <dependency rev="latest.integration" org="caGrid" name="portal-search" conf="search->*"/>
 
         <dependency rev="${target.grid}" org="caGrid" name="target_grid" conf="default->trust"/>
         <dependency rev="${cagrid.integration.version}" org="caGrid" name="websso-client-acegi" conf="authn->default"

@@ -193,6 +193,11 @@
               todir="${liferay.autodeploy.dir}" overwrite="true"/>
     </target>
 
+    <target name="deploy-search-war" depends="prepare" description="Will deploy the Portal search component">
+        <mkdir dir="${portal.search.war.dest}"/>
+
+        <unzip dest="${portal.search.war.dest}" src="${portal.search.war}"/>
+    </target>
 
     <target name="deploy-all" description="Deploy all Portlets, Layouts and Themes to Liferay">
         <antcall target="deploy-authn"/>
