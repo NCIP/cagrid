@@ -16,7 +16,7 @@
     <property name="solr.dir" value="${basedir}/solr"/>
     <property name="solr.webapp.dir" value="${solr.dir}/webapp"/>
     <property name="solr.home.src.dir" value="${solr.dir}/home"/>
-    <property name="solr.war.name" value="solr.war"/>
+    <property name="solr.war.name" value="${portal.search.war.name}.war"/>
 
 
     <target name="clean" description="Cleans the project">
