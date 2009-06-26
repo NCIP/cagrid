@@ -36,6 +36,7 @@
             classpath*:applicationContext-db-run.xml
             classpath*:applicationContext-*.xml
             /WEB-INF/context/common.xml
+            /WEB-INF/context/query-portlet.xml
             /WEB-INF/context/facades.xml
             /WEB-INF/context/dwr-applicationContext.xml
         </param-value>
