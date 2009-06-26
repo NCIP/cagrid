@@ -325,6 +325,24 @@
 	
 	<bean id="communityViewBean" class="gov.nih.nci.cagrid.portal.portlet.browse.CommunityCatalogEntryViewBean" scope="prototype">
 		<property name="memberRelationshipTypeName" value="CommunityPersonMember"/>
-	</bean>    
-
+	</bean>
+	
+	<!-- 
+	<util:list id="catlogEntryAnnotationTypes">
+		<bean class="gov.nih.nci.cagrid.portal.portlet.terms.CatalogEntryAnnotationType">
+			<property name="name" value="annotType1"/>
+			<property name="label" value="Annotation Type 1"/>
+			<property name="description" value="Annotations Type 1"/>
+			<property name="terminologyUri" value="uri:annotation_type_1.owl"/>
+			<property name="catalogEntryType" value="gov.nih.nci.cagrid.portal.domain.catalog.ToolDeploymentCatalogEntry"/>
+		</bean>
+		<bean class="gov.nih.nci.cagrid.portal.portlet.terms.CatalogEntryAnnotationType">
+			<property name="name" value="annotType2"/>
+			<property name="label" value="Annotation Type 2"/>
+			<property name="description" value="Annotations Type 2"/>
+			<property name="terminologyUri" value="uri:annotation_type_2.owl"/>
+			<property name="catalogEntryType" value="gov.nih.nci.cagrid.portal.domain.catalog.GridServiceEndPointCatalogEntry"/>
+		</bean>
+	</util:list>
+	 -->
 </beans>

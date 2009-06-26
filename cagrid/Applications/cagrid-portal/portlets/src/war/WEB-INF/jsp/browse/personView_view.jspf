@@ -21,4 +21,7 @@
             </div>
 			</c:if>
 		</div>
+		
+<%@ include file="/WEB-INF/jsp/browse/common_view_terms.jspf" %>
+		
 <%@ include file="/WEB-INF/jsp/browse/relatedItemsAndOtherInfo.jspf" %>

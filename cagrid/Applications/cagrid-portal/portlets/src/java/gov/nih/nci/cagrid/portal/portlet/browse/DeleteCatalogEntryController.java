@@ -6,6 +6,7 @@ package gov.nih.nci.cagrid.portal.portlet.browse;
 import gov.nih.nci.cagrid.portal.dao.catalog.CatalogEntryDao;
 import gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntry;
 import gov.nih.nci.cagrid.portal.portlet.UserModel;
+import gov.nih.nci.cagrid.portal.portlet.util.PortletUtils;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -43,10 +44,14 @@ public class DeleteCatalogEntryController extends AbstractController {
 			throw new RuntimeException("Couldn't find catalog entry for id: "
 					+ entryId);
 		}
+
+		PortletUtils.deleteResource(getUserModel().getPortalUser(),
+				CatalogEntry.class, catalogEntry.getId());
+
 		getCatalogEntryDao().delete(catalogEntry);
 		getCatalogEntryDao().getHibernateTemplate().flush();
 		getUserModel().setCurrentCatalogEntry(null);
-		
+
 		response.setRenderParameter("operation", "view");
 	}
 

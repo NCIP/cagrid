@@ -144,6 +144,7 @@
                 <value>gov.nih.nci.cagrid.portal.domain.catalog.GridServiceEndPointCatalogEntry</value>
                 <value>gov.nih.nci.cagrid.portal.domain.catalog.GridServiceInterfaceCatalogEntry</value>
                 <value>gov.nih.nci.cagrid.portal.domain.catalog.Hyperlink</value>
+                <value>gov.nih.nci.cagrid.portal.domain.catalog.Image</value>
                 <value>gov.nih.nci.cagrid.portal.domain.catalog.InformationModelCatalogEntry</value>
                 <value>gov.nih.nci.cagrid.portal.domain.catalog.InputDescriptor</value>
                 <value>gov.nih.nci.cagrid.portal.domain.catalog.InstitutionCatalogEntry</value>
@@ -328,6 +329,9 @@
           
 	<bean id="catalogEntryRelationshipTypeDao" parent="daoTemplate"
           class="gov.nih.nci.cagrid.portal.dao.catalog.CatalogEntryRelationshipTypeDao"/>
+          
+    <bean id="imageDao" parent="daoTemplate"
+          class="gov.nih.nci.cagrid.portal.dao.catalog.ImageDao"/>
 
     <bean id="timestampProvider" class="gov.nih.nci.cagrid.portal.util.StaticTimestampProvider"/>
 

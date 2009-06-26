@@ -137,6 +137,8 @@ function ${ns}saveNewRelatedItem(){
 
 function ${ns}renderUpdatedRelatedItemsView(){
 	jQuery("#${ns}relatedItemsDiv").html("Rendering related items <img src='<c:url value="/images/indicator.gif"/>'/>");
+	
+	
 	CatalogEntryManagerFacade.renderRelatedItems("${ns}",
 	{
 		callback:function(html){
@@ -147,6 +149,7 @@ function ${ns}renderUpdatedRelatedItemsView(){
 			alert("Error rendering related items: " + errorString);
 		}
 	});
+
 }
 function ${ns}cancelNewRelatedItem(){
 	${ns}renderUpdatedRelatedItemsView();

@@ -1,3 +1,15 @@
+
+<style>
+#cagp-tooltip{
+	position:absolute;
+	border:1px solid #333;
+	background:#f7f5d1;
+	padding:2px 5px;
+	color:#333;
+	display:none;
+	}
+</style>
+
 <script type="text/javascript">
 //var debug_log = new YAHOO.widget.LogReader("debug_log");
 
@@ -99,6 +111,38 @@ function ${ns}setField(inputName, inputValue){
 	}
 }
 
+var ${ns}tooltipTitle = "";
+function ${ns}initTooltips(){
+	/* CONFIG */		
+	var xOffset = 10;
+	var yOffset = 20;		
+	// these 2 variable determine popup's distance from the cursor
+	/* END CONFIG */
+			
+	jQuery(".cagp-tooltip").hover(function(e){
+		if(this.title != ""){											  
+			${ns}tooltipTitle = this.title;
+		}
+		this.title = "";									  
+		jQuery("body").append("<p id='cagp-tooltip'>"+ ${ns}tooltipTitle +"</p>");
+		jQuery("#cagp-tooltip")
+			.css("top",(e.pageY - xOffset) + "px")
+			.css("left",(e.pageX + yOffset) + "px")
+			.fadeIn("fast");	
+    },
+	function(){
+		if(${ns}tooltipTitle != ""){
+			this.title = ${ns}tooltipTitle;
+		}
+		jQuery("#cagp-tooltip").remove();
+    });	
+	jQuery(".cagp-tooltip").mousemove(function(e){
+		jQuery("#cagp-tooltip")
+			.css("top",(e.pageY - xOffset) + "px")
+			.css("left",(e.pageX + yOffset) + "px");
+	});
+}
+
 var ${ns}errorFlag = false;
 		
 jQuery(document).ready(function() {
@@ -145,7 +189,9 @@ jQuery(document).ready(function() {
 		${ns}setField(evt.target.name, evt.target.value);
 	});
 	
-});	
+	${ns}initTooltips();
+});
+	
 /*  Edit name and description interactivity  */
 jQuery("#input-name").click(function(){
 	if (jQuery("#input-name").attr("value") == "Name") {
@@ -175,5 +221,5 @@ jQuery("#input-description").blur( function() {
 		jQuery(this).css({'color' : '#afafaf'});
 	}
 	
-});		
+});
 </script>	

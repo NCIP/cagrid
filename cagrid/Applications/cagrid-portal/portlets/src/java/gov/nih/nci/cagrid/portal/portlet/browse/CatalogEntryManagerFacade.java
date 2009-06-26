@@ -12,6 +12,7 @@ import gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntryRelationshipInstance
 import gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntryRelationshipType;
 import gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntryRoleInstance;
 import gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntryRoleType;
+import gov.nih.nci.cagrid.portal.domain.catalog.Rating;
 import gov.nih.nci.cagrid.portal.domain.catalog.Term;
 import gov.nih.nci.cagrid.portal.domain.catalog.Terminology;
 import gov.nih.nci.cagrid.portal.portlet.UserModel;
@@ -80,12 +81,9 @@ public class CatalogEntryManagerFacade {
 			if (ce.getId() == null) {
 				getHibernateTemplate().save(ce);
 
-				String[] portalId = portalUser.getPortalId().split(":");
-				ResourceLocalServiceUtil.addResources(Long
-						.parseLong(portalId[0]), 0,
-						Long.parseLong(portalId[1]), CatalogEntry.class
-								.getName(), String.valueOf(ce.getId()), false,
-						false, false);
+				PortletUtils.addResource(getUserModel().getPortalUser(),
+						CatalogEntry.class, ce.getId());
+
 			} else {
 				getHibernateTemplate().update(ce);
 			}
@@ -177,8 +175,12 @@ public class CatalogEntryManagerFacade {
 					sb.append(",");
 				}
 			}
-			List l = getHibernateTemplate().find(
-					"from CatalogEntryRoleType where type in (" + sb + ")");
+			String query = "from CatalogEntryRoleType where type in (" + sb
+					+ ")";
+			logger.debug("Query: " + query);
+
+			List l = getHibernateTemplate().find(query);
+
 			List<CatalogEntryRoleType> roleTypes = new ArrayList<CatalogEntryRoleType>();
 			for (Iterator<CatalogEntryRoleType> i = l.iterator(); i.hasNext();) {
 				CatalogEntryRoleType targetTypeObj = i.next();
@@ -385,6 +387,9 @@ public class CatalogEntryManagerFacade {
 
 			getHibernateTemplate().flush();
 
+			PortletUtils.addResource(getUserModel().getPortalUser(),
+					CatalogEntryRelationshipInstance.class, relInst.getId());
+
 		} catch (Exception ex) {
 			String msg = "Error saving relationship: " + ex.getMessage();
 			logger.error(msg, ex);
@@ -400,6 +405,10 @@ public class CatalogEntryManagerFacade {
 			CatalogEntryRelationshipInstance relInst = (CatalogEntryRelationshipInstance) templ
 					.find("from CatalogEntryRelationshipInstance where id = ?",
 							relationshipId).iterator().next();
+
+			PortletUtils.deleteResource(getUserModel().getPortalUser(),
+					CatalogEntryRelationshipInstance.class, relInst.getId());
+
 			CatalogEntryRoleInstance roleAInst = relInst.getRoleA();
 			CatalogEntryRoleInstance roleBInst = relInst.getRoleB();
 			roleAInst.setRelationship(null);
@@ -410,6 +419,7 @@ public class CatalogEntryManagerFacade {
 			templ.delete(roleBInst);
 			templ.delete(relInst);
 			templ.flush();
+
 		} catch (Exception ex) {
 			String msg = "Error deleting relationship: " + ex.getMessage();
 			logger.error(msg, ex);
@@ -434,6 +444,61 @@ public class CatalogEntryManagerFacade {
 			getUserModel().getCurrentCatalogEntry().setName(name);
 		} catch (Exception ex) {
 			String msg = "Error setting name: " + ex.getMessage();
+			logger.error(msg, ex);
+			throw new RuntimeException(msg, ex);
+		}
+		return message;
+	}
+
+	public Integer getAverageRating(Integer entryId) {
+		try {
+			int sum = 0;
+			List<Rating> ratings = getHibernateTemplate().find(
+					"from Rating r where r.ratingOf.id = ?", entryId);
+			int numRatings = 0;
+			for (Rating r : ratings) {
+				numRatings++;
+				sum += r.getRating();
+			}
+			return Math.round(sum / Math.max(1, numRatings));
+		} catch (Exception ex) {
+			String msg = "Error calculating average rating: " + ex.getMessage();
+			logger.error(msg, ex);
+			throw new RuntimeException(msg, ex);
+		}
+	}
+
+	public String setRating(Integer value) {
+		String message = null;
+		try {
+			PortalUser portalUser = getUserModel().getPortalUser();
+			CatalogEntry catalogEntry = getUserModel().getCurrentCatalogEntry();
+			Rating rating = null;
+			List<Rating> ratings = getHibernateTemplate()
+					.find(
+							"from Rating r where r.ratingContributor.id = ? and r.ratingOf.id = ?",
+							new Object[] { portalUser.getCatalog().getId(),
+									catalogEntry.getId() });
+			if (ratings.size() > 1) {
+				throw new RuntimeException(
+						"More than one rating of this catalog entry ["
+								+ catalogEntry.getId()
+								+ "] for this person entry ["
+								+ portalUser.getCatalog().getId() + "]");
+			}
+			if (ratings.size() == 1) {
+				rating = ratings.iterator().next();
+			}
+			if (rating == null) {
+				rating = new Rating();
+				rating.setRatingOf(catalogEntry);
+				rating.setRatingContributor(portalUser.getCatalog());
+				getHibernateTemplate().save(rating);
+			}
+			rating.setRating(value);
+			getHibernateTemplate().update(rating);
+		} catch (Exception ex) {
+			String msg = "Error setting rating: " + ex.getMessage();
 			logger.error(msg, ex);
 			throw new RuntimeException(msg, ex);
 		}

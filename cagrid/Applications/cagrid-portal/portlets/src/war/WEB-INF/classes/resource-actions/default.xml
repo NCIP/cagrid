@@ -16,4 +16,23 @@
 		</guest-defaults>
 		<guest-unsupported />
 	</portlet-resource>
+	<model-resource>
+		<model-name>gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntryRelationshipInstance</model-name>
+		<portlet-ref>
+			<portlet-name>BrowsePortlet</portlet-name>
+		</portlet-ref>
+		<supports>
+			<action-key>VIEW</action-key>
+			<action-key>DELETE</action-key>
+		</supports>
+		<community-defaults>
+			<action-key>VIEW</action-key>
+		</community-defaults>
+		<guest-defaults>
+			<action-key>VIEW</action-key>
+		</guest-defaults>
+		<guest-unsupported>
+			<action-key>DELETE</action-key>
+		</guest-unsupported>
+	</model-resource>	
 </resource-action-mapping>
