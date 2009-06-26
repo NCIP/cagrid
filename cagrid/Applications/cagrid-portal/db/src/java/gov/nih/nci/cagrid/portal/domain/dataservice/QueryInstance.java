@@ -8,17 +8,7 @@ import gov.nih.nci.cagrid.portal.domain.PortalUser;
 
 import java.util.Date;
 
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import org.hibernate.annotations.ForceDiscriminator;
 import org.hibernate.annotations.GenericGenerator;
@@ -78,6 +68,7 @@ public abstract class QueryInstance extends AbstractDomainObject {
 		this.createTime = createTime;
 	}
 
+    @Column(length = 4000)
 	public String getError() {
 		return error;
 	}
