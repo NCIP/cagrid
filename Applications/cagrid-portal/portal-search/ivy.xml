@@ -1,0 +1,20 @@
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="http://incubator.apache.org/ivy/schemas/ivy.xsd">
+
+    <info organisation="caGrid" module="portal-search" revision="${project.version}">
+        <license name="caGrid" url="http://www.cagrid.org/mwiki/index.php?title=CaGrid:LICENSE-1.1"/>
+        <description>caGrid Portal Search</description>
+    </info>
+
+    <configurations>
+        <conf name="default"   visibility="public"/>
+    </configurations>
+
+
+    <publications>
+        <artifact name="${portal.search.war.name}" type="war" conf="default"/>
+    </publications>
+
+
+
+</ivy-module>
