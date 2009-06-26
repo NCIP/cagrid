@@ -36,14 +36,17 @@ public class CQLQueryDao extends AbstractDao<CQLQuery> {
 		List queries = getHibernateTemplate().find(
 				"from CQLQuery where hash = '" + hash + "'");
 
-		if (queries.size() > 1) {
-			throw new NonUniqueResultException("Found " + queries.size()
-					+ " CQLQuery objects for hash '" + hash + "'");
-		}
-		if (queries.size() == 1) {
+// does not matter. If the hash is the same, its the same query       
+//		if (queries.size() > 1) {
+//			throw new NonUniqueResultException("Found " + queries.size()
+//					+ " CQLQuery objects for hash '" + hash + "'");
+//		}
+		if (queries.size() > 0) {
 			query = (CQLQuery) queries.get(0);
 		}
 		return query;
 	}
+
+
 
 }

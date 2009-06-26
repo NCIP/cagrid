@@ -1,9 +1,9 @@
 package gov.nih.nci.cagrid.portal.domain.catalog;
 
-import javax.persistence.CascadeType;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import gov.nih.nci.cagrid.portal.domain.dataservice.SharedCQLQuery;
+import gov.nih.nci.cagrid.portal.domain.dataservice.CQLQuery;
+
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +16,9 @@ public class SharedQueryCatalogEntry extends ToolCatalogEntry {
     public List<QueryResultColumnDescriptor> columns = new ArrayList<QueryResultColumnDescriptor>();
     public List<SharedQueryToolsRelationship> toolRelationships = new ArrayList<SharedQueryToolsRelationship>();
     public List<Term> typesOfCancer = new ArrayList<Term>();
+    private CQLQuery about;
 
-    @OneToMany(mappedBy="query")
+    @OneToMany(mappedBy = "query")
     public List<CriterionDescriptor> getCriteria() {
         return criteria;
     }
@@ -51,5 +52,15 @@ public class SharedQueryCatalogEntry extends ToolCatalogEntry {
 
     public void setTypesOfCancer(List<Term> typesOfCancer) {
         this.typesOfCancer = typesOfCancer;
+    }
+
+    @OneToOne
+    @JoinColumn(name = "cql_id")
+    public CQLQuery getAbout() {
+        return about;
+    }
+
+    public void setAbout(CQLQuery about) {
+        this.about = about;
     }
 }
