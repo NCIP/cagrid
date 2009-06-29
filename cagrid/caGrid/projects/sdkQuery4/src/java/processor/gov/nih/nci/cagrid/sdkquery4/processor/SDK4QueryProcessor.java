@@ -83,13 +83,14 @@ public class SDK4QueryProcessor extends CQLQueryProcessor {
 
     public CQLQueryResults processQuery(CQLQuery cqlQuery) throws MalformedQueryException, QueryProcessingException {
         List rawResults = queryCoreService(cqlQuery);
-        if (LOG.isDebugEnabled()) {
+        // trace is lower than debug, so this shouldn't get run unless somebody REALLY wants to see everything
+        if (LOG.isTraceEnabled()) {
             // print the SDK's output if debug is enabled
             for (Object o : rawResults) {
-                LOG.debug(o.getClass().getName());
+                LOG.trace(o.getClass().getName());
                 caCOREMarshaller m = new caCOREMarshaller("unmarshaller-xml-mapping.xml", false);
                 try {
-                    LOG.debug(m.toXML(o));
+                    LOG.trace(m.toXML(o));
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
