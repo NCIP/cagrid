@@ -82,13 +82,13 @@ public class SDK4QueryProcessor extends CQLQueryProcessor {
 
 
     public CQLQueryResults processQuery(CQLQuery cqlQuery) throws MalformedQueryException, QueryProcessingException {
-        List rawResults = queryCoreService(cqlQuery);
+        List<?> rawResults = queryCoreService(cqlQuery);
         // trace is lower than debug, so this shouldn't get run unless somebody REALLY wants to see everything
         if (LOG.isTraceEnabled()) {
-            // print the SDK's output if debug is enabled
+            // print the SDK's output iff trace is enabled
             for (Object o : rawResults) {
                 LOG.trace(o.getClass().getName());
-                caCOREMarshaller m = new caCOREMarshaller("unmarshaller-xml-mapping.xml", false);
+                caCOREMarshaller m = new caCOREMarshaller("xml-mapping.xml", false);
                 try {
                     LOG.trace(m.toXML(o));
                 } catch (Exception ex) {
@@ -300,8 +300,8 @@ public class SDK4QueryProcessor extends CQLQueryProcessor {
     }
     
     
-    protected List queryCoreService(CQLQuery query) 
-        throws MalformedQueryException, QueryProcessingException {
+    protected List<?> queryCoreService(CQLQuery query) 
+        throws QueryProcessingException {
         // get the caCORE application service
         ApplicationService service = getApplicationService();
 
@@ -312,7 +312,7 @@ public class SDK4QueryProcessor extends CQLQueryProcessor {
 
         // process the query
         HQLCriteria hqlCriteria = new HQLCriteria(parameterizedHql.getHql(), parameterizedHql.getParameters());
-        List targetObjects = null;
+        List<?> targetObjects = null;
         try {
             targetObjects = service.query(hqlCriteria);
         } catch (Exception ex) {
