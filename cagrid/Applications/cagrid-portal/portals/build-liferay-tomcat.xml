@@ -2,6 +2,9 @@
 
 <project name="liferay-portal-tomcat" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
 
+    <property name="ext.ext.lib.dir" value="${basedir}/ext/ext-tomcat/jars"/>
+    <property name="ext.ext.xml.dir" value="${basedir}/ext/ext-tomcat/xmls"/>
+    
     <import file="${basedir}/build.xml"/>
     
     <property name="liferay.tomcat.download.url"
@@ -21,8 +24,6 @@
     <property name="liferay.tomcat.enginename" value="Catalina"/>
     <property name="liferay.tomcat.hostname" value="localhost"/>
     
-    <property name="ext.ext.lib.dir" value="${basedir}/ext/ext-tomcat/jars"/>
-    <property name="ext.ext.xml.dir" value="${basedir}/ext/ext-tomcat/xmls"/>    
     <property name="portal.search.war.dest" value="${liferay.auto.deploy.dest.dir}/${portal.search.war.name}"/>
     
 
