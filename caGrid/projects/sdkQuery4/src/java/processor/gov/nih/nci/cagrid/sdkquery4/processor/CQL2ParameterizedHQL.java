@@ -259,7 +259,7 @@ public class CQL2ParameterizedHQL {
             // add a placeholder parameter to the HQL query
 			hql.append('?');
 
-			// convert the attribtue value to the specific data type of the attribute
+			// convert the attribute value to the specific data type of the attribute
             java.lang.Object value = valueToObject(attributeFieldType, 
                 caseInsensitive ? attribute.getValue().toLowerCase() : attribute.getValue());
 
