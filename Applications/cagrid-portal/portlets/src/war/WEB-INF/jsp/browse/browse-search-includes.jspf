@@ -1,6 +1,6 @@
 <link type="text/css" rel="stylesheet"
       href="<c:url value="/js/yui/assets/skins/sam/datatable.css"/>"/>
-<link type="text/css" rel="stylesheet" href="<c:url value="/js/yui/treeview/assets/skins/sam/treeview.css"/>"/>
+<link type="text/css" rel="stylesheet" href="<c:url value="/js/yui/treeview/assets/css/menu/tree.css"/>"/>
 <link rel="stylesheet" type="text/css" href="<c:url value="/js/yui/paginator/assets/skins/sam/paginator.css"/>"/>
 
 <script type="text/javascript" src="<c:url value="/js/scriptaculous/prototype.js"/>"></script>
@@ -12,7 +12,6 @@
 <script type="text/javascript" src="<c:url value="/js/yui/connection/connection-min.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/yui/get/get-min.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/yui/logger/logger-min.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/js/yui/animation/animation-min.js"/>"></script>
 <script src="<c:url value="/js/yui/treeview/treeview-min.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/yui/paginator/paginator-min.js"/>"></script>
 
@@ -71,7 +70,7 @@
                 var categoryNode = new YAHOO.widget.HTMLNode({html:subTree.label}, this.rootNode, true);
                 for (var i = 0; i < nodesList.length; i++) {
                     var node = nodesList[i];
-                    new YAHOO.widget.TextNode({label:node.label + "(" + node.count + ")",type:subTree.type,name:node.name}, categoryNode, true);
+                    new YAHOO.widget.MenuNode({label:node.label + "(" + node.count + ")",type:subTree.type,name:node.name}, categoryNode, true);
                 }
             }
         },
