@@ -3,31 +3,14 @@
                 user="@cagrid.portal.db.username@" password="@cagrid.portal.db.password@"/>
 
     <document name="CatalogEntry">
-        <entity name="GridServiceEndPointCatalog"
-                deltaQuery="select id from cat_entry where where catalog_type='tool_grid_service_endpoint'
-                            and updatedAt > '${dataimporter.last_index_time}'"
-                query="select * from cat_entry where catalog_type='tool_grid_service_endpoint'">
-            <field column="id" name="id"/>
-            <field column="catalog_type" name="catalog_type"/>
-            <field column="name" name="name"/>
-            <field column="description" name="description"/>
-            <entity name="Hyperlink"
-                    query="select * from cat_hyperlinks where catalog_id='${GridServiceEndPointCatalog.id}'">
-                <field name="homepageUrl" column="url"/>
-            </entity>
-              <entity name="GridService"
-                    query="select * from grid_services where id='${GridServiceEndPointCatalog.grid_service_id}'">
-                <field name="endpoint" column="url"/>
-                  <field name="endpoint" column="url"/>
-            </entity>
-        </entity>
+
 
         <entity name="AllCatalogs"
-                query="select * from cat_entry where catalog_type !='tool_grid_service_endpoint'"
-                deltaQuery="select id from cat_entry where where updatedAt > '${dataimporter.last_index_time}' and catalog_type !='tool_grid_service_endpoint'">
+                query="select * from cat_entry"
+                deltaQuery="select id from cat_entry where where updatedAt > '${dataimporter.last_index_time}'">
             <field column="id" name="id"/>
             <field column="catalog_type" name="catalog_type"/>
-            <field column="name" name="name"/>
+            <field column="name" name="catalogName"/>
             <field column="firstName" name="firstName"/>
             <field column="lastName" name="lastName"/>
             <field column="description" name="description"/>
@@ -37,6 +20,25 @@
             <field column="country" name="country"/>
             <field column="homepageUrl" name="homepageUrl"/>
             <field column="phoneNumber" name="phoneNumber"/>
+            <field column="updatedAt" name="updatedAt"/>
+
+             <!--<entity name="Hyperlink"-->
+                    <!--query="select * from cat_hyperlinks where catalog_id='${AllCatalogs.id}'">-->
+                <!--<field name="homepageUrl" column="url"/>-->
+            <!--</entity>-->
+            <entity name="GridService"
+                    query="select * from grid_services where id='${AllCatalogs.grid_service_id}'">
+                <field name="endpoint" column="url"/>
+            </entity>
+            <entity name="cat_entry_terms"
+                    query="select term_id from cat_entry_terms where entry_id='${AllCatalogs.id}'">
+                <entity name="term"
+                        query="select * from cat_terms where id='${cat_entry_terms.term_id}'">
+                    <field name="term_description" column="description"/>
+                    <field name="term_identifier" column="identifier"/>
+                    <field name="term_label" column="label"/>
+                </entity>
+            </entity>
         </entity>
 
 
