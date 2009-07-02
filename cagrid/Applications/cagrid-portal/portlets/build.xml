@@ -49,7 +49,9 @@
         <path refid="test.compile.cp"/>
         <pathelement location="${ext.test.xml.dir}"/>
         <pathelement location="${ext.test.xsd.dir}"/>
+        <pathelement location="${build.classes.dir}"/>
         <pathelement location="${build.war.build.classes.dir}"/>
+        <pathelement location="${build.war.dir}"/>
         <path path="${test.etc.dir}"/>
     </path>
 
@@ -58,11 +60,6 @@
     	<mkdir dir="${build.war.webinf.dir}/lib"/>
         <mkdir dir="${build.war.build.classes.dir}"/>
 
-        <copy todir="${build.war.webinf.dir}/lib" overwrite="true" flatten="true">
-            <fileset dir="${ext.lib.dir}">
-                <include name="*.jar"/>
-            </fileset>
-        </copy>
         <copy todir="${build.war.dir}" overwrite="true" filtering="false">
             <fileset dir="${src.war.dir}"/>
         </copy>
@@ -74,6 +71,13 @@
                 <filter token="evs40.remoteAPI.url" value="${evs.remoteAPI.url}"/>
             </filterset>
         </copy>
+
+        <copy todir="${build.war.webinf.dir}/lib" overwrite="true" flatten="true">
+            <fileset dir="${ext.lib.dir}">
+                <include name="*.jar"/>
+            </fileset>
+        </copy>
+        
         <copy todir="${build.war.build.classes.dir}">
             <fileset dir="${ext.xml.dir}">
                 <include name="*.xml"/>
@@ -96,7 +100,8 @@
 
     <target name="compile">
         <mkdir dir="${build.classes.dir}"/>
-        <javac srcdir="${src.java.dir}" destdir="${build.classes.dir}" debug="${portlets.debug}">
+        <javac srcdir="${src.java.dir}" destdir="${build.classes.dir}" source="1.5"
+               debug="${portlets.debug}">
             <classpath refid="compile.cp"/>
         </javac>
     </target>
@@ -139,6 +144,6 @@
     </target>
 
     <!--all called from main build. Will build tests-->
-    <target name="all" depends="war"/>
+    <target name="all" depends="clean,war"/>
 
 </project>

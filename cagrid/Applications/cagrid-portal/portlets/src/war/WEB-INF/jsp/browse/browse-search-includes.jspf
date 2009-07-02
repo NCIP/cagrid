@@ -22,84 +22,79 @@
 <script src="<c:url value="/js/browse-catalog.js"/>"></script>
 
 <script type="text/javascript">
-    //        var myLogReader = new YAHOO.widget.LogReader("myLogger");
-
-    var resultEvent = new YAHOO.util.CustomEvent({type:"resultEvent",signature:"YAHOO.util.CustomEvent.FLAT"});
+//    var myLogReader = new YAHOO.widget.LogReader("myLogger");
     var solrDatasource = new YAHOO.util.XHRDataSource("<c:out value="${solrServiceUrl}"/>/select?", {responseType:YAHOO.util.XHRDataSource.JSON});
+
 
     <%--Represents the summary tree for filtering search results--%>
     var SummaryTree = Class.create({
         initialize: function(catalog) {
-            var searchTerm = catalog.config.keyword;
+            var summaryQuery = catalog.query;
             var treeDiv = catalog.config.treeDiv;
+
             this.tree = new YAHOO.widget.TreeView(document.getElementById(treeDiv));
 
-            <%--onClick callback--%>
+        <%--onClick callback--%>
             this.tree.subscribe("labelClick", function(node) {
-                catalog.config.catalogType = node.data.type;
-                this.destroy();
-                new Catalogs(catalog.config);
+                catalog.config.filterType = node.data.type;
+                catalog.config.filterValue = node.data.name;
+                catalog.runQuery(false);
+
             });
 
-            var root = this.tree.getRoot();
-            this.categoryNode = new YAHOO.widget.TextNode({label:"Category"}, root, true);
-            this.treeNodes = new Array();
+            treeEvent.subscribe(updateTreeWithResults, this);
 
             var searchCallback = function (oRequest, oParsedResponse, oPayload) {
                 var solrJSON = YAHOO.lang.JSON.parse(oParsedResponse.results.responseText);
-                var resultList = solrJSON.response.docs;
-                this.tree.removeChildren(this.categoryNode);
+                YAHOO.log("Firing tree event");
+                treeEvent.fire(solrJSON.tree);
 
-                for (var i = 0, len = resultList.length; i < len; ++i) {
-                    this.addNode(resultList[i], this);
-                }
-
-                this.buildTree(this.categoryNode, this);
-                this.categoryNode.refresh();
-                this.categoryNode.expand();
             };
 
-            <%--get all rows--%>
-            var summaryQuery = new solrQuery(searchTerm, 100000);
-            <%--only get catalog_type field for makign summary tree--%>
-            summaryQuery.addParam("fl=catalog_type");
+        <%--only get catalog_type field for makign summary tree--%>
             YAHOO.log("Summary query is " + summaryQuery.getQuery());
 
+            summaryQuery.setRows(10000);
             solrDatasource.sendRequest(summaryQuery.getQuery(), {
                 success : searchCallback,
                 failure : searchCallback,
                 scope : this
             });
+            summaryQuery.setRows(catalog.config.rowsPerPage);
+
+            this.rootNode = new YAHOO.widget.HTMLNode({html:"Search Categories"}, this.tree.getRoot(), true);
             this.tree.render();
         },
-
-        addNode: function(result, sTree) {
-            var typeLabel = result.catalog_type;
-            var categoryNode = sTree.treeNodes.findByLabel(typeLabel);
-
-            if (null == categoryNode) {
-                sTree.treeNodes.push(new SearchTreeNode(typeLabel));
+        addSubTree: function(subTree) {
+            var nodesList = subTree.nodes;
+            if (subTree.nodes.length > 0) {
+                var categoryNode = new YAHOO.widget.HTMLNode({html:subTree.label}, this.rootNode, true);
+                for (var i = 0; i < nodesList.length; i++) {
+                    var node = nodesList[i];
+                    new YAHOO.widget.TextNode({label:node.label + "(" + node.count + ")",type:subTree.type,name:node.name}, categoryNode, true);
+                }
             }
-            <!--else update the count-->
-            else {
-                categoryNode.addCount();
-            }
-
         },
-        buildTree: function(rootNode, sTree) {
-            for (var i = 0; i < sTree.treeNodes.length; i++) {
-                new YAHOO.widget.TextNode(sTree.treeNodes[i], rootNode);
-            }
+        refresh: function() {
+            this.tree.getRoot().refresh();
         }
     });
 
+    function updateTreeWithResults(type, args, tree) {
+        var treeList = args[0];
+        for (var i = 0, len = treeList.length; i < len; i++) {
+            tree.addSubTree(treeList[i]);
+        }
+        tree.refresh();
+    }
 
     <%--represents the catalog search/browse results object--%>
     var Catalogs = Class.create({
 
         initialize: function(config) {
             this.rowsPerPage = 10;
-            this.config = {keyword:config.keyword,treeDiv:config.treeDiv,catalogType:config.catalogType,rowsPerPage:config.rowsPerPage,paginatorDiv:config.paginatorDiv};
+            this.config = {keyword:config.keyword,treeDiv:config.treeDiv,catalogType:config.catalogType,rowsPerPage:config.rowsPerPage,paginatorDiv:config.paginatorDiv,
+                filterType:config.filterType,filterValue:config.filterValue,sortField:config.sortField};
 
             if (this.config.rowsPerPage)
                 this.rowsPerPage = this.config.rowsPerPage;
@@ -110,27 +105,47 @@
                 containers   : [this.config.paginatorDiv] // or idStr or elem or [ elem, elem ]
             });
             this.paginator.subscribe('changeRequest', this.handlePagination, this);
-
             this.query = new solrQuery(this.config.keyword, this.rowsPerPage);
+            sortEvent.subscribe(this.sort,this);
 
-            if (this.config.catalogType) {
-                this.query.addFacet("catalog_type", this.config.catalogType);
-            }
-
-            new SummaryTree(this);
-
-            this.runQuery();
+            this.runQuery(false);
 
         },
 
-        runQuery: function() {
+        sort: function(type, args,catalog){
+            var sort = args[0];
+            catalog.config.sortField=sort.value;
+            catalog.runQuery(false);
+        },
+
+        runQuery: function(paginate) {
+           
+            YAHOO.log("Will run a new query");
+            if (this.config.catalogType) {
+                this.query.addFacet("catalog_type", this.config.catalogType);
+            }
+            if (this.config.filterType) {
+                this.query.addFacet(this.config.filterType, this.config.filterValue);
+            }
+            if (this.config.sortField) {
+                this.query.sort(this.config.sortField + "+asc");
+            }
+
+            if (!paginate) {
+                <%--not coming for paginator--%>
+                this.query.setStartValue(0);
+                new SummaryTree(this);
+            }
+
             var searchCallback = function (oRequest, oParsedResponse, oPayload) {
                 try {
                     var solrJSON = YAHOO.lang.JSON.parse(oParsedResponse.results.responseText);
                     var resultList = solrJSON.response.docs;
                     this.setupPaginator({start:solrJSON.response.start, count:solrJSON.response.numFound});
+
                     YAHOO.log("Firing result event");
                     resultEvent.fire(resultList);
+
                 }
                 catch (x) {
                     alert("JSON Parse failed!" + x);
@@ -159,7 +174,7 @@
         handlePagination: function(newState, cat) {
             cat.paginator.setState(newState);
             cat.query.setStartValue(newState.recordOffset);
-            cat.runQuery();
+            cat.runQuery(true);
 
         }
     });

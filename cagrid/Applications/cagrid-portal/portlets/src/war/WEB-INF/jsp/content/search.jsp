@@ -46,7 +46,7 @@ jQuery("input.search").blur( function() {
             <input type="hidden" name="operation" id="operation" value="catalogSearch">
 			<div class="L-endcap"></div>
             <input id="keyword" class="search" type="text" size="20" value="Search" style="color:#afafaf;" onkeypress="return search(event);"/>
-            <div class="R-endcap"></div>
+            <%--<div class="R-endcap"></div>--%>
         
     </div>
 </form:form>
