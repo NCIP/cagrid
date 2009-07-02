@@ -29,6 +29,12 @@ public class CatalogEntryDao extends AbstractDao<CatalogEntry> {
         return latest;
     }
 
+    // is  a JoinPoint   
+    @Override
+    public void save(CatalogEntry domainObject) {
+        super.save(domainObject);    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
     @Override
     public Class domainClass() {
         return CatalogEntry.class;
