@@ -28,10 +28,10 @@
 
 <c:choose>
 	<c:when test="${viewMode eq 'edit'}">
-<%@ include file="/WEB-INF/jsp/browse/relationshipTypeView_edit.jspf" %>
+<%@ include file="/WEB-INF/jsp/browse/relationshipType/edit.jspf" %>
 <br/>
 	</c:when>
 	<c:otherwise>
-<%@ include file="/WEB-INF/jsp/browse/relationshipTypeView_view.jspf" %>	
+<%@ include file="/WEB-INF/jsp/browse/relationshipType/view.jspf" %>	
 	</c:otherwise>
 </c:choose>

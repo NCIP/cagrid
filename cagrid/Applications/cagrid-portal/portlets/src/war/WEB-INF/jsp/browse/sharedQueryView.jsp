@@ -1,5 +1,5 @@
 <%@ include file="/WEB-INF/jsp/include/includes.jspf" %>
-<%@ include file="/WEB-INF/jsp/browse/common_top.jspf" %>
+<%@ include file="/WEB-INF/jsp/browse/common/top.jspf" %>
 <%@ include file="/WEB-INF/jsp/browse/backLink.jspf" %>
 
 <c:set var="managerFacadeName">${catalogEntry.class.simpleName}ManagerFacade</c:set>

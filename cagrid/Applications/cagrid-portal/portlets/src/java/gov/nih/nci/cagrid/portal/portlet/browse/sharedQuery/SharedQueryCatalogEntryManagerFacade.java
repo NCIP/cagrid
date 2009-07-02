@@ -3,23 +3,24 @@
  */
 package gov.nih.nci.cagrid.portal.portlet.browse.sharedQuery;
 
-import gov.nih.nci.cagrid.portal.domain.catalog.SharedQueryCatalogEntry;
-import gov.nih.nci.cagrid.portal.domain.catalog.SharedQueryToolsRelationship;
-import gov.nih.nci.cagrid.portal.domain.catalog.GridServiceEndPointCatalogEntry;
-import gov.nih.nci.cagrid.portal.domain.dataservice.CQLQuery;
-import gov.nih.nci.cagrid.portal.util.PortalUtils;
-import gov.nih.nci.cagrid.portal.dao.CQLQueryDao;
-import gov.nih.nci.cagrid.portal.dao.catalog.GridServiceEndPointCatalogEntryDao;
-import gov.nih.nci.cagrid.portal.portlet.query.shared.XMLSchemaValidatorFactory;
-import gov.nih.nci.cagrid.portal.portlet.browse.ToolCatalogEntryManagerFacade;
-import gov.nih.nci.cagrid.portal.portlet.browse.GridServiceEndpointDescriptorBean;
-import gov.nih.nci.cagrid.common.SchemaValidationException;
-import gov.nih.nci.cagrid.common.SchemaValidator;
 import gov.nih.nci.cagrid.common.Utils;
+import gov.nih.nci.cagrid.portal.dao.QueryDao;
+import gov.nih.nci.cagrid.portal.dao.catalog.GridServiceEndPointCatalogEntryDao;
+import gov.nih.nci.cagrid.portal.dao.catalog.SharedQueryCatalogEntryDao;
+import gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntry;
+import gov.nih.nci.cagrid.portal.domain.catalog.GridServiceEndPointCatalogEntry;
+import gov.nih.nci.cagrid.portal.domain.catalog.SharedQueryCatalogEntry;
+import gov.nih.nci.cagrid.portal.domain.dataservice.CQLQuery;
+import gov.nih.nci.cagrid.portal.domain.dataservice.DCQLQuery;
+import gov.nih.nci.cagrid.portal.domain.dataservice.Query;
+import gov.nih.nci.cagrid.portal.portlet.browse.GridServiceEndpointDescriptorBean;
+import gov.nih.nci.cagrid.portal.portlet.browse.ToolCatalogEntryManagerFacade;
+import gov.nih.nci.cagrid.portal.portlet.util.PortletUtils;
+import gov.nih.nci.cagrid.portal.util.PortalUtils;
 
-import java.util.List;
-import java.util.ArrayList;
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -31,135 +32,141 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public class SharedQueryCatalogEntryManagerFacade extends
-        ToolCatalogEntryManagerFacade {
+		ToolCatalogEntryManagerFacade {
 
-    CQLQueryDao cqlQueryDao;
-    GridServiceEndPointCatalogEntryDao gridServiceEndPointCatalogEntryDao;
-    String cqlQueryXML;
-    private SchemaValidator cqlXMLSchemaValidator;
+	private GridServiceEndPointCatalogEntryDao gridServiceEndPointCatalogEntryDao;
+	private String queryXML;
+	private SharedQueryCatalogEntryDao sharedQueryCatalogEntryDao;
+	private QueryDao queryDao;
 
-    private static final Log logger = LogFactory
-            .getLog(SharedQueryCatalogEntryManagerFacade.class);
+	private static final Log logger = LogFactory
+			.getLog(SharedQueryCatalogEntryManagerFacade.class);
 
-    /**
+	/**
      *
      */
-    public SharedQueryCatalogEntryManagerFacade() {
-        // TODO Auto-generated constructor stub
-    }
+	public SharedQueryCatalogEntryManagerFacade() {
+	}
 
-    public String setQuery(String query) {
-        cqlQueryXML = query;
-        return null;
+	public String setQuery(String queryXML) {
+		this.queryXML = queryXML;
+		return null;
 
-    }
+	}
 
-    /**
-     * for autocompleterer. Will only get services that are associated with CE's
-     *
-     * @param partialUrl
-     * @return
-     */
-    public List<GridServiceEndpointDescriptorBean> getCatalogEntriesForPartialUrl(String partialUrl) {
-        List<GridServiceEndpointDescriptorBean> result = new ArrayList<GridServiceEndpointDescriptorBean>();
-        for (GridServiceEndPointCatalogEntry entry : gridServiceEndPointCatalogEntryDao.getByPartialUrl(partialUrl)) {
-            GridServiceEndpointDescriptorBean descriptor = new GridServiceEndpointDescriptorBean(String.valueOf(entry.getId()), String.valueOf(entry.getAbout().getId()), entry.getAbout().getUrl());
-            result.add(descriptor);
-        }
-        return result;
-    }
+	/**
+	 * for autocompleterer. Will only get services that are associated with CE's
+	 * 
+	 * @param partialUrl
+	 * @return
+	 */
+	public List<GridServiceEndpointDescriptorBean> getCatalogEntriesForPartialUrl(
+			String partialUrl) {
+		List<GridServiceEndpointDescriptorBean> result = new ArrayList<GridServiceEndpointDescriptorBean>();
+		for (GridServiceEndPointCatalogEntry entry : gridServiceEndPointCatalogEntryDao
+				.getByPartialUrl(partialUrl)) {
+			GridServiceEndpointDescriptorBean descriptor = new GridServiceEndpointDescriptorBean(
+					String.valueOf(entry.getId()), String.valueOf(entry
+							.getAbout().getId()), entry.getAbout().getUrl());
+			result.add(descriptor);
+		}
+		return result;
+	}
 
+	@Override
+	public String validate() {
+		String message = null;
+		if (!PortletUtils.isDCQL(this.queryXML)
+				&& !PortletUtils.isCQL(this.queryXML)) {
+			message = "The query is invalid. Please check the syntax.";
+		}
+		return message;
+	}
 
-    @Override
-    public String validate() {
-        CQLQuery query = null;
+	public String getTargetClass() {
+		String queryXML = ((SharedQueryCatalogEntry) getUserModel()
+				.getCurrentCatalogEntry()).getAbout().getXml();
 
-        SharedQueryCatalogEntry ce = ((SharedQueryCatalogEntry) getUserModel().getCurrentCatalogEntry());
-        if (ce != null)
-            query = ce.getAbout();
+		StringReader reader = new StringReader(queryXML);
+		try {
+			gov.nih.nci.cagrid.cqlquery.CQLQuery query = (gov.nih.nci.cagrid.cqlquery.CQLQuery) Utils
+					.deserializeObject(reader,
+							gov.nih.nci.cagrid.cqlquery.CQLQuery.class);
+			return query.getTarget().getName();
+		} catch (Exception e) {
+			return "Could not be determined";
+		}
 
-        if (query == null && cqlQueryXML == null)
-            return "Please enter a valid XML query";
-//        else {
-//            try {
-//                cqlXMLSchemaValidator.validate(query.getXml());
-//            } catch (SchemaValidationException e) {
-//                return "XML Query does not conform to CQL Schema.";
-//            }
+	}
 
+	@Override
+	protected Integer saveInternal(CatalogEntry catalogEntry) {
 
-//        }
-        return null;
-    }
+		SharedQueryCatalogEntry sqCe = (SharedQueryCatalogEntry) catalogEntry;
 
-    public String getTargetClass() {
-        String queryXML = ((SharedQueryCatalogEntry) getUserModel().getCurrentCatalogEntry()).getAbout().getXml();
+		if (this.queryXML != null) {
 
-        StringReader reader = new StringReader(queryXML);
-        try {
-            gov.nih.nci.cagrid.cqlquery.CQLQuery query = (gov.nih.nci.cagrid.cqlquery.CQLQuery) Utils.deserializeObject(reader,
-                    gov.nih.nci.cagrid.cqlquery.CQLQuery.class);
-            return query.getTarget().getName();
-        } catch (Exception e) {
-            return "Could not be determined";
-        }
+			String xml = null;
+			if (PortletUtils.isCQL(queryXML)) {
+				xml = PortletUtils.normalizeCQL(queryXML);
+			} else {
+				xml = PortletUtils.normalizeDCQL(queryXML);
+			}
+			String hash = PortalUtils.createHash(xml);
 
-    }
+			Query aboutQuery = sqCe.getAbout();
+			if (aboutQuery == null) {
 
-    @Override
-    public Integer save() {
-        loop:
-        if (this.cqlQueryXML != null) {
-            String hash = PortalUtils.createHash(this.cqlQueryXML);
+				aboutQuery = getQueryDao().getQueryByHash(hash);
 
-            CQLQuery aboutCQL = null;
+				if (aboutQuery == null) {
+					
+					logger.debug("Will create a new query");
+					if (PortletUtils.isCQL(queryXML)) {
+						aboutQuery = new CQLQuery();
+					} else {
+						aboutQuery = new DCQLQuery();
+					}
+				}
 
-            SharedQueryCatalogEntry ce = ((SharedQueryCatalogEntry) getUserModel().getCurrentCatalogEntry());
-            if (ce != null)
-                aboutCQL = ce.getAbout();
+				sqCe.setAbout(aboutQuery);
+			} else {
+				aboutQuery = getQueryDao().getById(aboutQuery.getId());
+			}
 
-            if (aboutCQL == null) {
-                logger.debug("Will create a new query");
-                aboutCQL = new CQLQuery();
-            } else {
-                aboutCQL = cqlQueryDao.getById(aboutCQL.getId());
+			aboutQuery.setHash(hash);
+			aboutQuery.setXml(xml);
+			getQueryDao().save(aboutQuery);
+			getSharedQueryCatalogEntryDao().save(sqCe);
+		}
 
-                if (hash.equals(aboutCQL.getHash())){
-                    logger.debug("Will not save query. Same as existing query");
-                    break loop;
-                }
-            }
+		return sqCe.getId();
+	}
 
-            aboutCQL.setHash(hash);
-            aboutCQL.setXml(this.cqlQueryXML);
-            cqlQueryDao.save(aboutCQL);
+	public GridServiceEndPointCatalogEntryDao getGridServiceEndPointCatalogEntryDao() {
+		return gridServiceEndPointCatalogEntryDao;
+	}
 
-            ((SharedQueryCatalogEntry) getUserModel().getCurrentCatalogEntry()).setAbout(aboutCQL);
-        }
-        return super.save();
-    }
+	public void setGridServiceEndPointCatalogEntryDao(
+			GridServiceEndPointCatalogEntryDao gridServiceEndPointCatalogEntryDao) {
+		this.gridServiceEndPointCatalogEntryDao = gridServiceEndPointCatalogEntryDao;
+	}
 
-    public CQLQueryDao getCqlQueryDao() {
-        return cqlQueryDao;
-    }
+	public SharedQueryCatalogEntryDao getSharedQueryCatalogEntryDao() {
+		return sharedQueryCatalogEntryDao;
+	}
 
-    public void setCqlQueryDao(CQLQueryDao cqlQueryDao) {
-        this.cqlQueryDao = cqlQueryDao;
-    }
+	public void setSharedQueryCatalogEntryDao(
+			SharedQueryCatalogEntryDao sharedQueryCatalogEntryDao) {
+		this.sharedQueryCatalogEntryDao = sharedQueryCatalogEntryDao;
+	}
 
-    public GridServiceEndPointCatalogEntryDao getGridServiceEndPointCatalogEntryDao() {
-        return gridServiceEndPointCatalogEntryDao;
-    }
+	public QueryDao getQueryDao() {
+		return queryDao;
+	}
 
-    public void setGridServiceEndPointCatalogEntryDao(GridServiceEndPointCatalogEntryDao gridServiceEndPointCatalogEntryDao) {
-        this.gridServiceEndPointCatalogEntryDao = gridServiceEndPointCatalogEntryDao;
-    }
+	public void setQueryDao(QueryDao queryDao) {
+		this.queryDao = queryDao;
+	}
 
-    public SchemaValidator getCqlXMLSchemaValidator() {
-        return cqlXMLSchemaValidator;
-    }
-
-    public void setCqlXMLSchemaValidator(SchemaValidator cqlXMLSchemaValidator) {
-        this.cqlXMLSchemaValidator = cqlXMLSchemaValidator;
-    }
 }

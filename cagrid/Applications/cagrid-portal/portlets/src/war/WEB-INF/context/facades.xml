@@ -204,7 +204,8 @@
 
     <bean id="queryExecutionManager"
     	class="gov.nih.nci.cagrid.portal.portlet.browse.sharedQuery.QueryExecutionManager"
-        p:cqlQueryService-ref="cqlQueryService"
+    	p:resultsView="/WEB-INF/jsp/browse/sharedQuery/query_results_display.jsp" 
+    	p:errorView="/WEB-INF/jsp/browse/sharedQuery/query_error_display.jsp"
     	autowire="byName"/>
 
     <bean id="terminologyService" class="gov.nih.nci.cagrid.portal.portlet.terms.TerminologyService" autowire="byName">
