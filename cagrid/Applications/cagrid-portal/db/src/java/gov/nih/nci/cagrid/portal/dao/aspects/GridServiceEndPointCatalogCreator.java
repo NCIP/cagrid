@@ -29,8 +29,8 @@ public class GridServiceEndPointCatalogCreator {
     @AfterReturning("execution(* gov.nih.nci.cagrid.portal.dao.GridServiceDao.save*(gov.nih.nci.cagrid.portal.domain.GridService))  && args(service)")
     public void onSave(GridService service) {
 
-        logger.debug("A service is being saved. Will create catalog");
-        gridServiceEndPointCatalogEntryDao.createCatalogAbout(service);
+//        logger.debug("A service is being saved. Will create catalog");
+//        gridServiceEndPointCatalogEntryDao.createCatalogAbout(service);
     }
 
     public GridServiceDao getGridServiceDao() {

@@ -5,6 +5,7 @@ import gov.nih.nci.cagrid.portal.domain.Participant;
 import gov.nih.nci.cagrid.portal.domain.catalog.InstitutionCatalogEntry;
 
 import java.net.MalformedURLException;
+import java.util.List;
 
 /**
  * User: kherm
@@ -58,6 +59,10 @@ public class InstitutionCatalogEntryDao extends AboutCatalogEntryDao<Institution
         save(entry);
         return entry;
     }
+
+	public List<InstitutionCatalogEntry> searchByName(String name) {
+		return getHibernateTemplate().find("from InstitutionCatalogEntry where name = ?", name);
+	}
 
 
 }

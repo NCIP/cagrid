@@ -246,7 +246,7 @@ public class CatalogEntry extends AbstractDomainObject implements Commentable, M
         this.favoriteOfRole = favoriteOfRole;
     }
 
-    @OneToMany(mappedBy = "catalogEntry")
+    @OneToMany(mappedBy = "catalogEntry", cascade = CascadeType.ALL)
     public List<CatalogEntryRoleInstance> getRoles() {
         return roles;
     }

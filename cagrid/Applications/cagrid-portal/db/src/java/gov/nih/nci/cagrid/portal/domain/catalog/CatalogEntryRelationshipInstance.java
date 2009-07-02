@@ -7,6 +7,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -69,7 +70,7 @@ public class CatalogEntryRelationshipInstance extends AbstractDomainObject imple
     }
 
 
-    @OneToOne
+    @OneToOne (cascade=CascadeType.ALL)
     @JoinColumn(name = "catalog_instance_roleA")
     public CatalogEntryRoleInstance getRoleA() {
         return roleA;
@@ -79,7 +80,7 @@ public class CatalogEntryRelationshipInstance extends AbstractDomainObject imple
         this.roleA = roleA;
     }
 
-    @OneToOne
+    @OneToOne  (cascade=CascadeType.ALL)
     @JoinColumn(name = "catalog_instance_roleB")
     public CatalogEntryRoleInstance getRoleB() {
         return roleB;

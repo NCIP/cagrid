@@ -5,12 +5,16 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "cat_relationship_type")
+@Table(name = "cat_relationship_type", 
+		uniqueConstraints = 
+			@UniqueConstraint(columnNames = 
+				{"name"}))
 @GenericGenerator(name = "id-generator", strategy = "native",
  parameters = {
         @Parameter(name="sequence", value="seq_cat_relationship_type")

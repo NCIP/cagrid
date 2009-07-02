@@ -10,6 +10,8 @@ import java.util.List;
 @DiscriminatorValue("tool")
 
 public class ToolCatalogEntry extends CatalogEntry {
+	
+	private String version;
 
     public List<SharedQueryToolsRelationship> sharedQueryRelationships = new ArrayList<SharedQueryToolsRelationship>();
 
@@ -33,4 +35,12 @@ public class ToolCatalogEntry extends CatalogEntry {
     public void setApplications(List<ToolApplications> applications) {
         this.applications = applications;
     }
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
 }
