@@ -56,7 +56,7 @@ public class CatalogEntryRoleInstance extends AbstractDomainObject implements Co
         this.type = type;
     }
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name="relationship_fk")
     public CatalogEntryRelationshipInstance getRelationship() {
         return relationship;

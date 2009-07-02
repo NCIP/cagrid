@@ -14,6 +14,7 @@
     <import resource="applicationContext-db.xml"/>
 
     <!--will filter out archived Statues-->
+
     <bean id="filterActivator" class="gov.nih.nci.cagrid.portal.dao.aspects.ActivateFilterAspect"
           parent="daoTemplate">
         <property name="filterName" ref="archivedStatus"/>
@@ -29,7 +30,7 @@
     <bean id="gridServiceEndPointCatalogAspect"
           class="gov.nih.nci.cagrid.portal.dao.aspects.GridServiceEndPointCatalogCreator"
           autowire="byName"/>
-
+ 
     <bean id="institutionCatalogCreator"
           class="gov.nih.nci.cagrid.portal.dao.aspects.InstitutionCatalogCreator"
           autowire="byName"/>
@@ -39,5 +40,9 @@
           class="gov.nih.nci.cagrid.portal.dao.aspects.PersonCatalogCreator"
           autowire="byName"/>
 
+
+ 	<bean id="serviceMetadataCatalogEntryBuilderAspect" 
+ 		class="gov.nih.nci.cagrid.portal.dao.aspects.ServiceMetadataCatalogEntryBuilderAspect" 
+ 		autowire="byName"/>
 
 </beans>

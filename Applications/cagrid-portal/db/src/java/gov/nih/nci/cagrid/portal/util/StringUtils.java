@@ -32,6 +32,10 @@ public class StringUtils {
         String _longStr = getEmptyIfNull(longStr);
         return _longStr.length() > maxLength ? _longStr.substring(0, maxLength - 2) + ".." : _longStr;
     }
+    
+    public static boolean isEmpty(String s){
+    	return s == null || s.trim().length() == 0;
+    }
 }
 
 

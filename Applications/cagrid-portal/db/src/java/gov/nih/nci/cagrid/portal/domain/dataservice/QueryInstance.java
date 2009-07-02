@@ -5,6 +5,7 @@ package gov.nih.nci.cagrid.portal.domain.dataservice;
 
 import gov.nih.nci.cagrid.portal.domain.AbstractDomainObject;
 import gov.nih.nci.cagrid.portal.domain.PortalUser;
+import gov.nih.nci.cagrid.portal.domain.table.QueryResultTable;
 
 import java.util.Date;
 
@@ -34,6 +35,7 @@ public abstract class QueryInstance extends AbstractDomainObject {
 	private Date createTime = new Date();
 	private Date startTime;
 	private Date finishTime;
+	private QueryResultTable queryResultTable;
 	
 	/**
 	 * 
@@ -117,5 +119,14 @@ public abstract class QueryInstance extends AbstractDomainObject {
 	@Transient
 	public abstract String getType();
 	public abstract void setType(String type);
+
+	@OneToOne(mappedBy="queryInstance")
+	public QueryResultTable getQueryResultTable() {
+		return queryResultTable;
+	}
+
+	public void setQueryResultTable(QueryResultTable queryResultTable) {
+		this.queryResultTable = queryResultTable;
+	}
 
 }
