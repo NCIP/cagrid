@@ -40,7 +40,7 @@
 
     function pageCallback(type, args) {
         $("${ns}catalogs").innerHTML = '';
-
+        YAHOO.log("Received results");
         var resultList = args[0];
         for (var i = 0, len = resultList.length; i < len; ++i) {
             var result = resultList[i];
@@ -58,7 +58,7 @@
 			iconLnk.setAttribute('name', 'Details');
 			iconLnk.className = "oneResultIcon";
 			var icon = document.createElement('img');
-			icon.setAttribute('src', '<c:url value="/images/person_placeholder_50px.png"/>');
+			icon.setAttribute('src', '<c:url value="/images/catalog_icons/"/>' + result.catalog_type + '.png');
 			icon.setAttribute('alt', '');
 			iconLnk.appendChild(icon);    
 			resultDiv.appendChild(iconLnk);
@@ -93,11 +93,12 @@
         <div class="searchBox">
             <div class="L-endcap"></div>
             <input class="search" id="${ns}keyword" type="text" size="20" value="Search" style="color:#afafaf;" onkeypress="return checkEnter($('${ns}keyword').value, event);"/>
-            <div class="R-endcap"></div>
+            <%--<div class="R-endcap"></div>--%>
         </div>
+           <%@ include file="/WEB-INF/jsp/browse/sort.jspf" %>
         <div>
             <div id="${ns}tree" class="tree-container"></div>
-            <div style="height:100%;width:60%;float:right;">
+            <div style="height:100%;width:40%;float:right;">
             	<div id="${ns}catalogs"></div>
 				<div class="yui-skin-sam">
 					<div id="${ns}paginatorDiv" class="pagination">
@@ -152,7 +153,9 @@ function search(keyword) {
             catalogType: "${catalogType}",
             paginatorDiv: "${ns}paginatorDiv",
             treeDiv: "${ns}tree",
-            rowsPerPage: 10
+            rowsPerPage: 5,
+            sortField:$("${ns}sortList").value
+
         });
         resultEvent.subscribe(pageCallback);
 }

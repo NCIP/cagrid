@@ -1,0 +1,13 @@
+<div style="float:right;width:120px;">
+    Sort By:
+    <select id="${ns}sortList" title="Sort By" onchange="${ns}sortResults();">
+        <option value="catalogName">Name</option>
+        <option value="updatedAt">Update Date</option>
+    </select>
+</div>
+
+<script type="text/javascript">
+    function ${ns}sortResults() {
+      sortEvent.fire($("${ns}sortList"));
+    }
+</script>

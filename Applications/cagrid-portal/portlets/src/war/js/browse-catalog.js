@@ -1,3 +1,7 @@
+var resultEvent = new YAHOO.util.CustomEvent({type:"resultEvent",signature:"YAHOO.util.CustomEvent.FLAT"});
+var treeEvent = new YAHOO.util.CustomEvent({type:"treeEvent",signature:"YAHOO.util.CustomEvent.FLAT"});
+var sortEvent = new YAHOO.util.CustomEvent({type:"sortEvent",signature:"YAHOO.util.CustomEvent.FLAT"});
+
 
 
 <!--extend array to find by object.initLabel property-->
@@ -10,6 +14,11 @@
         }
         return null;
     };
+
+  Array.prototype.clear=function()
+  {
+      this.length = 0;
+  };
 
 
    Array.prototype.find = function(searchStr) {
@@ -41,6 +50,7 @@
             this.params[this.params.length] = "rows=" + this.rows;
             this.params[this.params.length] = "start=" + this.start;
             this.params[this.params.length] = "q=" + searchTerm;
+            this.params[this.params.length] = "tree=on";
         },
         addParam: function(param) {
             this.params.push(param);
@@ -65,7 +75,7 @@
         },
 
         setRows: function(rows){
-             this.removeParam("rows="+this.rows);
+            this.removeParam("rows="+this.rows);
             this.rows=rows;
             this.addParam("rows="+ this.rows);
         },
@@ -76,52 +86,20 @@
             YAHOO.log("Moved to specified start value " + startValue);
         },
 
+
         getQuery: function() {
             return this.params.join('&');
+        },
+
+        sort: function(sortParam){
+            this.removeParam("sort="+this.sortParam);
+            this.sortParam=sortParam;
+            this.addParam("sort="+ this.sortParam);
         }
+
     });
 
-    <!--represents a catalog item-->
-    var SearchTreeNode = Class.create({
-        initialize: function(initLabel) {
-            this.initLabel = initLabel;
-            this.type=initLabel;
-            this.count = 1;
-            this.updateLabel();
-        },
-        updateLabel: function() {
-            this.label = this.initLabel + " (" + this.count + ")";
-        },
-        addCount: function() {
-            this.count++;
-            this.updateLabel();
-        }
-    });
-    <!--represents search results. Will build a search tree as results are added-->
-    var SearchResults = Class.create({
-        initialize: function() {
-            this.searchTree = new Array();
-        },
-        add: function(result) {
-            var typeLabel = result.catalog_type;
-            var categoryNode = this.searchTree.findByLabel(typeLabel);
-
-            if (null == categoryNode) {
-                this.searchTree.push(new SearchTreeNode(typeLabel));
-            }
-            <!--else update the count-->
-            else {
-                categoryNode.addCount();
-            }
-
-        },
-        <!--will add tree nodes to the supplied tree.-->
-        addNodesToTree: function(rootNode) {
-            for (var i = 0; i < this.searchTree.length; i++) {
-                new YAHOO.widget.TextNode(this.searchTree[i], rootNode);
-            }
-        }
-    });
+   
 
 
 
