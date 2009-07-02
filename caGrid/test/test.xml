@@ -16,8 +16,6 @@
 	<!--        - The presence of this property causes the build to fail as      -->
 	<!--          soon as test fails.                                            -->
 	<!-- ======================================================================= -->
-	<import file="test-dart.xml" />
-
 	<property name="test.logs.dir" value="${test.dir}/logs" />
 	<property name="junit.results.dir" value="${test.logs.dir}/junit" />
 	<property name="run.tests.in.parallel" value="true" />
@@ -43,7 +41,7 @@
 	<!-- ============================================================================ -->
 	<!-- Calls unit test for each project and aggregates the log resutls   -->
 	<!-- ============================================================================ -->
-	<target name="test" depends="prepare,set-test-defaults,createDartTestFiles" description="Completely tests all the projects' unit tests, generating a report.">
+	<target name="test" depends="prepare,set-test-defaults" description="Completely tests all the projects' unit tests, generating a report.">
 		<!-- Clean out old logs first -->
 		<delete failonerror="false">
 			<fileset dir="${junit.results.dir}">
