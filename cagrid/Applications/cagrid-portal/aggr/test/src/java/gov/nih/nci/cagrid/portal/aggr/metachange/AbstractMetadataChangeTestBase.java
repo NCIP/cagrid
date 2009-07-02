@@ -24,127 +24,135 @@ import java.io.FileReader;
 import java.util.List;
 
 public abstract class AbstractMetadataChangeTestBase {
-    private GridServiceDao gridServiceDao;
-    private TestMetadataListener metadataListener;
-    private MetadataChangeListener changeListener;
-    private CQLQueryDao cqlQueryDao;
-    private CQLQueryInstanceDao cqlQueryInstanceDao;
-    private SharedCQLQueryDao sharedCqlQueryDao;
+	private GridServiceDao gridServiceDao;
+	private TestMetadataListener metadataListener;
+	private TestMetadataListener changeListener;
+	private CQLQueryDao cqlQueryDao;
+	private CQLQueryInstanceDao cqlQueryInstanceDao;
+	private SharedCQLQueryDao sharedCqlQueryDao;
 
-    public AbstractMetadataChangeTestBase() {
-    }
+	public AbstractMetadataChangeTestBase() {
+	}
 
-    @Before
-    public void setUp() throws Exception {
-        TestDB.create();
-        HibernateTemplate templ = (HibernateTemplate) TestDB
-                .getApplicationContext().getBean("hibernateTemplate");
-
-        DomainModelBuilder domainModelBuilder = new DomainModelBuilder();
-        domainModelBuilder.setHibernateTemplate(templ);
-        domainModelBuilder.setPersist(true);
-
-        ServiceMetadataBuilder serviceMetadataBuilder = new ServiceMetadataBuilder();
-        serviceMetadataBuilder.setHibernateTemplate(templ);
-        serviceMetadataBuilder.setPersist(true);
-
-        metadataListener = new TestMetadataListener();
-
-        gridServiceDao = (GridServiceDao) TestDB
-                .getApplicationContext().getBean("gridServiceDao");
-        cqlQueryDao = (CQLQueryDao) TestDB.getApplicationContext()
-                .getBean("cqlQueryDao");
-        cqlQueryInstanceDao = (CQLQueryInstanceDao) TestDB
-                .getApplicationContext().getBean("cqlQueryInstanceDao");
-        sharedCqlQueryDao = (SharedCQLQueryDao) TestDB
-                .getApplicationContext().getBean("sharedCqlQueryDao");
-
-        changeListener = new TestMetadataListener();
-        changeListener.setCqlQueryInstanceDao(cqlQueryInstanceDao);
-        changeListener.setGridServiceDao(gridServiceDao);
-        changeListener.setSharedCqlQueryDao(sharedCqlQueryDao);
-
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        TestDB.drop();
-    }
-
-    protected void verify(GridDataService dataService,
-                          SharedCQLQueryDao sharedCqlQueryDao,
-                          CQLQueryInstanceDao cqlQueryInstanceDao, String targetClassName) {
-        List<SharedCQLQuery> sharedCqlQueries = sharedCqlQueryDao
-                .getByDataService(dataService);
-        assertTrue("expected to find one shared query for this service, found "
-                + sharedCqlQueries.size(), sharedCqlQueries.size() == 1);
-        SharedCQLQuery sharedCqlQuery2 = sharedCqlQueries.get(0);
-        assertNotNull("shared query has no target class", sharedCqlQuery2
-                .getTargetClass());
-        assertNotNull("shared query has no target service", sharedCqlQuery2
-                .getTargetService());
-        assertEquals("exected to find gene as target class", targetClassName,
-                sharedCqlQuery2.getTargetClass().getPackageName() + "."
-                        + sharedCqlQuery2.getTargetClass().getClassName());
-
-        List<CQLQueryInstance> cqlQueryInstances = cqlQueryInstanceDao
-                .getByDataService(dataService);
-        assertTrue("expected to find one cql query instance", cqlQueryInstances
-                .size() == 1);
-    }
-
-    String loadCQL(String fileName) throws Exception {
-        StringBuilder sb = new StringBuilder();
-        BufferedReader r = new BufferedReader(new FileReader(fileName));
-        String line = null;
-        while ((line = r.readLine()) != null) {
-            sb.append(line);
-        }
-        return sb.toString();
-    }
-
-    protected static class TestMetadataListener extends MetadataChangeListener {
-
-        public void onApplicationEvent(ApplicationEvent event) {
-
-        }
-
-        public void loadMetadata(GridDataService service, Metadata meta)
-                throws Exception {
-            setMetadata(service, meta);
-        }
-
-        @Override
-        public ApplicationContext getApplicationContext() {
-            return new ClassPathXmlApplicationContext(
-                    new String[]{"applicationContext-db.xml", "applicationContext-aggr.xml"
-                    });
-//            return TestDB.getApplicationContext();
-        }
-    }
+	protected String[] getConfigLocations() {
+		return new String[] { "applicationContext-db.xml",
+				"applicationContext-aggr.xml" };
+	}
 
 
-    public GridServiceDao getGridServiceDao() {
-        return gridServiceDao;
-    }
+	@Before
+	public void setUp() throws Exception {
+		TestDB.create();
+		HibernateTemplate templ = (HibernateTemplate) TestDB
+				.getApplicationContext().getBean("hibernateTemplate");
 
-    public CQLQueryDao getCqlQueryDao() {
-        return cqlQueryDao;
-    }
+		DomainModelBuilder domainModelBuilder = new DomainModelBuilder();
+		domainModelBuilder.setHibernateTemplate(templ);
+		domainModelBuilder.setPersist(true);
 
-    public CQLQueryInstanceDao getCqlQueryInstanceDao() {
-        return cqlQueryInstanceDao;
-    }
+		ServiceMetadataBuilder serviceMetadataBuilder = new ServiceMetadataBuilder();
+		serviceMetadataBuilder.setHibernateTemplate(templ);
+		serviceMetadataBuilder.setPersist(true);
 
-    public SharedCQLQueryDao getSharedCqlQueryDao() {
-        return sharedCqlQueryDao;
-    }
+		metadataListener = new TestMetadataListener(getConfigLocations());
 
-    public MetadataChangeListener getChangeListener() {
-        return changeListener;
-    }
+		gridServiceDao = (GridServiceDao) TestDB.getApplicationContext()
+				.getBean("gridServiceDao");
+		cqlQueryDao = (CQLQueryDao) TestDB.getApplicationContext().getBean(
+				"cqlQueryDao");
+		cqlQueryInstanceDao = (CQLQueryInstanceDao) TestDB
+				.getApplicationContext().getBean("cqlQueryInstanceDao");
+		sharedCqlQueryDao = (SharedCQLQueryDao) TestDB.getApplicationContext()
+				.getBean("sharedCqlQueryDao");
 
-    public TestMetadataListener getMetadataListener() {
-        return metadataListener;
-    }
+		changeListener = new TestMetadataListener(getConfigLocations());
+		changeListener.setCqlQueryInstanceDao(cqlQueryInstanceDao);
+		changeListener.setGridServiceDao(gridServiceDao);
+		changeListener.setSharedCqlQueryDao(sharedCqlQueryDao);
+
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		TestDB.drop();
+	}
+
+	protected void verify(GridDataService dataService,
+			SharedCQLQueryDao sharedCqlQueryDao,
+			CQLQueryInstanceDao cqlQueryInstanceDao, String targetClassName) {
+		List<SharedCQLQuery> sharedCqlQueries = sharedCqlQueryDao
+				.getByDataService(dataService);
+		assertTrue("expected to find one shared query for this service, found "
+				+ sharedCqlQueries.size(), sharedCqlQueries.size() == 1);
+		SharedCQLQuery sharedCqlQuery2 = sharedCqlQueries.get(0);
+		assertNotNull("shared query has no target class", sharedCqlQuery2
+				.getTargetClass());
+		assertNotNull("shared query has no target service", sharedCqlQuery2
+				.getTargetService());
+		assertEquals("exected to find gene as target class", targetClassName,
+				sharedCqlQuery2.getTargetClass().getPackageName() + "."
+						+ sharedCqlQuery2.getTargetClass().getClassName());
+
+		List<CQLQueryInstance> cqlQueryInstances = cqlQueryInstanceDao
+				.getByDataService(dataService);
+		assertTrue("expected to find one cql query instance", cqlQueryInstances
+				.size() == 1);
+	}
+
+	String loadCQL(String fileName) throws Exception {
+		StringBuilder sb = new StringBuilder();
+		BufferedReader r = new BufferedReader(new FileReader(fileName));
+		String line = null;
+		while ((line = r.readLine()) != null) {
+			sb.append(line);
+		}
+		return sb.toString();
+	}
+
+	protected static class TestMetadataListener extends MetadataChangeListener {
+		
+		public String[] configLocations;
+		
+		TestMetadataListener(String[] configLocations){
+			this.configLocations = configLocations;
+		}
+
+		public void onApplicationEvent(ApplicationEvent event) {
+
+		}
+
+		public void loadMetadata(GridDataService service, Metadata meta)
+				throws Exception {
+			setMetadata(service, meta);
+		}
+
+		@Override
+		public ApplicationContext getApplicationContext() {
+			return new ClassPathXmlApplicationContext(this.configLocations);
+		}
+	}
+
+	public GridServiceDao getGridServiceDao() {
+		return gridServiceDao;
+	}
+
+	public CQLQueryDao getCqlQueryDao() {
+		return cqlQueryDao;
+	}
+
+	public CQLQueryInstanceDao getCqlQueryInstanceDao() {
+		return cqlQueryInstanceDao;
+	}
+
+	public SharedCQLQueryDao getSharedCqlQueryDao() {
+		return sharedCqlQueryDao;
+	}
+
+	public TestMetadataListener getChangeListener() {
+		return changeListener;
+	}
+
+	public TestMetadataListener getMetadataListener() {
+		return metadataListener;
+	}
 }

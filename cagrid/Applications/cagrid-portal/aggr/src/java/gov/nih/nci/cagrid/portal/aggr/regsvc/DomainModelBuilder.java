@@ -149,6 +149,7 @@ public class DomainModelBuilder extends ServiceMetadataBuilder {
 		if (classColl != null) {
 			gov.nih.nci.cagrid.metadata.dataservice.UMLClass[] umlClassIns = classColl
 					.getUMLClass();
+			
 			if (umlClassIns != null && umlClassIns.length > 0) {
 				pushPath("classes");
 				for (gov.nih.nci.cagrid.metadata.dataservice.UMLClass umlClassIn : umlClassIns) {
