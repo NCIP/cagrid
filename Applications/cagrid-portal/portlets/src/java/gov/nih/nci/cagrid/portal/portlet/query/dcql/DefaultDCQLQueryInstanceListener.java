@@ -3,12 +3,18 @@ package gov.nih.nci.cagrid.portal.portlet.query.dcql;
 import gov.nih.nci.cagrid.portal.dao.DCQLQueryInstanceDao;
 import gov.nih.nci.cagrid.portal.domain.dataservice.DCQLQueryInstance;
 import gov.nih.nci.cagrid.portal.domain.dataservice.QueryInstanceState;
+import gov.nih.nci.cagrid.portal.portlet.query.results.XMLQueryResultToQueryResultTableHandler;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import java.io.ByteArrayInputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Date;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 /**
  * User: kherm
@@ -59,6 +65,19 @@ public class DefaultDCQLQueryInstanceListener implements DCQLQueryInstanceListen
             instance.setState(QueryInstanceState.COMPLETE);
             getDcqlQueryInstanceDao().save(instance);
             instance.setResult(results);
+			try {
+				SAXParserFactory fact = SAXParserFactory.newInstance();
+				fact.setNamespaceAware(true);
+				SAXParser parser = fact.newSAXParser();
+				XMLQueryResultToQueryResultTableHandler handler = new XMLQueryResultToQueryResultTableHandler();
+				handler.getTable().setQueryInstance(instance);
+				parser.parse(new ByteArrayInputStream(instance.getResult().getBytes()), handler);
+			} catch (Exception ex) {
+				String msg = "Error storing results in table: "
+						+ ex.getMessage();
+				logger.error(msg, ex);
+				throw new RuntimeException(msg, ex);
+			}
         }
     }
 

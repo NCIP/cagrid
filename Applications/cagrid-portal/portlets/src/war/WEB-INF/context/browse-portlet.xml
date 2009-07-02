@@ -41,14 +41,23 @@
    	</util:map>	
 	
 	<util:map id="entryTypeViewMap">
+		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.CommunityCatalogEntry" value="catalogEntryView"/>
+		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.DataSetCatalogEntry" value="catalogEntryView"/>
+		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.DesktopToolCatalogEntry" value="catalogEntryView"/>
+		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.GridServiceEndPointCatalogEntry" value="catalogEntryView"/>
+		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.GridServiceInterfaceCatalogEntry" value="catalogEntryView"/>
+		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.InformationModelCatalogEntry" value="catalogEntryView"/>
+		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.InstitutionCatalogEntry" value="catalogEntryView"/>
+		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.KnowledgeCenterCatalogEntry" value="catalogEntryView"/>
    		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.PersonCatalogEntry" value="personView"/>
-   		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.DataSetCatalogEntry" value="datasetView"/>
-   		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.CommunityCatalogEntry" value="communityView"/>
-   		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.ToolCatalogEntry" value="toolView"/>
-        <entry key="gov.nih.nci.cagrid.portal.domain.catalog.ToolDeploymentCatalogEntry" value="toolDeploymentView"/>
-        <entry key="gov.nih.nci.cagrid.portal.domain.catalog.GridServiceEndPointCatalogEntry" value="gridServiceEndpointView"/>
-        <entry key="gov.nih.nci.cagrid.portal.domain.catalog.SharedQueryCatalogEntry" value="sharedQueryView"/>
-        
+   		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.PortletCatalogEntry" value="catalogEntryView"/>
+   		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.SharedQueryCatalogEntry" value="sharedQueryView"/>
+		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.TerminologyCatalogEntry" value="catalogEntryView"/>   		
+   		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.ToolCatalogEntry" value="catalogEntryView"/>
+   		<entry key="gov.nih.nci.cagrid.portal.domain.catalog.ToolDeploymentCatalogEntry" value="catalogEntryView"/>
+        <entry key="gov.nih.nci.cagrid.portal.domain.catalog.WorkflowCatalogEntry" value="catalogEntryView"/>
+        <entry key="gov.nih.nci.cagrid.portal.domain.catalog.WorkspaceCatalogEntry" value="catalogEntryView"/>
+
    	</util:map>
    	
 	

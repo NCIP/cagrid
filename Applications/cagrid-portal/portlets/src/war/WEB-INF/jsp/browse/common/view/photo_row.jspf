@@ -39,7 +39,10 @@ function ${ns}renderRatingForm(){
 
 
 function ${ns}renderAverageRating(){
-	document.getElementById("${ns}ratingForm").style.display = "none";
+	var ratingForm = document.getElementById("${ns}ratingForm");
+	if(ratingForm != null){
+		ratingForm.style.display = "none";
+	}
 	var f = function(avgRating){
 		if(avgRating == 0){
 			jQuery("#${ns}averageRating").html("No ratings yet.");
@@ -82,7 +85,8 @@ function ${ns}setRating(rating){
 
 jQuery(document).ready(function() {
 	${ns}renderAverageRating();
-		
+
+	<c:if test="${!empty portalUser}">		
 	var ratingButton = 
 		new YAHOO.widget.Button("${ns}ratingButton", 
 		{  
@@ -104,6 +108,7 @@ jQuery(document).ready(function() {
 	rateThisButton.subscribe("click", function(evt){
 		${ns}renderRatingForm();
 	});
+	</c:if>
 	
 });
 </script>

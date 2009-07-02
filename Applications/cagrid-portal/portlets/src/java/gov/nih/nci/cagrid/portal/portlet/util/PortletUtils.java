@@ -3,6 +3,9 @@
  */
 package gov.nih.nci.cagrid.portal.portlet.util;
 
+import gov.nih.nci.cagrid.common.Utils;
+import gov.nih.nci.cagrid.data.DataServiceConstants;
+import gov.nih.nci.cagrid.fqp.common.DCQLConstants;
 import gov.nih.nci.cagrid.portal.domain.PortalUser;
 import gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntry;
 import gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntryRelationshipInstance;
@@ -17,6 +20,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -264,5 +269,63 @@ public class PortletUtils {
 			throw new RuntimeException("Error creating resource: "
 					+ ex.getMessage(), ex);
 		}
+	}
+	
+	public static gov.nih.nci.cagrid.cqlquery.CQLQuery parseCQL(String queryXML){
+		try {
+			return  (gov.nih.nci.cagrid.cqlquery.CQLQuery)Utils.deserializeObject(new StringReader(queryXML), gov.nih.nci.cagrid.cqlquery.CQLQuery.class);
+		} catch (Exception ex) {
+			throw new RuntimeException("Error parsing CQL: " + ex.getMessage(), ex);
+		}
+        
+	}
+	public static String normalizeCQL(String queryXML){
+		StringWriter w = new StringWriter();
+        try {
+			Utils.serializeObject(parseCQL(queryXML), DataServiceConstants.CQL_QUERY_QNAME, w);
+		} catch (Exception ex) {
+			throw new RuntimeException("Error normalizing CQL: " + ex.getMessage(), ex);
+		}
+        return w.toString();
+	}
+	
+	public static gov.nih.nci.cagrid.dcql.DCQLQuery parseDCQL(String queryXML){
+		try {
+			return  (gov.nih.nci.cagrid.dcql.DCQLQuery)Utils.deserializeObject(new StringReader(queryXML), gov.nih.nci.cagrid.dcql.DCQLQuery.class);
+		} catch (Exception ex) {
+			throw new RuntimeException("Error parsing DCQL: " + ex.getMessage(), ex);
+		}
+        
+	}
+	public static String normalizeDCQL(String queryXML){
+		StringWriter w = new StringWriter();
+        try {
+			Utils.serializeObject(parseCQL(queryXML), DCQLConstants.DCQL_QUERY_QNAME, w);
+		} catch (Exception ex) {
+			throw new RuntimeException("Error normalizing DCQL: " + ex.getMessage(), ex);
+		}
+        return w.toString();
+	}
+
+	public static boolean isDCQL(String queryXML) {
+		boolean isDCQL = false;
+		try{
+			parseDCQL(queryXML);
+			isDCQL = true;
+		}catch(Exception ex){
+			
+		}
+		return isDCQL;
+	}
+	
+	public static boolean isCQL(String queryXML) {
+		boolean isCQL = false;
+		try{
+			parseCQL(queryXML);
+			isCQL = true;
+		}catch(Exception ex){
+			
+		}
+		return isCQL;
 	}
 }

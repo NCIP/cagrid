@@ -130,14 +130,14 @@ public class CatalogEntryViewBean {
 		// TODO: Enable handling of sub types of relationships
 		// if(role.getRelationship().getType().getName().equals(
 		// getPocRelationshipTypeName())){
-		if (role.getType().getName().indexOf("Contact") != -1) {
-			handle = true;
-			// Don't add to set of related items
-			if (pocRoleType == null) {
-				pocRoleType = new CatalogEntryRoleTypeViewBean(role.getType());
-			}
-			pocRoleType.addRoleInstance(role);
-		}
+//		if (role.getType().getName().indexOf("Contact") != -1) {
+//			handle = true;
+//			// Don't add to set of related items
+//			if (pocRoleType == null) {
+//				pocRoleType = new CatalogEntryRoleTypeViewBean(role.getType());
+//			}
+//			pocRoleType.addRoleInstance(role);
+//		}
 		return handle;
 	}
 

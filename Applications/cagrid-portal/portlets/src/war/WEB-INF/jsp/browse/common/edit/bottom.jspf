@@ -6,4 +6,4 @@
 </div>
 </div>
 		
-<%@ include file="/WEB-INF/jsp/browse/common_edit_bottom_script.jspf" %>
+<%@ include file="/WEB-INF/jsp/browse/common/edit/bottom_script.jspf" %>

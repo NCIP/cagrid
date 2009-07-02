@@ -39,6 +39,11 @@
           autowire="byName">
         <aop:scoped-proxy proxy-target-class="true"/>
     </bean>
+    
+    <bean id="queryService" class="gov.nih.nci.cagrid.portal.portlet.query.QueryService" scope="globalSession"
+          autowire="byName">
+        <aop:scoped-proxy proxy-target-class="true"/>
+    </bean>
 
 
     <bean id="cqlQueryInstanceExecutorPrototype"
@@ -338,6 +343,12 @@
           class="gov.nih.nci.cagrid.portal.portlet.query.shared.XMLSchemaValidatorFactory"  factory-method="initialize">
         <constructor-arg  type="java.lang.String" value="Distributed_CQL_schema_2.0.xsd"/>
     </bean>
+    
+    <bean id="queryResultColumnNameResolver" class="gov.nih.nci.cagrid.portal.portlet.query.results.QueryResultColumnNameResolver" autowire="byName"/>
+    
+    <bean id="xmlQueryResultToQueryResultTableHandlerPrototype" 
+    	class="gov.nih.nci.cagrid.portal.portlet.query.results.XMLQueryResultToQueryResultTableHandler" 
+    	autowire="byName" scope="prototype"/>
 
     	<!--
 	<util:list id="catlogEntryAnnotationTypes">

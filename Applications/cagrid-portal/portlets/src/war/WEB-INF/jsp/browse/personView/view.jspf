@@ -1,6 +1,6 @@
-<%@ include file="/WEB-INF/jsp/browse/common_view_edit_controls.jspf" %>
+<%@ include file="/WEB-INF/jsp/browse/common/view/edit_controls.jspf" %>
 		
-<%@ include file="/WEB-INF/jsp/browse/common_view_photo_row.jspf" %>
+<%@ include file="/WEB-INF/jsp/browse/common/view/photo_row.jspf" %>
 
 		<div class="contactInfoRow">
 			<c:if test="${catalogEntry.phoneNumberPublic}">
@@ -22,6 +22,6 @@
 			</c:if>
 		</div>
 		
-<%@ include file="/WEB-INF/jsp/browse/common_view_terms.jspf" %>
+<%@ include file="/WEB-INF/jsp/browse/common/view/terms.jspf" %>
 		
 <%@ include file="/WEB-INF/jsp/browse/relatedItemsAndOtherInfo.jspf" %>
