@@ -27,7 +27,7 @@
     <dependencies>
         <dependency rev="latest.integration" org="caGrid" name="portal-security" conf="authn->runtime"/>
         <dependency rev="latest.integration" org="caGrid" name="portal-db" conf="ext->domain;authn->dao;default;test"/>
-        <dependency rev="latest.integration" org="caGrid" name="portal-search" conf="search->*"/>
+        <dependency rev="latest.integration" org="caGrid" name="portal-portal-search" conf="search->*"/>
 
         <dependency rev="${target.grid}" org="caGrid" name="target_grid" conf="default->trust"/>
         <dependency rev="${cagrid.integration.version}" org="caGrid" name="websso-client-acegi" conf="authn->default"
@@ -45,7 +45,7 @@
         <dependency rev="5.1.6+" org="mysql" name="mysql-connector-java" conf="ext->*"/>
         <dependency rev="2.3+" org="sun" name="servlet" conf="default"/>
         <dependency rev="2.5.5" org="springframework" name="spring" conf="authn->full"/>
-        
+
         <dependency rev="3.4.GA" org="javassist" name="javassist" conf="ext-tomcat->*"/>
         <dependency rev="1.0.1B" org="sun" name="jta" conf="ext-tomcat->*"/>
         <dependency rev="1.4.1" org="javax.mail" name="mail" conf="ext-tomcat->*"/>
