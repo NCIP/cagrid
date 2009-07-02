@@ -98,7 +98,7 @@
            <%@ include file="/WEB-INF/jsp/browse/sort.jspf" %>
         <div>
             <div id="${ns}tree" class="tree-container"></div>
-            <div style="height:100%;width:40%;float:right;">
+            <div style="height:100%;width:50%;padding:30px 10px 10px 10px;float:right;">
             	<div id="${ns}catalogs"></div>
 				<div class="yui-skin-sam">
 					<div id="${ns}paginatorDiv" class="pagination">
