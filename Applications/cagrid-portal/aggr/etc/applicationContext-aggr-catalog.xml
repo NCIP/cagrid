@@ -10,6 +10,7 @@
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
 	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
+
     <bean id="abstractCatalogCreator"
           abstract="true" class="gov.nih.nci.cagrid.portal.aggr.catalog.AbstractCatalogCreator"
           autowire="byName"/>
@@ -19,7 +20,7 @@
           p:gridServiceDao-ref="gridServiceDao"
           p:gridServiceEndPointCatalogEntryDao-ref="gridServiceEndPointCatalogEntryDao"
           autowire="byName"/>
-
+ 
     <bean id="institutionCatalogCreator" parent="abstractCatalogCreator"
           class="gov.nih.nci.cagrid.portal.aggr.catalog.InstitutionCatalogCreator"
           p:institutionCatalogEntryDao-ref="institutionCatalogEntryDao"
@@ -31,5 +32,8 @@
           p:personCatalogEntryDao-ref="personCatalogEntryDao"
           p:portalUserDao-ref="portalUserDao"
           autowire="byName"/>
+
+           
+    
 
 </beans>

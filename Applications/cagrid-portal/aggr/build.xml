@@ -148,7 +148,14 @@
 
     <target name="run-regsvc" depends="jar">
         <java classname="gov.nih.nci.cagrid.portal.util.RunRegSvc" classpathref="run.cp" fork="true"
+        	maxmemory="2048M"
                 />
+    </target>
+	
+	<target name="run-loadmeta" depends="jar">
+        <java classname="gov.nih.nci.cagrid.portal.util.LoadMetadata" classpathref="run.cp"
+        	maxmemory="2048M"
+              fork="true"/>
     </target>
 
     <target name="run-metachange" depends="jar">

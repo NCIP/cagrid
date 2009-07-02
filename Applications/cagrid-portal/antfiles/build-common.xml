@@ -89,7 +89,8 @@
             <entry key="cagrid.portal.notifications.mail.server" value="${cagrid.portal.notifications.mail.server}"/>
             <entry key="cagrid.portal.notifications.mail.address" value="${cagrid.portal.notifications.mail.address}"/>
             <entry key="cagrid.portal.autorun.db.updater" value="${autorun.db.updater}"/>
-            <entry key="cagrid.portal.solr.http.url" value="${cagrid.portal.solr.http.url}"/>
+        	<entry key="cagrid.portal.solr.http.url" value="${cagrid.portal.solr.http.url}"/>
+        	<entry key="cagrid.portal.autopopulate.relationship.types" value="${autopopulate.relationship.types}"/>
         </propertyfile>
     </target>
 
