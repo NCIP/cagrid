@@ -30,10 +30,11 @@
     function ${ns}getGSCatalogEntries(sQuery) {
 
         jQuery("#${ns}gridServiceSearchMsg").html("Searching <img src='<c:url value="/images/indicator.gif"/>'/>");
+        var xml = jQuery("#input-query").val();
         var results = new Array();
 
     ${managerFacadeName}.
-        getCatalogEntriesForPartialUrl(sQuery,
+        getAppropriateEndpointsForPartialUrl(xml, sQuery,
         {
             callback:function(entries) {
                 if (entries.length == 0) {

@@ -16,7 +16,7 @@
 	        	<!-- Related People -->
 	        	<c:if test="${!empty catalogEntryViewBean.relatedPersons}">
 		        	<div>
-			        	<h3><img src="#" alt="People Icon" /> Related People</h3>
+			        	<h3>Related People</h3>
 			        	
 			        	<c:set var="entryTypeLabel" value="Person"/>
 			        	<c:set var="relatedEntries" value="${catalogEntryViewBean.relatedPersons}"/>
@@ -28,7 +28,7 @@
 	        	<!-- Related Institutions -->
 	        	<c:if test="${!empty catalogEntryViewBean.relatedInstitutions}">
 		        	<div>
-			        	<h3><img src="#" alt="Institution Icon" /> Related Institutions</h3>
+			        	<h3>Related Institutions</h3>
 			        	
 			        	<c:set var="entryTypeLabel" value="Institution"/>
 			        	<c:set var="relatedEntries" value="${catalogEntryViewBean.relatedInstitutions}"/>
@@ -39,7 +39,7 @@
 	        	<!-- Related Communities -->
 	        	<c:if test="${!empty catalogEntryViewBean.relatedCommunities}">
 		        	<div>
-			        	<h3><img src="#" alt="Communities Icon" /> Related Communities</h3>
+			        	<h3>Related Communities</h3>
 			        	
 			        	<c:set var="entryTypeLabel" value="Community"/>
 			        	<c:set var="relatedEntries" value="${catalogEntryViewBean.relatedCommunities}"/>
@@ -50,7 +50,7 @@
 	        	<!-- Related Datasets -->
 	        	<c:if test="${!empty catalogEntryViewBean.relatedDataSets}">
 		        	<div>
-			        	<h3><img src="#" alt="Dataset Icon" /> Related Datasets</h3>
+			        	<h3>Related Datasets</h3>
 			        	
 			        	<c:set var="entryTypeLabel" value="Dataset"/>
 			        	<c:set var="relatedEntries" value="${catalogEntryViewBean.relatedDataSets}"/>
@@ -61,7 +61,7 @@
 	        	<!-- Related Tools -->
 	        	<c:if test="${!empty catalogEntryViewBean.relatedTools}">
 		        	<div>
-			        	<h3><img src="#" alt="Tool Icon" /> Related Tools</h3>
+			        	<h3>Related Tools</h3>
 			        	
 			        	<c:set var="entryTypeLabel" value="Tool"/>
 			        	<c:set var="relatedEntries" value="${catalogEntryViewBean.relatedTools}"/>
@@ -72,7 +72,7 @@
 	        	<!-- Related Tool Deployments -->
 	        	<c:if test="${!empty catalogEntryViewBean.relatedToolDeployments}">
 		        	<div>
-			        	<h3><img src="#" alt="Tool Deployment Icon" /> Related Tool Deployments</h3>
+			        	<h3>Related Tool Deployments</h3>
 			        	
 			        	<c:set var="entryTypeLabel" value="Tool Deployment"/>
 			        	<c:set var="relatedEntries" value="${catalogEntryViewBean.relatedToolDeployments}"/>

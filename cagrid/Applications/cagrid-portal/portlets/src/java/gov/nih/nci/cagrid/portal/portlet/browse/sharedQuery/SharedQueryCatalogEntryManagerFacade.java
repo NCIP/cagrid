@@ -22,6 +22,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.axis.utils.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -73,6 +74,39 @@ public class SharedQueryCatalogEntryManagerFacade extends
 		return result;
 	}
 
+	public List<GridServiceEndpointDescriptorBean> getAppropriateEndpointsForPartialUrl(String xml,
+			String partialUrl) {
+		List<GridServiceEndpointDescriptorBean> result = new ArrayList<GridServiceEndpointDescriptorBean>();
+		if (StringUtils.isEmpty(xml)) {
+			logger.debug("xml is null, ignoring request");
+		}else{
+			List<GridServiceEndPointCatalogEntry> endpointCes = null;
+			if (PortletUtils.isCQL(xml)) {
+				logger.debug("this is a CQL query");
+				String umlClassName = PortletUtils
+						.getTargetUMLClassName(xml);
+				logger.debug("UMLClass: " + umlClassName);
+				int idx = umlClassName.lastIndexOf(".");
+				String packageName = umlClassName.substring(0, idx);
+				String className = umlClassName.substring(idx + 1);
+				endpointCes = getGridServiceEndPointCatalogEntryDao()
+						.getByUmlClassNameAndPartialUrl(packageName, className,
+								partialUrl);
+			} else {
+				logger.debug("this is a DCQL query");
+				endpointCes = getGridServiceEndPointCatalogEntryDao()
+						.getByPartialUrl(partialUrl);
+			}
+			for (GridServiceEndPointCatalogEntry entry : endpointCes) {
+				GridServiceEndpointDescriptorBean descriptor = new GridServiceEndpointDescriptorBean(
+						String.valueOf(entry.getId()), String.valueOf(entry
+								.getAbout().getId()), entry.getAbout().getUrl());
+				result.add(descriptor);
+			}	
+		}
+		return result;
+	}
+
 	@Override
 	public String validate() {
 		String message = null;
@@ -120,7 +154,7 @@ public class SharedQueryCatalogEntryManagerFacade extends
 				aboutQuery = getQueryDao().getQueryByHash(hash);
 
 				if (aboutQuery == null) {
-					
+
 					logger.debug("Will create a new query");
 					if (PortletUtils.isCQL(queryXML)) {
 						aboutQuery = new CQLQuery();

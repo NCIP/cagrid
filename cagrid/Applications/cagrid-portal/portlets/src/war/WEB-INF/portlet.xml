@@ -2,7 +2,7 @@
 
 <portlet-app xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0" xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd">
 
-
+<!-- 
     <portlet>
         <description>Direct Login</description>
         <portlet-name>cagriddirectauthn</portlet-name>
@@ -169,7 +169,7 @@
         </portlet-preferences>
 
     </portlet>
-
+ 
     <portlet>
         <description>caGrid Status</description>
         <portlet-name>cagridstatus</portlet-name>
@@ -229,7 +229,7 @@
         </portlet-preferences>
     </portlet>
 
-
+-->
     <portlet>
         <description>caGrid Map Portlet</description>
         <portlet-name>cagridmap</portlet-name>
@@ -461,7 +461,7 @@
         </portlet-preferences>
     </portlet>
 
-
+<!-- 
     <portlet>
         <description>Content introducing the caGrid Portal</description>
         <portlet-name>WelcomeToCaGridPortal</portlet-name>
@@ -549,7 +549,7 @@
             </preference>
         </portlet-preferences>
     </portlet>
-    
+ -->
     <portlet>
         <description>High-level Navigation Portlet</description>
         <portlet-name>HighLevelNavigationPortlet</portlet-name>
@@ -665,7 +665,7 @@
             </preference>
         </portlet-preferences>
     </portlet>
-    
+
 	<portlet>
         <description>Browse Portlet</description>
         <portlet-name>BrowsePortlet</portlet-name>
@@ -727,7 +727,6 @@
         </portlet-info>
     </portlet>    
  -->
-    
     <portlet>
         <description>Content Portlet</description>
         <portlet-name>ContentPortlet</portlet-name>
@@ -756,7 +755,8 @@
             </preference>
         </portlet-preferences>
     </portlet>
-    
+
+
     <portlet>
         <description>Catalog Search Portlet</description>
         <portlet-name>CatalogSearchPortlet</portlet-name>

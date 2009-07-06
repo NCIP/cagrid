@@ -6,10 +6,12 @@
 		<portlet-name>BrowsePortlet</portlet-name>
 		<private-session-attributes>true</private-session-attributes>
 	</portlet>
+
 	<portlet>
 		<portlet-name>ContentPortlet</portlet-name>
 		<private-session-attributes>true</private-session-attributes>
 	</portlet>
+
 	<portlet>
 		<portlet-name>cagridquery</portlet-name>
 		<private-session-attributes>true</private-session-attributes>

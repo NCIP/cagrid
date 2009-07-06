@@ -1,7 +1,7 @@
 <div>
     <div class="row">
         <div class="label">
-            CQL Query:
+            CQL Query
         </div>
         <div class="value">
             <textarea id="input-query"   onblur="${ns}submitQuery();"

@@ -30,22 +30,15 @@ public class ContentViewController extends AbstractContentViewController {
 	public ModelAndView handleRenderRequest(RenderRequest request,
 			RenderResponse response) throws Exception {
 
-		String userId = (String) request.getPortletSession().getAttribute(
-				"CAGRIDPORTAL_ATTS_liferayUserId",
-				PortletSession.APPLICATION_SCOPE);
-		System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-		System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-		System.out.println("userId: " + userId);
-
 		String viewNameParam = getViewNameParam();
 		String viewNameDefault = getViewNameDefault();
-		logger.info("Looking for preference " + viewNameParam
+		logger.debug("Looking for preference " + viewNameParam
 				+ ", with default of '" + viewNameDefault + "'");
 		String viewName = viewNameDefault;
 		try {
 			viewName = request.getPreferences().getValue(viewNameParam,
 					viewNameDefault);
-			logger.info("Got preference " + viewNameParam + " = " + viewName);
+			logger.debug("Got preference " + viewNameParam + " = " + viewName);
 		} catch (Exception ex) {
 			logger.error("Error getting viewName from preferences: "
 					+ ex.getMessage() + ". Using default: " + viewNameDefault,

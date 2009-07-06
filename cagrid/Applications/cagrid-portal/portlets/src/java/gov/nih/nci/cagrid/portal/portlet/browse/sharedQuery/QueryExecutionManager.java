@@ -1,6 +1,7 @@
 package gov.nih.nci.cagrid.portal.portlet.browse.sharedQuery;
 
 import gov.nih.nci.cagrid.portal.dao.GridServiceDao;
+import gov.nih.nci.cagrid.portal.dao.QueryInstanceDao;
 import gov.nih.nci.cagrid.portal.domain.GridDataService;
 import gov.nih.nci.cagrid.portal.domain.GridService;
 import gov.nih.nci.cagrid.portal.domain.catalog.SharedQueryCatalogEntry;
@@ -8,15 +9,18 @@ import gov.nih.nci.cagrid.portal.domain.dataservice.CQLQuery;
 import gov.nih.nci.cagrid.portal.domain.dataservice.Query;
 import gov.nih.nci.cagrid.portal.domain.dataservice.QueryInstance;
 import gov.nih.nci.cagrid.portal.domain.dataservice.QueryInstanceState;
+import gov.nih.nci.cagrid.portal.domain.table.QueryResultTable;
 import gov.nih.nci.cagrid.portal.portlet.UserModel;
 import gov.nih.nci.cagrid.portal.portlet.browse.CatalogEntryManagerFacade;
 import gov.nih.nci.cagrid.portal.portlet.query.QueryService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -34,6 +38,7 @@ public class QueryExecutionManager extends CatalogEntryManagerFacade {
 	private GridServiceDao gridServiceDao;
 	private String resultsView;
 	private String errorView;
+	private QueryInstanceDao queryInstanceDao;
 
 	@Override
 	public String validate() {
@@ -168,6 +173,23 @@ public class QueryExecutionManager extends CatalogEntryManagerFacade {
 		return null;
 	}
 
+	public void deleteQueryInstance(Integer instanceId) {
+		try {
+			getQueryService().removeQueryInstance(instanceId);
+			QueryInstanceDao dao = getQueryInstanceDao();
+			HibernateTemplate templ = dao.getHibernateTemplate();
+			QueryInstance inst = getQueryInstanceDao().getById(instanceId);
+			QueryResultTable table = inst.getQueryResultTable();
+			templ.delete(table.getData());
+			templ.delete(table);
+			dao.delete(inst);
+		} catch (Exception ex) {
+			String msg = "Error deleting query instance: " + ex.getMessage();
+			logger.error(msg, ex);
+			throw new RuntimeException(msg, ex);
+		}
+	}
+
 	public GridServiceDao getGridServiceDao() {
 		return gridServiceDao;
 	}
@@ -214,5 +236,13 @@ public class QueryExecutionManager extends CatalogEntryManagerFacade {
 
 	public void setErrorView(String errorView) {
 		this.errorView = errorView;
+	}
+
+	public QueryInstanceDao getQueryInstanceDao() {
+		return queryInstanceDao;
+	}
+
+	public void setQueryInstanceDao(QueryInstanceDao queryInstanceDao) {
+		this.queryInstanceDao = queryInstanceDao;
 	}
 }

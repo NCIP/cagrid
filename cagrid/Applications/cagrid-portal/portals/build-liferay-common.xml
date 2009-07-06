@@ -126,9 +126,9 @@
         <get src="${liferay.war.download.url}" dest="${liferay.downloads.dir}/${liferay.war}"
              verbose="on"/>
     </target>
-    
+    <!--
     <target name="add-cagrid-category" depends="prepare">
-        <!-- Downloaded to tools/ant/resources/liferay-display_4_0_0.dtd -->
+         Downloaded to tools/ant/resources/liferay-display_4_0_0.dtd 
         <property name="config.file" value="${liferay.portal.war.dir}/WEB-INF/liferay-display.xml"/>
         <xmltask source="${config.file}" dest="${config.file}" preservetype="true">
             <xmlcatalog refid="portal.catalog"/>
@@ -162,6 +162,7 @@
             <entry key="category.cagrid" value="caGrid"/>
         </propertyfile>
     </target>
+	-->
     
     <target name="war-layouts">
         <mkdir dir="${build.dir}"/>
