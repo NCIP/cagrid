@@ -140,11 +140,6 @@ function checkEnter(keyword, e){ //e is event object passed from function invoca
 search(wildcard);
 
 function search(keyword) {
-	if ("${catalogType}") {
-            $("${ns}tree").style.visibility = "collapse";
-            $("${ns}catalogs").style.width = "100%";
-        }
-        
         if (keyword.length < 1) {
             keyword = wildcard;
         }

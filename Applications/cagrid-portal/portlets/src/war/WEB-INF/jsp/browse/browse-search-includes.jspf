@@ -38,7 +38,7 @@
                 catalog.config.filterType = node.data.type;
                 catalog.config.filterValue = node.data.name;
                 catalog.runQuery(false);
-
+                node.toggle();
             });
 
             treeEvent.subscribe(updateTreeWithResults, this);
@@ -67,10 +67,10 @@
         addSubTree: function(subTree) {
             var nodesList = subTree.nodes;
             if (subTree.nodes.length > 0) {
-                var categoryNode = new YAHOO.widget.MenuNode({label:subTree.label + " (All)",type:subTree.type,name:"[* TO *]"}, this.rootNode, true);
+                var subTreeNode = new YAHOO.widget.TextNode({label:subTree.label + " (All)",type:subTree.type,name:"[* TO *]"}, this.rootNode, true);
                 for (var i = 0; i < nodesList.length; i++) {
                     var node = nodesList[i];
-                    new YAHOO.widget.MenuNode({label:node.label + "(" + node.count + ")",type:subTree.type,name:node.name}, categoryNode, true);
+                    new YAHOO.widget.MenuNode({label:node.label + "(" + node.count + ")",type:subTree.type,name:node.name}, subTreeNode, true);
                 }
             }
         },
@@ -105,35 +105,44 @@
             });
             this.paginator.subscribe('changeRequest', this.handlePagination, this);
             this.query = new solrQuery(this.config.keyword, this.rowsPerPage);
-            sortEvent.subscribe(this.sort,this);
+            sortEvent.subscribe(this.sort, this);
+
+            if (this.config.catalogType) {
+                this.query.addFacet("catalog_type", this.config.catalogType);
+            }
+            new SummaryTree(this);
+
 
             this.runQuery(false);
 
         },
 
-        sort: function(type, args,catalog){
+        sort: function(type, args, catalog) {
             var sort = args[0];
-            catalog.config.sortField=sort.value;
+            catalog.config.sortField = sort.value;
             catalog.runQuery(false);
         },
 
         runQuery: function(paginate) {
-           
-            YAHOO.log("Will run a new query");
-            if (this.config.catalogType) {
-                this.query.addFacet("catalog_type", this.config.catalogType);
-            }
+
+            YAHOO.log("Will run a new query" + this.query.getQuery());
+
+
             if (this.config.filterType) {
                 this.query.addFacet(this.config.filterType, this.config.filterValue);
             }
+
+            if (this.config.catalogType) {
+                this.query.addFacet("catalog_type", this.config.catalogType);
+            }
+
             if (this.config.sortField) {
                 this.query.sort(this.config.sortField + "+asc");
             }
 
             if (!paginate) {
-                <%--not coming for paginator--%>
+            <%--not coming for paginator--%>
                 this.query.setStartValue(0);
-                new SummaryTree(this);
             }
 
             var searchCallback = function (oRequest, oParsedResponse, oPayload) {
