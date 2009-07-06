@@ -33,6 +33,7 @@
 	<bean id="contentViewController" parent="contentControllerTemplate"
 		class="gov.nih.nci.cagrid.portal.portlet.content.ContentViewController"/>
 
+<!-- 
     <bean id="catalogSearchController" class="gov.nih.nci.cagrid.portal.portlet.content.BrowseSearchController">
           <property name="redirectUrlPreferenceName" value="catalogSearchUrl"/>
           <property name="commandClass" value="gov.nih.nci.cagrid.portal.portlet.content.BrowseSearchCommand"/>
@@ -66,7 +67,7 @@
             </map>
         </property>
     </bean>
-    
+    -->
 	<bean id="portletModeHandlerMapping"
 		class="org.springframework.web.portlet.handler.PortletModeHandlerMapping">
 		<property name="portletModeMap">

@@ -31,7 +31,8 @@
                     callback:function(running) {
                         if(running==null){
                             jQuery("#${ns}resultsDiv").html("Running Query <img src='<c:url value="/images/indicator.gif"/>'/>");
-                            ${ns}loadResults();
+                            ${ns}showResultsTab();
+                            ${ns}loadResults(false);
                         }
 
                     },

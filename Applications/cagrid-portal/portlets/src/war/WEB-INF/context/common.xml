@@ -349,7 +349,13 @@
     <bean id="xmlQueryResultToQueryResultTableHandlerPrototype" 
     	class="gov.nih.nci.cagrid.portal.portlet.query.results.XMLQueryResultToQueryResultTableHandler" 
     	autowire="byName" scope="prototype"/>
+    	
+    <bean id="queryResultTableToJSONObjectBuilder" 
+    	class="gov.nih.nci.cagrid.portal.portlet.query.results.QueryResultTableToJSONObjectBuilder" autowire="byName"/>
 
+	<bean id="queryResultTableToHSSFWorkbookBuilder" 
+    	class="gov.nih.nci.cagrid.portal.portlet.query.results.QueryResultTableToHSSFWorkbookBuilder" autowire="byName"/>
+    	
     	<!--
 	<util:list id="catlogEntryAnnotationTypes">
 		<bean class="gov.nih.nci.cagrid.portal.portlet.terms.CatalogEntryAnnotationType">

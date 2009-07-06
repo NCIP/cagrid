@@ -29,6 +29,7 @@
     <!--
        - Location of the XML file that defines the root application context.
        - Applied by ContextLoaderServlet.
+                   /WEB-INF/context/query-portlet.xml
        -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
@@ -36,7 +37,6 @@
             classpath*:applicationContext-db-run.xml
             classpath*:applicationContext-*.xml
             /WEB-INF/context/common.xml
-            /WEB-INF/context/query-portlet.xml
             /WEB-INF/context/facades.xml
             /WEB-INF/context/dwr-applicationContext.xml
         </param-value>
@@ -100,6 +100,10 @@
             <param-name>disconnectedTime</param-name>
             <param-value>5000</param-value>
         </init-param>
+ 		<init-param>
+    		<param-name>allowScriptTagRemoting</param-name >
+    		<param-value>true </param-value>
+  		</init-param>
         <init-param>
             <param-name>classes</param-name>
             <param-value>

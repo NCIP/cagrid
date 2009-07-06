@@ -23,6 +23,12 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <bean name="/query_results.xml" class="gov.nih.nci.cagrid.portal.portlet.query.results.ExportXmlResultsController"
     	autowire="byName"/>
     	
+    <bean name="/query_results_table.xls" class="gov.nih.nci.cagrid.portal.portlet.query.results.ExportQueryResultTableToHSSFWorkbookController"
+    	autowire="byName"/>
+    	
+    <bean name="/query_results_table.xml" class="gov.nih.nci.cagrid.portal.portlet.query.results.ExportQueryResultTableToXMLController"
+    	autowire="byName"/>
+    	
     <bean name="/query_results.json" class="gov.nih.nci.cagrid.portal.portlet.query.results.ExportJSONResultsController"
     	autowire="byName"/>
     	

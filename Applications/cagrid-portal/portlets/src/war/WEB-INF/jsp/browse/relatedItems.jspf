@@ -52,7 +52,10 @@ if(permissionChecker.hasPermission(scopeGroupId, portletDisplay.getRootPortletId
 					</c:if>
 					<br/>
 			        </div>
-						[Asserted by 
+			        	
+						[Asserted by
+						<c:choose>
+						<c:when test="${!empty role.roleInstance.relationship.author}"> 
 						<portlet:renderURL var="viewAuthorUrl">
 							<portlet:param name="operation" value="viewDetails"/>
 							<portlet:param name="entryId" value="${role.roleInstance.relationship.author.catalog.id}"/>
@@ -60,6 +63,9 @@ if(permissionChecker.hasPermission(scopeGroupId, portletDisplay.getRootPortletId
 						<a href="<c:out value="${viewAuthorUrl}"/>">
 							<c:out value="${role.roleInstance.relationship.author.catalog.firstName}"/> <c:out value="${role.roleInstance.relationship.author.catalog.lastName}"/>
 						</a>
+						</c:when>
+						<c:otherwise>caGrid Portal</c:otherwise>
+						</c:choose>
 						on <fmt:formatDate value="${role.roleInstance.relationship.createdAt}" type="both"/>]
 					<p>		        
 						<c:if test="${!empty role.orderedComments}">

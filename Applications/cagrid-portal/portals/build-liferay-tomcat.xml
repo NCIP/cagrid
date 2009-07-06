@@ -230,8 +230,8 @@ com.liferay.portal.kernel.security.jaas.PortalLoginModule  required;
         <antcall target="tomcat:deploy-liferay-portal-war"/>
         <antcall target="move-endorsed-jars"/>
         <antcall target="deploy-all"/>
-        <antcall target="add-cagrid-category"/>
-        <antcall target="configure-liferay-messages"/>
+        <!-- antcall target="add-cagrid-category"/ -->
+        <!-- antcall target="configure-liferay-messages"/ -->
     </target>
 
      

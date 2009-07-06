@@ -4,9 +4,11 @@
 package gov.nih.nci.cagrid.portal.portlet.query;
 
 import gov.nih.nci.cagrid.portal.dao.GridServiceDao;
+import gov.nih.nci.cagrid.portal.dao.PortalUserDao;
 import gov.nih.nci.cagrid.portal.dao.QueryDao;
 import gov.nih.nci.cagrid.portal.dao.QueryInstanceDao;
 import gov.nih.nci.cagrid.portal.domain.GridDataService;
+import gov.nih.nci.cagrid.portal.domain.PortalUser;
 import gov.nih.nci.cagrid.portal.domain.dataservice.CQLQuery;
 import gov.nih.nci.cagrid.portal.domain.dataservice.CQLQueryInstance;
 import gov.nih.nci.cagrid.portal.domain.dataservice.DCQLQuery;
@@ -20,14 +22,13 @@ import gov.nih.nci.cagrid.portal.util.PortalUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.TreeMap;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -39,7 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public class QueryService implements ApplicationContextAware {
-	
+
 	private Map<Integer, QueryInstanceExecutor> executors = new HashMap<Integer, QueryInstanceExecutor>();
 	private ApplicationContext applicationContext;
 	private String cqlQueryExecutorBeanName = "cqlQueryInstanceExecutorPrototype";
@@ -48,6 +49,7 @@ public class QueryService implements ApplicationContextAware {
 	private QueryDao queryDao;
 	private QueryInstanceDao queryInstanceDao;
 	private GridServiceDao gridServiceDao;
+	private PortalUserDao portalUserDao;
 
 	public QueryInstance submitQuery(String queryXML, String serviceUrl) {
 		QueryInstance instance = null;
@@ -58,29 +60,53 @@ public class QueryService implements ApplicationContextAware {
 		}
 		return instance;
 	}
-	
-	public List<QueryInstance> getSubmittedQueries(){
-        SortedSet<QueryInstance> set = new TreeSet<QueryInstance>(new Comparator<QueryInstance>(){
-			public int compare(QueryInstance q1, QueryInstance q2) {
-				return q2.getCreateTime().compareTo(q1.getCreateTime());
+
+	public List<QueryInstance> getSubmittedQueries() {
+		List<QueryInstance> ordered = new ArrayList<QueryInstance>();
+
+		Set<QueryInstance> set = new HashSet<QueryInstance>();
+		TreeMap<Date, QueryInstance> map = new TreeMap<Date, QueryInstance>();
+		synchronized (executors) {
+			for (QueryInstanceExecutor executor : executors.values()) {
+				QueryInstance instance = executor.getQueryInstance();
+				set.add(instance);
 			}
-        });
-        synchronized (executors) {
-            for (QueryInstanceExecutor executor : executors.values()) {
-                set.add(executor.getQueryInstance());
-            }
-        }
-        return new ArrayList<QueryInstance>(set);
+		}
+		PortalUser portalUser = getUserModel().getPortalUser();
+		if (portalUser != null) {
+			portalUser = getPortalUserDao().getById(portalUser.getId());
+			for (QueryInstance instance : portalUser.getQueryInstances()) {
+				set.add(instance);
+			}
+		}
+		for(QueryInstance instance : set){
+			map.put(instance.getCreateTime(), instance);
+		}
+		for (QueryInstance instance : map.values()) {
+			ordered.add(instance);
+		}
+		Collections.reverse(ordered);
+
+		return ordered;
 	}
-	
-	public Query loadQuery(String queryXML){
+
+	public QueryInstance removeQueryInstance(Integer instanceId) {
+		QueryInstance instance = null;
+		QueryInstanceExecutor executor = executors.remove(instanceId);
+		if (executor != null) {
+			instance = executor.getQueryInstance();
+		}
+		return instance;
+	}
+
+	public Query loadQuery(String queryXML) {
 		return getQueryDao().getQueryByHash(PortalUtils.createHash(queryXML));
 	}
 
 	protected DCQLQueryInstance submitDCQLQuery(String queryXML,
 			String serviceUrl) {
 		DCQLQueryInstance instance = new DCQLQueryInstance();
-
+		instance.setCreateTime(new Date());
 		GridDataService dataService = (GridDataService) getGridServiceDao()
 				.getByUrl(serviceUrl);
 
@@ -111,7 +137,7 @@ public class QueryService implements ApplicationContextAware {
 
 	protected CQLQueryInstance submitCQLQuery(String queryXML, String serviceUrl) {
 		CQLQueryInstance instance = new CQLQueryInstance();
-
+		instance.setCreateTime(new Date());
 		GridDataService dataService = (GridDataService) getGridServiceDao()
 				.getByUrl(serviceUrl);
 		instance.setDataService(dataService);
@@ -200,6 +226,14 @@ public class QueryService implements ApplicationContextAware {
 
 	public void setQueryInstanceDao(QueryInstanceDao queryInstanceDao) {
 		this.queryInstanceDao = queryInstanceDao;
+	}
+
+	public PortalUserDao getPortalUserDao() {
+		return portalUserDao;
+	}
+
+	public void setPortalUserDao(PortalUserDao portalUserDao) {
+		this.portalUserDao = portalUserDao;
 	}
 
 }
