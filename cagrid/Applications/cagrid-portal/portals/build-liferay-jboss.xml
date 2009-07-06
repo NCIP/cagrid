@@ -351,8 +351,8 @@
         <antcall target="configure-jboss"/>
         <antcall target="jboss:deploy-liferay-portal-war"/>
         <antcall target="deploy-all"/>
-        <antcall target="add-cagrid-category"/>
-        <antcall target="configure-liferay-messages"/>
+        <!--<antcall target="add-cagrid-category"/>-->
+        <!--<antcall target="configure-liferay-messages"/>-->
     </target>
 
 
