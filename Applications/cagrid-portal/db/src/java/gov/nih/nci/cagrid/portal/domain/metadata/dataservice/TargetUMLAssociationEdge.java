@@ -3,6 +3,7 @@
  */
 package gov.nih.nci.cagrid.portal.domain.metadata.dataservice;
 
+import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
@@ -24,7 +25,7 @@ public class TargetUMLAssociationEdge extends UMLAssociationEdge {
 
     }
 
-    @OneToOne(mappedBy = "target", fetch = FetchType.LAZY, optional = true)
+    @OneToOne(mappedBy = "target", fetch = FetchType.LAZY, optional = true, cascade = CascadeType.ALL)
     public UMLAssociation getAssociation() {
         return association;
     }

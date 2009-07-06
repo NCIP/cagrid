@@ -8,7 +8,9 @@ import gov.nih.nci.cagrid.portal.domain.GridService;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 
 /**
@@ -23,8 +25,8 @@ public class ServiceMetadataCatalogEntryBuilderAspect {
 
 	private ServiceMetadataCatalogEntryBuilder serviceMetadataCatalogEntryBuilder;
 
-	@AfterReturning("execution(* gov.nih.nci.cagrid.portal.dao.GridServiceDao.save*(gov.nih.nci.cagrid.portal.domain.GridService))  && args(service)")
-	public void onSave(GridService service) {
+	@AfterReturning("execution(* gov.nih.nci.cagrid.portal.dao.GridServiceDao.save*(gov.nih.nci.cagrid.portal.domain.GridService)) && !within(gov.nih.nci.cagrid.portal.dao.catalog.ServiceMetadataCatalogEntryBuilder)  && args(service)")
+	public void onSave(GridService service) throws Throwable {
 		try {
 			getServiceMetadataCatalogEntryBuilder().build(service);
 		} catch (Exception ex) {

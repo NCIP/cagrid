@@ -8,6 +8,7 @@ import gov.nih.nci.cagrid.portal.domain.metadata.common.SemanticMetadata;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -69,7 +70,7 @@ public class SemanticMetadataMapping extends AbstractDomainObject {
 		this.objectIdentifier = objectIdentifier;
 	}
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "sem_meta_id")
 	public SemanticMetadata getSemanticMetadata() {
 		return semanticMetadata;

@@ -61,7 +61,7 @@ public class QueryResultTable extends AbstractDomainObject {
 		this.columns = columns;
 	}
 	
-	@OneToOne (fetch= FetchType.LAZY)
+	@OneToOne (fetch= FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "data_id")
 	public QueryResultData getData() {
 		return data;

@@ -31,20 +31,20 @@ import org.springframework.transaction.annotation.Transactional;
  * 
  */
 @Transactional
-public class LoadMetadata {
+public class LoadStaticMetadata {
 	
-	private static final Log logger = LogFactory.getLog(LoadMetadata.class);
+	private static final Log logger = LogFactory.getLog(LoadStaticMetadata.class);
 
 	public static void main(String[] args) throws Exception {
 
 		final String indexServiceUrl = "http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService";
-		String inDirPath = "out";
+		String inDirPath = "test/data/metadata";
 
 		ApplicationContext ctx = new FileSystemXmlApplicationContext(
 				new String[] { "../db/etc/applicationContext-db-aspects.xml",
 						"test/etc/applicationContext-aggr-util.xml",
 						"etc/applicationContext-aggr.xml" });
-		LoadMetadata l = (LoadMetadata) ctx.getBean("loadMetadataPrototype");
+		LoadStaticMetadata l = (LoadStaticMetadata) ctx.getBean("loadStaticMetadataPrototype");
 		l.load(ctx, inDirPath, indexServiceUrl);
 	}
 

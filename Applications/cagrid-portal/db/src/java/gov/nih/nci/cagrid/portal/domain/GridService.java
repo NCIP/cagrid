@@ -108,7 +108,7 @@ public class GridService extends AbstractDomainObject {
         return history.get(history.size() - 1).getStatus();
     }
 
-    @OneToMany(mappedBy = "gridService")
+    @OneToMany(mappedBy = "gridService", cascade = CascadeType.ALL)
     public List<SemanticMetadataMapping> getSemanticMetadataMappings() {
         return semanticMetadataMappings;
     }
