@@ -24,6 +24,7 @@
 
     <property name="ext.dir" value="${basedir}/ext"/>
     <property name="ext.lib.dir" value="${ext.dir}/default/jars"/>
+    <property name="ext.xmls.dir" value="${ext.dir}/default/xmls"/>
     <property name="ext.test.lib.dir" value="${ext.dir}/test/jars"/>
 
     <property name="solr.dir" value="${basedir}/solr"/>
@@ -54,6 +55,7 @@
     </path>
     <path id="test.run.cp">
         <path path="${build.xmls.dir}"/>
+        <path  path="${ext.xmls.dir}"/>
         <path refid="test.compile.cp"/>
         <path path="${test.build.classes.dir}"/>
         <path path="${test.etc.dir}"/>
