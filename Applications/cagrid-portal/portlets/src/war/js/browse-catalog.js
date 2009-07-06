@@ -64,7 +64,7 @@ var sortEvent = new YAHOO.util.CustomEvent({type:"sortEvent",signature:"YAHOO.ut
         },
 
         addFacet: function(arg, value) {
-            this.removeParam("\^fq=" + arg);
+            this.removeParam("\^fq=");
             this.addParam("fq=" + arg + ":" + value);
         },
         nextPage: function(){
@@ -83,7 +83,6 @@ var sortEvent = new YAHOO.util.CustomEvent({type:"sortEvent",signature:"YAHOO.ut
             this.removeParam("start="+this.start);
             this.start=startValue;
             this.addParam("start="+ this.start);
-            YAHOO.log("Moved to specified start value " + startValue);
         },
 
 
@@ -92,7 +91,7 @@ var sortEvent = new YAHOO.util.CustomEvent({type:"sortEvent",signature:"YAHOO.ut
         },
 
         sort: function(sortParam){
-            this.removeParam("sort="+this.sortParam);
+            this.removeParam("\^sort=");
             this.sortParam=sortParam;
             this.addParam("sort="+ this.sortParam);
         }
