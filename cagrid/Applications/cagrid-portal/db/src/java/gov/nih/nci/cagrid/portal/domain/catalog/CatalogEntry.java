@@ -264,7 +264,7 @@ public class CatalogEntry extends AbstractDomainObject implements Commentable, M
         this.author = author;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
 	@JoinTable(
 			name = "cat_entry_aofterms", 
 			joinColumns = @JoinColumn(name = "entry_id"), 

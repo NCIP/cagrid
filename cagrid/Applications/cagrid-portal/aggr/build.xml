@@ -153,9 +153,12 @@
     </target>
 	
 	<target name="run-loadmeta" depends="jar">
-        <java classname="gov.nih.nci.cagrid.portal.util.LoadMetadata" classpathref="run.cp"
+		<property name="idx.url" value="http://index.training.cagrid.org:8080/wsrf/services/DefaultIndexService"/>
+        <java classname="gov.nih.nci.cagrid.portal.util.LoadDynamicMetadata" classpathref="run.cp"
         	maxmemory="2048M"
-              fork="true"/>
+              fork="true">
+			<arg value="${idx.url}"/>
+		</java>
     </target>
 
     <target name="run-metachange" depends="jar">
@@ -188,7 +191,7 @@
     </target>
 
     <target name="run-kill-grid-svcs" depends="jar">
-        <java classname="gov.nih.nci.cagrid.portal.util.KillGridServices" classpathref="run.cp"/>
+        <java classname="gov.nih.nci.cagrid.portal.util.KillGridServices" classpathref="run.cp" maxmemory="2048M" fork="true"/>
     </target>
 
     <target name="report:svcs-with-status" depends="jar" description="Will report all services with the given status">
@@ -232,6 +235,7 @@
 
     <target name="delete-catalogs" depends="jar" description="Will delete all catalog items">
         <java classname="gov.nih.nci.cagrid.portal.util.DeleteCatalogs" classpathref="run.cp"
+        	maxmemory="2048M"
               fork="true"/>
     </target>
 

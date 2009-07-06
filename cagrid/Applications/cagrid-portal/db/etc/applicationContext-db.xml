@@ -11,8 +11,6 @@
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
 	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
 	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
-	
-	<import resource="classpath:applicationContext-db-relationships.xml"/>
 
     <bean id="archivedStatus" class="java.lang.String">
         <constructor-arg value="archivedStatus"/>

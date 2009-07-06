@@ -91,12 +91,13 @@ public class ServiceMetadataCatalogEntryBuilder {
 				"serviceMetadata.serviceDescription.description"));
 
 		// See if interface exists
+		String intfName = serviceName + " (" + serviceVersion + ") Interface";
 		GridServiceInterfaceCatalogEntry interfaceCe = getGridServiceInterfaceCatalogEntryDao()
-				.getDynamicInterfaceForNameAndVersion(serviceName,
+				.getDynamicInterfaceForNameAndVersion(intfName,
 						serviceVersion);
 		if (interfaceCe == null) {
 			interfaceCe = new GridServiceInterfaceCatalogEntry();
-			interfaceCe.setName(serviceName + " (" + serviceVersion + ")");
+			interfaceCe.setName(intfName);
 			interfaceCe.setVersion(serviceVersion);
 			interfaceCe.setDescription(endpointCe.getDescription());
 			interfaceCe.setPublished(true);

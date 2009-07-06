@@ -11,7 +11,10 @@
 	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
 	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
-    <bean id="loadMetadataPrototype"
-          class="gov.nih.nci.cagrid.portal.util.LoadMetadata" scope="prototype" autowire="byName"/>
+    <bean id="loadStaticMetadataPrototype"
+          class="gov.nih.nci.cagrid.portal.util.LoadStaticMetadata" scope="prototype" autowire="byName"/>
+          
+    <bean id="loadDynamicMetadataPrototype"
+          class="gov.nih.nci.cagrid.portal.util.LoadDynamicMetadata" scope="prototype" autowire="byName"/>
 
 </beans>

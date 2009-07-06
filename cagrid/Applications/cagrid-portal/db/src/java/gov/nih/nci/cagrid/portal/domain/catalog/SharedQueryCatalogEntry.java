@@ -22,6 +22,9 @@ public class SharedQueryCatalogEntry extends ToolCatalogEntry {
 	public List<Term> typesOfCancer = new ArrayList<Term>();
 	private Query about;
 
+	// private GridServiceEndPointCatalogEntry defaultService;
+	// private boolean defaultServiceEditable;
+
 	@OneToMany(mappedBy = "query")
 	public List<CriterionDescriptor> getCriteria() {
 		return criteria;
@@ -68,4 +71,23 @@ public class SharedQueryCatalogEntry extends ToolCatalogEntry {
 	public void setAbout(Query about) {
 		this.about = about;
 	}
+
+	// @ManyToOne
+	// @JoinColumn(name = "default_service_id")
+	// public GridServiceEndPointCatalogEntry getDefaultService() {
+	// return defaultService;
+	// }
+	//
+	// public void setDefaultService(GridServiceEndPointCatalogEntry
+	// defaultService) {
+	// this.defaultService = defaultService;
+	// }
+	//
+	// public boolean isDefaultServiceEditable() {
+	// return defaultServiceEditable;
+	// }
+	//
+	// public void setDefaultServiceEditable(boolean defaultServiceEditable) {
+	// this.defaultServiceEditable = defaultServiceEditable;
+	// }
 }

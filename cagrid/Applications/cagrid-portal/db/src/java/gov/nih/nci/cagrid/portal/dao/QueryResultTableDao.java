@@ -31,12 +31,20 @@ public class QueryResultTableDao extends AbstractDao<QueryResultTable> {
 		return QueryResultTable.class;
 	}
 
-	public List<QueryResultRow> getRows(Integer tableId, int offset, int numRows) {
-		List<QueryResultRow> l = getHibernateTemplate().find(
-				"from QueryResultRow r where " + "r.table.id = ? and "
-						+ "r.order >= ? and r.order < ?",
-				new Object[] { tableId, offset, offset + numRows });
-		return l;
+	public List<QueryResultRow> getRows(final Integer tableId, final int offset, final int numRows) {
+		List<QueryResultRow> rows = (List<QueryResultRow>) getHibernateTemplate()
+		.execute(new HibernateCallback() {
+			public Object doInHibernate(Session session)
+					throws HibernateException, SQLException {
+
+				return session.createCriteria(QueryResultRow.class)
+						.setFirstResult(offset)
+						.setMaxResults(numRows)
+						.createCriteria("table").add(
+								Restrictions.eq("id", tableId)).list();
+			}
+		});
+		return rows;
 	}
 
 	public List<QueryResultRow> getSortedRows(final Integer tableId,
@@ -96,8 +104,7 @@ public class QueryResultTableDao extends AbstractDao<QueryResultTable> {
 						return session.createCriteria(QueryResultRow.class)
 								.setProjection(Projections.rowCount())
 								.createCriteria("table").add(
-										Restrictions.eq("id", tableId))
-								.list()
+										Restrictions.eq("id", tableId)).list()
 								.get(0);
 					}
 				});

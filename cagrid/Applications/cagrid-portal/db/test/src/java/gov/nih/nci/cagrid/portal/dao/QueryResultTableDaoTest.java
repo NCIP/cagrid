@@ -97,6 +97,7 @@ public class QueryResultTableDaoTest extends AbstractDBTestBase {
 		}
 		assertEquals(4, l.size());
 		
+		dao.delete(table);
 	}
 
 }
