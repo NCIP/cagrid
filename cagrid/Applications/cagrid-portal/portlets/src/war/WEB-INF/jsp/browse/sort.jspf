@@ -1,4 +1,4 @@
-<div style="float:right;width:120px;">
+<div class="sortSearchResults">
     Sort By:
     <select id="${ns}sortList" title="Sort By" onchange="${ns}sortResults();">
         <option value="catalogName">Name</option>

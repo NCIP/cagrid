@@ -93,12 +93,13 @@
         <div class="searchBox">
             <div class="L-endcap"></div>
             <input class="search" id="${ns}keyword" type="text" size="20" value="Search" style="color:#afafaf;" onkeypress="return checkEnter($('${ns}keyword').value, event);"/>
-            <%--<div class="R-endcap"></div>--%>
+            <div class="R-endcap"></div>
         </div>
-           <%@ include file="/WEB-INF/jsp/browse/sort.jspf" %>
+           
         <div>
             <div id="${ns}tree" class="tree-container"></div>
-            <div style="height:100%;width:50%;padding:30px 10px 10px 10px;float:right;">
+            <div class="searchResults">
+            	<%@ include file="/WEB-INF/jsp/browse/sort.jspf" %>
             	<div id="${ns}catalogs"></div>
 				<div class="yui-skin-sam">
 					<div id="${ns}paginatorDiv" class="pagination">
