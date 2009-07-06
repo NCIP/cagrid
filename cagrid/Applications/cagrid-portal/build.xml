@@ -191,6 +191,18 @@
              dir="${projects.dir}/aggr">
         </ant>
     </target>
+	
+	<target name="load-metadata" depends="prepare" description="Load the service metadata">
+        <ant inheritall="false" target="run-loadmeta"
+             dir="${projects.dir}/aggr">
+        </ant>
+    </target>
+	
+	<target name="load-data" depends="prepare">
+		<antcall target="load-workspaces"/>
+		<antcall target="load-metadata"/>
+	</target>
+	
 
     <target name="run-trust" depends="config-trust" description="Sync with caGrid GTS service">
         <ant inheritall="false" target="run-trust"
