@@ -193,7 +193,7 @@ jQuery(document).ready(function() {
 });
 	
 /*  Edit name and description interactivity  */
-jQuery("#input-name").click(function(){
+jQuery("#input-name").focus(function(){
 	if (jQuery("#input-name").attr("value") == "Name") {
 		jQuery(this).css({
 			'color': '#000000'
@@ -207,7 +207,7 @@ jQuery("#input-name").blur( function() {
 		jQuery(this).css({'color' : '#afafaf'});
 	}
 });
-jQuery("#input-description").click(function(){
+jQuery("#input-description").focus(function(){
 	if (jQuery("#input-description").attr("value") == "Description") {
 		jQuery(this).css({
 			'color': '#000000'

@@ -20,7 +20,7 @@
     <portlet:param name="operation" value="createCatalogEntry"/>
 </portlet:actionURL>
     <div class="yui-skin-sam">
-          <div id="${ns}addButtonContainer"></div>
+          <div id="${ns}addButtonContainer" class="createCatalogEntryButton"></div>
           <div id="${ns}createDialog" style="display: none">
               <div class="hd">Please select the type of entry to create.</div>
               <div class="bd">
