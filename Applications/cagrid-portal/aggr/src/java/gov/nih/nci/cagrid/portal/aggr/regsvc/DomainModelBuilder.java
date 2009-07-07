@@ -46,6 +46,7 @@ public class DomainModelBuilder extends ServiceMetadataBuilder {
 		
 		pushPath("domainModel");
 		DomainModel modelOut = new DomainModel();
+		handlePersist(modelOut);
 
 		Map<String, List<UMLAssociationEdge>> assocMap = new HashMap<String, List<UMLAssociationEdge>>();
 		Map<String, List<String>> subClassMap = new HashMap<String, List<String>>();

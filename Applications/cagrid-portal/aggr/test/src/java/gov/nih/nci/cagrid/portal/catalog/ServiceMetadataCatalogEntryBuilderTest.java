@@ -34,6 +34,7 @@ public class ServiceMetadataCatalogEntryBuilderTest extends
 
 	protected String[] getConfigLocations() {
 		return new String[] { "applicationContext-db.xml",
+				"applicationContext-db-relationships.xml",
 				"applicationContext-aggr.xml" };
 	}
 
