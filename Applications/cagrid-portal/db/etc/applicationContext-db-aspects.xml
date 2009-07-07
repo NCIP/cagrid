@@ -25,11 +25,6 @@
             </bean>
         </property>
     </bean>
-
-
-    <bean id="gridServiceEndPointCatalogAspect"
-          class="gov.nih.nci.cagrid.portal.dao.aspects.GridServiceEndPointCatalogCreator"
-          autowire="byName"/>
  
     <bean id="institutionCatalogCreator"
           class="gov.nih.nci.cagrid.portal.dao.aspects.InstitutionCatalogCreator"
