@@ -21,10 +21,10 @@
 <c:set var="selectItemsOperationName" value="selectItemsForDiscovery"/>
 <portlet:actionURL var="action"/>
 
-<%@ include file="/WEB-INF/jsp/map/mapDirectory.jspf" %>
+
 
 <div style="width:100%;">
-<%@ include file="/WEB-INF/jsp/map/latestContent-view.jspf" %>
+
 <div id="<c:out value="${mapNodeId}"/>" class="mapNode"><!-- for ie --></div>
      </div>
 
@@ -37,7 +37,8 @@
 <div id="${prefix}mapDiv">
     <%----%>
 </div>
-
+<%@ include file="/WEB-INF/jsp/map/latestContent-view.jspf" %>
+<%@ include file="/WEB-INF/jsp/map/mapDirectory.jspf" %>
 <script type="text/javascript">
 
     //<![CDATA[

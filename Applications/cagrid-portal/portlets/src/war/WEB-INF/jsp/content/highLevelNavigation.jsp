@@ -9,9 +9,10 @@
 #blue-box {
 	font-family: Arial, Helvetica, sans-serif;
 	display: block;
-	height: 341px;
+	height: 264px;
 	width: 931px;
 	background-image: url(<c:url value="/images/foop/blue-box.png"/>);
+	padding-top:7px;
 }
 
 #blue-box table {
@@ -23,8 +24,8 @@
 	font-size: 36px;
 	text-decoration: none;
 	display: block;
-	line-height:40px;
-	margin-top:6px;
+	line-height:36px;
+	margin-top:0;
 }
 
 #blue-box a:hover {
@@ -37,7 +38,7 @@
 
 #blue-box td {
 	vertical-align: top;
-	padding-top: 13px;
+	padding-top:0;
 }
 
 #blue-box span {
@@ -45,6 +46,7 @@
 	font-size: 0.8em;
 	display: block;
 	width: 300px;
+	line-height:14px;
 }
 
 col.icon {
