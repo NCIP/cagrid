@@ -260,7 +260,7 @@
 						</then>
 					</elseif>					
 					<else>
-						<property name="portlets.temp.dir" value="${liferay.install.dir}/${tomcat.server.name}/temp/3-cagridportlets"/>
+						<property name="portlets.temp.dir" value="${liferay.install.dir}/${tomcat.server.name}/webapps/cagridportlets"/>
 					</else>
 				</if>
 				
