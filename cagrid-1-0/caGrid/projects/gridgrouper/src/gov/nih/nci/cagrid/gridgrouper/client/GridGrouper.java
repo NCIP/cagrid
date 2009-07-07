@@ -54,6 +54,17 @@ public class GridGrouper extends GridGrouperObject implements GrouperI {
 		this(serviceURI, null);
 	}
 
+    /**
+     * Used to Construct a Grid Grouper object corresponding to a Grid Grouper
+     * Service. This constructor uses a default credential search order (as
+     * specified by Globus). Thus, this constructor is preferable to use
+     * when creating a GridGrouper instance in a service implementation.
+     * 
+     * @param serviceURI
+     *            The service URI of the Grid Grouper service.
+     * @param preferAnonymous
+     * 			  Whether or not to prefer connecting anonymously to the service.
+     */
 	public GridGrouper(String serviceURI, boolean preferAnonymous) {
 		try {
 			GridGrouperClient c = new GridGrouperClient(serviceURI);
