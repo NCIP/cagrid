@@ -69,6 +69,7 @@ public class ServiceMetadataCatalogEntryBuilderAspectTest extends
 	protected String[] getConfigLocations() {
 		return new String[] { "classpath*:applicationContext-aggr-catalog.xml",
 				"applicationContext-aggr-regsvc-beans.xml",
+				"applicationContext-db-relationships.xml",
 				"applicationContext-db-aspects.xml" };
 	}
 

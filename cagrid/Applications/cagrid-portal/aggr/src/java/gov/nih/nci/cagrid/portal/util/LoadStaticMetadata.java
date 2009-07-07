@@ -42,6 +42,7 @@ public class LoadStaticMetadata {
 
 		ApplicationContext ctx = new FileSystemXmlApplicationContext(
 				new String[] { "../db/etc/applicationContext-db-aspects.xml",
+						"../db/etc/applicationContext-db-relationships.xml",
 						"test/etc/applicationContext-aggr-util.xml",
 						"etc/applicationContext-aggr.xml" });
 		LoadStaticMetadata l = (LoadStaticMetadata) ctx.getBean("loadStaticMetadataPrototype");

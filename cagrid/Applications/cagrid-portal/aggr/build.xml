@@ -160,6 +160,13 @@
 			<arg value="${idx.url}"/>
 		</java>
     </target>
+	
+	<target name="run-staticloadmeta" depends="jar">
+        <java classname="gov.nih.nci.cagrid.portal.util.LoadStaticMetadata" classpathref="run.cp"
+        	maxmemory="2048M"
+              fork="true">
+		</java>
+    </target>
 
     <target name="run-metachange" depends="jar">
         <java classname="gov.nih.nci.cagrid.portal.util.RunMetaChange" classpathref="run.cp"

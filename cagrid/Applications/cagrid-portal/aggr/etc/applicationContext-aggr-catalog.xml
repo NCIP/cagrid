@@ -14,12 +14,6 @@
     <bean id="abstractCatalogCreator"
           abstract="true" class="gov.nih.nci.cagrid.portal.aggr.catalog.AbstractCatalogCreator"
           autowire="byName"/>
-
-    <bean id="gridServiceEndPointCatalogCreator" parent="abstractCatalogCreator"
-          class="gov.nih.nci.cagrid.portal.aggr.catalog.GridServiceEndPointCatalogCreator"
-          p:gridServiceDao-ref="gridServiceDao"
-          p:gridServiceEndPointCatalogEntryDao-ref="gridServiceEndPointCatalogEntryDao"
-          autowire="byName"/>
  
     <bean id="institutionCatalogCreator" parent="abstractCatalogCreator"
           class="gov.nih.nci.cagrid.portal.aggr.catalog.InstitutionCatalogCreator"
