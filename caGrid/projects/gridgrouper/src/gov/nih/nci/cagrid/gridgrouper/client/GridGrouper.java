@@ -13,6 +13,7 @@ import gov.nih.nci.cagrid.gridgrouper.bean.MembershipExpression;
 import gov.nih.nci.cagrid.gridgrouper.bean.MembershipType;
 import gov.nih.nci.cagrid.gridgrouper.bean.StemDescriptor;
 import gov.nih.nci.cagrid.gridgrouper.bean.StemIdentifier;
+import gov.nih.nci.cagrid.gridgrouper.client.GridGrouperClient;
 import gov.nih.nci.cagrid.gridgrouper.grouper.GroupI;
 import gov.nih.nci.cagrid.gridgrouper.grouper.GrouperI;
 import gov.nih.nci.cagrid.gridgrouper.grouper.MemberI;
@@ -56,6 +57,27 @@ public class GridGrouper extends GridGrouperObject implements GrouperI {
         this(serviceURI, null);
     }
 
+    /**
+     * Used to Construct a Grid Grouper object corresponding to a Grid Grouper
+     * Service. This constructor uses a default credential search order (as
+     * specified by Globus). Thus, this constructor is preferable to use
+     * when creating a GridGrouper instance in a service implementation.
+     * 
+     * @param serviceURI
+     *            The service URI of the Grid Grouper service.
+     * @param preferAnonymous
+     * 			  Whether or not to prefer connecting anonymously to the service.
+     */
+	public GridGrouper(String serviceURI, boolean preferAnonymous) {
+		try {
+			GridGrouperClient c = new GridGrouperClient(serviceURI);
+			c.setAnonymousPrefered(preferAnonymous);
+			this.setClient(c);
+		} catch (Exception e) {
+			getLog().error(e.getMessage(), e);
+			throw new GrouperRuntimeException(Utils.getExceptionMessage(e));
+		}
+	}
 
     /**
      * Used to Construct a Grid Grouper object corresponding to a Grid Grouper
