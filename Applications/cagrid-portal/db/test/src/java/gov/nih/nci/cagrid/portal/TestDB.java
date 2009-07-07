@@ -43,7 +43,7 @@ public class TestDB {
 
     static {
         applicationContext = new ClassPathXmlApplicationContext(
-                new String[]{"classpath:applicationContext-db.xml"});
+                new String[]{"classpath:applicationContext-db.xml", "classpath:applicationContext-db-relationships.xml"});
         props = new Properties();
         try {
             props.load(Thread.currentThread().getContextClassLoader()
