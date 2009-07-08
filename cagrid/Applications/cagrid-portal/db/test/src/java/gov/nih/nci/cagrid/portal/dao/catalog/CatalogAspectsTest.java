@@ -4,13 +4,10 @@ import gov.nih.nci.cagrid.portal.DBIntegrationTestBase;
 import gov.nih.nci.cagrid.portal.dao.GridServiceDao;
 import gov.nih.nci.cagrid.portal.dao.ParticipantDao;
 import gov.nih.nci.cagrid.portal.dao.PortalUserDao;
-import gov.nih.nci.cagrid.portal.domain.GridService;
 import gov.nih.nci.cagrid.portal.domain.Participant;
 import gov.nih.nci.cagrid.portal.domain.PortalUser;
 import gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntry;
-import gov.nih.nci.cagrid.portal.domain.catalog.GridServiceEndPointCatalogEntry;
 import gov.nih.nci.cagrid.portal.domain.catalog.InstitutionCatalogEntry;
-import gov.nih.nci.cagrid.portal.domain.catalog.PersonCatalogEntry;
 
 /**
  * User: kherm
@@ -27,24 +24,25 @@ public class CatalogAspectsTest extends DBIntegrationTestBase {
     CatalogEntryDao catalogEntryDao;
 
 
-    public void testGSAspect() {
-        int initCount = gridServiceEndPointCatalogEntryDao.getAll().size();
-
-        GridService service = new GridService();
-
-        gridServiceDao.save(service);
-
-        GridService loadedService = gridServiceDao.getById(1);
-        // make sure catalog item is created for service
-        assertNotNull(loadedService.getCatalog());
-        assertEquals(gridServiceEndPointCatalogEntryDao.getAll().size() - initCount, 1);
-
-        for (GridServiceEndPointCatalogEntry entry : gridServiceEndPointCatalogEntryDao.getAll())
-            assertNotNull(entry.getAbout());
-
-    }
-
-
+    /**
+     * Not valid any more. GridService CE's are being created by ServiceMetadataCatalogEntryBuilderAspect
+     */
+//    public void testGSAspect() {
+//        int initCount = gridServiceEndPointCatalogEntryDao.getAll().size();
+//
+//        GridService service = new GridService();
+//
+//        gridServiceDao.save(service);
+//
+//        GridService loadedService = gridServiceDao.getById(1);
+//        // make sure catalog item is created for service
+//        assertNotNull(loadedService.getCatalog());
+////        assertEquals(gridServiceEndPointCatalogEntryDao.getAll().size() - initCount, 1);
+////
+////        for (GridServiceEndPointCatalogEntry entry : gridServiceEndPointCatalogEntryDao.getAll())
+////            assertNotNull(entry.getAbout());
+//
+//    }
     public void testInstAspect() {
         int initCount = institutionCatalogEntryDao.getAll().size();
 
@@ -91,7 +89,6 @@ public class CatalogAspectsTest extends DBIntegrationTestBase {
             assertNotNull("Timestamp is null", catalog.getUpdatedAt());
         }
     }
-
 
     public CatalogEntryDao getCatalogEntryDao() {
         return catalogEntryDao;

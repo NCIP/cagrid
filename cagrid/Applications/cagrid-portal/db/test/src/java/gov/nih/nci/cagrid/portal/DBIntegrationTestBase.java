@@ -23,7 +23,9 @@ public class DBIntegrationTestBase extends AbstractDependencyInjectionSpringCont
     @Override
     protected String[] getConfigLocations() {
         return new String[]{
-                "classpath:applicationContext-db-aspects.xml"
+                "classpath:applicationContext-db-aspects.xml",
+                "classpath:applicationContext-db-relationships.xml"
+
         };
     }
 
