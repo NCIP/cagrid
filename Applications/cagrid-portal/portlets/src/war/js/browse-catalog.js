@@ -65,7 +65,7 @@ var sortEvent = new YAHOO.util.CustomEvent({type:"sortEvent",signature:"YAHOO.ut
 
         addFacet: function(arg, value) {
             this.removeParam("\^fq=");
-            this.addParam("fq=" + arg + ":" + value);
+            this.addParam("fq=" + arg + ":(" + value + ")");
         },
         nextPage: function(){
             this.removeParam("start="+this.start);
@@ -92,7 +92,7 @@ var sortEvent = new YAHOO.util.CustomEvent({type:"sortEvent",signature:"YAHOO.ut
 
         sort: function(sortParam){
             this.removeParam("\^sort=");
-            this.sortParam=sortParam;
+            this.sortParam="featured+desc,"+sortParam;
             this.addParam("sort="+ this.sortParam);
         }
 
