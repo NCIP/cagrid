@@ -151,6 +151,22 @@
 					</ConfigurationDescriptor>
 				</ConfigurationDescriptors>
 			</ConfigurationGroup>
+			<ConfigurationGroup>
+				<name>Image Gallery</name>
+				<ConfigurationDescriptors>
+					<ConfigurationDescriptor>
+						<DisplayName>Image Gallery Service(s)</DisplayName>
+						<SystemName>imagegallery</SystemName>
+			    		<ModelClassname>org.cagrid.grape.configuration.ServiceConfiguration</ModelClassname>
+			    		<qname>
+							<namespace>http://www.cagrid.org/1/grape-service-configuration</namespace>
+							<name>ServiceConfiguration</name>
+						</qname>
+						<ConfigurationPanel>org.cagrid.grape.ServiceConfigurationEditor</ConfigurationPanel>
+						<DefaultFile>conf/image-gallery-services-configuration.xml</DefaultFile>
+					</ConfigurationDescriptor>
+				</ConfigurationDescriptors>
+			</ConfigurationGroup>
 		</ConfigurationGroups>
 		<ConfigurationDescriptors>
 			
