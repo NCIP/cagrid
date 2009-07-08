@@ -3,29 +3,13 @@ package gov.nih.nci.cagrid.portal.domain.catalog;
 import gov.nih.nci.cagrid.portal.domain.AbstractDomainObject;
 import gov.nih.nci.cagrid.portal.domain.PortalUser;
 import gov.nih.nci.cagrid.portal.util.StringUtils;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.persistence.UniqueConstraint;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 @Entity
 @Table(name = "cat_entry")
@@ -81,14 +65,14 @@ public class CatalogEntry extends AbstractDomainObject implements Commentable, M
     public List<CatalogEntryRoleInstance> roles = new ArrayList<CatalogEntryRoleInstance>();
 
     private List<Comment> comments = new ArrayList<Comment>();
-    
+
     private Image image;
-    
+
     private Image thumbnail;
 
+    private boolean featured;
+
     public static final int NAME_MAX_LENGTH_ALLOWED = 18;
-    
-    
 
 
     public String getName() {
@@ -184,13 +168,13 @@ public class CatalogEntry extends AbstractDomainObject implements Commentable, M
     }
 
     @ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(
-			name = "cat_entry_terms", 
-			joinColumns = @JoinColumn(name = "entry_id"), 
-			inverseJoinColumns = @JoinColumn(name = "term_id"), 
-			uniqueConstraints =	@UniqueConstraint(columnNames = 
-				{"entry_id", "term_id" })
-	)
+    @JoinTable(
+            name = "cat_entry_terms",
+            joinColumns = @JoinColumn(name = "entry_id"),
+            inverseJoinColumns = @JoinColumn(name = "term_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames =
+                    {"entry_id", "term_id"})
+    )
     public List<Term> getTerms() {
         return terms;
     }
@@ -225,7 +209,6 @@ public class CatalogEntry extends AbstractDomainObject implements Commentable, M
     public void setRatings(List<Rating> ratings) {
         this.ratings = ratings;
     }
-
 
     @ManyToOne
     @JoinColumn(name = "contributor_id")
@@ -265,13 +248,13 @@ public class CatalogEntry extends AbstractDomainObject implements Commentable, M
     }
 
     @ManyToMany
-	@JoinTable(
-			name = "cat_entry_aofterms", 
-			joinColumns = @JoinColumn(name = "entry_id"), 
-			inverseJoinColumns = @JoinColumn(name = "term_id"), 
-			uniqueConstraints =	@UniqueConstraint(columnNames = 
-				{"entry_id", "term_id" })
-	)
+    @JoinTable(
+            name = "cat_entry_aofterms",
+            joinColumns = @JoinColumn(name = "entry_id"),
+            inverseJoinColumns = @JoinColumn(name = "term_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames =
+                    {"entry_id", "term_id"})
+    )
     public List<Term> getAreasOfFocus() {
         return areasOfFocus;
     }
@@ -291,21 +274,30 @@ public class CatalogEntry extends AbstractDomainObject implements Commentable, M
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "image_id")
-	public Image getImage() {
-		return image;
-	}
+    public Image getImage() {
+        return image;
+    }
 
-	public void setImage(Image image) {
-		this.image = image;
-	}
+    public void setImage(Image image) {
+        this.image = image;
+    }
 
-	@OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "thumbnail_id")
-	public Image getThumbnail() {
-		return thumbnail;
-	}
+    public Image getThumbnail() {
+        return thumbnail;
+    }
 
-	public void setThumbnail(Image thumbnail) {
-		this.thumbnail = thumbnail;
-	}
+    public void setThumbnail(Image thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
+    @Column(name = "featured")
+    public boolean isFeatured() {
+        return featured;
+    }
+
+    public void setFeatured(boolean featured) {
+        this.featured = featured;
+    }
 }
