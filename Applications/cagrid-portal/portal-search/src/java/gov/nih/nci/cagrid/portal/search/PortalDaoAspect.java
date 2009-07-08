@@ -21,7 +21,7 @@ public class PortalDaoAspect extends AbstractSolrCommandExecutor {
         super(command);
     }
 
-    @AfterReturning("execution(* gov.nih.nci.cagrid.portal.dao.catalog.*.save*(gov.nih.nci.cagrid.portal.domain.catalog.*))")
+    @AfterReturning("execution(* gov.nih.nci.cagrid.portal.dao.catalog.*.save(*))" + " && args(gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntry)")
     public void runCommand() throws Exception {
         try {
             logger.info("Calling update on SOLR. Changes detected to the Portal DB");
