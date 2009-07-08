@@ -9,25 +9,6 @@
              description="Alternate link. Will not use popup image. Requires link_text" %>
 <%@attribute name="link_text" required="false" description="Alternate link text.Required when specifying link_href" %>
 
-
-<a id="${id}-infoPopup-control"
-   class="infoPopupLink"
-   onmouseover="$('${id}-infoPopup-content').style.display='inline'"
-   onmouseout="$('${id}-infoPopup-content').style.display='none'"
-        <c:if test="${not empty link_href}">
-            &nbsp; href='${link_href}'
-        </c:if>
-        >
-    <c:choose>
-        <c:when test="${not empty link_text}">
-            ${link_text}
-        </c:when>
-        <c:otherwise>
-            <tags:image name="information_icon.png" height="13"/>
-        </c:otherwise>
-    </c:choose>
-</a>&nbsp;
-
     <span id="${id}-infoPopup-content" class="infoPopup">
     <div>
 
@@ -80,4 +61,23 @@
 
     </div>
 
-    <span class="infoPopup-pointer">&nbsp;</span></span>
+    <%--<span class="infoPopup-pointer">&nbsp;</span>--%></span>
+<a id="${id}-infoPopup-control"
+   class="infoPopupLink"
+   onmouseover="$('${id}-infoPopup-content').style.display='inline'"
+   onmouseout="$('${id}-infoPopup-content').style.display='none'"
+        <c:if test="${not empty link_href}">
+            &nbsp; href='${link_href}'
+        </c:if>
+        >
+		<%--TODO: Add actual icons, the below line is just a placeholder--%>
+		<img src="<c:url value="/images/catalog_icons/tool.png" />" alt="" style="float:left;"/>
+    <c:choose>
+        <c:when test="${not empty link_text}">
+            ${link_text}
+        </c:when>
+        <c:otherwise>
+            <tags:image name="information_icon.png" height="13"/>
+        </c:otherwise>
+    </c:choose>
+</a>

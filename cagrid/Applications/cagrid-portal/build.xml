@@ -277,6 +277,7 @@
 						<include name="**/*.png" />
 						<include name="**/*.tld" />
 						<include name="**/*.vm" />
+						<include name="**/*.tag" />
 					</fileset>
 				</copy>
 

@@ -47,6 +47,7 @@
 	display: block;
 	width: 300px;
 	line-height:14px;
+	padding:3px 0 0 3px;
 }
 
 col.icon {

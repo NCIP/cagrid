@@ -6,45 +6,35 @@
     <div id="${ns}executeQueryBtnContainer" class="yui-skin-sam">
 
     </div>
+	<a href="javascript:runIt();" id="runItbtn">Run It!</a>
 
     <%@ include file="/WEB-INF/jsp/browse/sharedQuery/query_results.jspf" %>
     
 </div>
 
 <script type="text/javascript">
+function runIt() {
 
-    jQuery(document).ready(function() {
-        ${ns}executeBtn = new YAHOO.widget.Button({
-            label: "Execute Query",
-            id: "${ns}executeQueryBtn",
-            container: "${ns}executeQueryBtnContainer"
+    if ($("${ns}serviceId").value == null) {
+        alert("Please select valid service");
+    }
+
+    else {
+        QueryExecutionManager.submitQuery($("${ns}serviceUrl").value,{
+            callback:function(running) {
+                if(running==null){
+                    jQuery("#${ns}resultsDiv").html("Running Query <img src='<c:url value="/images/indicator.gif"/>'/>");
+                    ${ns}showResultsTab();
+                    ${ns}loadResults(false);
+                }
+
+            },
+            errorHandler:function(errorString, exception) {
+                alert("Error running query: " + errorString);
+            },
+            async: true
         });
-
-        ${ns}executeBtn.on("click", function(evt) {
-
-            if ($("${ns}serviceId").value == null) {
-                alert("Please select valid service");
-            }
-
-            else {
-                QueryExecutionManager.submitQuery($("${ns}serviceUrl").value,{
-                    callback:function(running) {
-                        if(running==null){
-                            jQuery("#${ns}resultsDiv").html("Running Query <img src='<c:url value="/images/indicator.gif"/>'/>");
-                            ${ns}showResultsTab();
-                            ${ns}loadResults(false);
-                        }
-
-                    },
-                    errorHandler:function(errorString, exception) {
-                        alert("Error running query: " + errorString);
-                    },
-                    async: true
-                });
-            }
-        });
-    });
-
-
+    }
+}
 </script>
  

@@ -23,9 +23,9 @@
 </style>
 <div>
     <div class="row">
-        <div class="label">
+        <label>
             Query Results
-        </div>
+        </label>
         <div class="value">
             <span id="${ns}queryResultsCount">
 				<img src='<c:url value="/images/indicator.gif"/>'/>
@@ -234,21 +234,6 @@ function ${ns}ResultTable(instanceId, metadataUrl, dataUrl){
 	    	alert("Couldn't parse metadata: " + e);
 	    	return; 
 		}
-		/*
-		this.customUrlFormatter = function(elCell, oRecord, oColumn, oData) {
-			alert("Formatting URL: " + oData);
-			elCell.innerHTML = "Yadda: " + oData;
-		}
-		YAHOO.widget.DataTable.Formatter.serviceUrlFormatter = this.customUrlFormatter;
-		
-		for(var idx = 0; idx < this.meta.columnDefs.length; idx++){
-			if(this.meta.columnDefs[idx].key == "dataServiceUrl"){
-				alert("Found Data Service URL col def");
-				this.meta.columnDefs[idx].formatter = "serviceUrlFormatter";
-			}
-		}
-		*/
-		
 		this.dataSource = new YAHOO.util.DataSource(this.dataUrl);
 		this.dataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
 		this.dataSource.responseSchema = this.meta.responseSchema;

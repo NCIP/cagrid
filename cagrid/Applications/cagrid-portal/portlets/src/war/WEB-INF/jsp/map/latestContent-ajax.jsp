@@ -4,9 +4,9 @@
 
 
 <c:forEach var="catalog" items="${latestContent}">
-    <div class="row">
-        <div class="label">
-            <c:choose>
+    <div class="oneLatestEntry">
+        
+           <%-- <c:choose>
                 <c:when test="${catalog.class.simpleName == 'GridServiceEndPointCatalogEntry'}">
                     <c:choose>
                         <c:when test="${catalog.data== 'true'}">
@@ -23,7 +23,7 @@
                 <c:when test="${catalog.class.simpleName == 'PersonCatalogEntry'}">
                     <tags:image name="man.png"/>
                 </c:when>
-            </c:choose>
+            </c:choose>--%>
             <tags:catalogEntryPopup id="${catalog.id}" entry="${catalog}" link_text="${catalog.name}" 
                                     link_href="javascript:viewDetails(${catalog.id})"/>
         </div>
@@ -31,6 +31,6 @@
 
 </c:forEach>
 
-<div class="row">
-    <a href="/web/guest/catalog/all">more..</a>
+<div style="text-align:right;">
+    <a href="/web/guest/catalog/all">More</a>
 </div>
