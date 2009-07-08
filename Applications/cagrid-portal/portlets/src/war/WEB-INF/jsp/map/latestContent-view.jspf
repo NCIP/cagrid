@@ -19,7 +19,7 @@
 </liferay-portlet:renderURL>
 
 <div id="latestContent">
-    <div id="latestContentTitle">Latest Content</div>
+    <h3 id="latestContentTitle">Latest Content</h3>
 
     <div id="${prefix}errorDiv" style="display:none">
         <span class="errorMsg">
@@ -29,7 +29,7 @@
 
     <div id="${prefix}loadingDiv">
         <div id="${prefix}loadingDivInner" style="height:100%;">
-            <tags:image name="loading_animation.gif" cssStyle="align:center;"/>
+            <%--<tags:image name="loading_animation.gif" cssStyle="align:center;"/>--%>
         </div>
     </div>
 

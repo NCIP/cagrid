@@ -1,37 +1,18 @@
-
-
-<form:form commandName="mapBean">
-    <b>Categories:</b>&nbsp;
-    <form:select id="${prefix}directory" onchange="loadMap();" path="selectedDirectory">
-        <form:option value="">----</form:option>
-        <%@ include file="/WEB-INF/jsp/map/directories.jspf" %>
-    </form:select>
-</form:form>
-
-<table width="97%" border="0" cellpadding="0" cellspacing="0"
-       style="border: 1px solid #996633; position:relative; left:11px; margin-top:7px; margin-bottom: 5px;">
-    <tr>
-        <td style="padding-left:10px">
-            <table width="100%" border="0">
-                <tr>
-                    <td width="5%" style="padding:2px"><img src="<c:url value="/images/data-services.png"/>"/></td>
-                    <td width="30%" style="padding:2px" nowrap="nowrap">Data Service<span class="summary" id="${ns}dCount"></span></td>
-                    <td width="5%" style="padding:2px"><img src="<c:url value="/images/participant_institute.png"/>"/>
-                    </td>
-                    <td width="35%" nowrap="nowrap">Participant Institute<span  class="summary" id="${ns}pCount"></span></td>
-                </tr>
-                <tr>
-                    <td style="padding:2px"><img src="<c:url value="/images/analytical_services.png"/>"/></td>
-                    <td nowrap="nowrap" style="padding:2px">Analytical Service<span  class="summary" id="${ns}aCount"></span></td>
-                    <td style="padding:2px"><img src="<c:url value="/images/hosting-research-center.png"/>"/></td>
-                    <td nowrap="nowrap" style="padding:2px">Hosting Research Center</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-</table>
+<div style="display:none;">
+	<form:form commandName="mapBean">
+	    Categories:
+	    <form:select id="${prefix}directory" onchange="loadMap();" path="selectedDirectory">
+	        <form:option value=""></form:option>
+	        <%@ include file="/WEB-INF/jsp/map/directories.jspf" %>
+	    </form:select>
+	</form:form>
+</div>
+<div id="mapLegend">
+	<img src="<c:url value="/images/data-services.png"/>"/>Data Service<span class="summary" id="${ns}dCount"></span>
+	<img src="<c:url value="/images/participant_institute.png"/>"/>Participant Institute<span  class="summary" id="${ns}pCount"></span>
+	<img src="<c:url value="/images/analytical_services.png"/>"/>Analytical Service<span  class="summary" id="${ns}aCount"></span>
+	<img src="<c:url value="/images/hosting-research-center.png"/>"/>Hosting Research Center
+</div>
 
 <script>
     jQuery(document).ready(function() {

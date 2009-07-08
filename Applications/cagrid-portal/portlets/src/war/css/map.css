@@ -1,4 +1,8 @@
-
+.mapContainer {
+	width:615px;
+	float:left;
+	margin-right:20px;
+}
 div.mapLoadingMsg {
     color:#FF0033;
     font-size:11px;
@@ -7,10 +11,8 @@ div.mapLoadingMsg {
 }
 
 div.mapNode {
-    width:75%;
-    border: 4px solid #5C5C5C;
-    margin-left: auto;
-    height: 300px;
+    border: 2px solid #5C5C5C;
+    height:300px;
 }
 
 div.mapInfoPopup {
@@ -20,4 +22,16 @@ div.mapInfoPopup {
 span.summary{
     font-size:11px;
     padding-left:3px;
+}
+#mapLegend {
+	font-size:7pt;
+	padding:10px 5px 5px;
+	background-color:#efefef;
+	border:1px solid gray;
+	width:603px;
+	color:gray;
+}
+#mapLegend img {
+	vertical-align:middle;
+	margin:5px 5px 0 10px;
 }

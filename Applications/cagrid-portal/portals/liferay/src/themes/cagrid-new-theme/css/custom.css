@@ -463,3 +463,19 @@ div.row div.twoCols{
 .saved {
     color: red;
 }
+#runItbtn, #runItbtn:link {
+	background-image:url(../images/foop/run_it.png);
+	background-position:0 0;
+	height:83px;
+	width:195px;
+	display:block;
+	font-size:0;
+	text-indent:-9999px;
+	margin:10px 0 0 190px;
+}
+#runItbtn:hover {
+	background-position:0 -83px;
+}
+#runItbtn:active {
+	background-position:0 -166px;
+}
