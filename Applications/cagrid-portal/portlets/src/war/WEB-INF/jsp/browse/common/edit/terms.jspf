@@ -62,17 +62,15 @@ function ${ns}addTerms(terms){
 			termValues += ",";
 		}
 	}
-	//alert("Labels: " + termLabels + "\nValues: " + termValues);
 	jQuery("#${ns}areaOfFocusValues").val(termValues);
 	jQuery("#${ns}areaOfFocusLabels").val(termLabels);
-	//${ns}setField("areaOfFocusValues", termValues);
 	${ns}setAreaOfFocusValues(termValues);
 }
 
 jQuery(document).ready(function() {
 	jQuery("#${ns}areaOfFocusLabels").bind('focus', function(evt){
-		jQuery(evt.target).blur();
 		if(!${ns}areaOfFocusDialogOpen){
+			${ns}areaOfFocusDialogOpen = true;
 			${ns}showAreaOfFocusDialog();
 		}
 	});

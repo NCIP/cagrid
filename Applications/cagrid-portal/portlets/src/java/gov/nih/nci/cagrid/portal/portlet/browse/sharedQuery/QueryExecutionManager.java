@@ -180,8 +180,10 @@ public class QueryExecutionManager extends CatalogEntryManagerFacade {
 			HibernateTemplate templ = dao.getHibernateTemplate();
 			QueryInstance inst = getQueryInstanceDao().getById(instanceId);
 			QueryResultTable table = inst.getQueryResultTable();
-			templ.delete(table.getData());
-			templ.delete(table);
+			if (table != null) {
+				templ.delete(table.getData());
+				templ.delete(table);
+			}
 			dao.delete(inst);
 		} catch (Exception ex) {
 			String msg = "Error deleting query instance: " + ex.getMessage();

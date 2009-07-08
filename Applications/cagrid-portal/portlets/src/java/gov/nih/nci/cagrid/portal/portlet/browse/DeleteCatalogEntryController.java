@@ -22,6 +22,7 @@ public class DeleteCatalogEntryController extends AbstractController {
 	private UserModel userModel;
 	private CatalogEntryDao catalogEntryDao;
 
+
 	/**
 	 * 
 	 */
@@ -49,7 +50,7 @@ public class DeleteCatalogEntryController extends AbstractController {
 				CatalogEntry.class, catalogEntry.getId());
 
 		getCatalogEntryDao().delete(catalogEntry);
-		getCatalogEntryDao().getHibernateTemplate().flush();
+		
 		getUserModel().setCurrentCatalogEntry(null);
 
 		response.setRenderParameter("operation", "view");
@@ -62,6 +63,7 @@ public class DeleteCatalogEntryController extends AbstractController {
 	public void setUserModel(UserModel userModel) {
 		this.userModel = userModel;
 	}
+
 
 	public CatalogEntryDao getCatalogEntryDao() {
 		return catalogEntryDao;

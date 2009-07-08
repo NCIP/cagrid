@@ -1,7 +1,7 @@
 <div>
     <div class="row">
         <label>
-            CQL Query
+            Query
         </label>
             <textarea id="input-query" onblur="${ns}submitQuery();"
                       <c:if test="${empty editMode}">

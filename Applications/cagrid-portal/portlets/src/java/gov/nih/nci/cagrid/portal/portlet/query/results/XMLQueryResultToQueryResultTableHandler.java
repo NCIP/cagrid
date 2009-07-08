@@ -41,6 +41,8 @@ public class XMLQueryResultToQueryResultTableHandler extends
 	private Map<String, QueryResultColumn> cols = new HashMap<String, QueryResultColumn>();
 	private QueryResultRow currentRow;
 	private int maxValueLength = 256;
+	private String dataServiceUrl;
+	private boolean persist = true;
 
 	/**
 	 * 
@@ -55,13 +57,16 @@ public class XMLQueryResultToQueryResultTableHandler extends
 		elementStack.push(new ElementInfo(uri, localName, qName, attributes));
 
 		if (queryType == null) {
-			getQueryResultTableDao().save(table);
+			if (persist) {
+				getQueryResultTableDao().save(table);
+			}
 			if ("DCQLQueryResultsCollection".equals(localName)) {
 				queryType = QueryType.DCQL;
 			} else {
 				queryType = QueryType.CQL;
 			}
 		} else if (resultType == null) {
+			
 			int size = elementStack.size();
 			if (size == 2 && QueryType.CQL.equals(queryType) || size == 4
 					&& QueryType.DCQL.equals(queryType)) {
@@ -74,25 +79,40 @@ public class XMLQueryResultToQueryResultTableHandler extends
 				}
 			}
 		}
+		
+		if("DCQLResult".equals(localName)){
+			for(int i = 0; i < attributes.getLength(); i++){
+				if("targetServiceURL".equals(attributes.getLocalName(i))){
+					dataServiceUrl = attributes.getValue(i);
+					break;
+				}
+			}
+		}
 
 		if (resultType != null) {
 			if (ResultType.COUNT.equals(resultType)) {
 				QueryResultColumn col = new QueryResultColumn();
 				col.setName("count");
 				col.setTable(table);
-				getQueryResultTableDao().getHibernateTemplate().save(col);
+				if (persist) {
+					getQueryResultTableDao().getHibernateTemplate().save(col);
+				}
 				table.getColumns().add(col);
 
 				QueryResultRow row = new QueryResultRow();
 				row.setTable(table);
-				getQueryResultTableDao().getHibernateTemplate().save(row);
+				if (persist) {
+					getQueryResultTableDao().getHibernateTemplate().save(row);
+				}
 				table.getRows().add(row);
 
 				QueryResultCell cell = new QueryResultCell();
 				cell.setValue(attributes.getValue("count"));
 				cell.setRow(row);
 				cell.setColumn(col);
-				getQueryResultTableDao().getHibernateTemplate().save(cell);
+				if (persist) {
+					getQueryResultTableDao().getHibernateTemplate().save(cell);
+				}
 				row.getCells().add(cell);
 
 			} else if (ResultType.ATTRIBUTE.equals(resultType)) {
@@ -100,13 +120,17 @@ public class XMLQueryResultToQueryResultTableHandler extends
 				if ("AttributeResult".equals(localName)) {
 
 					if (currentRow != null) {
-						getQueryResultTableDao().getHibernateTemplate().save(
-								currentRow);
+						if (persist) {
+							getQueryResultTableDao().getHibernateTemplate()
+									.save(currentRow);
+						}
 					}
 					currentRow = new QueryResultRow();
 					currentRow.setTable(table);
-					getQueryResultTableDao().getHibernateTemplate().save(
-							currentRow);
+					if (persist) {
+						getQueryResultTableDao().getHibernateTemplate().save(
+								currentRow);
+					}
 					table.getRows().add(currentRow);
 
 				} else if ("Attribute".equals(localName)) {
@@ -118,28 +142,44 @@ public class XMLQueryResultToQueryResultTableHandler extends
 						col = new QueryResultColumn();
 						col.setName(name);
 						col.setTable(table);
-						getQueryResultTableDao().getHibernateTemplate().save(
-								col);
+						if (persist) {
+							getQueryResultTableDao().getHibernateTemplate()
+									.save(col);
+						}
 						cols.put(name, col);
 					}
 					QueryResultCell cell = new QueryResultCell();
 					cell.setRow(currentRow);
 					cell.setColumn(col);
 					cell.setValue(value);
-					getQueryResultTableDao().getHibernateTemplate().save(cell);
+					if (persist) {
+						getQueryResultTableDao().getHibernateTemplate().save(
+								cell);
+					}
 					currentRow.getCells().add(cell);
 				}
 			} else if (ResultType.OBJECT.equals(resultType)) {
-
+				
+				
 				if ("ObjectResult".equals(localName)) {
 					if (currentRow != null) {
-						getQueryResultTableDao().getHibernateTemplate().save(
-								currentRow);
+						if (persist) {
+							getQueryResultTableDao().getHibernateTemplate()
+									.save(currentRow);
+						}
 					}
 					currentRow = new QueryResultRow();
 					currentRow.setTable(table);
-					getQueryResultTableDao().getHibernateTemplate().save(
-							currentRow);
+
+					if (dataServiceUrl == null) {
+						throw new RuntimeException(
+								"Couldn't determine source URL");
+					}
+					currentRow.setServiceUrl(dataServiceUrl);
+					if (persist) {
+						getQueryResultTableDao().getHibernateTemplate().save(
+								currentRow);
+					}
 					table.getRows().add(currentRow);
 
 				} else if ("ObjectResult".equals(elementStack.get(elementStack
@@ -154,16 +194,20 @@ public class XMLQueryResultToQueryResultTableHandler extends
 							col = new QueryResultColumn();
 							col.setName(name);
 							col.setTable(table);
-							getQueryResultTableDao().getHibernateTemplate()
-									.save(col);
+							if (persist) {
+								getQueryResultTableDao().getHibernateTemplate()
+										.save(col);
+							}
 							cols.put(name, col);
 						}
 						QueryResultCell cell = new QueryResultCell();
 						cell.setRow(currentRow);
 						cell.setColumn(col);
 						cell.setValue(value);
-						getQueryResultTableDao().getHibernateTemplate().save(
-								cell);
+						if (persist) {
+							getQueryResultTableDao().getHibernateTemplate()
+									.save(cell);
+						}
 						currentRow.getCells().add(cell);
 
 					}
@@ -184,32 +228,39 @@ public class XMLQueryResultToQueryResultTableHandler extends
 	}
 
 	public void endDocument() {
-		if (ResultType.OBJECT.equals(resultType) && getColumnNames() != null
-				&& getColumnNames().size() > 0) {
-			for (String colName : getColumnNames()) {
+		List<String> colNames = getColumnNames();
+		if (ResultType.OBJECT.equals(resultType) && colNames != null
+				&& colNames.size() > 0) {
+			for (String colName : colNames) {
 				if (!cols.containsKey(colName)) {
 					QueryResultColumn col = new QueryResultColumn();
 					col.setName(colName);
 					col.setTable(table);
-					getQueryResultTableDao().getHibernateTemplate().save(col);
+					if (persist) {
+						getQueryResultTableDao().getHibernateTemplate().save(
+								col);
+					}
 					cols.put(colName, col);
 				}
 			}
 
 		}
 		try {
-			
+
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			GZIPOutputStream gOut = new GZIPOutputStream(out);
 			gOut.write(table.getQueryInstance().getResult().getBytes());
 			table.getQueryInstance().setResult(null);
-			
+
 			QueryResultData data = new QueryResultData();
 			data.setData(out.toByteArray());
-			
-			getQueryResultTableDao().getHibernateTemplate().save(data);
+			if (persist) {
+				getQueryResultTableDao().getHibernateTemplate().save(data);
+			}
 			table.setData(data);
-			getQueryResultTableDao().save(table);
+			if (persist) {
+				getQueryResultTableDao().save(table);
+			}
 		} catch (Exception ex) {
 			throw new RuntimeException("Error saving data: " + ex.getMessage(),
 					ex);
@@ -263,5 +314,21 @@ public class XMLQueryResultToQueryResultTableHandler extends
 	public void setQueryResultColumnNameResolver(
 			QueryResultColumnNameResolver queryResultColumnNameResolver) {
 		this.queryResultColumnNameResolver = queryResultColumnNameResolver;
+	}
+
+	public String getDataServiceUrl() {
+		return dataServiceUrl;
+	}
+
+	public void setDataServiceUrl(String dataServiceUrl) {
+		this.dataServiceUrl = dataServiceUrl;
+	}
+
+	public boolean isPersist() {
+		return persist;
+	}
+
+	public void setPersist(boolean persist) {
+		this.persist = persist;
 	}
 }

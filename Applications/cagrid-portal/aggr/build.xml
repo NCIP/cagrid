@@ -200,6 +200,10 @@
     <target name="run-kill-grid-svcs" depends="jar">
         <java classname="gov.nih.nci.cagrid.portal.util.KillGridServices" classpathref="run.cp" maxmemory="2048M" fork="true"/>
     </target>
+	
+	 <target name="run-deletequeries" depends="jar">
+        <java classname="gov.nih.nci.cagrid.portal.util.DeleteQueries" classpathref="run.cp" maxmemory="2048M" fork="true"/>
+    </target>
 
     <target name="report:svcs-with-status" depends="jar" description="Will report all services with the given status">
         <input message="Enter Service Status to report on:" validargs="DORMANT,BANNED,ACTIVE,INACTIVE"

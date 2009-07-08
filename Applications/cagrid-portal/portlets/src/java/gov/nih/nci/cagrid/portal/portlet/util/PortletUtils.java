@@ -300,7 +300,7 @@ public class PortletUtils {
 	public static String normalizeDCQL(String queryXML){
 		StringWriter w = new StringWriter();
         try {
-			Utils.serializeObject(parseCQL(queryXML), DCQLConstants.DCQL_QUERY_QNAME, w);
+			Utils.serializeObject(parseDCQL(queryXML), DCQLConstants.DCQL_QUERY_QNAME, w);
 		} catch (Exception ex) {
 			throw new RuntimeException("Error normalizing DCQL: " + ex.getMessage(), ex);
 		}

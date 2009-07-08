@@ -86,7 +86,6 @@
 	<classpathentry kind="lib" path="ext/default/jars/globus_wsrf_mds_aggregator.jar"/>
 	<classpathentry kind="lib" path="ext/default/jars/globus_wsrf_servicegroup_stubs.jar"/>
 	<classpathentry kind="lib" path="ext/default/jars/globus_wsrf_servicegroup.jar"/>
-	<classpathentry kind="lib" path="ext/default/jars/hibernate3.jar"/>
 	<classpathentry kind="lib" path="ext/default/jars/hibernate-annotations.jar"/>
 	<classpathentry kind="lib" path="ext/default/jars/hibernate-commons-annotations.jar"/>
 	<classpathentry kind="lib" path="ext/default/jars/hibernate-search.jar"/>
@@ -168,5 +167,6 @@
 	<classpathentry kind="lib" path="ext/default/jars/jena.jar"/>
 	<classpathentry kind="lib" path="ext/default/jars/slf4j-api-1.5.6.jar"/>
 	<classpathentry kind="lib" path="ext/default/jars/slf4j-log4j12-1.5.6.jar"/>
+	<classpathentry kind="lib" path="ext/default/jars/hibernate3-patch.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

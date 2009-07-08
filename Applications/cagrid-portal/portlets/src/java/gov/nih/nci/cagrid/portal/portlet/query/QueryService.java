@@ -17,6 +17,7 @@ import gov.nih.nci.cagrid.portal.domain.dataservice.Query;
 import gov.nih.nci.cagrid.portal.domain.dataservice.QueryInstance;
 import gov.nih.nci.cagrid.portal.portlet.UserModel;
 import gov.nih.nci.cagrid.portal.portlet.query.cql.CQLQueryInstanceExecutor;
+import gov.nih.nci.cagrid.portal.portlet.query.dcql.DCQLQueryInstanceExecutor;
 import gov.nih.nci.cagrid.portal.portlet.util.PortletUtils;
 import gov.nih.nci.cagrid.portal.util.PortalUtils;
 
@@ -79,7 +80,7 @@ public class QueryService implements ApplicationContextAware {
 				set.add(instance);
 			}
 		}
-		for(QueryInstance instance : set){
+		for (QueryInstance instance : set) {
 			map.put(instance.getCreateTime(), instance);
 		}
 		for (QueryInstance instance : map.values()) {
@@ -105,30 +106,43 @@ public class QueryService implements ApplicationContextAware {
 
 	protected DCQLQueryInstance submitDCQLQuery(String queryXML,
 			String serviceUrl) {
+
+		String hash = PortalUtils.createHash(queryXML);
+		DCQLQuery query = (DCQLQuery) getQueryDao().getQueryByHash(hash);
+		if (query == null) {
+			query = new DCQLQuery();
+			query.setXml(queryXML);
+			query.setHash(hash);
+
+			getQueryDao().save(query);
+		}
+		
+		if(query.getTargetServices() == null || query.getTargetServices().size() == 0){
+			List<GridDataService> targetServices = new ArrayList<GridDataService>();
+			Set<String> svcUrls = null;
+			try {
+				svcUrls = PortletUtils.getTargetServiceUrls(queryXML);
+			} catch (Exception ex) {
+				throw new RuntimeException(
+						"Error getting target service URLs from DCQL query: "
+								+ ex.getMessage(), ex);
+			}
+			for (String svcUrl : svcUrls) {
+				GridDataService svc = (GridDataService) getGridServiceDao()
+						.getByUrl(svcUrl);
+				targetServices.add(svc);
+			}
+			query.setTargetServices(targetServices);
+			getQueryDao().save(query);
+		}
+
 		DCQLQueryInstance instance = new DCQLQueryInstance();
 		instance.setCreateTime(new Date());
-		GridDataService dataService = (GridDataService) getGridServiceDao()
-				.getByUrl(serviceUrl);
-
-		DCQLQuery query = (DCQLQuery) getQuery(queryXML);
-		Set<String> svcUrls = null;
-		try {
-			svcUrls = PortletUtils.getTargetServiceUrls(queryXML);
-		} catch (Exception ex) {
-			throw new RuntimeException(
-					"Error getting target service URLs from DCQL query: "
-							+ ex.getMessage(), ex);
-		}
-		for (String svcUrl : svcUrls) {
-			GridDataService svc = (GridDataService) getGridServiceDao()
-					.getByUrl(svcUrl);
-			query.getTargetServices().add(svc);
-		}
 		instance.setPortalUser(getUserModel().getPortalUser());
 		instance.setQuery(query);
 		getQueryInstanceDao().save(instance);
 
-		CQLQueryInstanceExecutor executor = (CQLQueryInstanceExecutor) getApplicationContext()
+		DCQLQueryInstanceExecutor executor = (DCQLQueryInstanceExecutor) getApplicationContext()
 				.getBean(getDcqlQueryExecutorBeanName());
 		startQueryInstance(instance, executor);
 
@@ -136,13 +150,23 @@ public class QueryService implements ApplicationContextAware {
 	}
 
 	protected CQLQueryInstance submitCQLQuery(String queryXML, String serviceUrl) {
+
+		String hash = PortalUtils.createHash(queryXML);
+		CQLQuery query = (CQLQuery) getQueryDao().getQueryByHash(hash);
+		if (query == null) {
+			query = new CQLQuery();
+			query.setXml(queryXML);
+			query.setHash(hash);
+			getQueryDao().save(query);
+		}
+
 		CQLQueryInstance instance = new CQLQueryInstance();
 		instance.setCreateTime(new Date());
 		GridDataService dataService = (GridDataService) getGridServiceDao()
 				.getByUrl(serviceUrl);
 		instance.setDataService(dataService);
 		instance.setPortalUser(getUserModel().getPortalUser());
-		instance.setQuery(getQuery(queryXML));
+		instance.setQuery(query);
 		getQueryInstanceDao().save(instance);
 
 		CQLQueryInstanceExecutor executor = (CQLQueryInstanceExecutor) getApplicationContext()
@@ -150,19 +174,6 @@ public class QueryService implements ApplicationContextAware {
 		startQueryInstance(instance, executor);
 
 		return instance;
-	}
-
-	protected Query getQuery(String queryXML) {
-		String xml = PortletUtils.normalizeCQL(queryXML);
-		String hash = PortalUtils.createHash(xml);
-		Query query = getQueryDao().getQueryByHash(hash);
-		if (query == null) {
-			query = new CQLQuery();
-			query.setXml(xml);
-			query.setHash(hash);
-			getQueryDao().save(query);
-		}
-		return query;
 	}
 
 	protected void startQueryInstance(QueryInstance instance,
