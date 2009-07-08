@@ -2,14 +2,10 @@ package gov.nih.nci.cagrid.portal.search;
 
 import gov.nih.nci.cagrid.portal.DBIntegrationTestBase;
 import gov.nih.nci.cagrid.portal.dao.PortalUserDao;
-import gov.nih.nci.cagrid.portal.dao.catalog.CatalogEntryDao;
-import gov.nih.nci.cagrid.portal.dao.catalog.GridServiceEndPointCatalogEntryDao;
-import gov.nih.nci.cagrid.portal.dao.catalog.InstitutionCatalogEntryDao;
-import gov.nih.nci.cagrid.portal.dao.catalog.PersonCatalogEntryDao;
-import gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntry;
-import gov.nih.nci.cagrid.portal.domain.catalog.GridServiceEndPointCatalogEntry;
-import gov.nih.nci.cagrid.portal.domain.catalog.InstitutionCatalogEntry;
-import gov.nih.nci.cagrid.portal.domain.catalog.PersonCatalogEntry;
+import gov.nih.nci.cagrid.portal.dao.catalog.*;
+import gov.nih.nci.cagrid.portal.domain.catalog.*;
+import gov.nih.nci.cagrid.portal.domain.DomainObject;
+import gov.nih.nci.cagrid.portal.domain.AbstractDomainObject;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpMethod;
@@ -55,6 +51,15 @@ public class PortalDaoAspectTest extends DBIntegrationTestBase {
 
     }
 
+    public void testNonCatalog() throws Exception{
+        AbstractDomainObject obj = new Term();
+        AbstractCatalogEntryDao cEDao = (CatalogEntryDao) getApplicationContext().getBean("catalogEntryDao");
+        cEDao.save(obj);
+        assertFalse("Solr HTTP interface should not be called for non CatalogEntry", MockHttpClient.assertJustRan());
+        MockHttpClient httpClient = (MockHttpClient) getApplicationContext().getBean("defaultHttpClient");
+         httpClient.executeMethod(null);
+        
+    }
     public void testCEAspect() {
         CatalogEntry ce = new CatalogEntry();
         CatalogEntryDao cEDao = (CatalogEntryDao) getApplicationContext().getBean("catalogEntryDao");

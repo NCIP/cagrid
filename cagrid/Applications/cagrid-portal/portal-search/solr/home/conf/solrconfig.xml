@@ -529,11 +529,23 @@ concurrently.  An error is returned if this limit is exceeded. Recommend
         <str name="terms_label">Area Of Focus</str>
 
         <lst name="catalog_type">
-          <str name="tool_grid_service_endpoint">Grid Service</str>
+          <str name="tool_grid_service_endpoint">Grid Service Endpoint</str>
             <str name="person">People</str>
             <str name="institution">Institution</str>
-            <str name="tool_shared_query">Queries</str>
-            <str name="tool">Tools</str>
+            <str name="tool_shared_query">Shared Query</str>
+            <str name="tool">Tool</str>
+            <str name="dataset">Dataset</str>
+            <str name="tool_desktop">Desktop Tool</str>
+            <str name="community">Communities</str>
+            <str name="information_model">Information Model</str>
+            <str name="tool_grid_service_interface">Grid Service Interface</str>
+            <str name="kc">Knowledge Center</str>
+            <str name="tool_portlet">Portlet</str>
+            <str name="project">Community Project</str>
+            <str name="terminology">Terminology</str>
+            <str name="tool_deployment">Tool Deployment</str>
+            <str name="tool_workflow">Workflow</str>
+            <str name="tool_workspace">Workspace</str>
         </lst>
 
 
