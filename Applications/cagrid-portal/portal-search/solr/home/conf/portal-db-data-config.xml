@@ -7,8 +7,9 @@
 
         <entity name="AllCatalogs"
                 query="select * from cat_entry"
+                pk="id"
                 deltaImportQuery="select * from cat_entry where id=='${dataimporter.delta.id}'"
-                deltaQuery="select id from cat_entry where where updatedAt > '${dataimporter.last_index_time}'">
+                deltaQuery="select id from cat_entry where updatedAt > '${dataimporter.last_index_time}'">
             <field column="id" name="id"/>
             <field column="catalog_type" name="catalog_type"/>
             <field column="name" name="catalogName"/>
