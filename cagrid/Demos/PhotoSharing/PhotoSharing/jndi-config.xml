@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jndiConfig xmlns="http://wsrf.globus.org/jndi/config">
+  <service name="SERVICE-INSTANCE-PREFIX/Gallery">
+    <resource name="configuration" type="org.cagrid.demo.photosharing.gallery.service.globus.resource.GalleryResourceConfiguration">
+      <resourceParams>
+        <parameter>
+          <name>factory</name>
+          <value>org.globus.wsrf.jndi.BeanFactory</value>
+        </parameter>
+        <parameter>
+          <name>performRegistration</name>
+          <!-- Set this to false to skip ServiceGroup registration -->
+          <value>PERFORM_REGISTRATION</value>
+        </parameter>
+        <parameter>
+          <name>registrationTemplateFile</name>
+          <!-- Set this to the relative path (from the container root, e.g GLOBUS_LOCATION for globus container) of the registration parameters template file (ignored if performRegistration is false) -->
+          <value>ETC-PATH/Gallery_registration.xml</value>
+        </parameter>
+      </resourceParams>
+    </resource>
+    <resource name="home" type="org.cagrid.demo.photosharing.gallery.service.globus.resource.GalleryResourceHome">
+      <resourceParams>
+        <parameter>
+          <name>factory</name>
+          <value>org.globus.wsrf.jndi.BeanFactory</value>
+        </parameter>
+        <parameter>
+          <name>resourceClass</name>
+          <value>org.cagrid.demo.photosharing.gallery.service.globus.resource.GalleryResource</value>
+        </parameter>
+        <parameter>
+          <name>resourceKeyName</name>
+          <value>{http://photosharing.demo.cagrid.org/PhotoSharing/Gallery}GalleryResultsKey</value>
+        </parameter>
+        <parameter>
+          <name>resourceKeyType</name>
+          <value>java.lang.String</value>
+        </parameter>
+      </resourceParams>
+    </resource>
+    <resourceLink name="serviceconfiguration" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/PhotoSharing/serviceconfiguration" />
+    <resourceLink name="photoSharingHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/PhotoSharing/home" />
+  </service>
+  <service name="SERVICE-INSTANCE-PREFIX/PhotoSharing">
+    <resource name="configuration" type="org.cagrid.demo.photosharing.service.globus.resource.PhotoSharingResourceConfiguration">
+      <resourceParams>
+        <parameter>
+          <name>factory</name>
+          <value>org.globus.wsrf.jndi.BeanFactory</value>
+        </parameter>
+        <parameter>
+          <name>performRegistration</name>
+          <!-- Set this to false to skip ServiceGroup registration -->
+          <value>PERFORM_REGISTRATION</value>
+        </parameter>
+        <parameter>
+          <name>registrationTemplateFile</name>
+          <!-- Set this to the relative path (from the container root, e.g GLOBUS_LOCATION for globus container) of the registration parameters template file (ignored if performRegistration is false) -->
+          <value>ETC-PATH/PhotoSharing_registration.xml</value>
+        </parameter>
+      </resourceParams>
+    </resource>
+    <resource name="serviceconfiguration" type="org.cagrid.demo.photosharing.service.PhotoSharingConfiguration">
+      <resourceParams>
+        <parameter>
+          <name>factory</name>
+          <value>org.globus.wsrf.jndi.BeanFactory</value>
+        </parameter>
+        <parameter>
+          <name>etcDirectoryPath</name>
+          <value>ETC-PATH</value>
+        </parameter>
+        <parameter>
+          <name>gridGrouperURL</name>
+          <value>@gridGrouperURL@</value>
+        </parameter>
+        <parameter>
+          <name>serviceStemSystemName</name>
+          <value>@serviceStemSystemName@</value>
+        </parameter>
+      </resourceParams>
+    </resource>
+    <resource name="home" type="org.cagrid.demo.photosharing.service.globus.resource.PhotoSharingResourceHome">
+      <resourceParams>
+        <parameter>
+          <name>factory</name>
+          <value>org.globus.wsrf.jndi.BeanFactory</value>
+        </parameter>
+      </resourceParams>
+    </resource>
+    <resourceLink name="galleryHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/Gallery/home" />
+  </service>
+</jndiConfig>
+

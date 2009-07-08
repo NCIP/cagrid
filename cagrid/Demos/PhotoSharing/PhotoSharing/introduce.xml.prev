@@ -1,0 +1,449 @@
+<ns1:ServiceDescription introduceVersion="1.3" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
+ <ns2:Namespaces xsi:type="ns2:NamespacesType" xmlns:ns2="gme://gov.nih.nci.cagrid.introduce/1/Namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns2:Namespace generateStubs="false" location="org.cagrid.demo.photosharing.domain.xsd" namespace="gme://org.cagrid.demo.photosharing.domain" packageName="org.cagrid.demo.photosharing.domain" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement className="Image" deserializer="org.cagrid.datatype.sdkmapping4.encoding.SDK41DeserializerFactory" serializer="org.cagrid.datatype.sdkmapping4.encoding.SDK41SerializerFactory" type="Image" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement className="ImageDescription" deserializer="org.cagrid.datatype.sdkmapping4.encoding.SDK41DeserializerFactory" serializer="org.cagrid.datatype.sdkmapping4.encoding.SDK41SerializerFactory" type="ImageDescription" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement className="User" deserializer="org.cagrid.datatype.sdkmapping4.encoding.SDK41DeserializerFactory" serializer="org.cagrid.datatype.sdkmapping4.encoding.SDK41SerializerFactory" type="User" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace generateStubs="false" namespace="http://www.w3.org/2001/XMLSchema" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="anySimpleType" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="anyType" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="anyURI" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="base64Binary" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="boolean" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="byte" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="date" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="dateTime" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="decimal" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="double" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="duration" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ENTITIES" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ENTITY" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="float" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="gDay" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="gMonth" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="gMonthDay" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="gYear" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="gYearMonth" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="hexBinary" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ID" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="IDREF" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="IDREFS" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="int" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="integer" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="language" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="long" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Name" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="NCName" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="negativeInteger" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="NMTOKEN" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="NMTOKENS" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="nonNegativeInteger" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="nonPositiveInteger" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="normalizedString" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="NOTATION" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="positiveInteger" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="QName" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="short" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="string" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="time" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="token" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="unsignedByte" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="unsignedInt" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="unsignedLong" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="unsignedShort" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace location="./PhotoSharingTypes.xsd" namespace="http://photosharing.demo.cagrid.org/PhotoSharing/types" packageName="org.cagrid.demo.photosharing.stubs.types" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="PhotoSharingException" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="PhotoSharingReference" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace generateStubs="false" location="./xsd/cagrid/types/security/security.xsd" namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" packageName="gov.nih.nci.cagrid.metadata.security" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="CommunicationMechanism" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="CommunicationStyle" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="GSISecureConversation" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="GSISecureMessage" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="GSITransport" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="None" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Operation" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ServiceSecurityMetadata" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace location="./GalleryTypes.xsd" namespace="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/types" packageName="org.cagrid.demo.photosharing.gallery.stubs.types" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="AuthorizationException" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="GalleryReference" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace location="../wsrf/lifetime/WS-ResourceLifetime.xsd" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd" packageName="org.oasis.wsrf.lifetime" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="CurrentTime" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="TerminationNotification" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="TerminationTime" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+ </ns2:Namespaces>
+ <ns3:Services xsi:type="ns3:ServicesType" xmlns:ns3="gme://gov.nih.nci.cagrid.introduce/1/Services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns3:Service name="PhotoSharing" namespace="http://photosharing.demo.cagrid.org/PhotoSharing" packageName="org.cagrid.demo.photosharing" xsi:type="ns3:ServiceType">
+   <ns4:Methods xsi:type="ns4:MethodsType" xmlns:ns4="gme://gov.nih.nci.cagrid.introduce/1/Methods">
+    <ns4:Method isImported="true" isProvided="true" name="GetMultipleResourceProperties" xsi:type="ns4:MethodType">
+     <ns4:Output qName="void" isArray="false"/>
+     <ns5:MethodSecurity xsi:type="ns5:MethodSecurity" xmlns:ns5="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns5:SecuritySetting xsi:type="ns5:SecuritySetting">None</ns5:SecuritySetting>
+     </ns5:MethodSecurity>
+     <ns4:ImportInformation fromIntroduce="false" inputMessage="ns6:GetMultipleResourcePropertiesRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" outputMessage="ns6:GetMultipleResourcePropertiesResponse" packageName="org.oasis.wsrf.properties" portTypeName="GetMultipleResourceProperties" wsdlFile="../wsrf/properties/WS-ResourceProperties.wsdl" xmlns:ns6="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl"/>
+     <ns4:ProviderInformation providerClass="GetMRPProvider"/>
+    </ns4:Method>
+    <ns4:Method isImported="true" isProvided="true" name="GetResourceProperty" xsi:type="ns4:MethodType">
+     <ns4:Output qName="void" isArray="false"/>
+     <ns7:MethodSecurity xsi:type="ns7:MethodSecurity" xmlns:ns7="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns7:SecuritySetting xsi:type="ns7:SecuritySetting">None</ns7:SecuritySetting>
+     </ns7:MethodSecurity>
+     <ns4:ImportInformation fromIntroduce="false" inputMessage="ns8:GetResourcePropertyRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" outputMessage="ns8:GetResourcePropertyResponse" packageName="org.oasis.wsrf.properties" portTypeName="GetResourceProperty" wsdlFile="../wsrf/properties/WS-ResourceProperties.wsdl" xmlns:ns8="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl"/>
+     <ns4:ProviderInformation providerClass="GetRPProvider"/>
+    </ns4:Method>
+    <ns4:Method isImported="true" isProvided="true" name="QueryResourceProperties" xsi:type="ns4:MethodType">
+     <ns4:Output qName="void" isArray="false"/>
+     <ns9:MethodSecurity xsi:type="ns9:MethodSecurity" xmlns:ns9="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns9:SecuritySetting xsi:type="ns9:SecuritySetting">None</ns9:SecuritySetting>
+     </ns9:MethodSecurity>
+     <ns4:ImportInformation fromIntroduce="false" inputMessage="ns10:QueryResourcePropertiesRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" outputMessage="ns10:QueryResourcePropertiesResponse" packageName="org.oasis.wsrf.properties" portTypeName="QueryResourceProperties" wsdlFile="../wsrf/properties/WS-ResourceProperties.wsdl" xmlns:ns10="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl"/>
+     <ns4:ProviderInformation providerClass="QueryRPProvider"/>
+    </ns4:Method>
+    <ns4:Method isImported="true" isProvided="true" name="getServiceSecurityMetadata" xsi:type="ns4:MethodType">
+     <ns4:Output qName="ns11:ServiceSecurityMetadata" isArray="false" isClientHandle="false" xmlns:ns11="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+     <ns12:MethodSecurity xsi:type="ns12:MethodSecurity" xmlns:ns12="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns12:SecuritySetting xsi:type="ns12:SecuritySetting">None</ns12:SecuritySetting>
+      <ns12:MethodAuthorization xsi:type="ns12:MethodAuthorization">
+       <ns12:NoAuthorization xsi:type="ns12:NoAuthorization"/>
+      </ns12:MethodAuthorization>
+     </ns12:MethodSecurity>
+     <ns4:ImportInformation namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" packageName="gov.nih.nci.cagrid.introduce.security.stubs" portTypeName="ServiceSecurityPortType" wsdlFile="ServiceSecurity.wsdl"/>
+     <ns4:ProviderInformation providerClass="gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl"/>
+    </ns4:Method>
+    <ns4:Method description="Create a photo gallery" isImported="false" isProvided="false" name="createGallery" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="xsd:string" description="" isArray="false" name="galleryName" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+     </ns4:Inputs>
+     <ns4:Output qName="ns13:GalleryReference" clientHandleClass="org.cagrid.demo.photosharing.gallery.client.GalleryClient" description="" isArray="false" isClientHandle="true" isCreatingResourceForClientHandle="true" resourceClientIntroduceServiceName="Gallery" xmlns:ns13="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/types"/>
+     <ns4:Exceptions>
+      <ns4:Exception description="" name="PhotoSharingException" qname="ns14:PhotoSharingException" xmlns:ns14="http://photosharing.demo.cagrid.org/PhotoSharing/types"/>
+     </ns4:Exceptions>
+     <ns15:MethodSecurity xsi:type="ns15:MethodSecurity" xmlns:ns15="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns15:SecuritySetting xsi:type="ns15:SecuritySetting">Custom</ns15:SecuritySetting>
+      <ns15:TransportLevelSecurity xsi:type="ns15:TransportLevelSecurity">
+       <ns15:CommunicationMethod xsi:type="ns15:CommunicationMethod">Privacy</ns15:CommunicationMethod>
+      </ns15:TransportLevelSecurity>
+      <ns15:RunAsMode xsi:type="ns15:RunAsMode">System</ns15:RunAsMode>
+      <ns15:AnonymousClients xsi:type="ns15:AnonymousCommunication">No</ns15:AnonymousClients>
+      <ns15:MethodAuthorization xsi:type="ns15:MethodAuthorization">
+       <ns15:InheritServiceAuthorization xsi:type="ns15:InheritServiceAuthorization"/>
+      </ns15:MethodAuthorization>
+     </ns15:MethodSecurity>
+     <ns16:Extensions xsi:type="ns16:ExtensionsType" xmlns:ns16="gme://gov.nih.nci.cagrid.introduce/1/Extension"/>
+    </ns4:Method>
+    <ns4:Method description="List all galleries" isImported="false" isProvided="false" name="listGalleries" xsi:type="ns4:MethodType">
+     <ns4:Inputs/>
+     <ns4:Output qName="ns17:GalleryReference" clientHandleClass="org.cagrid.demo.photosharing.gallery.client.GalleryClient" description="" isArray="true" isClientHandle="true" isCreatingResourceForClientHandle="true" resourceClientIntroduceServiceName="Gallery" xmlns:ns17="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/types"/>
+     <ns4:Exceptions/>
+     <ns18:MethodSecurity xsi:type="ns18:MethodSecurity" xmlns:ns18="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns18:SecuritySetting xsi:type="ns18:SecuritySetting">Custom</ns18:SecuritySetting>
+      <ns18:TransportLevelSecurity xsi:type="ns18:TransportLevelSecurity">
+       <ns18:CommunicationMethod xsi:type="ns18:CommunicationMethod">Privacy</ns18:CommunicationMethod>
+      </ns18:TransportLevelSecurity>
+      <ns18:RunAsMode xsi:type="ns18:RunAsMode">System</ns18:RunAsMode>
+      <ns18:AnonymousClients xsi:type="ns18:AnonymousCommunication">No</ns18:AnonymousClients>
+      <ns18:MethodAuthorization xsi:type="ns18:MethodAuthorization">
+       <ns18:InheritServiceAuthorization xsi:type="ns18:InheritServiceAuthorization"/>
+      </ns18:MethodAuthorization>
+     </ns18:MethodSecurity>
+     <ns19:Extensions xsi:type="ns19:ExtensionsType" xmlns:ns19="gme://gov.nih.nci.cagrid.introduce/1/Extension"/>
+    </ns4:Method>
+   </ns4:Methods>
+   <ns20:ServiceSecurity xsi:type="ns20:ServiceSecurity" xmlns:ns20="gme://gov.nih.nci.cagrid.introduce/1/Security">
+    <ns20:SecuritySetting xsi:type="ns20:SecuritySetting">Custom</ns20:SecuritySetting>
+    <ns20:TransportLevelSecurity xsi:type="ns20:TransportLevelSecurity">
+     <ns20:CommunicationMethod xsi:type="ns20:CommunicationMethod">Privacy</ns20:CommunicationMethod>
+    </ns20:TransportLevelSecurity>
+    <ns20:RunAsMode xsi:type="ns20:RunAsMode">System</ns20:RunAsMode>
+    <ns20:AnonymousClients xsi:type="ns20:AnonymousCommunication">No</ns20:AnonymousClients>
+    <ns20:ServiceAuthorization xsi:type="ns20:ServiceAuthorization">
+     <ns20:IntroducePDPAuthorization xsi:type="ns20:IntroducePDPAuthorization"/>
+    </ns20:ServiceAuthorization>
+   </ns20:ServiceSecurity>
+   <ns3:description xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"></ns3:description>
+   <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
+    <ns3:Main xsi:type="ns3:Main"/>
+    <ns3:Singleton xsi:type="ns3:Singleton"/>
+    <ns3:Identifiable xsi:type="ns3:Identifiable"/>
+    <ns3:ResourcePropertyManagement xsi:type="ns3:ResourcePropertyManagement"/>
+   </ns3:ResourceFrameworkOptions>
+   <ns21:Extensions xsi:type="ns21:ExtensionsType" xmlns:ns21="gme://gov.nih.nci.cagrid.introduce/1/Extension">
+    <ns21:Extension extensionType="AUTHORIZATION" name="enforce_auth" xsi:type="ns21:ExtensionType"/>
+   </ns21:Extensions>
+  </ns3:Service>
+  <ns3:Service name="Gallery" namespace="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery" packageName="org.cagrid.demo.photosharing.gallery" xsi:type="ns3:ServiceType">
+   <ns22:Methods xsi:type="ns22:MethodsType" xmlns:ns22="gme://gov.nih.nci.cagrid.introduce/1/Methods">
+    <ns22:Method isImported="true" isProvided="true" name="getServiceSecurityMetadata" xsi:type="ns22:MethodType">
+     <ns22:Output qName="ns23:ServiceSecurityMetadata" isArray="false" isClientHandle="false" xmlns:ns23="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+     <ns24:MethodSecurity xsi:type="ns24:MethodSecurity" xmlns:ns24="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns24:SecuritySetting xsi:type="ns24:SecuritySetting">None</ns24:SecuritySetting>
+      <ns24:MethodAuthorization xsi:type="ns24:MethodAuthorization">
+       <ns24:NoAuthorization xsi:type="ns24:NoAuthorization"/>
+      </ns24:MethodAuthorization>
+     </ns24:MethodSecurity>
+     <ns22:ImportInformation namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" packageName="gov.nih.nci.cagrid.introduce.security.stubs" portTypeName="ServiceSecurityPortType" wsdlFile="ServiceSecurity.wsdl"/>
+     <ns22:ProviderInformation providerClass="gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl"/>
+    </ns22:Method>
+    <ns22:Method isImported="true" isProvided="true" name="Destroy" xsi:type="ns22:MethodType">
+     <ns22:Output qName="void" isArray="false"/>
+     <ns22:ImportInformation fromIntroduce="false" inputMessage="ns25:DestroyRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" outputMessage="ns25:DestroyResponse" packageName="org.oasis.wsrf.lifetime" portTypeName="ImmediateResourceTermination" wsdlFile="../wsrf/lifetime/WS-ResourceLifetime.wsdl" xmlns:ns25="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl"/>
+     <ns22:ProviderInformation providerClass="DestroyProvider"/>
+    </ns22:Method>
+    <ns22:Method isImported="true" isProvided="true" name="SetTerminationTime" xsi:type="ns22:MethodType">
+     <ns22:Output qName="void" isArray="false"/>
+     <ns22:ImportInformation fromIntroduce="false" inputMessage="ns26:SetTerminationTimeRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" outputMessage="ns26:SetTerminationTimeResponse" packageName="org.oasis.wsrf.lifetime" portTypeName="ScheduledResourceTermination" wsdlFile="../wsrf/lifetime/WS-ResourceLifetime.wsdl" xmlns:ns26="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl"/>
+     <ns22:ProviderInformation providerClass="SetTerminationTimeProvider"/>
+    </ns22:Method>
+    <ns22:Method description="Add an image to the gallery" isImported="false" isProvided="false" name="addImage" xsi:type="ns22:MethodType">
+     <ns22:Inputs>
+      <ns22:Input qName="ns27:Image" description="" isArray="false" name="image" xmlns:ns27="gme://org.cagrid.demo.photosharing.domain"/>
+     </ns22:Inputs>
+     <ns22:Output qName="ns28:ImageDescription" description="" isArray="false" xmlns:ns28="gme://org.cagrid.demo.photosharing.domain"/>
+     <ns22:Exceptions>
+      <ns22:Exception description="" name="PhotoSharingException" qname="ns29:PhotoSharingException" xmlns:ns29="http://photosharing.demo.cagrid.org/PhotoSharing/types"/>
+      <ns22:Exception description="" name="AuthorizationException" qname="ns30:AuthorizationException" xmlns:ns30="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/types"/>
+     </ns22:Exceptions>
+     <ns31:MethodSecurity xsi:type="ns31:MethodSecurity" xmlns:ns31="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns31:SecuritySetting xsi:type="ns31:SecuritySetting">Custom</ns31:SecuritySetting>
+      <ns31:TransportLevelSecurity xsi:type="ns31:TransportLevelSecurity">
+       <ns31:CommunicationMethod xsi:type="ns31:CommunicationMethod">Privacy</ns31:CommunicationMethod>
+      </ns31:TransportLevelSecurity>
+      <ns31:RunAsMode xsi:type="ns31:RunAsMode">System</ns31:RunAsMode>
+      <ns31:AnonymousClients xsi:type="ns31:AnonymousCommunication">No</ns31:AnonymousClients>
+      <ns31:MethodAuthorization xsi:type="ns31:MethodAuthorization">
+       <ns31:InheritServiceAuthorization xsi:type="ns31:InheritServiceAuthorization"/>
+      </ns31:MethodAuthorization>
+     </ns31:MethodSecurity>
+     <ns32:Extensions xsi:type="ns32:ExtensionsType" xmlns:ns32="gme://gov.nih.nci.cagrid.introduce/1/Extension"/>
+    </ns22:Method>
+    <ns22:Method description="List all images in the gallery" isImported="false" isProvided="false" name="listImages" xsi:type="ns22:MethodType">
+     <ns22:Inputs/>
+     <ns22:Output qName="ns33:ImageDescription" description="" isArray="true" xmlns:ns33="gme://org.cagrid.demo.photosharing.domain"/>
+     <ns22:Exceptions>
+      <ns22:Exception description="" name="AuthorizationException" qname="ns34:AuthorizationException" xmlns:ns34="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/types"/>
+     </ns22:Exceptions>
+     <ns35:MethodSecurity xsi:type="ns35:MethodSecurity" xmlns:ns35="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns35:SecuritySetting xsi:type="ns35:SecuritySetting">Custom</ns35:SecuritySetting>
+      <ns35:TransportLevelSecurity xsi:type="ns35:TransportLevelSecurity">
+       <ns35:CommunicationMethod xsi:type="ns35:CommunicationMethod">Privacy</ns35:CommunicationMethod>
+      </ns35:TransportLevelSecurity>
+      <ns35:RunAsMode xsi:type="ns35:RunAsMode">System</ns35:RunAsMode>
+      <ns35:AnonymousClients xsi:type="ns35:AnonymousCommunication">No</ns35:AnonymousClients>
+      <ns35:MethodAuthorization xsi:type="ns35:MethodAuthorization">
+       <ns35:InheritServiceAuthorization xsi:type="ns35:InheritServiceAuthorization"/>
+      </ns35:MethodAuthorization>
+     </ns35:MethodSecurity>
+     <ns36:Extensions xsi:type="ns36:ExtensionsType" xmlns:ns36="gme://gov.nih.nci.cagrid.introduce/1/Extension"/>
+    </ns22:Method>
+    <ns22:Method description="Retrieve an image" isImported="false" isProvided="false" name="getImage" xsi:type="ns22:MethodType">
+     <ns22:Inputs>
+      <ns22:Input qName="ns37:ImageDescription" description="" isArray="false" name="imageDescription" xmlns:ns37="gme://org.cagrid.demo.photosharing.domain"/>
+     </ns22:Inputs>
+     <ns22:Output qName="ns38:Image" description="" isArray="false" xmlns:ns38="gme://org.cagrid.demo.photosharing.domain"/>
+     <ns22:Exceptions>
+      <ns22:Exception description="" name="AuthorizationException" qname="ns39:AuthorizationException" xmlns:ns39="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/types"/>
+      <ns22:Exception description="" name="PhotoSharingException" qname="ns40:PhotoSharingException" xmlns:ns40="http://photosharing.demo.cagrid.org/PhotoSharing/types"/>
+     </ns22:Exceptions>
+     <ns41:MethodSecurity xsi:type="ns41:MethodSecurity" xmlns:ns41="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns41:SecuritySetting xsi:type="ns41:SecuritySetting">Custom</ns41:SecuritySetting>
+      <ns41:TransportLevelSecurity xsi:type="ns41:TransportLevelSecurity">
+       <ns41:CommunicationMethod xsi:type="ns41:CommunicationMethod">Privacy</ns41:CommunicationMethod>
+      </ns41:TransportLevelSecurity>
+      <ns41:RunAsMode xsi:type="ns41:RunAsMode">System</ns41:RunAsMode>
+      <ns41:AnonymousClients xsi:type="ns41:AnonymousCommunication">No</ns41:AnonymousClients>
+      <ns41:MethodAuthorization xsi:type="ns41:MethodAuthorization">
+       <ns41:InheritServiceAuthorization xsi:type="ns41:InheritServiceAuthorization"/>
+      </ns41:MethodAuthorization>
+     </ns41:MethodSecurity>
+     <ns42:Extensions xsi:type="ns42:ExtensionsType" xmlns:ns42="gme://gov.nih.nci.cagrid.introduce/1/Extension"/>
+    </ns22:Method>
+    <ns22:Method description="Grant privileges for a user to view the gallery" isImported="false" isProvided="false" name="grantViewGalleryPrivileges" xsi:type="ns22:MethodType">
+     <ns22:Inputs>
+      <ns22:Input qName="ns43:User" description="" isArray="false" name="user" xmlns:ns43="gme://org.cagrid.demo.photosharing.domain"/>
+     </ns22:Inputs>
+     <ns22:Output qName="void" description="" isArray="false"/>
+     <ns22:Exceptions>
+      <ns22:Exception description="" name="AuthorizationException" qname="ns44:AuthorizationException" xmlns:ns44="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/types"/>
+      <ns22:Exception description="" name="PhotoSharingException" qname="ns45:PhotoSharingException" xmlns:ns45="http://photosharing.demo.cagrid.org/PhotoSharing/types"/>
+     </ns22:Exceptions>
+     <ns46:MethodSecurity xsi:type="ns46:MethodSecurity" xmlns:ns46="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns46:SecuritySetting xsi:type="ns46:SecuritySetting">Custom</ns46:SecuritySetting>
+      <ns46:TransportLevelSecurity xsi:type="ns46:TransportLevelSecurity">
+       <ns46:CommunicationMethod xsi:type="ns46:CommunicationMethod">Privacy</ns46:CommunicationMethod>
+      </ns46:TransportLevelSecurity>
+      <ns46:RunAsMode xsi:type="ns46:RunAsMode">System</ns46:RunAsMode>
+      <ns46:AnonymousClients xsi:type="ns46:AnonymousCommunication">No</ns46:AnonymousClients>
+      <ns46:MethodAuthorization xsi:type="ns46:MethodAuthorization">
+       <ns46:InheritServiceAuthorization xsi:type="ns46:InheritServiceAuthorization"/>
+      </ns46:MethodAuthorization>
+     </ns46:MethodSecurity>
+     <ns47:Extensions xsi:type="ns47:ExtensionsType" xmlns:ns47="gme://gov.nih.nci.cagrid.introduce/1/Extension"/>
+    </ns22:Method>
+    <ns22:Method description="Revoke privileges for a user to view the gallery" isImported="false" isProvided="false" name="revokeViewGalleryPrivileges" xsi:type="ns22:MethodType">
+     <ns22:Inputs>
+      <ns22:Input qName="ns48:User" description="" isArray="false" name="user" xmlns:ns48="gme://org.cagrid.demo.photosharing.domain"/>
+     </ns22:Inputs>
+     <ns22:Output qName="void" description="" isArray="false"/>
+     <ns22:Exceptions>
+      <ns22:Exception description="" name="AuthorizationException" qname="ns49:AuthorizationException" xmlns:ns49="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/types"/>
+      <ns22:Exception description="" name="PhotoSharingException" qname="ns50:PhotoSharingException" xmlns:ns50="http://photosharing.demo.cagrid.org/PhotoSharing/types"/>
+     </ns22:Exceptions>
+     <ns51:MethodSecurity xsi:type="ns51:MethodSecurity" xmlns:ns51="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns51:SecuritySetting xsi:type="ns51:SecuritySetting">Custom</ns51:SecuritySetting>
+      <ns51:TransportLevelSecurity xsi:type="ns51:TransportLevelSecurity">
+       <ns51:CommunicationMethod xsi:type="ns51:CommunicationMethod">Privacy</ns51:CommunicationMethod>
+      </ns51:TransportLevelSecurity>
+      <ns51:RunAsMode xsi:type="ns51:RunAsMode">System</ns51:RunAsMode>
+      <ns51:AnonymousClients xsi:type="ns51:AnonymousCommunication">No</ns51:AnonymousClients>
+      <ns51:MethodAuthorization xsi:type="ns51:MethodAuthorization">
+       <ns51:InheritServiceAuthorization xsi:type="ns51:InheritServiceAuthorization"/>
+      </ns51:MethodAuthorization>
+     </ns51:MethodSecurity>
+     <ns52:Extensions xsi:type="ns52:ExtensionsType" xmlns:ns52="gme://gov.nih.nci.cagrid.introduce/1/Extension"/>
+    </ns22:Method>
+    <ns22:Method description="Grant privileges to add an image to the gallery" isImported="false" isProvided="false" name="grantAddImagePrivileges" xsi:type="ns22:MethodType">
+     <ns22:Inputs>
+      <ns22:Input qName="ns53:User" description="" isArray="false" name="user" xmlns:ns53="gme://org.cagrid.demo.photosharing.domain"/>
+     </ns22:Inputs>
+     <ns22:Output qName="void" description="" isArray="false"/>
+     <ns22:Exceptions>
+      <ns22:Exception description="" name="AuthorizationException" qname="ns54:AuthorizationException" xmlns:ns54="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/types"/>
+      <ns22:Exception description="" name="PhotoSharingException" qname="ns55:PhotoSharingException" xmlns:ns55="http://photosharing.demo.cagrid.org/PhotoSharing/types"/>
+     </ns22:Exceptions>
+     <ns56:MethodSecurity xsi:type="ns56:MethodSecurity" xmlns:ns56="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns56:SecuritySetting xsi:type="ns56:SecuritySetting">Custom</ns56:SecuritySetting>
+      <ns56:TransportLevelSecurity xsi:type="ns56:TransportLevelSecurity">
+       <ns56:CommunicationMethod xsi:type="ns56:CommunicationMethod">Privacy</ns56:CommunicationMethod>
+      </ns56:TransportLevelSecurity>
+      <ns56:RunAsMode xsi:type="ns56:RunAsMode">System</ns56:RunAsMode>
+      <ns56:AnonymousClients xsi:type="ns56:AnonymousCommunication">No</ns56:AnonymousClients>
+      <ns56:MethodAuthorization xsi:type="ns56:MethodAuthorization">
+       <ns56:InheritServiceAuthorization xsi:type="ns56:InheritServiceAuthorization"/>
+      </ns56:MethodAuthorization>
+     </ns56:MethodSecurity>
+     <ns57:Extensions xsi:type="ns57:ExtensionsType" xmlns:ns57="gme://gov.nih.nci.cagrid.introduce/1/Extension"/>
+    </ns22:Method>
+    <ns22:Method description="Revoke privileges to add an image to the gallery" isImported="false" isProvided="false" name="revokeAddImagePrivileges" xsi:type="ns22:MethodType">
+     <ns22:Inputs>
+      <ns22:Input qName="ns58:User" description="" isArray="false" name="user" xmlns:ns58="gme://org.cagrid.demo.photosharing.domain"/>
+     </ns22:Inputs>
+     <ns22:Output qName="void" description="" isArray="false"/>
+     <ns22:Exceptions>
+      <ns22:Exception description="" name="AuthorizationException" qname="ns59:AuthorizationException" xmlns:ns59="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/types"/>
+      <ns22:Exception description="" name="PhotoSharingException" qname="ns60:PhotoSharingException" xmlns:ns60="http://photosharing.demo.cagrid.org/PhotoSharing/types"/>
+     </ns22:Exceptions>
+     <ns61:MethodSecurity xsi:type="ns61:MethodSecurity" xmlns:ns61="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns61:SecuritySetting xsi:type="ns61:SecuritySetting">Custom</ns61:SecuritySetting>
+      <ns61:TransportLevelSecurity xsi:type="ns61:TransportLevelSecurity">
+       <ns61:CommunicationMethod xsi:type="ns61:CommunicationMethod">Privacy</ns61:CommunicationMethod>
+      </ns61:TransportLevelSecurity>
+      <ns61:RunAsMode xsi:type="ns61:RunAsMode">System</ns61:RunAsMode>
+      <ns61:AnonymousClients xsi:type="ns61:AnonymousCommunication">No</ns61:AnonymousClients>
+      <ns61:MethodAuthorization xsi:type="ns61:MethodAuthorization">
+       <ns61:InheritServiceAuthorization xsi:type="ns61:InheritServiceAuthorization"/>
+      </ns61:MethodAuthorization>
+     </ns61:MethodSecurity>
+     <ns62:Extensions xsi:type="ns62:ExtensionsType" xmlns:ns62="gme://gov.nih.nci.cagrid.introduce/1/Extension"/>
+    </ns22:Method>
+    <ns22:Method description="Grant privileges to retrieve a specific image" isImported="false" isProvided="false" name="grantImageRetrievalPrivileges" xsi:type="ns22:MethodType">
+     <ns22:Inputs>
+      <ns22:Input qName="ns63:ImageDescription" description="" isArray="false" name="imageDescription" xmlns:ns63="gme://org.cagrid.demo.photosharing.domain"/>
+      <ns22:Input qName="ns64:User" description="" isArray="false" name="user" xmlns:ns64="gme://org.cagrid.demo.photosharing.domain"/>
+     </ns22:Inputs>
+     <ns22:Output qName="void" description="" isArray="false"/>
+     <ns22:Exceptions>
+      <ns22:Exception description="" name="AuthorizationException" qname="ns65:AuthorizationException" xmlns:ns65="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/types"/>
+      <ns22:Exception description="" name="PhotoSharingException" qname="ns66:PhotoSharingException" xmlns:ns66="http://photosharing.demo.cagrid.org/PhotoSharing/types"/>
+     </ns22:Exceptions>
+     <ns67:MethodSecurity xsi:type="ns67:MethodSecurity" xmlns:ns67="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns67:SecuritySetting xsi:type="ns67:SecuritySetting">Custom</ns67:SecuritySetting>
+      <ns67:TransportLevelSecurity xsi:type="ns67:TransportLevelSecurity">
+       <ns67:CommunicationMethod xsi:type="ns67:CommunicationMethod">Privacy</ns67:CommunicationMethod>
+      </ns67:TransportLevelSecurity>
+      <ns67:RunAsMode xsi:type="ns67:RunAsMode">System</ns67:RunAsMode>
+      <ns67:AnonymousClients xsi:type="ns67:AnonymousCommunication">No</ns67:AnonymousClients>
+      <ns67:MethodAuthorization xsi:type="ns67:MethodAuthorization">
+       <ns67:InheritServiceAuthorization xsi:type="ns67:InheritServiceAuthorization"/>
+      </ns67:MethodAuthorization>
+     </ns67:MethodSecurity>
+     <ns68:Extensions xsi:type="ns68:ExtensionsType" xmlns:ns68="gme://gov.nih.nci.cagrid.introduce/1/Extension"/>
+    </ns22:Method>
+    <ns22:Method description="Revoke privileges to retrieve a specific image" isImported="false" isProvided="false" name="revokeImageRetrievalPrivileges" xsi:type="ns22:MethodType">
+     <ns22:Inputs>
+      <ns22:Input qName="ns69:ImageDescription" description="" isArray="false" name="imageDescription" xmlns:ns69="gme://org.cagrid.demo.photosharing.domain"/>
+      <ns22:Input qName="ns70:User" description="" isArray="false" name="user" xmlns:ns70="gme://org.cagrid.demo.photosharing.domain"/>
+     </ns22:Inputs>
+     <ns22:Output qName="void" description="" isArray="false"/>
+     <ns22:Exceptions>
+      <ns22:Exception description="" name="AuthorizationException" qname="ns71:AuthorizationException" xmlns:ns71="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/types"/>
+      <ns22:Exception description="" name="PhotoSharingException" qname="ns72:PhotoSharingException" xmlns:ns72="http://photosharing.demo.cagrid.org/PhotoSharing/types"/>
+     </ns22:Exceptions>
+     <ns73:MethodSecurity xsi:type="ns73:MethodSecurity" xmlns:ns73="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns73:SecuritySetting xsi:type="ns73:SecuritySetting">Custom</ns73:SecuritySetting>
+      <ns73:TransportLevelSecurity xsi:type="ns73:TransportLevelSecurity">
+       <ns73:CommunicationMethod xsi:type="ns73:CommunicationMethod">Privacy</ns73:CommunicationMethod>
+      </ns73:TransportLevelSecurity>
+      <ns73:RunAsMode xsi:type="ns73:RunAsMode">System</ns73:RunAsMode>
+      <ns73:AnonymousClients xsi:type="ns73:AnonymousCommunication">No</ns73:AnonymousClients>
+      <ns73:MethodAuthorization xsi:type="ns73:MethodAuthorization">
+       <ns73:InheritServiceAuthorization xsi:type="ns73:InheritServiceAuthorization"/>
+      </ns73:MethodAuthorization>
+     </ns73:MethodSecurity>
+     <ns74:Extensions xsi:type="ns74:ExtensionsType" xmlns:ns74="gme://gov.nih.nci.cagrid.introduce/1/Extension"/>
+    </ns22:Method>
+    <ns22:Method description="Get the name of this gallery" isImported="false" isProvided="false" name="getGalleryName" xsi:type="ns22:MethodType">
+     <ns22:Inputs/>
+     <ns22:Output qName="xsd:string" description="" isArray="false" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+     <ns22:Exceptions>
+      <ns22:Exception description="" name="PhotoSharingException" qname="ns75:PhotoSharingException" xmlns:ns75="http://photosharing.demo.cagrid.org/PhotoSharing/types"/>
+     </ns22:Exceptions>
+     <ns76:MethodSecurity xsi:type="ns76:MethodSecurity" xmlns:ns76="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns76:SecuritySetting xsi:type="ns76:SecuritySetting">Custom</ns76:SecuritySetting>
+      <ns76:TransportLevelSecurity xsi:type="ns76:TransportLevelSecurity">
+       <ns76:CommunicationMethod xsi:type="ns76:CommunicationMethod">Privacy</ns76:CommunicationMethod>
+      </ns76:TransportLevelSecurity>
+      <ns76:RunAsMode xsi:type="ns76:RunAsMode">System</ns76:RunAsMode>
+      <ns76:AnonymousClients xsi:type="ns76:AnonymousCommunication">No</ns76:AnonymousClients>
+      <ns76:MethodAuthorization xsi:type="ns76:MethodAuthorization">
+       <ns76:InheritServiceAuthorization xsi:type="ns76:InheritServiceAuthorization"/>
+      </ns76:MethodAuthorization>
+     </ns76:MethodSecurity>
+     <ns77:Extensions xsi:type="ns77:ExtensionsType" xmlns:ns77="gme://gov.nih.nci.cagrid.introduce/1/Extension"/>
+    </ns22:Method>
+   </ns22:Methods>
+   <ns78:ResourcePropertiesList xsi:type="ns78:ResourcePropertiesListType" xmlns:ns78="gme://gov.nih.nci.cagrid.introduce/1/Resources">
+    <ns78:ResourceProperty qName="ns79:CurrentTime" populateFromFile="false" register="false" xsi:type="ns78:ResourcePropertyType" xmlns:ns79="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+    <ns78:ResourceProperty qName="ns80:TerminationTime" populateFromFile="false" register="false" xsi:type="ns78:ResourcePropertyType" xmlns:ns80="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+   </ns78:ResourcePropertiesList>
+   <ns81:ServiceSecurity xsi:type="ns81:ServiceSecurity" xmlns:ns81="gme://gov.nih.nci.cagrid.introduce/1/Security">
+    <ns81:SecuritySetting xsi:type="ns81:SecuritySetting">Custom</ns81:SecuritySetting>
+    <ns81:TransportLevelSecurity xsi:type="ns81:TransportLevelSecurity">
+     <ns81:CommunicationMethod xsi:type="ns81:CommunicationMethod">Privacy</ns81:CommunicationMethod>
+    </ns81:TransportLevelSecurity>
+    <ns81:RunAsMode xsi:type="ns81:RunAsMode">System</ns81:RunAsMode>
+    <ns81:AnonymousClients xsi:type="ns81:AnonymousCommunication">No</ns81:AnonymousClients>
+    <ns81:ServiceAuthorization xsi:type="ns81:ServiceAuthorization">
+     <ns81:IntroducePDPAuthorization xsi:type="ns81:IntroducePDPAuthorization"/>
+    </ns81:ServiceAuthorization>
+   </ns81:ServiceSecurity>
+   <ns3:description xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"></ns3:description>
+   <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
+    <ns3:Lifetime xsi:type="ns3:Lifetime"/>
+    <ns3:Identifiable xsi:type="ns3:Identifiable"/>
+   </ns3:ResourceFrameworkOptions>
+   <ns82:Extensions xsi:type="ns82:ExtensionsType" xmlns:ns82="gme://gov.nih.nci.cagrid.introduce/1/Extension">
+    <ns82:Extension extensionType="AUTHORIZATION" name="enforce_auth" xsi:type="ns82:ExtensionType"/>
+   </ns82:Extensions>
+  </ns3:Service>
+ </ns3:Services>
+ <ns83:Extensions xsi:type="ns83:ExtensionsType" xmlns:ns83="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+ <ns84:ServiceProperties xmlns:ns84="gme://gov.nih.nci.cagrid.introduce/1/Property">
+  <ns84:Property description="Grid Grouper service URL" isFromETC="false" key="gridGrouperURL" value="https://grouper.training.carid.org:8443/wsrf/services/cagrid/GridGrouper"/>
+  <ns84:Property description="System name of the service stem in Grid Grouper" isFromETC="false" key="serviceStemSystemName" value="Training:photoSharingcaBIGAnnualMeeting2009:justin-permars-macbook-pro.local"/>
+ </ns84:ServiceProperties>
+</ns1:ServiceDescription>

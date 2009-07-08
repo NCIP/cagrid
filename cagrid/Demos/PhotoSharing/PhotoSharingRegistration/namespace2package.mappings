@@ -1,0 +1,10 @@
+http\://photoservicereg.demos.cagrid.org/PhotoSharingRegistration=org.cagrid.demos.photoservicereg.stubs
+http\://photoservicereg.demos.cagrid.org/PhotoSharingRegistration/bindings=org.cagrid.demos.photoservicereg.stubs.bindings
+http\://photoservicereg.demos.cagrid.org/PhotoSharingRegistration/service=org.cagrid.demos.photoservicereg.stubs.service
+http\://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl=org.oasis.wsrf.properties
+http\://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl=org.oasis.wsrf.properties
+http\://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl=org.oasis.wsrf.properties
+http\://security.introduce.cagrid.nci.nih.gov/ServiceSecurity=gov.nih.nci.cagrid.introduce.security.stubs
+
+http\://photoservicereg.demos.cagrid.org/PhotoSharingRegistration/types=org.cagrid.demos.photoservicereg.stubs.types
+gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security=gov.nih.nci.cagrid.metadata.security

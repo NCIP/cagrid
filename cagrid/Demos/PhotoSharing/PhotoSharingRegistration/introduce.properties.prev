@@ -1,0 +1,11 @@
+#Introduce Properties
+#Wed Jul 08 13:35:32 EDT 2009
+introduce.skeleton.services.list=PhotoSharingRegistration
+introduce.skeleton.extensions=
+introduce.skeleton.timestamp=1247074004967
+introduce.skeleton.service.name=PhotoSharingRegistration
+introduce.skeleton.resource.options=main,singleton,identifiable,resourcePropertyManagement
+introduce.skeleton.destination.dir=/Users/jpermar/workspace/PhotoSharingRegistration
+introduce.skeleton.namespace.domain=http\://photoservicereg.demos.cagrid.org/PhotoSharingRegistration
+introduce.ns.excludes=\ -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security
+introduce.soap.binding.excludes=\ 
