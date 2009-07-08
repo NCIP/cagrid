@@ -35,33 +35,23 @@ public class AddUserToSharedSessionAttribute extends Action {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.liferay.portal.kernel.events.Action#run(javax.servlet.http.HttpServletRequest,
-	 *      javax.servlet.http.HttpServletResponse)
+	 * @seecom.liferay.portal.kernel.events.Action#run(javax.servlet.http.
+	 * HttpServletRequest, javax.servlet.http.HttpServletResponse)
 	 */
 	@Override
 	public void run(HttpServletRequest request, HttpServletResponse response)
 			throws ActionException {
-		System.out.println("#########################################");
-		System.out.println("#########################################");
-		System.out.println("#########################################");
 		try {
 			User user = PortalUtil.getUser(request);
 			if (user != null) {
 				String userId = user.getCompanyId() + ":" + user.getUserId();
-				System.out.println("Adding " + SHARED_SESSION_ATTRIBUTE_NAME + "="
-				+ userId + " to session.");
-				logger.debug("Adding " + SHARED_SESSION_ATTRIBUTE_NAME + "="
-						+ userId + " to session.");
 				request.getSession().setAttribute(
 						SHARED_SESSION_ATTRIBUTE_NAME, userId);
-			} else {
-				System.out.println("No user found.");
-				logger.debug("No user found.");
 			}
 		} catch (Exception ex) {
-			ex.printStackTrace();
-			throw new ActionException("Error getting user: " + ex.getMessage(),
-					ex);
+			String msg = "Error getting user: " + ex.getMessage();
+			logger.error(msg, ex);
+			throw new ActionException(msg, ex);
 		}
 	}
 
