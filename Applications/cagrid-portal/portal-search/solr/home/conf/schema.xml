@@ -264,7 +264,8 @@ via copyField further on in this schema  -->
         -->
          <!-- PORTAL adds  -->
         <field name="catalogName" type="alphaOnlySort" indexed="true" stored="false"/>
-        <field name="updatedAt" type="date" indexed="true" stored="true"/>
+        <field name="updatedAt" type="date" indexed="true" stored="false"/>
+        <field name="createdAt" type="date" indexed="true" stored="false"/>
 
         <field name="lastName" type="text" indexed="true" stored="true"/>
         <field name="firstName" type="text" indexed="true" stored="true"/>
@@ -285,6 +286,9 @@ via copyField further on in this schema  -->
         <field name="term_label" type="text" indexed="true" stored="true"  multiValued="true"  />
         <field name="term_vocabulary" type="text" indexed="true" stored="true"  multiValued="true"  />
         <field name="term_identifier" type="text" indexed="true" stored="true" multiValued="true"  />
+
+        <field name="rating" type="integer" indexed="true" stored="true" multiValued="true"  />
+        <field name="featured" type="boolean" indexed="true" stored="true"/>
 
         <!--will just treat it as a string-->
         <field name="phoneNumber" type="string" indexed="true" stored="true"/>
@@ -344,7 +348,7 @@ or to add multiple fields to the same field for easier/faster searching.  -->
     <copyField source="displayName" dest="text"/>
     <copyField source="shortName" dest="text"/>
     <copyField source="role" dest="text"/>
-    <copyField source="catalogName" dest="name"/>
+   
 
 
     <!-- Similarity is the scoring routine for each document vs. a query.
