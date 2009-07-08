@@ -1,0 +1,15 @@
+<ivy-module version="2.0">
+    <info organisation="org.cagrid.ivyexamples" module="image-gallery-ui"/>
+     <configurations>
+  
+
+    <!-- Public Configurations--> 
+     <conf name="endorsed" visibility="public"/>
+     <conf name="ui" visibility="public" extends="impl"/>
+     <conf name="impl" visibility="private"/>
+  </configurations>
+    
+    <dependencies>
+        <dependency org="caGrid" name="gaards-ui" rev="1.3" conf="ui->full;endorsed->endorsed" />
+    </dependencies>
+</ivy-module>
