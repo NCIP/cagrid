@@ -22,7 +22,7 @@
 <script src="<c:url value="/js/browse-catalog.js"/>"></script>
 
 <script type="text/javascript">
-//    var myLogReader = new YAHOO.widget.LogReader("myLogger");
+    var myLogReader = new YAHOO.widget.LogReader("myLogger");
     var solrDatasource = new YAHOO.util.XHRDataSource("<c:out value="${solrServiceUrl}"/>/select?", {responseType:YAHOO.util.XHRDataSource.JSON});
 
 
@@ -127,17 +127,16 @@
 
         runQuery: function(paginate) {
 
-            YAHOO.log("Will run a new query" + this.query.getQuery());
+            this.query.removeAllFacets();
 
             if (this.config.catalogType) {
+                YAHOO.log("Adding catalog_type facet");
                 this.query.addFacet("catalog_type", this.config.catalogType);
             }
-
-
             if (this.config.filterType) {
+                 YAHOO.log("Adding " + this.config.filterType + " facet");
                 this.query.addFacet(this.config.filterType, this.config.filterValue);
             }
-            
             if (this.config.sortField) {
                 YAHOO.log("Will sort on " + this.config.sortField);
                 this.query.sort(this.config.sortField + "+asc");
@@ -147,7 +146,8 @@
             <%--not coming for paginator--%>
                 this.query.setStartValue(0);
             }
-
+            YAHOO.log("Will run a new query" + this.query.getQuery());
+            
             var searchCallback = function (oRequest, oParsedResponse, oPayload) {
                 try {
                     var solrJSON = YAHOO.lang.JSON.parse(oParsedResponse.results.responseText);

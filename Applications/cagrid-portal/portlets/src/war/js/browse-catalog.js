@@ -57,15 +57,26 @@ var sortEvent = new YAHOO.util.CustomEvent({type:"sortEvent",signature:"YAHOO.ut
         },
 
         removeParam: function(param) {
-            var index = this.params.find(param);
-            if(index>-1){
-                this.params.splice(index,1);
-            }
+                var index = this.params.find(param);
+                if(index>-1){
+                    this.params.splice(index,1);
+                }
         },
 
         addFacet: function(arg, value) {
-            this.removeParam("\^fq=");
+            this.removeParam("\^fq="+arg);
             this.addParam("fq=" + arg + ":(" + value + ")");
+        },
+
+          removeAllFacets: function() {
+         for (var i = 0; i < this.params.length; i++) {
+                var index = this.params.find("\^fq=");
+                if(index>-1){
+                    this.params.splice(index,1);
+                }
+                else
+                    break;
+            }
         },
         nextPage: function(){
             this.removeParam("start="+this.start);
