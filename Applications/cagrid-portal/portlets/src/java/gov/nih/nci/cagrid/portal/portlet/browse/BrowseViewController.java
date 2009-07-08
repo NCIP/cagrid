@@ -80,7 +80,8 @@ public class BrowseViewController implements InitializingBean, Controller {
         String entryTypeName = null;
         if (browseType.equals(BrowseTypeEnum.DATASET)) {
             entryTypeName = "DataSetCatalogEntry";
-            mav.addObject("catalogType", "dataset");
+        //both data sets and information models
+            mav.addObject("catalogType", "dataset information_model terminology");
         } else if (browseType.equals(BrowseTypeEnum.COMMUNITY)) {
             entryTypeName = "CommunityCatalogEntry";
             mav.addObject("catalogType", "community");
