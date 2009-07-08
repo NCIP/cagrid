@@ -2,8 +2,6 @@
 <%@ include file="browse-search-includes.jspf" %>
 <%@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %>
 
-<c:set var="ns"><portlet:namespace/></c:set>
-
 <%@ include file="catalogCreateDialog.jspf"%>
 <%--
 <p>
@@ -38,14 +36,18 @@
         $("${ns}catalogDetailsForm").submit();
     }
 
-    function pageCallback(type, args) {
+    function ${ns}pageCallback(type, args) {
         $("${ns}catalogs").innerHTML = '';
-        YAHOO.log("Received results");
         var resultList = args[0];
+        YAHOO.log("Received results of size:" + resultList.length);
+
+           var featuredDiv = document.createElement('div');
+			featuredDiv.className = "featuredDiv";
+             $("${ns}catalogs").appendChild(featuredDiv);
+
         for (var i = 0, len = resultList.length; i < len; ++i) {
             var result = resultList[i];
 
-        <%--/* this is where results are rendered. Needs to be styled */--%>
             var resultDiv = document.createElement('div');
 			resultDiv.className = "oneResultDiv";
             var detailsLnk = document.createElement('a');
@@ -65,7 +67,9 @@
 			
             var nameDiv = document.createElement('div');
 			nameDiv.appendChild(detailsLnk);
+
             resultDiv.appendChild(nameDiv);
+
 
             var descDiv = document.createElement('div');
 			if (result.description==null || result.description==undefined || result.description=="") {
@@ -73,11 +77,14 @@
 				descDiv.appendChild(document.createTextNode("No information available"));
 			} else {
 				descDiv.className = "oneResultDescription";
-				descDiv.appendChild(document.createTextNode(result.description));
+				descDiv.appendChild(document.createTextNode((result.description).truncate(80, "...")));
 			}
 			resultDiv.appendChild(descDiv);
 
-            
+               if(result.featured){
+                 featuredDiv.appendChild(resultDiv);
+                   continue;
+            }
             
             $("${ns}catalogs").appendChild(resultDiv);
 
@@ -105,6 +112,7 @@
 					<div id="${ns}paginatorDiv" class="pagination">
 	                    <!-- pagination controls will go here -->
 	                </div>
+                    <div id="${ns}paginatorSummary" class="paginationSummary"></div>
 				</div>
 			</div>
 			<br style="clear:both;"/>
@@ -141,7 +149,7 @@ function checkEnter(keyword, e){ //e is event object passed from function invoca
 search(wildcard);
 
 function search(keyword) {
-        if (keyword.length < 1) {
+	    if (keyword.length < 1) {
             keyword = wildcard;
         }
         new Catalogs({
@@ -149,11 +157,11 @@ function search(keyword) {
             catalogType: "${catalogType}",
             paginatorDiv: "${ns}paginatorDiv",
             treeDiv: "${ns}tree",
-            rowsPerPage: 5,
+            rowsPerPage: 10,
             sortField:$("${ns}sortList").value
 
         });
-        resultEvent.subscribe(pageCallback);
+        resultEvent.subscribe(${ns}pageCallback);
 }
 </script>
 

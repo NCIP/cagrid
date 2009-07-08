@@ -14,6 +14,7 @@
 <script type="text/javascript" src="<c:url value="/js/yui/logger/logger-min.js"/>"></script>
 <script src="<c:url value="/js/yui/treeview/treeview-min.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/yui/paginator/paginator-min.js"/>"></script>
+<c:set var="ns"><portlet:namespace/></c:set>
 
 
 <div id="myLogger"><%--logging--%></div>
@@ -101,8 +102,9 @@
             this.paginator = new YAHOO.widget.Paginator({
                 rowsPerPage  : this.rowsPerPage,
                 alwaysVisible: false,
-                containers   : [this.config.paginatorDiv] // or idStr or elem or [ elem, elem ]
+                containers   : [this.config.paginatorDiv]
             });
+
             this.paginator.subscribe('changeRequest', this.handlePagination, this);
             this.query = new solrQuery(this.config.keyword, this.rowsPerPage);
             sortEvent.subscribe(this.sort, this);
@@ -127,16 +129,17 @@
 
             YAHOO.log("Will run a new query" + this.query.getQuery());
 
-
-            if (this.config.filterType) {
-                this.query.addFacet(this.config.filterType, this.config.filterValue);
-            }
-
             if (this.config.catalogType) {
                 this.query.addFacet("catalog_type", this.config.catalogType);
             }
 
+
+            if (this.config.filterType) {
+                this.query.addFacet(this.config.filterType, this.config.filterValue);
+            }
+            
             if (this.config.sortField) {
+                YAHOO.log("Will sort on " + this.config.sortField);
                 this.query.sort(this.config.sortField + "+asc");
             }
 
@@ -176,14 +179,20 @@
         setupPaginator: function(result) {
             this.paginator.setState({totalRecords:result.count,recordOffset:result.start});
             this.paginator.render();
+            var startValue = result.start+1;
+            var totalRecords = result.count;
+            var endValue = result.start +  this.rowsPerPage;
+            if(endValue>totalRecords)
+                endValue = totalRecords;
 
+            $("${ns}paginatorSummary").innerHTML = "Results  <strong>" + startValue + " - " + endValue + "</strong> of  <strong>" + totalRecords + "</strong>";
+            
         },
 
         handlePagination: function(newState, cat) {
             cat.paginator.setState(newState);
             cat.query.setStartValue(newState.recordOffset);
             cat.runQuery(true);
-
         }
     });
 

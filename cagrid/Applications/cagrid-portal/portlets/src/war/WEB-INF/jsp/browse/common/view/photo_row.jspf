@@ -32,6 +32,10 @@
 					<span id="rateStatus"></span>
 					<span id="ratingSaved">Thanks for rating!</span> 
 				</div>
+                 <div class="row">
+                     <label>Featured Item?</label>
+                     <div><c:out value="${catalogEntry.featured}"/> </div>
+                   </div>
 				
 				<p class="entryDescription">
 				<c:out value="${catalogEntry.description}"/>
@@ -40,7 +44,9 @@
 			<!-- The following line is for formatting purposes -->
 			<hr style="clear:both; visibility:hidden;"/>
 		</div>
-		
+
+
+
 <script type="text/javascript">
 
 function ${ns}renderRatingForm(){
@@ -95,6 +101,7 @@ function ${ns}setRating(rating){
 	});
 }
 
+
 jQuery(document).ready(function() {
 	${ns}renderAverageRating();
 
@@ -120,9 +127,14 @@ jQuery(document).ready(function() {
 	rateThisButton.subscribe("click", function(evt){
 		${ns}renderRatingForm();
 	});
+
+
+
 	</c:if>
 	
 });
+
+
 </script>
 <script>
 /*
