@@ -26,6 +26,7 @@
 	<property name="ext.dir" location="${basedir}/ext" />
 	<property name="ext.grid.dir" location="${ext.dir}/target_grid" />
 	<property name="ext.dependencies.dir" location="${ext.dir}/dependencies" />
+	<property name="lib.dir" value="lib" />
 	<property name="ext.lib.dir" value="${ext.dependencies.dir}/jars" />
 	<property name="ext.test.lib.dir" location="${ext.dependencies.dir}/test/jars" />
 
@@ -66,6 +67,9 @@
 	<target name="defineClasspaths" depends="checkGlobus">
 		<path id="build.classpath">
 			<fileset dir="${ext.lib.dir}">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${lib.dir}">
 				<include name="**/*.jar" />
 			</fileset>
 			<fileset dir="${globus.dir}/lib">
