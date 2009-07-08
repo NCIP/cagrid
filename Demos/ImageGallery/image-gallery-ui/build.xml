@@ -1,0 +1,95 @@
+<project name="Image Gallery UI" default="all" xmlns:ivy="antlib:org.apache.ivy.ant">
+	<property name="lib.dir" value="lib" />
+	<property name="endorsed.dir" value="endorsed" />
+	<property name="build.dir" value="build" />
+	<property name="src.dir" value="src" />
+	<property environment="env" />
+	<property name="globus.dir" value="${env.GLOBUS_LOCATION}" />
+	<fail unless="env.GLOBUS_LOCATION" message="You must set the environment variable GLOBUS_LOCATION to the directory in which you have Globus installed." />
+	<taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant">
+		<classpath>
+			<fileset dir="${lib.dir}" includes="ivy-*.jar" />
+		</classpath>
+	</taskdef>
+	<property name="ivy.settings.url" value="http://software.cagrid.org/repository-1.3/ivysettings.xml" />
+	<ivy:settings id="ivy.instance" url="${ivy.settings.url}" />
+
+	<target name="ivy-resolve" description="--> retreive dependencies with ivy">
+		<ivy:retrieve type="jar" conf="ui" pattern="${lib.dir}/[originalname](.[ext])" sync="false" />
+		<ivy:retrieve type="jar" conf="endorsed" pattern="${endorsed.dir}/[originalname](.[ext])" />
+	</target>
+	<target name="ivy-report" depends="ivy-resolve" description="--> generates a report of dependencies">
+		<ivy:report todir="${build.dir}" />
+	</target>
+	<target name="ivy-clean" description="--> cleans all the libraries which were retrieved for the project">
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="${lib.dir}">
+				<include name="**/*" />
+				<exclude name="ivy*.jar" />
+			</fileset>
+		</delete>
+		<ivy:cleancache />
+	</target>
+	<path id="lib.path.id">
+		<fileset dir="${lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${globus.dir}/lib">
+			<include name="*.jar" />
+			<exclude name="caGrid-*.jar" />
+		</fileset>
+	</path>
+	<path id="run.path.id">
+		<path refid="lib.path.id" />
+		<path location="${build.dir}" />
+		<path location="${globus.dir}" />
+	</path>
+
+	<target name="compile" depends="clean" description="--> compile and run the project">
+		<mkdir dir="${build.dir}" />
+		<javac srcdir="${src.dir}" destdir="${build.dir}" classpathref="lib.path.id" />
+	</target>
+
+
+	<target name="clean" description="--> cleans the project">
+		<delete dir="${build.dir}" failonerror="false" />
+		<delete>
+			<fileset dir="${lib.dir}">
+				<include name="*.jar" />
+				<exclude name="ivy*.jar" />
+			</fileset>
+		</delete>
+		<delete>
+			<fileset dir="${endorsed.dir}">
+				<include name="*.jar" />
+			</fileset>
+		</delete>
+	</target>
+
+	<target name="all" depends="clean, ivy-clean,ivy-resolve,ivy-report, compile" />
+
+	<target name="defineClasspaths">
+		<path id="base.classpath">
+			<fileset dir="${lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${globus.dir}/lib">
+				<include name="*.jar" />
+				<exclude name="junit.jar" />
+				<exclude name="xml-apis.jar" />
+				<exclude name="xercesImpl.jar" />
+			</fileset>
+		</path>
+		<path id="run.classpath">
+			<path refid="base.classpath" />
+		</path>
+	</target>
+
+
+	<target name="ui" description="Runs the Image Gallery UI" depends="defineClasspaths">
+		<java classname="org.cagrid.grape.GridApplication" classpathref="run.classpath" fork="yes">
+			<arg value="conf/image-gallery-ui.xml" />
+			<jvmarg value="-Djava.endorsed.dirs=${endorsed.dir}" />
+		</java>
+	</target>
+</project>
