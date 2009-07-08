@@ -10,8 +10,11 @@ import gov.nih.nci.cagrid.portal.domain.table.QueryResultColumn;
 import gov.nih.nci.cagrid.portal.domain.table.QueryResultTable;
 import gov.nih.nci.cagrid.portal.portlet.UserModel;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -51,16 +54,38 @@ public class ExportJSONResultsMetadataController extends AbstractController {
 
 		JSONObject meta = new JSONObject();
 		QueryInstance instance = getUserModel().getCurrentQueryInstance();
+		
+		
+		List<String> allColNames = new ArrayList<String>();
+		SortedMap<String,UMLAttribute> sortedColNames = new TreeMap<String,UMLAttribute>();
 		for (UMLAttribute att : getQueryResultColumnNameResolver()
 				.getTargetUMLClass(instance.getId())
 				.getUmlAttributeCollection()) {
+			sortedColNames.put(att.getName(), att);
+		}
+		if(sortedColNames.containsKey("id")){
+			allColNames.add("id");
+		}
+		for(String colName : sortedColNames.keySet()){
+			if(!"id".equals(colName)){
+				allColNames.add(colName);
+			}
+		}
+		allColNames.add(ResultConstants.DATA_SERVICE_URL_COL_NAME);
+		
+		for (String colName : allColNames) {
 			JSONObject colDef = new JSONObject();
-			colDef.put("key", att.getName());
+			String dataTypeName = "java.lang.String";
+			UMLAttribute att = sortedColNames.get(colName);
+			if(att != null){
+				dataTypeName = att.getDataTypeName();
+			}
+			colDef.put("key", colName);
 			colDef.put("sortable", true);
 			colDef.put("resizeable", true);
-			if (isNumber(att.getDataTypeName())) {
+			if (isNumber(dataTypeName)) {
 				colDef.put("formatter", "YAHOO.widget.DataTable.formatNumber");
-			} else if (isDate(att.getDataTypeName())) {
+			} else if (isDate(dataTypeName)) {
 				colDef.put("formatter", "YAHOO.widget.DataTable.formatDate");
 			}
 			meta.append("columnDefs", colDef);
@@ -73,16 +98,11 @@ public class ExportJSONResultsMetadataController extends AbstractController {
 		responseSchema.put("metaFields", metaFields);
 		metaFields.put("totalRecords", "numRows");
 		
-//		List<String> colNames = getQueryResultColumnNameResolver()
-//				.getColumnNames(instance.getId());
-//		
-//		for (String colName : colNames) {
-//			responseSchema.append("fields", colName);
-//		}
 		QueryResultTable table = getQueryResultTableDao().getByQueryInstanceId(instance.getId());
 		for (QueryResultColumn col : table.getColumns()) {
 			responseSchema.append("fields", col.getName());
 		}
+		responseSchema.append("fields", ResultConstants.DATA_SERVICE_URL_COL_NAME);
 		res.setContentType("application/json");
 		res.getWriter().write(meta.toString());
 

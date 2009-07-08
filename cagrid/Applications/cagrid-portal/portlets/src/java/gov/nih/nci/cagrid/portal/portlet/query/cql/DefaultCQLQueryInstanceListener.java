@@ -83,6 +83,7 @@ public class DefaultCQLQueryInstanceListener implements
 				SAXParser parser = fact.newSAXParser();
 				XMLQueryResultToQueryResultTableHandler handler = (XMLQueryResultToQueryResultTableHandler) applicationContext
 						.getBean("xmlQueryResultToQueryResultTableHandlerPrototype");
+				handler.setDataServiceUrl(instance.getDataService().getUrl());
 				handler.getTable().setQueryInstance(instance);
 				parser.parse(new ByteArrayInputStream(instance.getResult().getBytes()), handler);
 			} catch (Exception ex) {

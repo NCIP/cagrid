@@ -34,6 +34,9 @@ public class QueryResultTableToHSSFWorkbookBuilder {
 			cell.setCellValue(col.getName());
 			colIdx++;
 		}
+		HSSFCell serviceUrlCol = headerRow.createCell(colIdx);
+		serviceUrlCol.setCellValue(ResultConstants.DATA_SERVICE_URL_COL_NAME);
+		
 		rowIdx++;
 		for(QueryResultRow row : rows){
 			HSSFRow r = sheet.createRow(rowIdx);
@@ -50,6 +53,9 @@ public class QueryResultTableToHSSFWorkbookBuilder {
 				c.setCellValue(value);
 				colIdx++;
 			}
+			HSSFCell serviceUrlCell = r.createCell(colIdx);
+			serviceUrlCell.setCellValue(row.getServiceUrl());
+			
 			rowIdx++;
 		}
 		

@@ -78,6 +78,25 @@ function ${ns}toggleResultsTab(){
    	}
 }
 
+function ${ns}showError(instanceId){
+	jQuery("#toggleError" + instanceId).html("Hide Error");
+	document.getElementById("stackTrace" + instanceId).style.display="block";
+}
+function ${ns}hideError(instanceId){
+	jQuery("#toggleError" + instanceId).html("View Error");
+	document.getElementById("stackTrace" + instanceId).style.display="none";
+}
+function cgp_toggleError(instanceId){
+	var text = jQuery("#toggleError" + instanceId).text();
+	if("View Error" == text){
+		${ns}showError(instanceId);
+   	}else{
+   		${ns}hideError(instanceId);
+   	}
+   	return false;
+}
+
+
     function ${ns}loadResults(firstTime) {
         QueryExecutionManager.getQueryInstances($("input-query").value, {
             callback:function(qInstList) {
@@ -163,9 +182,9 @@ function ${ns}toggleResultsTab(){
         	QueryExecutionManager.loadInstance(qInst.id, {
 				callback:function(inst){
 					if (inst.state == 'COMPLETE') {
-	            		QueryExecutionManager.getResults(qInst.id, new ${ns}renderResult(qInst,resultsContainer));
+	            		QueryExecutionManager.getResults(qInst.id, new ${ns}renderResult(qInst,resultsContainer, false));
     	    		} else if (inst.state != 'RUNNING') {
-    	        		QueryExecutionManager.getError(qInst.id, new ${ns}renderResult(qInst,resultsContainer));
+    	        		QueryExecutionManager.getError(qInst.id, new ${ns}renderResult(qInst,resultsContainer, true));
 	        		}
 				},
 				errorHandler:function(errorString, exception){
@@ -177,16 +196,17 @@ function ${ns}toggleResultsTab(){
     }
 
 
-    function ${ns}renderResult(qInst,resultsContainer){
+    function ${ns}renderResult(qInst, resultsContainer, isError){
 
-        this.callback =function(result) {
-            jQuery(resultsContainer).replaceWith("<div id='" +resultsContainer +"'>" + result + "</div>");
-
-            var rt = new ${ns}ResultTable(
+        this.callback = function(result) {
+            jQuery(resultsContainer).replaceWith("<div id='" + resultsContainer +"'>" + result + "</div>");
+			if(!isError){
+            	var rt = new ${ns}ResultTable(
             		qInst.id,
 					"<c:url value="/export/query_results_meta.json"/>", 
 					"<c:url value="/export/query_results.json"/>?"); 
-            rt.render();
+            	rt.render();
+            }
 
         };
         this.errorHandler =function(errorString, exception) {
@@ -214,6 +234,21 @@ function ${ns}ResultTable(instanceId, metadataUrl, dataUrl){
 	    	alert("Couldn't parse metadata: " + e);
 	    	return; 
 		}
+		/*
+		this.customUrlFormatter = function(elCell, oRecord, oColumn, oData) {
+			alert("Formatting URL: " + oData);
+			elCell.innerHTML = "Yadda: " + oData;
+		}
+		YAHOO.widget.DataTable.Formatter.serviceUrlFormatter = this.customUrlFormatter;
+		
+		for(var idx = 0; idx < this.meta.columnDefs.length; idx++){
+			if(this.meta.columnDefs[idx].key == "dataServiceUrl"){
+				alert("Found Data Service URL col def");
+				this.meta.columnDefs[idx].formatter = "serviceUrlFormatter";
+			}
+		}
+		*/
+		
 		this.dataSource = new YAHOO.util.DataSource(this.dataUrl);
 		this.dataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
 		this.dataSource.responseSchema = this.meta.responseSchema;

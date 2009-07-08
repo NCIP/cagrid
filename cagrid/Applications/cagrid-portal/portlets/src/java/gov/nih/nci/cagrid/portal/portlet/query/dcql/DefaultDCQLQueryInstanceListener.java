@@ -7,6 +7,9 @@ import gov.nih.nci.cagrid.portal.portlet.query.results.XMLQueryResultToQueryResu
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 import java.io.ByteArrayInputStream;
 import java.io.PrintWriter;
@@ -21,12 +24,13 @@ import javax.xml.parsers.SAXParserFactory;
  *
  * @author kherm manav.kher@semanticbits.com
  */
-public class DefaultDCQLQueryInstanceListener implements DCQLQueryInstanceListener {
+public class DefaultDCQLQueryInstanceListener implements DCQLQueryInstanceListener, ApplicationContextAware {
 
     private static final Log logger = LogFactory
             .getLog(DefaultDCQLQueryInstanceListener.class);
 
     private DCQLQueryInstanceDao dcqlQueryInstanceDao;
+    private ApplicationContext applicationContext;
 
     /**
      *
@@ -69,7 +73,8 @@ public class DefaultDCQLQueryInstanceListener implements DCQLQueryInstanceListen
 				SAXParserFactory fact = SAXParserFactory.newInstance();
 				fact.setNamespaceAware(true);
 				SAXParser parser = fact.newSAXParser();
-				XMLQueryResultToQueryResultTableHandler handler = new XMLQueryResultToQueryResultTableHandler();
+				XMLQueryResultToQueryResultTableHandler handler = (XMLQueryResultToQueryResultTableHandler) applicationContext
+				.getBean("xmlQueryResultToQueryResultTableHandlerPrototype");
 				handler.getTable().setQueryInstance(instance);
 				parser.parse(new ByteArrayInputStream(instance.getResult().getBytes()), handler);
 			} catch (Exception ex) {
@@ -128,4 +133,9 @@ public class DefaultDCQLQueryInstanceListener implements DCQLQueryInstanceListen
     public void setDcqlQueryInstanceDao(DCQLQueryInstanceDao dcqlQueryInstanceDao) {
         this.dcqlQueryInstanceDao = dcqlQueryInstanceDao;
     }
+
+	public void setApplicationContext(ApplicationContext applicationContext)
+			throws BeansException {
+		this.applicationContext = applicationContext;
+	}
 }

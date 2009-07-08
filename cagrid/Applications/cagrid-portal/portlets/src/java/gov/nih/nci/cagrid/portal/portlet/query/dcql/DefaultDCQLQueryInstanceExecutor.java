@@ -1,17 +1,17 @@
 package gov.nih.nci.cagrid.portal.portlet.query.dcql;
 
-import gov.nih.nci.cagrid.portal.dao.UMLClassDao;
 import gov.nih.nci.cagrid.portal.domain.dataservice.DCQLQueryInstance;
 import gov.nih.nci.cagrid.portal.security.EncryptionService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.globus.gsi.GlobusCredential;
-import org.springframework.beans.factory.InitializingBean;
 
 import java.io.ByteArrayInputStream;
 import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.globus.gsi.GlobusCredential;
+import org.springframework.beans.factory.InitializingBean;
 
 /**
  * User: kherm
@@ -139,6 +139,7 @@ public class DefaultDCQLQueryInstanceExecutor implements
     private class TimeoutThread extends Thread {
         public void run() {
             while (new Date().before(getEndTime())) {
+            	System.out.println("Time left: " + (((new Date().getTime())-getEndTime().getTime())/1000));
                 try {
                     Thread.sleep(5000);
                 } catch (InterruptedException ex) {

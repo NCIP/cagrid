@@ -31,19 +31,19 @@ public class QueryResultTableDao extends AbstractDao<QueryResultTable> {
 		return QueryResultTable.class;
 	}
 
-	public List<QueryResultRow> getRows(final Integer tableId, final int offset, final int numRows) {
+	public List<QueryResultRow> getRows(final Integer tableId,
+			final int offset, final int numRows) {
 		List<QueryResultRow> rows = (List<QueryResultRow>) getHibernateTemplate()
-		.execute(new HibernateCallback() {
-			public Object doInHibernate(Session session)
-					throws HibernateException, SQLException {
+				.execute(new HibernateCallback() {
+					public Object doInHibernate(Session session)
+							throws HibernateException, SQLException {
 
-				return session.createCriteria(QueryResultRow.class)
-						.setFirstResult(offset)
-						.setMaxResults(numRows)
-						.createCriteria("table").add(
-								Restrictions.eq("id", tableId)).list();
-			}
-		});
+						return session.createCriteria(QueryResultRow.class)
+								.setFirstResult(offset).setMaxResults(numRows)
+								.createCriteria("table").add(
+										Restrictions.eq("id", tableId)).list();
+					}
+				});
 		return rows;
 	}
 
@@ -77,6 +77,30 @@ public class QueryResultTableDao extends AbstractDao<QueryResultTable> {
 			rows.add(cell.getRow());
 		}
 
+		return rows;
+	}
+
+	public List<QueryResultRow> getSortedRowsByDataServiceUrl(
+			final Integer tableId, final String direction, final int offset,
+			final int numRows) {
+		List<QueryResultRow> rows = (List<QueryResultRow>) getHibernateTemplate().execute(
+				new HibernateCallback() {
+					public Object doInHibernate(Session session)
+							throws HibernateException, SQLException {
+
+						Order order = null;
+						if ("asc".equals(direction)) {
+							order = Order.asc("serviceUrl");
+						} else {
+							order = Order.desc("serviceUrl");
+						}
+						return session.createCriteria(QueryResultRow.class)
+								.addOrder(order).setFirstResult(offset)
+								.setMaxResults(numRows)
+								.createCriteria("table").add(
+										Restrictions.eq("id", tableId)).list();
+					}
+				});
 		return rows;
 	}
 

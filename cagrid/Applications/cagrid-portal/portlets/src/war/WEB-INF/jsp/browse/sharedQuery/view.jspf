@@ -4,11 +4,11 @@
 
 <%@ include file="/WEB-INF/jsp/browse/common/view/terms.jspf" %>
 
-<%@ include file="/WEB-INF/jsp/browse/sharedQuery/query_xml.jspf" %>
-
 <%--
-<%@ include file="/WEB-INF/jsp/browse/sharedQuery/query_details.jspf" %>
+<%@ include file="/WEB-INF/jsp/browse/sharedQuery/query_xml.jspf" %>
 --%>
+
+<%@ include file="/WEB-INF/jsp/browse/sharedQuery/query_details.jspf" %>
 
 <%@ include file="/WEB-INF/jsp/browse/sharedQuery/query_execute.jspf" %>
 

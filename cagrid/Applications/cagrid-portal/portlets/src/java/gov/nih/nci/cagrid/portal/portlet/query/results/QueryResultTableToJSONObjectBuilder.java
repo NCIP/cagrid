@@ -22,9 +22,11 @@ import org.json.JSONObject;
  */
 public class QueryResultTableToJSONObjectBuilder {
 
-	private QueryResultTableDao queryResultTableDao;
 	
-	public JSONObject build(Integer tableId){
+
+	private QueryResultTableDao queryResultTableDao;
+
+	public JSONObject build(Integer tableId) {
 		return build(tableId, null, null, null, null);
 	}
 
@@ -42,8 +44,14 @@ public class QueryResultTableToJSONObjectBuilder {
 
 			QueryResultTable table = getQueryResultTableDao().getById(tableId);
 
-			List<QueryResultRow> rows = getQueryResultTableDao().getSortedRows(
-					table.getId(), sort, dir, startIndex, results);
+			List<QueryResultRow> rows = null;
+			if(ResultConstants.DATA_SERVICE_URL_COL_NAME.equals(sort)){
+				rows = getQueryResultTableDao().getSortedRowsByDataServiceUrl(
+						table.getId(), dir, startIndex, results);
+			}else{
+				rows = getQueryResultTableDao().getSortedRows(
+						table.getId(), sort, dir, startIndex, results);
+			}
 
 			tableJO.put("numRows", numRows);
 			for (QueryResultRow row : rows) {
@@ -60,6 +68,7 @@ public class QueryResultTableToJSONObjectBuilder {
 					}
 					rowMap.put(col.getName(), value);
 				}
+				rowMap.put(ResultConstants.DATA_SERVICE_URL_COL_NAME, row.getServiceUrl());
 				tableJO.append("rows", rowMap);
 			}
 		} catch (Exception ex) {

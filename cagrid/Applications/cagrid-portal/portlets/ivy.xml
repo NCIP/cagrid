@@ -33,6 +33,8 @@
                     conf="default->validation"/>
         <dependency rev="${cagrid.integration.version}" transitive="false" org="caGrid" name="cql"
                     conf="default->cql-schemas"/>
+        <dependency rev="${cagrid.integration.version}" org="caGrid" name="transfer"
+                    conf="default->client"/>
 
         <dependency rev="2.0.3" org="getahead" name="dwr"/>
         <dependency rev="3.4.GA" org="javassist" name="javassist"/>
