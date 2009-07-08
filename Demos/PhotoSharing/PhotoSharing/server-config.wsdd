@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:aggr="http://mds.globus.org/aggregator/types" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="defaultServerConfig">
+  <service name="SERVICE-INSTANCE-PREFIX/Gallery" provider="Handler" use="literal" style="document">
+    <parameter name="className" value="org.cagrid.demo.photosharing.gallery.service.globus.GalleryProviderImpl" />
+    <wsdlFile>share/schema/PhotoSharing/Gallery_service.wsdl</wsdlFile>
+    <parameter name="securityDescriptor" value="ETC-PATH/Gallery-security-desc.xml" />
+    <parameter name="allowedMethods" value="*" />
+    <parameter name="handlerClass" value="org.globus.axis.providers.RPCProvider" />
+    <parameter name="scope" value="Application" />
+    <parameter name="providers" value=" gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl DestroyProvider SetTerminationTimeProvider" />
+    <parameter name="loadOnStartup" value="true" />
+    <parameter name="securityMetadata" value="ETC-PATH/Gallery-security-metadata.xml" />
+    <parameter name="gallery-etcDirectoryPath" value="ETC-PATH" />
+    <parameter name="gallery-serviceName" value="Gallery" />
+  </service>
+  <service name="SERVICE-INSTANCE-PREFIX/PhotoSharing" provider="Handler" use="literal" style="document">
+    <parameter name="className" value="org.cagrid.demo.photosharing.service.globus.PhotoSharingProviderImpl" />
+    <wsdlFile>share/schema/PhotoSharing/PhotoSharing_service.wsdl</wsdlFile>
+    <parameter name="securityDescriptor" value="ETC-PATH/PhotoSharing-security-desc.xml" />
+    <parameter name="allowedMethods" value="*" />
+    <parameter name="handlerClass" value="org.globus.axis.providers.RPCProvider" />
+    <parameter name="scope" value="Application" />
+    <parameter name="providers" value=" GetMRPProvider GetRPProvider QueryRPProvider gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl" />
+    <parameter name="loadOnStartup" value="true" />
+    <parameter name="securityMetadata" value="ETC-PATH/PhotoSharing-security-metadata.xml" />
+    <parameter name="photosharing-etcDirectoryPath" value="ETC-PATH" />
+    <parameter name="photosharing-serviceName" value="PhotoSharing" />
+    <parameter name="castorMarshallerMapping" value="org/cagrid/demo/photosharing/PhotoSharing-edited-xml-mapping.xml" />
+    <parameter name="castorUnmarshallerMapping" value="org/cagrid/demo/photosharing/PhotoSharing-edited-unmarshaller-xml-mapping.xml" />
+  </service>
+  <typeMapping name="AggregatorContent" qname="aggr:AggregatorContent" type="java:org.globus.mds.aggregator.types.AggregatorContent" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" />
+  <!-- START INTRODUCE TYPEMAPPINGS -->
+<ns3:typeMapping encodingStyle="" serializer="org.cagrid.datatype.sdkmapping41.encoding.SDK41SerializerFactory" deserializer="org.cagrid.datatype.sdkmapping41.encoding.SDK41DeserializerFactory" type="ns1:org.cagrid.demo.photosharing.domain.Image" qname="ns2:Image" xmlns:ns1="http://xml.apache.org/axis/wsdd/providers/java" xmlns:ns2="gme://org.cagrid.demo.photosharing.domain" xmlns:ns3="http://xml.apache.org/axis/wsdd/"/>
+
+<ns3:typeMapping encodingStyle="" serializer="org.cagrid.datatype.sdkmapping41.encoding.SDK41SerializerFactory" deserializer="org.cagrid.datatype.sdkmapping41.encoding.SDK41DeserializerFactory" type="ns1:org.cagrid.demo.photosharing.domain.ImageDescription" qname="ns2:ImageDescription" xmlns:ns1="http://xml.apache.org/axis/wsdd/providers/java" xmlns:ns2="gme://org.cagrid.demo.photosharing.domain" xmlns:ns3="http://xml.apache.org/axis/wsdd/"/>
+
+<ns3:typeMapping encodingStyle="" serializer="org.cagrid.datatype.sdkmapping41.encoding.SDK41SerializerFactory" deserializer="org.cagrid.datatype.sdkmapping41.encoding.SDK41DeserializerFactory" type="ns1:org.cagrid.demo.photosharing.domain.User" qname="ns2:User" xmlns:ns1="http://xml.apache.org/axis/wsdd/providers/java" xmlns:ns2="gme://org.cagrid.demo.photosharing.domain" xmlns:ns3="http://xml.apache.org/axis/wsdd/"/>
+
+
+<!-- END INTRODUCE TYPEMAPPINGS -->
+</deployment>
+

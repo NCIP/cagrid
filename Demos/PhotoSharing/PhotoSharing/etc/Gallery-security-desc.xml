@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<securityConfig xmlns="http://www.globus.org">
+  <method name="getServiceSecurityMetadata">
+    <auth-method>
+      <none />
+    </auth-method>
+  </method>
+  <authz value="gallery:org.cagrid.demo.photosharing.gallery.service.globus.GalleryAuthorization" />
+  <auth-method>
+    <GSITransport>
+      <protection-level>
+        <privacy />
+      </protection-level>
+    </GSITransport>
+  </auth-method>
+  <run-as>
+    <system-identity />
+  </run-as>
+</securityConfig>
+
+

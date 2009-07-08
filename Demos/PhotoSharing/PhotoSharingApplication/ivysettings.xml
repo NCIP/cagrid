@@ -1,0 +1,20 @@
+<ivysettings>
+  <!-- cagrid.version property is set in build.xml file that calls ivy:settings with this xml file as parameter -->
+  <settings defaultResolver="caGrid-ivy-resolver" circularDependencyStrategy="error"/>
+  <resolvers>
+    <chain name="caGrid-ivy-resolver">
+      <url name="r1">
+        <ivy pattern="http://software.cagrid.org/repository-${cagrid.version}/[organisation]/[module]/ivy-[revision].xml"/>
+        <artifact pattern="http://software.cagrid.org/repository-${cagrid.version}/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"/>
+        <artifact pattern="http://software.cagrid.org/repository-${cagrid.version}/[organisation]/[module]/[revision]/[artifact].[ext]"/>
+      </url>
+<!--
+      <filesystem name="r2" local="true">
+        <ivy pattern="${caGrid.dir}/[organisation]/[module]/ivy-[revision].xml"/>
+        <artifact pattern="${caGrid.dir}/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"/>
+        <artifact pattern="${caGrid.dir}/[organisation]/[module]/[revision]/[artifact].[ext]"/>
+      </filesystem>
+-->
+    </chain>
+  </resolvers>
+</ivysettings>

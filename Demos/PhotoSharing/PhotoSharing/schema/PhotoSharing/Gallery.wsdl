@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery" xmlns:wsrp="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd" xmlns:wsrlw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" xmlns:wsdlpp="http://www.globus.org/namespaces/2004/10/WSDLPreprocessor" xmlns:gtwsdl1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:wsntw="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" xmlns:wsrbfw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" xmlns:wsrpw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" xmlns:wns0="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" xmlns:ns1="http://photosharing.demo.cagrid.org/PhotoSharing/types" xmlns:ns3="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/types" xmlns:ns2="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" xmlns:ns0="gme://org.cagrid.demo.photosharing.domain" xmlns:ns4="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd" name="Gallery" targetNamespace="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery">
+  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" location="../wsrf/properties/WS-ResourceProperties.wsdl" />
+  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" location="../wsrf/faults/WS-BaseFaults.wsdl" />
+  <import namespace="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" location="../wsrf/notification/WS-BaseN.wsdl" />
+  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" location="./../wsrf/lifetime/WS-ResourceLifetime.wsdl" />
+  <import namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" location="./ServiceSecurity.wsdl" />
+  <!--============================================================
+
+                      T Y P E S
+                      
+  ============================================================-->
+  <types>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsrbf="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" targetNamespace="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery" elementFormDefault="qualified" attributeFormDefault="unqualified">
+      <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" schemaLocation="../wsrf/faults/WS-BaseFaults.xsd" />
+      <import namespace="http://photosharing.demo.cagrid.org/PhotoSharing/types" schemaLocation="./PhotoSharingTypes.xsd" />
+      <import namespace="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/types" schemaLocation="./GalleryTypes.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" schemaLocation="./xsd/cagrid/types/security/security.xsd" />
+      <import namespace="gme://org.cagrid.demo.photosharing.domain" schemaLocation="org.cagrid.demo.photosharing.domain.xsd" />
+      <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd" schemaLocation="../wsrf/lifetime/WS-ResourceLifetime.xsd" />
+      <element name="AddImageRequest">
+        <complexType>
+          <sequence>
+            <element name="image">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:Image" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="AddImageResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:ImageDescription" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ListImagesRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="ListImagesResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:ImageDescription" minOccurs="1" maxOccurs="unbounded" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetImageRequest">
+        <complexType>
+          <sequence>
+            <element name="imageDescription">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:ImageDescription" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetImageResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:Image" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GrantViewGalleryPrivilegesRequest">
+        <complexType>
+          <sequence>
+            <element name="user">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:User" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GrantViewGalleryPrivilegesResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="RevokeViewGalleryPrivilegesRequest">
+        <complexType>
+          <sequence>
+            <element name="user">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:User" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="RevokeViewGalleryPrivilegesResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="GrantAddImagePrivilegesRequest">
+        <complexType>
+          <sequence>
+            <element name="user">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:User" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GrantAddImagePrivilegesResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="RevokeAddImagePrivilegesRequest">
+        <complexType>
+          <sequence>
+            <element name="user">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:User" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="RevokeAddImagePrivilegesResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="GrantImageRetrievalPrivilegesRequest">
+        <complexType>
+          <sequence>
+            <element name="imageDescription">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:ImageDescription" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="user">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:User" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GrantImageRetrievalPrivilegesResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="RevokeImageRetrievalPrivilegesRequest">
+        <complexType>
+          <sequence>
+            <element name="imageDescription">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:ImageDescription" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="user">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:User" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="RevokeImageRetrievalPrivilegesResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="GetGalleryNameRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="GetGalleryNameResponse">
+        <complexType>
+          <sequence>
+            <element name="response" type="xs:string" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GalleryResourceProperties">
+        <complexType>
+          <sequence>
+            <element ref="ns4:CurrentTime" />
+            <element ref="ns4:TerminationTime" />
+          </sequence>
+        </complexType>
+      </element>
+    </schema>
+  </types>
+  <!--  place service messages here -->
+  <message name="AddImageRequest">
+    <part name="parameters" element="tns:AddImageRequest" />
+  </message>
+  <message name="AddImageResponse">
+    <part name="parameters" element="tns:AddImageResponse" />
+  </message>
+  <message name="ListImagesRequest">
+    <part name="parameters" element="tns:ListImagesRequest" />
+  </message>
+  <message name="ListImagesResponse">
+    <part name="parameters" element="tns:ListImagesResponse" />
+  </message>
+  <message name="GetImageRequest">
+    <part name="parameters" element="tns:GetImageRequest" />
+  </message>
+  <message name="GetImageResponse">
+    <part name="parameters" element="tns:GetImageResponse" />
+  </message>
+  <message name="GrantViewGalleryPrivilegesRequest">
+    <part name="parameters" element="tns:GrantViewGalleryPrivilegesRequest" />
+  </message>
+  <message name="GrantViewGalleryPrivilegesResponse">
+    <part name="parameters" element="tns:GrantViewGalleryPrivilegesResponse" />
+  </message>
+  <message name="RevokeViewGalleryPrivilegesRequest">
+    <part name="parameters" element="tns:RevokeViewGalleryPrivilegesRequest" />
+  </message>
+  <message name="RevokeViewGalleryPrivilegesResponse">
+    <part name="parameters" element="tns:RevokeViewGalleryPrivilegesResponse" />
+  </message>
+  <message name="GrantAddImagePrivilegesRequest">
+    <part name="parameters" element="tns:GrantAddImagePrivilegesRequest" />
+  </message>
+  <message name="GrantAddImagePrivilegesResponse">
+    <part name="parameters" element="tns:GrantAddImagePrivilegesResponse" />
+  </message>
+  <message name="RevokeAddImagePrivilegesRequest">
+    <part name="parameters" element="tns:RevokeAddImagePrivilegesRequest" />
+  </message>
+  <message name="RevokeAddImagePrivilegesResponse">
+    <part name="parameters" element="tns:RevokeAddImagePrivilegesResponse" />
+  </message>
+  <message name="GrantImageRetrievalPrivilegesRequest">
+    <part name="parameters" element="tns:GrantImageRetrievalPrivilegesRequest" />
+  </message>
+  <message name="GrantImageRetrievalPrivilegesResponse">
+    <part name="parameters" element="tns:GrantImageRetrievalPrivilegesResponse" />
+  </message>
+  <message name="RevokeImageRetrievalPrivilegesRequest">
+    <part name="parameters" element="tns:RevokeImageRetrievalPrivilegesRequest" />
+  </message>
+  <message name="RevokeImageRetrievalPrivilegesResponse">
+    <part name="parameters" element="tns:RevokeImageRetrievalPrivilegesResponse" />
+  </message>
+  <message name="GetGalleryNameRequest">
+    <part name="parameters" element="tns:GetGalleryNameRequest" />
+  </message>
+  <message name="GetGalleryNameResponse">
+    <part name="parameters" element="tns:GetGalleryNameResponse" />
+  </message>
+  <message name="PhotoSharingExceptionFaultMessage">
+    <part name="fault" element="ns1:PhotoSharingException" />
+  </message>
+  <message name="AuthorizationExceptionFaultMessage">
+    <part name="fault" element="ns3:AuthorizationException" />
+  </message>
+  <!--============================================================
+
+                       P O R T T Y P E
+                      
+  ============================================================-->
+  <portType name="GalleryPortType" wsrp:ResourceProperties="tns:GalleryResourceProperties">
+    <operation name="addImage">
+      <input message="tns:AddImageRequest" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/AddImageRequest" />
+      <output message="tns:AddImageResponse" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/AddImageResponse" />
+      <fault name="PhotoSharingException" message="tns:PhotoSharingExceptionFaultMessage" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/PhotoSharingExceptionFaultMessage" />
+      <fault name="AuthorizationException" message="tns:AuthorizationExceptionFaultMessage" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/AuthorizationExceptionFaultMessage" />
+    </operation>
+    <operation name="listImages">
+      <input message="tns:ListImagesRequest" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/ListImagesRequest" />
+      <output message="tns:ListImagesResponse" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/ListImagesResponse" />
+      <fault name="AuthorizationException" message="tns:AuthorizationExceptionFaultMessage" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/AuthorizationExceptionFaultMessage" />
+    </operation>
+    <operation name="getImage">
+      <input message="tns:GetImageRequest" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/GetImageRequest" />
+      <output message="tns:GetImageResponse" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/GetImageResponse" />
+      <fault name="AuthorizationException" message="tns:AuthorizationExceptionFaultMessage" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/AuthorizationExceptionFaultMessage" />
+      <fault name="PhotoSharingException" message="tns:PhotoSharingExceptionFaultMessage" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/PhotoSharingExceptionFaultMessage" />
+    </operation>
+    <operation name="grantViewGalleryPrivileges">
+      <input message="tns:GrantViewGalleryPrivilegesRequest" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/GrantViewGalleryPrivilegesRequest" />
+      <output message="tns:GrantViewGalleryPrivilegesResponse" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/GrantViewGalleryPrivilegesResponse" />
+      <fault name="AuthorizationException" message="tns:AuthorizationExceptionFaultMessage" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/AuthorizationExceptionFaultMessage" />
+      <fault name="PhotoSharingException" message="tns:PhotoSharingExceptionFaultMessage" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/PhotoSharingExceptionFaultMessage" />
+    </operation>
+    <operation name="revokeViewGalleryPrivileges">
+      <input message="tns:RevokeViewGalleryPrivilegesRequest" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/RevokeViewGalleryPrivilegesRequest" />
+      <output message="tns:RevokeViewGalleryPrivilegesResponse" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/RevokeViewGalleryPrivilegesResponse" />
+      <fault name="AuthorizationException" message="tns:AuthorizationExceptionFaultMessage" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/AuthorizationExceptionFaultMessage" />
+      <fault name="PhotoSharingException" message="tns:PhotoSharingExceptionFaultMessage" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/PhotoSharingExceptionFaultMessage" />
+    </operation>
+    <operation name="grantAddImagePrivileges">
+      <input message="tns:GrantAddImagePrivilegesRequest" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/GrantAddImagePrivilegesRequest" />
+      <output message="tns:GrantAddImagePrivilegesResponse" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/GrantAddImagePrivilegesResponse" />
+      <fault name="AuthorizationException" message="tns:AuthorizationExceptionFaultMessage" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/AuthorizationExceptionFaultMessage" />
+      <fault name="PhotoSharingException" message="tns:PhotoSharingExceptionFaultMessage" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/PhotoSharingExceptionFaultMessage" />
+    </operation>
+    <operation name="revokeAddImagePrivileges">
+      <input message="tns:RevokeAddImagePrivilegesRequest" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/RevokeAddImagePrivilegesRequest" />
+      <output message="tns:RevokeAddImagePrivilegesResponse" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/RevokeAddImagePrivilegesResponse" />
+      <fault name="AuthorizationException" message="tns:AuthorizationExceptionFaultMessage" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/AuthorizationExceptionFaultMessage" />
+      <fault name="PhotoSharingException" message="tns:PhotoSharingExceptionFaultMessage" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/PhotoSharingExceptionFaultMessage" />
+    </operation>
+    <operation name="grantImageRetrievalPrivileges">
+      <input message="tns:GrantImageRetrievalPrivilegesRequest" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/GrantImageRetrievalPrivilegesRequest" />
+      <output message="tns:GrantImageRetrievalPrivilegesResponse" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/GrantImageRetrievalPrivilegesResponse" />
+      <fault name="AuthorizationException" message="tns:AuthorizationExceptionFaultMessage" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/AuthorizationExceptionFaultMessage" />
+      <fault name="PhotoSharingException" message="tns:PhotoSharingExceptionFaultMessage" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/PhotoSharingExceptionFaultMessage" />
+    </operation>
+    <operation name="revokeImageRetrievalPrivileges">
+      <input message="tns:RevokeImageRetrievalPrivilegesRequest" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/RevokeImageRetrievalPrivilegesRequest" />
+      <output message="tns:RevokeImageRetrievalPrivilegesResponse" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/RevokeImageRetrievalPrivilegesResponse" />
+      <fault name="AuthorizationException" message="tns:AuthorizationExceptionFaultMessage" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/AuthorizationExceptionFaultMessage" />
+      <fault name="PhotoSharingException" message="tns:PhotoSharingExceptionFaultMessage" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/PhotoSharingExceptionFaultMessage" />
+    </operation>
+    <operation name="getGalleryName">
+      <input message="tns:GetGalleryNameRequest" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/GetGalleryNameRequest" />
+      <output message="tns:GetGalleryNameResponse" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/GetGalleryNameResponse" />
+      <fault name="PhotoSharingException" message="tns:PhotoSharingExceptionFaultMessage" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/PhotoSharingExceptionFaultMessage" />
+    </operation>
+    <operation name="getServiceSecurityMetadata">
+      <input message="wns0:GetServiceSecurityMetadataRequest" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataRequest" />
+      <output message="wns0:GetServiceSecurityMetadataResponse" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataResponse" />
+    </operation>
+    <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="Destroy">
+      <wsdl:input message="wsrlw:DestroyRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime/Destroy" />
+      <wsdl:output message="wsrlw:DestroyResponse" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime/DestroyResponse" />
+      <wsdl:fault message="wsrlw:ResourceNotDestroyedFault" name="ResourceNotDestroyedFault" />
+      <wsdl:fault message="wsrlw:ResourceUnknownFault" name="ResourceUnknownFault" />
+    </wsdl:operation>
+    <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="SetTerminationTime">
+      <wsdl:input message="wsrlw:SetTerminationTimeRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime/SetTerminationTime" />
+      <wsdl:output message="wsrlw:SetTerminationTimeResponse" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime/SetTerminationTimeResponse" />
+      <wsdl:fault message="wsrlw:UnableToSetTerminationTimeFault" name="UnableToSetTerminationTimeFault" />
+      <wsdl:fault message="wsrlw:ResourceUnknownFault" name="ResourceUnknownFault" />
+      <wsdl:fault message="wsrlw:TerminationTimeChangeRejectedFault" name="TerminationTimeChangeRejectedFault" />
+    </wsdl:operation>
+  </portType>
+</definitions>
+

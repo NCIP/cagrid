@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="gme://org.cagrid.demo.photosharing.domain" targetNamespace="gme://org.cagrid.demo.photosharing.domain" elementFormDefault="qualified">
+  <xs:element name="Image" type="Image" />
+  <xs:complexType name="Image">
+    <xs:sequence>
+      <xs:element name="imageDescription" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="ImageDescription" minOccurs="0" maxOccurs="1" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="data" type="xs:string" />
+    <xs:attribute name="id" type="xs:long" />
+  </xs:complexType>
+  <xs:element name="ImageDescription" type="ImageDescription" />
+  <xs:complexType name="ImageDescription">
+    <xs:sequence />
+    <xs:attribute name="id" type="xs:long" />
+    <xs:attribute name="name" type="xs:string" />
+    <xs:attribute name="description" type="xs:string" />
+    <xs:attribute name="type" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="User" type="User" />
+  <xs:complexType name="User">
+    <xs:sequence />
+    <xs:attribute name="userIdentity" type="xs:string" />
+    <xs:attribute name="id" type="xs:long" />
+  </xs:complexType>
+</xs:schema>
+
