@@ -91,5 +91,7 @@
 	<classpathentry kind="lib" path="lib/PhotoSharingRegistration-client.jar"/>
 	<classpathentry kind="lib" path="lib/PhotoSharingRegistration-common.jar"/>
 	<classpathentry kind="lib" path="lib/PhotoSharingRegistration-stubs.jar"/>
+	<classpathentry kind="lib" path="lib/jai_codec.jar"/>
+	<classpathentry kind="lib" path="lib/jai_core.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

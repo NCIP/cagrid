@@ -197,14 +197,12 @@
 	<!-- ============================================================== -->
 	<!-- Runs the Multiple Index Service Discovery Client               -->
 	<!-- ============================================================== -->
-	<target name="runMultipleIndexClient" depends="defineClasspaths" description="Runs the multiple service discovery client">
-		<property file="${basedir}/ext/target_grid/service_urls.properties" />
-		<property name="service.url" value="${cagrid.master.index.service.url}"/>
-		<echo message="Discovering from Index Service: ${service.url}" />
-		<java classname="gov.nih.nci.cagrid.discovery.client.MultiIndexServiceDiscoveryClientFactory" classpathref="run.classpath" fork="yes">
+	<target name="photosharing" depends="defineClasspaths" description="Runs the multiple service discovery client">
+		<property name="service.url" value="https://localhost:8443/wsrf/services/cagrid/PhotoSharing"/>
+		<java classname="org.cagrid.demo.photosharing.serviceclient.PhotoSharingApplication" classpathref="run.classpath" fork="yes">
 			<jvmarg value="-DGLOBUS_LOCATION=${ext.globus.dir}" />
+			<arg value="-url"/>
 			<arg value="${service.url}"/>
-			<arg value="${secondary.service.url}"/>
 		</java>
 	</target>
 
