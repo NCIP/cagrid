@@ -46,7 +46,8 @@ public class CQLAttributeResultIterator implements Iterator {
 
 
 	/**
-	 * @return TypeAttribute[] or a serialized CQLAttributeResult
+	 * @return TypeAttribute[] unless xmlOnly == true, 
+	 * then a serialized CQLAttributeResult
 	 */
 	public Object next() {
         if (currentIndex >= results.length - 1) {
