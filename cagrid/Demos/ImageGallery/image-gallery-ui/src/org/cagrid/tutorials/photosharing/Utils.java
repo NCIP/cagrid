@@ -13,26 +13,22 @@ import org.cagrid.grape.configuration.Services;
 
 public class Utils {
 
-
-    public static List<PhotoSharingHandle> getPhotoSharingServices() {
+    public static List<PhotoSharingHandle> getPhotoSharingServices() throws Exception {
         List<PhotoSharingHandle> services = new ArrayList<PhotoSharingHandle>();
-        try {
-            ServiceConfiguration conf = (ServiceConfiguration) GridApplication.getContext().getConfigurationManager()
-                .getConfigurationObject("imagegallery");
-            Services s = conf.getServices();
-            if (s != null) {
-                ServiceDescriptor[] list = s.getServiceDescriptor();
-                if (list != null) {
-                    for (int i = 0; i < list.length; i++) {
-                        PhotoSharingHandle handle = new PhotoSharingHandle(list[i]);
-                        services.add(handle);
-                    }
+
+        ServiceConfiguration conf = (ServiceConfiguration) GridApplication.getContext().getConfigurationManager()
+            .getConfigurationObject("photosharing");
+        Services s = conf.getServices();
+        if (s != null) {
+            ServiceDescriptor[] list = s.getServiceDescriptor();
+            if (list != null) {
+                for (int i = 0; i < list.length; i++) {
+                    PhotoSharingHandle handle = new PhotoSharingHandle(list[i]);
+                    services.add(handle);
                 }
             }
-
-        } catch (Throwable e) {
-          e.printStackTrace();
         }
+
         return services;
     }
 }
