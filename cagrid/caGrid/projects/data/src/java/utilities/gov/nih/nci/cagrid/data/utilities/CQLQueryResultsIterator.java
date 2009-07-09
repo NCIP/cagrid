@@ -50,7 +50,7 @@ public class CQLQueryResultsIterator implements Iterator {
 	/**
 	 * When returning objects, setting xmlOnly to true will bypass the
 	 * AXIS deserializer and return straight XML strings.  When set to
-	 * false, the results are deseriailzed with the default AXIS config
+	 * false, the results are deserialized with the default AXIS config
 	 * 
 	 * @param results
 	 * 		The resuls to iterate over
