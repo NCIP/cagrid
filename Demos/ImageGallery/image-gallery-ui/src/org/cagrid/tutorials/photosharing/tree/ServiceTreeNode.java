@@ -8,6 +8,7 @@ import javax.swing.tree.TreeNode;
 import org.cagrid.gaards.ui.gridgrouper.GridGrouperLookAndFeel;
 import org.cagrid.grape.utils.ErrorDialog;
 import org.cagrid.tutorials.photosharing.GalleryHandle;
+import org.cagrid.tutorials.photosharing.GalleryLookAndFeel;
 import org.cagrid.tutorials.photosharing.PhotoSharingHandle;
 
 
@@ -69,7 +70,7 @@ public class ServiceTreeNode extends GalleryBaseTreeNode {
 
 
     public ImageIcon getIcon() {
-        return GridGrouperLookAndFeel.getStemIcon16x16();
+        return GalleryLookAndFeel.getService16x16();
     }
 
 

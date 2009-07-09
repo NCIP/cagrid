@@ -94,7 +94,7 @@
 					<title>Gallery Browser</title>
 					<description>Discover and browser photo galleries</description>
 					<classname>org.cagrid.tutorials.photosharing.GalleryBrowser</classname>
-					<icon>/grouper_logo_no_background_22x22.png</icon>
+					<icon>/gallery22x22.png</icon>
 					<showOnToolBar>true</showOnToolBar>
 					<dimensions>
 						<width>1000</width>

@@ -11,6 +11,10 @@ import org.cagrid.gaards.ui.common.ProgressPanel;
 import org.cagrid.gaards.ui.common.TitlePanel;
 import org.cagrid.grape.ApplicationComponent;
 import org.cagrid.tutorials.photosharing.tree.GalleryTree;
+import org.cagrid.tutorials.photosharing.tree.GalleryTreeEventListener;
+
+import javax.swing.JTabbedPane;
+import java.awt.Insets;
 
 
 public class GalleryBrowser extends ApplicationComponent {
@@ -24,6 +28,7 @@ public class GalleryBrowser extends ApplicationComponent {
     private GalleryTree galleryTree = null;
     private JPanel titlePanel = null;
     private ProgressPanel progress = null;
+    private GalleryManager galleryManager = null;
     /**
      * This is the default constructor
      */
@@ -41,7 +46,7 @@ public class GalleryBrowser extends ApplicationComponent {
     private void initialize() {
         this.setSize(300, 200);
         this.setContentPane(getJContentPane());
-        this.setTitle("JFrame");
+        this.setTitle("Gallery");
     }
 
 
@@ -122,8 +127,16 @@ public class GalleryBrowser extends ApplicationComponent {
      */
     private JPanel getRightPanel() {
         if (rightPanel == null) {
+            GridBagConstraints gridBagConstraints4 = new GridBagConstraints();
+            gridBagConstraints4.fill = GridBagConstraints.BOTH;
+            gridBagConstraints4.weighty = 1.0;
+            gridBagConstraints4.gridx = 0;
+            gridBagConstraints4.gridy = 0;
+            gridBagConstraints4.insets = new Insets(2, 2, 2, 2);
+            gridBagConstraints4.weightx = 1.0;
             rightPanel = new JPanel();
             rightPanel.setLayout(new GridBagLayout());
+            rightPanel.add(getGalleryManager(), gridBagConstraints4);
         }
         return rightPanel;
     }
@@ -151,6 +164,8 @@ public class GalleryBrowser extends ApplicationComponent {
     private GalleryTree getGalleryTree() {
         if (galleryTree == null) {
             galleryTree = new GalleryTree();
+            galleryTree.setProgress(getProgress());
+            galleryTree.addMouseListener(new GalleryTreeEventListener(galleryTree, getGalleryManager()));
         }
         return galleryTree;
     }
@@ -179,6 +194,19 @@ public class GalleryBrowser extends ApplicationComponent {
             progress = new ProgressPanel();
         }
         return progress;
+    }
+
+
+    /**
+     * This method initializes galleryManager	
+     * 	
+     * @return javax.swing.JTabbedPane	
+     */
+    private GalleryManager getGalleryManager() {
+        if (galleryManager == null) {
+            galleryManager = new GalleryManager(getProgress());
+        }
+        return galleryManager;
     }
 
 }
