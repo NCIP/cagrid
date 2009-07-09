@@ -50,6 +50,10 @@ public class PhotoSharingApplication {
 					
 					//list that our identity is in the list of viewers and adders
 					org.cagrid.demo.photosharing.domain.User[] viewers = galleryClient.listAllUsersWithViewPrivileges();
+					
+					if (viewers == null) {
+						throw new RuntimeException("Gallery viewers not expected to be null!");
+					}
 					for (org.cagrid.demo.photosharing.domain.User viewer : viewers) {
 						if (!(viewer.getUserIdentity().equals(userCredential.getIdentity()))) {
 							throw new RuntimeException("Gallery owner isn't in the list of viewers!");
@@ -58,6 +62,11 @@ public class PhotoSharingApplication {
 
 					//list that our identity is in the list of adders
 					org.cagrid.demo.photosharing.domain.User[] adders = galleryClient.listAllUsersWithViewPrivileges();
+
+					if (adders == null) {
+						throw new RuntimeException("Gallery adders not expected to be null!");
+					}
+
 					for (org.cagrid.demo.photosharing.domain.User adder : adders) {
 						if (!(adder.getUserIdentity().equals(userCredential.getIdentity()))) {
 							throw new RuntimeException("Gallery owner isn't in the list of adders!");
