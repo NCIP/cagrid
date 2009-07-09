@@ -25,7 +25,8 @@ import java.util.Set;
 
 
 /**
- * DomainModelValidator Does the dirty work of validating a CQL query against a
+ * DomainModelValidator 
+ * Does the dirty work of validating a CQL query against a
  * domain model
  * 
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
