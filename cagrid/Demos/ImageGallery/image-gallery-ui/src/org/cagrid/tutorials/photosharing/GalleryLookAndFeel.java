@@ -19,6 +19,10 @@ public class GalleryLookAndFeel extends LookAndFeel {
     public final static ImageIcon getLoadIcon() {
         return IconUtils.loadIcon("/view-refresh.png");
     }
+    
+    public final static ImageIcon getPhotoLoadIcon() {
+        return IconUtils.loadIcon("/load.png");
+    }
 
 
     public final static ImageIcon getCloseTab() {
@@ -40,6 +44,7 @@ public class GalleryLookAndFeel extends LookAndFeel {
     public final static ImageIcon getService22x22() {
         return IconUtils.loadIcon("/photo-sharing22x22.png");
     }
+    
     
     public final static ImageIcon getGallery22x22() {
         return IconUtils.loadIcon("/gallery22x22.png");
