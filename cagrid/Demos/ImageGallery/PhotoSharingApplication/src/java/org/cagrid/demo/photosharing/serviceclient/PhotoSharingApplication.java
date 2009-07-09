@@ -7,6 +7,7 @@ import java.awt.image.RenderedImage;
 import javax.swing.JFrame;
 
 import org.cagrid.demo.photosharing.gallery.client.GalleryClient;
+import org.cagrid.demo.photosharing.guicomponents.PermissionsPanel;
 import org.cagrid.demo.photosharing.utils.ImageType;
 import org.cagrid.demo.photosharing.utils.ImageUtils;
 import org.castor.util.Base64Decoder;
@@ -46,6 +47,7 @@ public class PhotoSharingApplication {
 					String galleryName = "Summer Vacation";
 					GalleryClient galleryClient = client.createGallery(galleryName);
 
+					
 					//list that our identity is in the list of viewers and adders
 					org.cagrid.demo.photosharing.domain.User[] viewers = galleryClient.listAllUsersWithViewPrivileges();
 					for (org.cagrid.demo.photosharing.domain.User viewer : viewers) {
@@ -80,6 +82,19 @@ public class PhotoSharingApplication {
 
 					galleryClient = client.createGallery(galleryName);
 
+					
+					PermissionsPanel panel = new PermissionsPanel(galleryClient);
+					
+					JFrame permissionsFrame = new JFrame();
+					
+					permissionsFrame.getContentPane().add(panel.getPermissionsPanel());
+					
+					permissionsFrame.pack();
+					permissionsFrame.show();
+					
+					System.out.println("Test");
+					Thread.sleep(10000);
+
 					String testIdentity = userCredential.getIdentity() + "testinguser";
 					org.cagrid.demo.photosharing.domain.User user = new org.cagrid.demo.photosharing.domain.User();
 					user.setId(Long.valueOf(0));
@@ -87,6 +102,10 @@ public class PhotoSharingApplication {
 					galleryClient.grantAddImagePrivileges(user);
 					galleryClient.grantViewGalleryPrivileges(user);
 
+					System.out.println("Test");
+					Thread.sleep(10000);
+					
+					
 					boolean ownerIsPresent = false;
 					boolean testuserIsPresent = false;
 					//list that our identity is in the list of viewers and adders
@@ -141,8 +160,11 @@ public class PhotoSharingApplication {
 						}
 					}
 					
+					System.out.println("Test");
+					Thread.sleep(10000);
 
-
+					
+					
 					String imageName = "OSU Medical Center Logo";
 					String imageDescription = "Displaying OSU Medical Center Logo";
 
