@@ -479,3 +479,7 @@ div.row div.twoCols{
 #runItbtn:active {
 	background-position:0 -166px;
 }
+.featuredDiv {
+	background-color:#FFFFCF;
+	padding:10px;
+}

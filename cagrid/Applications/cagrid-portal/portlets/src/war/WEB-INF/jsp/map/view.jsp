@@ -23,7 +23,7 @@
 
 
 
-<div class="mapContainer"">
+<div class="mapContainer">
 
 <div id="<c:out value="${mapNodeId}"/>" class="mapNode"><!-- for ie --></div>
      </div>
