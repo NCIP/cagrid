@@ -19,6 +19,7 @@ import org.oasis.wsrf.faults.BaseFaultTypeDescription;
  */
 public class GalleryImpl extends GalleryImplBase {
 
+	private static final boolean USE_IMAGE_AUTHORIZATION = false;
 	
 	public GalleryImpl() throws RemoteException {
 		super();
@@ -55,7 +56,7 @@ public class GalleryImpl extends GalleryImplBase {
 		String imageData = image.getData();
 		ImageDescription desc;
 		try {
-			desc = resource.getGallery().addImage(userDN, imageName, imageDescription, imageType, imageData);
+			desc = resource.getGallery().addImage(userDN, imageName, imageDescription, imageType, imageData, USE_IMAGE_AUTHORIZATION);
 		} catch (AuthorizationException e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
@@ -446,6 +447,51 @@ public class GalleryImpl extends GalleryImplBase {
 		try {
 			resource = getResourceHome().getAddressedResource();
 			return resource.getGallery().getGalleryName();
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			e.printStackTrace();
+			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException pse = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
+			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
+			pse.setDescription(new BaseFaultTypeDescription[] { faultDesc });
+			throw pse;
+		}
+  }
+
+  public org.cagrid.demo.photosharing.domain.User[] listUsersWithAddPrivileges() throws RemoteException, org.cagrid.demo.photosharing.stubs.types.PhotoSharingException {
+		GalleryResource resource = null;
+		try {
+			resource = getResourceHome().getAddressedResource();
+			String[] viewers = resource.getGallery().listIdentitiesWithAddPrivileges();
+			Collection<org.cagrid.demo.photosharing.domain.User> users = new ArrayList<org.cagrid.demo.photosharing.domain.User>();
+			for (String viewer : viewers) {
+				org.cagrid.demo.photosharing.domain.User user = new org.cagrid.demo.photosharing.domain.User();
+				user.setUserIdentity(viewer);
+				users.add(user);
+			}
+			return users.toArray(new org.cagrid.demo.photosharing.domain.User[0]);
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			e.printStackTrace();
+			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException pse = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
+			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
+			pse.setDescription(new BaseFaultTypeDescription[] { faultDesc });
+			throw pse;
+		}
+    
+  }
+
+  public org.cagrid.demo.photosharing.domain.User[] listAllUsersWithViewPrivileges() throws RemoteException, org.cagrid.demo.photosharing.stubs.types.PhotoSharingException {
+		GalleryResource resource = null;
+		try {
+			resource = getResourceHome().getAddressedResource();
+			String[] viewers = resource.getGallery().listIdentitiesWithViewPrivileges();
+			Collection<org.cagrid.demo.photosharing.domain.User> users = new ArrayList<org.cagrid.demo.photosharing.domain.User>();
+			for (String viewer : viewers) {
+				org.cagrid.demo.photosharing.domain.User user = new org.cagrid.demo.photosharing.domain.User();
+				user.setUserIdentity(viewer);
+				users.add(user);
+			}
+			return users.toArray(new org.cagrid.demo.photosharing.domain.User[0]);
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();

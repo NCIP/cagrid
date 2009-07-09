@@ -105,7 +105,6 @@ public class PhotoSharingClient extends PhotoSharingClientBase implements PhotoS
 					galleryClient.revokeAddImagePrivileges(user);
 					galleryClient.revokeViewGalleryPrivileges(user);
 
-
 					String imageName = "OSU Medical Center Logo";
 					String imageDescription = "Displaying OSU Medical Center Logo";
 
@@ -129,7 +128,6 @@ public class PhotoSharingClient extends PhotoSharingClientBase implements PhotoS
 					org.cagrid.demo.photosharing.domain.ImageDescription galleryImageDescription = galleryClient.addImage(beanImage);
 
 					org.cagrid.demo.photosharing.domain.ImageDescription[] imageDescriptions = galleryClient.listImages();
-
 
 					for (org.cagrid.demo.photosharing.domain.ImageDescription desc : imageDescriptions) {
 
@@ -200,52 +198,52 @@ public class PhotoSharingClient extends PhotoSharingClientBase implements PhotoS
 		}
 	}
 
-	public org.oasis.wsrf.properties.GetMultipleResourcePropertiesResponse getMultipleResourceProperties(org.oasis.wsrf.properties.GetMultipleResourceProperties_Element params) throws RemoteException {
-		synchronized(portTypeMutex){
-			configureStubSecurity((Stub)portType,"getMultipleResourceProperties");
-			return portType.getMultipleResourceProperties(params);
-		}
-	}
+  public org.oasis.wsrf.properties.GetMultipleResourcePropertiesResponse getMultipleResourceProperties(org.oasis.wsrf.properties.GetMultipleResourceProperties_Element params) throws RemoteException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"getMultipleResourceProperties");
+    return portType.getMultipleResourceProperties(params);
+    }
+  }
 
-	public org.oasis.wsrf.properties.GetResourcePropertyResponse getResourceProperty(javax.xml.namespace.QName params) throws RemoteException {
-		synchronized(portTypeMutex){
-			configureStubSecurity((Stub)portType,"getResourceProperty");
-			return portType.getResourceProperty(params);
-		}
-	}
+  public org.oasis.wsrf.properties.GetResourcePropertyResponse getResourceProperty(javax.xml.namespace.QName params) throws RemoteException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"getResourceProperty");
+    return portType.getResourceProperty(params);
+    }
+  }
 
-	public org.oasis.wsrf.properties.QueryResourcePropertiesResponse queryResourceProperties(org.oasis.wsrf.properties.QueryResourceProperties_Element params) throws RemoteException {
-		synchronized(portTypeMutex){
-			configureStubSecurity((Stub)portType,"queryResourceProperties");
-			return portType.queryResourceProperties(params);
-		}
-	}
+  public org.oasis.wsrf.properties.QueryResourcePropertiesResponse queryResourceProperties(org.oasis.wsrf.properties.QueryResourceProperties_Element params) throws RemoteException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"queryResourceProperties");
+    return portType.queryResourceProperties(params);
+    }
+  }
 
-	public org.cagrid.demo.photosharing.gallery.client.GalleryClient createGallery(java.lang.String galleryName) throws RemoteException, org.apache.axis.types.URI.MalformedURIException, org.cagrid.demo.photosharing.stubs.types.PhotoSharingException {
-		synchronized(portTypeMutex){
-			configureStubSecurity((Stub)portType,"createGallery");
-			org.cagrid.demo.photosharing.stubs.CreateGalleryRequest params = new org.cagrid.demo.photosharing.stubs.CreateGalleryRequest();
-			params.setGalleryName(galleryName);
-			org.cagrid.demo.photosharing.stubs.CreateGalleryResponse boxedResult = portType.createGallery(params);
-			EndpointReferenceType ref = boxedResult.getGalleryReference().getEndpointReference();
-			return new org.cagrid.demo.photosharing.gallery.client.GalleryClient(ref,getProxy());
-		}
-	}
+  public org.cagrid.demo.photosharing.gallery.client.GalleryClient createGallery(java.lang.String galleryName) throws RemoteException, org.apache.axis.types.URI.MalformedURIException, org.cagrid.demo.photosharing.stubs.types.PhotoSharingException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"createGallery");
+    org.cagrid.demo.photosharing.stubs.CreateGalleryRequest params = new org.cagrid.demo.photosharing.stubs.CreateGalleryRequest();
+    params.setGalleryName(galleryName);
+    org.cagrid.demo.photosharing.stubs.CreateGalleryResponse boxedResult = portType.createGallery(params);
+    EndpointReferenceType ref = boxedResult.getGalleryReference().getEndpointReference();
+    return new org.cagrid.demo.photosharing.gallery.client.GalleryClient(ref,getProxy());
+    }
+  }
 
-	public org.cagrid.demo.photosharing.gallery.client.GalleryClient[] listGalleries() throws RemoteException, org.apache.axis.types.URI.MalformedURIException {
-		synchronized(portTypeMutex){
-			configureStubSecurity((Stub)portType,"listGalleries");
-			org.cagrid.demo.photosharing.stubs.ListGalleriesRequest params = new org.cagrid.demo.photosharing.stubs.ListGalleriesRequest();
-			org.cagrid.demo.photosharing.stubs.ListGalleriesResponse boxedResult = portType.listGalleries(params);
-			org.cagrid.demo.photosharing.gallery.client.GalleryClient[] clientArray = null;
-			if(boxedResult.getGalleryReference()!=null){
-				clientArray = new org.cagrid.demo.photosharing.gallery.client.GalleryClient[boxedResult.getGalleryReference().length];
-				for(int i = 0; i < boxedResult.getGalleryReference().length; i++){
-					clientArray[i] = new org.cagrid.demo.photosharing.gallery.client.GalleryClient(boxedResult.getGalleryReference(i).getEndpointReference(),getProxy());
-				}
-			}
-			return clientArray;
-		}
-	}
+  public org.cagrid.demo.photosharing.gallery.client.GalleryClient[] listGalleries() throws RemoteException, org.apache.axis.types.URI.MalformedURIException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"listGalleries");
+    org.cagrid.demo.photosharing.stubs.ListGalleriesRequest params = new org.cagrid.demo.photosharing.stubs.ListGalleriesRequest();
+    org.cagrid.demo.photosharing.stubs.ListGalleriesResponse boxedResult = portType.listGalleries(params);
+    org.cagrid.demo.photosharing.gallery.client.GalleryClient[] clientArray = null;
+    if(boxedResult.getGalleryReference()!=null){
+      clientArray = new org.cagrid.demo.photosharing.gallery.client.GalleryClient[boxedResult.getGalleryReference().length];
+      for(int i = 0; i < boxedResult.getGalleryReference().length; i++){
+    	   clientArray[i] = new org.cagrid.demo.photosharing.gallery.client.GalleryClient(boxedResult.getGalleryReference(i).getEndpointReference(),getProxy());
+      }
+    }
+    return clientArray;
+    }
+  }
 
 }

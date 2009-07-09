@@ -415,35 +415,73 @@
      </ns76:MethodSecurity>
      <ns77:Extensions xsi:type="ns77:ExtensionsType" xmlns:ns77="gme://gov.nih.nci.cagrid.introduce/1/Extension"/>
     </ns22:Method>
+    <ns22:Method description="List all users that have add privileges on the gallery" isImported="false" isProvided="false" name="listUsersWithAddPrivileges" xsi:type="ns22:MethodType">
+     <ns22:Inputs/>
+     <ns22:Output qName="ns78:User" description="" isArray="true" xmlns:ns78="gme://org.cagrid.demo.photosharing.domain"/>
+     <ns22:Exceptions>
+      <ns22:Exception description="" name="PhotoSharingException" qname="ns79:PhotoSharingException" xmlns:ns79="http://photosharing.demo.cagrid.org/PhotoSharing/types"/>
+     </ns22:Exceptions>
+     <ns80:MethodSecurity xsi:type="ns80:MethodSecurity" xmlns:ns80="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns80:SecuritySetting xsi:type="ns80:SecuritySetting">Custom</ns80:SecuritySetting>
+      <ns80:TransportLevelSecurity xsi:type="ns80:TransportLevelSecurity">
+       <ns80:CommunicationMethod xsi:type="ns80:CommunicationMethod">Privacy</ns80:CommunicationMethod>
+      </ns80:TransportLevelSecurity>
+      <ns80:RunAsMode xsi:type="ns80:RunAsMode">System</ns80:RunAsMode>
+      <ns80:AnonymousClients xsi:type="ns80:AnonymousCommunication">No</ns80:AnonymousClients>
+      <ns80:MethodAuthorization xsi:type="ns80:MethodAuthorization">
+       <ns80:InheritServiceAuthorization xsi:type="ns80:InheritServiceAuthorization"/>
+      </ns80:MethodAuthorization>
+     </ns80:MethodSecurity>
+     <ns81:Extensions xsi:type="ns81:ExtensionsType" xmlns:ns81="gme://gov.nih.nci.cagrid.introduce/1/Extension"/>
+    </ns22:Method>
+    <ns22:Method description="List all users that have view privileges on the gallery" isImported="false" isProvided="false" name="listAllUsersWithViewPrivileges" xsi:type="ns22:MethodType">
+     <ns22:Inputs/>
+     <ns22:Output qName="ns82:User" description="" isArray="true" xmlns:ns82="gme://org.cagrid.demo.photosharing.domain"/>
+     <ns22:Exceptions>
+      <ns22:Exception description="" name="PhotoSharingException" qname="ns83:PhotoSharingException" xmlns:ns83="http://photosharing.demo.cagrid.org/PhotoSharing/types"/>
+     </ns22:Exceptions>
+     <ns84:MethodSecurity xsi:type="ns84:MethodSecurity" xmlns:ns84="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns84:SecuritySetting xsi:type="ns84:SecuritySetting">Custom</ns84:SecuritySetting>
+      <ns84:TransportLevelSecurity xsi:type="ns84:TransportLevelSecurity">
+       <ns84:CommunicationMethod xsi:type="ns84:CommunicationMethod">Privacy</ns84:CommunicationMethod>
+      </ns84:TransportLevelSecurity>
+      <ns84:RunAsMode xsi:type="ns84:RunAsMode">System</ns84:RunAsMode>
+      <ns84:AnonymousClients xsi:type="ns84:AnonymousCommunication">No</ns84:AnonymousClients>
+      <ns84:MethodAuthorization xsi:type="ns84:MethodAuthorization">
+       <ns84:InheritServiceAuthorization xsi:type="ns84:InheritServiceAuthorization"/>
+      </ns84:MethodAuthorization>
+     </ns84:MethodSecurity>
+     <ns85:Extensions xsi:type="ns85:ExtensionsType" xmlns:ns85="gme://gov.nih.nci.cagrid.introduce/1/Extension"/>
+    </ns22:Method>
    </ns22:Methods>
-   <ns78:ResourcePropertiesList xsi:type="ns78:ResourcePropertiesListType" xmlns:ns78="gme://gov.nih.nci.cagrid.introduce/1/Resources">
-    <ns78:ResourceProperty qName="ns79:CurrentTime" populateFromFile="false" register="false" xsi:type="ns78:ResourcePropertyType" xmlns:ns79="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
-    <ns78:ResourceProperty qName="ns80:TerminationTime" populateFromFile="false" register="false" xsi:type="ns78:ResourcePropertyType" xmlns:ns80="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
-   </ns78:ResourcePropertiesList>
-   <ns81:ServiceSecurity xsi:type="ns81:ServiceSecurity" xmlns:ns81="gme://gov.nih.nci.cagrid.introduce/1/Security">
-    <ns81:SecuritySetting xsi:type="ns81:SecuritySetting">Custom</ns81:SecuritySetting>
-    <ns81:TransportLevelSecurity xsi:type="ns81:TransportLevelSecurity">
-     <ns81:CommunicationMethod xsi:type="ns81:CommunicationMethod">Privacy</ns81:CommunicationMethod>
-    </ns81:TransportLevelSecurity>
-    <ns81:RunAsMode xsi:type="ns81:RunAsMode">System</ns81:RunAsMode>
-    <ns81:AnonymousClients xsi:type="ns81:AnonymousCommunication">No</ns81:AnonymousClients>
-    <ns81:ServiceAuthorization xsi:type="ns81:ServiceAuthorization">
-     <ns81:IntroducePDPAuthorization xsi:type="ns81:IntroducePDPAuthorization"/>
-    </ns81:ServiceAuthorization>
-   </ns81:ServiceSecurity>
+   <ns86:ResourcePropertiesList xsi:type="ns86:ResourcePropertiesListType" xmlns:ns86="gme://gov.nih.nci.cagrid.introduce/1/Resources">
+    <ns86:ResourceProperty qName="ns87:CurrentTime" populateFromFile="false" register="false" xsi:type="ns86:ResourcePropertyType" xmlns:ns87="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+    <ns86:ResourceProperty qName="ns88:TerminationTime" populateFromFile="false" register="false" xsi:type="ns86:ResourcePropertyType" xmlns:ns88="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+   </ns86:ResourcePropertiesList>
+   <ns89:ServiceSecurity xsi:type="ns89:ServiceSecurity" xmlns:ns89="gme://gov.nih.nci.cagrid.introduce/1/Security">
+    <ns89:SecuritySetting xsi:type="ns89:SecuritySetting">Custom</ns89:SecuritySetting>
+    <ns89:TransportLevelSecurity xsi:type="ns89:TransportLevelSecurity">
+     <ns89:CommunicationMethod xsi:type="ns89:CommunicationMethod">Privacy</ns89:CommunicationMethod>
+    </ns89:TransportLevelSecurity>
+    <ns89:RunAsMode xsi:type="ns89:RunAsMode">System</ns89:RunAsMode>
+    <ns89:AnonymousClients xsi:type="ns89:AnonymousCommunication">No</ns89:AnonymousClients>
+    <ns89:ServiceAuthorization xsi:type="ns89:ServiceAuthorization">
+     <ns89:IntroducePDPAuthorization xsi:type="ns89:IntroducePDPAuthorization"/>
+    </ns89:ServiceAuthorization>
+   </ns89:ServiceSecurity>
    <ns3:description xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"></ns3:description>
    <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
     <ns3:Lifetime xsi:type="ns3:Lifetime"/>
     <ns3:Identifiable xsi:type="ns3:Identifiable"/>
    </ns3:ResourceFrameworkOptions>
-   <ns82:Extensions xsi:type="ns82:ExtensionsType" xmlns:ns82="gme://gov.nih.nci.cagrid.introduce/1/Extension">
-    <ns82:Extension extensionType="AUTHORIZATION" name="enforce_auth" xsi:type="ns82:ExtensionType"/>
-   </ns82:Extensions>
+   <ns90:Extensions xsi:type="ns90:ExtensionsType" xmlns:ns90="gme://gov.nih.nci.cagrid.introduce/1/Extension">
+    <ns90:Extension extensionType="AUTHORIZATION" name="enforce_auth" xsi:type="ns90:ExtensionType"/>
+   </ns90:Extensions>
   </ns3:Service>
  </ns3:Services>
- <ns83:Extensions xsi:type="ns83:ExtensionsType" xmlns:ns83="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
- <ns84:ServiceProperties xmlns:ns84="gme://gov.nih.nci.cagrid.introduce/1/Property">
-  <ns84:Property description="Grid Grouper service URL" isFromETC="false" key="gridGrouperURL" value="https://grouper.training.carid.org:8443/wsrf/services/cagrid/GridGrouper"/>
-  <ns84:Property description="System name of the service stem in Grid Grouper" isFromETC="false" key="serviceStemSystemName" value="Training:photoSharingcaBIGAnnualMeeting2009:justin-permars-macbook-pro.local"/>
- </ns84:ServiceProperties>
+ <ns91:Extensions xsi:type="ns91:ExtensionsType" xmlns:ns91="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+ <ns92:ServiceProperties xmlns:ns92="gme://gov.nih.nci.cagrid.introduce/1/Property">
+  <ns92:Property description="Grid Grouper service URL" isFromETC="false" key="gridGrouperURL" value="https://grouper.training.cagrid.org:8443/wsrf/services/cagrid/GridGrouper"/>
+  <ns92:Property description="System name of the service stem in Grid Grouper" isFromETC="false" key="serviceStemSystemName" value="Training:photosharingtutorial:justin-permars-macbook-pro.local"/>
+ </ns92:ServiceProperties>
 </ns1:ServiceDescription>

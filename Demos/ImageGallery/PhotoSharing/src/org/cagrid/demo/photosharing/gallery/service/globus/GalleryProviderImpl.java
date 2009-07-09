@@ -86,4 +86,16 @@ public class GalleryProviderImpl{
     return boxedResult;
   }
 
+    public org.cagrid.demo.photosharing.gallery.stubs.ListUsersWithAddPrivilegesResponse listUsersWithAddPrivileges(org.cagrid.demo.photosharing.gallery.stubs.ListUsersWithAddPrivilegesRequest params) throws RemoteException, org.cagrid.demo.photosharing.stubs.types.PhotoSharingException {
+    org.cagrid.demo.photosharing.gallery.stubs.ListUsersWithAddPrivilegesResponse boxedResult = new org.cagrid.demo.photosharing.gallery.stubs.ListUsersWithAddPrivilegesResponse();
+    boxedResult.setUser(impl.listUsersWithAddPrivileges());
+    return boxedResult;
+  }
+
+    public org.cagrid.demo.photosharing.gallery.stubs.ListAllUsersWithViewPrivilegesResponse listAllUsersWithViewPrivileges(org.cagrid.demo.photosharing.gallery.stubs.ListAllUsersWithViewPrivilegesRequest params) throws RemoteException, org.cagrid.demo.photosharing.stubs.types.PhotoSharingException {
+    org.cagrid.demo.photosharing.gallery.stubs.ListAllUsersWithViewPrivilegesResponse boxedResult = new org.cagrid.demo.photosharing.gallery.stubs.ListAllUsersWithViewPrivilegesResponse();
+    boxedResult.setUser(impl.listAllUsersWithViewPrivileges());
+    return boxedResult;
+  }
+
 }
