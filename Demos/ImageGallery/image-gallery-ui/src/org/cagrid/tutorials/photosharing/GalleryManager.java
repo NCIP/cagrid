@@ -90,7 +90,7 @@ public class GalleryManager extends JTabbedPane {
                     this.setTitleAt(i, name);
                 }
             }
-            browse.setGallery();
+            //browse.setGallery();
         }
     }
 
@@ -102,7 +102,7 @@ public class GalleryManager extends JTabbedPane {
         browser.setProgress(progress);
         galleries.put(name, browser);
         this.addTab(name,
-            new CombinedIcon(new GalleryManagerTabCloseIcon(), GalleryLookAndFeel.getGallery22x22()), browser,
+            new CombinedIcon(new GalleryManagerTabCloseIcon(this), GalleryLookAndFeel.getGallery16x16()), browser,
             null);
         this.remove(getWelcomePanel());
         this.setSelectedComponent(browser);

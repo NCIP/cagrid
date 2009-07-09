@@ -8,9 +8,6 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.Icon;
 
-import org.cagrid.gaards.ui.gridgrouper.GridGrouperLookAndFeel;
-
-
 
 /**
  * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella</A>
@@ -21,65 +18,70 @@ import org.cagrid.gaards.ui.gridgrouper.GridGrouperLookAndFeel;
  *          Exp $
  */
 public class GalleryManagerTabCloseIcon implements Icon {
-	private final Icon mIcon;
+    private final Icon mIcon;
 
-	private GalleryManager mTabbedPane = null;
+    private GalleryManager mTabbedPane = null;
 
-	private transient Rectangle mPosition = null;
-
-
-	/**
-	 * Creates a new instance of TabCloseIcon.
-	 */
-	public GalleryManagerTabCloseIcon(Icon icon) {
-		mIcon = icon;
-	}
+    private transient Rectangle mPosition = null;
+    private boolean isInited;
 
 
-	/**
-	 * Creates a new instance of TabCloseIcon.
-	 */
-	public GalleryManagerTabCloseIcon() {
-		this(GridGrouperLookAndFeel.getCloseTab());
-	}
+    /**
+     * Creates a new instance of TabCloseIcon.
+     */
+    public GalleryManagerTabCloseIcon(GalleryManager manager, Icon icon) {
+        mIcon = icon;
+        this.isInited = false;
+        this.mTabbedPane = manager;
+    }
 
 
-	/**
-	 * when painting, remember last position painted.
-	 */
-	public void paintIcon(Component c, Graphics g, int x, int y) {
-		if (null == mTabbedPane) {
-			mTabbedPane = (GalleryManager) c;
-			mTabbedPane.addMouseListener(new MouseAdapter() {
-				public void mouseReleased(MouseEvent e) {
-					// asking for isConsumed is *very* important, otherwise more
-					// than one tab might get closed!
-					if (!e.isConsumed() && mPosition.contains(e.getX(), e.getY())) {
-						mTabbedPane.removeSelectedNode();
-						mTabbedPane.removeMouseListener(this);
-					}
-				}
-			});
-		}
+    /**
+     * Creates a new instance of TabCloseIcon.
+     */
+    public GalleryManagerTabCloseIcon(GalleryManager manager) {
+        this(manager,
 
-		mPosition = new Rectangle(x, y, getIconWidth(), getIconHeight());
-		mIcon.paintIcon(c, g, x, y);
-	}
+        GalleryLookAndFeel.getCloseTab());
+    }
 
 
-	/**
-	 * just delegate
-	 */
-	public int getIconWidth() {
-		return mIcon.getIconWidth();
-	}
+    /**
+     * when painting, remember last position painted.
+     */
+    public void paintIcon(Component c, Graphics g, int x, int y) {
+        if (!isInited) {
+        mTabbedPane.addMouseListener(new MouseAdapter() {
+                public void mouseReleased(MouseEvent e) {
+                    // asking for isConsumed is *very* important, otherwise more
+                    // than one tab might get closed!
+                    if (!e.isConsumed() && mPosition.contains(e.getX(), e.getY())) {
+                        mTabbedPane.removeSelectedNode();
+                        mTabbedPane.removeMouseListener(this);
+                    }
+                }
+            });
+            isInited = true;
+        }
+
+        mPosition = new Rectangle(x, y, getIconWidth(), getIconHeight());
+        mIcon.paintIcon(c, g, x, y);
+    }
 
 
-	/**
-	 * just delegate
-	 */
-	public int getIconHeight() {
-		return mIcon.getIconHeight();
-	}
+    /**
+     * just delegate
+     */
+    public int getIconWidth() {
+        return mIcon.getIconWidth();
+    }
+
+
+    /**
+     * just delegate
+     */
+    public int getIconHeight() {
+        return mIcon.getIconHeight();
+    }
 
 }

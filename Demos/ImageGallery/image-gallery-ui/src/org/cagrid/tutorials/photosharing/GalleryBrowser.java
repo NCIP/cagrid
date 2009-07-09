@@ -92,8 +92,8 @@ public class GalleryBrowser extends ApplicationComponent {
     private JSplitPane getJSplitPane() {
         if (jSplitPane == null) {
             jSplitPane = new JSplitPane();
-            jSplitPane.setLeftComponent(getLeftPanel());
             jSplitPane.setRightComponent(getRightPanel());
+            jSplitPane.setLeftComponent(getLeftPanel());
         }
         return jSplitPane;
     }

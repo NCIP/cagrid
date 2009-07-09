@@ -1,9 +1,10 @@
 package org.cagrid.tutorials.photosharing;
 
-import gov.nih.nci.cagrid.common.security.ProxyUtil;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.cagrid.demo.photosharing.domain.ImageDescription;
 import org.cagrid.demo.photosharing.gallery.client.GalleryClient;
-import org.globus.gsi.GlobusCredential;
 
 
 public class GalleryHandle {
@@ -20,6 +21,23 @@ public class GalleryHandle {
 
     public String getName() {
         return name;
+    }
+
+
+    public List<PhotoHandle> getPhotos() throws Exception {
+        List<PhotoHandle> photos = new ArrayList<PhotoHandle>();
+        ImageDescription[] images = this.client.listImages();
+        if (images != null) {
+            for (int i = 0; i < images.length; i++) {
+                photos.add(new PhotoHandle(this, images[i]));
+            }
+        }
+        return photos;
+    }
+
+
+    public GalleryClient getClient() {
+        return client;
     }
 
 }
