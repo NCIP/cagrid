@@ -71,7 +71,8 @@
         </c:if>
         >
 		<%--TODO: Add actual icons, the below line is just a placeholder--%>
-		<img src="<c:url value="/images/catalog_icons/tool.png" />" alt="" style="float:left;"/>
+		<%-- <img src="<c:url value="/images/catalog_icons/tool.png" />" alt="" style="float:left;"/> --%>
+		<tags:catalogEntryImage entry="${entry}" thumbnail="true" cssStyle="float:left;"/>
     <c:choose>
         <c:when test="${not empty link_text}">
             ${link_text}

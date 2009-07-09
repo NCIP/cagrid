@@ -16,5 +16,8 @@
           
     <bean id="loadDynamicMetadataPrototype"
           class="gov.nih.nci.cagrid.portal.util.LoadDynamicMetadata" scope="prototype" autowire="byName"/>
+          
+    <bean id="createUserPrototype"
+          class="gov.nih.nci.cagrid.portal.util.CreateUser" scope="prototype" autowire="byName"/>
 
 </beans>
