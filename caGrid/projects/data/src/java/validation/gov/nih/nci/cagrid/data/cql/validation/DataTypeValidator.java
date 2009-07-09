@@ -10,7 +10,8 @@ import org.apache.commons.logging.LogFactory;
 
 
 /**
- * ValueDomainValidator Validates a value against its ValueDomain
+ * DataTypeValidator 
+ * Validates values from a CQL query against their specified data type
  * 
  * @author <A HREF="MAILTO:ervin@bmi.osu.edu">David W. Ervin</A>
  * 
@@ -23,7 +24,7 @@ public class DataTypeValidator {
 
 	public static void validate(String value, String dataType) throws MalformedQueryException {
 		if (dataType.equals(String.class.getName())) {
-			// this is fairly common, so returning immediatly is a slight
+			// this is fairly common, so returning immediately is a slight
 			// performance boost
 			return;
 		} else if (dataType.equals(Long.class.getName())) {
@@ -84,5 +85,10 @@ public class DataTypeValidator {
 		if (value.length() > 1) {
 			throw new MalformedQueryException("Value " + value + " is not a single Character or empty");
 		}
+	}
+	
+	
+	private DataTypeValidator() {
+	    // prevent instantiation
 	}
 }
