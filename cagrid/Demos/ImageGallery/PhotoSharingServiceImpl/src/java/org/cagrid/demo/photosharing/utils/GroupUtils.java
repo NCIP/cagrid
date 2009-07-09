@@ -19,8 +19,11 @@ import gov.nih.nci.cagrid.gridgrouper.bean.MembershipExpression;
 import gov.nih.nci.cagrid.gridgrouper.client.GridGrouper;
 import gov.nih.nci.cagrid.gridgrouper.common.SubjectUtils;
 import gov.nih.nci.cagrid.gridgrouper.grouper.GroupI;
+import gov.nih.nci.cagrid.gridgrouper.grouper.MemberI;
 import gov.nih.nci.cagrid.gridgrouper.grouper.StemI;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Set;
 
 public class GroupUtils {
@@ -155,6 +158,15 @@ public class GroupUtils {
 	public static boolean hasMember(GroupI group, String identity) throws SubjectNotFoundException {
 		Subject subj = SubjectUtils.getSubject(identity);
 		return group.hasMember(subj);
+	}
+	
+	public static String[] listUsersInGroup(GroupI group) {
+		Set<MemberI> members = group.getMembers();
+		Collection<String> identities = new ArrayList<String>();
+		for (MemberI member : members) {
+			identities.add(member.getSubjectId());
+		}
+		return identities.toArray(new String[0]);
 	}
 
 }

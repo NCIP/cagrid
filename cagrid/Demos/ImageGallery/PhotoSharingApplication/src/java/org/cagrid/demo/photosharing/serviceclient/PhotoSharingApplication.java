@@ -46,6 +46,23 @@ public class PhotoSharingApplication {
 					String galleryName = "Summer Vacation";
 					GalleryClient galleryClient = client.createGallery(galleryName);
 
+					//list that our identity is in the list of viewers and adders
+					org.cagrid.demo.photosharing.domain.User[] viewers = galleryClient.listAllUsersWithViewPrivileges();
+					for (org.cagrid.demo.photosharing.domain.User viewer : viewers) {
+						if (!(viewer.getUserIdentity().equals(userCredential.getIdentity()))) {
+							throw new RuntimeException("Gallery owner isn't in the list of viewers!");
+						}
+					}
+
+					//list that our identity is in the list of adders
+					org.cagrid.demo.photosharing.domain.User[] adders = galleryClient.listAllUsersWithViewPrivileges();
+					for (org.cagrid.demo.photosharing.domain.User adder : adders) {
+						if (!(adder.getUserIdentity().equals(userCredential.getIdentity()))) {
+							throw new RuntimeException("Gallery owner isn't in the list of adders!");
+						}
+					}
+					
+					
 					//list galleries... ensure ours is there.
 					GalleryClient[] galleries = client.listGalleries();
 					if (!(galleries[0].getGalleryName()).equals(galleryName)) {
@@ -69,8 +86,61 @@ public class PhotoSharingApplication {
 					user.setUserIdentity(testIdentity);
 					galleryClient.grantAddImagePrivileges(user);
 					galleryClient.grantViewGalleryPrivileges(user);
+
+					boolean ownerIsPresent = false;
+					boolean testuserIsPresent = false;
+					//list that our identity is in the list of viewers and adders
+					viewers = galleryClient.listAllUsersWithViewPrivileges();
+					for (org.cagrid.demo.photosharing.domain.User viewer : viewers) {
+						if (viewer.getUserIdentity().equals(userCredential.getIdentity())) {
+							ownerIsPresent = true;
+						}
+						if (viewer.getUserIdentity().equals(testIdentity)) {
+							testuserIsPresent = true;
+						}
+					}
+					
+					if (!(ownerIsPresent && testuserIsPresent)) {
+						throw new RuntimeException("Expected both owner and test user in the list of viewers!");
+					}
+
+					ownerIsPresent = false;
+					testuserIsPresent = false;
+					//list that our identity is in the list of adders
+					adders = galleryClient.listAllUsersWithViewPrivileges();
+					for (org.cagrid.demo.photosharing.domain.User adder : adders) {
+						if (adder.getUserIdentity().equals(userCredential.getIdentity())) {
+							ownerIsPresent = true;
+						}
+						if (adder.getUserIdentity().equals(testIdentity)) {
+							testuserIsPresent = true;
+						}
+					}
+					
+					if (!(ownerIsPresent && testuserIsPresent)) {
+						throw new RuntimeException("Expected both owner and test user in the list of viewers!");
+					}
+					
 					galleryClient.revokeAddImagePrivileges(user);
 					galleryClient.revokeViewGalleryPrivileges(user);
+
+					//check that only one user is there now
+					//list that our identity is in the list of viewers and adders
+					viewers = galleryClient.listAllUsersWithViewPrivileges();
+					for (org.cagrid.demo.photosharing.domain.User viewer : viewers) {
+						if (!(viewer.getUserIdentity().equals(userCredential.getIdentity()))) {
+							throw new RuntimeException("Gallery owner isn't in the list of viewers!");
+						}
+					}
+
+					//list that our identity is in the list of adders
+					adders = galleryClient.listAllUsersWithViewPrivileges();
+					for (org.cagrid.demo.photosharing.domain.User adder : adders) {
+						if (!(adder.getUserIdentity().equals(userCredential.getIdentity()))) {
+							throw new RuntimeException("Gallery owner isn't in the list of adders!");
+						}
+					}
+					
 
 
 					String imageName = "OSU Medical Center Logo";
@@ -123,7 +193,8 @@ public class PhotoSharingApplication {
 						System.out.println("Correctly received image not found exception");
 					}
 
-					//test image permissions
+					//test image permissions... DISABLED for the moment in the service (hard-coded)
+					/*
 					String fakeIdentity = userCredential.getIdentity() + "fakeappended";
 					galleryClient.grantImageRetrievalPrivileges(galleryImageDescription, user);
 					//now try to retrieve image
@@ -141,6 +212,7 @@ public class PhotoSharingApplication {
 
 					galleryClient.grantImageRetrievalPrivileges(galleryImageDescription, realUser);
 					//now try to retrieve image
+					 */
 					org.cagrid.demo.photosharing.domain.Image image = galleryClient.getImage(galleryImageDescription);
 
 					byte[] imageDataFromServer = Base64Decoder.decode(image.getData());

@@ -82,7 +82,7 @@ public class GrouperGallery {
 	}
 
 	public ImageDescription addImage(String callerIdentity, String imageName,
-			String imageDescription, String imageType, String encodedImage)
+			String imageDescription, String imageType, String encodedImage, boolean useImagePermissions)
 	throws AuthorizationException, PhotoSharingException {
 		// Image image, MembershipExpression expression, GridGrouper grouper,
 		// GroupI group) throws AuthorizationException {
@@ -98,6 +98,7 @@ public class GrouperGallery {
 			GroupI imageGroup = null;
 			try {
 				//check if image group already exists
+				if (useImagePermissions) {
 				Set<GroupI> existingGroups = this.info.getGalleryStem().getChildGroups();
 				for (GroupI group : existingGroups) {
 					if (group.getExtension().equals(GroupUtils.makeSystemName(description.getName()))) {
@@ -107,8 +108,9 @@ public class GrouperGallery {
 				if (imageGroup == null) {
 					imageGroup = createImageGroup(description);
 				}
+				}
 				GrouperImage imageFacade = new GrouperImage(image,
-						grouperURL, grouper, imageGroup);
+						grouperURL, grouper, imageGroup, useImagePermissions);
 				this.facadesMap
 				.put(image.getDescription().getId(), imageFacade);
 				return description;
@@ -213,12 +215,13 @@ public class GrouperGallery {
 	}
 
 	public void grantGalleryViewingPrivileges(String callerIdentity, String userIdentity) throws PhotoSharingException, AuthorizationException {
+		GroupI group = this.info.getViewPhotosGroup();
 		if (!(callerIdentity.equals(this.info.getGalleryOwnerIdentity()))) {
 			throw new AuthorizationException("Only the gallery owner can grant gallery viewing privileges");
 		}
 		try {
-			if (!(GroupUtils.hasMember(this.info.getAddPhotosGroup(), userIdentity))) {
-				GroupUtils.addGroupMember(this.info.getViewPhotosGroup(), userIdentity);
+			if (!(GroupUtils.hasMember(group, userIdentity))) {
+				GroupUtils.addGroupMember(group, userIdentity);
 			}
 		} catch (Exception e) {
 			throw new PhotoSharingException("Could not add user as viewer: " + e.getMessage());
@@ -226,13 +229,14 @@ public class GrouperGallery {
 	}
 
 	public void revokeGalleryViewingPrivileges(String callerIdentity, String userIdentity) throws PhotoSharingException, AuthorizationException {
+		GroupI group = this.info.getViewPhotosGroup();
 		if (!(callerIdentity.equals(this.info.getGalleryOwnerIdentity()))) {
 			throw new AuthorizationException("Only the gallery owner can revoke gallery viewing privileges");
 		}
 		
 		try {
-			if (GroupUtils.hasMember(this.info.getAddPhotosGroup(), userIdentity)) {
-			GroupUtils.removeGroupMember(this.info.getViewPhotosGroup(), userIdentity);
+			if (GroupUtils.hasMember(group, userIdentity)) {
+			GroupUtils.removeGroupMember(group, userIdentity);
 			}
 		} catch (Exception e) {
 			throw new PhotoSharingException("Could not remove user from viewers: " + e.getMessage());
@@ -240,13 +244,14 @@ public class GrouperGallery {
 	}
 
 	public void grantGalleryAddPrivileges(String callerIdentity, String userIdentity) throws PhotoSharingException, AuthorizationException {
+		GroupI group = this.info.getAddPhotosGroup();
 		if (!(callerIdentity.equals(this.info.getGalleryOwnerIdentity()))) {
 			throw new AuthorizationException("Only the gallery owner can grant image addition privileges");
 		}
 		try {
 			//add only if user doesn't exist.
-			if (!(GroupUtils.hasMember(this.info.getAddPhotosGroup(), userIdentity))) {
-				GroupUtils.addGroupMember(this.info.getAddPhotosGroup(), userIdentity);
+			if (!(GroupUtils.hasMember(group, userIdentity))) {
+				GroupUtils.addGroupMember(group, userIdentity);
 			}
 		} catch (Exception e) {
 			throw new PhotoSharingException("Could not add user to add images group: " + e.getMessage());
@@ -254,12 +259,13 @@ public class GrouperGallery {
 	}
 
 	public void revokeGalleryAddPrivileges(String callerIdentity, String userIdentity) throws PhotoSharingException, AuthorizationException {
+		GroupI group = this.info.getAddPhotosGroup();
 		if (!(callerIdentity.equals(this.info.getGalleryOwnerIdentity()))) {
 			throw new AuthorizationException("Only the gallery owner can revoke image addition privileges");
 		}
 		try {
-			if (GroupUtils.hasMember(this.info.getAddPhotosGroup(), userIdentity)) {
-				GroupUtils.removeGroupMember(this.info.getAddPhotosGroup(), userIdentity);
+			if (GroupUtils.hasMember(group, userIdentity)) {
+				GroupUtils.removeGroupMember(group, userIdentity);
 			}
 		} catch (Exception e) {
 			throw new PhotoSharingException("Could not remove user from add images group: " + e.getMessage());
@@ -269,5 +275,23 @@ public class GrouperGallery {
 	public String getGalleryName() {
 		return this.galleryName;
 	}
+	
+	/**
+	 * Return all identities that have view privileges
+	 * @return
+	 */
+	public String[] listIdentitiesWithViewPrivileges() {
+		return GroupUtils.listUsersInGroup(this.info.getViewPhotosGroup());
+	}
+	
+
+	/**
+	 * Return all identities that have view privileges
+	 * @return
+	 */
+	public String[] listIdentitiesWithAddPrivileges() {
+		return GroupUtils.listUsersInGroup(this.info.getAddPhotosGroup());
+	}
+
 
 }

@@ -122,5 +122,21 @@ public interface GalleryI {
    */
   public java.lang.String getGalleryName() throws RemoteException, org.cagrid.demo.photosharing.stubs.types.PhotoSharingException ;
 
+  /**
+   * List all users that have add privileges on the gallery
+   *
+   * @throws PhotoSharingException
+   *	
+   */
+  public org.cagrid.demo.photosharing.domain.User[] listUsersWithAddPrivileges() throws RemoteException, org.cagrid.demo.photosharing.stubs.types.PhotoSharingException ;
+
+  /**
+   * List all users that have view privileges on the gallery
+   *
+   * @throws PhotoSharingException
+   *	
+   */
+  public org.cagrid.demo.photosharing.domain.User[] listAllUsersWithViewPrivileges() throws RemoteException, org.cagrid.demo.photosharing.stubs.types.PhotoSharingException ;
+
 }
 

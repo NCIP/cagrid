@@ -204,4 +204,22 @@ public class GalleryClient extends GalleryClientBase implements GalleryI {
     }
   }
 
+  public org.cagrid.demo.photosharing.domain.User[] listUsersWithAddPrivileges() throws RemoteException, org.cagrid.demo.photosharing.stubs.types.PhotoSharingException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"listUsersWithAddPrivileges");
+    org.cagrid.demo.photosharing.gallery.stubs.ListUsersWithAddPrivilegesRequest params = new org.cagrid.demo.photosharing.gallery.stubs.ListUsersWithAddPrivilegesRequest();
+    org.cagrid.demo.photosharing.gallery.stubs.ListUsersWithAddPrivilegesResponse boxedResult = portType.listUsersWithAddPrivileges(params);
+    return boxedResult.getUser();
+    }
+  }
+
+  public org.cagrid.demo.photosharing.domain.User[] listAllUsersWithViewPrivileges() throws RemoteException, org.cagrid.demo.photosharing.stubs.types.PhotoSharingException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"listAllUsersWithViewPrivileges");
+    org.cagrid.demo.photosharing.gallery.stubs.ListAllUsersWithViewPrivilegesRequest params = new org.cagrid.demo.photosharing.gallery.stubs.ListAllUsersWithViewPrivilegesRequest();
+    org.cagrid.demo.photosharing.gallery.stubs.ListAllUsersWithViewPrivilegesResponse boxedResult = portType.listAllUsersWithViewPrivileges(params);
+    return boxedResult.getUser();
+    }
+  }
+
 }

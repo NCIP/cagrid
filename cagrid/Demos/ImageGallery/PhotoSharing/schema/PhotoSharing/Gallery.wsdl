@@ -204,6 +204,30 @@
           </sequence>
         </complexType>
       </element>
+      <element name="ListUsersWithAddPrivilegesRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="ListUsersWithAddPrivilegesResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:User" minOccurs="1" maxOccurs="unbounded" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ListAllUsersWithViewPrivilegesRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="ListAllUsersWithViewPrivilegesResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:User" minOccurs="1" maxOccurs="unbounded" />
+          </sequence>
+        </complexType>
+      </element>
       <element name="GalleryResourceProperties">
         <complexType>
           <sequence>
@@ -275,6 +299,18 @@
   <message name="GetGalleryNameResponse">
     <part name="parameters" element="tns:GetGalleryNameResponse" />
   </message>
+  <message name="ListUsersWithAddPrivilegesRequest">
+    <part name="parameters" element="tns:ListUsersWithAddPrivilegesRequest" />
+  </message>
+  <message name="ListUsersWithAddPrivilegesResponse">
+    <part name="parameters" element="tns:ListUsersWithAddPrivilegesResponse" />
+  </message>
+  <message name="ListAllUsersWithViewPrivilegesRequest">
+    <part name="parameters" element="tns:ListAllUsersWithViewPrivilegesRequest" />
+  </message>
+  <message name="ListAllUsersWithViewPrivilegesResponse">
+    <part name="parameters" element="tns:ListAllUsersWithViewPrivilegesResponse" />
+  </message>
   <message name="PhotoSharingExceptionFaultMessage">
     <part name="fault" element="ns1:PhotoSharingException" />
   </message>
@@ -343,6 +379,16 @@
     <operation name="getGalleryName">
       <input message="tns:GetGalleryNameRequest" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/GetGalleryNameRequest" />
       <output message="tns:GetGalleryNameResponse" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/GetGalleryNameResponse" />
+      <fault name="PhotoSharingException" message="tns:PhotoSharingExceptionFaultMessage" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/PhotoSharingExceptionFaultMessage" />
+    </operation>
+    <operation name="listUsersWithAddPrivileges">
+      <input message="tns:ListUsersWithAddPrivilegesRequest" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/ListUsersWithAddPrivilegesRequest" />
+      <output message="tns:ListUsersWithAddPrivilegesResponse" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/ListUsersWithAddPrivilegesResponse" />
+      <fault name="PhotoSharingException" message="tns:PhotoSharingExceptionFaultMessage" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/PhotoSharingExceptionFaultMessage" />
+    </operation>
+    <operation name="listAllUsersWithViewPrivileges">
+      <input message="tns:ListAllUsersWithViewPrivilegesRequest" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/ListAllUsersWithViewPrivilegesRequest" />
+      <output message="tns:ListAllUsersWithViewPrivilegesResponse" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/ListAllUsersWithViewPrivilegesResponse" />
       <fault name="PhotoSharingException" message="tns:PhotoSharingExceptionFaultMessage" wsa:Action="http://photosharing.demo.cagrid.org/PhotoSharing/Gallery/PhotoSharingExceptionFaultMessage" />
     </operation>
     <operation name="getServiceSecurityMetadata">

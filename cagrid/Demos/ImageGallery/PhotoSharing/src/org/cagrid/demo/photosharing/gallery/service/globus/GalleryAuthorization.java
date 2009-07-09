@@ -142,6 +142,20 @@ public class GalleryAuthorization implements PDP {
 		((AuthorizationExtension)authorizationClassMap.get("enforce_auth")).authorizeService(peerSubject,context,operation);
 		 	  
 	}
+	   				
+	public void authorizeListUsersWithAddPrivileges(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+		// authorization using service authorization from the enforce_auth extension
+		((AuthorizationExtension)authorizationClassMap.get("enforce_auth")).authorizeService(peerSubject,context,operation);
+		 	  
+	}
+	   				
+	public void authorizeListAllUsersWithViewPrivileges(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+		// authorization using service authorization from the enforce_auth extension
+		((AuthorizationExtension)authorizationClassMap.get("enforce_auth")).authorizeService(peerSubject,context,operation);
+		 	  
+	}
 	   
 	
 	public boolean isPermitted(Subject peerSubject, MessageContext context, QName operation)
@@ -188,6 +202,12 @@ public class GalleryAuthorization implements PDP {
 			return true;
 		} else if(operation.getLocalPart().equals("getGalleryName")){
 			authorizeGetGalleryName(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("listUsersWithAddPrivileges")){
+			authorizeListUsersWithAddPrivileges(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("listAllUsersWithViewPrivileges")){
+			authorizeListAllUsersWithViewPrivileges(peerSubject, context, operation);
 			return true;
 		} 		
 		return false;
