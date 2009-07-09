@@ -21,7 +21,6 @@ public class PhotoSharingHandle extends ServiceHandle {
     public PhotoSharingHandle(ServiceDescriptor des) throws Exception {
         super(des);
         cred = ProxyUtil.getDefaultProxy();
-        System.out.println(des.getServiceURL());
         client = new PhotoSharingClient(des.getServiceURL(), cred);
     }
 
