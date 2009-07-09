@@ -11,5 +11,6 @@
     
     <dependencies>
         <dependency org="caGrid" name="gaards-ui" rev="1.3" conf="ui->full;endorsed->endorsed" />
+        <dependency rev="1.3" org="caGrid" name="core" conf="ui->default"/>
     </dependencies>
 </ivy-module>

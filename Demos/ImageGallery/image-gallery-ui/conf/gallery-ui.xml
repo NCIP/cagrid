@@ -34,7 +34,7 @@
 					<description>Allows the management of grid proxy credentials.</description>
 					<classname>org.cagrid.gaards.ui.common.CredentialManagerComponent</classname>
 					<icon>/certificate.png</icon>
-					<showOnToolBar>true</showOnToolBar>
+					<showOnToolBar>false</showOnToolBar>
 					<dimensions>
 						<width>800</width>
 						<height>500</height>
@@ -57,7 +57,7 @@
 					<description>View the groups in which you are a member of.</description>
 					<classname>org.cagrid.gaards.ui.gridgrouper.mygroups.MyGroupsWindow</classname>
 					<icon>/grouper_logo_no_background_22x22.png</icon>
-					<showOnToolBar>true</showOnToolBar>
+					<showOnToolBar>false</showOnToolBar>
 					<dimensions>
 						<width>800</width>
 						<height>300</height>
@@ -83,6 +83,24 @@
 					<showOnToolBar>false</showOnToolBar>
 				</component>
 				
+			</components>
+		</menu>
+		<menu>
+			<title>Photo Sharing</title>
+			<description>Tools for testing the photo sharing tutorial</description>
+			<showIcons>true</showIcons>
+			<components>
+				<component>
+					<title>Gallery Browser</title>
+					<description>Discover and browser photo galleries</description>
+					<classname>org.cagrid.tutorials.photosharing.GalleryBrowser</classname>
+					<icon>/grouper_logo_no_background_22x22.png</icon>
+					<showOnToolBar>true</showOnToolBar>
+					<dimensions>
+						<width>1000</width>
+						<height>675</height>
+					</dimensions>
+				</component>
 			</components>
 		</menu>
 		<menu>
@@ -155,15 +173,15 @@
 				<name>Image Gallery</name>
 				<ConfigurationDescriptors>
 					<ConfigurationDescriptor>
-						<DisplayName>Image Gallery Service(s)</DisplayName>
-						<SystemName>imagegallery</SystemName>
+						<DisplayName>Photo Sharing Service(s)</DisplayName>
+						<SystemName>photosharing</SystemName>
 			    		<ModelClassname>org.cagrid.grape.configuration.ServiceConfiguration</ModelClassname>
 			    		<qname>
 							<namespace>http://www.cagrid.org/1/grape-service-configuration</namespace>
 							<name>ServiceConfiguration</name>
 						</qname>
 						<ConfigurationPanel>org.cagrid.grape.ServiceConfigurationEditor</ConfigurationPanel>
-						<DefaultFile>conf/image-gallery-services-configuration.xml</DefaultFile>
+						<DefaultFile>conf/photo-sharing-services-configuration.xml</DefaultFile>
 					</ConfigurationDescriptor>
 				</ConfigurationDescriptors>
 			</ConfigurationGroup>
