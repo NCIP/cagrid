@@ -51,7 +51,7 @@ public class ServiceTreeNode extends GalleryBaseTreeNode {
 
 
     public void refresh() {
-        int id = getTree().startEvent("Refreshing " + toString() + ".... ");
+       getTree().startEvent("Refreshing " + toString() + ".... ");
         try {
             if (parent != null) {
                 getTree().reload(parent);
@@ -59,10 +59,10 @@ public class ServiceTreeNode extends GalleryBaseTreeNode {
                 getTree().reload();
             }
             loadService();
-            getTree().stopEvent(id, "Refreshed " + toString() + "!!!");
+            getTree().stopEvent("Refreshed " + toString() + "!!!");
         } catch (Exception e) {
             e.printStackTrace();
-            getTree().stopEvent(id, "Error refreshing " + toString() + "!!!");
+            getTree().stopEvent("Error refreshing " + toString() + "!!!");
             ErrorDialog.showError(e);
         }
     }

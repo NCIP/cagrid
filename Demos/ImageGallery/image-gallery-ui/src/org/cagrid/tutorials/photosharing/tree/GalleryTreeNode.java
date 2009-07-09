@@ -21,16 +21,16 @@ public class GalleryTreeNode extends GalleryBaseTreeNode {
 
 
     public void refresh() {
-        int id = getTree().startEvent("Refreshing " + toString() + ".... ");
+        getTree().startEvent("Refreshing " + toString() + ".... ");
         try {
             if (parent != null) {
                 getTree().reload(parent);
             } else {
                 getTree().reload();
             }
-            getTree().stopEvent(id, "Refreshed " + toString() + "!!!");
+            getTree().stopEvent("Refreshed " + toString() + "!!!");
         } catch (Exception e) {
-            getTree().stopEvent(id, "Error refreshing " + toString() + "!!!");
+            getTree().stopEvent("Error refreshing " + toString() + "!!!");
             ErrorDialog.showError(e);
         }
     }
