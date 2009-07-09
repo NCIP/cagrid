@@ -16,7 +16,8 @@ public class RunRegSvc {
     public static void main(String[] args) throws Exception {
 
         new ClassPathXmlApplicationContext(new String[]{
-                "classpath:applicationContext-db-aspects.xml",
+        		"classpath:applicationContext-db-relationships.xml",
+        		"classpath:applicationContext-db-aspects.xml",
                 "classpath:applicationContext-aggr-regsvc.xml"});
 
     }

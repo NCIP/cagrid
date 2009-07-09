@@ -14,7 +14,7 @@ import gov.nih.nci.cagrid.portal.domain.dataservice.CQLQuery;
 import gov.nih.nci.cagrid.portal.domain.dataservice.DCQLQuery;
 import gov.nih.nci.cagrid.portal.domain.dataservice.Query;
 import gov.nih.nci.cagrid.portal.portlet.browse.GridServiceEndpointDescriptorBean;
-import gov.nih.nci.cagrid.portal.portlet.browse.ToolCatalogEntryManagerFacade;
+import gov.nih.nci.cagrid.portal.portlet.browse.ajax.ToolCatalogEntryManagerFacade;
 import gov.nih.nci.cagrid.portal.portlet.util.PortletUtils;
 import gov.nih.nci.cagrid.portal.util.PortalUtils;
 
