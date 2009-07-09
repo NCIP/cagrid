@@ -57,6 +57,7 @@
 			<fileset dir="${lib.dir}">
 				<include name="*.jar" />
 				<exclude name="ivy*.jar" />
+				<exclude name="PhotoSharing*.jar" />
 			</fileset>
 		</delete>
 		<delete>
