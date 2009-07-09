@@ -1,4 +1,4 @@
-package org.cagrid.tutorials.gallery;
+package org.cagrid.tutorials.photosharing;
 
 import java.awt.BorderLayout;
 
