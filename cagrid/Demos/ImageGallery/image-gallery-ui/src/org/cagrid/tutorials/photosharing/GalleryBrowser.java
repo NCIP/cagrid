@@ -1,18 +1,16 @@
 package org.cagrid.tutorials.photosharing;
 
-import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 
+import org.cagrid.gaards.ui.common.ProgressPanel;
+import org.cagrid.gaards.ui.common.TitlePanel;
 import org.cagrid.grape.ApplicationComponent;
 import org.cagrid.tutorials.photosharing.tree.GalleryTree;
-
-import javax.swing.JSplitPane;
-import javax.swing.JScrollPane;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import javax.swing.JTree;
 
 
 public class GalleryBrowser extends ApplicationComponent {
@@ -24,6 +22,8 @@ public class GalleryBrowser extends ApplicationComponent {
     private JPanel rightPanel = null;
     private JScrollPane treeScrollPane = null;
     private GalleryTree galleryTree = null;
+    private JPanel titlePanel = null;
+    private ProgressPanel progress = null;
     /**
      * This is the default constructor
      */
@@ -52,16 +52,28 @@ public class GalleryBrowser extends ApplicationComponent {
      */
     private JPanel getJContentPane() {
         if (jContentPane == null) {
+            GridBagConstraints gridBagConstraints3 = new GridBagConstraints();
+            gridBagConstraints3.gridx = 0;
+            gridBagConstraints3.weightx = 1.0D;
+            gridBagConstraints3.fill = GridBagConstraints.HORIZONTAL;
+            gridBagConstraints3.gridy = 2;
+            GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
+            gridBagConstraints2.gridx = 0;
+            gridBagConstraints2.weightx = 1.0D;
+            gridBagConstraints2.anchor = GridBagConstraints.WEST;
+            gridBagConstraints2.gridy = 0;
             GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
             gridBagConstraints1.fill = GridBagConstraints.BOTH;
-            gridBagConstraints1.gridy = 0;
+            gridBagConstraints1.gridy = 1;
             gridBagConstraints1.ipadx = 100;
-            gridBagConstraints1.weightx = 1.0;
+            gridBagConstraints1.weightx = 1.0D;
             gridBagConstraints1.weighty = 1.0;
             gridBagConstraints1.gridx = 0;
             jContentPane = new JPanel();
             jContentPane.setLayout(new GridBagLayout());
             jContentPane.add(getJSplitPane(), gridBagConstraints1);
+            jContentPane.add(getTitlePanel(), gridBagConstraints2);
+            jContentPane.add(getProgress(), gridBagConstraints3);
         }
         return jContentPane;
     }
@@ -141,6 +153,32 @@ public class GalleryBrowser extends ApplicationComponent {
             galleryTree = new GalleryTree();
         }
         return galleryTree;
+    }
+
+
+    /**
+     * This method initializes titlePanel	
+     * 	
+     * @return javax.swing.JPanel	
+     */
+    private JPanel getTitlePanel() {
+        if (titlePanel == null) {
+            titlePanel = new TitlePanel("Gallery", "Create, view, and share photo galleries.");
+        }
+        return titlePanel;
+    }
+
+
+    /**
+     * This method initializes progress	
+     * 	
+     * @return javax.swing.JPanel	
+     */
+    private ProgressPanel getProgress() {
+        if (progress == null) {
+            progress = new ProgressPanel();
+        }
+        return progress;
     }
 
 }

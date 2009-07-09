@@ -15,6 +15,7 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
+import org.cagrid.gaards.ui.common.ProgressPanel;
 import org.cagrid.grape.GridApplication;
 import org.cagrid.grape.utils.ErrorDialog;
 import org.cagrid.grape.utils.MultiEventProgressBar;
@@ -34,7 +35,7 @@ public class GalleryTree extends JTree {
 
 	private ServicesTreeNode rootNode;
 
-	private MultiEventProgressBar progress;
+	private ProgressPanel progress;
 
 	public GalleryTree() {
 		super();
@@ -98,21 +99,19 @@ public class GalleryTree extends JTree {
 		}
 	}
 
-	public int startEvent(String message) {
+	public void startEvent(String message) {
 		if (this.progress != null) {
-			return this.progress.startEvent(message);
-		} else {
-			return -1;
+			progress.showProgress(message);
+		} 
+	}
+
+	public void stopEvent(String message) {
+		if (this.progress != null) {
+			this.progress.stopProgress(message);
 		}
 	}
 
-	public void stopEvent(int eventId, String message) {
-		if (this.progress != null) {
-			this.progress.stopEvent(eventId, message);
-		}
-	}
-
-	public void setProgress(MultiEventProgressBar progess) {
+	public void setProgress(ProgressPanel progess) {
 		this.progress = progess;
 	}
 

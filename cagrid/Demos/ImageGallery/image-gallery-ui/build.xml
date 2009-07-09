@@ -26,6 +26,13 @@
 			<fileset dir="${lib.dir}">
 				<include name="**/*" />
 				<exclude name="ivy*.jar" />
+				<exclude name="PhotoSharing-*.jar" />
+				<exclude name="photosharing-*.jar" />
+				<exclude name="caGrid-mappingExtensions-1.3.jar" />
+				<exclude name="sdk-client-framework.jar" />
+			</fileset>
+			<fileset dir="${endorsed.dir}">
+				<include name="**/*" />
 			</fileset>
 		</delete>
 		<ivy:cleancache />
@@ -51,18 +58,8 @@
 	</target>
 
 
-	<target name="clean" description="--> cleans the project">
+	<target name="clean" depends="ivy-clean" description="--> cleans the project">
 		<delete dir="${build.dir}" failonerror="false" />
-		<delete>
-			<fileset dir="${lib.dir}">
-				<include name="*.jar" />
-				<exclude name="ivy*.jar" />
-				<exclude name="PhotoSharing-*.jar" />
-				<exclude name="photosharing-*.jar" />
-				<exclude name="caGrid-mappingExtensions-1.3.jar" />
-				<exclude name="sdk-client-framework.jar" />
-			</fileset>
-		</delete>
 		<delete>
 			<fileset dir="${endorsed.dir}">
 				<include name="*.jar" />
@@ -70,7 +67,7 @@
 		</delete>
 	</target>
 
-	<target name="all" depends="clean, ivy-clean,ivy-resolve,ivy-report, compile" />
+	<target name="all" depends="clean,ivy-resolve,ivy-report, compile" />
 
 	<target name="defineClasspaths">
 		<path id="base.classpath">
@@ -92,7 +89,7 @@
 
 	<target name="ui" description="Runs the Image Gallery UI" depends="defineClasspaths">
 		<java classname="org.cagrid.grape.GridApplication" classpathref="run.classpath" fork="yes">
-			<arg value="conf/image-gallery-ui.xml" />
+			<arg value="conf=gallery-ui.xml" />
 			<jvmarg value="-Djava.endorsed.dirs=${endorsed.dir}" />
 		</java>
 	</target>

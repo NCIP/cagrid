@@ -32,7 +32,7 @@ public class ServicesTreeNode extends GalleryBaseTreeNode {
             ErrorDialog
                 .showError("The Photo Sharing service " + handle.getDisplayName() + " has already been added!!!");
         } else {
-            int id = getTree().startEvent("Loading Photo Sharing Service.... ");
+             getTree().startEvent("Loading service.... ");
             try {
 
                 ServiceTreeNode node = new ServiceTreeNode(getTree(), handle);
@@ -41,11 +41,11 @@ public class ServicesTreeNode extends GalleryBaseTreeNode {
                     getTree().reload(this);
                 }
                 node.loadService();
-                getTree().stopEvent(id, "Grid Grouper Service Successfully Loaded!!!");
+                getTree().stopEvent("Service successfully loaded!!!");
                 this.services.put(handle.getDisplayName(), node);
             } catch (Exception e) {
                 ErrorDialog.showError(e);
-                getTree().stopEvent(id, "Error loading Grid Grouper Service!!!");
+                getTree().stopEvent("Error loading service!!!");
             }
 
         }
