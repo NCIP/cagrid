@@ -5,6 +5,7 @@ import javax.swing.ImageIcon;
 import org.cagrid.gaards.ui.gridgrouper.GridGrouperLookAndFeel;
 import org.cagrid.grape.utils.ErrorDialog;
 import org.cagrid.tutorials.photosharing.GalleryHandle;
+import org.cagrid.tutorials.photosharing.GalleryLookAndFeel;
 
 
 public class GalleryTreeNode extends GalleryBaseTreeNode {
@@ -37,7 +38,7 @@ public class GalleryTreeNode extends GalleryBaseTreeNode {
 
 
     public ImageIcon getIcon() {
-        return GridGrouperLookAndFeel.getGroupIcon16x16();
+        return GalleryLookAndFeel.getGallery16x16();
     }
 
 

@@ -1,4 +1,3 @@
-
 package org.cagrid.tutorials.photosharing.tree;
 
 import gov.nih.nci.cagrid.common.FaultUtil;
@@ -18,8 +17,8 @@ import javax.swing.tree.TreeSelectionModel;
 import org.cagrid.gaards.ui.common.ProgressPanel;
 import org.cagrid.grape.GridApplication;
 import org.cagrid.grape.utils.ErrorDialog;
-import org.cagrid.grape.utils.MultiEventProgressBar;
 import org.cagrid.tutorials.photosharing.PhotoSharingHandle;
+
 
 /**
  * @author <A HREF="MAILTO:langella@bmi.osu.edu">Stephen Langella</A>
@@ -30,178 +29,195 @@ import org.cagrid.tutorials.photosharing.PhotoSharingHandle;
  *          Exp $
  */
 public class GalleryTree extends JTree {
-	
-	private static final long serialVersionUID = 1L;
 
-	private ServicesTreeNode rootNode;
+    private static final long serialVersionUID = 1L;
 
-	private ProgressPanel progress;
+    private ServicesTreeNode rootNode;
 
-	public GalleryTree() {
-		super();
-		setLargeModel(true);
-		this.rootNode = new ServicesTreeNode(this);
-		getSelectionModel().setSelectionMode(
-				TreeSelectionModel.SINGLE_TREE_SELECTION);
-		setModel(new DefaultTreeModel(this.rootNode));
-		this.setCellRenderer(new TreeRenderer());
-		loadServicesFromConfiguration();
-	}
-	
-	   private void loadServicesFromConfiguration() {
-	        try {
-	            List<PhotoSharingHandle> services = org.cagrid.tutorials.photosharing.Utils.getPhotoSharingServices();
-	            for (int i = 0; i < services.size(); i++) {
-	                addService(services.get(i));
-	            }
-	        } catch (Exception e) {
-	            ErrorDialog.showError("An unexpected error occurred loading the configured photo sharing services!!!", e);
-	            FaultUtil.printFault(e);
-	        }
-	    }
+    private ProgressPanel progress;
 
-	public ServiceTreeNode getSelectedService() {
-		GalleryBaseTreeNode selected = getSelectedNode();
-		if (selected != null) {
-			if (selected instanceof ServiceTreeNode) {
-				return (ServiceTreeNode) selected;
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
 
-	public GalleryTreeNode getSelectedGroup() {
-		GalleryBaseTreeNode selected = getSelectedNode();
-		if (selected != null) {
-			if (selected instanceof GalleryTreeNode) {
-				return (GalleryTreeNode) selected;
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
+    public GalleryTree() {
+        super();
+        setLargeModel(true);
+        this.rootNode = new ServicesTreeNode(this);
+        getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+        setModel(new DefaultTreeModel(this.rootNode));
+        this.setCellRenderer(new TreeRenderer());
+        loadServicesFromConfiguration();
+    }
 
-	public GalleryBaseTreeNode getSelectedNode() {
-		List list = getSelectedNodes();
-		if (list == null) {
-			return null;
-		} else {
-			if (list.size() > 0) {
-				return (GalleryBaseTreeNode) list.get(0);
-			} else {
-				return null;
-			}
-		}
-	}
 
-	public void startEvent(String message) {
-		if (this.progress != null) {
-			progress.showProgress(message);
-		} 
-	}
+    private void loadServicesFromConfiguration() {
+        try {
+            List<PhotoSharingHandle> services = org.cagrid.tutorials.photosharing.Utils.getPhotoSharingServices();
+            for (int i = 0; i < services.size(); i++) {
+                addService(services.get(i));
+            }
+        } catch (Exception e) {
+            ErrorDialog.showError("An unexpected error occurred loading the configured photo sharing services!!!", e);
+            FaultUtil.printFault(e);
+        }
+    }
 
-	public void stopEvent(String message) {
-		if (this.progress != null) {
-			this.progress.stopProgress(message);
-		}
-	}
 
-	public void setProgress(ProgressPanel progess) {
-		this.progress = progess;
-	}
+    public ServiceTreeNode getSelectedService() {
+        GalleryBaseTreeNode selected = getSelectedNode();
+        if (selected != null) {
+            if (selected instanceof ServiceTreeNode) {
+                return (ServiceTreeNode) selected;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
 
-	public void addService(final PhotoSharingHandle handle) {
-		Runner runner = new Runner() {
-			public void execute() {
-				try {
-					rootNode.addService(handle);
-				} catch (Exception e) {
-					ErrorDialog.showError(e);
-				}
-			}
-		};
-		try {
-			GridApplication.getContext().executeInBackground(runner);
-		} catch (Exception t) {
-			t.getMessage();
-		}
 
-	}
+    public GalleryTreeNode getSelectedGroup() {
+        GalleryBaseTreeNode selected = getSelectedNode();
+        if (selected != null) {
+            if (selected instanceof GalleryTreeNode) {
+                return (GalleryTreeNode) selected;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
 
-	public ServicesTreeNode getRootNode() {
-		return this.rootNode;
-	}
 
-	public List getGroupNodes() {
-		List nodes = new ArrayList();
-		this.getGroupNodes(getRootNode(), nodes);
-		return nodes;
-	}
+    public GalleryBaseTreeNode getSelectedNode() {
+        List list = getSelectedNodes();
+        if (list == null) {
+            return null;
+        } else {
+            if (list.size() > 0) {
+                return (GalleryBaseTreeNode) list.get(0);
+            } else {
+                return null;
+            }
+        }
+    }
 
-	private void getGroupNodes(GalleryBaseTreeNode node, List nodes) {
-		int count = node.getChildCount();
-		for (int i = 0; i < count; i++) {
-			GalleryBaseTreeNode child = (GalleryBaseTreeNode) node
-					.getChildAt(i);
-			if (child instanceof GalleryTreeNode) {
-				nodes.add(child);
-			} else if (child instanceof ServiceTreeNode) {
-				getGroupNodes(child, nodes);
-			}
-		}
-	}
 
-	public GalleryBaseTreeNode getCurrentNode() {
-		TreePath currentSelection = this.getSelectionPath();
-		if (currentSelection != null) {
-			DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) currentSelection
-					.getLastPathComponent();
-			return (GalleryBaseTreeNode) currentNode;
-		}
-		return null;
-	}
+    public void startEvent(String message) {
+        if (this.progress != null) {
+            progress.showProgress(message);
+        }
+    }
 
-	/**
-	 * Get all the selected service nodes
-	 * 
-	 * @return A List of GridServiceTreeNodes
-	 */
-	public List getSelectedNodes() {
-		List selected = new LinkedList();
-		TreePath[] currentSelection = this.getSelectionPaths();
-		if (currentSelection != null) {
-			for (int i = 0; i < currentSelection.length; i++) {
-				TreePath path = currentSelection[i];
-				DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) path
-						.getLastPathComponent();
-				if (currentNode != this.getRootNode()) {
-					selected.add(currentNode);
-				}
-			}
-		}
-		return selected;
-	}
 
-	/**
-	 * Reload a portion of the tree's view in a synchronized way
-	 * 
-	 * @param reloadPoint
-	 *            The node from which to reload
-	 */
-	public synchronized void reload(TreeNode reloadPoint) {
-		((DefaultTreeModel) this.getModel()).reload(reloadPoint);
-	}
+    public void stopEvent(String message) {
+        if (this.progress != null) {
+            this.progress.stopProgress(message);
+        }
+    }
 
-	/**
-	 * Reload from the root
-	 */
-	public synchronized void reload() {
-		this.reload(getRootNode());
-	}
+
+    public void setProgress(ProgressPanel progess) {
+        this.progress = progess;
+    }
+
+
+    public void addService(final PhotoSharingHandle handle) {
+        Runner runner = new Runner() {
+            public void execute() {
+                try {
+                    rootNode.addService(handle);
+                } catch (Exception e) {
+                    ErrorDialog.showError(e);
+                }
+            }
+        };
+        try {
+            GridApplication.getContext().executeInBackground(runner);
+        } catch (Exception t) {
+            t.getMessage();
+        }
+
+    }
+
+
+    public ServicesTreeNode getRootNode() {
+        return this.rootNode;
+    }
+
+
+    public List getGroupNodes() {
+        List nodes = new ArrayList();
+        this.getGroupNodes(getRootNode(), nodes);
+        return nodes;
+    }
+
+
+    private void getGroupNodes(GalleryBaseTreeNode node, List nodes) {
+        int count = node.getChildCount();
+        for (int i = 0; i < count; i++) {
+            GalleryBaseTreeNode child = (GalleryBaseTreeNode) node.getChildAt(i);
+            if (child instanceof GalleryTreeNode) {
+                nodes.add(child);
+            } else if (child instanceof ServiceTreeNode) {
+                getGroupNodes(child, nodes);
+            }
+        }
+    }
+
+
+    public GalleryBaseTreeNode getCurrentNode() {
+        TreePath currentSelection = this.getSelectionPath();
+        if (currentSelection != null) {
+            DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) currentSelection.getLastPathComponent();
+            return (GalleryBaseTreeNode) currentNode;
+        }
+        return null;
+    }
+
+
+    /**
+     * Get all the selected service nodes
+     * 
+     * @return A List of GridServiceTreeNodes
+     */
+    public List getSelectedNodes() {
+        List selected = new LinkedList();
+        TreePath[] currentSelection = this.getSelectionPaths();
+        if (currentSelection != null) {
+            for (int i = 0; i < currentSelection.length; i++) {
+                TreePath path = currentSelection[i];
+                DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) path.getLastPathComponent();
+                if (currentNode != this.getRootNode()) {
+                    selected.add(currentNode);
+                }
+            }
+        }
+        return selected;
+    }
+
+
+    /**
+     * Reload a portion of the tree's view in a synchronized way
+     * 
+     * @param reloadPoint
+     *            The node from which to reload
+     */
+    public synchronized void reload(TreeNode reloadPoint) {
+        ((DefaultTreeModel) this.getModel()).reload(reloadPoint);
+    }
+
+
+    /**
+     * Reload from the root
+     */
+    public synchronized void reload() {
+        this.reload(getRootNode());
+    }
+
+
+    public ProgressPanel getProgress() {
+        return progress;
+    }
 
 }
