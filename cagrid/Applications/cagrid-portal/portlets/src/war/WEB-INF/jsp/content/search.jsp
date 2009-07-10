@@ -2,8 +2,6 @@
 <%@ include file="/WEB-INF/jsp/include/liferay-includes.jspf" %>
 <c:set var="ns"><portlet:namespace/></c:set>
 
-<%--<c:set var="searchLink"><portlet:actionURL/></c:set>--%>
-
 <liferay-portlet:actionURL var="searchLink" portletName="BrowsePortlet_WAR_cagridportlets"
                            portletMode="view">
     <liferay-portlet:param name="operation" value="view"/>
@@ -11,7 +9,7 @@
 
 
 <script type="text/javascript">
-    function ${ns}search(e) { //e is event object passed from function invocation
+    function ${ns}search(e, keyword) { //e is event object passed from function invocation
         var characterCode //literal character code will be stored in this variable
         if (e && e.which) { //if which property of event object is supported (NN4)
             e = e;
@@ -23,12 +21,12 @@
         if (characterCode == 13) { //if generated character code is equal to ascii 13 (if enter key)
             var searchLink = "${searchLink}";
             searchLink = searchLink.replace("/guest/home", "/guest/catalog/all");
-            $("${ns}searchKeyword").value = $('${ns}keyword').value;
+            $("${ns}searchKeyword").value = keyword;
             $("${ns}searchForm").action = searchLink;
             $("${ns}searchForm").submit();
             return false;
         } else {
-            return true
+            return true;
         }
     }
 
@@ -36,14 +34,8 @@
 
 
 <form:form id="${ns}searchForm" method="post">
-    <div class="searchBox">
-        <input type="hidden" name="searchKeyword" id="${ns}searchKeyword"/>
+    <input type="hidden" name="searchKeyword" id="${ns}searchKeyword"/>
 
-        <div class="L-endcap"></div>
-        <input id="${ns}keyword" class="search" type="text" size="20"
-               value="Search" style="color:#afafaf;" onkeypress="return ${ns}search(event);"/>
+    <tags:searchBox searchCallback="${ns}search" id="${ns}keyword"/>
 
-        <div class="R-endcap"></div>
-
-    </div>
 </form:form>
