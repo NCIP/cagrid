@@ -435,8 +435,10 @@ public class CatalogEntryManagerFacade extends AjaxViewGenerator {
         return message;
     }
 
-    public Integer getAverageRating(Integer entryId) {
+    public Integer getAverageRating() {
         try {
+            int entryId = getUserModel().getCurrentCatalogEntry().getId();
+
             int sum = 0;
             List<Rating> ratings = getHibernateTemplate().find(
                     "from Rating r where r.ratingOf.id = ?", entryId);

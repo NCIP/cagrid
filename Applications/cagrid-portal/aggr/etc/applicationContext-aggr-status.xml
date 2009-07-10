@@ -16,7 +16,7 @@
 
     <bean id="statusChangeArchiverTask"
           class="org.springframework.scheduling.timer.ScheduledTimerTask">
-        <property name="delay" value="1000"/>
+        <property name="delay" ref="defaultDelay"/>
         <property name="period" ref="slowDefaultPeriod"/>
         <property name="timerTask">
             <bean id="statusChangeArchiverTaskBean"
@@ -29,7 +29,7 @@
 
     <bean id="checkForServiceStatusChangesTask"
           class="org.springframework.scheduling.timer.ScheduledTimerTask">
-        <property name="delay" value="60000"/>
+        <property name="delay" ref="defaultDelay"/>
         <property name="period" ref="defaultPeriod"/>
         <property name="timerTask">
             <bean id="checkForServiceStatusChanges"
@@ -42,7 +42,7 @@
 
     <bean id="checkServiceStatusTask"
           class="org.springframework.scheduling.timer.ScheduledTimerTask">
-        <property name="delay" value="90000"/>
+        <property name="delay" ref="defaultDelay"/>
         <property name="period" ref="defaultPeriod"/>
         <property name="timerTask">
             <bean id="checkServiceStatus"

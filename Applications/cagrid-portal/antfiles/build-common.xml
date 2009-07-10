@@ -13,7 +13,7 @@
     <property file="${projects.dir}/build.properties"/>
     <property file="${antfiles.dir}/project.properties"/>
 
-    
+
     <target name="prepare-ant-tasks" unless="defined.anttaskes">
         <path id="xmltaskdef.cp">
             <pathelement location="${tools.ant.lib}/xmltask-v1.14.jar"/>
@@ -89,8 +89,11 @@
             <entry key="cagrid.portal.notifications.mail.server" value="${cagrid.portal.notifications.mail.server}"/>
             <entry key="cagrid.portal.notifications.mail.address" value="${cagrid.portal.notifications.mail.address}"/>
             <entry key="cagrid.portal.autorun.db.updater" value="${autorun.db.updater}"/>
-        	<entry key="cagrid.portal.solr.http.url" value="${cagrid.portal.solr.http.url}"/>
-        	<entry key="cagrid.portal.autopopulate.relationship.types" value="${autopopulate.relationship.types}"/>
+            <entry key="cagrid.portal.solr.http.url" value="${cagrid.portal.solr.http.url}"/>
+            <entry key="cagrid.portal.autopopulate.relationship.types" value="${autopopulate.relationship.types}"/>
+            <entry key="cagrid.portal.fast.aggr.defaultDelay" value="${cagrid.portal.fast.aggr.defaultDelay}"/>
+            <entry key="cagrid.portal.slow.aggr.defaultDelay" value="${cagrid.portal.slow.aggr.defaultDelay}"/>
+            <entry key="cagrid.portal.aggr.defaultDelay" value="${cagrid.portal.aggr.defaultDelay}"/>
         </propertyfile>
     </target>
 

@@ -23,7 +23,7 @@
 
     <bean id="checkForNewServicesTask"
           class="org.springframework.scheduling.timer.ScheduledTimerTask">
-        <property name="delay" value="40000"/>
+        <property name="delay" ref="defaultDelay"/>
         <property name="period" ref="defaultPeriod"/>
         <property name="timerTask" ref="checkForNewServices"/>
     </bean>
@@ -32,7 +32,7 @@
     <!--Will update the Cache of services from Index-->
     <bean id="updateServiceCacheTask"
           class="org.springframework.scheduling.timer.ScheduledTimerTask">
-        <property name="delay" value="2000"/>
+        <property name="delay" ref="fastDefaultDelay"/>
         <property name="period" ref="fastDefaultPeriod"/>
         <property name="timerTask">
             <bean id="updateServicCache"

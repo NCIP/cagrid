@@ -12,13 +12,14 @@
 	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
 	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
-    <import resource="classpath:applicationContext-aggr.xml" />
+    <import resource="classpath:applicationContext-aggr.xml"/>
 
     <bean id="conceptMonitor"
           class="gov.nih.nci.cagrid.portal.aggr.metachange.ConceptMonitor"
           autowire="byName"/>
 
-    <bean id="serviceConceptIndexer" class="gov.nih.nci.cagrid.portal.aggr.metachange.ServiceConceptIndexer" autowire="byName"/>
+    <bean id="serviceConceptIndexer" class="gov.nih.nci.cagrid.portal.aggr.metachange.ServiceConceptIndexer"
+          autowire="byName"/>
 
     <bean id="conceptHandler"
           class="gov.nih.nci.cagrid.portal.aggr.metachange.LexBIGConceptHandler"
@@ -26,10 +27,10 @@
         <property name="version">
             <bean
                     class="org.LexGrid.LexBIG.DataModel.Core.CodingSchemeVersionOrTag"
-                    p:tag="PRODUCTION" />
+                    p:tag="PRODUCTION"/>
         </property>
         <property name="codingSchemeUri"
-                  value="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#" />
+                  value="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#"/>
         <property name="evsApplicationService">
             <bean
                     class="org.springframework.beans.factory.config.MethodInvokingFactoryBean"
@@ -48,15 +49,15 @@
 
     <bean id="processNewConcepts"
           class="org.springframework.scheduling.timer.MethodInvokingTimerTaskFactoryBean">
-        <property name="targetObject" ref="conceptMonitor" />
-        <property name="targetMethod" value="processNewConcepts" />
+        <property name="targetObject" ref="conceptMonitor"/>
+        <property name="targetMethod" value="processNewConcepts"/>
     </bean>
 
     <bean id="processNewConceptsTask"
           class="org.springframework.scheduling.timer.ScheduledTimerTask">
-        <!-- property name="delay" value="1000" / -->
-        <property name="period" ref="slowDefaultPeriod" />
-        <property name="timerTask" ref="processNewConcepts" />
+        <property name="delay" ref="slowDefaultDelay"/>
+        <property name="period" ref="slowDefaultPeriod"/>
+        <property name="timerTask" ref="processNewConcepts"/>
     </bean>
 
     <bean id="conceptMonitorTimerFactory"
@@ -64,7 +65,7 @@
 
         <property name="scheduledTimerTasks">
             <list>
-                <ref bean="processNewConceptsTask" />
+                <ref bean="processNewConceptsTask"/>
             </list>
         </property>
     </bean>

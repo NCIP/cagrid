@@ -21,8 +21,8 @@
         </property>
     </bean>
 
-    <bean  id="defaultGeocoder"
-           class="gov.nih.nci.cagrid.portal.aggr.geocode.YahooGeocoder">
+    <bean id="defaultGeocoder"
+          class="gov.nih.nci.cagrid.portal.aggr.geocode.YahooGeocoder">
         <property name="baseUrl" value="${cagrid.portal.geocoder.yahoo.baseUrl}"/>
         <property name="yahooAppId" value="${cagrid.portal.geocoder.yahoo.appId}"/>
         <property name="timeout" ref="defaultTimeout"/>
@@ -30,15 +30,15 @@
 
     <bean id="checkAddresses"
           class="org.springframework.scheduling.timer.MethodInvokingTimerTaskFactoryBean">
-        <property name="targetObject" ref="addressMonitor" />
-        <property name="targetMethod" value="checkAddresses" />
+        <property name="targetObject" ref="addressMonitor"/>
+        <property name="targetMethod" value="checkAddresses"/>
     </bean>
 
     <bean id="checkAddressesTask"
           class="org.springframework.scheduling.timer.ScheduledTimerTask">
-        <property name="delay" value="15000" />
-        <property name="period" ref="defaultPeriod" />
-        <property name="timerTask" ref="checkAddresses" />
+        <property name="delay" ref="slowDefaultDelay"/>
+        <property name="period" ref="defaultPeriod"/>
+        <property name="timerTask" ref="checkAddresses"/>
     </bean>
 
     <bean id="geocodeTimerFactory"
@@ -46,7 +46,7 @@
 
         <property name="scheduledTimerTasks">
             <list>
-                <ref bean="checkAddressesTask" />
+                <ref bean="checkAddressesTask"/>
             </list>
         </property>
     </bean>
