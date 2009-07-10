@@ -130,12 +130,14 @@
 
     // When you actually rate something //
     function rateIt(me) {
-        if (!rated) {
-            document.getElementById("rateStatus").innerHTML = document.getElementById("ratingSaved").innerHTML;
-            preSet = me;
-            rated = 1;
-            sendRate(me);
-            rating(me);
+        if (canRate) {
+            if (!rated) {
+                document.getElementById("rateStatus").innerHTML = document.getElementById("ratingSaved").innerHTML;
+                preSet = me;
+                rated = 1;
+                sendRate(me);
+                rating(me);
+            }
         }
     }
 
