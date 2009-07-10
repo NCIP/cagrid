@@ -2,7 +2,9 @@ package org.cagrid.tutorials.photosharing.tree;
 
 import javax.swing.JMenuItem;
 
+import org.cagrid.grape.GridApplication;
 import org.cagrid.grape.LookAndFeel;
+import org.cagrid.tutorials.photosharing.CreateGalleryWindow;
 import org.cagrid.tutorials.photosharing.GalleryManager;
 
 
@@ -53,10 +55,9 @@ public class ServiceNodeMenu extends TreeNodeMenu {
             addGallery.setText("Add Gallery");
             addGallery.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    /*
                     GridApplication.getContext().addApplicationComponent(
-                        new AddStemWindow((StemTreeNode) getGridGrouperTree().getCurrentNode()), 700, 300);
-                        */
+                        new CreateGalleryWindow((ServiceTreeNode) getTree().getCurrentNode()), 400, 175);
+                        
                 }
             });
         }

@@ -3,8 +3,6 @@ package org.cagrid.tutorials.photosharing;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cagrid.gaards.ui.gridgrouper.GridGrouperHandle;
-import org.cagrid.gaards.ui.gridgrouper.GridGrouperUIConstants;
 import org.cagrid.grape.GridApplication;
 import org.cagrid.grape.configuration.ServiceConfiguration;
 import org.cagrid.grape.configuration.ServiceDescriptor;

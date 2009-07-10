@@ -1,6 +1,7 @@
 package org.cagrid.tutorials.photosharing.tree;
 
 import gov.nih.nci.cagrid.common.Runner;
+import gov.nih.nci.cagrid.common.Utils;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -41,11 +42,11 @@ public class ServicesTreeNode extends GalleryBaseTreeNode {
                     getTree().reload(this);
                 }
                 node.loadService();
-                getTree().stopEvent("Service successfully loaded!!!");
+                getTree().stopEvent("");
                 this.services.put(handle.getDisplayName(), node);
             } catch (Exception e) {
-                ErrorDialog.showError(e);
-                getTree().stopEvent("Error loading service!!!");
+                ErrorDialog.showError(Utils.getExceptionMessage(e),e);
+                getTree().stopEvent("");
             }
 
         }
