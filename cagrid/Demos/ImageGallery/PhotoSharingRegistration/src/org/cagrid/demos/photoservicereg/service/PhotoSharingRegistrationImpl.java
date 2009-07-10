@@ -5,7 +5,6 @@ import edu.internet2.middleware.grouper.GroupDeleteException;
 import edu.internet2.middleware.grouper.InsufficientPrivilegeException;
 import edu.internet2.middleware.grouper.SchemaException;
 import edu.internet2.middleware.grouper.StemDeleteException;
-import edu.internet2.middleware.grouper.StemNotFoundException;
 import edu.internet2.middleware.subject.SubjectNotFoundException;
 import gov.nih.nci.cagrid.gridgrouper.client.GridGrouper;
 import gov.nih.nci.cagrid.gridgrouper.common.SubjectUtils;
@@ -62,79 +61,6 @@ public class PhotoSharingRegistrationImpl extends PhotoSharingRegistrationImplBa
 		}
 	}
 
-	public void registerPhotoSharingService(java.lang.String stemSystemExtension,java.lang.String stemDisplayExtension,java.lang.String serviceIdentity,java.lang.String userIdentity) throws RemoteException, org.cagrid.demos.photoservicereg.stubs.types.RegistrationException {
-		try {
-			StemI serviceStem = this.photoStem.addChildStem(stemSystemExtension, stemDisplayExtension);
-
-			//NOTE: any of these privileges might exist... don't error if that's the case
-			//add stem privileges
-			
-			try {
-				addStemPrivilege(serviceIdentity, serviceStem);
-			} catch(Exception e) {
-				//ignore
-				System.out.println("STEM privileges already exist on stem " + serviceStem.getName() + " for identity " + serviceIdentity);
-			}
-			try {
-				addStemPrivilege(userIdentity, serviceStem);
-			} catch(Exception e) {
-				//ignore
-				System.out.println("STEM privileges already exist on stem " + serviceStem.getName() + " for identity " + userIdentity);
-			}
-
-			//add group privileges
-			try {
-				addGroupPrivilege(serviceIdentity, serviceStem);
-			} catch(Exception e) {
-				//ignore
-				System.out.println("GROUP privileges already exist on stem " + serviceStem.getName() + " for identity " + serviceIdentity);
-			}
-
-			try {
-				addGroupPrivilege(userIdentity, serviceStem);
-			} catch(Exception e) {
-				//ignore
-				System.out.println("GROUP privileges already exist on stem " + serviceStem.getName() + " for identity " + userIdentity);
-			}
-		} catch(Exception e) {
-			System.err.println(e.getMessage());
-			e.printStackTrace();
-			org.cagrid.demos.photoservicereg.stubs.types.RegistrationException re = new org.cagrid.demos.photoservicereg.stubs.types.RegistrationException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-			re.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw re;
-
-		}
-	}
-
-	public void unregisterPhotoSharingService(java.lang.String stemSystemExtension) throws RemoteException, org.cagrid.demos.photoservicereg.stubs.types.RegistrationException {
-		StemI serviceStem = findChildStem(this.photoStem, stemSystemExtension);
-
-		if (serviceStem != null) {
-			//remove it
-			try {
-			deleteStemHierarchy(serviceStem);
-			serviceStem.delete();
-			} catch(Exception e) {
-				System.err.println(e.getMessage());
-				e.printStackTrace();
-				org.cagrid.demos.photoservicereg.stubs.types.RegistrationException re = new org.cagrid.demos.photoservicereg.stubs.types.RegistrationException();
-				BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-				re.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-				throw re;
-
-			}
-
-		} else {
-			org.cagrid.demos.photoservicereg.stubs.types.RegistrationException re = new org.cagrid.demos.photoservicereg.stubs.types.RegistrationException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription("Cannot find stem with system extension: " + stemSystemExtension);
-			re.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw re;
-
-		}
-
-	}
-
 	public static void addStemPrivilege(String identity, StemI stem) throws SubjectNotFoundException, GrantPrivilegeException, InsufficientPrivilegeException, SchemaException {
 		edu.internet2.middleware.subject.Subject subject = SubjectUtils.getSubject(identity);
 		stem.grantPriv(subject, edu.internet2.middleware.grouper.NamingPrivilege.STEM);
@@ -178,6 +104,92 @@ public class PhotoSharingRegistrationImpl extends PhotoSharingRegistrationImplBa
 		}
 	}
 	
+
+  public void registerPhotoSharingService(java.lang.String hostIdentity) throws RemoteException, org.cagrid.demos.photoservicereg.stubs.types.RegistrationException {
+		try {
+			
+			//parse the hostIdentity to get the hostname for the stem system and display extensions
+			int index = hostIdentity.indexOf("CN=", 0);
+			index += 3;
+			String hostname = hostIdentity.substring(index, hostIdentity.length());
+			
+			StemI serviceStem = this.photoStem.addChildStem(hostname, hostname);
+
+			String userDN = gov.nih.nci.cagrid.introduce.servicetools.security.SecurityUtils.getCallerIdentity();
+
+			//NOTE: any of these privileges might exist... don't error if that's the case
+			//add stem privileges
+			
+			try {
+				addStemPrivilege(hostIdentity, serviceStem);
+			} catch(Exception e) {
+				//ignore
+				System.out.println("STEM privileges already exist on stem " + serviceStem.getName() + " for identity " + hostIdentity);
+			}
+			try {
+				addStemPrivilege(userDN, serviceStem);
+			} catch(Exception e) {
+				//ignore
+				System.out.println("STEM privileges already exist on stem " + serviceStem.getName() + " for identity " + userDN);
+			}
+
+			//add group privileges
+			try {
+				addGroupPrivilege(hostIdentity, serviceStem);
+			} catch(Exception e) {
+				//ignore
+				System.out.println("GROUP privileges already exist on stem " + serviceStem.getName() + " for identity " + hostIdentity);
+			}
+
+			try {
+				addGroupPrivilege(userDN, serviceStem);
+			} catch(Exception e) {
+				//ignore
+				System.out.println("GROUP privileges already exist on stem " + serviceStem.getName() + " for identity " + userDN);
+			}
+		} catch(Exception e) {
+			System.err.println(e.getMessage());
+			e.printStackTrace();
+			org.cagrid.demos.photoservicereg.stubs.types.RegistrationException re = new org.cagrid.demos.photoservicereg.stubs.types.RegistrationException();
+			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
+			re.setDescription(new BaseFaultTypeDescription[] { faultDesc });
+			throw re;
+
+		}
+  }
+
+  public void unregisterPhotoSharingService(java.lang.String hostIdentity) throws RemoteException, org.cagrid.demos.photoservicereg.stubs.types.RegistrationException {
+
+		//parse the hostIdentity to get the hostname for the stem system and display extensions
+		int index = hostIdentity.indexOf("CN=", 0);
+		index += 3;
+		String hostname = hostIdentity.substring(index, hostIdentity.length());
+
+		StemI serviceStem = findChildStem(this.photoStem, hostname);
+
+		if (serviceStem != null) {
+			//remove it
+			try {
+			deleteStemHierarchy(serviceStem);
+			serviceStem.delete();
+			} catch(Exception e) {
+				System.err.println(e.getMessage());
+				e.printStackTrace();
+				org.cagrid.demos.photoservicereg.stubs.types.RegistrationException re = new org.cagrid.demos.photoservicereg.stubs.types.RegistrationException();
+				BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
+				re.setDescription(new BaseFaultTypeDescription[] { faultDesc });
+				throw re;
+
+			}
+
+		} else {
+			org.cagrid.demos.photoservicereg.stubs.types.RegistrationException re = new org.cagrid.demos.photoservicereg.stubs.types.RegistrationException();
+			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription("Cannot find child stem with system extension: " + hostname);
+			re.setDescription(new BaseFaultTypeDescription[] { faultDesc });
+			throw re;
+
+		}
+  }
 
 }
 

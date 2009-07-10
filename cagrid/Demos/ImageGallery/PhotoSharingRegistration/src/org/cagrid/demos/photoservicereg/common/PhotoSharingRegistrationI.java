@@ -12,32 +12,29 @@ import java.rmi.RemoteException;
  */
 public interface PhotoSharingRegistrationI {
 
-  /**
-   * Register a photo sharing service
-   *
-   * @param stemSystemExtension
-   * @param stemDisplayExtension
-   * @param serviceIdentity
-   * @param userIdentity
-   * @throws RegistrationException
-   *	
-   */
-  public void registerPhotoSharingService(java.lang.String stemSystemExtension,java.lang.String stemDisplayExtension,java.lang.String serviceIdentity,java.lang.String userIdentity) throws RemoteException, org.cagrid.demos.photoservicereg.stubs.types.RegistrationException ;
-
-  /**
-   * Unregister a photo sharing service
-   *
-   * @param stemSystemExtension
-   * @throws RegistrationException
-   *	
-   */
-  public void unregisterPhotoSharingService(java.lang.String stemSystemExtension) throws RemoteException, org.cagrid.demos.photoservicereg.stubs.types.RegistrationException ;
-
   public org.oasis.wsrf.properties.GetMultipleResourcePropertiesResponse getMultipleResourceProperties(org.oasis.wsrf.properties.GetMultipleResourceProperties_Element params) throws RemoteException ;
 
   public org.oasis.wsrf.properties.GetResourcePropertyResponse getResourceProperty(javax.xml.namespace.QName params) throws RemoteException ;
 
   public org.oasis.wsrf.properties.QueryResourcePropertiesResponse queryResourceProperties(org.oasis.wsrf.properties.QueryResourceProperties_Element params) throws RemoteException ;
+
+  /**
+   * Register a photo sharing service
+   *
+   * @param hostIdentity
+   * @throws RegistrationException
+   *	
+   */
+  public void registerPhotoSharingService(java.lang.String hostIdentity) throws RemoteException, org.cagrid.demos.photoservicereg.stubs.types.RegistrationException ;
+
+  /**
+   * Unregister a photo sharing service
+   *
+   * @param hostIdentity
+   * @throws RegistrationException
+   *	
+   */
+  public void unregisterPhotoSharingService(java.lang.String hostIdentity) throws RemoteException, org.cagrid.demos.photoservicereg.stubs.types.RegistrationException ;
 
 }
 

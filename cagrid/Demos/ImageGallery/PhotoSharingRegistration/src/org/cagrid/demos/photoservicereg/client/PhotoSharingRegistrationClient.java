@@ -76,27 +76,6 @@ public class PhotoSharingRegistrationClient extends PhotoSharingRegistrationClie
 		}
 	}
 
-  public void registerPhotoSharingService(java.lang.String stemSystemExtension,java.lang.String stemDisplayExtension,java.lang.String serviceIdentity,java.lang.String userIdentity) throws RemoteException, org.cagrid.demos.photoservicereg.stubs.types.RegistrationException {
-    synchronized(portTypeMutex){
-      configureStubSecurity((Stub)portType,"registerPhotoSharingService");
-    org.cagrid.demos.photoservicereg.stubs.RegisterPhotoSharingServiceRequest params = new org.cagrid.demos.photoservicereg.stubs.RegisterPhotoSharingServiceRequest();
-    params.setStemSystemExtension(stemSystemExtension);
-    params.setStemDisplayExtension(stemDisplayExtension);
-    params.setServiceIdentity(serviceIdentity);
-    params.setUserIdentity(userIdentity);
-    org.cagrid.demos.photoservicereg.stubs.RegisterPhotoSharingServiceResponse boxedResult = portType.registerPhotoSharingService(params);
-    }
-  }
-
-  public void unregisterPhotoSharingService(java.lang.String stemSystemExtension) throws RemoteException, org.cagrid.demos.photoservicereg.stubs.types.RegistrationException {
-    synchronized(portTypeMutex){
-      configureStubSecurity((Stub)portType,"unregisterPhotoSharingService");
-    org.cagrid.demos.photoservicereg.stubs.UnregisterPhotoSharingServiceRequest params = new org.cagrid.demos.photoservicereg.stubs.UnregisterPhotoSharingServiceRequest();
-    params.setStemSystemExtension(stemSystemExtension);
-    org.cagrid.demos.photoservicereg.stubs.UnregisterPhotoSharingServiceResponse boxedResult = portType.unregisterPhotoSharingService(params);
-    }
-  }
-
   public org.oasis.wsrf.properties.GetMultipleResourcePropertiesResponse getMultipleResourceProperties(org.oasis.wsrf.properties.GetMultipleResourceProperties_Element params) throws RemoteException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"getMultipleResourceProperties");
@@ -115,6 +94,24 @@ public class PhotoSharingRegistrationClient extends PhotoSharingRegistrationClie
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"queryResourceProperties");
     return portType.queryResourceProperties(params);
+    }
+  }
+
+  public void registerPhotoSharingService(java.lang.String hostIdentity) throws RemoteException, org.cagrid.demos.photoservicereg.stubs.types.RegistrationException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"registerPhotoSharingService");
+    org.cagrid.demos.photoservicereg.stubs.RegisterPhotoSharingServiceRequest params = new org.cagrid.demos.photoservicereg.stubs.RegisterPhotoSharingServiceRequest();
+    params.setHostIdentity(hostIdentity);
+    org.cagrid.demos.photoservicereg.stubs.RegisterPhotoSharingServiceResponse boxedResult = portType.registerPhotoSharingService(params);
+    }
+  }
+
+  public void unregisterPhotoSharingService(java.lang.String hostIdentity) throws RemoteException, org.cagrid.demos.photoservicereg.stubs.types.RegistrationException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"unregisterPhotoSharingService");
+    org.cagrid.demos.photoservicereg.stubs.UnregisterPhotoSharingServiceRequest params = new org.cagrid.demos.photoservicereg.stubs.UnregisterPhotoSharingServiceRequest();
+    params.setHostIdentity(hostIdentity);
+    org.cagrid.demos.photoservicereg.stubs.UnregisterPhotoSharingServiceResponse boxedResult = portType.unregisterPhotoSharingService(params);
     }
   }
 
