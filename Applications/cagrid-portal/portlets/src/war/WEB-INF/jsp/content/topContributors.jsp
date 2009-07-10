@@ -1,11 +1,13 @@
 <%@ include file="/WEB-INF/jsp/include/includes.jspf" %>
 
-<a href="#">Ethan Basch</a><br/>
-<a href="#">Bryce Reeves</a><br/>
-<a href="#">Bob Morrell</a><br/>
-<a href="#">John Speakman</a><br/>
-<a href="#">David Jones</a><br/>
-<a href="#">Kevin Rumley</a><br/>
-<a href="#">Steve Pittman</a><br/>
+<h3>Top Contributors</h3>
+
+<a href="#">Rodney Goddard</a><br/>
+<a href="#">Ernesto Russell</a><br/>
+<a href="#">Keren Bevins-McClelland</a><br/>
+<a href="#">Wilbur Gerber</a><br/>
+<a href="#">Myrle Elston</a><br/>
+<a href="#">Rosemary Hoskins</a><br/>
+<a href="#">Melisa Rupert</a><br/>
 <br/>
 <a href="#">More...</a>

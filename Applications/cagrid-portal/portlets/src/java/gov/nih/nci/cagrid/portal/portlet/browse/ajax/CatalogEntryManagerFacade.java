@@ -238,10 +238,8 @@ public class CatalogEntryManagerFacade extends AjaxViewGenerator {
             String name, String type) {
         List<LabelDescriptionBean> ldbs = new ArrayList<LabelDescriptionBean>();
         try {
-            List entries = getHibernateTemplate().find(
-                    "from " + Class.forName(type).getSimpleName());
-            for (Iterator<CatalogEntry> i = entries.iterator(); i.hasNext();) {
-                CatalogEntry entry = i.next();
+            List<CatalogEntry> entries = getCatalogEntryDao().getByPartialNameAndType(name, type);
+            for (CatalogEntry entry : entries) {
                 ldbs.add(new LabelDescriptionBean(
                         String.valueOf(entry.getId()), entry.getName(), entry
                                 .getDescription()));

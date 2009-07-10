@@ -5,17 +5,16 @@
         <label for="selectedEndpoints">
             Selected Data Sources 
         </label>
-        <div class="value">
+
 		<select id="${ns}selectedEndpoints" name="selectedEndpoints" multiple="true" size="3">
 			<option>No data sources selected.</option>
 		</select>
-		<input type="button" value="View Data Sources" onclick="${ns}showSelectEndpointsForm()"/>
-		</div>
+		<input type="button" value="View Data Sources" onclick="${ns}showSelectEndpointsForm()" style="vertical-align: top;"/>
+
     </div>
     <div class="row">
-    	<div class="value">
-    		<span id="${ns}executeQueryButtonContainer"></span>
-    	</div>
+    	<label>&nbsp;</label>
+    	<span id="${ns}executeQueryButtonContainer"></span>	
     </div>
     <%@ include file="/WEB-INF/jsp/browse/sharedQuery/query_results.jspf" %>
 </div>
@@ -26,7 +25,7 @@ var ${ns}selectEndpointsPopupDialog;
 
 function ${ns}showSelectEndpointsForm(){
 	${ns}selectEndpointsPopupDialog = 
-			new Liferay.Popup({title: "Select Data Sources", modal:true, width:500 , height:600}); 
+			new Liferay.Popup({title: "Select Data Sources", modal:true, width:800 , height:300}); 
 	jQuery(
 		${ns}selectEndpointsPopupDialog
 	).load(

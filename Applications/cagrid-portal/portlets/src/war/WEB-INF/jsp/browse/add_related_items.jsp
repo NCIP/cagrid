@@ -27,7 +27,10 @@ Adding a Related Item
 First, choose the kind of catalog entry for which you would like to describe a relationship.
 Then, select the kind relationship that you would like to describe.
 </p>
+<p>
 <div id="${ns}addRelationshipButtonContainer"></div>
+</p>
+<br/>
 <form name="${ns}addRelatedItemsForm">
 
 <%@ include file="/WEB-INF/jsp/browse/entry_types.jspf" %>
