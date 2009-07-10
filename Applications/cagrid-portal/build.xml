@@ -255,6 +255,7 @@
     <target name="test" depends="all, test:test" description="Run all unit tests for the project."/>
     <target name="reports" depends="all, reports:reports" description="Generate reports for the project."/>
 
+
     <target name="deploy-web-fast" depends="prepare">
 
         <if>
@@ -289,7 +290,7 @@
                 </if>
 
                 <tstamp/>
-                <copy todir="${portlets.temp.dir}">
+                <copy todir="${portlets.temp.dir}" overwrite="${do.overwrite}">
                     <fileset dir="portlets/src/war">
                         <include name="**/*.css"/>
                         <include name="**/*.dtd"/>
