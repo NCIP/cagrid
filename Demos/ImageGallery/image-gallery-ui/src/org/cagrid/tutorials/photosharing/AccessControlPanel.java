@@ -1,5 +1,7 @@
 package org.cagrid.tutorials.photosharing;
 
+import gov.nih.nci.cagrid.common.Utils;
+
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -21,6 +23,10 @@ import javax.swing.table.AbstractTableModel;
 import org.cagrid.demo.photosharing.domain.User;
 import org.cagrid.demo.photosharing.gallery.client.GalleryClient;
 import org.cagrid.demo.photosharing.stubs.types.PhotoSharingException;
+import org.cagrid.grape.utils.ErrorDialog;
+
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 
 public class AccessControlPanel extends JPanel {
@@ -33,17 +39,24 @@ public class AccessControlPanel extends JPanel {
     private JScrollPane jScrollPane = null;
     private JTable accessControlTable = null;
     private MyTableModel model;
+    private JPanel addPanel = null;
+    private JLabel Identity = null;
+    private JTextField gridIdentity = null;
+    private JButton add = null;
 
     /**
      * This is the default constructor
      */
     public AccessControlPanel(GalleryClient client) {
         super();
-        
         this.client = client;
         this.model = new MyTableModel();
         model.addTableModelListener(new PermissionsModelListener(this.client));
         initialize();
+    }
+    
+    public void listPermissions(){
+        
     }
 
 
@@ -53,6 +66,12 @@ public class AccessControlPanel extends JPanel {
      * @return void
      */
     private void initialize() {
+        GridBagConstraints gridBagConstraints21 = new GridBagConstraints();
+        gridBagConstraints21.gridx = 0;
+        gridBagConstraints21.insets = new Insets(2, 2, 2, 2);
+        gridBagConstraints21.fill = GridBagConstraints.HORIZONTAL;
+        gridBagConstraints21.weightx = 1.0D;
+        gridBagConstraints21.gridy = 2;
         GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
         gridBagConstraints1.gridx = 0;
         gridBagConstraints1.fill = GridBagConstraints.BOTH;
@@ -69,6 +88,7 @@ public class AccessControlPanel extends JPanel {
         this.setLayout(new GridBagLayout());
         this.add(getListPermissionsPanel(), gridBagConstraints);
         this.add(getPermissionsPanel(), gridBagConstraints1);
+        this.add(getAddPanel(), gridBagConstraints21);
     }
     
     static class RefreshButtonActionListener implements ActionListener {
@@ -133,11 +153,9 @@ public class AccessControlPanel extends JPanel {
 
                 this.model.setUserPermissions(new ArrayList(permissionSet));
             } catch (PhotoSharingException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
+              ErrorDialog.showError(Utils.getExceptionMessage(e1), e1);
             } catch (RemoteException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
+                ErrorDialog.showError(Utils.getExceptionMessage(e1), e1);
             }
         }
     }
@@ -145,6 +163,12 @@ public class AccessControlPanel extends JPanel {
 
         public UserPermission() {
             this.identity = null;
+            this.view = Boolean.FALSE;
+            this.add = Boolean.FALSE;
+        }
+        
+        public UserPermission(String gridIdentity) {
+            this.identity = gridIdentity;
             this.view = Boolean.FALSE;
             this.add = Boolean.FALSE;
         }
@@ -252,11 +276,13 @@ public class AccessControlPanel extends JPanel {
         //CALL THIS ONLY FROM SWING THREAD
         public void addUserPermission(UserPermission userPermission) {
             this.userPermissions.add(userPermission);
+            this.fireTableStructureChanged();
         }
 
         //CALL THIS ONLY FROM SWING THREAD
         public void removeUserPermission(UserPermission userPermission) {
             this.userPermissions.remove(userPermission);
+            this.fireTableStructureChanged();
         }
 
         public List<UserPermission> getUserPermissions() {
@@ -343,6 +369,73 @@ public class AccessControlPanel extends JPanel {
             accessControlTable = new JTable(this.model);
         }
         return accessControlTable;
+    }
+
+
+    /**
+     * This method initializes addPanel	
+     * 	
+     * @return javax.swing.JPanel	
+     */
+    private JPanel getAddPanel() {
+        if (addPanel == null) {
+            GridBagConstraints gridBagConstraints4 = new GridBagConstraints();
+            gridBagConstraints4.fill = GridBagConstraints.HORIZONTAL;
+            gridBagConstraints4.anchor = GridBagConstraints.WEST;
+            gridBagConstraints4.gridx = 1;
+            gridBagConstraints4.gridy = 0;
+            gridBagConstraints4.insets = new Insets(2, 2, 2, 2);
+            gridBagConstraints4.weightx = 1.0;
+            GridBagConstraints gridBagConstraints3 = new GridBagConstraints();
+            gridBagConstraints3.anchor = GridBagConstraints.WEST;
+            gridBagConstraints3.gridy = 0;
+            gridBagConstraints3.insets = new Insets(2, 2, 2, 2);
+            gridBagConstraints3.gridx = 0;
+            Identity = new JLabel();
+            Identity.setText("Identity");
+            addPanel = new JPanel();
+            addPanel.setLayout(new GridBagLayout());
+            addPanel.add(Identity, gridBagConstraints3);
+            addPanel.add(getGridIdentity(), gridBagConstraints4);
+            addPanel.add(getAdd(), new GridBagConstraints());
+        }
+        return addPanel;
+    }
+
+
+    /**
+     * This method initializes gridIdentity	
+     * 	
+     * @return javax.swing.JTextField	
+     */
+    private JTextField getGridIdentity() {
+        if (gridIdentity == null) {
+            gridIdentity = new JTextField();
+        }
+        return gridIdentity;
+    }
+
+
+    /**
+     * This method initializes add	
+     * 	
+     * @return javax.swing.JButton	
+     */
+    private JButton getAdd() {
+        if (add == null) {
+            add = new JButton();
+            add.setText("Add");
+            add.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    String gridId = getGridIdentity().getText();
+                    if(Utils.clean(gridId)!=null){
+                        model.addUserPermission(new UserPermission(gridId));
+                    }
+                    getGridIdentity().setText("");
+                }
+            });
+        }
+        return add;
     }
 
 }
