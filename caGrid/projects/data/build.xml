@@ -374,12 +374,13 @@
 
 
 	<!-- compiles the CQL Query Processor code -->
-	<target name="compileCql" depends="compileStubs, compileCommon">
+	<target name="compileCql" depends="compileStubs, compileCommon, compileUtils">
 		<javac srcdir="${cql.src.dir}" destdir="${build.cql.dest}" debug="${java.debug}" source="${java.source}">
 			<classpath>
 				<path refid="base.classpath" />
 				<pathelement location="${stubs.dest}" />
 				<pathelement location="${build.common.dest}" />
+				<pathelement location="${build.utils.dest}"/>
 				<fileset dir="${globus.dir}/lib">
 					<include name="*.jar" />
                     <exclude name="junit.jar"/>
