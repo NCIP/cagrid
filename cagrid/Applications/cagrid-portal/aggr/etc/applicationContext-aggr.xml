@@ -19,6 +19,18 @@
 
     <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
 
+    <bean id="defaultDelay" class="java.lang.Long">
+        <constructor-arg value="${cagrid.portal.aggr.defaultDelay}"/>
+    </bean>
+
+    <bean id="slowDefaultDelay" class="java.lang.Long">
+        <constructor-arg value="${cagrid.portal.slow.aggr.defaultDelay}"/>
+    </bean>
+
+    <bean id="fastDefaultDelay" class="java.lang.Long">
+        <constructor-arg value="${cagrid.portal.fast.aggr.defaultDelay}"/>
+    </bean>
+
     <bean id="defaultTimeout" class="java.lang.Long">
         <constructor-arg value="${cagrid.portal.aggr.defaultTimeout}"/>
     </bean>

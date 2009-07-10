@@ -3,7 +3,6 @@
  */
 package gov.nih.nci.cagrid.portal.portlet.browse;
 
-import gov.nih.nci.cagrid.portal.portlet.InterPortletMessageReceiver;
 import gov.nih.nci.cagrid.portal.portlet.UserModel;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -16,7 +15,6 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
-import java.util.List;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com>Joshua Phillips</a>
@@ -28,7 +26,7 @@ public class BrowseViewController implements InitializingBean, Controller {
     private String successViewName;
     private String solrServiceUrl;
     private UserModel userModel;
-    private InterPortletMessageReceiver interPortletMessageReceiver;
+    private String searchRequestParam;
 
     private static final Log logger = LogFactory.getLog(BrowseViewController.class);
 
@@ -47,10 +45,9 @@ public class BrowseViewController implements InitializingBean, Controller {
       * @see org.springframework.web.portlet.mvc.Controller#handleActionRequest(javax.portlet.ActionRequest,
       *      javax.portlet.ActionResponse)
       */
-    public void handleActionRequest(ActionRequest arg0, ActionResponse arg1)
+    public void handleActionRequest(ActionRequest req, ActionResponse res)
             throws Exception {
-        // nothing
-
+        res.setRenderParameter(searchRequestParam, req.getParameter(searchRequestParam));
     }
 
     /*
@@ -70,17 +67,13 @@ public class BrowseViewController implements InitializingBean, Controller {
 
 
         // wildcard by default
-        String searchKeyword = "*:*";
-        if (getInterPortletMessageReceiver() != null && getInterPortletMessageReceiver().handles(request)) {
-            searchKeyword = (String) getInterPortletMessageReceiver().receive(request);
-            logger.debug("Received IPC keyword for search.");
-        }
+        String searchKeyword = request.getParameter(searchRequestParam) != null ? request.getParameter(searchRequestParam) : "*:*";
         mav.addObject("searchKeyword", searchKeyword);
 
         String entryTypeName = null;
         if (browseType.equals(BrowseTypeEnum.DATASET)) {
             entryTypeName = "DataSetCatalogEntry";
-        //both data sets and information models
+            //both data sets and information models
             mav.addObject("catalogType", "dataset information_model terminology");
         } else if (browseType.equals(BrowseTypeEnum.COMMUNITY)) {
             entryTypeName = "CommunityCatalogEntry";
@@ -143,11 +136,11 @@ public class BrowseViewController implements InitializingBean, Controller {
         this.userModel = userModel;
     }
 
-    public InterPortletMessageReceiver getInterPortletMessageReceiver() {
-        return interPortletMessageReceiver;
+    public String getSearchRequestParam() {
+        return searchRequestParam;
     }
 
-    public void setInterPortletMessageReceiver(InterPortletMessageReceiver interPortletMessageReceiver) {
-        this.interPortletMessageReceiver = interPortletMessageReceiver;
+    public void setSearchRequestParam(String searchRequestParam) {
+        this.searchRequestParam = searchRequestParam;
     }
 }

@@ -22,7 +22,7 @@
 <script src="<c:url value="/js/browse-catalog.js"/>"></script>
 
 <script type="text/javascript">
-    var myLogReader = new YAHOO.widget.LogReader("myLogger");
+    //    var myLogReader = new YAHOO.widget.LogReader("myLogger");
     var solrDatasource = new YAHOO.util.XHRDataSource("<c:out value="${solrServiceUrl}"/>/select?", {responseType:YAHOO.util.XHRDataSource.JSON});
 
 
@@ -134,7 +134,7 @@
                 this.query.addFacet("catalog_type", this.config.catalogType);
             }
             if (this.config.filterType) {
-                 YAHOO.log("Adding " + this.config.filterType + " facet");
+                YAHOO.log("Adding " + this.config.filterType + " facet");
                 this.query.addFacet(this.config.filterType, this.config.filterValue);
             }
             if (this.config.sortField) {
@@ -147,7 +147,7 @@
                 this.query.setStartValue(0);
             }
             YAHOO.log("Will run a new query" + this.query.getQuery());
-            
+
             var searchCallback = function (oRequest, oParsedResponse, oPayload) {
                 try {
                     var solrJSON = YAHOO.lang.JSON.parse(oParsedResponse.results.responseText);
@@ -179,14 +179,14 @@
         setupPaginator: function(result) {
             this.paginator.setState({totalRecords:result.count,recordOffset:result.start});
             this.paginator.render();
-            var startValue = result.start+1;
+            var startValue = result.start + 1;
             var totalRecords = result.count;
-            var endValue = result.start +  this.rowsPerPage;
-            if(endValue>totalRecords)
+            var endValue = result.start + this.rowsPerPage;
+            if (endValue > totalRecords)
                 endValue = totalRecords;
 
             $("${ns}paginatorSummary").innerHTML = "Results  <strong>" + startValue + " - " + endValue + "</strong> of  <strong>" + totalRecords + "</strong>";
-            
+
         },
 
         handlePagination: function(newState, cat) {

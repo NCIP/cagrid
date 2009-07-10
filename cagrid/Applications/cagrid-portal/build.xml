@@ -9,7 +9,7 @@
 
     <property name="antfiles.dir" value="${basedir}/antfiles"/>
 
-     <import file="${ivy.dir}/ivy-targets.xml"/>
+    <import file="${ivy.dir}/ivy-targets.xml"/>
     <import file="${antfiles.dir}/build-test.xml"/>
     <import file="${antfiles.dir}/build-report.xml"/>
 
@@ -96,7 +96,8 @@
         </trycatch>
     </target>
 
-    <target name="liferay:deploy-portlets" depends="prepare" description="Deploy customizations(themes,security,la to liferay Portal">
+    <target name="liferay:deploy-portlets" depends="prepare"
+            description="Deploy customizations(themes,security,la to liferay Portal">
         <trycatch property="errorMsg">
             <try>
                 <ant target="deploy-all"
@@ -107,20 +108,22 @@
             </catch>
         </trycatch>
     </target>
-	
-	<target name="liferay:deploy-theme" depends="prepare" description="Deploy customizations(themes,security,la to liferay Portal">
-	        <trycatch property="errorMsg">
-	            <try>
-	                <ant target="deploy-theme"
-	                     dir="${projects.dir}/portals" antfile="build-liferay-${liferay.server.type}.xml"/>
-	            </try>
-	            <catch>
-	                <fail message="Please build the project first or run 'ant all': ${errorMsg}"/>
-	            </catch>
-	        </trycatch>
-	    </target>
-	
-	<target name="liferay:deploy-layouts" depends="prepare" description="Deploy customizations(themes,security,la to liferay Portal">
+
+    <target name="liferay:deploy-theme" depends="prepare"
+            description="Deploy customizations(themes,security,la to liferay Portal">
+        <trycatch property="errorMsg">
+            <try>
+                <ant target="deploy-theme"
+                     dir="${projects.dir}/portals" antfile="build-liferay-${liferay.server.type}.xml"/>
+            </try>
+            <catch>
+                <fail message="Please build the project first or run 'ant all': ${errorMsg}"/>
+            </catch>
+        </trycatch>
+    </target>
+
+    <target name="liferay:deploy-layouts" depends="prepare"
+            description="Deploy customizations(themes,security,la to liferay Portal">
         <trycatch property="errorMsg">
             <try>
                 <ant target="deploy-layouts"
@@ -130,9 +133,9 @@
                 <fail message="Please build the project first or run 'ant all': ${errorMsg}"/>
             </catch>
         </trycatch>
-    </target>	
+    </target>
 
-     <target name="liferay:deploy-authn" depends="prepare" description="Deploy the authentication module to Liferay">
+    <target name="liferay:deploy-authn" depends="prepare" description="Deploy the authentication module to Liferay">
         <trycatch property="errorMsg">
             <try>
                 <ant target="deploy-authn"
@@ -144,19 +147,32 @@
         </trycatch>
     </target>
 
-    <target name="cagrid:deploy-portlets" depends="prepare" description="Deploy all caGrid Portlets to the Portlet server">
+    <target name="cagrid:deploy-portlets" depends="prepare"
+            description="Deploy all caGrid Portlets to the Portlet server">
         <ant inheritall="false" target="deploy-portlets"
              dir="${projects.dir}/portlets">
         </ant>
     </target>
 
+    <target name="cagrid:deploy-portal-search" depends="prepare"
+            description="Deploy the caGrid Portal search engine(SOLR)">
+        <ant inheritall="false" target="solr:deploy-solr-home"
+             dir="${projects.dir}/portal-search">
+        </ant>
+
+        <ant inheritall="false" target="deploy-search-war"
+             dir="${projects.dir}/portals" antfile="build-liferay-${liferay.server.type}.xml">
+        </ant>
+    </target>
+
     <target name="deploy-all-portlets" depends="prepare" description="Deploy all caGrid Portlets">
-        <antcall  target="cagrid:deploy-portlets"/>
-        <antcall  target="liferay:deploy-portlets"/>
+        <antcall target="cagrid:deploy-portlets"/>
+        <antcall target="liferay:deploy-portlets"/>
+        <antcall target="cagrid:deploy-portal-search"/>
     </target>
 
     <target name="install-liferay" depends="prepare" description="Install the Liferay Portal.">
-    	<echo message="Server Type: ${server.type}"/>
+        <echo message="Server Type: ${server.type}"/>
         <ant inheritall="true" target="${liferay.server.type}:install-liferay"
              dir="${projects.dir}/portals" antfile="build-liferay-${liferay.server.type}.xml">
         </ant>
@@ -172,6 +188,7 @@
                 <antcall target="install-liferay"/>
                 <antcall target="liferay:deploy-portlets"/>
                 <antcall target="cagrid:deploy-portlets"/>
+                <antcall target="cagrid:deploy-portal-search"/>
             </try>
             <catch>
                 <fail message="Please build the project first or run 'ant all': ${errorMsg}"/>
@@ -191,18 +208,18 @@
              dir="${projects.dir}/aggr">
         </ant>
     </target>
-	
-	<target name="load-metadata" depends="prepare" description="Load the service metadata">
+
+    <target name="load-metadata" depends="prepare" description="Load the service metadata">
         <ant inheritall="false" target="run-loadmeta"
              dir="${projects.dir}/aggr">
         </ant>
     </target>
-	
-	<target name="load-data" depends="prepare">
-		<antcall target="load-workspaces"/>
-		<antcall target="load-metadata"/>
-	</target>
-	
+
+    <target name="load-data" depends="prepare">
+        <antcall target="load-workspaces"/>
+        <antcall target="load-metadata"/>
+    </target>
+
 
     <target name="run-trust" depends="config-trust" description="Sync with caGrid GTS service">
         <ant inheritall="false" target="run-trust"
@@ -210,7 +227,8 @@
         </ant>
     </target>
 
-    <target name="report-svcs-with-status" depends="prepare" description="Will generate a list of services with the given status.">
+    <target name="report-svcs-with-status" depends="prepare"
+            description="Will generate a list of services with the given status.">
         <ant inheritall="false" target="report-svcs-with-status"
              dir="${projects.dir}/aggr">
         </ant>
@@ -236,54 +254,60 @@
     <!--for automatated build-->
     <target name="test" depends="all, test:test" description="Run all unit tests for the project."/>
     <target name="reports" depends="all, reports:reports" description="Generate reports for the project."/>
-	
-	<target name="deploy-web-fast" depends="prepare">
-		
-		<if>
-			<equals arg1="${liferay.server.type}" arg2="tomcat" />
-			<then>
-				<if>
-					<available file="${liferay.install.dir}/${tomcat.server.name}/temp/0-cagridportlets" type="dir"/>
-					<then>
-						<property name="portlets.temp.dir" value="${liferay.install.dir}/${tomcat.server.name}/temp/0-cagridportlets"/>
-					</then>
-					<elseif>
-						<available file="${liferay.install.dir}/${tomcat.server.name}/temp/1-cagridportlets" type="dir"/>
-						<then>
-							<property name="portlets.temp.dir" value="${liferay.install.dir}/${tomcat.server.name}/temp/1-cagridportlets"/>
-						</then>
-					</elseif>
-					<elseif>
-						<available file="${liferay.install.dir}/${tomcat.server.name}/temp/2-cagridportlets" type="dir"/>
-						<then>
-							<property name="portlets.temp.dir" value="${liferay.install.dir}/${tomcat.server.name}/temp/2-cagridportlets"/>
-						</then>
-					</elseif>					
-					<else>
-						<property name="portlets.temp.dir" value="${liferay.install.dir}/${tomcat.server.name}/webapps/cagridportlets"/>
-					</else>
-				</if>
-				
-				<tstamp/>
-				<copy todir="${portlets.temp.dir}">
-					<fileset dir="portlets/src/war">
-						<include name="**/*.css" />
-						<include name="**/*.dtd" />
-						<include name="**/*.gif" />
-						<include name="**/*.jpg" />
-						<include name="**/*.js" />
-						<include name="**/*.jsp" />
-						<include name="**/*.jspf" />
-						<include name="**/*.png" />
-						<include name="**/*.tld" />
-						<include name="**/*.vm" />
-						<include name="**/*.tag" />
-					</fileset>
-				</copy>
 
-			</then>
-		</if>		
-	</target>
+    <target name="deploy-web-fast" depends="prepare">
+
+        <if>
+            <equals arg1="${liferay.server.type}" arg2="tomcat"/>
+            <then>
+                <if>
+                    <available file="${liferay.install.dir}/${tomcat.server.name}/temp/0-cagridportlets" type="dir"/>
+                    <then>
+                        <property name="portlets.temp.dir"
+                                  value="${liferay.install.dir}/${tomcat.server.name}/temp/0-cagridportlets"/>
+                    </then>
+                    <elseif>
+                        <available file="${liferay.install.dir}/${tomcat.server.name}/temp/1-cagridportlets"
+                                   type="dir"/>
+                        <then>
+                            <property name="portlets.temp.dir"
+                                      value="${liferay.install.dir}/${tomcat.server.name}/temp/1-cagridportlets"/>
+                        </then>
+                    </elseif>
+                    <elseif>
+                        <available file="${liferay.install.dir}/${tomcat.server.name}/temp/2-cagridportlets"
+                                   type="dir"/>
+                        <then>
+                            <property name="portlets.temp.dir"
+                                      value="${liferay.install.dir}/${tomcat.server.name}/temp/2-cagridportlets"/>
+                        </then>
+                    </elseif>
+                    <else>
+                        <property name="portlets.temp.dir"
+                                  value="${liferay.install.dir}/${tomcat.server.name}/webapps/cagridportlets"/>
+                    </else>
+                </if>
+
+                <tstamp/>
+                <copy todir="${portlets.temp.dir}">
+                    <fileset dir="portlets/src/war">
+                        <include name="**/*.css"/>
+                        <include name="**/*.dtd"/>
+                        <include name="**/*.gif"/>
+                        <include name="**/*.jpg"/>
+                        <include name="**/*.js"/>
+                        <include name="**/*.jsp"/>
+                        <include name="**/*.jspf"/>
+                        <include name="**/*.png"/>
+                        <include name="**/*.tld"/>
+                        <include name="**/*.vm"/>
+                        <include name="**/*.tag"/>
+                    </fileset>
+                </copy>
+
+            </then>
+        </if>
+    </target>
 
 
 </project>
