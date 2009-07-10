@@ -11,6 +11,7 @@
 		<xsd:choice>
 			<xsd:element ref="mods:NamedAttribute" minOccurs="1" maxOccurs="unbounded"/>
 			<xsd:element ref="mods:DistinctAttribute" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="CountOnly" type="xsd:boolean" default="false" minOccurs="0" maxOccurs="1"/>
 		</xsd:choice>
 	</xsd:complexType>
 	
