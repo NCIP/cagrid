@@ -486,3 +486,8 @@ div.row div.twoCols{
 	background-color:#FFFFCF;
 	padding:10px;
 }
+.commentAuthor {
+	font-size:7pt;
+	color:gray;
+	font-style:italic;
+}

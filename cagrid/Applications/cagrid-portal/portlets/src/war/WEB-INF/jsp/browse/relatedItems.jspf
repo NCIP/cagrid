@@ -53,7 +53,8 @@ if(permissionChecker.hasPermission(scopeGroupId, portletDisplay.getRootPortletId
 					<br/>
 			        </div>
 			        	
-						[Asserted by
+						<span class="commentAuthor">
+						Asserted by
 						<c:choose>
 						<c:when test="${!empty role.roleInstance.relationship.author}"> 
 						<portlet:renderURL var="viewAuthorUrl">
@@ -66,16 +67,18 @@ if(permissionChecker.hasPermission(scopeGroupId, portletDisplay.getRootPortletId
 						</c:when>
 						<c:otherwise>caGrid Portal</c:otherwise>
 						</c:choose>
-						on <fmt:formatDate value="${role.roleInstance.relationship.createdAt}" type="both"/>]
-					<p>		        
+						on <fmt:formatDate value="${role.roleInstance.relationship.createdAt}" type="both"/></span>
+							        
 						<c:if test="${!empty role.orderedComments}">
+							<p>
 				            <a style="cursor:pointer" id="comments-toggle">Hide Comments</a>
 							<div id="comments">
 					            <c:set var="comments" value="${role.orderedComments}"/>
 					            <%@ include file="/WEB-INF/jsp/browse/comments.jspf" %>
 							</div>
+							</p>
 				        </c:if>
-			        </p>
+			        
 					<hr/>
 					
     			</c:forEach>
