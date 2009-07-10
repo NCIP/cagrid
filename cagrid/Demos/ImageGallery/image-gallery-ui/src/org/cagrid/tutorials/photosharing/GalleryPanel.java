@@ -4,21 +4,19 @@ import gov.nih.nci.cagrid.common.Runner;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 
 import org.cagrid.gaards.ui.common.ProgressPanel;
 import org.cagrid.grape.GridApplication;
 import org.cagrid.grape.utils.ErrorDialog;
 import org.cagrid.tutorials.photosharing.tree.GalleryTreeNode;
-import java.awt.BorderLayout;
-import javax.swing.JSplitPane;
 
 
 public class GalleryPanel extends JPanel {

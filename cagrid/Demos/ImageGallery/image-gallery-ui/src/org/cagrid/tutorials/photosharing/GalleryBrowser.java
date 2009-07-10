@@ -2,6 +2,7 @@ package org.cagrid.tutorials.photosharing;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -12,9 +13,6 @@ import org.cagrid.gaards.ui.common.TitlePanel;
 import org.cagrid.grape.ApplicationComponent;
 import org.cagrid.tutorials.photosharing.tree.GalleryTree;
 import org.cagrid.tutorials.photosharing.tree.GalleryTreeEventListener;
-
-import javax.swing.JTabbedPane;
-import java.awt.Insets;
 
 
 public class GalleryBrowser extends ApplicationComponent {

@@ -1,8 +1,9 @@
 package org.cagrid.tutorials.photosharing.tree;
 
+import gov.nih.nci.cagrid.common.Utils;
+
 import javax.swing.ImageIcon;
 
-import org.cagrid.gaards.ui.gridgrouper.GridGrouperLookAndFeel;
 import org.cagrid.grape.utils.ErrorDialog;
 import org.cagrid.tutorials.photosharing.GalleryHandle;
 import org.cagrid.tutorials.photosharing.GalleryLookAndFeel;
@@ -29,11 +30,24 @@ public class GalleryTreeNode extends GalleryBaseTreeNode {
             } else {
                 getTree().reload();
             }
-            getTree().stopEvent("Refreshed " + toString() + "!!!");
+            getTree().stopEvent("");
         } catch (Exception e) {
-            getTree().stopEvent("Error refreshing " + toString() + "!!!");
+            getTree().stopEvent("");
             ErrorDialog.showError(e);
         }
+    }
+
+
+    public void deleteGallery() {
+        getTree().startEvent("Deleting " + toString() + ".... ");
+        try {
+            ServiceTreeNode parent = (ServiceTreeNode) getParent();
+            getGallery().deleteGallery();
+            parent.refresh();
+        } catch (Exception e) {
+            ErrorDialog.showError(Utils.getExceptionMessage(e), e);
+        }
+        getTree().stopEvent("");
     }
 
 

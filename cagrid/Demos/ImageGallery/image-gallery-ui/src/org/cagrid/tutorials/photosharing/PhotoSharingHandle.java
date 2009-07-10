@@ -1,9 +1,9 @@
 package org.cagrid.tutorials.photosharing;
 
+import gov.nih.nci.cagrid.common.security.ProxyUtil;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import gov.nih.nci.cagrid.common.security.ProxyUtil;
 
 import org.cagrid.demo.photosharing.client.PhotoSharingClient;
 import org.cagrid.demo.photosharing.gallery.client.GalleryClient;
@@ -25,12 +25,17 @@ public class PhotoSharingHandle extends ServiceHandle {
     }
 
 
+    public void createGallery(String galleryName) throws Exception {
+        client.createGallery(galleryName);
+    }
+
+
     public List<GalleryHandle> getGalleries() throws Exception {
         List<GalleryHandle> handles = new ArrayList<GalleryHandle>();
         GalleryClient[] clients = client.listGalleries();
         if (clients != null) {
             for (int i = 0; i < clients.length; i++) {
-                GalleryClient c = new GalleryClient(clients[i].getEndpointReference(),cred);
+                GalleryClient c = new GalleryClient(clients[i].getEndpointReference(), cred);
                 handles.add(new GalleryHandle(c));
             }
         }

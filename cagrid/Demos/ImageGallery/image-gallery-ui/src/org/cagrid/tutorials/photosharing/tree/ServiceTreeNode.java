@@ -1,11 +1,12 @@
 package org.cagrid.tutorials.photosharing.tree;
 
+import gov.nih.nci.cagrid.common.Utils;
+
 import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.tree.TreeNode;
 
-import org.cagrid.gaards.ui.gridgrouper.GridGrouperLookAndFeel;
 import org.cagrid.grape.utils.ErrorDialog;
 import org.cagrid.tutorials.photosharing.GalleryHandle;
 import org.cagrid.tutorials.photosharing.GalleryLookAndFeel;
@@ -60,11 +61,11 @@ public class ServiceTreeNode extends GalleryBaseTreeNode {
                 getTree().reload();
             }
             loadService();
-            getTree().stopEvent("Refreshed " + toString() + "!!!");
+            getTree().stopEvent("");
         } catch (Exception e) {
             e.printStackTrace();
-            getTree().stopEvent("Error refreshing " + toString() + "!!!");
-            ErrorDialog.showError(e);
+            getTree().stopEvent("");
+            ErrorDialog.showError(Utils.getExceptionMessage(e),e);
         }
     }
 
