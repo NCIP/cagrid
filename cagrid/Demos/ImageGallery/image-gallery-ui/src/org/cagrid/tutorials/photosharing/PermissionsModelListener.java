@@ -1,5 +1,7 @@
 package org.cagrid.tutorials.photosharing;
 
+import gov.nih.nci.cagrid.common.Utils;
+
 import java.rmi.RemoteException;
 
 import javax.swing.event.TableModelEvent;
@@ -9,6 +11,7 @@ import org.cagrid.demo.photosharing.domain.User;
 import org.cagrid.demo.photosharing.gallery.client.GalleryClient;
 import org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException;
 import org.cagrid.demo.photosharing.stubs.types.PhotoSharingException;
+import org.cagrid.grape.utils.ErrorDialog;
 import org.cagrid.tutorials.photosharing.AccessControlPanel.MyTableModel;
 
 public class PermissionsModelListener implements TableModelListener {
@@ -79,28 +82,14 @@ public class PermissionsModelListener implements TableModelListener {
 				if (viewable.booleanValue()) {
 					try {
 						this.client.grantAddImagePrivileges(user);
-					} catch (AuthorizationException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (PhotoSharingException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (RemoteException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+					} catch (Exception e1) {
+					    ErrorDialog.showError(Utils.getExceptionMessage(e1),e1);
 					}
 				} else {
 					try {
 						this.client.revokeAddImagePrivileges(user);
-					} catch (AuthorizationException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (PhotoSharingException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (RemoteException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+					} catch (Exception e1) {
+					    ErrorDialog.showError(Utils.getExceptionMessage(e1),e1);
 					}
 				}
 			}
