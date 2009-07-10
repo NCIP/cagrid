@@ -5,10 +5,17 @@
       <none />
     </auth-method>
   </method>
+  <authz value="photosharingregistration:org.cagrid.demos.photoservicereg.service.globus.PhotoSharingRegistrationAuthorization" />
   <auth-method>
-    <none />
+    <GSITransport>
+      <protection-level>
+        <privacy />
+      </protection-level>
+    </GSITransport>
   </auth-method>
-  <authz value="none" />
+  <run-as>
+    <system-identity />
+  </run-as>
   <method name="getMultipleResourceProperties">
     <auth-method>
       <none />

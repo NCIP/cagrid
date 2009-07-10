@@ -21,15 +21,16 @@ public class PhotoSharingRegistrationApplication {
 					
 					PhotoSharingRegistrationClient registrationClient = new PhotoSharingRegistrationClient(photoSharingRegistrationServiceURL);
 					
-					String hostname = "justin-permars-macbook-pro.local";
-					String stemSystemExtension = hostname;
-					String stemDisplayExtension = hostname;
+					String hostIdentity = "/O=caBIG/OU=caGrid/OU=Training/OU=Services/CN=justin-permars-macbook-pro.local";
+					registrationClient.registerPhotoSharingService(hostIdentity);
 					
-					String serviceIdentity = "/O=caBIG/OU=caGrid/OU=Training/OU=Services/CN=justin-permars-macbook-pro.local";
-					String userIdentity = "/O=caBIG/OU=caGrid/OU=Training/OU=Dorian/CN=jpermar";
-					registrationClient.registerPhotoSharingService(stemSystemExtension, stemDisplayExtension, serviceIdentity, userIdentity);
+					System.out.println("Registered " + hostIdentity + " as a photo sharing service");
+					/*
+					System.out.println("Sleepy...");
+					Thread.sleep(20000);
 					
-					
+					registrationClient.unregisterPhotoSharingService(hostIdentity);
+					*/
 				} else {
 					usage();
 					System.exit(1);

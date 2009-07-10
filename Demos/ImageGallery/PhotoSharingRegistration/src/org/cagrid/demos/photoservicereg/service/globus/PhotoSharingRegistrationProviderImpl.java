@@ -28,13 +28,13 @@ public class PhotoSharingRegistrationProviderImpl{
 
     public org.cagrid.demos.photoservicereg.stubs.RegisterPhotoSharingServiceResponse registerPhotoSharingService(org.cagrid.demos.photoservicereg.stubs.RegisterPhotoSharingServiceRequest params) throws RemoteException, org.cagrid.demos.photoservicereg.stubs.types.RegistrationException {
     org.cagrid.demos.photoservicereg.stubs.RegisterPhotoSharingServiceResponse boxedResult = new org.cagrid.demos.photoservicereg.stubs.RegisterPhotoSharingServiceResponse();
-    impl.registerPhotoSharingService(params.getStemSystemExtension(),params.getStemDisplayExtension(),params.getServiceIdentity(),params.getUserIdentity());
+    impl.registerPhotoSharingService(params.getHostIdentity());
     return boxedResult;
   }
 
     public org.cagrid.demos.photoservicereg.stubs.UnregisterPhotoSharingServiceResponse unregisterPhotoSharingService(org.cagrid.demos.photoservicereg.stubs.UnregisterPhotoSharingServiceRequest params) throws RemoteException, org.cagrid.demos.photoservicereg.stubs.types.RegistrationException {
     org.cagrid.demos.photoservicereg.stubs.UnregisterPhotoSharingServiceResponse boxedResult = new org.cagrid.demos.photoservicereg.stubs.UnregisterPhotoSharingServiceResponse();
-    impl.unregisterPhotoSharingService(params.getStemSystemExtension());
+    impl.unregisterPhotoSharingService(params.getHostIdentity());
     return boxedResult;
   }
 
