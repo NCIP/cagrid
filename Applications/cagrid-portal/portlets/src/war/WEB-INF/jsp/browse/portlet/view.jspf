@@ -2,7 +2,11 @@
 		
 <%@ include file="/WEB-INF/jsp/browse/common/view/photo_row.jspf" %>
 
-<tags:row rowLabel="Portal URL" rowValue="${catalogEntry.portalUrl}"/>
+<div class="row">
+	<label></label>
+	<div class="value"><a href="${catalogEntry.portalUrl}">Try It!</a></div>
+</div>
+
 
 <%@ include file="/WEB-INF/jsp/browse/common/view/terms.jspf" %>
 

@@ -42,7 +42,11 @@ function ${ns}selectEndpoints(endpoints){
 	Liferay.Popup.close(${ns}selectEndpointsPopupDialog);
 	var html = "";
 	for(var i = 0; i < endpoints.length; i++){
-		html += "<option value='" + endpoints[i].url + "' selected='true'>" + endpoints[i].name + "</option>";
+		var endpointName = endpoints[i].name;
+		if(endpointName.length > 50){
+			endpointName = endpointName.substring(0, 50);
+		}
+		html += "<option value='" + endpoints[i].url + "' selected='true'>" + endpointName + "</option>";
 	}
 	jQuery("#${ns}selectedEndpoints").html(html);
 	${ns}checkEnableExecute();

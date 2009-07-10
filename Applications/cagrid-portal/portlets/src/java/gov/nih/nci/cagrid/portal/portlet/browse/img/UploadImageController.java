@@ -104,7 +104,7 @@ public class UploadImageController implements Controller {
 					getImageDao().save(regImage);
 
 					BufferedImage thumbBImage = ImageUtils.scaleImage(bImage,
-							getImageMaxHeight(), getImageMaxWidth());
+							getThumbnailMaxHeight(), getThumbnailMaxWidth());
 					bos = new ByteArrayOutputStream();
 					ImageIO.write(thumbBImage, imageFormat.toString(), bos);
 					bos.close();
