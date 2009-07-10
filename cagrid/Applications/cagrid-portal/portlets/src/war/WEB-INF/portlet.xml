@@ -632,7 +632,7 @@
         <portlet-preferences>
             <preference>
                 <name>jsp</name>
-                <value>topContributors</value>
+                <value>topRankedContent</value>
             </preference>
         </portlet-preferences>
     </portlet>

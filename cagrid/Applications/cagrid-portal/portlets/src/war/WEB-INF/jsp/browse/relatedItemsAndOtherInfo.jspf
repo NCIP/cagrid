@@ -1,3 +1,6 @@
+
+<br/>
+<br/>
 <div class="yui-skin-sam">
 <div id="<portlet:namespace/>tabs" class="yui-navset"> 
     <ul class="yui-nav"> 
@@ -18,6 +21,7 @@ String addRelatedItemActionId = "ADD_RELATED_ITEM";
 <p>
 <div id="${ns}addRelatedItemButtonContainer"></div>	
 </p>
+<br/>
 <style type="text/css">
 .match {
     font-weight:bold;

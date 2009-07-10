@@ -26,7 +26,10 @@ Areas of Focus
 <p>
 Select all terms that apply.
 </p>
+<p>
 <div id="${ns}addTermsButtonContainer"></div>
+</p>
+<br/>
 <form name="${ns}addTermsForm">
 
 </form>

@@ -1,5 +1,7 @@
 <%@ include file="/WEB-INF/jsp/include/includes.jspf" %>
 
+<h3>Quick Links</h3>
+
 <a href="/web/guest/discovery">Service Discovery</a><br/>
 <a href="/web/guest/discovery">Data Service Query</a><br/>
 <a href="/web/guest/discovery">Service Diagnostics</a><br/>

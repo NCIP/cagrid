@@ -26,7 +26,10 @@ Available Data Sources
 <p>
 Select all data sources you would like to query.
 </p>
+<p>
 <div id="${ns}selectEndpointsButtonContainer"></div>
+</p>
+</br>
 <p>
 <form name="${ns}selectEndpointsForm">
 
