@@ -6,37 +6,39 @@
     <c:set var="gridService" value="${catalogEntry.about}"/>
 
     <div class="row">
-        <div class="label">
-            URL:
-        </div>
-        <div class="value">
+        <label>
+            URL
+        </label>
+        <span class="value">
                 ${gridService.url}
-            <%@ include file="/WEB-INF/jsp/browse/gridService/view_query.jspf" %>
-        </div>
+        </span>
     </div>
+    <c:if test="${gridService.class.simpleName == 'GridDataService'}">
+    <div class="row">
+    	<label>&nbsp;</label>
+    	<%@ include file="/WEB-INF/jsp/browse/gridService/view_query.jspf" %>
+    </div>
+    </c:if>
 
     <div class="row">
-        <div class="label">
-            Status:
-        </div>
+        <label>
+            Status
+        </label>
         <div class="value">
-            <span
-            <c:choose>
-            <c:when test="${gridService.currentStatus != 'ACTIVE'}">
-                    style="vertical-align:top;color:red">
-                    <c:out value="${gridService.currentStatus}"/>
-                     </span>
-            <%@ include file="/WEB-INF/jsp/browse/gridService/view_diagnose.jspf" %>
-            &nbsp;
-            </c:when>
-            <c:otherwise>
-                > <c:out value="${gridService.currentStatus}"/>
-                </span>
-                &nbsp;
-            </c:otherwise>
-            </c:choose>
+        	<span
+        	<c:if test="${gridService.currentStatus != 'ACTIVE'}">
+			style="color:red;"        	
+        	</c:if>
+        	><c:out value="${gridService.currentStatus}"/></span>
         </div>
-    </div>
+   </div>
+   <c:if test="${gridService.currentStatus != 'ACTIVE'}">
+   <div class="row">
+   		<label>&nbsp;</label>
+   		<%@ include file="/WEB-INF/jsp/browse/gridService/view_diagnose.jspf" %>
+   </div>   
+   </c:if>
+
 
     <%----%>
     <%--<%@ include file="/WEB-INF/jsp/disc/details/service/notification.jspf" %>--%>

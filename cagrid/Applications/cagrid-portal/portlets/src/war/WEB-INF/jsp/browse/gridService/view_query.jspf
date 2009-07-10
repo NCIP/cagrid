@@ -4,10 +4,10 @@
     <liferay-portlet:param name="dataServiceUrl" value="${gridService.url}"/>
 </liferay-portlet:actionURL>
 
-<c:if test="${gridService.class.simpleName == 'GridDataService'}">
+
     <span id="${ns}queryBtnContainer" class="yui-skin-sam" />
     <span id="${ns}queryTipContainer" class="yui-skin-sam"/>
-</c:if>
+
 
 <script type="text/javascript">
     jQuery(document).ready(function() {

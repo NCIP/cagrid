@@ -1,24 +1,45 @@
 <div>
-    <div class="row">
-        <label>
-            Query
-        </label>
-            <textarea id="input-query" onblur="${ns}submitQuery();"
-                      <c:if test="${empty editMode}">
-                      readonly="readonly"
-                          </c:if>
-                      wrap="virtual"
-                      class="required"
-                      name="query"
-                      style="height:100px;width:75%;
-                      <c:if test="${empty catalogEntry.about.xml}">color:#afafaf;</c:if>"><c:choose><c:when
-                    test="${empty catalogEntry.about.xml}">
-            </c:when><c:otherwise><c:out
-                    value="${catalogEntry.about.xml}"/></c:otherwise></c:choose></textarea>
+
+<c:choose>
+	<c:when test="${!empty editMode}">
+	    <div class="row">
+    	    <label>
+        	    Query
+        	</label>
+            <textarea 
+            	id="input-query" 
+            	onblur="${ns}submitQuery();"
+                wrap="virtual"
+                class="required"
+                name="query"
+                style="height:100px;width:75%;>"><c:out value="${catalogEntry.about.xml}"/></textarea>
             <span style="color: red"></span>
-    </div>
+	    </div>	
+	</c:when>
+	<c:otherwise>
+
+	    <div class="row">
+    	    <label>
+        	    Query
+        	</label>
+        	<a id="${ns}showQueryXml" onclick="${ns}showQueryXml()">View XML</a>
+            <textarea
+            	id="input-query" 
+            	onblur="${ns}submitQuery();"
+            	readonly="true"
+                wrap="virtual"
+                name="query"
+                style="height:100px;width:75%;display:none;>"><c:out value="${catalogEntry.about.xml}"/></textarea>
+            <span style="color: red"></span>
+	    </div>	
+	
+	</c:otherwise>
+</c:choose>
+
+
 </div>
-   <script type="text/javascript">
+
+<script type="text/javascript">
 
    function ${ns}submitQuery(){
         ${managerFacadeName}.setQuery($("input-query").value, {
@@ -32,5 +53,10 @@
             async: true
         });
     }
+    
+function ${ns}showQueryXml(){
+	jQuery("#${ns}showQueryXml").hide();
+	document.getElementById("input-query").style.display = "block";
+}
 </script>
   

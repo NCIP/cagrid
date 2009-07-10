@@ -15,7 +15,7 @@
                 id="${id}"
             </c:if>
             >
-        <div class="label"><c:out value="${rowLabel}"/></div>
+        <label><c:out value="${rowLabel}"/></label>
         <div class="value"><c:out value="${rowValue}"/></div>
     </div>
 

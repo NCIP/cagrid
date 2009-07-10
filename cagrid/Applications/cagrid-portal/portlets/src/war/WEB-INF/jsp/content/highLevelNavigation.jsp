@@ -111,7 +111,7 @@ col.text {
                             <a href="/web/guest/about-cagrid-portal"><img src="<c:url value="/images/foop/question-mark.png"/>" alt="" /></a>
                         </td>
                         <td>
-                            <a href="/web/guest/about-cagrid-portal">About caGRID Portal</a>
+                            <a href="/web/guest/about-cagrid-portal">About caGrid Portal</a>
                             <span>Learn more about what you can do here.</span>
                         </td>
                     </tr>
