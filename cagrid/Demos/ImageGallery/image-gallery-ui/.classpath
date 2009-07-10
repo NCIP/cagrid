@@ -116,5 +116,8 @@
 	<classpathentry kind="lib" path="lib/photosharing-config.jar"/>
 	<classpathentry kind="lib" path="lib/caGrid-mappingExtensions-1.3.jar"/>
 	<classpathentry kind="lib" path="lib/sdk-client-framework.jar"/>
+	<classpathentry kind="lib" path="lib/PhotoSharingRegistration-client.jar"/>
+	<classpathentry kind="lib" path="lib/PhotoSharingRegistration-common.jar"/>
+	<classpathentry kind="lib" path="lib/PhotoSharingRegistration-stubs.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

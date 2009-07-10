@@ -38,6 +38,8 @@ public class GalleryPanel extends JPanel {
 
     private JPanel photo = null;
 
+    private JPanel accessControl = null;
+
 
     public ProgressPanel getProgress() {
         return progress;
@@ -209,6 +211,7 @@ public class GalleryPanel extends JPanel {
         if (jTabbedPane == null) {
             jTabbedPane = new JTabbedPane();
             jTabbedPane.addTab("Photos", null, getJSplitPane(), null);
+            jTabbedPane.addTab("Access Control", null, getAccessControl(), null);
         }
         return jTabbedPane;
     }
@@ -292,5 +295,18 @@ public class GalleryPanel extends JPanel {
                     .getPanelLabelColor()));
         }
         return photo;
+    }
+
+
+    /**
+     * This method initializes accessControl	
+     * 	
+     * @return javax.swing.JPanel	
+     */
+    private JPanel getAccessControl() {
+        if (accessControl == null) {
+            accessControl = new AccessControlPanel(this.gallery.getGallery().getClient());
+        }
+        return accessControl;
     }
 }
