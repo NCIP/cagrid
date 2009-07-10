@@ -151,7 +151,9 @@
     	
     <bean id="sharedQueryCatalogEntryManagerFacade" 
     	class="gov.nih.nci.cagrid.portal.portlet.browse.sharedQuery.SharedQueryCatalogEntryManagerFacade" 
-    	autowire="byName"/>
+    	autowire="byName">
+    	<property name="selectEndpointsFormContentViewName" value="/browse/sharedQuery/select_endpoints_form_content.html"/>
+    </bean>
     	
     <bean id="workflowCatalogEntryManagerFacade" 
     	class="gov.nih.nci.cagrid.portal.portlet.browse.ajax.WorkflowCatalogEntryManagerFacade"

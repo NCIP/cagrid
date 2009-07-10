@@ -4,11 +4,16 @@
 package gov.nih.nci.cagrid.portal.portlet.query.results;
 
 import gov.nih.nci.cagrid.portal.dao.QueryResultTableDao;
+import gov.nih.nci.cagrid.portal.domain.table.QueryResultRow;
 import gov.nih.nci.cagrid.portal.domain.table.QueryResultTable;
+import gov.nih.nci.cagrid.portal.portlet.util.PortletUtils;
+
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.axis.utils.StringUtils;
 import org.json.JSONObject;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
@@ -49,14 +54,48 @@ public class ExportJSONResultsController extends AbstractController {
 
 		QueryResultTable table = getQueryResultTableDao().getByQueryInstanceId(
 				Integer.valueOf(instanceId));
-		JSONObject tableJO = getQueryResultTableToJSONObjectBuilder().build(
-				table.getId(), sort, dir, Integer.valueOf(startIndex),
-				Integer.valueOf(results));
+		JSONObject tableJO = build(table.getId(), sort, dir, Integer
+				.valueOf(startIndex), Integer.valueOf(results));
 
 		res.setContentType("application/json");
 		res.getWriter().write(tableJO.toString());
 
 		return null;
+	}
+
+	public JSONObject build(Integer tableId, String pSort, String pDir,
+			Integer pStartIndex, Integer pResults) {
+		try {
+			Integer numRows = getQueryResultTableDao().getRowCount(tableId);
+
+			String sort = StringUtils.isEmpty(pSort) ? "id" : pSort;
+			String dir = StringUtils.isEmpty(pDir) ? "asc" : pDir;
+			Integer startIndex = pStartIndex == null ? 0 : pStartIndex;
+			Integer results = pResults == null ? numRows - startIndex : Math
+					.min(pResults, numRows - startIndex);
+
+			QueryResultTable table = getQueryResultTableDao().getById(tableId);
+			
+			if(PortletUtils.isCountQuery(table.getQueryInstance().getQuery().getXml())){
+				sort = "count";
+			}
+
+			List<QueryResultRow> rows = null;
+			if (ResultConstants.DATA_SERVICE_URL_COL_NAME.equals(sort)) {
+				rows = getQueryResultTableDao().getSortedRowsByDataServiceUrl(
+						table.getId(), dir, startIndex, results);
+			} else {
+				rows = getQueryResultTableDao().getSortedRows(table.getId(),
+						sort, dir, startIndex, results);
+			}
+
+			return getQueryResultTableToJSONObjectBuilder().build(rows);
+
+		} catch (Exception ex) {
+			throw new RuntimeException("Error building JSON: "
+					+ ex.getMessage(), ex);
+		}
+
 	}
 
 	public QueryResultTableDao getQueryResultTableDao() {

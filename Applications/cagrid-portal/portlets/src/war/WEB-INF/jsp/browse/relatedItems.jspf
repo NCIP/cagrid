@@ -47,7 +47,7 @@ if(permissionChecker.hasPermission(scopeGroupId, portletDisplay.getRootPortletId
 					<input type="button" value="Delete" onclick="${ns}deleteRelatedItem('${role.roleInstance.relationship.id}')"/>
 <% } %>
 --%>
-					<c:if test="${portalUser.id eq role.roleInstance.relationship.author.id}">
+					<c:if test="${!empty portalUser and portalUser.id eq role.roleInstance.relationship.author.id}">
 						<input type="button" value="Delete" onclick="${ns}deleteRelatedItem('${role.roleInstance.relationship.id}')"/>
 					</c:if>
 					<br/>

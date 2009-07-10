@@ -41,6 +41,52 @@ public class QueryExecutionManager extends CatalogEntryManagerFacade {
 
 	@Override
 	public String validate() {
+
+		return null;
+	}
+
+	public String startQueries(String[] urls) {
+
+		String message = null;
+		try {
+			if (urls == null) {
+				String msg = "No endpoints specified.";
+				logger.error(msg);
+				throw new RuntimeException(msg);
+			}
+			if (getActiveQueryCount() + urls.length >= getMaxActiveQueries()) {
+				message = "Exceeded maximum number of queries. Please wait for some queries to finish";
+			} else {
+
+				Query query = ((SharedQueryCatalogEntry) getUserModel()
+						.getCurrentCatalogEntry()).getAbout();
+				for (String url : urls) {
+					GridService service = getGridServiceDao().getByUrl(url);
+					if (service == null) {
+						String msg = "No service with the selected URL was found: "
+								+ url;
+						logger.error(msg);
+						throw new RuntimeException(msg);
+					}
+					if (query instanceof CQLQuery
+							&& !(service instanceof GridDataService)) {
+						String msg = "The selected service is not a data service.";
+						logger.error(msg);
+						throw new RuntimeException(msg);
+					}
+					getQueryService().submitQuery(query.getXml(), url);
+				}
+
+			}
+		} catch (Exception ex) {
+			String msg = "Error submitting query: " + ex.getMessage();
+			logger.error(msg, ex);
+			return msg;
+		}
+		return message;
+	}
+
+	public int getActiveQueryCount() {
 		int active = 0;
 		for (QueryInstance instance : getQueryService().getSubmittedQueries()) {
 			if (QueryInstanceState.RUNNING.equals(instance.getState())
@@ -50,40 +96,7 @@ public class QueryExecutionManager extends CatalogEntryManagerFacade {
 				active++;
 			}
 		}
-		if (active >= getMaxActiveQueries()) {
-			return "Exceeded maximum number of queries. Please wait for some queries to finish";
-		}
-		return null;
-	}
-
-	public String submitQuery(String serviceUrl) {
-		String message = validate();
-		if (message != null) {
-			return message;
-		}
-
-		Query query = ((SharedQueryCatalogEntry) getUserModel()
-				.getCurrentCatalogEntry()).getAbout();
-		try {
-
-			GridService service = getGridServiceDao().getByUrl(serviceUrl);
-			if (service == null) {
-				return "No service with the selected URL was found: "
-						+ serviceUrl;
-			}
-			if (query instanceof CQLQuery
-					&& !(service instanceof GridDataService)) {
-				return "The selected service is not a data service.";
-			}
-			getQueryService().submitQuery(query.getXml(), serviceUrl);
-
-		} catch (Exception ex) {
-			String msg = "Error submitting query: " + ex.getMessage();
-			logger.error(msg, ex);
-			return msg;
-		}
-
-		return null;
+		return active;
 	}
 
 	/**

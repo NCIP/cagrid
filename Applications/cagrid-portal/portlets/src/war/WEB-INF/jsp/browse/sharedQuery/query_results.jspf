@@ -2,15 +2,18 @@
 
 
 <link type="text/css" rel="stylesheet" href="<c:url value="/js/yui/resize/assets/skins/sam/resize.css"/>">
+<link type="text/css" rel="stylesheet" href="<c:url value="/js/yui/paginator/assets/skins/sam/paginator.css"/>">
 <link type="text/css" rel="stylesheet" href="<c:url value="/js/yui/datatable/assets/skins/sam/datatable.css"/>">
-<link rel="stylesheet" type="text/css" href="<c:url value="/js/yui/paginator/assets/skins/sam/paginator.css"/>">
 
 <script type="text/javascript" src="<c:url value="/js/yui/utilities/utilities.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/yui/resize/resize-min.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/js/yui/datatable/datatable-min.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/js/yui/paginator/paginator-min.js"/>"></script> 
+<script type="text/javascript" src="<c:url value="/js/yui/yahoo-dom-event/yahoo-dom-event.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/yui/connection/connection-min.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/yui/json/json-min.js"/>"></script>
-
+<script type="text/javascript" src="<c:url value="/js/yui/element/element-min.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/yui/paginator/paginator-min.js"/>"></script> 
+<script type="text/javascript" src="<c:url value="/js/yui/datasource/datasource-min.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/yui/datatable/datatable.js"/>"></script>
 
 <style>
     span.resultStatus {
