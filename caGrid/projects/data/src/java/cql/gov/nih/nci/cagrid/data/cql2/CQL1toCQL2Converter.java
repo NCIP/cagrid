@@ -63,25 +63,26 @@ public class CQL1toCQL2Converter {
     }
     
 
-    public CQLQuery convertToCql2Query(gov.nih.nci.cagrid.cqlquery.CQLQuery cqlQuery) {
+    public CQLQuery convertToCql2Query(gov.nih.nci.cagrid.cqlquery.CQLQuery cqlQuery) throws QueryConversionException {
         CQLQuery cql2 = new CQLQuery();
         // walk the core of the object model
         CQLTargetObject target = convertTarget(cqlQuery.getTarget());
         if (cqlQuery.getQueryModifier() != null) {
-            convertQueryModifier(cqlQuery.getQueryModifier());
+            cql2.setCQLQueryModifier(convertQueryModifier(cqlQuery.getQueryModifier()));
         }
+        cql2.setCQLTargetObject(target);
         return cql2;
     }
     
     
-    private CQLTargetObject convertTarget(Object cqlTarget) {
+    private CQLTargetObject convertTarget(Object cqlTarget) throws QueryConversionException {
         CQLTargetObject target = new CQLTargetObject();
         convertObject(cqlTarget, target);
         return target;
     }
     
     
-    private CQLAssociatedObject convertAssociation(String parentClassName, Association cqlAssoc) {
+    private CQLAssociatedObject convertAssociation(String parentClassName, Association cqlAssoc) throws QueryConversionException {
         CQLAssociatedObject assoc = new CQLAssociatedObject();
         convertObject(cqlAssoc, assoc);
         assoc.setClassName(cqlAssoc.getName());
@@ -89,15 +90,14 @@ public class CQL1toCQL2Converter {
         try {
             roleName = resolver.getRoleName(parentClassName, cqlAssoc);
         } catch (RoleNameResolutionException ex) {
-            // TODO: throw conversion exception or similar
-            ex.printStackTrace();
+            throw new QueryConversionException("Error resolving role name: " + ex.getMessage(), ex);
         }
         assoc.setSourceRoleName(roleName);
         return assoc;
     }
     
     
-    private void convertObject(Object cqlObj, CQLObject instance) {
+    private void convertObject(Object cqlObj, CQLObject instance) throws QueryConversionException {
         instance.setClassName(cqlObj.getName());
         if (cqlObj.getAttribute() != null) {
             // determine if the attribute is unary or binary in CQL 2
@@ -116,7 +116,7 @@ public class CQL1toCQL2Converter {
     }
     
     
-    private CQLGroup convertGroup(String parentClassName, Group cqlGroup) {
+    private CQLGroup convertGroup(String parentClassName, Group cqlGroup) throws QueryConversionException {
         CQLGroup group = new CQLGroup();
         if (cqlGroup.getAssociation() != null) {
             CQLAssociatedObject[] associations = new CQLAssociatedObject[cqlGroup.getAssociation().length];
@@ -163,7 +163,7 @@ public class CQL1toCQL2Converter {
     }
     
     
-    private BinaryCQLAttribute convertBinaryAttribute(String className, Attribute cqlAttribute) {
+    private BinaryCQLAttribute convertBinaryAttribute(String className, Attribute cqlAttribute) throws QueryConversionException {
         BinaryCQLAttribute bin = new BinaryCQLAttribute();
         bin.setName(cqlAttribute.getName());
         BinaryPredicate predicate = binaryPredicateConversion.get(cqlAttribute.getPredicate());
@@ -183,7 +183,7 @@ public class CQL1toCQL2Converter {
     }
     
     
-    private AttributeValue convertAttributeValue(String className, String attributeName, String rawValue) {
+    private AttributeValue convertAttributeValue(String className, String attributeName, String rawValue) throws QueryConversionException {
         String datatypeName = null;
         UMLClass[] classes = model.getExposedUMLClassCollection().getUMLClass();
         for (UMLClass c : classes) {
@@ -211,8 +211,8 @@ public class CQL1toCQL2Converter {
                 try {
                     date = DateFormat.getDateInstance().parse(rawValue);
                 } catch (ParseException ex) {
-                    // TODO: throw conversion exception or something
-                    ex.printStackTrace();
+                    throw new QueryConversionException(
+                        "Error converting value " + rawValue + " to date: " + ex.getMessage(), ex);
                 }
                 val.setDateValue(date);
             } else if (Integer.class.getName().equals(datatypeName)) {
@@ -228,7 +228,7 @@ public class CQL1toCQL2Converter {
     private CQLQueryModifier convertQueryModifier(QueryModifier cqlModifier) {
         CQLQueryModifier mods = new CQLQueryModifier();
         if (cqlModifier.isCountOnly()) {
-            // FIXME: cql2 doesn't have a count-only feature, just an aggregation on a distinct element (d'oh)
+            mods.setCountOnly(Boolean.valueOf(cqlModifier.isCountOnly()));
         }
         if (cqlModifier.getDistinctAttribute() != null) {
             DistinctAttribute attrib = new DistinctAttribute();
