@@ -160,6 +160,27 @@ public class PortletUtils {
 		return targetClassName;
 	}
 
+	public static boolean isCountQuery(String cqlQuery) {
+		boolean isCountQuery = false;
+		try {
+			Document doc = DocumentBuilderFactory.newInstance()
+					.newDocumentBuilder().parse(
+							new ByteArrayInputStream(cqlQuery.getBytes()));
+			XPathFactory xpFact = XPathFactory.newInstance();
+			String countOnly = (String) xpFact.newXPath().compile(
+					"/CQLQuery/QueryModifier/@countOnly").evaluate(doc,
+					XPathConstants.STRING);
+
+			isCountQuery = "true".equals(countOnly);
+
+		} catch (Exception ex) {
+			String msg = "Error checking count query: " + ex.getMessage();
+			logger.error(msg, ex);
+			throw new RuntimeException(msg, ex);
+		}
+		return isCountQuery;
+	}
+
 	public static List<Class> getSubclasses(String packageName,
 			final Class superclass) {
 		String pkgName = packageName;
@@ -246,12 +267,13 @@ public class PortletUtils {
 		return value;
 	}
 
-	public static void addResource(PortalUser portalUser, Class klass, Integer id) {
+	public static void addResource(PortalUser portalUser, Class klass,
+			Integer id) {
 		String[] portalId = portalUser.getPortalId().split(":");
 		try {
 			ResourceLocalServiceUtil.addResources(Long.parseLong(portalId[0]),
-					0, Long.parseLong(portalId[1]), klass.getName(),
-					String.valueOf(id), false, false, false);
+					0, Long.parseLong(portalId[1]), klass.getName(), String
+							.valueOf(id), false, false, false);
 		} catch (Exception ex) {
 			throw new RuntimeException("Error creating resource: "
 					+ ex.getMessage(), ex);
@@ -259,7 +281,8 @@ public class PortletUtils {
 
 	}
 
-	public static void deleteResource(PortalUser portalUser, Class klass, Integer id) {
+	public static void deleteResource(PortalUser portalUser, Class klass,
+			Integer id) {
 		String[] portalId = portalUser.getPortalId().split(":");
 		try {
 			ResourceLocalServiceUtil.deleteResource(
@@ -270,61 +293,73 @@ public class PortletUtils {
 					+ ex.getMessage(), ex);
 		}
 	}
-	
-	public static gov.nih.nci.cagrid.cqlquery.CQLQuery parseCQL(String queryXML){
+
+	public static gov.nih.nci.cagrid.cqlquery.CQLQuery parseCQL(String queryXML) {
 		try {
-			return  (gov.nih.nci.cagrid.cqlquery.CQLQuery)Utils.deserializeObject(new StringReader(queryXML), gov.nih.nci.cagrid.cqlquery.CQLQuery.class);
+			return (gov.nih.nci.cagrid.cqlquery.CQLQuery) Utils
+					.deserializeObject(new StringReader(queryXML),
+							gov.nih.nci.cagrid.cqlquery.CQLQuery.class);
 		} catch (Exception ex) {
-			throw new RuntimeException("Error parsing CQL: " + ex.getMessage(), ex);
+			throw new RuntimeException("Error parsing CQL: " + ex.getMessage(),
+					ex);
 		}
-        
+
 	}
-	public static String normalizeCQL(String queryXML){
+
+	public static String normalizeCQL(String queryXML) {
 		StringWriter w = new StringWriter();
-        try {
-			Utils.serializeObject(parseCQL(queryXML), DataServiceConstants.CQL_QUERY_QNAME, w);
-		} catch (Exception ex) {
-			throw new RuntimeException("Error normalizing CQL: " + ex.getMessage(), ex);
-		}
-        return w.toString();
-	}
-	
-	public static gov.nih.nci.cagrid.dcql.DCQLQuery parseDCQL(String queryXML){
 		try {
-			return  (gov.nih.nci.cagrid.dcql.DCQLQuery)Utils.deserializeObject(new StringReader(queryXML), gov.nih.nci.cagrid.dcql.DCQLQuery.class);
+			Utils.serializeObject(parseCQL(queryXML),
+					DataServiceConstants.CQL_QUERY_QNAME, w);
 		} catch (Exception ex) {
-			throw new RuntimeException("Error parsing DCQL: " + ex.getMessage(), ex);
+			throw new RuntimeException("Error normalizing CQL: "
+					+ ex.getMessage(), ex);
 		}
-        
+		return w.toString();
 	}
-	public static String normalizeDCQL(String queryXML){
-		StringWriter w = new StringWriter();
-        try {
-			Utils.serializeObject(parseDCQL(queryXML), DCQLConstants.DCQL_QUERY_QNAME, w);
+
+	public static gov.nih.nci.cagrid.dcql.DCQLQuery parseDCQL(String queryXML) {
+		try {
+			return (gov.nih.nci.cagrid.dcql.DCQLQuery) Utils.deserializeObject(
+					new StringReader(queryXML),
+					gov.nih.nci.cagrid.dcql.DCQLQuery.class);
 		} catch (Exception ex) {
-			throw new RuntimeException("Error normalizing DCQL: " + ex.getMessage(), ex);
+			throw new RuntimeException(
+					"Error parsing DCQL: " + ex.getMessage(), ex);
 		}
-        return w.toString();
+
+	}
+
+	public static String normalizeDCQL(String queryXML) {
+		StringWriter w = new StringWriter();
+		try {
+			Utils.serializeObject(parseDCQL(queryXML),
+					DCQLConstants.DCQL_QUERY_QNAME, w);
+		} catch (Exception ex) {
+			throw new RuntimeException("Error normalizing DCQL: "
+					+ ex.getMessage(), ex);
+		}
+		return w.toString();
 	}
 
 	public static boolean isDCQL(String queryXML) {
 		boolean isDCQL = false;
-		try{
+		try {
 			parseDCQL(queryXML);
 			isDCQL = true;
-		}catch(Exception ex){
-			
+		} catch (Exception ex) {
+
 		}
 		return isDCQL;
 	}
-	
+
 	public static boolean isCQL(String queryXML) {
 		boolean isCQL = false;
-		try{
+		try {
 			parseCQL(queryXML);
 			isCQL = true;
-		}catch(Exception ex){
-			
+		} catch (Exception ex) {
+
 		}
 		return isCQL;
 	}

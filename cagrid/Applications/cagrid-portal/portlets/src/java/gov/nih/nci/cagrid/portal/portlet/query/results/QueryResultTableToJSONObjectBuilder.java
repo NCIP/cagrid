@@ -3,7 +3,6 @@
  */
 package gov.nih.nci.cagrid.portal.portlet.query.results;
 
-import gov.nih.nci.cagrid.portal.dao.QueryResultTableDao;
 import gov.nih.nci.cagrid.portal.domain.table.QueryResultCell;
 import gov.nih.nci.cagrid.portal.domain.table.QueryResultColumn;
 import gov.nih.nci.cagrid.portal.domain.table.QueryResultRow;
@@ -13,7 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.axis.utils.StringUtils;
 import org.json.JSONObject;
 
 /**
@@ -22,53 +20,29 @@ import org.json.JSONObject;
  */
 public class QueryResultTableToJSONObjectBuilder {
 
-	
-
-	private QueryResultTableDao queryResultTableDao;
-
-	public JSONObject build(Integer tableId) {
-		return build(tableId, null, null, null, null);
-	}
-
-	public JSONObject build(Integer tableId, String pSort, String pDir,
-			Integer pStartIndex, Integer pResults) {
+	public JSONObject build(List<QueryResultRow> rows) {
 		JSONObject tableJO = new JSONObject();
 		try {
-			Integer numRows = getQueryResultTableDao().getRowCount(tableId);
-
-			String sort = StringUtils.isEmpty(pSort) ? "id" : pSort;
-			String dir = StringUtils.isEmpty(pDir) ? "asc" : pDir;
-			Integer startIndex = pStartIndex == null ? 0 : pStartIndex;
-			Integer results = pResults == null ? numRows - startIndex : Math
-					.min(pResults, numRows - startIndex);
-
-			QueryResultTable table = getQueryResultTableDao().getById(tableId);
-
-			List<QueryResultRow> rows = null;
-			if(ResultConstants.DATA_SERVICE_URL_COL_NAME.equals(sort)){
-				rows = getQueryResultTableDao().getSortedRowsByDataServiceUrl(
-						table.getId(), dir, startIndex, results);
-			}else{
-				rows = getQueryResultTableDao().getSortedRows(
-						table.getId(), sort, dir, startIndex, results);
-			}
-
-			tableJO.put("numRows", numRows);
+			QueryResultTable table = null;
+			tableJO.put("numRows", rows.size());
 			for (QueryResultRow row : rows) {
-
+				if (table == null) {
+					table = row.getTable();
+				}
 				Map<String, String> rowMap = new HashMap<String, String>();
-				for (QueryResultColumn col : table.getColumns()) {
-
+				for (String colName : QueryResultTableToDataTableMetadataBuilder
+						.getOrderedColumnNames(table)) {
 					String value = "";
 					for (QueryResultCell cell : row.getCells()) {
-						if (cell.getColumn().getId().equals(col.getId())) {
+						if (cell.getColumn().getName().equals(colName)) {
 							value = cell.getValue();
 							break;
 						}
 					}
-					rowMap.put(col.getName(), value);
+					rowMap.put(colName, value);
 				}
-				rowMap.put(ResultConstants.DATA_SERVICE_URL_COL_NAME, row.getServiceUrl());
+				rowMap.put(ResultConstants.DATA_SERVICE_URL_COL_NAME, row
+						.getServiceUrl());
 				tableJO.append("rows", rowMap);
 			}
 		} catch (Exception ex) {
@@ -76,14 +50,6 @@ public class QueryResultTableToJSONObjectBuilder {
 					+ ex.getMessage(), ex);
 		}
 		return tableJO;
-	}
-
-	public QueryResultTableDao getQueryResultTableDao() {
-		return queryResultTableDao;
-	}
-
-	public void setQueryResultTableDao(QueryResultTableDao queryResultTableDao) {
-		this.queryResultTableDao = queryResultTableDao;
 	}
 
 }
