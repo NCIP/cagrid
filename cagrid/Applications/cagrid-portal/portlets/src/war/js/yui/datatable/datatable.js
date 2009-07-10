@@ -4409,6 +4409,13 @@ _initColumnSet : function(aColumnDefs) {
  * @private
  */
 _initDataSource : function(oDataSource) {
+
+	//JAP: Just assuming this is the data source to get around issue below.
+	//JAP: Change starts here
+	this._oDataSource = oDataSource;
+    if(true) return;
+    //JAP: Change ends here
+
     this._oDataSource = null;
     if(oDataSource && (oDataSource instanceof DS)) {
         this._oDataSource = oDataSource;
@@ -4418,6 +4425,7 @@ _initDataSource : function(oDataSource) {
         var tmpTable = null;
         var tmpContainer = this._elContainer;
         var i=0;
+        //JAP: Yep it is breaking.
         //TODO: this will break if re-initing DS at runtime for SDT
         // Peek in container child nodes to see if TABLE already exists
         if(tmpContainer.hasChildNodes()) {
