@@ -4,12 +4,13 @@
 <c:if test="${!empty sd.serviceContextCollection}">
 
     <div class="row">
-    	<label>
-        	Service Contexts
-	    </label>
-    	<div  class="value">
-        	<span id="${ns}ctxTree" style="margin-top:-40px;"></span>
-    	</div>
+        <label>
+            Service Contexts
+        </label>
+
+        <div class="label">
+            <span id="${ns}ctxTree" style="margin-top:-40px;"></span>
+        </div>
     </div>
 
     <c:forEach var="ctx" items="${sd.serviceContextCollection}">
@@ -47,7 +48,7 @@
         </script>
 
     </c:forEach>
-    
+
 </c:if>
 
 

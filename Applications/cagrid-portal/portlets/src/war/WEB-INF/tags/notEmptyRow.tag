@@ -6,6 +6,8 @@
 <%@attribute name="id" required="false" %>
 <%@attribute name="rowValue" required="true" %>
 <%@attribute name="rowLabel" required="true" %>
+<%@attribute name="useLabel" type="java.lang.Boolean" required="false"
+             description="Will use label and not div to display the lable field" %>
 
 
 <%--will only render row if the Value is not null--%>
@@ -15,7 +17,14 @@
                 id="${id}"
             </c:if>
             >
-        <label><c:out value="${rowLabel}"/></label>
+        <c:choose>
+            <c:when test="${!useLabel}">
+                <div class="label"><c:out value="${rowLabel}"/></div>
+            </c:when>
+            <c:otherwise>
+                <label><c:out value="${rowLabel}"/></label>
+            </c:otherwise>
+        </c:choose>
         <div class="value"><c:out value="${rowValue}"/></div>
     </div>
 
