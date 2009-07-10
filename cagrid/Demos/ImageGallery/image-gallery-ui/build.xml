@@ -83,11 +83,12 @@
 		</path>
 		<path id="run.classpath">
 			<path refid="base.classpath" />
+			pathelement location="resources/" />
 		</path>
 	</target>
 
 
-	<target name="ui" description="Runs the Image Gallery UI" depends="defineClasspaths">
+	<target name="gallery" description="Runs the Image Gallery UI" depends="defineClasspaths">
 		<java classname="org.cagrid.grape.GridApplication" classpathref="run.classpath" fork="yes">
 			<arg value="conf=gallery-ui.xml" />
 			<jvmarg value="-Djava.endorsed.dirs=${endorsed.dir}" />
