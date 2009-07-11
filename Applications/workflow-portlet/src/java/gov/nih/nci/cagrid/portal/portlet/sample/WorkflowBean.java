@@ -28,7 +28,16 @@ public class WorkflowBean {
 	private String selectedUUID;
 	
 	private String[] outputs;
+	private String viewResolver;
 	
+
+	public String getViewResolver() {
+		return viewResolver;
+	}
+
+	public void setViewResolver(String viewResolver) {
+		this.viewResolver = viewResolver;
+	}
 
 	public String[] getOutputs() {
 		return outputs;

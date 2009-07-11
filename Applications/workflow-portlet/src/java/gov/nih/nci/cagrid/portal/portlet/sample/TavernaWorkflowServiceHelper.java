@@ -1,8 +1,11 @@
 package gov.nih.nci.cagrid.portal.portlet.sample;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -129,4 +132,27 @@ public class TavernaWorkflowServiceHelper {
     public void setTavernaWorkflowServiceUrl(String tavernaWorkflowServiceUrl) {
         this.tavernaWorkflowServiceUrl = tavernaWorkflowServiceUrl;
     }
+    
+    public String getLymphomaResultViewer(String output){
+    	
+    	String outputTable = "<TABLE border=2>";
+    	String[] array = output.split("\\n");
+    	List<String> list = new ArrayList<String> (Arrays.asList(array));
+    	list.remove(0);
+    	list.remove(list.size() - 1);
+    	array = (String[]) list.toArray(new String[list.size()]);
+    	for(String row : array){
+    		outputTable = outputTable + "<TR>";
+    		String[] cols = row.split("\\s+");
+    		for(String col : cols){
+        		outputTable = outputTable + "<TD>"+ col + "</TD>";
+    		}
+    		outputTable = outputTable + "</TR>";
+    	}
+    	outputTable = outputTable + "</TABLE>";
+    	return outputTable;
+    	
+    }
+    
+    
 }

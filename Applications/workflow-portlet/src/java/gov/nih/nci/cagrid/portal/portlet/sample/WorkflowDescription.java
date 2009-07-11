@@ -20,10 +20,19 @@ public class WorkflowDescription implements ResourceLoaderAware, InitializingBea
 	private Integer inputPorts;		
 	private String filePath;
 	private String sampleInputs;
+	private String viewResolver = "output";
 
 	private String scuflLocation;
 	private ResourceLoader resourceLoader;
 	
+
+	public String getViewResolver() {
+		return viewResolver;
+	}
+
+	public void setViewResolver(String viewResolver) {
+		this.viewResolver = viewResolver;
+	}
 
 	public String getSampleInputs() {
 		return sampleInputs;
