@@ -12,19 +12,16 @@
 <div class="content">
      <div class="result">
            <c:if test="${cmd.formState == 2}">
-
                 <span style="font-weight:bold; font-color:blue">
-				Output :<BR>
+				<font color="blue" size="2">${cmd.result}</font><BR>
 				<hr/>
 				</span>
-                <span style="font-weight:bold">
-                     <c:out value="${cmd.result}"/>
-                     <!--
-					<c:out value="${cmd.formState}"/>
-					<c:out value="${cmd.keyword}"/>
+			<form action="<portlet:actionURL/>" method="post">
+			<input type="hidden" name="formState" value="3"		
+			<input type="submit" value="Views All Submitted Workflows">
+			</form>
+         </c:if>
 
-               --></span>
-            </c:if>
 			<c:if test="${cmd.result == null}">
 				<span style="font-weight:bold; font-color:blue">
 				Something went wrong.<BR>

@@ -108,8 +108,9 @@
     <target name="war" depends="build-war-dir" description="Will create a deployable war for the Portlet">
         <jar destfile="${portlet.build.dir}/${portlet.context.name}.war"
              basedir="${portlet.build.war.dir}"/>
-    	<copy file="${portlet.build.dir}/${portlet.context.name}.war" 
+<!--    	<copy file="${portlet.build.dir}/${portlet.context.name}.war" 
     		tofile="/Users/sulakhe/portal-liferay/deploy/${portlet.context.name}.war" overwrite="true" />
+-->
     </target>
 
     <target name="clean" depends="ivy-clean">
