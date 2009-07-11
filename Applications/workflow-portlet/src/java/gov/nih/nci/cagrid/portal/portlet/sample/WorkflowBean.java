@@ -2,10 +2,13 @@ package gov.nih.nci.cagrid.portal.portlet.sample;
 
 import java.util.Map;
 
+import org.apache.axis.message.addressing.EndpointReferenceType;
 /**
- * User: sulakhe
- *
- * @author sulakhe@mcs.anl.gov
+ * The command class that is used to store the Model used for the Views generated.
+ * 
+ * @author Dinanath Sulakhe sulakhe@mcs.anl.gov
+ * Status: This class needs to split into multiple Model classes later when PortletModeParameterHandlerMappings will be used to 
+ *   create multiple Controllers.
  */
 public class WorkflowBean {
 
@@ -21,8 +24,36 @@ public class WorkflowBean {
 	
 	private String[] inputValues;
 	
-    
+	private Map<String, WorkflowSubmitted> eprsMap;
+	private String selectedUUID;
 	
+	private String[] outputs;
+	
+
+	public String[] getOutputs() {
+		return outputs;
+	}
+
+	public void setOutputs(String[] outputs) {
+		this.outputs = outputs;
+	}
+
+	public String getSelectedUUID() {
+		return selectedUUID;
+	}
+
+	public void setSelectedUUID(String selectedUUID) {
+		this.selectedUUID = selectedUUID;
+	}
+
+	public Map<String, WorkflowSubmitted> getEprsMap() {
+		return eprsMap;
+	}
+
+	public void setEprsMap(Map<String, WorkflowSubmitted> eprsMap) {
+		this.eprsMap = eprsMap;
+	}
+
 	public String[] getInputValues() {
 		return inputValues;
 	}

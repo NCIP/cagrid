@@ -3,6 +3,7 @@ package gov.nih.nci.cagrid.portal.portlet.sample;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.commons.logging.Log;
@@ -15,9 +16,11 @@ import org.springframework.validation.BindException;
 import javax.portlet.*;
 
 /**
- * User: sulakhe
- *
- * @author sulakhe@mcs.anl.gov
+ * Controller class that manages all the interactions.
+ * 
+ * @author Dinanath Sulakhe sulakhe@mcs.anl.gov
+ * Status: Currently this is the only controller that handles all the interactions. 
+ * Eventually, need to use PortletModeParameterHandlerMappings and create a controller per view(interaction).
  */
 public class TavernaPortletController extends SimpleFormController {
 
@@ -40,6 +43,8 @@ public class TavernaPortletController extends SimpleFormController {
 		String id = cmd.getWorkflowId();
 
 		logger.info("Starting onSubmitAction method..");
+		
+		//This If loop handles the Form where Users enters Input values.
 		if(cmd.getFormState().equals("1"))
 		{
 			try {
@@ -53,45 +58,76 @@ public class TavernaPortletController extends SimpleFormController {
 			}
 
 		}
-		else if(cmd.getFormState().equals("2"))
+		else if(cmd.getFormState().equals("2")) //This else if loop handles the submission of the workflow.
 		{
 			try {
 				logger.info("Submitting the selected workflow..");
-				WorkflowDescription temp = workflowList.get(id);
-				//String result = twsHelper.submitWorkflow(temp.getName(), temp.getScuflLocation(), cmd.getInputValues());
-				SessionEprs eprs = twsHelper.getSessionEprsRef();
-				//eprs.putEpr(twsHelper.submitWorkflow(temp.getName(), temp.getScuflLocation(), cmd.getInputValues()), "Active");
-				twsHelper.setSessionEprsRef(eprs);
-				//cmd.setResult("Number of EPRS:" + Integer.toString(eprs.getEprs().size()));
-				cmd.setResult(twsHelper.submitWorkflow(temp.getName(), temp.getScuflLocation(), cmd.getInputValues()));
+				WorkflowDescription selectedWorkflow = workflowList.get(id);
+				EndpointReferenceType epr = twsHelper.submitWorkflow(
+						selectedWorkflow.getName(), selectedWorkflow.getScuflLocation(), cmd.getInputValues());
 				
-				//cmd.setResult(":"+cmd.getInputValues()[1]+":");
-				//cmd.setKeyword(inputs[0]);	
+				UUID uuid = UUID.randomUUID();
+				logger.info("UUID : " + uuid.toString());
+				SessionEprs eprs = twsHelper.getSessionEprsRef();
+				eprs.putEpr(uuid.toString(), new WorkflowSubmitted(epr, selectedWorkflow, twsHelper.getStatus(epr), twsHelper.getOutput(epr)) );
+				twsHelper.setSessionEprsRef(eprs);				
+				cmd.setResult("The Workflow was submitted successfully.");
+				logger.error("The Workflow was submitted successfully.");
+				
 			} catch (Exception e1) {
 				e.printStackTrace();
-				cmd.setResult("Error Executing Workflow");
+				cmd.setResult("Error Submitting Workflow" + "<BR>" + e1.getMessage() );
 				logger.error("Error in executing the workflow", e1);
 			}
 		}
+		else if(cmd.getFormState().equals("3")) //This handles the List All Submitted Workflows View. 
+		{
+			logger.info("List all the submitted workflows..");
+			twsHelper.updateSession();
+			cmd.setEprsMap(twsHelper.getSessionEprsRef().getEprs());
+		}
+		else if(cmd.getFormState().equals("4")){ //This displays the out of the selected workflow.
+			logger.info("Show the Output of workflow..");
+			twsHelper.updateSession();
+			
+			String[] temp = ((WorkflowSubmitted) twsHelper.getSessionEprsRef().getEprs().get(cmd.getSelectedUUID())).getWorkflowOutput();
+//			for(int i =0; i<temp.length; i++)
+//			{
+//				logger.info("OOOO: " + temp[i]);
+//				temp[i] = temp[i].replaceAll("\\n", "<BR>");
+//			}
+			cmd.setOutputs(temp);
+
+			cmd.setEprsMap(twsHelper.getSessionEprsRef().getEprs());
+		}
+		
     }
 
     @Override
     protected ModelAndView onSubmitRender(Object o) throws Exception {
 		logger.info("Starting onSubmitRender method..");
     	WorkflowBean cmd = (WorkflowBean) o;
-    	if(cmd.getFormState().equals("1"))
+    	String getView = getFormView();
+ 
+    	if(cmd.getFormState().equals("2"))
     	{
-	        ModelAndView mav = new ModelAndView(getFormView());
-	        mav.addObject(getCommandName(), o);
-	        return mav;
+			logger.info("Inside formState=2..");
+    		getView = getSuccessView();    		
     	}
-    	else //if(cmd.getFormState().equals("2"))
-    	{
-	        ModelAndView mav = new ModelAndView(getSuccessView());
-	        mav.addObject(getCommandName(), o);
-	        return mav;
+    	else if(cmd.getFormState().equals("3"))
+    	{	
+			logger.info("Inside formState=3..");
+    		getView = "list";    		
+    	}
+    	else if(cmd.getFormState().equals("4")){
+    		logger.info("Inside formState=4");
     		
+    		getView = "output";
     	}
+        ModelAndView mav = new ModelAndView(getView);
+        mav.addObject(getCommandName(), o);
+        return mav;
+
     }
 
     protected ModelAndView showForm(RenderRequest request, RenderResponse response, BindException errors) throws Exception
@@ -120,14 +156,17 @@ public class TavernaPortletController extends SimpleFormController {
     	//Map<EndpointReferenceType, String> newMap = new HashMap<EndpointReferenceType, String>();
     	//sess.setEprs(newMap);
     	
+
     	if(sess.getEprs().isEmpty())
     	{
-        	cmd2.setKeyword("NULL");
+        	cmd2.setKeyword("0");
 
     	}
     	else
     	{
-        	cmd2.setKeyword("Number of EPRS:" + Integer.toString(sess.getEprs().size()));
+    		twsHelper.updateSession();
+    		cmd2.setEprsMap(twsHelper.getSessionEprsRef().getEprs());
+        	cmd2.setKeyword(Integer.toString(sess.getEprs().size()));
     	}
     	
     	logger.info("Setting all workflows to the commandClass.");
