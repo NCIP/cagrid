@@ -109,11 +109,12 @@
     
     <bean id="workflow-1" class="gov.nih.nci.cagrid.portal.portlet.sample.WorkflowDescription">
         <property name="workflowId" value="workflow-1"/>
-        <property name="name" value="Concatenate two Strings."/>
+        <property name="name" value="Concatenate two Strings (for testing)."/>
         <property name="inputPorts" value="2"/>
         <property name="description" value="It is a simple workflow that takes two strings as input and returns a concatenated string as output."/>
         <property name="author" value="Dinanath Sulakhe"/>
         <property name="filePath" value="classpath:fishsoup.t2flow"/>
+        <property name="sampleInputs" value="Any two Strings."/>
     </bean>
     <bean id="workflow-2" class="gov.nih.nci.cagrid.portal.portlet.sample.WorkflowDescription">
         <property name="workflowId" value="workflow-2"/>
@@ -122,6 +123,7 @@
         <property name="description" value="This workflow runs against the caDSR Service deployed by the caGrid. It is to test if we can run any caGrid services. You can try with an Input value : caCORE"/>
         <property name="author" value="Wei Tan"/>
         <property name="filePath" value="classpath:cadsr.t2flow"/>
+        <property name="sampleInputs" value="caCore"/>
    </bean>
     <bean id="workflow-3" class="gov.nih.nci.cagrid.portal.portlet.sample.WorkflowDescription">
         <property name="workflowId" value="workflow-3"/>
@@ -130,6 +132,7 @@
         <property name="description" value=" Scientific value Using gene-expression patterns associated with DLBCL and FL to predict the lymphoma type of an unknown sample. Using SVM (Support Vector Machine) to classify data, and predicting the tumor types of unknown examples. Steps Querying training data from experiments stored in caArray. Preprocessing, or normalize the microarray data. Adding training and testing data into SVM service to get classification result."/>
         <property name="author" value="Wei Tan"/>
         <property name="filePath" value="classpath:caArray_SVM-090702.t2flow"/>
+        <property name="sampleInputs" value="95"/>
    </bean>
 
 </beans>

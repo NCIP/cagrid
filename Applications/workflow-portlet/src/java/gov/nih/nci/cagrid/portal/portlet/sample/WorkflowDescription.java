@@ -19,10 +19,19 @@ public class WorkflowDescription implements ResourceLoaderAware, InitializingBea
 	private String author;
 	private Integer inputPorts;		
 	private String filePath;
+	private String sampleInputs;
 
 	private String scuflLocation;
 	private ResourceLoader resourceLoader;
 	
+
+	public String getSampleInputs() {
+		return sampleInputs;
+	}
+
+	public void setSampleInputs(String sampleInputs) {
+		this.sampleInputs = sampleInputs;
+	}
 
 	public String getFilePath() {
 		return filePath;
