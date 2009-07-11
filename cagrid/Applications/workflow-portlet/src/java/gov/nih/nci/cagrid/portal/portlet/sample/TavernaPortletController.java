@@ -90,14 +90,23 @@ public class TavernaPortletController extends SimpleFormController {
 			logger.info("Show the Output of workflow..");
 			twsHelper.updateSession();
 			
-			String[] temp = ((WorkflowSubmitted) twsHelper.getSessionEprsRef().getEprs().get(cmd.getSelectedUUID())).getWorkflowOutput();
-//			for(int i =0; i<temp.length; i++)
-//			{
-//				logger.info("OOOO: " + temp[i]);
-//				temp[i] = temp[i].replaceAll("\\n", "<BR>");
-//			}
-			cmd.setOutputs(temp);
+			WorkflowSubmitted wSub = (WorkflowSubmitted) twsHelper.getSessionEprsRef().getEprs().get(cmd.getSelectedUUID());
+			
+			String[] temp = wSub.getWorkflowOutput();
+			cmd.setViewResolver(((WorkflowDescription)wSub.getWorkflowDesc()).getViewResolver());
 
+			for(int i =0; i<temp.length; i++)
+			{
+				// This following if loop is added to create a TABLE view for Lymphoma workflow output.	
+				if(cmd.getViewResolver().equals("lymphoma"))
+				{
+					temp[i].replaceAll("\\[", "");
+					temp[i].replaceAll("\\]", "");
+					temp[i] = twsHelper.getLymphomaResultViewer(temp[i]);
+				}
+				temp[i] = temp[i].replaceAll("\\n", "<BR>");
+			}
+			cmd.setOutputs(temp);
 			cmd.setEprsMap(twsHelper.getSessionEprsRef().getEprs());
 		}
 		
@@ -120,9 +129,9 @@ public class TavernaPortletController extends SimpleFormController {
     		getView = "list";    		
     	}
     	else if(cmd.getFormState().equals("4")){
-    		logger.info("Inside formState=4");
-    		
-    		getView = "output";
+    		logger.info("Inside formState=4");    		
+    		getView = cmd.getViewResolver();
+    		logger.info("ViewResolver: " + getView);
     	}
         ModelAndView mav = new ModelAndView(getView);
         mav.addObject(getCommandName(), o);
