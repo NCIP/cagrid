@@ -29,12 +29,12 @@
 	          <td><b><font size="2" > Scufl Path: </font></b>${workflow.scuflLocation} </td>
 	        </tr>
 			<tr>
-	          <td><b><font size="2" > # of Input Ports: </font></b> ${workflow.inputPorts}</td>
-	        </tr>
+	          <td><b><font size="2" > Number of Input Ports: </font></b> ${workflow.inputPorts}</td>
+	        </tr><!--
 			<tr>
 	          <td><b><font size="2" > # of EPRs in Session: </font></b> ${cmd.keyword} 
 	        </tr>
-			<tr><td><br>
+			--><tr><td><br>
 			<form action="<portlet:actionURL/>" method="post">
 	        <span style="color:red"><form:errors path="*"/></span>
 			<!--<input type="hidden" name="Form" value="1">
@@ -64,7 +64,7 @@
 		<b><font size="4" >Workflow Name : ${cmd.theWorkflow.name} -- Author: ${cmd.theWorkflow.author} </font></b> <br><br>
 	</TD></TR>
 	<tr> 
-		<td><b><font size="2" > Description: </font></b>${cmd.theWorkflow.description}<BR> </td>
+		<td><b><font size="2" > Description: </font></b>${cmd.theWorkflow.description}<BR><BR> </td>
 	</tr>
 
 	<TR><TD>
@@ -72,6 +72,9 @@
 	</TD></TR>
 	<tr> 
 		<td><b><font size="2" >Please Enter the Workflow Inputs below:<BR><BR></font></b></td>
+	</tr>
+	<tr> 
+		<td><b><font size="2" >Example Input Values: ${cmd.theWorkflow.sampleInputs}<BR><BR></font></b></td>
 	</tr>
 	
 	<c:forEach var="i" begin="1" end = "${cmd.theWorkflow.inputPorts}" step="1" varStatus ="status">
@@ -87,8 +90,6 @@
 		</form>
 	</TD></TR>
 	</TABLE>
-
-
 
 	</c:if>
 
