@@ -12,10 +12,8 @@
 
 
 	<div class="content">
-        <!--
-            Keyword:
-            <input name="keyword" value="${cmd.keyword}" size="30"/><br>
-		-->	
+ 
+
 
 	<c:if test="${cmd.formState == 0}">
 	    <table border=0>
@@ -32,6 +30,9 @@
 	        </tr>
 			<tr>
 	          <td><b><font size="2" > # of Input Ports: </font></b> ${workflow.inputPorts}</td>
+	        </tr>
+			<tr>
+	          <td><b><font size="2" > # of EPRs in Session: </font></b> ${cmd.keyword} 
 	        </tr>
 			<tr><td><br>
 			<form action="<portlet:actionURL/>" method="post">
@@ -63,7 +64,7 @@
 		<b><font size="4" >Workflow Name : ${cmd.theWorkflow.name} -- Author: ${cmd.theWorkflow.author} </font></b> <br><br>
 	</TD></TR>
 	<tr> 
-		<td><b><font size="2" > Description: </font></b>${cmd.theWorkflow.description} </td>
+		<td><b><font size="2" > Description: </font></b>${cmd.theWorkflow.description}<BR> </td>
 	</tr>
 
 	<TR><TD>
@@ -89,6 +90,63 @@
 
 
 
+	</c:if>
+
+
+
+	<c:if test="${cmd.formState == 0}">
+
+	<c:choose>
+	<c:when test="${cmd.keyword =='0'}">
+
+	</c:when>
+
+	<c:otherwise>
+	<b><font size="3" color="red"> Workflows in Session (Currently Running or Completed).. </font></b> <br><br>
+	.<TABLE BORDER=2>
+		<TR>
+			<TH>Job ID</TH><TH>Workflow ID</TH><TH>Status</TH>
+		</TR>
+	<c:forEach var="entry" items="${cmd.eprsMap}">
+
+		<TR>
+		<TD>
+			${entry.key}
+		</TD>
+		<TD>
+			${entry.value.workflowDesc.workflowId }
+		</TD>
+		<TD>
+		<b><font size="2" > ${entry.value.status}</font></b>
+
+		</TD>
+		<c:choose>
+			<c:when test="${entry.value.status == 'Done'}">
+						
+
+				<TD>
+
+					<form action="<portlet:actionURL/>" method="post">
+					<input type="hidden" name="formState" value="4">
+					<input type="hidden" name="selectedUUID" value="${entry.key}">
+					<input type="submit" name="Output" value = "Output">
+					</form>
+				</TD>
+
+			</c:when>
+			<c:otherwise>
+				<TD>
+					<button type="button" disabled="disabled">Output</button>
+				</TD>
+			</c:otherwise>
+		</c:choose>
+		</TR>
+	</c:forEach>
+	
+	</TABLE>
+
+	</c:otherwise>
+	</c:choose>
 	</c:if>
 
 
