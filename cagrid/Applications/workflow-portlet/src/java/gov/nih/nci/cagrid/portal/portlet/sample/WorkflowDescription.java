@@ -5,16 +5,22 @@ import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 
+/**
+ * This Class represents a Workflow uploaded in the Portlet. This is used to initialize the workflows Objects using Spring.
+ * 
+ * @author Dinanath Sulakhe sulakhe@mcs.anl.gov
+ */
+
 public class WorkflowDescription implements ResourceLoaderAware, InitializingBean{
 
 	private String workflowId;
 	private String name;
 	private String description;
-	private String scuflLocation;
 	private String author;
-	private Integer inputPorts;
-		
+	private Integer inputPorts;		
 	private String filePath;
+
+	private String scuflLocation;
 	private ResourceLoader resourceLoader;
 	
 

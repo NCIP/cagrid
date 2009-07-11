@@ -2,22 +2,26 @@ package gov.nih.nci.cagrid.portal.portlet.sample;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import org.apache.axis.message.addressing.EndpointReferenceType;
-
+/**
+ * Class that is stored in the session. This holds all the submitted workflows and the EPR.
+ * 
+ * @author Dinanath Sulakhe sulakhe@mcs.anl.gov
+ * 
+ */
 public class SessionEprs {
 	
-	private Map<EndpointReferenceType, String> eprs = new HashMap<EndpointReferenceType, String>();
+	private Map<String, WorkflowSubmitted> eprs = new HashMap<String, WorkflowSubmitted>();
 
-	public Map<EndpointReferenceType, String> getEprs() {
+	public Map<String, WorkflowSubmitted> getEprs() {
 		return eprs;
 	}
 
-	public void setEprs(Map<EndpointReferenceType, String> eprs) {
+	public void setEprs(Map<String, WorkflowSubmitted> eprs) {
 		this.eprs = eprs;
 	}
 	
-	public void putEpr(EndpointReferenceType epr, String status)
+	public void putEpr(String epr, WorkflowSubmitted status)
 	{
 		this.eprs.put(epr, status);
 	}

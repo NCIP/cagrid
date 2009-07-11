@@ -18,6 +18,13 @@ import net.sf.taverna.t2.workflowmodel.serialization.DeserializationException;
 import net.sf.taverna.t2.workflowmodel.serialization.xml.XMLDeserializer;
 import net.sf.taverna.t2.workflowmodel.serialization.xml.XMLDeserializerRegistry;
 
+/**
+ * Helper class that will be used in future to get the number of Input (and Output?) ports of a user uploaded workflow.
+ * 
+ * @author Dinanath Sulakhe sulakhe@mcs.anl.gov
+ * Status: Currently it is not used in the portlet.
+ */
+
 public class GetInputPorts {
 	
 	private static XMLDeserializer deserializer = XMLDeserializerRegistry.getInstance().getDeserializer();
