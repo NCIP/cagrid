@@ -90,6 +90,17 @@
 			<description>Tools for testing the photo sharing tutorial</description>
 			<showIcons>true</showIcons>
 			<components>
+			<component>
+					<title>Register for the Tutorial</title>
+					<description>Register for the photo sharing tutorial.</description>
+					<classname>org.cagrid.tutorials.photosharing.RegistrationWindow</classname>
+					<icon>/gallery22x22.png</icon>
+					<showOnToolBar>false</showOnToolBar>
+					<dimensions>
+						<width>600</width>
+						<height>400</height>
+					</dimensions>
+				</component>
 				<component>
 					<title>Gallery Browser</title>
 					<description>Discover and browser photo galleries</description>
@@ -170,7 +181,7 @@
 				</ConfigurationDescriptors>
 			</ConfigurationGroup>
 			<ConfigurationGroup>
-				<name>Image Gallery</name>
+				<name>Photo Sharing</name>
 				<ConfigurationDescriptors>
 					<ConfigurationDescriptor>
 						<DisplayName>Photo Sharing Service(s)</DisplayName>
