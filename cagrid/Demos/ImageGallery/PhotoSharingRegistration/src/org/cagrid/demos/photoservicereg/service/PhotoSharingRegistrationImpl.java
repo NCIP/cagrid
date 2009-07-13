@@ -107,14 +107,36 @@ public class PhotoSharingRegistrationImpl extends PhotoSharingRegistrationImplBa
 
   public void registerPhotoSharingService(java.lang.String hostIdentity) throws RemoteException, org.cagrid.demos.photoservicereg.stubs.types.RegistrationException {
 		try {
-			
+
 			//parse the hostIdentity to get the hostname for the stem system and display extensions
-			int index = hostIdentity.indexOf("CN=", 0);
-			index += 3;
-			String hostname = hostIdentity.substring(index, hostIdentity.length());
+			//check for old school hostnames first
+			String pattern = "CN=host/";
+			String hostname = null;
+			int index = hostIdentity.indexOf(pattern, 0);
+			if (index != -1) {
+			index += pattern.length();
+			hostname = hostIdentity.substring(index, hostIdentity.length());
+			} else {
+			pattern = "CN=";
+			index = hostIdentity.indexOf(pattern, 0);
+			if (index != -1) {
+			index += pattern.length();
+			hostname = hostIdentity.substring(index, hostIdentity.length());
+			}
+			}
+			
+			if (hostname == null) {
+				String msg = "Could not parse hostname from the host identity: " + hostIdentity;
+				System.err.println(msg);
+				org.cagrid.demos.photoservicereg.stubs.types.RegistrationException re = new org.cagrid.demos.photoservicereg.stubs.types.RegistrationException();
+				BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(msg);
+				re.setDescription(new BaseFaultTypeDescription[] { faultDesc });
+				throw re;
+				
+			}
+			
 			
 			StemI serviceStem = this.photoStem.addChildStem(hostname, hostname);
-
 			String userDN = gov.nih.nci.cagrid.introduce.servicetools.security.SecurityUtils.getCallerIdentity();
 
 			//NOTE: any of these privileges might exist... don't error if that's the case
