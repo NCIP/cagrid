@@ -215,6 +215,7 @@ jQuery("#input-description").focus(function(){
 		jQuery(this).attr("value", "");
 	}
 });
+/* This is messing up the autoset code
 jQuery("#input-description").blur( function() {
 	if (jQuery(this).attr("value")== "") {
 		jQuery(this).attr("value", "Description");
@@ -222,4 +223,5 @@ jQuery("#input-description").blur( function() {
 	}
 	
 });
+*/
 </script>	

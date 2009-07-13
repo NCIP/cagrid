@@ -1,4 +1,7 @@
 <%@ include file="/WEB-INF/jsp/include/includes.jspf" %>
+<%@ include file="/WEB-INF/jsp/include/liferay-includes.jspf" %>
+
+<c:set var="ns"><portlet:namespace/></c:set>
 
 <style type="text/css">
 <!--
@@ -104,7 +107,7 @@ col.text {
                             <a href="/web/guest/catalog/tools"><img src="<c:url value="/images/foop/wrench.png"/>" alt="" /></a>
                         </td>
                         <td>
-                            <a href="/web/guest/catalog/tools">Interact</a>
+                            <a href="javascript:${ns}viewPortlets();">Interact</a>
                             <span>Work with caBIG tools and execute scientific workflows.</span>
                         </td>
 						<td>
@@ -118,3 +121,17 @@ col.text {
                 </tbody>
             </table>
         </div>
+        
+<script type="text/javascript">
+
+<liferay-portlet:renderURL
+		var="portletsUrl" portletName="BrowsePortlet_WAR_cagridportlets"
+        portletMode="view">
+    <liferay-portlet:param name="searchKeyword" value="catalog_type:tool_portlet"/>
+</liferay-portlet:renderURL>
+var portletsUrl = "${portletsUrl}".replace("guest/home", "guest/catalog/tools");
+
+function ${ns}viewPortlets(){
+	document.location = portletsUrl;
+}
+</script>
