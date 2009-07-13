@@ -361,6 +361,8 @@ public class RegistrationWindow extends ApplicationComponent {
             client.registerPhotoSharingService(CertUtil.subjectToIdentity(getHostCertificates().getSelectedHostCertificate().getSubject()));
             getProgress().stopProgress();
             getRegister().setEnabled(true);
+            dispose();
+            GridApplication.getContext().showMessage("Congratulations you have successfully registered for the photo sharing tutorial.");
         } catch (Exception e) {
             getProgress().stopProgress();
             ErrorDialog.showError(Utils.getExceptionMessage(e), e);
