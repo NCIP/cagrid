@@ -16,7 +16,7 @@
 
 	<TABLE BORDER="2">
 		<TR bgcolor="grey">
-			<TH>Job ID</TH><TH>Workflow ID</TH><TH>Status</TH><TH>Output</TH>
+			<TH> Job ID </TH><TH> Workflow ID </TH><TH> Status </TH><TH> Output </TH>
 		</TR>
 	<c:forEach var="entry" items="${cmd.eprsMap}">
 
