@@ -97,11 +97,12 @@ public class TavernaPortletController extends SimpleFormController {
 
 			for(int i =0; i<temp.length; i++)
 			{
-				// This following if loop is added to create a TABLE view for Lymphoma workflow output.	
+				// This following if loop is added to create a TABLE view for Lymphoma workflow output.
+				// Eventually, add an abstract class that would handle all the output types.
 				if(cmd.getViewResolver().equals("lymphoma"))
 				{
-					temp[i].replaceAll("\\[", "");
-					temp[i].replaceAll("\\]", "");
+					//temp[i].replaceAll("\\[", "");
+					//temp[i].replaceAll("\\]", "");
 					temp[i] = twsHelper.getLymphomaResultViewer(temp[i]);
 				}
 				temp[i] = temp[i].replaceAll("\\n", "<BR>");
@@ -161,10 +162,12 @@ public class TavernaPortletController extends SimpleFormController {
     		workflows[count++] = (WorkflowDescription) pairs.getValue();
     	}
     	logger.info("Iterating completed.");
-    	SessionEprs sess = twsHelper.getSessionEprsRef();
     	//Map<EndpointReferenceType, String> newMap = new HashMap<EndpointReferenceType, String>();
     	//sess.setEprs(newMap);
     	
+
+		twsHelper.updateSession();
+    	SessionEprs sess = twsHelper.getSessionEprsRef();
 
     	if(sess.getEprs().isEmpty())
     	{
@@ -173,7 +176,6 @@ public class TavernaPortletController extends SimpleFormController {
     	}
     	else
     	{
-    		twsHelper.updateSession();
     		cmd2.setEprsMap(twsHelper.getSessionEprsRef().getEprs());
         	cmd2.setKeyword(Integer.toString(sess.getEprs().size()));
     	}

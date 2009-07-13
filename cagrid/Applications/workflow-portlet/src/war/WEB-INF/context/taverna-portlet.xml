@@ -115,7 +115,6 @@
         <property name="author" value="Dinanath Sulakhe"/>
         <property name="filePath" value="classpath:fishsoup.t2flow"/>
         <property name="sampleInputs" value="Any two Strings."/>
-        <property name="viewResolver" value="lymphoma"/>
     </bean>
     <bean id="workflow-2" class="gov.nih.nci.cagrid.portal.portlet.sample.WorkflowDescription">
         <property name="workflowId" value="workflow-2"/>
@@ -130,7 +129,7 @@
         <property name="workflowId" value="workflow-3"/>
         <property name="name" value="Lymphoma type prediction based on microarray data"/>
         <property name="inputPorts" value="1"/>
-        <property name="description" value=" Scientific value Using gene-expression patterns associated with DLBCL and FL to predict the lymphoma type of an unknown sample. Using SVM (Support Vector Machine) to classify data, and predicting the tumor types of unknown examples. Steps Querying training data from experiments stored in caArray. Preprocessing, or normalize the microarray data. Adding training and testing data into SVM service to get classification result."/>
+        <property name="description" value=" Scientific value Using gene-expression patterns associated with DLBCL and FL to predict the lymphoma type of an unknown sample. Using SVM (Support Vector Machine) to classify data, and predicting the tumor types of unknown examples. Steps Querying training data from experiments stored in caArray. Preprocessing, or normalize the microarray data. Adding training and testing data into SVM service to get classification result. The input to this workflow is an Experiment ID. Experiment ID identifies the experiment that caArray uses for data collection. For example, Experiment 95 contains microArray data regarding 77 tumor samples."/>
         <property name="author" value="Wei Tan"/>
         <property name="filePath" value="classpath:caArray_SVM-090710.t2flow"/>
         <property name="sampleInputs" value="95"/>

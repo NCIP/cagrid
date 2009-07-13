@@ -81,7 +81,7 @@
 		<tr> 
 			<td><b><font size="2" > Input Port: ${i}</font></b></td>
 		</tr>
-		<TR> <TD><TEXTAREA name="inputValues" rows="5" cols="80"></TEXTAREA><BR><BR></TD></TR>
+		<TR> <TD><TEXTAREA name="inputValues" rows="5" cols="80">${cmd.theWorkflow.sampleInputs}</TEXTAREA><BR><BR></TD></TR>
 	</c:forEach>
 	<TR><TD>
 		<input type="hidden" name="workflowId" value="${cmd.theWorkflow.workflowId }">
@@ -105,8 +105,8 @@
 	<c:otherwise>
 	<b><font size="3" color="red"> Workflows in Session (Currently Running or Completed).. </font></b> <br><br>
 	.<TABLE BORDER=2>
-		<TR>
-			<TH>Job ID</TH><TH>Workflow ID</TH><TH>Status</TH>
+		<TR bgcolor="#333366" height="200%">
+			<TH >Job ID</TH><TH>Workflow ID</TH><TH>Status</TH><TH> Output </TH>
 		</TR>
 	<c:forEach var="entry" items="${cmd.eprsMap}">
 

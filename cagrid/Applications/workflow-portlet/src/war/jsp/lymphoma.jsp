@@ -13,7 +13,7 @@
 
 	<UL><font color="blue" size="4">The Output of the Workflow</font></UL><BR>
 	<B>UUID of the Submitted Workflow : </B>${cmd.selectedUUID}<BR>
-	<B>Output Port :</B><BR>
+	<B>Workflow Output :</B><BR>
 	<c:forEach var="out" items= "${cmd.outputs}">
 		${out}	
 	</c:forEach>
