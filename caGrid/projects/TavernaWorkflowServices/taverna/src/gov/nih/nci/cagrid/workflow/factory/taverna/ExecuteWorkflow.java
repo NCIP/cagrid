@@ -211,8 +211,8 @@ public class ExecuteWorkflow {
 		}
 		System.out.println("Finished!");
 		System.out.println("TotalOutputPorts:::" + expectedOutputs);
-		for (Entry<String, Object> entry : simpleListener.results.entrySet()) {			
-			System.out.println(entry.getKey() + ":::TWS:::" + ((String)entry.getValue()).replaceAll("^\\[+\\n|\\]+\\n$", ""));
+		for (Entry<String, Object> entry : simpleListener.results.entrySet()) {
+			System.out.println(entry.getKey() + ":::TWS:::" + entry.getValue());
 		}
 		
 	}
