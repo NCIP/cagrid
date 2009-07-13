@@ -141,18 +141,19 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 				if (status != 0)
 					throw new Exception();
 				
+
+				System.out.println("\nOUTPUTs:\n");
+				//for(String output : outputs)
+				for(int i =0; i < outputs.length; i++)
+                {
+                    System.out.println("Output-" + i+1 + ":\n");
+                    outputs[i] = outputs[i].replaceAll("^\\[+\\n|\\]+$", "");
+                    System.out.println(outputs[i]);
+                }
+				setOutputDoc(outputs);
 				workflowStatus = WorkflowStatusType.Done;
 				this.statusRP.set(0, workflowStatus);
 
-				//String[] temp = output.split(":::");
-				//System.out.println("\nOUTPUT:\n" + temp[1]);
-				//setOutputDoc(new String[] {temp[1]});
-				System.out.println("\nOUTPUTs:\n");
-				for(String output : outputs)
-				{
-					System.out.println(output);
-				}
-				setOutputDoc(outputs);
 				System.out.println("Final Status: " + workflowStatus.getValue());
 				
 			} catch (IOException e) {
