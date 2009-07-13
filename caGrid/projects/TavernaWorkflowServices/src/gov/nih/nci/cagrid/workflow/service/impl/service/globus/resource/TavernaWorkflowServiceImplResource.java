@@ -68,7 +68,7 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 	    //private FileOutputStream outtemp;
 	    public WorkflowExecutionThread (String[] args,ResourcePropertySet propSet )
 		{
-		    
+
 			this.args = args;
 			this.propSet  = propSet;
 			statusRP = this.propSet.get(TavernaWorkflowServiceImplConstantsBase.WORKFLOWSTATUSELEMENT);
@@ -87,60 +87,90 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 				
 				Map<String, String> environment = builder.environment();
 				String classpath = tavernaDir + File.separator + "target" + File.separator + "classes";
-		    
-			    // lisfOfJars is a method that returns all the jars from Taverna repository in CLASSPATH format (: seperated). 
-			    classpath = classpath + listOfJars(repository);
-			    environment.put("CLASSPATH", classpath);
+
+				// lisfOfJars is a method that returns all the jars from Taverna repository in CLASSPATH format (: seperated). 
+				classpath = classpath + listOfJars(repository);
+				environment.put("CLASSPATH", classpath);
+
+				Process process;
+				process = builder.start();
+
+				InputStream is = process.getInputStream();
+				InputStreamReader isr = new InputStreamReader(is);
+				BufferedReader br = new BufferedReader(isr);
+				String line;
+				System.out.printf("Output of running %s is: ", 
+						Arrays.toString(args));
 				
-/*				Iterator it = environment.entrySet().iterator();
-				while(it.hasNext())
-				{
-					Map.Entry pairs = (Map.Entry) it.next();
-					String envpairs = pairs.getKey() + " = " + pairs.getValue() + "\n";
-				}
-*/					
-					Process process;
-					process = builder.start();
-					
-					InputStream is = process.getInputStream();
-					InputStreamReader isr = new InputStreamReader(is);
-					BufferedReader br = new BufferedReader(isr);
-					String line;
-					System.out.printf("Output of running %s is: ", 
-							Arrays.toString(args));
-					boolean finished = false;
-					String output = "";
-					while ((line = br.readLine()) != null) {
-						System.out.println(line);
-						if(finished == true)
+				
+				boolean finished = false;
+				boolean firstLine = true;
+				
+				//Currently multiple outputs are stored in array. Eventually the return type should be changed to a Map
+				// with output port names as keys.
+				
+				String[] outputs = new String[1];
+				int portsCounter = -1;
+
+				while ((line = br.readLine()) != null) {
+					System.out.println(line);
+					if(finished == true)
+					{
+						if((firstLine == true) && (line.startsWith("TotalOutputPorts")))
 						{
-							//this.setOutputDoc(new String[] {line});
-							output = output + line;
-							workflowStatus = WorkflowStatusType.Done;
-							this.statusRP.set(0, workflowStatus);
+							String[] portsLine = line.split(":::");
+							int ports = Integer.parseInt(portsLine[1]);
+							outputs = new String[ports];
+							firstLine = false;
+							
+						}else{						
+							if(line.indexOf(":::TWS:::") > 0){ //if String contains :::TWS::: anywhere
+								String[] temp = line.split(":::TWS:::");
+								portsCounter++;
+								outputs[portsCounter] = temp[1];
+							} else {
+								outputs[portsCounter] = outputs[portsCounter] + "\n" + line;
+							}
 						}
-						if(line.equals("Finished!"))		
-							finished = true;
 					}
-					int status = process.waitFor();
-					if (status != 0)
-						throw new Exception();
-					String[] temp = output.split(":::");
-					System.out.println("\nOUTPUT:\n" + temp[1]);
-					setOutputDoc(new String[] {temp[1]});
-				} catch (IOException e) {
-					System.err.println("Erorr in running the Workflow");
-					workflowStatus = WorkflowStatusType.Failed;
-					e.printStackTrace();
-				} catch (InterruptedException e) {
-					workflowStatus = WorkflowStatusType.Failed;
-					System.err.println("Process Interrupted");
-					e.printStackTrace();
-				} catch (Exception e) {
-					workflowStatus = WorkflowStatusType.Failed;
-					System.err.println("Erorr in running the Workflow");
-					e.printStackTrace();
-				} 
+					if(line.equals("Finished!")){		
+						finished = true;
+					}
+				}
+				int status = process.waitFor();
+				if (status != 0)
+					throw new Exception();
+				
+				workflowStatus = WorkflowStatusType.Done;
+				this.statusRP.set(0, workflowStatus);
+
+				//String[] temp = output.split(":::");
+				//System.out.println("\nOUTPUT:\n" + temp[1]);
+				//setOutputDoc(new String[] {temp[1]});
+				System.out.println("\nOUTPUTs:\n");
+				for(String output : outputs)
+				{
+					System.out.println(output);
+				}
+				setOutputDoc(outputs);
+				System.out.println("Final Status: " + workflowStatus.getValue());
+				
+			} catch (IOException e) {
+				System.err.println("IOException : Erorr in running the Workflow");
+				workflowStatus = WorkflowStatusType.Failed;
+				this.statusRP.set(0, workflowStatus);
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				workflowStatus = WorkflowStatusType.Failed;
+				this.statusRP.set(0, workflowStatus);
+				System.err.println("InterruptedException: Process Interrupted");
+				e.printStackTrace();
+			} catch (Exception e) {
+				workflowStatus = WorkflowStatusType.Failed;
+				this.statusRP.set(0, workflowStatus);
+				System.err.println("Exception : Erorr in running the Workflow");
+				e.printStackTrace();
+			} 
 
 
 		}
@@ -282,14 +312,16 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 
 			//The first argument is the scuflDoc string, and remaining are the input strings.
 			//String [] args = { this.getScuflDoc(), "blah", "and blah"	};
-			String [] args = new String[inputPorts + 3];
+			String [] args = new String[inputPorts + 5];
 
 			args[0] = "java";
-			args[1] = "gov.nih.nci.cagrid.workflow.factory.taverna.ExecuteWorkflow";
-			args[2] = this.getScuflDoc();
+			args[1] = "-Xms256m";
+			args[2] = "-Xmx1g";
+			args[3] = "gov.nih.nci.cagrid.workflow.factory.taverna.ExecuteWorkflow";
+			args[4] = this.getScuflDoc();
 			for(int i = 0; i < inputPorts; i++)
 			{
-				args[i+3] = this.getInputDoc()[i];
+				args[i+5] = this.getInputDoc()[i];
 			}
 
 			workflowStatus = WorkflowStatusType.Active;
@@ -320,6 +352,7 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 				// Ideally, the output files should be created for each output in the "start" operation,
 				//	 and then access those files here, convert them into string buffers and then store them below.
 				// Will add it once we have some examples of multiple outout workflows.
+				//UPDATE: SEE COMMENT IN THE PROCEEBUILDER CODE(NEED MAP).
 
 				workflowOuputElement.setOutputFile(this.getOutputDoc());
 			}
@@ -328,7 +361,6 @@ public class TavernaWorkflowServiceImplResource extends TavernaWorkflowServiceIm
 				throw new RemoteException("Either the Workflow execution is not Completed or Failed.");
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}

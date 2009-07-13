@@ -138,7 +138,7 @@ TavernaWorkflowServiceClientBase implements TavernaWorkflowServiceI {
 		CountDownLatch doneSignal = new CountDownLatch(1);
 		TavernaWorkflowServiceImplClient serviceClient = new TavernaWorkflowServiceImplClient(epr, doneSignal, null);
 		serviceClient.subscribe(TavernaWorkflowServiceImplConstantsBase.WORKFLOWSTATUSELEMENT);
-        doneSignal.await(60, TimeUnit.SECONDS);
+        doneSignal.await(TimeInSeconds, TimeUnit.SECONDS);
 	}
 
 

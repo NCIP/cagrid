@@ -19,7 +19,8 @@ import net.sf.taverna.t2.facade.WorkflowInstanceFacade;
 import net.sf.taverna.t2.facade.impl.WorkflowInstanceFacadeImpl;
 import net.sf.taverna.t2.invocation.InvocationContext;
 import net.sf.taverna.t2.invocation.WorkflowDataToken;
-import net.sf.taverna.t2.provenance.connector.ProvenanceConnector;
+//import net.sf.taverna.t2.provenance.connector.ProvenanceConnector;
+import net.sf.taverna.t2.provenance.reporter.ProvenanceReporter;
 import net.sf.taverna.t2.reference.ReferenceService;
 import net.sf.taverna.t2.reference.T2Reference;
 import net.sf.taverna.t2.workflowmodel.Dataflow;
@@ -29,6 +30,8 @@ import net.sf.taverna.t2.workflowmodel.serialization.DeserializationException;
 import net.sf.taverna.t2.workflowmodel.serialization.xml.XMLDeserializer;
 import net.sf.taverna.t2.workflowmodel.serialization.xml.XMLDeserializerRegistry;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
@@ -62,12 +65,17 @@ public class ExecuteWorkflow {
 			return null;
 		}
 
-		public ProvenanceConnector getProvenanceConnector() {
-			return null;
-		}
+	//	public ProvenanceConnector getProvenanceConnector() {
+	//		return null;
+	//	}
 
 		public ReferenceService getReferenceService() {
 			return referenceService;
+		}
+
+		public ProvenanceReporter getProvenanceReporter() {
+			// TODO Auto-generated method stub
+			return null;
 		}
 	}
 
@@ -76,7 +84,7 @@ public class ExecuteWorkflow {
 	}
 
 	// Maximum number of seconds to wait
-	protected static final long TIMEOUT = 5;
+	protected static final long TIMEOUT = 3600;
 	
 	private static XMLDeserializer deserializer = XMLDeserializerRegistry
 			.getInstance().getDeserializer();
@@ -96,6 +104,8 @@ public class ExecuteWorkflow {
 	protected InvocationContext invocationContext;
 
 	protected ReferenceService referenceService;
+	protected final Log logger = LogFactory.getLog(getClass());
+
 
 	protected void createContext() {
 		appContext = new RavenAwareClassPathXmlApplicationContext(
@@ -136,6 +146,8 @@ public class ExecuteWorkflow {
 	}
 
 	protected void run(String[] args) throws Exception {
+			
+		logger.info("Entering the Run method .... #####");
 		if (args.length == 0 || args[0].equalsIgnoreCase("-h")
 				|| args[0].equalsIgnoreCase("--help")) {
 			help();
@@ -164,6 +176,10 @@ public class ExecuteWorkflow {
 		SimpleResultListener simpleListener = new SimpleResultListener();
 		facade.addResultListener(simpleListener);
 
+		//SimpleFailureListener simpleFailure = new SimpleFailureListener();
+		//facade.addFailureListener(simpleFailure);
+
+		
 		long until = System.currentTimeMillis() + TIMEOUT * 1000;
 		System.out.println("Executing workflow " + workflowFile);
 		
@@ -181,14 +197,22 @@ public class ExecuteWorkflow {
 				long sleep = until - System.currentTimeMillis();
 				if (sleep <= 0) {
 					// timed out
+					System.out.println("ERROR : Workflow Execution Timed Out.");
 					break;
 				}
 				simpleListener.wait(sleep);
 			}
 		}
+
+		if(simpleListener.results.entrySet().size() != expectedOutputs)
+		{
+			System.out.println("\n\nERROR : Failed to execute the workflow.");
+			throw new Exception();
+		}
 		System.out.println("Finished!");
-		for (Entry<String, Object> entry : simpleListener.results.entrySet()) {
-			System.out.println(entry.getKey() + ":::" + entry.getValue());
+		System.out.println("TotalOutputPorts:::" + expectedOutputs);
+		for (Entry<String, Object> entry : simpleListener.results.entrySet()) {			
+			System.out.println(entry.getKey() + ":::TWS:::" + ((String)entry.getValue()).replaceAll("^\\[+\\n|\\]+\\n$", ""));
 		}
 		
 	}
