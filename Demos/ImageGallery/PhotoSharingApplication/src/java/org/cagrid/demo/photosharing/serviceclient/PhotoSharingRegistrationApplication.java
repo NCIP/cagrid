@@ -21,10 +21,33 @@ public class PhotoSharingRegistrationApplication {
 					
 					PhotoSharingRegistrationClient registrationClient = new PhotoSharingRegistrationClient(photoSharingRegistrationServiceURL);
 					
-					String hostIdentity = "/O=caBIG/OU=caGrid/OU=Training/OU=Services/CN=justin-permars-macbook-pro.local";
-					registrationClient.registerPhotoSharingService(hostIdentity);
+					String hostIdentity = "/O=caBIG/OU=caGrid/OU=Training/OU=Services/CN=justin-permars-macbook-pro.local4";
+//					registrationClient.registerPhotoSharingService(hostIdentity);
 					
+//					System.out.println("Registered " + hostIdentity + " as a photo sharing service");
+
+					 hostIdentity = "/O=caBIG/OU=caGrid/OU=Training/OU=Services/CN=host/justin-permars-macbook-pro.local5";
+//					registrationClient.registerPhotoSharingService(hostIdentity);
+						System.out.println("Registered " + hostIdentity + " as a photo sharing service");
+					
+					try {
+					 hostIdentity = "/O=caBIG/OU=caGrid/OU=Training/OU=Servistin-permars-macbook-pro.local";
+					registrationClient.registerPhotoSharingService(hostIdentity);
 					System.out.println("Registered " + hostIdentity + " as a photo sharing service");
+					} catch(Exception e) {
+						//ignore
+					}
+
+					try {
+					
+					 hostIdentity = "/O=caBIG/CNOU=caGrid/OU=Training/OU=Servistin-permars-macbook-pro.local";
+					registrationClient.registerPhotoSharingService(hostIdentity);
+					System.out.println("Registered " + hostIdentity + " as a photo sharing service");
+					} catch(Exception e) {
+						//ignore
+					}
+
+					
 					/*
 					System.out.println("Sleepy...");
 					Thread.sleep(20000);
