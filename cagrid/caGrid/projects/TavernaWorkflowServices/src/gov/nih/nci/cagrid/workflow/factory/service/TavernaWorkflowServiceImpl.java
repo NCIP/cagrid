@@ -13,6 +13,7 @@ import org.globus.wsrf.utils.AddressingUtils;
 import workflowmanagementfactoryservice.WMSOutputType;
 
 import java.rmi.RemoteException;
+import java.util.Calendar;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -33,6 +34,7 @@ public class TavernaWorkflowServiceImpl extends TavernaWorkflowServiceImplBase {
 
 	  TavernaWorkflowServiceImplResourceHome home = null;
 		ResourceKey key = null;
+		int TERM_TIME = 120;
 		try {
 			Context ctx = new InitialContext();
 			String lookupString = Constants.JNDI_SERVICES_BASE_NAME +
@@ -47,6 +49,11 @@ public class TavernaWorkflowServiceImpl extends TavernaWorkflowServiceImplBase {
 					.getBaseURL() + "cagrid/TavernaWorkflowServiceImpl", key);
 			//System.out.println("EPR :" + epr.getAddress().toString());
 			
+			
+//			Calendar termTime = Calendar.getInstance();
+//	        termTime.add(Calendar.MINUTE, TERM_TIME);
+//	        workflowResource.setTerminationTime(termTime);
+	        
 			workflowResource.createWorkflow(wMSInputElement);
 			WMSOutputType wMSOutputElement = new WMSOutputType();
 			wMSOutputElement.setWorkflowEPR(epr);

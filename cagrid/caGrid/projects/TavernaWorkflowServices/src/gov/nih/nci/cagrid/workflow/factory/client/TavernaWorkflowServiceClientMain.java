@@ -62,9 +62,9 @@ public class TavernaWorkflowServiceClientMain {
 
 					// 2. Start Workflow Operations Invoked.
 
-					//String[] inputArgs = {"caCore", " and caBig4"}; 
-					String[] inputArgs = {"caCore"};
-					
+					//String[] inputArgs = {"caCore", " and caBig3"}; 
+					String[] inputArgs = {"<ns1:CQLQuery xmlns:ns1=\"http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLQuery\">  <ns1:Target name=\"gov.nih.nci.caarray.domain.project.Experiment\">   <ns1:Group logicRelation=\"AND\">    <ns1:Attribute name=\"id\" predicate=\"EQUAL_TO\" value=\"95\"/>   </ns1:Group>  </ns1:Target> </ns1:CQLQuery>"};
+					//String[] inputArgs = {"caCore"};
 					System.out.println("\n2. Now starting the workflow ..");
 					System.out.println("Reading EPR from file ..");
 					EndpointReferenceType readEPR = new EndpointReferenceType();
@@ -112,22 +112,31 @@ public class TavernaWorkflowServiceClientMain {
 					}
 					
 					//Subscribe to the Resource property:
-					TavernaWorkflowServiceClient.subscribeRP(readEPR, 20);
+					TavernaWorkflowServiceClient.subscribeRP(readEPR, 3600);
 					workflowStatus = TavernaWorkflowServiceClient.getStatus(readEPR);
 
 
 					//4. Get output of workflow.
 					
-					
-					System.out.println("\n4. Getting back the output file..");
-					WorkflowOutputType workflowOutput = TavernaWorkflowServiceClient.getOutput(readEPR);
-					
-					String[] outputs = workflowOutput.getOutputFile();
-					for (int i=0; i < outputs.length; i++)
+					if(workflowStatus.equals(WorkflowStatusType.Done))
 					{
-						String outputFile = System.getProperty("user.dir") + "/" + workflowName +"-output-" + i + ".xml";
-						Utils.stringBufferToFile(new StringBuffer(outputs[i]), outputFile);
-						System.out.println("Output file " + i + " : " + outputFile);
+						System.out.println("Workflow Executions is Completed.");
+					
+						System.out.println("\n4. Getting back the output file..");
+						WorkflowOutputType workflowOutput = TavernaWorkflowServiceClient.getOutput(readEPR);
+						
+						String[] outputs = workflowOutput.getOutputFile();
+						for (int i=0; i < outputs.length; i++)
+						{
+							String outputFile = System.getProperty("user.dir") + "/" + workflowName +"-output-" + i + ".xml";
+							Utils.stringBufferToFile(new StringBuffer(outputs[i]), outputFile);
+							System.out.println("Output file " + i + " : " + outputFile);
+						}
+					}
+					else
+					{
+						System.out.println("Workflow Executiong either failed or incomplete..");
+						System.out.println("Current status is: " + workflowStatus.getValue());
 					}
 
 				} else {
