@@ -44,7 +44,7 @@
 </script>
 
 
-<div id="${ns}diagnosticsDiv" style="border:1px dotted black;padding:5px;margin:10px;width:70%;">
+<div id="${ns}diagnosticsDiv" style="border:1px dotted black;padding:5px;margin:10px 10px 10px 200px;width:70%;">
 
     <div id="${ns}outerDiv">
         <div id="${ns}errorMsg" class="errorMsg">
