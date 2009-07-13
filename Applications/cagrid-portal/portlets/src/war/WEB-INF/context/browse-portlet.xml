@@ -51,7 +51,7 @@
         <entry key="gov.nih.nci.cagrid.portal.domain.catalog.GridServiceInterfaceCatalogEntry"
                value="catalogEntryView"/>
         <entry key="gov.nih.nci.cagrid.portal.domain.catalog.InformationModelCatalogEntry" value="catalogEntryView"/>
-        <entry key="gov.nih.nci.cagrid.portal.domain.catalog.InstitutionCatalogEntry" value="catalogEntryView"/>
+        <entry key="gov.nih.nci.cagrid.portal.domain.catalog.InstitutionCatalogEntry" value="institutionView"/>
         <entry key="gov.nih.nci.cagrid.portal.domain.catalog.KnowledgeCenterCatalogEntry" value="catalogEntryView"/>
         <entry key="gov.nih.nci.cagrid.portal.domain.catalog.PersonCatalogEntry" value="personView"/>
         <entry key="gov.nih.nci.cagrid.portal.domain.catalog.PortletCatalogEntry" value="portletView"/>

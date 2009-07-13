@@ -22,8 +22,8 @@
         ${ns}queryButton.on("click", function(evt) {
 
             var queryLink = "${queryLink}";
-            queryLink = queryLink.replace("guest/catalog/tools", "guest/discovery");
-            queryLink = queryLink.replace("guest/catalog/all", "guest/discovery");
+            queryLink = queryLink.replace("guest/catalog/tools", "guest/tools/query-builder");
+            queryLink = queryLink.replace("guest/catalog/all", "guest/tools/query-builder");
             window.location = queryLink;
         });
 
