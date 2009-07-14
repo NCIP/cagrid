@@ -2,8 +2,8 @@ package gov.nih.nci.cagrid.data.utilities;
 
 import gov.nih.nci.cagrid.metadata.common.SemanticMetadata;
 import gov.nih.nci.cagrid.metadata.common.UMLAttribute;
-import gov.nih.nci.cagrid.metadata.common.UMLClass;
 import gov.nih.nci.cagrid.metadata.dataservice.DomainModel;
+import gov.nih.nci.cagrid.metadata.dataservice.UMLClass;
 import gov.nih.nci.cagrid.metadata.dataservice.UMLClassReference;
 import gov.nih.nci.cagrid.metadata.dataservice.UMLGeneralization;
 
