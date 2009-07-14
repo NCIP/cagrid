@@ -1,7 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page import="gov.nih.nci.cagrid.portal.portlet.sample.WorkflowDescription" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.Iterator" %>
 
@@ -13,9 +12,8 @@
 
 	<div class="content">
  
-
-
 	<c:if test="${cmd.formState == 0}">
+		
 	    <table border=0>
 	      <c:forEach var="workflow" items="${cmd.allWorkflows}">
 	
@@ -90,6 +88,19 @@
 		</form>
 	</TD></TR>
 	</TABLE>
+	<HR>
+	<TABLE>
+		<TR>
+			<TD><font size="4" >Workflow Image: </font></TD>
+		</TR>
+		<TR>
+			<TD> <img src="<c:url value="/images/${cmd.theWorkflow.imageFile}"/>" width="100%"/> </TD>
+		</TR><!--
+		<TR>
+			<TD> <img src="<c:url value="/images/${cmd.theWorkflow.imageFile}"/>" width="150" height="200" onclick="this.src='<c:url value="/images/${cmd.theWorkflow.imageFile}"/>';this.height='100%';this.width='100%'" ondblclick="this.src='<c:url value="/images/${cmd.theWorkflow.imageFile}"/>';this.height=300;this.width=250">
+		</TR>
+	--></TABLE>
+
 
 	</c:if>
 
