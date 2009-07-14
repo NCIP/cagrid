@@ -219,6 +219,8 @@ public class CQL1toCQL2Converter {
                 val.setIntegerValue(Integer.valueOf(rawValue));
             } else if (Long.class.getName().equals(datatypeName)) {
                 val.setLongValue(Long.valueOf(rawValue));
+            } else if (Double.class.getName().equals(datatypeName)) {
+                val.setDoubleValue(Double.valueOf(rawValue));
             }
         }
         return val;
