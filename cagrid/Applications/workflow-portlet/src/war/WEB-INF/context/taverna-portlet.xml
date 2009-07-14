@@ -118,9 +118,9 @@
     </bean>
     <bean id="workflow-2" class="gov.nih.nci.cagrid.portal.portlet.sample.WorkflowDescription">
         <property name="workflowId" value="workflow-2"/>
-        <property name="name" value="caDSR Workflow"/>
+        <property name="name" value="caDSR metadata query in caGrid"/>
         <property name="inputPorts" value="1"/>
-        <property name="description" value="This workflow runs against the caDSR Service deployed by the caGrid. It is to test if we can run any caGrid services. You can try with an Input value : caCORE"/>
+        <property name="description" value="This workflow uses caDSR (Cancer Data Standards Repository) service, which defines a comprehensive set of standardized metadata descriptors for cancer research terminology used in information collection and analysis. This Sample workflow is to find all the concepts related to a given context, for example caCore. The workflow uses context information to invoke findProjects in caDSR and get the project(s) information."/>
         <property name="author" value="Wei Tan"/>
         <property name="filePath" value="classpath:cadsr.t2flow"/>
         <property name="sampleInputs" value="caCore"/>
