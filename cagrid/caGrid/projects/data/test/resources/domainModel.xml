@@ -1254,7 +1254,7 @@
    </ns33:umlAttributeCollection>
    <ns34:SemanticMetadata conceptCode="C18190" conceptDefinition="The microscopic study of characteristic tissue abnormalities by employing various cytochemical and immunocytochemical stains.  -- 2004" conceptName="Histopathology" order="0" xmlns:ns34="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
   </ns1:UMLClass>
-  <ns1:UMLClass allowableAsTarget="false" className="Gene" description="Gene objects are the effective portal to most of the genomic information provided by the caBIO data services; organs, diseases, chromosomes, pathways, sequence data, and expression experiments are among the many objects accessible via a gene." id="173832FC-A4D6-6E57-E044-0003BA3F9857" packageName="gov.nih.nci.cabio.domain" projectName="caCORE" projectVersion="3">
+  <ns1:UMLClass allowableAsTarget="true" className="Gene" description="Gene objects are the effective portal to most of the genomic information provided by the caBIO data services; organs, diseases, chromosomes, pathways, sequence data, and expression experiments are among the many objects accessible via a gene." id="173832FC-A4D6-6E57-E044-0003BA3F9857" packageName="gov.nih.nci.cabio.domain" projectName="caCORE" projectVersion="3">
    <ns35:umlAttributeCollection xmlns:ns35="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
     <ns35:UMLAttribute dataTypeName="java.lang.String" description="The title of the gene." name="fullName" publicID="2223839" version="3.0">
      <ns35:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
