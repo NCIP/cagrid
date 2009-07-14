@@ -6,7 +6,7 @@
 <div class="row">
     <label for="portalUrl">Portal URL</label>
     <input type="text" name="portalUrl" class="autoSet" size="100"
-           value="<c:out value="${catalogEntry.portalUrl}"/>"/><span style="color: red"></span>
+           value="<c:out value="${catalogEntry.communityUrl}"/>"/><span style="color: red"></span>
 </div>
 
 <%@ include file="/WEB-INF/jsp/browse/common/edit/terms.jspf" %>
