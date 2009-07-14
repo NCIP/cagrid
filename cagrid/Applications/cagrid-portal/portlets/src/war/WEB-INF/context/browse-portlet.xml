@@ -43,7 +43,7 @@
     </util:map>
 
     <util:map id="entryTypeViewMap">
-        <entry key="gov.nih.nci.cagrid.portal.domain.catalog.CommunityCatalogEntry" value="communityiew"/>
+        <entry key="gov.nih.nci.cagrid.portal.domain.catalog.CommunityCatalogEntry" value="communityView"/>
         <entry key="gov.nih.nci.cagrid.portal.domain.catalog.DataSetCatalogEntry" value="catalogEntryView"/>
         <entry key="gov.nih.nci.cagrid.portal.domain.catalog.DesktopToolCatalogEntry" value="catalogEntryView"/>
         <entry key="gov.nih.nci.cagrid.portal.domain.catalog.GridServiceEndPointCatalogEntry"
