@@ -91,6 +91,10 @@
 	</TD></TR>
 	</TABLE>
 
+	</c:if>
+
+
+
 	<c:if test="${cmd.formState == 0}">
 
 	<c:choose>
