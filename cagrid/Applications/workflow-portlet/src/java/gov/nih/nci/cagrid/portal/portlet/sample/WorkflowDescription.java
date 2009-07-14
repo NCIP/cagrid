@@ -21,7 +21,8 @@ public class WorkflowDescription implements ResourceLoaderAware, InitializingBea
 	private String filePath;
 	private String sampleInputs;
 	private String viewResolver = "output";
-
+	private String imageFile;
+	
 	private String scuflLocation;
 	private ResourceLoader resourceLoader;
 	
@@ -32,6 +33,14 @@ public class WorkflowDescription implements ResourceLoaderAware, InitializingBea
 
 	public void setViewResolver(String viewResolver) {
 		this.viewResolver = viewResolver;
+	}
+
+	public String getImageFile() {
+		return imageFile;
+	}
+
+	public void setImageFile(String imageFile) {
+		this.imageFile = imageFile;
 	}
 
 	public String getSampleInputs() {
