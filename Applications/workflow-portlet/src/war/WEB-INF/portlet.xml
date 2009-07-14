@@ -14,8 +14,8 @@
 			<mime-type>text/html</mime-type>
 		</supports>
 		<portlet-info>
-			<title>Taverna Portlet</title>
-			<short-title>Taverna Portlet</short-title>
+			<title>Taverna Workflow Portlet</title>
+			<short-title>Taverna Workflow Portlet</short-title>
 			<keywords>caGrid Taverna Sample</keywords>
 		</portlet-info>
 		<portlet-preferences>
