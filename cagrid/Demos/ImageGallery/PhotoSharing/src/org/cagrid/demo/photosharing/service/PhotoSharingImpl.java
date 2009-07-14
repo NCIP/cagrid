@@ -10,15 +10,19 @@ import gov.nih.nci.cagrid.gridgrouper.common.SubjectUtils;
 import gov.nih.nci.cagrid.gridgrouper.grouper.NamingPrivilegeI;
 import gov.nih.nci.cagrid.gridgrouper.grouper.StemI;
 
+import java.net.URL;
 import java.rmi.RemoteException;
 import java.security.Principal;
 import java.util.Set;
 
+import org.apache.axis.message.addressing.AttributedURI;
+import org.apache.axis.types.URI.MalformedURIException;
 import org.cagrid.demo.photosharing.service.globus.resource.PhotoSharingResource;
 import org.cagrid.demo.photosharing.utils.GalleryManager;
 import org.cagrid.demo.photosharing.utils.GroupUtils;
 import org.cagrid.demo.photosharing.utils.GrouperGallery;
 import org.globus.gsi.jaas.JaasSubject;
+import org.globus.wsrf.container.ServiceHost;
 
 /** 
  * TODO:I am the service side implementation class.  IMPLEMENT AND DOCUMENT ME
@@ -117,9 +121,18 @@ public class PhotoSharingImpl extends PhotoSharingImplBase {
 			/* END CODE BLOCK */
 
 			String transportURL = (String) ctx.getProperty(org.apache.axis.MessageContext.TRANS_URL);
+			//modify EPR to fix a bug
+			//BEGIN
+	        AttributedURI uri = new AttributedURI(transportURL);
+	        URL baseURL = ServiceHost.getBaseURL();
+	        String correctHost = baseURL.getHost();
+	        uri.setHost(correctHost);
+	        transportURL = uri.toString();
+			//END
 			transportURL = transportURL.substring(0,transportURL.lastIndexOf('/') +1 );
 			transportURL += "Gallery";
 			epr = org.globus.wsrf.utils.AddressingUtils.createEndpointReference(transportURL,resourceKey);
+	        System.out.println("Creating gallery EPR of: " + epr.getAddress().toString());
 		} catch (Exception e) {
 			throw new RemoteException("Error looking up Gallery home:" + e.getMessage(), e);
 		}
