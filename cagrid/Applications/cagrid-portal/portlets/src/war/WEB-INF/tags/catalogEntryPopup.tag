@@ -8,6 +8,8 @@
 <%@attribute name="link_href" required="false"
              description="Alternate link. Will not use popup image. Requires link_text" %>
 <%@attribute name="link_text" required="false" description="Alternate link text.Required when specifying link_href" %>
+<%@attribute name="link_text_max_length" type="java.lang.Integer" required="false"
+             description="Maximum lenght of the link text to be displayed. By default, entire link text will be displayed" %>
 
     <span id="${id}-infoPopup-content" class="infoPopup">
     <div>
@@ -61,7 +63,7 @@
 
     </div>
 
-    <%--<span class="infoPopup-pointer">&nbsp;</span>--%></span>
+        <%--<span class="infoPopup-pointer">&nbsp;</span>--%></span>
 <a id="${id}-infoPopup-control"
    class="infoPopupLink"
    onmouseover="$('${id}-infoPopup-content').style.display='inline'"
@@ -70,12 +72,21 @@
             &nbsp; href='${link_href}'
         </c:if>
         >
-		<%--TODO: Add actual icons, the below line is just a placeholder--%>
-		<%-- <img src="<c:url value="/images/catalog_icons/tool.png" />" alt="" style="float:left;"/> --%>
-		<tags:catalogEntryImage entry="${entry}" thumbnail="true" cssStyle="float:left;"/>
+    <%--TODO: Add actual icons, the below line is just a placeholder--%>
+    <%-- <img src="<c:url value="/images/catalog_icons/tool.png" />" alt="" style="float:left;"/> --%>
+    <tags:catalogEntryImage entry="${entry}" thumbnail="true" cssStyle="float:left;"/>
     <c:choose>
         <c:when test="${not empty link_text}">
-            ${link_text}
+
+            <c:if test="${not empty link_text_max_length}">
+                <%
+                    if (link_text.length() > link_text_max_length) {
+                        link_text = link_text.substring(0, link_text_max_length);
+                    }
+                %>
+            </c:if>
+
+            <%= link_text%>
         </c:when>
         <c:otherwise>
             <tags:image name="information_icon.png" height="13"/>
