@@ -20,7 +20,7 @@
 	      <c:forEach var="workflow" items="${cmd.allWorkflows}">
 	
 	        <tr>
-	          <td> <b><font size="4" > ${workflow.name} -- Author: ${workflow.author} </font></b> <br><br></td>
+	          <td> <b><font size="4" > ${workflow.name} </font></b> <br><br></td>
 	        </tr>
 			<tr> 
 				<td><b><font size="2" > Description: </font></b>${workflow.description} </td>
@@ -30,11 +30,11 @@
 	        </tr>
 			<tr>
 	          <td><b><font size="2" > Number of Input Ports: </font></b> ${workflow.inputPorts}</td>
-	        </tr><!--
-			<tr>
-	          <td><b><font size="2" > # of EPRs in Session: </font></b> ${cmd.keyword} 
 	        </tr>
-			--><tr><td><br>
+			<tr>
+	          <td><b><font size="2" > Author: </font></b> ${workflow.author} 
+	        </tr>
+			<tr><td><br>
 			<form action="<portlet:actionURL/>" method="post">
 	        <span style="color:red"><form:errors path="*"/></span>
 			<!--<input type="hidden" name="Form" value="1">
@@ -90,10 +90,6 @@
 		</form>
 	</TD></TR>
 	</TABLE>
-
-	</c:if>
-
-
 
 	<c:if test="${cmd.formState == 0}">
 
