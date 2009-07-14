@@ -1,12 +1,10 @@
 <%@ include file="/WEB-INF/jsp/include/includes.jspf" %>
 
-      
-
 
 <c:forEach var="catalog" items="${latestContent}">
     <div class="oneLatestEntry">
-        
-           <%-- <c:choose>
+
+            <%-- <c:choose>
                 <c:when test="${catalog.class.simpleName == 'GridServiceEndPointCatalogEntry'}">
                     <c:choose>
                         <c:when test="${catalog.data== 'true'}">
@@ -24,9 +22,10 @@
                     <tags:image name="man.png"/>
                 </c:when>
             </c:choose>--%>
-            <tags:catalogEntryPopup id="${catalog.id}" entry="${catalog}" link_text="${catalog.name}" 
-                                    link_href="javascript:viewDetails(${catalog.id})"/>
-        </div>
+        <tags:catalogEntryPopup id="${catalog.id}" entry="${catalog}" link_text="${catalog.name}"
+                                link_text_max_length="30"
+                                link_href="javascript:viewDetails(${catalog.id})"/>
+    </div>
     </div>
 
 </c:forEach>
