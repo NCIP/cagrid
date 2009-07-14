@@ -5,7 +5,7 @@
 <!-- Portal URL Field -->
 <div class="row">
     <label for="portalUrl">Portal URL</label>
-    <input type="text" name="portalUrl" class="autoSet" size="100"
+    <input type="text" name="communityUrl" class="autoSet" size="100"
            value="<c:out value="${catalogEntry.communityUrl}"/>"/><span style="color: red"></span>
 </div>
 
