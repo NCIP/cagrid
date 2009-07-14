@@ -13,15 +13,20 @@
     }
 
     function ${ns}pageCallback(type, args) {
-        $("jsFillerRegularResults").innerHTML = '';
-        $("jsFillerFeaturedResults").innerHTML = '';
 
         var resultList = args[0];
-        YAHOO.log("Received results of size:" + resultList.length);
-        var featuredDiv = $("featuredDiv");
-        featuredDiv.setStyle({display: 'none',});
+
+
+        $("featuredDiv").setStyle({display: 'none'});
+        $("jsFillerFeaturedResults").innerHTML="";
+        $("regularResults").setStyle({display: 'none'});
+        $("jsFillerRegularResults").innerHTML="";
+
+         if(resultList!=null){
+          YAHOO.log("Received results of size:" + resultList.length);
 
         for (var i = 0, len = resultList.length; i < len; ++i) {
+            $("regularResults").setStyle({display: 'block'});
             var result = resultList[i];
 
             var resultDiv = document.createElement('div');
@@ -43,7 +48,6 @@
 
             var nameDiv = document.createElement('div');
             nameDiv.appendChild(detailsLnk);
-
             resultDiv.appendChild(nameDiv);
 
 
@@ -58,13 +62,13 @@
             resultDiv.appendChild(descDiv);
 
             if (result.featured) {
-                featuredDiv.setStyle({display: 'block',});
+                $("featuredDiv").setStyle({display: 'block'});
                 $("jsFillerFeaturedResults").appendChild(resultDiv);
                 continue;
             }
-
             $("jsFillerRegularResults").appendChild(resultDiv);
 
+        }
         }
     }
 
@@ -80,24 +84,32 @@
         <div>
             <div id="${ns}tree" class="tree-container"></div>
             <div class="searchResults">
-                <%@ include file="/WEB-INF/jsp/browse/sort.jspf" %>
-                <div id="${ns}catalogs">
+
+                <div id="${ns}searchBar" class="searchBar">
+                    <div id="${ns}paginatorSummary" class="paginationSummary"></div>
+                    <%@ include file="/WEB-INF/jsp/browse/sort.jspf" %>
+                </div>
+
+                <div id="catalogResult">
+                  <div id="${ns}catalogs">
                     <div id="featuredDiv" style="display:none;">
                         <h3>Featured Results</h3>
 
                         <div id="jsFillerFeaturedResults"><!-- Featured search results will go here --></div>
                     </div>
-                    <div id="regularResults">
+                    <div id="regularResults" style="display:none;">
                         <h3>Search Results</h3>
 
                         <div id="jsFillerRegularResults"><!-- Not featured search results will go here --></div>
                     </div>
                 </div>
+
+                </div>
+                
                 <div class="yui-skin-sam">
                     <div id="${ns}paginatorDiv" class="pagination">
                         <!-- pagination controls will go here -->
                     </div>
-                    <div id="${ns}paginatorSummary" class="paginationSummary"></div>
                 </div>
             </div>
             <br style="clear:both;"/>

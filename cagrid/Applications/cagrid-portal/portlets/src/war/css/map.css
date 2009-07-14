@@ -35,3 +35,7 @@ span.summary{
 	vertical-align:middle;
 	margin:5px 5px 0 10px;
 }
+
+span.subMapIcon{
+   cursor:pointer;
+}

@@ -1,3 +1,6 @@
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/catalog.css"/>"/>
+
+
 <link type="text/css" rel="stylesheet"
       href="<c:url value="/js/yui/assets/skins/sam/datatable.css"/>"/>
 <link type="text/css" rel="stylesheet" href="<c:url value="/js/yui/treeview/assets/css/menu/tree.css"/>"/>
@@ -45,9 +48,11 @@
             treeEvent.subscribe(updateTreeWithResults, this);
 
             var searchCallback = function (oRequest, oParsedResponse, oPayload) {
-                var solrJSON = YAHOO.lang.JSON.parse(oParsedResponse.results.responseText);
-                YAHOO.log("Firing tree event");
-                treeEvent.fire(solrJSON.tree);
+                if (oParsedResponse.results != null) {
+                    var solrJSON = YAHOO.lang.JSON.parse(oParsedResponse.results.responseText);
+                    YAHOO.log("Firing tree event");
+                    treeEvent.fire(solrJSON.tree);
+                }
 
             };
 
@@ -165,10 +170,9 @@
             };
 
             var failureCallback = function (o) {
-                alert("Async call failed!");
-                if (!YAHOO.util.Connect.isCallInProgress(o)) {
-                    alert("Async call failed!");
-                }
+                $("${ns}paginatorSummary").innerHTML = "Query failed!";
+                this.paginator.destroy();
+                resultEvent.fire(null);
             };
 
             solrDatasource.sendRequest(this.query.getQuery(), {success : searchCallback,
@@ -186,7 +190,8 @@
                 endValue = totalRecords;
 
             $("${ns}paginatorSummary").innerHTML = "Results  <strong>" + startValue + " - " + endValue + "</strong> of  <strong>" + totalRecords + "</strong>";
-
+            if (this.config.keyword != "*:*")
+                $("${ns}paginatorSummary").appendChild(document.createTextNode(" for " + this.config.keyword));
         },
 
         handlePagination: function(newState, cat) {
