@@ -24,7 +24,7 @@ public class SolrCommandExecutor extends AbstractSolrCommandExecutor {
         HttpMethod method = new GetMethod(getBaseSolrURL() + getCommand());
 
         try {
-            getHttpClient().executeMethod(method);
+            execute(method);
             logger.info("Import successfully executed on SOLR.");
         } catch (IOException e) {
             String msg = "Could not execut Import command on SOLR HTTP service. Make sure SOLR is running.";

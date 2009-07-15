@@ -1,11 +1,13 @@
 package gov.nih.nci.cagrid.portal.search;
 
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.io.IOException;
 
 /**
  * User: kherm
@@ -44,6 +46,15 @@ public abstract class AbstractSolrCommandExecutor {
         return this.baseSolrURL;
     }
 
+    /**
+     * Synchronize calls to SOLR
+     * @param httpMethod
+     * @throws IOException
+     */
+    public synchronized void execute(HttpMethod httpMethod) throws IOException {
+        getHttpClient().executeMethod(httpMethod);
+
+    }
     public void setBaseSolrURL(String baseSolrURL) {
         this.baseSolrURL = baseSolrURL;
     }
@@ -65,7 +76,6 @@ public abstract class AbstractSolrCommandExecutor {
     }
 
     public HttpClient getHttpClient() {
-
         return httpClient;
     }
 
