@@ -4,6 +4,7 @@ import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.After;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -26,7 +27,7 @@ public class PortalDaoAspect extends AbstractSolrCommandExecutor {
         try {
             logger.info("Calling update on SOLR. Changes detected to the Portal DB");
             HttpMethod method = new GetMethod(getBaseSolrURL() + getCommand());
-            getHttpClient().executeMethod(method);
+            execute(method);
             logger.info("Update sucessfully executed on SOLR.");
         } catch (IOException e) {
             String msg = "Could not execute Update command on SOLR HTTP service. Make sure SOLR is running.";
