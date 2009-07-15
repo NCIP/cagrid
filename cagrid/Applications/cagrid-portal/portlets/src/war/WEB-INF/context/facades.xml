@@ -98,9 +98,14 @@
 		<property name="encryptionService" ref="encryptionServicePrototype"/>
 		<property name="hibernateTemplate" ref="hibernateTemplate"/>
     </bean>
-    
 
-    <bean id="catalogEntryManagerFacade" 
+    <bean class="gov.nih.nci.cagrid.portal.portlet.browse.ajax.CatalogEntryManagerAspect"
+          parent="abstractSolrCommandExecutor">
+        <constructor-arg value="/dataimport?command=delta-import"/>
+        <property name="order" value="100"/>
+    </bean>
+
+    <bean id="catalogEntryManagerFacade"
     	class="gov.nih.nci.cagrid.portal.portlet.browse.ajax.CatalogEntryManagerFacade"
     	autowire="byName">
     	<property name="roleTypeRenderServletUrl" value="/browse/role_type_selection.html"/>
