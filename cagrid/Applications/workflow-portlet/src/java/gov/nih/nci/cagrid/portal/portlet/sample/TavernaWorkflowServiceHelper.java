@@ -80,9 +80,13 @@ public class TavernaWorkflowServiceHelper {
 	public void updateSession() throws MalformedURIException, RemoteException{
 
 		if(this.getSessionEprsRef().getEprs().isEmpty())
+		{
+			logger.info("The sessions object is EMPTY.");
 			return;
-
-		SessionEprs sessEprs = new SessionEprs();
+		}
+		
+		//SessionEprs sessEprs = new SessionEprs();
+		SessionEprs sessEprs = this.getSessionEprsRef();
 		Iterator it = this.getSessionEprsRef().getEprs().entrySet().iterator();
 		logger.info("Size of Session Map: " + this.getSessionEprsRef().getEprs().size());
 		while(it.hasNext())
