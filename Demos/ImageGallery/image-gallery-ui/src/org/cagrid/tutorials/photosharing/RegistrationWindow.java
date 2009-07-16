@@ -10,8 +10,11 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.List;
 
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 
 import org.cagrid.demos.photoservicereg.client.PhotoSharingRegistrationClient;
 import org.cagrid.gaards.dorian.client.GridUserClient;
@@ -20,12 +23,11 @@ import org.cagrid.gaards.dorian.federation.HostCertificateStatus;
 import org.cagrid.gaards.pki.CertUtil;
 import org.cagrid.gaards.ui.common.ProgressPanel;
 import org.cagrid.gaards.ui.common.TitlePanel;
+import org.cagrid.gaards.ui.dorian.DorianHandle;
+import org.cagrid.gaards.ui.dorian.ServicesManager;
 import org.cagrid.grape.ApplicationComponent;
 import org.cagrid.grape.GridApplication;
 import org.cagrid.grape.utils.ErrorDialog;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JButton;
 
 
 /**
@@ -37,10 +39,6 @@ import javax.swing.JButton;
  *          Exp $
  */
 public class RegistrationWindow extends ApplicationComponent {
-
-    public static final String DORIAN = "https://dorian.training.cagrid.org/wsrf/services/cagrid/Dorian"; // @jve:decl-index=0:
-
-    public static final String REGISTRATION_SERVICE = "https://tutorials.training.cagrid.org:8444/wsrf/services/cagrid/PhotoSharingRegistration"; // @jve:decl-index=0:
 
     private static final long serialVersionUID = 1L;
 
@@ -95,14 +93,17 @@ public class RegistrationWindow extends ApplicationComponent {
             getRegister().setEnabled(false);
             getProgress().showProgress("Finding hosts....");
             Thread.sleep(200);
-            GridUserClient client = new GridUserClient(DORIAN, ProxyUtil.getDefaultProxy());
-            List<HostCertificateRecord> records = client.getOwnedHostCertificates();
-            for (int i = 0; i < records.size(); i++) {
-                if (records.get(i).getStatus().equals(HostCertificateStatus.Active)) {
-                    getHostCertificates().addHostCertificate(records.get(i));
+            List<DorianHandle> services = ServicesManager.getInstance().getDorianServices();
+            for (int j = 0; j < services.size(); j++) {
+                DorianHandle handle = services.get(j);
+                GridUserClient client = handle.getUserClient(ProxyUtil.getDefaultProxy());
+                List<HostCertificateRecord> records = client.getOwnedHostCertificates();
+                for (int i = 0; i < records.size(); i++) {
+                    if (records.get(i).getStatus().equals(HostCertificateStatus.Active)) {
+                        getHostCertificates().addHostCertificate(records.get(i));
+                    }
                 }
             }
-
             getProgress().stopProgress();
             getRegister().setEnabled(true);
         } catch (Exception e) {
@@ -356,13 +357,15 @@ public class RegistrationWindow extends ApplicationComponent {
         try {
             getRegister().setEnabled(false);
             getProgress().showProgress("Registering for tutorial....");
-            PhotoSharingRegistrationClient client = new PhotoSharingRegistrationClient(REGISTRATION_SERVICE, ProxyUtil
-                .getDefaultProxy());
-            client.registerPhotoSharingService(CertUtil.subjectToIdentity(getHostCertificates().getSelectedHostCertificate().getSubject()));
+            PhotoSharingRegistrationClient client = new PhotoSharingRegistrationClient(
+                org.cagrid.tutorials.photosharing.Utils.getRegistrationService(), ProxyUtil.getDefaultProxy());
+            client.registerPhotoSharingService(CertUtil.subjectToIdentity(getHostCertificates()
+                .getSelectedHostCertificate().getSubject()));
             getProgress().stopProgress();
             getRegister().setEnabled(true);
             dispose();
-            GridApplication.getContext().showMessage("Congratulations you have successfully registered for the photo sharing tutorial.");
+            GridApplication.getContext().showMessage(
+                "Congratulations you have successfully registered for the photo sharing tutorial.");
         } catch (Exception e) {
             getProgress().stopProgress();
             ErrorDialog.showError(Utils.getExceptionMessage(e), e);

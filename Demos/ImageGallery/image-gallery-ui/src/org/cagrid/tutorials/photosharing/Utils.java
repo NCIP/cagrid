@@ -30,4 +30,33 @@ public class Utils {
         return services;
     }
 
+
+    public static String getRegistrationService() throws Exception {
+        ServiceConfiguration conf = (ServiceConfiguration) GridApplication.getContext().getConfigurationManager()
+            .getConfigurationObject("photosharingregistration");
+        Services s = conf.getServices();
+        if (s != null) {
+            ServiceDescriptor[] list = s.getServiceDescriptor();
+            if (list != null) {
+                if (list.length == 0) {
+                    throw new Exception(
+                        "No photo sharing registration service configured, you must configure one registration service!!!");
+                } else if (list.length == 1) {
+                    return list[0].getServiceURL();
+                } else {
+                    throw new Exception(
+                        "Multiple photo sharing registrations service were configured, where as only one is allowed.");
+                }
+
+            } else {
+                throw new Exception(
+                    "No photo sharing registration service configured, you must configure one registration service!!!");
+            }
+        } else {
+            throw new Exception(
+                "No photo sharing registration service configured, you must configure one registration service!!!");
+        }
+
+    }
+
 }

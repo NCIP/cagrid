@@ -147,7 +147,7 @@
 							<name>ServiceConfiguration</name>
 						</qname>
 						<ConfigurationPanel>org.cagrid.grape.ServiceConfigurationEditor</ConfigurationPanel>
-						<DefaultFile>conf/dorian-services-configuration.xml</DefaultFile>
+						<DefaultFile>conf/training/dorian-services-configuration.xml</DefaultFile>
 					</ConfigurationDescriptor>
 					<ConfigurationDescriptor>
 						<DisplayName>Authentication Service(s)</DisplayName>
@@ -158,7 +158,7 @@
 							<name>ServiceConfiguration</name>
 						</qname>
 						<ConfigurationPanel>org.cagrid.grape.ServiceConfigurationEditor</ConfigurationPanel>
-						<DefaultFile>conf/authentication-services-configuration.xml</DefaultFile>
+						<DefaultFile>conf/training/authentication-services-configuration.xml</DefaultFile>
 					</ConfigurationDescriptor>
 				</ConfigurationDescriptors>
 			</ConfigurationGroup>
@@ -176,7 +176,7 @@
 							<name>ServiceConfiguration</name>
 						</qname>
 						<ConfigurationPanel>org.cagrid.grape.ServiceConfigurationEditor</ConfigurationPanel>
-						<DefaultFile>conf/gridgrouper-services-configuration.xml</DefaultFile>
+						<DefaultFile>conf/training/gridgrouper-services-configuration.xml</DefaultFile>
 					</ConfigurationDescriptor>
 				</ConfigurationDescriptors>
 			</ConfigurationGroup>
@@ -192,7 +192,18 @@
 							<name>ServiceConfiguration</name>
 						</qname>
 						<ConfigurationPanel>org.cagrid.grape.ServiceConfigurationEditor</ConfigurationPanel>
-						<DefaultFile>conf/photo-sharing-services-configuration.xml</DefaultFile>
+						<DefaultFile>conf/training/photo-sharing-services-configuration.xml</DefaultFile>
+					</ConfigurationDescriptor>
+					<ConfigurationDescriptor>
+						<DisplayName>Registration</DisplayName>
+						<SystemName>photosharingregistration</SystemName>
+			    		<ModelClassname>org.cagrid.grape.configuration.ServiceConfiguration</ModelClassname>
+			    		<qname>
+							<namespace>http://www.cagrid.org/1/grape-service-configuration</namespace>
+							<name>ServiceConfiguration</name>
+						</qname>
+						<ConfigurationPanel>org.cagrid.grape.ServiceConfigurationEditor</ConfigurationPanel>
+						<DefaultFile>conf/training/photo-sharing-registration-services-configuration.xml</DefaultFile>
 					</ConfigurationDescriptor>
 				</ConfigurationDescriptors>
 			</ConfigurationGroup>
