@@ -16,7 +16,6 @@ import java.security.Principal;
 import java.util.Set;
 
 import org.apache.axis.message.addressing.AttributedURI;
-import org.apache.axis.types.URI.MalformedURIException;
 import org.cagrid.demo.photosharing.service.globus.resource.PhotoSharingResource;
 import org.cagrid.demo.photosharing.utils.GalleryManager;
 import org.cagrid.demo.photosharing.utils.GroupUtils;
@@ -89,7 +88,7 @@ public class PhotoSharingImpl extends PhotoSharingImplBase {
 		stem.grantPriv(subject, edu.internet2.middleware.grouper.NamingPrivilege.CREATE);
 	}
 
-  public org.cagrid.demo.photosharing.gallery.stubs.types.GalleryReference createGallery(java.lang.String galleryName) throws RemoteException, org.cagrid.demo.photosharing.stubs.types.PhotoSharingException {
+	public org.cagrid.demo.photosharing.gallery.stubs.types.GalleryReference createGallery(java.lang.String galleryName) throws RemoteException, org.cagrid.demo.photosharing.stubs.types.PhotoSharingException {
 		org.apache.axis.message.addressing.EndpointReferenceType epr = new org.apache.axis.message.addressing.EndpointReferenceType();
 		org.cagrid.demo.photosharing.gallery.service.globus.resource.GalleryResourceHome home = null;
 		org.globus.wsrf.ResourceKey resourceKey = null;
@@ -113,7 +112,7 @@ public class PhotoSharingImpl extends PhotoSharingImplBase {
 			String userDN = gov.nih.nci.cagrid.introduce.servicetools.security.SecurityUtils.getCallerIdentity();
 
 			GrouperGallery gallery = this.galleryManager.createGallery(galleryName, userDN);
-			
+
 			// sample of setting creator only security.  This will only allow the caller that created
 			// this resource to be able to use it.
 			//thisResource.setSecurityDescriptor(gov.nih.nci.cagrid.introduce.servicetools.security.SecurityUtils.createCreatorOnlyResourceSecurityDescriptor());
@@ -123,16 +122,16 @@ public class PhotoSharingImpl extends PhotoSharingImplBase {
 			String transportURL = (String) ctx.getProperty(org.apache.axis.MessageContext.TRANS_URL);
 			//modify EPR to fix a bug
 			//BEGIN
-	        AttributedURI uri = new AttributedURI(transportURL);
-	        URL baseURL = ServiceHost.getBaseURL();
-	        String correctHost = baseURL.getHost();
-	        uri.setHost(correctHost);
-	        transportURL = uri.toString();
+			AttributedURI uri = new AttributedURI(transportURL);
+			URL baseURL = ServiceHost.getBaseURL();
+			String correctHost = baseURL.getHost();
+			uri.setHost(correctHost);
+			transportURL = uri.toString();
 			//END
 			transportURL = transportURL.substring(0,transportURL.lastIndexOf('/') +1 );
 			transportURL += "Gallery";
 			epr = org.globus.wsrf.utils.AddressingUtils.createEndpointReference(transportURL,resourceKey);
-	        System.out.println("Creating gallery EPR of: " + epr.getAddress().toString());
+			System.out.println("Creating gallery EPR of: " + epr.getAddress().toString());
 		} catch (Exception e) {
 			throw new RemoteException("Error looking up Gallery home:" + e.getMessage(), e);
 		}
@@ -144,7 +143,7 @@ public class PhotoSharingImpl extends PhotoSharingImplBase {
 		//Add the reference to our list of maintained references
 		try {
 			PhotoSharingResource resource = getResourceHome().getAddressedResource();
-			
+
 			resource.addGallery(galleryName, ref);
 		} catch(Exception e) {
 			System.err.println(e.getMessage());
@@ -156,10 +155,10 @@ public class PhotoSharingImpl extends PhotoSharingImplBase {
 		return ref;
 	}
 
-  public org.cagrid.demo.photosharing.gallery.stubs.types.GalleryReference[] listGalleries() throws RemoteException {
+	public org.cagrid.demo.photosharing.gallery.stubs.types.GalleryReference[] listGalleries() throws RemoteException {
 		try {
 			PhotoSharingResource resource = getResourceHome().getAddressedResource();
-			
+
 			return resource.listGalleries();
 		} catch(Exception e) {
 			System.err.println(e.getMessage());
