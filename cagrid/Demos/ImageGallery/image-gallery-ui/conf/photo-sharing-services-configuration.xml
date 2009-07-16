@@ -3,9 +3,11 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <ServiceGroupDescription>Photo Sharing Service(s)</ServiceGroupDescription>
     <Services>
+    <!--  
         <ServiceDescriptor>
             <DisplayName>Localhost</DisplayName>
             <ServiceURL>https://localhost:8443/wsrf/services/cagrid/PhotoSharing</ServiceURL>
         </ServiceDescriptor>
+        -->
     </Services>
 </ServiceConfiguration>
