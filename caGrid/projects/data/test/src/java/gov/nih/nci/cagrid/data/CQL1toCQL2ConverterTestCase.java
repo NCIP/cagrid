@@ -105,6 +105,11 @@ public class CQL1toCQL2ConverterTestCase extends TestCase {
         convertAndValidate("objectWithAssociation.xml");
     }
     
+    
+    public void testValidObjectWithAssociationNoRoleName() {
+        convertAndValidate("objectWithAssociationNoRoleName.xml");
+    }
+    
 
     public static void main(String[] args) {
         TestRunner runner = new TestRunner();
