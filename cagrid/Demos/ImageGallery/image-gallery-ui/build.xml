@@ -91,7 +91,7 @@
 
 	<target name="gallery" description="Runs the Image Gallery UI" depends="defineClasspaths">
 		<java classname="org.cagrid.grape.GridApplication" classpathref="run.classpath" fork="yes">
-			<arg value="conf/gallery-ui.xml" />
+			<arg value="conf/training/gallery-ui.xml" />
 			<jvmarg value="-Djava.endorsed.dirs=${endorsed.dir}" />
 		</java>
 	</target>
