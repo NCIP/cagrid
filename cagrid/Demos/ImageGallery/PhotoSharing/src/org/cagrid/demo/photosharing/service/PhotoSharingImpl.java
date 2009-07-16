@@ -120,13 +120,15 @@ public class PhotoSharingImpl extends PhotoSharingImplBase {
 			/* END CODE BLOCK */
 
 			String transportURL = (String) ctx.getProperty(org.apache.axis.MessageContext.TRANS_URL);
-			//modify EPR to fix a bug
+			//modify EPR to fix a bug. COMMENTED FOR NOW... connect via IP address
 			//BEGIN
+			/*
 			AttributedURI uri = new AttributedURI(transportURL);
 			URL baseURL = ServiceHost.getBaseURL();
 			String correctHost = baseURL.getHost();
 			uri.setHost(correctHost);
 			transportURL = uri.toString();
+			*/
 			//END
 			transportURL = transportURL.substring(0,transportURL.lastIndexOf('/') +1 );
 			transportURL += "Gallery";
