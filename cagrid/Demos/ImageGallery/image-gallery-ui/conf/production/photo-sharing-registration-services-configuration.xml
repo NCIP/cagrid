@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ServiceConfiguration xmlns="http://www.cagrid.org/1/grape-service-configuration"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <ServiceGroupDescription>Photo Sharing Registration Service(s)</ServiceGroupDescription>
+    <Services>
+        <ServiceDescriptor>
+            <DisplayName>Photo Sharing Tutorial Registration</DisplayName>
+            <ServiceURL>https://tutorials.training.cagrid.org:8444/wsrf/services/cagrid/PhotoSharingRegistration</ServiceURL>
+        </ServiceDescriptor>
+    </Services>
+</ServiceConfiguration>

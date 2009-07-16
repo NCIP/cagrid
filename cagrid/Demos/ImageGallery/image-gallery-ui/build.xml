@@ -95,4 +95,11 @@
 			<jvmarg value="-Djava.endorsed.dirs=${endorsed.dir}" />
 		</java>
 	</target>
+	
+	<target name="gallery-production" description="Runs the Image Gallery UI" depends="defineClasspaths">
+			<java classname="org.cagrid.grape.GridApplication" classpathref="run.classpath" fork="yes">
+				<arg value="conf/production/gallery-ui.xml" />
+				<jvmarg value="-Djava.endorsed.dirs=${endorsed.dir}" />
+			</java>
+		</target>
 </project>
