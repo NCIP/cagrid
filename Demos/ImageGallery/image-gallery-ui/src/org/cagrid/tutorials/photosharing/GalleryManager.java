@@ -61,9 +61,7 @@ public class GalleryManager extends JTabbedPane {
     public void addNode(GalleryBaseTreeNode node) {
         if (node instanceof GalleryTreeNode) {
             this.addGallery((GalleryTreeNode) node);
-        } else {
-            ErrorDialog.showError("Please select a gallery to view!!!");
-        }
+        } 
     }
 
 
