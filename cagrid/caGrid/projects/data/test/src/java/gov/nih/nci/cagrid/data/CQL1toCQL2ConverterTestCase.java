@@ -5,8 +5,11 @@ import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.data.cql2.CQL1toCQL2Converter;
 import gov.nih.nci.cagrid.data.cql2.QueryConversionException;
 import gov.nih.nci.cagrid.data.cql2.validation.Cql2DomainValidator;
+import gov.nih.nci.cagrid.data.cql2.validation.Cql2StructureValidator;
 import gov.nih.nci.cagrid.data.cql2.validation.DomainModelCql2DomainValidator;
 import gov.nih.nci.cagrid.data.cql2.validation.DomainValidationException;
+import gov.nih.nci.cagrid.data.cql2.validation.ObjectWalkingCql2StructureValidator;
+import gov.nih.nci.cagrid.data.cql2.validation.StructureValidationException;
 import gov.nih.nci.cagrid.metadata.MetadataUtils;
 import gov.nih.nci.cagrid.metadata.dataservice.DomainModel;
 
@@ -23,7 +26,8 @@ public class CQL1toCQL2ConverterTestCase extends TestCase {
     public static final String DOMAIN_MODEL_FILE = "test/resources/domainModel.xml";
     
     private CQL1toCQL2Converter converter = null;
-    private Cql2DomainValidator validator = null;
+    private Cql2DomainValidator domainValidator = null;
+    private Cql2StructureValidator structureValidator = null;
     private String cqlDocsDir = null;
     
     public CQL1toCQL2ConverterTestCase() {
@@ -43,7 +47,8 @@ public class CQL1toCQL2ConverterTestCase extends TestCase {
             fail("Error deserializing domain model: " + ex.getMessage());
         }
         converter = new CQL1toCQL2Converter(model);
-        validator = new DomainModelCql2DomainValidator(model);
+        domainValidator = new DomainModelCql2DomainValidator(model);
+        structureValidator = new ObjectWalkingCql2StructureValidator();
     }
     
     
@@ -72,10 +77,16 @@ public class CQL1toCQL2ConverterTestCase extends TestCase {
             fail("Error converting CQL1 to CQL2 query: " + ex.getMessage());
         }
         try {
-            validator.validateAgainstDomainModel(cql2Query);
+            domainValidator.validateAgainstDomainModel(cql2Query);
         } catch (DomainValidationException ex) {
             ex.printStackTrace();
             fail("Error validating CQL 2 query against domain model: " + ex.getMessage());
+        }
+        try {
+            structureValidator.validateQuerySyntax(cql2Query);
+        } catch (StructureValidationException ex) {
+            ex.printStackTrace();
+            fail("Error validating CQL 2 query syntax: " + ex.getMessage());
         }
     }
     
