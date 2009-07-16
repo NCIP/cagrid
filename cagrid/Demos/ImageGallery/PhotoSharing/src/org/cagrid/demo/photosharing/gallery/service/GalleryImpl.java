@@ -1,5 +1,8 @@
 package org.cagrid.demo.photosharing.gallery.service;
 
+import gov.nih.nci.cagrid.common.FaultHelper;
+import gov.nih.nci.cagrid.common.FaultUtil;
+
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,6 +12,7 @@ import org.cagrid.demo.photosharing.utils.Image;
 import org.cagrid.demo.photosharing.utils.ImageDescription;
 import org.cagrid.demo.photosharing.utils.exceptions.AuthorizationException;
 import org.cagrid.demo.photosharing.utils.exceptions.PhotoSharingException;
+import org.oasis.wsrf.faults.BaseFaultType;
 import org.oasis.wsrf.faults.BaseFaultTypeDescription;
 
 /** 
@@ -20,22 +24,21 @@ import org.oasis.wsrf.faults.BaseFaultTypeDescription;
 public class GalleryImpl extends GalleryImplBase {
 
 	private static final boolean USE_IMAGE_AUTHORIZATION = false;
-	
+
 	public GalleryImpl() throws RemoteException {
 		super();
 	}
-	
-  public org.cagrid.demo.photosharing.domain.ImageDescription addImage(org.cagrid.demo.photosharing.domain.Image image) throws RemoteException, org.cagrid.demo.photosharing.stubs.types.PhotoSharingException, org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException {
+
+	public org.cagrid.demo.photosharing.domain.ImageDescription addImage(org.cagrid.demo.photosharing.domain.Image image) throws RemoteException, org.cagrid.demo.photosharing.stubs.types.PhotoSharingException, org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException {
 		GalleryResource resource = null;
 		try {
 			resource = getResourceHome().getAddressedResource();
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
-			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException pse = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-			pse.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw pse;
+			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException fault = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
+			fault = (org.cagrid.demo.photosharing.stubs.types.PhotoSharingException)convertJavaExceptionToFault(fault, e);
+			throw fault;
 		}
 
 		String userDN = null;
@@ -44,10 +47,9 @@ public class GalleryImpl extends GalleryImplBase {
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
-			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException pse = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-			pse.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw pse;
+			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException fault = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
+			fault = (org.cagrid.demo.photosharing.stubs.types.PhotoSharingException)convertJavaExceptionToFault(fault, e);
+			throw fault;
 		}
 
 		String imageName = image.getImageDescription().getName();
@@ -60,17 +62,15 @@ public class GalleryImpl extends GalleryImplBase {
 		} catch (AuthorizationException e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
-			org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException ae = new org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-			ae.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw ae;
+			org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException fault = new org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException();
+			fault = (org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException)convertJavaExceptionToFault(fault, e);
+			throw fault;
 		} catch (PhotoSharingException e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
-			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException pse = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-			pse.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw pse;
+			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException fault = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
+			fault = (org.cagrid.demo.photosharing.stubs.types.PhotoSharingException)convertJavaExceptionToFault(fault, e);
+			throw fault;
 		}
 
 		org.cagrid.demo.photosharing.domain.ImageDescription beanDescription = new org.cagrid.demo.photosharing.domain.ImageDescription();
@@ -80,19 +80,18 @@ public class GalleryImpl extends GalleryImplBase {
 		beanDescription.setType(desc.getType());
 
 		return beanDescription;
-  }
+	}
 
-  public org.cagrid.demo.photosharing.domain.ImageDescription[] listImages() throws RemoteException, org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException {
+	public org.cagrid.demo.photosharing.domain.ImageDescription[] listImages() throws RemoteException, org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException {
 		GalleryResource resource = null;
 		try {
 			resource = getResourceHome().getAddressedResource();
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
-			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException pse = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-			pse.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw pse;
+			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException fault = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
+			fault = (org.cagrid.demo.photosharing.stubs.types.PhotoSharingException)convertJavaExceptionToFault(fault, e);
+			throw fault;
 		}
 
 		String userDN = null;
@@ -101,10 +100,9 @@ public class GalleryImpl extends GalleryImplBase {
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
-			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException pse = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-			pse.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw pse;
+			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException fault = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
+			fault = (org.cagrid.demo.photosharing.stubs.types.PhotoSharingException)convertJavaExceptionToFault(fault, e);
+			throw fault;
 		}
 		Collection<ImageDescription> images;
 		try {
@@ -112,10 +110,9 @@ public class GalleryImpl extends GalleryImplBase {
 		} catch (AuthorizationException e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
-			org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException ae = new org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-			ae.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw ae;
+			org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException fault = new org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException();
+			fault = (org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException)convertJavaExceptionToFault(fault, e); 
+			throw fault;
 		}
 
 		//convert to beans
@@ -130,9 +127,9 @@ public class GalleryImpl extends GalleryImplBase {
 			beanDescriptions.add(beanDescription);
 		}
 		return beanDescriptions.toArray(new org.cagrid.demo.photosharing.domain.ImageDescription[0]);
-  }
+	}
 
-  public org.cagrid.demo.photosharing.domain.Image getImage(org.cagrid.demo.photosharing.domain.ImageDescription imageDescription) throws RemoteException, org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException, org.cagrid.demo.photosharing.stubs.types.PhotoSharingException {
+	public org.cagrid.demo.photosharing.domain.Image getImage(org.cagrid.demo.photosharing.domain.ImageDescription imageDescription) throws RemoteException, org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException, org.cagrid.demo.photosharing.stubs.types.PhotoSharingException {
 		GalleryResource resource = null;
 		String userDN = null;
 		try {
@@ -141,10 +138,9 @@ public class GalleryImpl extends GalleryImplBase {
 		} catch(Exception e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
-			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException pse = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-			pse.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw pse;
+			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException fault = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
+			fault = (org.cagrid.demo.photosharing.stubs.types.PhotoSharingException)convertJavaExceptionToFault(fault, e); 
+			throw fault;
 		}
 
 		Image image = null;
@@ -153,17 +149,15 @@ public class GalleryImpl extends GalleryImplBase {
 		} catch(PhotoSharingException e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
-			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException pse = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-			pse.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw pse;
+			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException fault = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
+			fault = (org.cagrid.demo.photosharing.stubs.types.PhotoSharingException)convertJavaExceptionToFault(fault, e); 
+			throw fault;
 		} catch(AuthorizationException e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
-			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException pse = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-			pse.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw pse;
+			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException fault = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
+			fault = (org.cagrid.demo.photosharing.stubs.types.PhotoSharingException)convertJavaExceptionToFault(fault, e); 
+			throw fault;
 		}
 
 		//convert to beans
@@ -182,19 +176,18 @@ public class GalleryImpl extends GalleryImplBase {
 
 		beanImage.setImageDescription(imageDescription);
 		return beanImage;
-  }
+	}
 
-  public void grantViewGalleryPrivileges(org.cagrid.demo.photosharing.domain.User user) throws RemoteException, org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException, org.cagrid.demo.photosharing.stubs.types.PhotoSharingException {
+	public void grantViewGalleryPrivileges(org.cagrid.demo.photosharing.domain.User user) throws RemoteException, org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException, org.cagrid.demo.photosharing.stubs.types.PhotoSharingException {
 		GalleryResource resource = null;
 		try {
 			resource = getResourceHome().getAddressedResource();
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
-			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException pse = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-			pse.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw pse;
+			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException fault = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
+			fault = (org.cagrid.demo.photosharing.stubs.types.PhotoSharingException)convertJavaExceptionToFault(fault, e); 
+			throw fault;
 		}
 
 		String userDN = null;
@@ -203,41 +196,37 @@ public class GalleryImpl extends GalleryImplBase {
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
-			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException pse = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-			pse.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw pse;
+			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException fault = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
+			fault = (org.cagrid.demo.photosharing.stubs.types.PhotoSharingException)convertJavaExceptionToFault(fault, e); 
+			throw fault;
 		}
 		try {
 			resource.getGallery().grantGalleryViewingPrivileges(userDN, user.getUserIdentity());
 		} catch (PhotoSharingException e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
-			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException pse = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-			pse.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw pse;
+			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException fault = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
+			fault = (org.cagrid.demo.photosharing.stubs.types.PhotoSharingException)convertJavaExceptionToFault(fault, e); 
+			throw fault;
 		} catch (AuthorizationException e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
-			org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException ae = new org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-			ae.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw ae;
+			org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException fault = new org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException();
+			fault = (org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException)convertJavaExceptionToFault(fault, e); 
+			throw fault;
 		}
-  }
+	}
 
-  public void revokeViewGalleryPrivileges(org.cagrid.demo.photosharing.domain.User user) throws RemoteException, org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException, org.cagrid.demo.photosharing.stubs.types.PhotoSharingException {
+	public void revokeViewGalleryPrivileges(org.cagrid.demo.photosharing.domain.User user) throws RemoteException, org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException, org.cagrid.demo.photosharing.stubs.types.PhotoSharingException {
 		GalleryResource resource = null;
 		try {
 			resource = getResourceHome().getAddressedResource();
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
-			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException pse = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-			pse.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw pse;
+			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException fault = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
+			fault = (org.cagrid.demo.photosharing.stubs.types.PhotoSharingException)convertJavaExceptionToFault(fault, e); 
+			throw fault;
 		}
 
 		String userDN = null;
@@ -246,41 +235,37 @@ public class GalleryImpl extends GalleryImplBase {
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
-			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException pse = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-			pse.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw pse;
+			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException fault = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
+			fault = (org.cagrid.demo.photosharing.stubs.types.PhotoSharingException)convertJavaExceptionToFault(fault, e); 
+			throw fault;
 		}
 		try {
 			resource.getGallery().revokeGalleryViewingPrivileges(userDN, user.getUserIdentity());
 		} catch (PhotoSharingException e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
-			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException pse = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-			pse.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw pse;
+			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException fault = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
+			fault = (org.cagrid.demo.photosharing.stubs.types.PhotoSharingException)convertJavaExceptionToFault(fault, e); 
+			throw fault;
 		} catch (AuthorizationException e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
-			org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException ae = new org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-			ae.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw ae;
+			org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException fault = new org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException();
+			fault = (org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException)convertJavaExceptionToFault(fault, e); 
+			throw fault;
 		}
-  }
+	}
 
-  public void grantAddImagePrivileges(org.cagrid.demo.photosharing.domain.User user) throws RemoteException, org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException, org.cagrid.demo.photosharing.stubs.types.PhotoSharingException {
+	public void grantAddImagePrivileges(org.cagrid.demo.photosharing.domain.User user) throws RemoteException, org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException, org.cagrid.demo.photosharing.stubs.types.PhotoSharingException {
 		GalleryResource resource = null;
 		try {
 			resource = getResourceHome().getAddressedResource();
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
-			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException pse = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-			pse.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw pse;
+			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException fault = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
+			fault = (org.cagrid.demo.photosharing.stubs.types.PhotoSharingException)convertJavaExceptionToFault(fault, e); 
+			throw fault;
 		}
 
 		String userDN = null;
@@ -289,41 +274,37 @@ public class GalleryImpl extends GalleryImplBase {
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
-			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException pse = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-			pse.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw pse;
+			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException fault = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
+			fault = (org.cagrid.demo.photosharing.stubs.types.PhotoSharingException)convertJavaExceptionToFault(fault, e); 
+			throw fault;
 		}
 		try {
 			resource.getGallery().grantGalleryAddPrivileges(userDN, user.getUserIdentity());
 		} catch (PhotoSharingException e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
-			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException pse = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-			pse.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw pse;
+			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException fault = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
+			fault = (org.cagrid.demo.photosharing.stubs.types.PhotoSharingException)convertJavaExceptionToFault(fault, e); 
+			throw fault;
 		} catch (AuthorizationException e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
-			org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException ae = new org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-			ae.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw ae;
+			org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException fault = new org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException();
+			fault = (org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException)convertJavaExceptionToFault(fault, e); 
+			throw fault;
 		}
-  }
+	}
 
-  public void revokeAddImagePrivileges(org.cagrid.demo.photosharing.domain.User user) throws RemoteException, org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException, org.cagrid.demo.photosharing.stubs.types.PhotoSharingException {
+	public void revokeAddImagePrivileges(org.cagrid.demo.photosharing.domain.User user) throws RemoteException, org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException, org.cagrid.demo.photosharing.stubs.types.PhotoSharingException {
 		GalleryResource resource = null;
 		try {
 			resource = getResourceHome().getAddressedResource();
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
-			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException pse = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-			pse.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw pse;
+			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException fault = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
+			fault = (org.cagrid.demo.photosharing.stubs.types.PhotoSharingException)convertJavaExceptionToFault(fault, e); 
+			throw fault;
 		}
 
 		String userDN = null;
@@ -332,41 +313,37 @@ public class GalleryImpl extends GalleryImplBase {
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
-			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException pse = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-			pse.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw pse;
+			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException fault = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
+			fault = (org.cagrid.demo.photosharing.stubs.types.PhotoSharingException)convertJavaExceptionToFault(fault, e); 
+			throw fault;
 		}
 		try {
 			resource.getGallery().revokeGalleryAddPrivileges(userDN, user.getUserIdentity());
 		} catch (PhotoSharingException e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
-			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException pse = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-			pse.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw pse;
+			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException fault = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
+			fault = (org.cagrid.demo.photosharing.stubs.types.PhotoSharingException)convertJavaExceptionToFault(fault, e); 
+			throw fault;
 		} catch (AuthorizationException e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
-			org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException ae = new org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-			ae.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw ae;
+			org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException fault = new org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException();
+			fault = (org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException)convertJavaExceptionToFault(fault, e); 
+			throw fault;
 		}
-  }
+	}
 
-  public void grantImageRetrievalPrivileges(org.cagrid.demo.photosharing.domain.ImageDescription imageDescription,org.cagrid.demo.photosharing.domain.User user) throws RemoteException, org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException, org.cagrid.demo.photosharing.stubs.types.PhotoSharingException {
+	public void grantImageRetrievalPrivileges(org.cagrid.demo.photosharing.domain.ImageDescription imageDescription,org.cagrid.demo.photosharing.domain.User user) throws RemoteException, org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException, org.cagrid.demo.photosharing.stubs.types.PhotoSharingException {
 		GalleryResource resource = null;
 		try {
 			resource = getResourceHome().getAddressedResource();
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
-			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException pse = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-			pse.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw pse;
+			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException fault = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
+			fault = (org.cagrid.demo.photosharing.stubs.types.PhotoSharingException)convertJavaExceptionToFault(fault, e); 
+			throw fault;
 		}
 
 		String userDN = null;
@@ -375,41 +352,37 @@ public class GalleryImpl extends GalleryImplBase {
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
-			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException pse = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-			pse.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw pse;
+			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException fault = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
+			fault = (org.cagrid.demo.photosharing.stubs.types.PhotoSharingException)convertJavaExceptionToFault(fault, e); 
+			throw fault;
 		}
 		try {
 			resource.getGallery().grantRetrieveImagePrivileges(userDN, imageDescription.getId(), user.getUserIdentity());
 		} catch (PhotoSharingException e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
-			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException pse = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-			pse.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw pse;
+			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException fault = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
+			fault = (org.cagrid.demo.photosharing.stubs.types.PhotoSharingException)convertJavaExceptionToFault(fault, e); 
+			throw fault;
 		} catch (AuthorizationException e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
-			org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException ae = new org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-			ae.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw ae;
+			org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException fault = new org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException();
+			fault = (org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException)convertJavaExceptionToFault(fault, e); 
+			throw fault;
 		}
-  }
+	}
 
-  public void revokeImageRetrievalPrivileges(org.cagrid.demo.photosharing.domain.ImageDescription imageDescription,org.cagrid.demo.photosharing.domain.User user) throws RemoteException, org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException, org.cagrid.demo.photosharing.stubs.types.PhotoSharingException {
+	public void revokeImageRetrievalPrivileges(org.cagrid.demo.photosharing.domain.ImageDescription imageDescription,org.cagrid.demo.photosharing.domain.User user) throws RemoteException, org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException, org.cagrid.demo.photosharing.stubs.types.PhotoSharingException {
 		GalleryResource resource = null;
 		try {
 			resource = getResourceHome().getAddressedResource();
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
-			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException pse = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-			pse.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw pse;
+			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException fault = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
+			fault = (org.cagrid.demo.photosharing.stubs.types.PhotoSharingException)convertJavaExceptionToFault(fault, e); 
+			throw fault;
 		}
 
 		String userDN = null;
@@ -418,31 +391,28 @@ public class GalleryImpl extends GalleryImplBase {
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
-			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException pse = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-			pse.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw pse;
+			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException fault = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
+			fault = (org.cagrid.demo.photosharing.stubs.types.PhotoSharingException)convertJavaExceptionToFault(fault, e); 
+			throw fault;
 		}
 		try {
 			resource.getGallery().revokeRetrieveImagePrivileges(userDN, imageDescription.getId(), user.getUserIdentity());
 		} catch (AuthorizationException e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
-			org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException ae = new org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-			ae.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw ae;
+			org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException fault = new org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException();
+			fault = (org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException)convertJavaExceptionToFault(fault, e); 
+			throw fault;
 		} catch (PhotoSharingException e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
-			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException pse = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-			pse.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw pse;
+			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException fault = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
+			fault = (org.cagrid.demo.photosharing.stubs.types.PhotoSharingException)convertJavaExceptionToFault(fault, e); 
+			throw fault;
 		}
-  }
+	}
 
-  public java.lang.String getGalleryName() throws RemoteException, org.cagrid.demo.photosharing.stubs.types.PhotoSharingException {
+	public java.lang.String getGalleryName() throws RemoteException, org.cagrid.demo.photosharing.stubs.types.PhotoSharingException {
 		GalleryResource resource = null;
 		try {
 			resource = getResourceHome().getAddressedResource();
@@ -450,14 +420,13 @@ public class GalleryImpl extends GalleryImplBase {
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
-			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException pse = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-			pse.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw pse;
+			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException fault = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
+			fault = (org.cagrid.demo.photosharing.stubs.types.PhotoSharingException)convertJavaExceptionToFault(fault, e); 
+			throw fault;
 		}
-  }
+	}
 
-  public org.cagrid.demo.photosharing.domain.User[] listUsersWithAddPrivileges() throws RemoteException, org.cagrid.demo.photosharing.stubs.types.PhotoSharingException {
+	public org.cagrid.demo.photosharing.domain.User[] listUsersWithAddPrivileges() throws RemoteException, org.cagrid.demo.photosharing.stubs.types.PhotoSharingException {
 		GalleryResource resource = null;
 		try {
 			resource = getResourceHome().getAddressedResource();
@@ -472,15 +441,14 @@ public class GalleryImpl extends GalleryImplBase {
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
-			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException pse = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-			pse.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw pse;
+			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException fault = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
+			fault = (org.cagrid.demo.photosharing.stubs.types.PhotoSharingException)convertJavaExceptionToFault(fault, e); 
+			throw fault;
 		}
-    
-  }
 
-  public org.cagrid.demo.photosharing.domain.User[] listAllUsersWithViewPrivileges() throws RemoteException, org.cagrid.demo.photosharing.stubs.types.PhotoSharingException {
+	}
+
+	public org.cagrid.demo.photosharing.domain.User[] listAllUsersWithViewPrivileges() throws RemoteException, org.cagrid.demo.photosharing.stubs.types.PhotoSharingException {
 		GalleryResource resource = null;
 		try {
 			resource = getResourceHome().getAddressedResource();
@@ -495,12 +463,19 @@ public class GalleryImpl extends GalleryImplBase {
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
-			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException pse = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
-			BaseFaultTypeDescription faultDesc = new BaseFaultTypeDescription(e.getMessage());
-			pse.setDescription(new BaseFaultTypeDescription[] { faultDesc });
-			throw pse;
+			org.cagrid.demo.photosharing.stubs.types.PhotoSharingException fault = new org.cagrid.demo.photosharing.stubs.types.PhotoSharingException();
+			fault = (org.cagrid.demo.photosharing.stubs.types.PhotoSharingException)convertJavaExceptionToFault(fault, e); 
+			throw fault;
 		}
-  }
+	}
+
+	private static BaseFaultType convertJavaExceptionToFault(BaseFaultType fault, Exception e) {
+		fault.setFaultString(e.getMessage());
+		FaultHelper helper = new FaultHelper(fault);
+		helper.addFaultCause(e);
+		fault = (org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException) helper.getFault();
+		return fault;
+	}
 
 }
 
