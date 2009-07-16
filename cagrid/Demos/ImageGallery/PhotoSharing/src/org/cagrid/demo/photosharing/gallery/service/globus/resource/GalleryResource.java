@@ -49,7 +49,7 @@ public class GalleryResource extends GalleryResourceBase {
 			photoSharingResource.removeGallery(this.gallery.getGalleryName());
 
 		} catch(Exception e) {
-			ResourceException re = new ResourceException(e);
+			ResourceException re = new ResourceException(e.getMessage(), e);
 			throw re;
 		}
 	}
