@@ -337,6 +337,7 @@ public class AddPhotoWindow extends ApplicationComponent {
                     JFileChooser f = new JFileChooser();
                     f.setFileFilter(new ImageFileFilter());
                     f.setMultiSelectionEnabled(false);
+                    f.setFileSelectionMode(JFileChooser.FILES_ONLY);
                     int returnVal = f.showOpenDialog(window);
                     if (returnVal == JFileChooser.APPROVE_OPTION) {
                         f.getSelectedFile().getName();

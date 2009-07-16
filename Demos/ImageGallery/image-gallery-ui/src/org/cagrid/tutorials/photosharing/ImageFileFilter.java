@@ -10,7 +10,7 @@ public class ImageFileFilter extends FileFilter {
     @Override
     public boolean accept(File f) {
         if (f.isDirectory()) {
-            return false;
+            return true;
         } else {
 
             String ext = getExtension(f);
