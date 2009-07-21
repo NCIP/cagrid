@@ -62,6 +62,7 @@ public class DataServiceConstants {
 	
 	// query processor constants
 	public static final String QUERY_PROCESSOR_CLASS_PROPERTY = "queryProcessorClass";
+	public static final String CQL2_QUERY_PROCESSOR_CLASS_PROPERTY = "cql2QueryProcessorClass";
 	public static final String QUERY_PROCESSOR_STUB_NAME = "StubCQLQueryProcessor";
 	public static final String QUERY_PROCESSOR_STUB_DEPRICATED_MESSAGE = 
 		"/*\n" +
@@ -72,6 +73,7 @@ public class DataServiceConstants {
 	
 	// query processor config constants
 	public static final String QUERY_PROCESSOR_CONFIG_PREFIX = "cqlQueryProcessorConfig_";
+	public static final String CQL2_QUERY_PROCESSOR_CONFIG_PREFIX = "cql2QueryProcessorConfig_";
 	
 	// exceptions
 	public static final String DATA_SERVICE_EXCEPTIONS_NAMESPACE = "http://gov.nih.nci.cagrid.data/DataServiceExceptions";
@@ -91,6 +93,8 @@ public class DataServiceConstants {
 	// validation constants
 	public static final String CQL_VALIDATOR_CLASS = DATA_SERVICE_PARAMS_PREFIX + "_cqlValidatorClass";
 	public static final String DOMAIN_MODEL_VALIDATOR_CLASS = DATA_SERVICE_PARAMS_PREFIX + "_domainModelValidatorClass";
+	public static final String CQL2_DOMAIN_MODEL_VALIDATOR = DATA_SERVICE_PARAMS_PREFIX + "_cql2DomainModelValidator";
+	public static final String CQL2_STRUCTURE_VALIDATOR = DATA_SERVICE_PARAMS_PREFIX + "_cql2StructureValidator";
 	public static final String VALIDATE_CQL_FLAG = DATA_SERVICE_PARAMS_PREFIX + "_validateCqlFlag";
 	public static final String VALIDATE_DOMAIN_MODEL_FLAG = DATA_SERVICE_PARAMS_PREFIX + "_validateDomainModelFlag";
     public static final String DEFAULT_VALIDATE_CQL_FLAG = Boolean.TRUE.toString();
