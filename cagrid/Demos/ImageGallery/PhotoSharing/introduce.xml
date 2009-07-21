@@ -1,9 +1,9 @@
 <ns1:ServiceDescription introduceVersion="1.3" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
  <ns2:Namespaces xsi:type="ns2:NamespacesType" xmlns:ns2="gme://gov.nih.nci.cagrid.introduce/1/Namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ns2:Namespace generateStubs="false" location="org.cagrid.demo.photosharing.domain.xsd" namespace="gme://org.cagrid.demo.photosharing.domain" packageName="org.cagrid.demo.photosharing.domain" xsi:type="ns2:NamespaceType">
-   <ns2:SchemaElement className="Image" deserializer="org.cagrid.datatype.sdkmapping4.encoding.SDK41DeserializerFactory" serializer="org.cagrid.datatype.sdkmapping4.encoding.SDK41SerializerFactory" type="Image" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement className="ImageDescription" deserializer="org.cagrid.datatype.sdkmapping4.encoding.SDK41DeserializerFactory" serializer="org.cagrid.datatype.sdkmapping4.encoding.SDK41SerializerFactory" type="ImageDescription" xsi:type="ns2:SchemaElementType"/>
-   <ns2:SchemaElement className="User" deserializer="org.cagrid.datatype.sdkmapping4.encoding.SDK41DeserializerFactory" serializer="org.cagrid.datatype.sdkmapping4.encoding.SDK41SerializerFactory" type="User" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement className="Image" deserializer="org.cagrid.datatype.sdkmapping41.encoding.SDK41DeserializerFactory" serializer="org.cagrid.datatype.sdkmapping41.encoding.SDK41SerializerFactory" type="Image" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement className="ImageDescription" deserializer="org.cagrid.datatype.sdkmapping41.encoding.SDK41DeserializerFactory" serializer="org.cagrid.datatype.sdkmapping41.encoding.SDK41SerializerFactory" type="ImageDescription" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement className="User" deserializer="org.cagrid.datatype.sdkmapping41.encoding.SDK41DeserializerFactory" serializer="org.cagrid.datatype.sdkmapping41.encoding.SDK41SerializerFactory" type="User" xsi:type="ns2:SchemaElementType"/>
   </ns2:Namespace>
   <ns2:Namespace generateStubs="false" namespace="http://www.w3.org/2001/XMLSchema" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement type="anySimpleType" xsi:type="ns2:SchemaElementType"/>
