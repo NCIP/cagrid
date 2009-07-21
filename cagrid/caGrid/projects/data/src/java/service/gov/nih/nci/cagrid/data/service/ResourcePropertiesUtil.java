@@ -29,7 +29,7 @@ public class ResourcePropertiesUtil {
 		String jndiName = Constants.JNDI_SERVICES_BASE_NAME + servicePath + "/configuration";
 		Context initialContext = new InitialContext();
 		Object config = initialContext.lookup(jndiName);
-		Class configClass = config.getClass();
+		Class<?> configClass = config.getClass();
 		Method[] configMethods = configClass.getMethods();
 		for (int i = 0; i < configMethods.length; i++) {
 			Method current = configMethods[i];
