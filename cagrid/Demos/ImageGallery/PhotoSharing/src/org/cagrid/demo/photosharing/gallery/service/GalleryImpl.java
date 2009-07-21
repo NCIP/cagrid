@@ -473,7 +473,7 @@ public class GalleryImpl extends GalleryImplBase {
 		fault.setFaultString(e.getMessage());
 		FaultHelper helper = new FaultHelper(fault);
 		helper.addFaultCause(e);
-		fault = (org.cagrid.demo.photosharing.gallery.stubs.types.AuthorizationException) helper.getFault();
+		fault = helper.getFault();
 		return fault;
 	}
 
