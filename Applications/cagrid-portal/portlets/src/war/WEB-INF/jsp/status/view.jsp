@@ -37,9 +37,7 @@
         <input type="hidden" name="selectedId"/>
 
         <div class="label" id="numberNew">
-            Here are the
-            <span id="${prefix}latestServiceCount"><%----%></span>
-            newest services...
+            Here are the newest services...
         </div>
 
         <div class="row">
@@ -167,8 +165,6 @@
 
     function ${prefix}loadStatus(){
         dwr.engine.beginBatch({timeout:90000});
-
-        StatusService.getLatestServicesLimit(function(limit){$('${prefix}latestServiceCount').innerHTML=limit + " ";});
         StatusService.latestServices(function(latestServices){$('${prefix}latestServices').innerHTML=latestServices;});
         StatusService.servicesCount(function(count){$('${prefix}servicesCount').innerHTML=count;});
         StatusService.dataServicesCount(function(count){$('${prefix}dataServicesCount').innerHTML=count;});
