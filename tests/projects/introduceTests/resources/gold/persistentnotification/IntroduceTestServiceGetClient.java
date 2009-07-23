@@ -20,7 +20,6 @@ import org.test.stubs.IntroduceTestServicePortType;
 import org.test.stubs.service.IntroduceTestServiceAddressingLocator;
 import org.test.common.IntroduceTestServiceI;
 
-import com.sun.java_cup.internal.production;
 
 import gov.nih.nci.cagrid.introduce.security.client.ServiceSecurityClient;
 
