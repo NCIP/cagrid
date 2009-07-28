@@ -2,7 +2,21 @@ var resultEvent = new YAHOO.util.CustomEvent({type:"resultEvent",signature:"YAHO
 var treeEvent = new YAHOO.util.CustomEvent({type:"treeEvent",signature:"YAHOO.util.CustomEvent.FLAT"});
 var sortEvent = new YAHOO.util.CustomEvent({type:"sortEvent",signature:"YAHOO.util.CustomEvent.FLAT"});
 
+var Filter = Class.create({
+   initialize: function(label,type,value){
+       this.label = label;
+       this.type= type;
+       this.value = value;
+   }
+});
 
+var CatalogType = Class.create({
+    initialize: function(type,label){
+        this.type= type;
+        this.label=label;
+    }
+});
+    
 
 <!--extend array to find by object.initLabel property-->
     Array.prototype.findByLabel =
