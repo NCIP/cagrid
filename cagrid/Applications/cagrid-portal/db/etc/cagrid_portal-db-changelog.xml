@@ -3,9 +3,6 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9 http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
 
-    <!--all pre version 2.0 DB changes-->
-    <include file="cagrid_portal-db-20-changelog.xml"/>
-
     <changeSet id="1" author="kherm">
         <tagDatabase tag="version_2.1"/>
     </changeSet>
@@ -1867,7 +1864,7 @@
     <changeSet author="kherm (generated)" id="61-24">
          <preConditions onFail="MARK_RAN">
             <not>
-                <indexExists indexName="entry_id-2"/>
+                <indexExists schemaName="cat_entry_tocterms" indexName="entry_id-2"/>
             </not>
         </preConditions>
         <createIndex indexName="entry_id-2" tableName="cat_entry_tocterms" unique="true">
@@ -1879,7 +1876,7 @@
     <changeSet author="kherm (generated)" id="61-25">
          <preConditions onFail="MARK_RAN">
             <not>
-                <indexExists indexName="comments_id-1"/>
+                <indexExists schemaName="cat_relationship_instance_cat_comments" indexName="comments_id-1"/>
             </not>
         </preConditions>
         <createIndex indexName="comments_id-1" tableName="cat_relationship_instance_cat_comments" unique="true">
@@ -1890,7 +1887,7 @@
     <changeSet author="kherm (generated)" id="61-26">
          <preConditions onFail="MARK_RAN">
             <not>
-                <indexExists indexName="comments_id-2"/>
+                <indexExists schemaName="cat_role_instance_cat_comments" indexName="comments_id-2"/>
             </not>
         </preConditions>
         <createIndex indexName="comments_id-2" tableName="cat_role_instance_cat_comments" unique="true">
@@ -1979,4 +1976,43 @@
         <dropColumn columnName="catalog_id"  tableName="portal_users"/>
     </changeSet>
   
+    <changeSet author="kherm (generated)" id="62">
+        <preConditions onFail="MARK_RAN">
+            <indexExists indexName="FK52FB32C9A0F2F220"/>
+        </preConditions>
+        <dropIndex indexName="FK52FB32C9A0F2F220" tableName="cat_entry"/>
+    </changeSet>
+    
+    <changeSet author="kherm (generated)" id="63">
+         <preConditions onFail="MARK_RAN">
+            <columnExists tableName="cat_entry" columnName="cql_id"/>
+        </preConditions>
+        <dropColumn columnName="cql_id" tableName="cat_entry"/>
+    </changeSet>
+    
+    <changeSet author="kherm (generated)" id="64">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="cat_entry" columnName="portal_url"/>
+        </preConditions>
+        <dropColumn columnName="portal_url"  tableName="cat_entry"/>
+    </changeSet>
+    
+    <changeSet author="kherm" id="65">
+       <update tableName="cat_entry">
+           <column name="catalog_type" value="tools"/>
+           <where>catalog_type='tool'</where>
+       </update>
+    </changeSet>
+
+    <changeSet author="kherm (generated)" id="66">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="cat_entry" columnName="communityUrl"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="cat_entry">
+            <column name="communityUrl" type="TINYBLOB"/>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>
