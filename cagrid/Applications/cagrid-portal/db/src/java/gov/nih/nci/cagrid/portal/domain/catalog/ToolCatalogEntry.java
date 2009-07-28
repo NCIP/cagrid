@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@DiscriminatorValue("tool")
+@DiscriminatorValue("tools")
 
 public class ToolCatalogEntry extends CatalogEntry {
 	
