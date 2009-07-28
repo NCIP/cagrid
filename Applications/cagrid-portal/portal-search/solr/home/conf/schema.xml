@@ -116,6 +116,7 @@ lexicographic ordering isn't equal to the numeric ordering) -->
             </analyzer>
         </fieldType>
 
+
         <!-- A text field that uses WordDelimiterFilter to enable splitting and matching of
         words on case-change, alpha numeric boundaries, and non-alphanumeric chars,
         so that a query of "wifi" or "wi fi" could match a document containing "Wi-Fi".
@@ -262,7 +263,7 @@ via copyField further on in this schema  -->
         <!-- Here, default is used to create a "timestamp" field indicating
            When each document was indexed.
         -->
-         <!-- PORTAL adds  -->
+        <!-- PORTAL adds  -->
         <field name="catalogName" type="alphaOnlySort" indexed="true" stored="false"/>
         <field name="updatedAt" type="date" indexed="true" stored="false"/>
         <field name="createdAt" type="date" indexed="true" stored="false"/>
@@ -278,20 +279,31 @@ via copyField further on in this schema  -->
         <field name="role" type="text" indexed="true" stored="true"/>
         <field name="emailAddress" type="text" indexed="true" stored="true"/>
         <field name="number" type="text" indexed="true" stored="true"/>
-        <field name="catalog_type" type="text" indexed="true" stored="true"/>
+        <field name="catalog_type" type="text_ws" indexed="true" stored="true"/>
         <field name="description" type="text" indexed="true" stored="true"/>
         <field name="homepageUrl" type="text" indexed="true" stored="true"/>
         <field name="endpoint" type="text" indexed="true" stored="true"/>
-        <field name="term_description" type="text" indexed="true" stored="true"  multiValued="true"  />
-        <field name="term_label" type="text" indexed="true" stored="true"  multiValued="true"  />
-        <field name="term_vocabulary" type="text" indexed="true" stored="true"  multiValued="true"  />
-        <field name="term_identifier" type="text" indexed="true" stored="true" multiValued="true"  />
+        <field name="term_description" type="text" indexed="true" stored="true" multiValued="true"/>
+        <field name="term_label" type="text" indexed="true" stored="true" multiValued="true"/>
+        <field name="term_vocabulary" type="text" indexed="true" stored="true" multiValued="true"/>
+        <field name="term_identifier" type="text" indexed="true" stored="true" multiValued="true"/>
 
-        <field name="rating" type="integer" indexed="true" stored="true" multiValued="true"  />
+        <field name="rating" type="integer" indexed="true" stored="true" multiValued="true"/>
         <field name="featured" type="boolean" indexed="true" stored="true"/>
 
         <!--will just treat it as a string-->
         <field name="phoneNumber" type="string" indexed="true" stored="true"/>
+        <field name="service_name" type="text" indexed="true" stored="true"/>
+        <field name="service_description" type="text" indexed="true" stored="true"/>
+
+        <!--semantic metadata-->
+        <field name="className" multiValued="true" type="text" indexed="true" stored="true"/>
+        <field name="conceptCode" multiValued="true" type="textTight" indexed="true" stored="true"/>
+        <field name="concept_name" multiValued="true" type="text" indexed="true" stored="true"/>
+        <field name="concept_description" multiValued="true" type="text" indexed="true" stored="true"/>
+
+        <field name="oper_name" multiValued="true" type="text" indexed="true" stored="true"/>
+        <field name="oper_description" multiValued="true" type="text" indexed="true" stored="true"/>
 
         <!-- Since we want to search multiple fields (description, title, user, etc.),
 we’ll set the default search field to a catchall text field called text -->
@@ -348,7 +360,13 @@ or to add multiple fields to the same field for easier/faster searching.  -->
     <copyField source="displayName" dest="text"/>
     <copyField source="shortName" dest="text"/>
     <copyField source="role" dest="text"/>
-   
+    <copyField source="oper_name" dest="text"/>
+    <copyField source="oper_description" dest="text"/>
+    <copyField source="conceptCode" dest="text"/>
+    <copyField source="concept_name" dest="text"/>
+    <copyField source="className" dest="text"/>
+    <copyField source="service_name" dest="text"/>
+    <copyField source="service_description" dest="text"/>
 
 
     <!-- Similarity is the scoring routine for each document vs. a query.
