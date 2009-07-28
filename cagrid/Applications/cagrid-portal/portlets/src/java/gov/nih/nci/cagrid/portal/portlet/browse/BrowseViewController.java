@@ -86,7 +86,7 @@ public class BrowseViewController implements InitializingBean, Controller {
             mav.addObject("catalogType", "person");
         } else if (browseType.equals(BrowseTypeEnum.TOOL)) {
             entryTypeName = "ToolCatalogEntry";
-            mav.addObject("catalogType", "tool");
+            mav.addObject("catalogType", "tool_* tools");
         } else if (browseType.equals(BrowseTypeEnum.ALL)) {
             entryTypeName = "CatalogEntry";
         } else {
