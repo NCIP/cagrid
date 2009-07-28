@@ -84,10 +84,8 @@
         <div>
             <div id="${ns}tree" class="tree-container"></div>
             <div class="searchResults">
-
+                <%@ include file="/WEB-INF/jsp/browse/sort.jspf" %>
                 <div id="${ns}searchBar" class="searchBar">
-                    <div id="${ns}paginatorSummary" class="paginationSummary"></div>
-                    <%@ include file="/WEB-INF/jsp/browse/sort.jspf" %>
                 </div>
 
                 <div id="catalogResult">
@@ -155,6 +153,7 @@
             keyword: keyword,
             catalogType: "${catalogType}",
             paginatorDiv: "${ns}paginatorDiv",
+            searchBar:"${ns}searchBar",
             treeDiv: "${ns}tree",
             rowsPerPage: 10,
             sortField:$("${ns}sortList").value

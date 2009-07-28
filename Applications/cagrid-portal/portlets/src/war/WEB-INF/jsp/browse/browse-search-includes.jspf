@@ -25,22 +25,30 @@
 <script src="<c:url value="/js/browse-catalog.js"/>"></script>
 
 <script type="text/javascript">
-    //    var myLogReader = new YAHOO.widget.LogReader("myLogger");
+//        var myLogReader = new YAHOO.widget.LogReader("myLogger");
     var solrDatasource = new YAHOO.util.XHRDataSource("<c:out value="${solrServiceUrl}"/>/select?", {responseType:YAHOO.util.XHRDataSource.JSON});
-
+    var wildcard="*:*";
 
     <%--Represents the summary tree for filtering search results--%>
     var SummaryTree = Class.create({
         initialize: function(catalog) {
             var summaryQuery = catalog.query;
-            var treeDiv = catalog.config.treeDiv;
+            if(catalog.config.catalog)
+                this.catalogType = catalog.config.catalog.type;
+            else
+                this.catalogType = wildcard;
 
-            this.tree = new YAHOO.widget.TreeView(document.getElementById(treeDiv));
+            this.tree = new YAHOO.widget.TreeView(document.getElementById(catalog.config.treeDiv));
 
         <%--onClick callback--%>
             this.tree.subscribe("labelClick", function(node) {
-                catalog.config.filterType = node.data.type;
-                catalog.config.filterValue = node.data.name;
+                if(node.data.type.search(/catalog/i)>-1){
+                   catalog.config.filter=null;
+                    catalog.config.catalog = new CatalogType(node.data.name,node.data.baseLabel);
+                }
+                else{
+                    catalog.config.filter = new Filter( node.data.baseLabel, node.data.type, node.data.name);
+                }
                 catalog.runQuery(false);
                 node.toggle();
             });
@@ -52,33 +60,37 @@
                     var solrJSON = YAHOO.lang.JSON.parse(oParsedResponse.results.responseText);
                     YAHOO.log("Firing tree event");
                     treeEvent.fire(solrJSON.tree);
-                }
-
-            };
+                }};
 
         <%--only get catalog_type field for makign summary tree--%>
-            YAHOO.log("Summary query is " + summaryQuery.getQuery());
-
             summaryQuery.setRows(10000);
             solrDatasource.sendRequest(summaryQuery.getQuery(), {
                 success : searchCallback,
                 failure : searchCallback,
                 scope : this
             });
+              YAHOO.log("Summary query is " + summaryQuery.getQuery());
             summaryQuery.setRows(catalog.config.rowsPerPage);
-
             this.rootNode = new YAHOO.widget.HTMLNode({html:"Search Categories"}, this.tree.getRoot(), true);
             this.tree.render();
         },
-        addSubTree: function(subTree) {
+
+        addSubTree: function(subTree,tree) {
             var nodesList = subTree.nodes;
             if (subTree.nodes.length > 0) {
-                var subTreeNode = new YAHOO.widget.TextNode({label:subTree.label + " (All)",type:subTree.type,name:"[* TO *]"}, this.rootNode, true);
+                var subTreeNode;
+                if(subTree.type.search(/catalog/i)>-1)
+                    subTreeNode = new YAHOO.widget.TextNode({baseLabel:'All',label:subTree.label + " (All)",type:subTree.type,name:tree.catalogType}, this.rootNode, true);
+                else
+                 subTreeNode= new YAHOO.widget.TextNode({baseLabel:'All',label:subTree.label + " (All)",type:subTree.type,name:"*:*"}, this.rootNode, true);
+
                 for (var i = 0; i < nodesList.length; i++) {
                     var node = nodesList[i];
-                    new YAHOO.widget.MenuNode({label:node.label + "(" + node.count + ")",type:subTree.type,name:node.name}, subTreeNode, true);
-                }
-            }
+                    if(subTree.type.search(/catalog/i)>-1)
+                    new YAHOO.widget.MenuNode({baseLabel:node.label,label:node.label + "(" + node.count + ")",type:subTree.type,name:node.name}, subTreeNode, true);
+                    else
+                        new YAHOO.widget.MenuNode({baseLabel:node.label,label:node.label,type:subTree.type,name:node.name}, subTreeNode, true);
+                }}
         },
         refresh: function() {
             this.tree.getRoot().refresh();
@@ -88,7 +100,7 @@
     function updateTreeWithResults(type, args, tree) {
         var treeList = args[0];
         for (var i = 0, len = treeList.length; i < len; i++) {
-            tree.addSubTree(treeList[i]);
+            tree.addSubTree(treeList[i],tree);
         }
         tree.refresh();
     }
@@ -98,8 +110,8 @@
 
         initialize: function(config) {
             this.rowsPerPage = 10;
-            this.config = {keyword:config.keyword,treeDiv:config.treeDiv,catalogType:config.catalogType,rowsPerPage:config.rowsPerPage,paginatorDiv:config.paginatorDiv,
-                filterType:config.filterType,filterValue:config.filterValue,sortField:config.sortField};
+            this.config = {keyword:config.keyword,treeDiv:config.treeDiv,rowsPerPage:config.rowsPerPage,paginatorDiv:config.paginatorDiv,searchBar:config.searchBar,
+                sortField:config.sortField};
 
             if (this.config.rowsPerPage)
                 this.rowsPerPage = this.config.rowsPerPage;
@@ -109,18 +121,30 @@
                 alwaysVisible: false,
                 containers   : [this.config.paginatorDiv]
             });
-
+            
             this.paginator.subscribe('changeRequest', this.handlePagination, this);
             this.query = new solrQuery(this.config.keyword, this.rowsPerPage);
             sortEvent.subscribe(this.sort, this);
 
-            if (this.config.catalogType) {
-                this.query.addFacet("catalog_type", this.config.catalogType);
+            if (config.catalogType) {
+                if(config.keyword && config.keyword!=wildcard)
+                this.config.catalog = new CatalogType(config.catalogType,config.keyword);
+                else
+                    this.config.catalog = new CatalogType(config.catalogType,"All");
             }
-            new SummaryTree(this);
 
+            <%--set the search summary bar--%>
+             $(this.config.searchBar).innerHTML ='';
+            this.paginatorSummaryDiv = document.createElement('div');
+            this.paginatorSummaryDiv.id='paginatorSummaryDiv';
+            $(this.config.searchBar).appendChild(this.paginatorSummaryDiv);
+
+            this.browseSummaryDiv = document.createElement('div');
+            this.browseSummaryDiv.id='browseSummary';
+            $(this.config.searchBar).appendChild(this.browseSummaryDiv);
 
             this.runQuery(false);
+            new SummaryTree(this);
 
         },
 
@@ -134,13 +158,13 @@
 
             this.query.removeAllFacets();
 
-            if (this.config.catalogType) {
+            if (this.config.catalog) {
                 YAHOO.log("Adding catalog_type facet");
-                this.query.addFacet("catalog_type", this.config.catalogType);
+                this.query.addFacet("catalog_type", this.config.catalog.type);
             }
-            if (this.config.filterType) {
-                YAHOO.log("Adding " + this.config.filterType + " facet");
-                this.query.addFacet(this.config.filterType, this.config.filterValue);
+            if (this.config.filter) {
+                YAHOO.log("Adding " + this.config.filter.type + " facet");
+                this.query.addFacet(this.config.filter.type, this.config.filter.value);
             }
             if (this.config.sortField) {
                 YAHOO.log("Will sort on " + this.config.sortField);
@@ -150,6 +174,19 @@
             if (!paginate) {
             <%--not coming for paginator--%>
                 this.query.setStartValue(0);
+                this.browseSummaryDiv.innerHTML='';
+
+                    this.browseSummaryDiv.appendChild(document.createTextNode("Browsing"));
+                if(this.config.keyword!=wildcard)
+                    this.browseSummaryDiv.appendChild(document.createTextNode("("+ this.config.keyword +")"));
+                
+                if (this.config.catalog) {
+                    this.browseSummaryDiv.appendChild(document.createTextNode(">>" +this.config.catalog.label));
+                }
+                if (this.config.filter) {
+                    this.browseSummaryDiv.appendChild(document.createTextNode(">>" +this.config.filter.label));
+                }
+
             }
             YAHOO.log("Will run a new query" + this.query.getQuery());
 
@@ -189,9 +226,12 @@
             if (endValue > totalRecords)
                 endValue = totalRecords;
 
-            $("${ns}paginatorSummary").innerHTML = "Results  <strong>" + startValue + " - " + endValue + "</strong> of  <strong>" + totalRecords + "</strong>";
+
+            this.paginatorSummaryDiv.innerHTML='';
+            this.paginatorSummaryDiv.appendChild(document.createTextNode("Results " + startValue + " - " + endValue + " of " + totalRecords));
             if (this.config.keyword != "*:*")
-                $("${ns}paginatorSummary").appendChild(document.createTextNode(" for " + this.config.keyword));
+               this.paginatorSummaryDiv.appendChild(document.createTextNode(" for " + this.config.keyword));
+
         },
 
         handlePagination: function(newState, cat) {

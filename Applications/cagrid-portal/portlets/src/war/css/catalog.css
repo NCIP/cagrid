@@ -7,7 +7,12 @@
 .searchBar{
     background-color:#E5E8EF;
     width:100%;
+    float:inherit;
+    margin-bottom:10px;
 }
-.paginationSummary{
+#browsingSummaryDiv{
     float:left;
+}
+#paginatorSummaryDiv{
+    float:right;
 }
