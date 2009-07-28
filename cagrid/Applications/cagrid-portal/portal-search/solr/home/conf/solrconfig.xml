@@ -533,7 +533,7 @@ concurrently.  An error is returned if this limit is exceeded. Recommend
             <str name="person">People</str>
             <str name="institution">Institution</str>
             <str name="tool_shared_query">Shared Query</str>
-            <str name="tool">Tool</str>
+            <str name="tools">Tool</str>
             <str name="dataset">Dataset</str>
             <str name="tool_desktop">Desktop Tool</str>
             <str name="community">Communities</str>
