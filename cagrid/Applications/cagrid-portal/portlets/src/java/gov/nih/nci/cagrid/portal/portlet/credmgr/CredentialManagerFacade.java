@@ -218,10 +218,12 @@ public class CredentialManagerFacade {
 					idpAuthn.setGridCredential(getEncryptionService().encrypt(
 							ProxyUtil.getProxyString(globusCred)));
 					getHibernateTemplate().update(idpAuthn);
+					
 				} catch (Exception ex) {
 					throw new RuntimeException("Error saving credentials: "
 							+ ex.getMessage(), ex);
 				}
+				user.setGridCredential(idpAuthn.getGridCredential());
 
 			}
 		} catch (RuntimeException ex) {
@@ -248,15 +250,19 @@ public class CredentialManagerFacade {
 				}
 				getHibernateTemplate().update(ia);
 			}
+			if (idpAuthn == null) {
+				throw new RuntimeException("No authentication found for identity: "
+						+ identity);
+			}
+			user.setGridCredential(idpAuthn.getGridCredential());
+			
 		} catch (RuntimeException ex) {
 			String msg = "Error setting default credential: " + ex.getMessage();
 			logger.error(msg, ex);
 			throw new RuntimeException(msg, ex);
 		}
-		if (idpAuthn == null) {
-			throw new RuntimeException("No authentication found for identity: "
-					+ identity);
-		}
+		
+		
 
 		return message;
 	}
