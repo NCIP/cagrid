@@ -11,12 +11,40 @@ import org.hibernate.SessionFactory;
 
 public class Database {
 
+	private String dbUrl;
+	private String dbUser;
+	private String dbPassword;
+	
 	private SessionFactory dbFactory = null;
 	
-	public Database( String dbUrl, String dbUser, String dbPassword ) {
+	public void initialize() {
 		dbFactory = HibernateUtil.initFactory(dbUrl, dbUser, dbPassword);
 	}
-		
+			
+	public String getDbUrl() {
+		return dbUrl;
+	}
+	
+	public void setDbUrl( String dbUrl ) {
+		this.dbUrl = dbUrl;
+	}
+	
+	public String getDbUser() {
+		return dbUser;
+	}
+	
+	public void setDbUser( String dbUser ) {
+		this.dbUser = dbUser;
+	}
+	
+	public String getDbPassword() {
+		return dbPassword;
+	}
+	
+	public void setDbPassword( String dbPassword ) {
+		this.dbPassword = dbPassword;
+	}
+	
 	public void save( String identifier, IdentifierValues values ) {
 			
         Session session = dbFactory.getCurrentSession();

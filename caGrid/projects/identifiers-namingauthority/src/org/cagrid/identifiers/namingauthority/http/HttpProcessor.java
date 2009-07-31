@@ -76,10 +76,10 @@ public class HttpProcessor {
 		
 		if (ivs == null)
 		{
-			msg.append("<h2>Identifier [" + idStr + "] could not be found</h2>\n");
+			msg.append("<h2>Local identifier [" + idStr + "] could not be found</h2>\n");
 		}
 		else {
-    		msg.append("<h3>" + idStr + "</h3>\n<hr>\n");
+    		msg.append("<h3>" + IdentifierUtil.build(namingAuthority.getConfiguration().getPrefix(), idStr) + "</h3>\n<hr>\n");
     		
     		for( String type : ivs.getTypes()) {
     			msg.append("<b>Type: &nbsp;</b>" + type + "<br>\n");
@@ -103,7 +103,7 @@ public class HttpProcessor {
 	}
 
 	public String xmlConfigResponse() {
-		NamingAuthorityConfig publicConfig = new NamingAuthorityConfig( namingAuthority.getConfig() );
+		NamingAuthorityConfig publicConfig = new NamingAuthorityConfig( namingAuthority.getConfiguration() );
 		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
 		java.beans.XMLEncoder encoder = new java.beans.XMLEncoder(baos);
         encoder.writeObject(publicConfig);

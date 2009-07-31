@@ -11,7 +11,19 @@
 	<!-- Place any other properties you will need here                  -->
 	<!-- ============================================================== -->
 
+	<property environment="env" />
+   <property file="${basedir}/project.properties" />
+   <property file="${basedir}/build.properties" />
+
 	<property name="jar.prefix" value="caGrid-${service.name}" />
+   <property name="jar.suffix" value="${project.version}.jar" />
+
+   <property name="common.jar.name" value="${jar.prefix}-common-${jar.suffix}" />
+   <property name="client.jar.name" value="${jar.prefix}-client-${jar.suffix}" />
+   <property name="service.jar.name" value="${jar.prefix}-service-${jar.suffix}" />
+   <property name="stubs.jar.name" value="${jar.prefix}-stubs-${jar.suffix}" />
+   <property name="test.jar.name" value="${jar.prefix}-tests-${jar.suffix}" />
+
 	<property name="ext.dir" location="${basedir}/ext" />
    <property name="ext.dependencies.dir" location="${ext.dir}/dependencies" />
    <property name="ext.lib.dir" location="${ext.dependencies.dir}/service/jars" />

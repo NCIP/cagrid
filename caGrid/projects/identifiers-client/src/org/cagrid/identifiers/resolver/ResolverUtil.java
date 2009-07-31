@@ -1,6 +1,5 @@
 package org.cagrid.identifiers.resolver;
 
-import gov.nih.nci.cagrid.identifiers.Type;
 import gov.nih.nci.cagrid.identifiers.TypeValues;
 import gov.nih.nci.cagrid.identifiers.TypeValuesMap;
 import gov.nih.nci.cagrid.identifiers.Values;
@@ -24,39 +23,39 @@ public class ResolverUtil {
 	//
 	// Given an identifier, it returns the real naming authority URL
 	//
-	public static String getNamingAuthorityURL( String identifier ) throws HttpException, IOException {
-		
-		String identifierURL = "";
-		
-		HttpClient client = new HttpClient();
-		
-		HttpMethod method = new GetMethod( identifier );
-		
-		method.setFollowRedirects(false);
-		
-		// Provide custom retry handler is necessary
-	    method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, 
-	    		new DefaultHttpMethodRetryHandler(3, false));
-	    
-	    try {
-	    	System.out.println("Connecting to " + identifier);
-	    	
-	    	int statusCode = client.executeMethod(method);
-	    	
-	    	if (statusCode ==  HttpStatus.SC_MOVED_TEMPORARILY) {
-	    		// Expected redirect
-	    		identifierURL = method.getResponseHeader("Location").getValue();
-	    	} else {
-	    		// No redirect. Assume identifier already points to NA
-	    		identifierURL = identifier;
-	    	}
-	    } finally {
-	        // Release the connection.
-	        method.releaseConnection();
-	    }  
-	    
-	    return identifierURL;
-	}
+//	public static String getNamingAuthorityURL( String identifier ) throws HttpException, IOException {
+//		
+//		String identifierURL = "";
+//		
+//		HttpClient client = new HttpClient();
+//		
+//		HttpMethod method = new GetMethod( identifier );
+//		
+//		method.setFollowRedirects(false);
+//		
+//		// Provide custom retry handler is necessary
+//	    method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, 
+//	    		new DefaultHttpMethodRetryHandler(3, false));
+//	    
+//	    try {
+//	    	System.out.println("Connecting to " + identifier);
+//	    	
+//	    	int statusCode = client.executeMethod(method);
+//	    	
+//	    	if (statusCode ==  HttpStatus.SC_MOVED_TEMPORARILY) {
+//	    		// Expected redirect
+//	    		identifierURL = method.getResponseHeader("Location").getValue();
+//	    	} else {
+//	    		// No redirect. Assume identifier already points to NA
+//	    		identifierURL = identifier;
+//	    	}
+//	    } finally {
+//	        // Release the connection.
+//	        method.releaseConnection();
+//	    }  
+//	    
+//	    return identifierURL;
+//	}
 	
 	//
 	// Given the naming authority URL, it returns the naming
@@ -117,10 +116,10 @@ public class ResolverUtil {
 		IdentifierValues ivs = new IdentifierValues();
 		
 		for( TypeValues tvs : tvsArr ) {
-			Type type = tvs.getType();
+			String type = tvs.getType();
 			Values values = tvs.getValues();
 			for( String value : values.getValue() ) {
-				ivs.add(type.getValue(), value);
+				ivs.add(type, value);
 			}
 		}
 		
@@ -128,10 +127,11 @@ public class ResolverUtil {
 	}
 	
 	public static IdentifierValues resolveGrid( String identifier ) throws HttpException, IOException {
-		String url = getNamingAuthorityURL( identifier );
-		NamingAuthorityConfig config = getNamingAuthorityConfig( url + "?config" );
+		//String url = getNamingAuthorityURL( identifier );
+		String configUrl = identifier + "?config";
+		NamingAuthorityConfig config = getNamingAuthorityConfig( configUrl );
 		if (config == null) {
-			throw new HttpException("Unable to retrieve naming authority configuration from " + url);
+			throw new HttpException("Unable to retrieve naming authority configuration from " + configUrl);
 		}
 		
 		IdentifiersNAServiceClient client = new IdentifiersNAServiceClient( config.getGridSvcUrl() );

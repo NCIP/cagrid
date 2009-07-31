@@ -39,7 +39,7 @@ public class ResolverTestCase extends TestCase {
 
 	private static Log log = LogFactory.getLog(ResolverTestCase.class);
 	
-	private String purl = "http://purl.cagrid.org:8090/cagrid/3c70f038-8773-4749-a5ea-37f5246d609d";
+	private String purl = "http://purl.cagrid.org:8090/cagrid/c9fa9853-1558-4576-b365-6ee6a6f57a31";
 
 	public void testGridResolution() {
 		try {

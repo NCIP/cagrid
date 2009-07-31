@@ -3,17 +3,6 @@
 	xmlns:tns="http://types.identifers-na.cagrid.org/IdentifiersNAService"
 	xmlns="http://www.w3.org/2001/XMLSchema">
 
-	<simpleType name="Type">
-		<restriction base="string">
-			<enumeration value="URL"/>
-			<enumeration value="DOI"/>
-			<enumeration value="EPR"/>
-			<enumeration value="CQL"/>
-		</restriction>
-	</simpleType>
-
-	<element name="Type" type="tns:Type"/>
-
 	<complexType name="Values">
 		<sequence>
 			<element name="Value" type="string" minOccurs="1" maxOccurs="unbounded" />
@@ -24,7 +13,7 @@
 
 	<complexType name="TypeValues">
         <sequence>
-          <element ref="tns:Type" />
+          <element name="type" type="string" />
           <element ref="tns:Values" />
         </sequence>
    </complexType>
