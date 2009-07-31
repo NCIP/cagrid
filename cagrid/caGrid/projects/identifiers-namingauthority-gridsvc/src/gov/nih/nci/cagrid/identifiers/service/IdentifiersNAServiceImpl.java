@@ -1,6 +1,7 @@
 package gov.nih.nci.cagrid.identifiers.service;
 
-import org.cagrid.identifiers.namingauthority.impl.NamingAuthorityConfigImpl;
+import org.cagrid.identifiers.namingauthority.NamingAuthority;
+import org.cagrid.identifiers.namingauthority.NamingAuthorityLoader;
 import org.cagrid.identifiers.namingauthority.impl.NamingAuthorityImpl;
 
 import gov.nih.nci.cagrid.identifiers.common.MappingUtil;
@@ -15,30 +16,25 @@ import java.rmi.RemoteException;
  */
 public class IdentifiersNAServiceImpl extends IdentifiersNAServiceImplBase {
 
-	private NamingAuthorityImpl _na;
+	private NamingAuthority namingAuthority;
 	
 	public IdentifiersNAServiceImpl() throws RemoteException {
 		super();
 		
-		NamingAuthorityConfigImpl config = new NamingAuthorityConfigImpl();
-		try {
-			config.setPrefix(getConfiguration().getIdentifiersNaPrefix());
-			config.setGridSvcUrl(getConfiguration().getIdentifiersNaGridSvcUrl());
-			config.setDbUrl(getConfiguration().getIdentifiersNaDbUrl());
-			config.setDbUser(getConfiguration().getIdentifiersNaDbUser());
-			config.setDbPassword(getConfiguration().getIdentifiersNaDbPassword());
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		_na = new NamingAuthorityImpl(config);
+		namingAuthority = new NamingAuthorityLoader().getNamingAuthority();
+		
+		System.out.println("Initializing naming authority with prefix [" +
+				namingAuthority.getConfiguration().getPrefix() + 
+				"]");
+		
+		namingAuthority.initialize();
 	}
 	
 
   public java.lang.String createIdentifier(gov.nih.nci.cagrid.identifiers.TypeValuesMap typeValues) throws RemoteException {
 	  try {
-		return _na.create(MappingUtil.toIdentifierValues(typeValues));
+		return ((NamingAuthorityImpl)namingAuthority).
+			create(MappingUtil.toIdentifierValues(typeValues));
 	} catch (Exception e) {
 		e.printStackTrace();
 		throw new RemoteException(e.toString());
@@ -46,7 +42,7 @@ public class IdentifiersNAServiceImpl extends IdentifiersNAServiceImplBase {
   }
 
   public gov.nih.nci.cagrid.identifiers.TypeValuesMap getTypeValues(java.lang.String identifier) throws RemoteException {
-	  return MappingUtil.toTypeValuesMap(_na.getValues(identifier));
+	  return MappingUtil.toTypeValuesMap(((NamingAuthorityImpl)namingAuthority).getValues(identifier));
   }
 
 }

@@ -70,13 +70,13 @@ public class IdentifiersNAServiceClient extends IdentifiersNAServiceClientBase i
 				
 			  TypeValues[] tvs = new TypeValues[2];
 			  tvs[0] = new TypeValues();
-			  tvs[0].setType(gov.nih.nci.cagrid.identifiers.Type.URL);
+			  tvs[0].setType("URL");
 			  Values values = new Values();
 			  values.setValue(new String[] { "http://www.google.com" });
 			  tvs[0].setValues(values);
 			  
 			  tvs[1] = new TypeValues();
-			  tvs[1].setType(gov.nih.nci.cagrid.identifiers.Type.DOI);
+			  tvs[1].setType("DOI");
 			  values = new Values();
 			  values.setValue(new String[] { "abc def hij" });
 			  tvs[1].setValues(values);
@@ -90,7 +90,7 @@ public class IdentifiersNAServiceClient extends IdentifiersNAServiceClientBase i
 			  System.out.println("Now retrieving values for " + identifier);
 			  TypeValuesMap tvm2 = client.getTypeValues(identifier);
 			  for( TypeValues tv : tvm2.getTypeValues() ) {
-				  System.out.println("TYPE: " + tv.getType().getValue());
+				  System.out.println("TYPE: " + tv.getType());
 				  for( String value : tv.getValues().getValue() ) {
 					  System.out.println("DATA: " + value);
 				  }

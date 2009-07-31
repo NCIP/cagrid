@@ -7,11 +7,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.cagrid.identifiers.namingauthority.NamingAuthority;
+import org.cagrid.identifiers.namingauthority.NamingAuthorityLoader;
 import org.cagrid.identifiers.namingauthority.http.HttpProcessor;
 
 public class NamingAuthorityService extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private NamingAuthorityImpl namingAuthority;
+	private NamingAuthority namingAuthority;
 	private HttpProcessor httpProcessor;
        
     /**
@@ -25,25 +27,14 @@ public class NamingAuthorityService extends HttpServlet {
 	 * @see Servlet#init(ServletConfig)
 	 */
 	public void init(ServletConfig config) throws ServletException {
-		System.out.println("NamingAuthorityService initializing...");
 		
-		String identifiersNaDbUrl = config.getInitParameter("identifiersNaDbUrl");
-		String identifiersNaDbUser = config.getInitParameter("identifiersNaDbUser");
-		String identifiersNaDbPassword = config.getInitParameter("identifiersNaDbPassword");
-		String identifiersNaPrefix = config.getInitParameter("identifiersNaPrefix");
-		String identifiersNaGridSvcUrl = config.getInitParameter("identifiersNaGridSvcUrl");
+		namingAuthority = new NamingAuthorityLoader().getNamingAuthority();
 		
-		//
-		// Start Naming Authority
-		//
-		NamingAuthorityConfigImpl naConfig = new NamingAuthorityConfigImpl();
-		naConfig.setPrefix(identifiersNaPrefix);
-		naConfig.setDbUrl(identifiersNaDbUrl);
-		naConfig.setDbUser(identifiersNaDbUser);
-		naConfig.setDbPassword(identifiersNaDbPassword);
-		naConfig.setGridSvcUrl(identifiersNaGridSvcUrl);
-
-		this.namingAuthority = new NamingAuthorityImpl(naConfig);
+		System.out.println("Initializing naming authority with prefix [" +
+				namingAuthority.getConfiguration().getPrefix() + 
+				"]");
+		
+		namingAuthority.initialize();
 		this.httpProcessor = new HttpProcessor( this.namingAuthority );
 	}
 

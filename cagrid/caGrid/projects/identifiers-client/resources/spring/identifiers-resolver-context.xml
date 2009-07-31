@@ -12,8 +12,8 @@
     <bean id="CQLRetriever" class="org.cagrid.identifiers.retriever.impl.CQLRetriever">
     	<property name="requiredTypes">
 		   <util:list>
-		    	<bean id="CQLType.name" class="org.springframework.beans.factory.config.PropertyPathFactoryBean"/>
-		    	<bean id="EPRType.name" class="org.springframework.beans.factory.config.PropertyPathFactoryBean"/>
+		    	<value>CQL</value>
+		    	<value>EPR</value>
 		   </util:list>
         </property>
     </bean>

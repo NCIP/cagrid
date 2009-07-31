@@ -16,7 +16,7 @@ public class MappingUtil {
 		for( TypeValues tv : typeValues.getTypeValues() ) {
 			if (tv.getValues() != null) {
 				for( String value : tv.getValues().getValue() ) {
-					ivs.add( tv.getType().getValue(), value);
+					ivs.add( tv.getType(), value);
 				}
 			}
 		}
@@ -30,7 +30,7 @@ public class MappingUtil {
 		
 		for( int i=0; i < tvs.length; i++) {
 			tvs[i] = new TypeValues();
-			tvs[i].setType(Type.fromValue(types[i]));
+			tvs[i].setType(types[i]);
 			Values newValues = new Values();
 			newValues.setValue(values.getValues(types[i]));
 			tvs[i].setValues(newValues);

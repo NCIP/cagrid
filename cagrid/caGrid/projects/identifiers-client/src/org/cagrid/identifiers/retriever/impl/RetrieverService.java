@@ -12,8 +12,7 @@ public class RetrieverService {
 	
 	public RetrieverService() {
 		init( new String[] { 
-				"/resources/spring/framework-resolver-context.xml",
-				"/resources/spring/framework-namingauthority-context.xml"},
+				"/resources/spring/identifiers-resolver-context.xml"},
 			"RetrieverFactory");
 	}
 	
