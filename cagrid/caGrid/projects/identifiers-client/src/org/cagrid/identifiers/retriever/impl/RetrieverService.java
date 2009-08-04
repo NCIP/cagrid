@@ -1,6 +1,6 @@
 package org.cagrid.identifiers.retriever.impl;
 
-import org.cagrid.identifiers.core.IdentifierValues;
+import org.cagrid.identifiers.namingauthority.impl.IdentifierValuesImpl;
 import org.cagrid.identifiers.retriever.Retriever;
 import org.cagrid.identifiers.retriever.RetrieverFactory;
 import org.springframework.context.ApplicationContext;
@@ -29,12 +29,12 @@ public class RetrieverService {
 		return factory;
 	}
 
-	public Object retrieve( String retrieverName, IdentifierValues ivs ) throws Exception {
+	public Object retrieve( String retrieverName, IdentifierValuesImpl ivs ) throws Exception {
 		Retriever retriever = factory.getRetriever( retrieverName );
 		return retriever.retrieve(ivs);
 	}
 	
-	public Object retrieve( IdentifierValues ivs ) throws Exception {
+	public Object retrieve( IdentifierValuesImpl ivs ) throws Exception {
 		Retriever retriever = factory.getRetriever(ivs);
 		return retriever.retrieve(ivs);
 	}

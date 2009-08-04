@@ -4,8 +4,8 @@ import java.util.List;
 
 
 
-import org.cagrid.identifiers.core.IdentifierValues;
 import org.cagrid.identifiers.namingauthority.hibernate.IdentifierValue;
+import org.cagrid.identifiers.namingauthority.impl.IdentifierValuesImpl;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -45,7 +45,7 @@ public class Database {
 		this.dbPassword = dbPassword;
 	}
 	
-	public void save( String identifier, IdentifierValues values ) {
+	public void save( String identifier, IdentifierValuesImpl values ) {
 			
         Session session = dbFactory.getCurrentSession();
         session.beginTransaction();
@@ -64,7 +64,7 @@ public class Database {
         session.getTransaction().commit();
 	}
 	
-	public IdentifierValues getValues( String identifier ) {
+	public IdentifierValuesImpl getValues( String identifier ) {
 		
 		Session session = dbFactory.getCurrentSession();
 		session.beginTransaction();
@@ -76,7 +76,7 @@ public class Database {
 		if (values.size() == 0)
 			return null;
 		
-		IdentifierValues ivs = new IdentifierValues();
+		IdentifierValuesImpl ivs = new IdentifierValuesImpl();
 		for( int i=0; i < values.size(); i++ ) {
 			ivs.add(values.get(i).getType(), values.get(i).getData());
 		}

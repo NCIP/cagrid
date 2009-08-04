@@ -2,9 +2,8 @@ package org.cagrid.identifiers.namingauthority.http;
 
 import java.io.IOException;
 
-import org.cagrid.identifiers.core.IdentifierUser;
-import org.cagrid.identifiers.core.IdentifierValues;
 import org.cagrid.identifiers.namingauthority.NamingAuthority;
+import org.cagrid.identifiers.namingauthority.impl.IdentifierValuesImpl;
 import org.cagrid.identifiers.namingauthority.util.IdentifierUtil;
 
 import javax.servlet.http.*;
@@ -71,7 +70,7 @@ public class HttpProcessor {
 	}
 	
 	
-	public String htmlResponse(String idStr, IdentifierValues ivs) {
+	public String htmlResponse(String idStr, IdentifierValuesImpl ivs) {
 		StringBuffer msg = new StringBuffer();
 		
 		if (ivs == null)
@@ -93,7 +92,7 @@ public class HttpProcessor {
 		return msg.toString();
 	}
 	
-	public String xmlResponse(IdentifierValues ivs) {
+	public String xmlResponse(IdentifierValuesImpl ivs) {
 		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
 		java.beans.XMLEncoder encoder = new java.beans.XMLEncoder(baos);
         encoder.writeObject(ivs);
@@ -151,7 +150,7 @@ public class HttpProcessor {
 
 			if (noErrors) {
 
-				IdentifierValues ivs = ((IdentifierUser)namingAuthority).getValues(idStr);
+				IdentifierValuesImpl ivs = (IdentifierValuesImpl)namingAuthority.resolveIdentifier(idStr);
 
 				if (xmlResponse) {
 					msg.append(xmlResponse(ivs));

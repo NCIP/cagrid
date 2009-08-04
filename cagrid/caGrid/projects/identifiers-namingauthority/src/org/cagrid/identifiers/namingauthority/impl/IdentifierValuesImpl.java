@@ -1,9 +1,11 @@
-package org.cagrid.identifiers.core;
+package org.cagrid.identifiers.namingauthority.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class IdentifierValues implements java.io.Serializable {
+import org.cagrid.identifiers.namingauthority.IdentifierValues;
+
+public class IdentifierValuesImpl implements IdentifierValues, java.io.Serializable {
 	private HashMap<String, ArrayList<String>> values =
 		new HashMap<String, ArrayList<String>>();
 	

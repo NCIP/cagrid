@@ -14,49 +14,12 @@ import org.apache.axis.types.URI.MalformedURIException;
 import org.apache.commons.httpclient.*;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
-import org.cagrid.identifiers.core.IdentifierValues;
 import org.cagrid.identifiers.namingauthority.http.NamingAuthorityConfig;
+import org.cagrid.identifiers.namingauthority.impl.IdentifierValuesImpl;
 
 
 public class ResolverUtil {
 
-	//
-	// Given an identifier, it returns the real naming authority URL
-	//
-//	public static String getNamingAuthorityURL( String identifier ) throws HttpException, IOException {
-//		
-//		String identifierURL = "";
-//		
-//		HttpClient client = new HttpClient();
-//		
-//		HttpMethod method = new GetMethod( identifier );
-//		
-//		method.setFollowRedirects(false);
-//		
-//		// Provide custom retry handler is necessary
-//	    method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, 
-//	    		new DefaultHttpMethodRetryHandler(3, false));
-//	    
-//	    try {
-//	    	System.out.println("Connecting to " + identifier);
-//	    	
-//	    	int statusCode = client.executeMethod(method);
-//	    	
-//	    	if (statusCode ==  HttpStatus.SC_MOVED_TEMPORARILY) {
-//	    		// Expected redirect
-//	    		identifierURL = method.getResponseHeader("Location").getValue();
-//	    	} else {
-//	    		// No redirect. Assume identifier already points to NA
-//	    		identifierURL = identifier;
-//	    	}
-//	    } finally {
-//	        // Release the connection.
-//	        method.releaseConnection();
-//	    }  
-//	    
-//	    return identifierURL;
-//	}
-	
 	//
 	// Given the naming authority URL, it returns the naming
 	// authority configuration object.
@@ -109,11 +72,11 @@ public class ResolverUtil {
 	    return config;
 	}
 	
-	public static IdentifierValues convert( TypeValues[] tvsArr ) {
+	public static IdentifierValuesImpl convert( TypeValues[] tvsArr ) {
 		if (tvsArr == null)
 			return null;
 		
-		IdentifierValues ivs = new IdentifierValues();
+		IdentifierValuesImpl ivs = new IdentifierValuesImpl();
 		
 		for( TypeValues tvs : tvsArr ) {
 			String type = tvs.getType();
@@ -126,7 +89,7 @@ public class ResolverUtil {
 		return ivs;
 	}
 	
-	public static IdentifierValues resolveGrid( String identifier ) throws HttpException, IOException {
+	public static IdentifierValuesImpl resolveGrid( String identifier ) throws HttpException, IOException {
 		//String url = getNamingAuthorityURL( identifier );
 		String configUrl = identifier + "?config";
 		NamingAuthorityConfig config = getNamingAuthorityConfig( configUrl );
@@ -141,7 +104,7 @@ public class ResolverUtil {
 				client.getTypeValues(identifier) );
 	}
 	
-	public static IdentifierValues resolveHttp( String identifier ) throws HttpException, IOException {
+	public static IdentifierValuesImpl resolveHttp( String identifier ) throws HttpException, IOException {
 		HttpClient client = new HttpClient();
 		
 		HttpMethod method = new GetMethod( identifier );
@@ -154,7 +117,7 @@ public class ResolverUtil {
 	    
 	    method.addRequestHeader(new Header("Accept", "application/xml"));
 	    
-	    IdentifierValues ivs = null;
+	    IdentifierValuesImpl ivs = null;
 	    
 	    try {
 	    	System.out.println("Connecting to " + identifier);
@@ -178,7 +141,7 @@ public class ResolverUtil {
 			XMLDecoder decoder = new XMLDecoder(new StringBufferInputStream(
 					response));
 		    
-		    ivs = (IdentifierValues)decoder.readObject();
+		    ivs = (IdentifierValuesImpl)decoder.readObject();
 		    decoder.close();
 		    
 		    if (ivs == null) {
