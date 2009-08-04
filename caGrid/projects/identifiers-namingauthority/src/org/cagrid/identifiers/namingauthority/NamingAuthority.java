@@ -33,4 +33,8 @@ public abstract class NamingAuthority {
 	public abstract void initialize();
 	
 	public abstract void processHttpRequest(HttpServletRequest request, HttpServletResponse response) throws IOException;
+
+	public abstract IdentifierValues resolveIdentifier(Object identifier);
+	
+	public abstract Object createIdentifier(IdentifierValues values) throws Exception;
 }

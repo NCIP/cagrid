@@ -7,13 +7,13 @@ import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.utils.XMLUtils;
-import org.cagrid.identifiers.core.*;
+import org.cagrid.identifiers.namingauthority.impl.IdentifierValuesImpl;
 import org.cagrid.identifiers.retriever.Retriever;
 import org.globus.wsrf.encoding.ObjectDeserializer;
 
 public class CQLRetriever extends Retriever {
 
-	public Object retrieve( IdentifierValues ivs ) throws Exception {
+	public Object retrieve( IdentifierValuesImpl ivs ) throws Exception {
 		
 		validateTypes( ivs );
 		

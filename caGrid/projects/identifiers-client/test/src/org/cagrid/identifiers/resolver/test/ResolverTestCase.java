@@ -26,7 +26,7 @@ import org.apache.axis.message.addressing.ServiceNameType;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.cagrid.identifiers.core.IdentifierValues;
+import org.cagrid.identifiers.namingauthority.impl.IdentifierValuesImpl;
 import org.cagrid.identifiers.resolver.ResolverUtil;
 import org.cagrid.identifiers.retriever.impl.RetrieverService;
 import org.globus.wsrf.encoding.ObjectDeserializer;
@@ -43,7 +43,7 @@ public class ResolverTestCase extends TestCase {
 
 	public void testGridResolution() {
 		try {
-			IdentifierValues ivs = ResolverUtil.resolveGrid(purl);
+			IdentifierValuesImpl ivs = ResolverUtil.resolveGrid(purl);
 			System.out.println(ivs.toString());
 		} catch (Exception e) {
 			e.printStackTrace();

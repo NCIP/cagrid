@@ -2,6 +2,7 @@ package gov.nih.nci.cagrid.identifiers.service;
 
 import org.cagrid.identifiers.namingauthority.NamingAuthority;
 import org.cagrid.identifiers.namingauthority.NamingAuthorityLoader;
+import org.cagrid.identifiers.namingauthority.impl.IdentifierValuesImpl;
 import org.cagrid.identifiers.namingauthority.impl.NamingAuthorityImpl;
 
 import gov.nih.nci.cagrid.identifiers.common.MappingUtil;
@@ -33,8 +34,7 @@ public class IdentifiersNAServiceImpl extends IdentifiersNAServiceImplBase {
 
   public java.lang.String createIdentifier(gov.nih.nci.cagrid.identifiers.TypeValuesMap typeValues) throws RemoteException {
 	  try {
-		return ((NamingAuthorityImpl)namingAuthority).
-			create(MappingUtil.toIdentifierValues(typeValues));
+		return (String)namingAuthority.createIdentifier(MappingUtil.toIdentifierValues(typeValues));
 	} catch (Exception e) {
 		e.printStackTrace();
 		throw new RemoteException(e.toString());
@@ -42,7 +42,7 @@ public class IdentifiersNAServiceImpl extends IdentifiersNAServiceImplBase {
   }
 
   public gov.nih.nci.cagrid.identifiers.TypeValuesMap getTypeValues(java.lang.String identifier) throws RemoteException {
-	  return MappingUtil.toTypeValuesMap(((NamingAuthorityImpl)namingAuthority).getValues(identifier));
+	  return MappingUtil.toTypeValuesMap((IdentifierValuesImpl)namingAuthority.resolveIdentifier(identifier));
   }
 
 }
