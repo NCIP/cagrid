@@ -12,7 +12,7 @@
     
     	<property name="configuration">
     		<bean class="org.cagrid.identifiers.namingauthority.impl.NamingAuthorityConfigImpl">
-    			<property name="prefix" value="http://purl.cagrid.org:8090/cagrid" />
+    			<property name="prefix" value="http://na.cagrid.org:8090/osumc" />
 				<property name="gridSvcUrl" value="http://localhost:8081/wsrf/services/cagrid/IdentifiersNAService" />
 			</bean>
     	</property>

@@ -1,5 +1,10 @@
 package org.cagrid.identifiers.namingauthority;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 public abstract class NamingAuthority {
 	
 	private NamingAuthorityConfig configuration;
@@ -26,4 +31,6 @@ public abstract class NamingAuthority {
 	}
 	
 	public abstract void initialize();
+	
+	public abstract void processHttpRequest(HttpServletRequest request, HttpServletResponse response) throws IOException;
 }
