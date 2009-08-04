@@ -14,7 +14,6 @@ import org.cagrid.identifiers.namingauthority.http.HttpProcessor;
 public class NamingAuthorityService extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private NamingAuthority namingAuthority;
-	private HttpProcessor httpProcessor;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -35,7 +34,6 @@ public class NamingAuthorityService extends HttpServlet {
 				"]");
 		
 		namingAuthority.initialize();
-		this.httpProcessor = new HttpProcessor( this.namingAuthority );
 	}
 
 	/**
@@ -51,7 +49,7 @@ public class NamingAuthorityService extends HttpServlet {
 		System.out.println("getServletPath["+request.getServletPath()+"]");
 		
 		
-		httpProcessor.processRequest(request, response);
+		namingAuthority.processHttpRequest(request, response);
 	}
 
 	/**

@@ -1,19 +1,28 @@
 package org.cagrid.identifiers.namingauthority.impl;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.cagrid.identifiers.core.*;
 import org.cagrid.identifiers.namingauthority.*;
 import org.cagrid.identifiers.namingauthority.util.Database;
 
 import org.cagrid.identifiers.namingauthority.util.*;
+import org.cagrid.identifiers.namingauthority.http.HttpProcessor;
 import org.cagrid.identifiers.namingauthority.http.HttpServer;
 
 public class NamingAuthorityImpl extends NamingAuthority implements IdentifierMaintainer, IdentifierUser {
 
 	private HttpServer httpServer = null;
 	private Database database;
+	private HttpProcessor httpProcessor;
 	
 	public void initialize() {
 		database.initialize();
+		
+		httpProcessor = new HttpProcessor(this);
 	}
 	
 	public Database getDatabase() {
@@ -47,5 +56,11 @@ public class NamingAuthorityImpl extends NamingAuthority implements IdentifierMa
 					((NamingAuthorityConfigImpl)getConfiguration()).getHttpServerPort());
 			httpServer.start();
 		}
+	}
+
+	@Override
+	public void processHttpRequest(HttpServletRequest request,
+			HttpServletResponse response) throws IOException {
+		httpProcessor.processRequest(request, response);
 	}
 }

@@ -11,13 +11,13 @@ import javax.servlet.http.*;
 
 public class HttpServer implements Runnable {
 	
-	private HttpProcessor httpProcessor;
+	private NamingAuthority namingAuthority;
 	
 
 	private int _port;
 	
 	public HttpServer(NamingAuthority na, int port) {
-		this.httpProcessor = new HttpProcessor(na);
+		this.namingAuthority = na;
 		_port = port;
 	}
 	
@@ -31,7 +31,7 @@ public class HttpServer implements Runnable {
 		    public void handle(String target, HttpServletRequest request, HttpServletResponse response, int dispatch)
 		        throws java.io.IOException, javax.servlet.ServletException
 		    {
-		    	httpProcessor.processRequest(request, response);
+		    	namingAuthority.processHttpRequest(request, response);
 		        ((Request)request).setHandled(true);
 		    }
 		};
