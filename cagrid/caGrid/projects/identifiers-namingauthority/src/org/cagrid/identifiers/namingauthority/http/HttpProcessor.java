@@ -122,7 +122,7 @@ public class HttpProcessor {
 		String config = request.getParameter("config");
 		if (config != null) {
 			msg.append(xmlConfigResponse());
-			response.setContentType("application/xml");
+			response.setContentType(HTTP_ACCEPT_XML);
 		} else {
 			//
 			// Specifying ?xml in the URL forces XML output
@@ -143,7 +143,7 @@ public class HttpProcessor {
 			if (uri == null || uri.length() <= 1 || !uri.startsWith("/")) {
 				msg.append("<h1>No identifier provided</h1>");
 				noErrors = false;
-				response.setContentType("text/html");
+				response.setContentType(HTTP_ACCEPT_HTML);
 			} else {
 				idStr = uri.substring(1);
 			}
@@ -154,10 +154,10 @@ public class HttpProcessor {
 
 				if (xmlResponse) {
 					msg.append(xmlResponse(ivs));
-					response.setContentType("application/xml");
+					response.setContentType(HTTP_ACCEPT_XML);
 				} else {
 					msg.append(htmlResponse(idStr, ivs));
-					response.setContentType("text/html");
+					response.setContentType(HTTP_ACCEPT_HTML);
 				}
 			}
 		}
