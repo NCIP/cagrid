@@ -1,3 +1,5 @@
+var currentQuery;
+
 var resultEvent = new YAHOO.util.CustomEvent({type:"resultEvent",signature:"YAHOO.util.CustomEvent.FLAT"});
 var treeEvent = new YAHOO.util.CustomEvent({type:"treeEvent",signature:"YAHOO.util.CustomEvent.FLAT"});
 var sortEvent = new YAHOO.util.CustomEvent({type:"sortEvent",signature:"YAHOO.util.CustomEvent.FLAT"});
@@ -64,7 +66,6 @@ var CatalogType = Class.create({
             this.params[this.params.length] = "rows=" + this.rows;
             this.params[this.params.length] = "start=" + this.start;
             this.params[this.params.length] = "q=" + searchTerm;
-            this.params[this.params.length] = "tree=on";
         },
         addParam: function(param) {
             this.params.push(param);
@@ -90,6 +91,16 @@ var CatalogType = Class.create({
                 }
                 else
                     break;
+            }
+        },
+        setTree: function(tree){
+         if(tree){
+            this.addParam("tree=on");
+            this.setRows(10000);
+            }
+        else{
+            this.removeParam("tree=on");
+            this.setRows(this.rows);
             }
         },
         nextPage: function(){
