@@ -2,14 +2,12 @@
 
 <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.7.0/build/button/assets/skins/sam/button.css" />
 <link rel="stylesheet" type="text/css" href="<c:url value="/js/yui/container/assets/skins/sam/container.css"/>" />
-<link type="text/css" rel="stylesheet" href="<c:url value="/js/yui/autocomplete/assets/skins/sam/autocomplete.css"/>">
 
 <script type="text/javascript" src="<c:url value="/js/yui/yahoo-dom-event/yahoo-dom-event.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/yui/datasource/datasource-min.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/yui/element/element-min.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/yui/button/button-min.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/yui/logger/logger-min.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/js/yui/autocomplete/autocomplete-min.js"/>"></script>
 
 <c:set var="ns" value="${param.ns}"/>
 
@@ -18,7 +16,8 @@
 <script type="text/javascript" src="<c:url value="/dwr/engine.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/dwr/util.js"/>"></script>
 
-<div align="left" style="overflow:auto; height:500px" class="yui-skin-sam">
+<div align="left" style="overflow:auto; height:270px;padding-bottom:10px;" class="yui-skin-sam">
+
 
 <h3>
 Available Data Sources

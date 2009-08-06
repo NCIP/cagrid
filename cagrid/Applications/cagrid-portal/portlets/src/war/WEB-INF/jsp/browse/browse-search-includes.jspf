@@ -25,7 +25,8 @@
 <script src="<c:url value="/js/browse-catalog.js"/>"></script>
 
 <script type="text/javascript">
-//        var myLogReader = new YAHOO.widget.LogReader("myLogger");
+//var myLogReader = new YAHOO.widget.LogReader("myLogger");
+
 var solrDatasource = new YAHOO.util.XHRDataSource("<c:out value="${solrServiceUrl}"/>/select?", {responseType:YAHOO.util.XHRDataSource.JSON});
 var wildcard = "*:*";
 
@@ -79,16 +80,14 @@ var SummaryTree = Class.create({
                 }
             };
         <%--if catalog type label is clicked, update the AOF sub tree--%>
-
             if (node.data.type.search(/catalog/i) > -1) {
-                summaryQuery.setRows(10000);
+                summaryQuery.setTree(true);
                 solrDatasource.sendRequest(summaryQuery.getQuery(), {
                     success : updateAOF,
                     failure : updateAOF,
                     scope : this
                 });
             }
-
             node.toggle();
         }, this);
 
@@ -102,8 +101,8 @@ var SummaryTree = Class.create({
             }
         };
 
-    <%--only get catalog_type field for makign summary tree--%>
-        summaryQuery.setRows(10000);
+    <%--only get catalog_type field for making summary tree--%>
+        summaryQuery.setTree(true);
         solrDatasource.sendRequest(summaryQuery.getQuery(), {
             success : searchCallback,
             failure : searchCallback,
@@ -160,7 +159,16 @@ var Catalogs = Class.create({
         });
 
         this.paginator.subscribe('changeRequest', this.handlePagination, this);
+
+        //        alert(config.query.getQuery());
+        //        this.query=config.query;
+
+
+        //        if(this.query==undefined){
+        //            YAHOO.log("New keyword detected. Will create a new SOLR query");
         this.query = new solrQuery(this.config.keyword, this.rowsPerPage);
+        //        }
+
 
         sortEvent.subscribe(this.sort, this);
 
@@ -195,7 +203,7 @@ var Catalogs = Class.create({
     runQuery: function(paginate) {
 
         this.query.removeAllFacets();
-        this.query.setRows(this.config.rowsPerPage);
+        this.query.setTree(false);
 
         if (this.config.catalog) {
             YAHOO.log("Adding catalog_type facet");

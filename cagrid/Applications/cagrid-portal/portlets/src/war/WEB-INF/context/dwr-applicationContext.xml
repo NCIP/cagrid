@@ -81,7 +81,7 @@
     </bean>
 
     <bean id="metadataDiagnosticService"
-          class="gov.nih.nci.cagrid.portal.portlet.diagnostics.MetadataDiagnosticService">
+          class="gov.nih.nci.cagrid.portal.portlet.diagnostics.MetadataDiagnosticService" autowire="byName">
         <property name="defaultTimeout" ref="defaultTimeout"/>
         <property name="geocoder" ref="defaultGeocoder"/>
     </bean>
