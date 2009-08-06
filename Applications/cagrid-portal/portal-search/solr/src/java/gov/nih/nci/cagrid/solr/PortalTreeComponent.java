@@ -86,6 +86,14 @@ public class PortalTreeComponent extends SearchComponent implements SolrCoreAwar
             final TreeBean termTree = new TreeBean(new TreeDescriptor(this.termField, this.termLabel));
             computeSearchTree(rb.getResults().docList, reader, this.termField, termTree);
 
+            logger.debug("Removing Documents from SOLR response");
+            NamedList response = rb.rsp.getValues();
+            int idx = response.indexOf("response", 0);
+            if (idx > 0)
+                response.remove(idx);
+
+
+            logger.debug("Adding tree to SOLR Response");
             rb.rsp.add("tree", new ArrayList() {{
                 add(typeTree);
                 add(termTree);
