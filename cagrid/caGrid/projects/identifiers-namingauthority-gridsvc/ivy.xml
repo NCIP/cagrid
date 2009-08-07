@@ -12,6 +12,7 @@
 	<configurations>
 		<!-- Private Configurations -->
 		<conf name="impl" visibility="private" extends="service" />
+		<conf name="impl-test" visibility="private" />
 		<conf name="serviceTools" visibility="private" />
 
 		<!-- Public Configurations -->
@@ -19,6 +20,7 @@
     	<conf name="common" extends="stubs" visibility="public" />
     	<conf name="client" extends="common" visibility="public" />
     	<conf name="service" extends="client" visibility="public" />
+		<conf name="test" visibility="public" extends="service,impl-test" />
 	</configurations>
 
 	<publications>
@@ -26,6 +28,7 @@
 		<artifact name="caGrid-IdentifiersNAService-common" conf="common" type="jar" />
 		<artifact name="caGrid-IdentifiersNAService-client" conf="client" type="jar" />
 		<artifact name="caGrid-IdentifiersNAService-service" conf="service" type="jar" />
+		<artifact name="caGrid-IdentifiersNAService-tests" conf="test" type="jar" />
 	</publications>
 
 	<dependencies>
@@ -58,6 +61,10 @@
 
 		<dependency rev="latest.integration" org="caGrid" name="identifiers-namingauthority"
          conf="impl->default" transitive="true" />
+
+		<dependency rev="4.4" org="junit" name="junit" conf="impl-test->default" />
+      <dependency rev="1.1" org="apache" name="commons-logging" conf="impl-test->default" />
+
 	</dependencies>
 
 </ivy-module>

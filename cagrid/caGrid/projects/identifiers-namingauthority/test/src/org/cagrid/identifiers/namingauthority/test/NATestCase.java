@@ -20,7 +20,9 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.cagrid.identifiers.namingauthority.IdentifierGenerator;
 import org.cagrid.identifiers.namingauthority.NamingAuthority;
+import org.cagrid.identifiers.namingauthority.NamingAuthorityConfig;
 import org.cagrid.identifiers.namingauthority.NamingAuthorityLoader;
 import org.cagrid.identifiers.namingauthority.impl.IdentifierValuesImpl;
 //import org.cagrid.identifiers.resolver.ResolverUtil;
@@ -33,27 +35,49 @@ public class NATestCase extends TestCase {
 	private static String url1 = "http://cagrid.org";
 	private static String url2 = "http://www.osu.edu";
 	private static String epr1 = "end point reference 1";
-    
-    private IdentifierValuesImpl getIdenfierValues() {
-
-    	IdentifierValuesImpl values = new IdentifierValuesImpl();
-    	values.add("URL", url1);
-    	values.add("URL", url2);
-    	values.add("EPR", epr1);
-    	
-    	return values;
+	
+	private static final IdentifierValuesImpl identifierValues;
+	
+	static {
+		identifierValues = new IdentifierValuesImpl();
+		identifierValues.add("URL", url1);
+		identifierValues.add("URL", url2);
+		identifierValues.add("EPR", epr1);
     }
+	
+	private boolean compare(IdentifierValuesImpl a, IdentifierValuesImpl b) {
+		if (!a.getValues().keySet().equals(b.getValues().keySet())) {
+			return false;
+		}
+		
+		// keys (types) are the same, compare values now
+
+		for( String type : a.getTypes()) {
+			String[] aValues = a.getValues(type);
+			String[] bValues = b.getValues(type);
+			
+			Arrays.sort(aValues);
+			Arrays.sort(bValues);
+			
+			if (!Arrays.equals(aValues, bValues)) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	//////////////////////////////////////////////////////////////////////////
+	// TEST CASES START
+	//////////////////////////////////////////////////////////////////////////
     
     public void testIdenfierValues() {
-
-    	
-    	IdentifierValuesImpl values = getIdenfierValues();
 
     	
     	////////////////////////////////////////////////////////////////////
     	// Test getTypes()
     	////////////////////////////////////////////////////////////////////
-    	String[] types = values.getTypes();
+    	String[] types = identifierValues.getTypes();
     	if (types.length != 2) {
     		fail("Expected two data types (URL, EPR). Got " + types.length);
     	}
@@ -70,7 +94,7 @@ public class NATestCase extends TestCase {
     	////////////////////////////////////////////////////////////////////
     	// Test getValues()
     	////////////////////////////////////////////////////////////////////
-  	   	HashMap<String, ArrayList<String>> map = values.getValues();
+  	   	HashMap<String, ArrayList<String>> map = identifierValues.getValues();
       	if (!map.containsKey("URL")) {
     		fail("No URL key found in map");
     	}
@@ -82,7 +106,7 @@ public class NATestCase extends TestCase {
     	////////////////////////////////////////////////////////////////////
     	// Test getValues(String type)
     	////////////////////////////////////////////////////////////////////
-    	String[] data = values.getValues("URL");
+    	String[] data = identifierValues.getValues("URL");
     	if (data.length != 2) {
     		fail("Expected 2 URLs, found " + data.length);
     	}
@@ -94,7 +118,7 @@ public class NATestCase extends TestCase {
     		fail( url2 + " not found in the data list");
     	}
     	
-    	data = values.getValues( "EPR" );
+    	data = identifierValues.getValues( "EPR" );
     	if (data.length != 1){
     		fail("Expected 1 EPR, found " + data.length);
     	}
@@ -105,20 +129,55 @@ public class NATestCase extends TestCase {
     	log.info( "testIdenfierValues passed");
     }
     
-//	public void testNA() {
-//		NamingAuthority na = new NamingAuthorityLoader().getNamingAuthority();
-//		
-//		IdentifierValuesImpl values = new IdentifierValuesImpl();
-//		values.
-//		na.createIdentifier(values)
-//		try {
-//			IdentifierValuesImpl ivs = ResolverUtil.resolveGrid(purl);
-//			System.out.println(ivs.toString());
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			fail(e.getMessage());
-//		}
-//	}
+	public void testNamingAuthority() throws Exception {
+		NamingAuthority na = new NamingAuthorityLoader().getNamingAuthority();
+		
+		//////////////////////////////////////////////////////////
+		// Test NA's initialize
+		//////////////////////////////////////////////////////////
+		na.initialize();
+		
+		//////////////////////////////////////////////////////////
+		// Test NA's createIdentifier
+		//////////////////////////////////////////////////////////
+		String identifier = (String)na.createIdentifier(identifierValues);
+		log.info("createIdentifier: " + identifier);
+		
+		//////////////////////////////////////////////////////////
+		// Test NA's generateIdentifier
+		//////////////////////////////////////////////////////////
+		log.debug("generateIdentifier: " + na.generateIdentifier());
+		
+		//////////////////////////////////////////////////////////
+		// Test NA's getConfiguration
+		//////////////////////////////////////////////////////////
+		NamingAuthorityConfig config = na.getConfiguration();
+		if (config == null) {
+			fail("Retrieved NULL config from getConfiguration()");
+		} else {
+			log.info("prefix  = " + config.getPrefix());
+			log.info("gridsvc = " + config.getGridSvcUrl());
+		}
+		
+		//////////////////////////////////////////////////////////
+		// Test NA's getIdentifierGenerator
+		//////////////////////////////////////////////////////////
+		IdentifierGenerator idGenerator = na.getIdentifierGenerator();
+		if (idGenerator == null) {
+			fail("Retrieved NULL IdentifierGenerator");
+		} else {
+			log.info("IdentifierGenerator.generate: " + idGenerator.generate(config));
+		}
+		
+		//////////////////////////////////////////////////////////
+		// Test NA's resolveIdentifier
+		//////////////////////////////////////////////////////////
+		IdentifierValuesImpl values = (IdentifierValuesImpl) na.resolveIdentifier(identifier);
+		if (!compare(values, identifierValues)) {
+			fail("Retrieved IdentifierValuesImpl does not match original values");
+		}
+	}
+	
 
    public static void main(String[] args) {
       junit.textui.TestRunner.run(NATestCase.class);
