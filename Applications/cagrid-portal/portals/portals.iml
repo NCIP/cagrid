@@ -17,6 +17,8 @@
     <orderEntry type="library" name="liferay 5.2.3" level="project" />
     <orderEntry type="module" module-name="aggr" />
     <orderEntry type="module" module-name="db" />
+    <orderEntry type="library" name="acegi" level="project" />
+    <orderEntry type="library" name="cagrid" level="project" />
   </component>
 </module>
 
