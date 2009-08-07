@@ -47,17 +47,20 @@
         <fileset dir="${ext.test.jar.dir}">
             <include name="*.jar"/>
         </fileset>
+         <pathelement location="${classes.dir}"/>
+    </path>
+
+    <path id="test.run.cp">
         <!--using jar dir so that properties are not loaded-->
         <fileset dir="${build.jar.dir}">
             <include name="*.jar"/>
         </fileset>
-    </path>
-
-    <path id="test.run.cp">
         <pathelement location="${build.xmls.dir}"/>
         <pathelement location="${ext.test.xml.dir}"/>
         <pathelement location="${test.build.classes.dir}"/>
-        <path refid="test.compile.cp"/>
+        <fileset dir="${ext.test.jar.dir}">
+            <include name="*.jar"/>
+        </fileset>
     </path>
 
     <path id="integration.test.run.cp">
@@ -103,6 +106,7 @@
 
 
     <target name="jar" depends="compile-test">
+        <echo message="${build.jar.dir}"/>
         <mkdir dir="${build.jar.dir}"/>
         <jar basedir="${classes.dir}" excludes="*.properties"
              destfile="${build.jar.dir}/caGrid-portal-aggr.jar"/>
@@ -287,7 +291,7 @@
         </java>
     </target>
 
-    <target name="all" depends="jar,compile"/>
+    <target name="all" depends="jar"/>
 
 
 </project>
