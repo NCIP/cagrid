@@ -58,7 +58,7 @@
       <maximumStackSize value="32" />
       <properties />
     </buildFile>
-    <buildFile url="file://$PROJECT_DIR$/../../../solr/release_13/build.xml">
+    <buildFile url="file://$PROJECT_DIR$/portals/build.xml">
       <additionalClassPath />
       <antReference projectDefault="true" />
       <customJdkName value="" />
@@ -327,7 +327,7 @@
     <option name="DEBUGGING_INFO" value="true" />
     <option name="GENERATE_NO_WARNINGS" value="false" />
     <option name="DEPRECATION" value="true" />
-    <option name="ADDITIONAL_OPTIONS_STRING" value="-target 1.6" />
+    <option name="ADDITIONAL_OPTIONS_STRING" value="" />
     <option name="MAXIMUM_HEAP_SIZE" value="128" />
   </component>
   <component name="JavadocGenerationManager">
@@ -488,11 +488,11 @@
       <module fileurl="file://$PROJECT_DIR$/aggr/aggr.iml" filepath="$PROJECT_DIR$/aggr/aggr.iml" />
       <module fileurl="file://$PROJECT_DIR$/cagrid-portal.iml" filepath="$PROJECT_DIR$/cagrid-portal.iml" />
       <module fileurl="file://$PROJECT_DIR$/db/db.iml" filepath="$PROJECT_DIR$/db/db.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../../../../utils/mockito-all-1.7.jar Folder/mockito-all-1.7.jar Folder.iml" filepath="$PROJECT_DIR$/../../../../utils/mockito-all-1.7.jar Folder/mockito-all-1.7.jar Folder.iml" />
       <module fileurl="file://$PROJECT_DIR$/portal-search/portal-search.iml" filepath="$PROJECT_DIR$/portal-search/portal-search.iml" />
       <module fileurl="file://$PROJECT_DIR$/portals/portals.iml" filepath="$PROJECT_DIR$/portals/portals.iml" />
       <module fileurl="file://$PROJECT_DIR$/portlets/portlets.iml" filepath="$PROJECT_DIR$/portlets/portlets.iml" />
       <module fileurl="file://$PROJECT_DIR$/security/security.iml" filepath="$PROJECT_DIR$/security/security.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../solr/solr.iml" filepath="$PROJECT_DIR$/../../../solr/solr.iml" />
     </modules>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.5" project-jdk-type="JavaSDK">
@@ -647,56 +647,11 @@
     </library>
     <library name="cagrid">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-data-common-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-gaards-core-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-discovery-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-dorian-stubs-1.2.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-syncgts-common-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-cds-common-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-data-utils-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-portal-security.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-dorian-client-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-syncgts-stubs-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-gts-common-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-data-stubs-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-websso-client-common-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-metadatautils-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-metadata-data-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-fqp-common-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-portal-aggr.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-globalModelExchange-client-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-cds-client-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-portal-db-domain.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-portal-db-dao.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-globalModelExchange-stubs-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-ServiceSecurityProvider-stubs-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-syncgts-client-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-metadata-common-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-advertisement-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-portal-db-utils.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-cds-stubs-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-core-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-authentication-service-client-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-fqp-stubs-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-gts-stubs-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-Introduce-ClientTools-Notification-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-dorian-common-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-authentication-service-common-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-wsEnum-stubs-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-ServiceSecurityProvider-common-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-gts-client-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-authentication-service-stubs-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-metadata-security-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-fqp-client-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-ServiceSecurityProvider-client-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-ServiceSecurityProvider-service-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-globalModelExchange-common-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-opensaml-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-dorian-stubs-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid/caGrid-CQL-cql.1.0-1.3.jar!/" />
+        <root url="file://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
+      <jarDirectory url="file://$PROJECT_DIR$/../../../../tomcat-wsrf/webapps/dev-repository/caGrid" recursive="false" />
     </library>
     <library name="velocity">
       <CLASSES>
@@ -743,7 +698,9 @@
         <root url="jar://$PROJECT_DIR$/ivy/repository/apache/lucene/2.4/lucene-spellchecker-2.4-dev.jar!/" />
       </CLASSES>
       <JAVADOC />
-      <SOURCES />
+      <SOURCES>
+        <root url="file://$PROJECT_DIR$/../../../solr/release_13/src/java" />
+      </SOURCES>
     </library>
     <library name="poi">
       <CLASSES>
@@ -846,6 +803,7 @@
     </library>
   </component>
   <UsedPathMacros>
+    <macro name="GLOBUS_LOCATION" />
     <macro name="MAVEN_REPOSITORY" description="Maven Local Repostiry" />
   </UsedPathMacros>
 </project>
