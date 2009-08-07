@@ -19,7 +19,8 @@
 
     <publications>
         <artifact name="caGrid-${ivy.module}" conf="default" type="jar"/>
-
+        <artifact name="caGrid-${ivy.module}-test" conf="test" type="jar"/>
+         
         <!--spring configs-->
         <artifact name="applicationContext-aggr-concepts" type="xml"/>
         <artifact name="applicationContext-aggr-geocode" type="xml"/>
