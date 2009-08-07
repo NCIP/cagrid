@@ -14,7 +14,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="db" />
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
           <root url="file://$MODULE_DIR$/build/xmls" />
@@ -23,7 +23,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
           <root url="file://$MODULE_DIR$/test/build/classes" />
@@ -32,8 +32,8 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="poi" level="project" />
-    <orderEntry type="library" name="cagrid" level="project" />
+    <orderEntry type="library" exported="" name="poi" level="project" />
+    <orderEntry type="library" exported="" name="cagrid" level="project" />
     <orderEntry type="library" name="mail" level="project" />
   </component>
 </module>
