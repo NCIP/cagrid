@@ -1,4 +1,6 @@
 <ns1:CQLQueryResults
+        xsi:type="ns1:CQLQueryResults"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:ns1="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet"
 	targetClassname="gov.nih.nci.cabio.domain.Gene">
 	<ns1:ObjectResult>
