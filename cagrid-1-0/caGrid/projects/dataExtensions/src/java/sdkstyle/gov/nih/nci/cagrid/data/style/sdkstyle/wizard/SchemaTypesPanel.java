@@ -296,8 +296,8 @@ public class SchemaTypesPanel extends AbstractWizardPanel {
                 JOptionPane.showMessageDialog(SchemaTypesPanel.this, "No packages to find schemas for");
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
-            CompositeErrorDialog.showErrorDialog("Error retrieving schemas from the GME", ex);
+            //ex.printStackTrace();
+            CompositeErrorDialog.showErrorDialog("Error retrieving schemas. GME 1.0 service has been deprecated, please check URL.", ex);
         }
     }
 

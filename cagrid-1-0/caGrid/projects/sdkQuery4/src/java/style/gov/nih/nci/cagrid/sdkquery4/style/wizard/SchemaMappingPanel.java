@@ -488,7 +488,7 @@ public class SchemaMappingPanel extends AbstractWizardPanel {
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-            CompositeErrorDialog.showErrorDialog("Error retrieving schemas from the GME", ex);
+            CompositeErrorDialog.showErrorDialog("Error retrieving schemas. GME 1.0 service has been deprecated. Please verify URL. ", ex);
         }
     }
     

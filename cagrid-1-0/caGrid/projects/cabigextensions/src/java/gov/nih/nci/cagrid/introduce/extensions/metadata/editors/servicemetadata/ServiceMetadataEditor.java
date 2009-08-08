@@ -212,7 +212,7 @@ public class ServiceMetadataEditor extends ResourcePropertyEditorPanel {
             this.searchCenterButton = new JButton("Load from caDSR");
             this.searchCenterButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    searchForCenter();
+                    //searchForCenter();
                 }
             });
         }

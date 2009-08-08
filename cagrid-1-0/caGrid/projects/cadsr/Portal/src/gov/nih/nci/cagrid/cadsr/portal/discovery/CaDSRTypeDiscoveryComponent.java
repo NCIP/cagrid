@@ -199,9 +199,9 @@ public class CaDSRTypeDiscoveryComponent extends NamespaceTypeToolsComponent
 
                 } catch (RemoteException e) {
                     e.printStackTrace();
-                    CompositeErrorDialog.showErrorDialog("Error communicating with caDSR; please check the caDSR URL!", e);
+                    CompositeErrorDialog.showErrorDialog("Error communicating with caDSR; please check the caDSR URL! caDSR 1.0 service deprecated.", e);
                     getCaDSRPanel().getMultiEventProgressBar().stopAll(
-                        "Error communicating with caDSR; please check the caDSR URL!");
+                        "Error communicating with caDSR; please check the caDSR URL! caDSR 1.0 service deprecated.");
                     getUMLDiagram().clear();
                 } catch (Exception e) {
                     e.printStackTrace();

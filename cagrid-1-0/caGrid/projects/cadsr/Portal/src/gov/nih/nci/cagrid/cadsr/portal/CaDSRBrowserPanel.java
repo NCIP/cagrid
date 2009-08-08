@@ -204,7 +204,7 @@ public class CaDSRBrowserPanel extends JPanel implements ProjectSelectedListener
                     makeCombosEnabled(true);
                 } catch (Exception e1) {
                     e1.printStackTrace();
-                    CompositeErrorDialog.showErrorDialog("Error communicating with caDSR; please check the caDSR URL!", e1
+                    CompositeErrorDialog.showErrorDialog("Error communicating with caDSR. caDSR 1.0 service has been deprecated.", e1
                         .getMessage(), e1);
                 } finally {
                     getMultiEventProgressBar().stopEvent(progressEventID, "");
