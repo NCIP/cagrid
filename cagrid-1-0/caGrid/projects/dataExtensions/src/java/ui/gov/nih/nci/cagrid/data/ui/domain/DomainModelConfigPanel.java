@@ -198,7 +198,7 @@ public class DomainModelConfigPanel extends DataServiceModificationSubPanel {
             currentlyFromCadsr = true;
         } catch (Exception ex) {
             ex.printStackTrace();
-            ErrorDialog.showErrorDialog("Error loading cadsr domain model information", 
+            ErrorDialog.showErrorDialog("Error loading cadsr domain model information. caDSR 1.0 service has been deprecated.", 
                 ex.getMessage(), ex);
         }
     }

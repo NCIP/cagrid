@@ -91,7 +91,7 @@ public class MetadataCodegenPostProcessor implements CodegenExtensionPostProcess
             CaDSRServiceI cadsrService = new CaDSRServiceClient(getCaDSRURL());
             cadsrService.annotateServiceMetadata(metadata);
         } catch (Exception e) {
-            LOG.error("Problem annotating ServiceMetadata; using unannotated model.", e);
+            LOG.error("Problem annotating ServiceMetadata; using unannotated model. caDSR 1.0 service has been deprecated.", e);
         }
 
         // serialize the model

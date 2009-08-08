@@ -203,7 +203,7 @@ public class CaDSRBrowserPanel extends JPanel implements ProjectSelectedListener
                     makeCombosEnabled(true);
                 } catch (Exception e1) {
                     e1.printStackTrace();
-                    ErrorDialog.showErrorDialog("Error communicating with caDSR; please check the caDSR URL!", e1
+                    ErrorDialog.showErrorDialog("Error communicating with caDSR; caDSR 1.0 service has been deprecated.", e1
                         .getMessage(), e1);
                 } finally {
                     getMultiEventProgressBar().stopEvent(progressEventID, "");
@@ -512,7 +512,7 @@ public class CaDSRBrowserPanel extends JPanel implements ProjectSelectedListener
                     makeCombosEnabled(true);
                 } catch (Exception e1) {
                     e1.printStackTrace();
-                    ErrorDialog.showErrorDialog("Error communicating with caDSR; please check the caDSR URL!", e1
+                    ErrorDialog.showErrorDialog("Error communicating with caDSR; caDSR 1.0 service has been deprecated.", e1
                         .getMessage(), e1);
                 } finally {
                     getMultiEventProgressBar().stopEvent(progressEventID, "Done.");
@@ -560,7 +560,7 @@ public class CaDSRBrowserPanel extends JPanel implements ProjectSelectedListener
                         makeCombosEnabled(true);
                     } catch (Exception e1) {
                         e1.printStackTrace();
-                        ErrorDialog.showErrorDialog("Error communicating with caDSR; please check the caDSR URL!", e1
+                        ErrorDialog.showErrorDialog("Error communicating with caDSR; caDSR 1.0 service has been deprecated.", e1
                             .getMessage(), e1);
                     } finally {
                         getMultiEventProgressBar().stopEvent(progressEventID, "Done.");

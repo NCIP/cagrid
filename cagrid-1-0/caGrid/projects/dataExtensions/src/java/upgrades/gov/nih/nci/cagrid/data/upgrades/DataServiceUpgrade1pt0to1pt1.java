@@ -563,7 +563,7 @@ public class DataServiceUpgrade1pt0to1pt1 extends ExtensionUpgraderBase {
             getStatus().addDescriptionLine("Cadsr Information block updated: flag for 'no domain model' set to " + String.valueOf(noDomainModel));
         }
         getStatus().addIssue("caDSR Service URL not updated", 
-            "If the caDSR grid service's URL has changed, you will need to change it manually");
+            "The caDSR 1.0 service has been deprecated.");
     }
 
 
