@@ -1,18 +1,5 @@
 package org.cagrid.identifiers.resolver.test;
 
-/*
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-import junit.textui.TestRunner;
-
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
- */
-
 import java.io.IOException;
 
 import javax.xml.namespace.QName;
@@ -39,44 +26,47 @@ public class ResolverTestCase extends TestCase {
 
 	private static Log log = LogFactory.getLog(ResolverTestCase.class);
 	
-	private String purl = "http://purl.cagrid.org:8090/cagrid/c9fa9853-1558-4576-b365-6ee6a6f57a31";
+	private String identifier = "http://na.cagrid.org:8090/osumc/c9fa9853-1558-4576-b365-6ee6a6f57a31";
 
 	public void testGridResolution() {
 		try {
-			IdentifierValuesImpl ivs = ResolverUtil.resolveGrid(purl);
+			System.out.println("========== testGridResolution =============");
+			IdentifierValuesImpl ivs = ResolverUtil.resolveGrid(identifier);
 			System.out.println(ivs.toString());
+			System.out.println("========== testGridResolution SUCCESS =============");
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail(e.getMessage());
 		}
 	}
 	
-//	public void testHttpResolution() {
-//		try {
-//			IdentifierValues ivs = ResolverUtil.resolveHttp(purl);
-//			System.out.println(ivs.toString());
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			fail(e.getMessage());
-//		}
-//	}
+	public void testHttpResolution() {
+		try {
+			System.out.println("========== testHttpResolution =============");
+			IdentifierValuesImpl ivs = ResolverUtil.resolveHttp(identifier);
+			System.out.println(ivs.toString());
+			System.out.println("========== testHttpResolution SUCCESS =============");
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
+	}
 	
-//	public void testCQLRetriever() {
-//		try {
-//			System.out.println("========== testCQLRetriever =============");
-//			
-//			IdentifierValues ivs = ResolverUtil.resolveHttp(purl);
-//			RetrieverService rs = new RetrieverService();
-//			gov.nih.nci.cagrid.cqlresultset.CQLQueryResults results = 
-//				(gov.nih.nci.cagrid.cqlresultset.CQLQueryResults)
-//					rs.retrieve("CQLRetriever", ivs);
-//			System.out.println("Object result count["+results.getObjectResult().length+"]");
-//			
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			fail(e.getMessage());
-//		}
-//	}
+	public void testCQLRetriever() {
+		try {
+			System.out.println("========== testCQLRetriever =============");
+			IdentifierValuesImpl ivs = ResolverUtil.resolveHttp(identifier);
+			RetrieverService rs = new RetrieverService();
+			gov.nih.nci.cagrid.cqlresultset.CQLQueryResults results = 
+				(gov.nih.nci.cagrid.cqlresultset.CQLQueryResults)
+					rs.retrieve("CQLRetriever", ivs);
+			System.out.println("Object result count["+results.getObjectResult().length+"]");
+			System.out.println("========== testCQLRetriever SUCCESS =============");
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
+	}
 	
 	public static void main(String[] args) {
 		junit.textui.TestRunner.run(ResolverTestCase.class);
