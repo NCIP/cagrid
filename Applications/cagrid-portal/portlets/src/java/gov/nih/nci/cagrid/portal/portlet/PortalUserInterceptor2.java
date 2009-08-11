@@ -109,7 +109,7 @@ public class PortalUserInterceptor2 implements WebRequestInterceptor {
                         portalUser.setGridCredential(cdsCredentialRetriever.getCredential(portalUser.getDelegatedEPR()));
                     }
                 } catch (AuthnServiceException e) {
-                    throw new AuthnServiceException("Could not retreive credentials from CDS service. You will not be able to invoke secure services");
+                    throw new AuthnServiceException("Could not retreive credentials from CDS service. You will not be able to invoke secure services", e);
                 }
                 getUserModel().setPortalUser(portalUser);
                 getQueryModel().setPortalUser(portalUser);
