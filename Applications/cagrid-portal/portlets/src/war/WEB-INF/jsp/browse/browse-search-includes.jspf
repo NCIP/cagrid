@@ -22,8 +22,6 @@
 
 <div id="myLogger"><%--logging--%></div>
 
-<script src="<c:url value="/js/browse-catalog.js"/>"></script>
-
 <script type="text/javascript">
 //var myLogReader = new YAHOO.widget.LogReader("myLogger");
 
@@ -159,17 +157,7 @@ var Catalogs = Class.create({
         });
 
         this.paginator.subscribe('changeRequest', this.handlePagination, this);
-
-        //        alert(config.query.getQuery());
-        //        this.query=config.query;
-
-
-        //        if(this.query==undefined){
-        //            YAHOO.log("New keyword detected. Will create a new SOLR query");
         this.query = new solrQuery(this.config.keyword, this.rowsPerPage);
-        //        }
-
-
         sortEvent.subscribe(this.sort, this);
 
         if (config.catalogType) {
@@ -215,7 +203,7 @@ var Catalogs = Class.create({
         }
         if (this.config.sortField) {
             YAHOO.log("Will sort on " + this.config.sortField);
-            this.query.sort(this.config.sortField + "+asc");
+            this.query.sort(this.config.sortField);
         }
 
         if (!paginate) {
@@ -246,11 +234,9 @@ var Catalogs = Class.create({
 
                 YAHOO.log("Firing result event");
                 resultEvent.fire(resultList);
-
             }
             catch (x) {
                 alert("JSON Parse failed!" + x);
-                return;
             }
         };
 
