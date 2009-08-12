@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<project name="Core" default="all" basedir=".">
+	
+	<target name="clean" />
+	<target name="all" />
+
+</project>
