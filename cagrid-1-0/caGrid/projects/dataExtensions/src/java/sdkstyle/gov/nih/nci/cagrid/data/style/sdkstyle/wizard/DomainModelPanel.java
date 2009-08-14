@@ -85,6 +85,8 @@ public class DomainModelPanel extends AbstractWizardPanel {
 	private JPanel packageButtonsPanel = null;
 	private JPanel caDsrPanel = null;
 	
+	private static final String CADSR_SERVICE_NAME = "cagrid/CaDSRService";
+	
 	public DomainModelPanel(ServiceExtensionDescriptionType extensionDescription, ServiceInformation info) {
 		super(extensionDescription, info);
 		initialize();
@@ -140,25 +142,45 @@ public class DomainModelPanel extends AbstractWizardPanel {
 	
 	
 	private void initialize() {
-        GridBagConstraints gridBagConstraints13 = new GridBagConstraints();
-        gridBagConstraints13.gridx = 0;
-        gridBagConstraints13.gridwidth = 2;
-        gridBagConstraints13.weightx = 1.0D;
-        gridBagConstraints13.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints13.gridy = 1;
-        GridBagConstraints gridBagConstraints12 = new GridBagConstraints();
-        gridBagConstraints12.gridx = 1;
-        gridBagConstraints12.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints12.anchor = java.awt.GridBagConstraints.NORTH;
-        gridBagConstraints12.gridy = 0;
-        GridBagConstraints gridBagConstraints11 = new GridBagConstraints();
-        gridBagConstraints11.gridx = 0;
-        gridBagConstraints11.gridy = 0;
-        this.setLayout(new GridBagLayout());
-        this.setSize(new java.awt.Dimension(623,298));
-        this.add(getDmSourcePanel(), gridBagConstraints11);
-        this.add(getDmFilePanel(), gridBagConstraints12);
-        this.add(getCaDsrPanel(), gridBagConstraints13);		
+		
+		
+		if (ResourceManager.getServiceURLProperty(DataServiceConstants.CADSR_SERVICE_URL).indexOf(CADSR_SERVICE_NAME) > -1) {
+			
+	        GridBagConstraints gridBagConstraints13 = new GridBagConstraints();
+	        gridBagConstraints13.gridx = 0;
+	        gridBagConstraints13.gridwidth = 2;
+	        gridBagConstraints13.weightx = 1.0D;
+	        gridBagConstraints13.fill = java.awt.GridBagConstraints.HORIZONTAL;
+	        gridBagConstraints13.gridy = 1;
+	        GridBagConstraints gridBagConstraints12 = new GridBagConstraints();
+	        gridBagConstraints12.gridx = 1;
+	        gridBagConstraints12.fill = java.awt.GridBagConstraints.HORIZONTAL;
+	        gridBagConstraints12.anchor = java.awt.GridBagConstraints.NORTH;
+	        gridBagConstraints12.gridy = 0;
+	        GridBagConstraints gridBagConstraints11 = new GridBagConstraints();
+	        gridBagConstraints11.gridx = 0;
+	        gridBagConstraints11.gridy = 0;
+	        this.setLayout(new GridBagLayout());
+	        this.setSize(new java.awt.Dimension(623,298));
+	        this.add(getDmSourcePanel(), gridBagConstraints11);
+	        this.add(getDmFilePanel(), gridBagConstraints12);
+	        this.add(getCaDsrPanel(), gridBagConstraints13);		
+		}
+		else {
+	        GridBagConstraints gridBagConstraints12 = new GridBagConstraints();
+	        gridBagConstraints12.gridx = 1;
+	        gridBagConstraints12.weightx = 1.0D;
+	        gridBagConstraints12.fill = java.awt.GridBagConstraints.HORIZONTAL;
+	        gridBagConstraints12.anchor = java.awt.GridBagConstraints.NORTH;
+	        gridBagConstraints12.gridy = 0;
+	        GridBagConstraints gridBagConstraints11 = new GridBagConstraints();
+	        gridBagConstraints11.gridx = 0;
+	        gridBagConstraints11.gridy = 0;
+	        this.setLayout(new GridBagLayout());
+	        this.setSize(new java.awt.Dimension(623,298));
+	        this.add(getDmSourcePanel(), gridBagConstraints11);
+	        this.add(getDmFilePanel(), gridBagConstraints12);
+		}
 	}
 
 
@@ -246,34 +268,60 @@ public class DomainModelPanel extends AbstractWizardPanel {
 	 */
 	private JPanel getDmSourcePanel() {
 		if (dmSourcePanel == null) {
-			GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
-			gridBagConstraints2.gridx = 0;
-			gridBagConstraints2.anchor = java.awt.GridBagConstraints.WEST;
-			gridBagConstraints2.fill = java.awt.GridBagConstraints.HORIZONTAL;
-			gridBagConstraints2.insets = new java.awt.Insets(2,2,2,2);
-			gridBagConstraints2.gridy = 2;
-			GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
-			gridBagConstraints1.gridx = 0;
-			gridBagConstraints1.insets = new java.awt.Insets(2,2,2,2);
-			gridBagConstraints1.fill = java.awt.GridBagConstraints.HORIZONTAL;
-			gridBagConstraints1.anchor = java.awt.GridBagConstraints.WEST;
-			gridBagConstraints1.gridy = 1;
-			GridBagConstraints gridBagConstraints = new GridBagConstraints();
-			gridBagConstraints.gridx = 0;
-			gridBagConstraints.insets = new java.awt.Insets(2,2,2,2);
-			gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-			gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-			gridBagConstraints.gridy = 0;
-			dmSourcePanel = new JPanel();
-			dmSourcePanel.setLayout(new GridBagLayout());
-			dmSourcePanel.add(getNoDomainModelRadioButton(), gridBagConstraints);
-			dmSourcePanel.add(getFromFileRadioButton(), gridBagConstraints1);
-			dmSourcePanel.add(getFromCaDsrRadioButton(), gridBagConstraints2);
-			ButtonGroup group = new ButtonGroup();
-			group.add(getNoDomainModelRadioButton());
-			group.add(getFromFileRadioButton());
-			group.add(getFromCaDsrRadioButton());
-			group.setSelected(getFromCaDsrRadioButton().getModel(), true);
+			
+			if (ResourceManager.getServiceURLProperty(DataServiceConstants.CADSR_SERVICE_URL).indexOf(CADSR_SERVICE_NAME) != -1) {
+				GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
+				gridBagConstraints2.gridx = 0;
+				gridBagConstraints2.anchor = java.awt.GridBagConstraints.WEST;
+				gridBagConstraints2.fill = java.awt.GridBagConstraints.HORIZONTAL;
+				gridBagConstraints2.insets = new java.awt.Insets(2,2,2,2);
+				gridBagConstraints2.gridy = 2;
+				GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
+				gridBagConstraints1.gridx = 0;
+				gridBagConstraints1.insets = new java.awt.Insets(2,2,2,2);
+				gridBagConstraints1.fill = java.awt.GridBagConstraints.HORIZONTAL;
+				gridBagConstraints1.anchor = java.awt.GridBagConstraints.WEST;
+				gridBagConstraints1.gridy = 1;
+				GridBagConstraints gridBagConstraints = new GridBagConstraints();
+				gridBagConstraints.gridx = 0;
+				gridBagConstraints.insets = new java.awt.Insets(2,2,2,2);
+				gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+				gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+				gridBagConstraints.gridy = 0;
+				dmSourcePanel = new JPanel();
+				dmSourcePanel.setLayout(new GridBagLayout());
+				dmSourcePanel.add(getNoDomainModelRadioButton(), gridBagConstraints);
+				dmSourcePanel.add(getFromFileRadioButton(), gridBagConstraints1);
+				dmSourcePanel.add(getFromCaDsrRadioButton(), gridBagConstraints2);
+				ButtonGroup group = new ButtonGroup();
+				group.add(getNoDomainModelRadioButton());
+				group.add(getFromFileRadioButton());
+				group.add(getFromCaDsrRadioButton());
+				group.setSelected(getFromCaDsrRadioButton().getModel(), true);
+			}
+			else {
+				GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
+				gridBagConstraints1.gridx = 0;
+				gridBagConstraints1.weightx = 1.0D;
+				gridBagConstraints1.insets = new java.awt.Insets(2,2,2,2);
+				gridBagConstraints1.fill = java.awt.GridBagConstraints.HORIZONTAL;
+				gridBagConstraints1.anchor = java.awt.GridBagConstraints.WEST;
+				gridBagConstraints1.gridy = 1;
+				GridBagConstraints gridBagConstraints = new GridBagConstraints();
+				gridBagConstraints.gridx = 0;
+				gridBagConstraints.insets = new java.awt.Insets(2,2,2,2);
+				gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+				gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+				gridBagConstraints.gridy = 0;
+				dmSourcePanel = new JPanel();
+				dmSourcePanel.setLayout(new GridBagLayout());
+				dmSourcePanel.add(getNoDomainModelRadioButton(), gridBagConstraints);
+				dmSourcePanel.add(getFromFileRadioButton(), gridBagConstraints1);
+				ButtonGroup group = new ButtonGroup();
+				group.add(getNoDomainModelRadioButton());
+				group.add(getFromFileRadioButton());
+				group.setSelected(getFromFileRadioButton().getModel(), true);
+			}
 		}
 		return dmSourcePanel;
 	}
