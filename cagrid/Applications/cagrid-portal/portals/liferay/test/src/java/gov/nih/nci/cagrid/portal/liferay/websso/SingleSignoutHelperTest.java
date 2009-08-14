@@ -22,6 +22,7 @@ public class SingleSignoutHelperTest {
 
         TestUserDetailsService userDetailsService = new TestUserDetailsService();
         WebSSOUser user = userDetailsService.load();
+        user.setDelegatedEPR("");
 
         Authentication auth = new TestingAuthenticationToken(user, user.getGridId(), user.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);
