@@ -134,7 +134,7 @@ public class SchemaTypesPanel extends AbstractWizardPanel {
 	        gridBagConstraints3.gridy = 0;
 	        this.setLayout(new GridBagLayout());
 	        this.setSize(new java.awt.Dimension(505, 209));
-	        this.add(getGmePanel(), gridBagConstraints3)
+	        this.add(getGmePanel(), gridBagConstraints3);
 	        this.add(getPackageNamespaceScrollPane(), gridBagConstraints4);
     	 }
     	 else {
