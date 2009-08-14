@@ -78,6 +78,8 @@ public class SchemaMappingPanel extends AbstractWizardPanel {
     private JPanel automapPanel = null;
     private JPanel mappingPanel = null;
     
+    private static final String GME_SERVICE_NAME = "cagrid/GlobalModelExchange";
+    
     private SchemaMappingConfigurationStep configuration = null;
 
     public SchemaMappingPanel(ServiceExtensionDescriptionType extensionDescription, ServiceInformation info) {
@@ -324,7 +326,11 @@ public class SchemaMappingPanel extends AbstractWizardPanel {
             automapPanel.setBorder(BorderFactory.createTitledBorder(
                 null, "Automatic Mapping", TitledBorder.DEFAULT_JUSTIFICATION, 
                 TitledBorder.DEFAULT_POSITION, null, LookAndFeel.getPanelLabelColor()));
-            automapPanel.add(getGmeMapButton(), null);
+            
+            if (ResourceManager.getServiceURLProperty(DataServiceConstants.GME_SERVICE_URL).length() > 0 
+            		&& ResourceManager.getServiceURLProperty(DataServiceConstants.GME_SERVICE_URL).indexOf(GME_SERVICE_NAME) != -1) { 
+            	automapPanel.add(getGmeMapButton(), null);
+        	}
             automapPanel.add(getConfigMapButton(), null);
         }
         return automapPanel;
@@ -338,41 +344,80 @@ public class SchemaMappingPanel extends AbstractWizardPanel {
      */
     private JPanel getMappingPanel() {
         if (mappingPanel == null) {
-            GridBagConstraints gridBagConstraints4 = new GridBagConstraints();
-            gridBagConstraints4.gridx = 0;
-            gridBagConstraints4.fill = GridBagConstraints.HORIZONTAL;
-            gridBagConstraints4.insets = new Insets(2, 2, 2, 2);
-            gridBagConstraints4.gridwidth = 2;
-            gridBagConstraints4.gridy = 2;
-            GridBagConstraints gridBagConstraints3 = new GridBagConstraints();
-            gridBagConstraints3.fill = GridBagConstraints.HORIZONTAL;
-            gridBagConstraints3.gridy = 1;
-            gridBagConstraints3.weightx = 1.0;
-            gridBagConstraints3.insets = new Insets(2, 2, 2, 2);
-            gridBagConstraints3.gridx = 1;
-            GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
-            gridBagConstraints2.gridx = 0;
-            gridBagConstraints2.fill = GridBagConstraints.HORIZONTAL;
-            gridBagConstraints2.insets = new Insets(2, 2, 2, 2);
-            gridBagConstraints2.gridy = 1;
-            GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
-            gridBagConstraints1.fill = GridBagConstraints.HORIZONTAL;
-            gridBagConstraints1.gridy = 0;
-            gridBagConstraints1.weightx = 1.0;
-            gridBagConstraints1.insets = new Insets(2, 2, 2, 2);
-            gridBagConstraints1.gridx = 1;
-            GridBagConstraints gridBagConstraints = new GridBagConstraints();
-            gridBagConstraints.gridx = 0;
-            gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-            gridBagConstraints.insets = new Insets(2, 2, 2, 2);
-            gridBagConstraints.gridy = 0;
-            mappingPanel = new JPanel();
-            mappingPanel.setLayout(new GridBagLayout());
-            mappingPanel.add(getGmeUrlLabel(), gridBagConstraints);
-            mappingPanel.add(getGmeUrlTextField(), gridBagConstraints1);
-            mappingPanel.add(getConfigDirLabel(), gridBagConstraints2);
-            mappingPanel.add(getConfigDirTextField(), gridBagConstraints3);
-            mappingPanel.add(getAutomapPanel(), gridBagConstraints4);
+        	
+        	if ( ResourceManager.getServiceURLProperty(DataServiceConstants.GME_SERVICE_URL).indexOf(GME_SERVICE_NAME) != -1) {
+        		
+	            GridBagConstraints gridBagConstraints4 = new GridBagConstraints();
+	            gridBagConstraints4.gridx = 0;
+	            gridBagConstraints4.fill = GridBagConstraints.HORIZONTAL;
+	            gridBagConstraints4.insets = new Insets(2, 2, 2, 2);
+	            gridBagConstraints4.gridwidth = 2;
+	            gridBagConstraints4.gridy = 2;
+	            GridBagConstraints gridBagConstraints3 = new GridBagConstraints();
+	            gridBagConstraints3.fill = GridBagConstraints.HORIZONTAL;
+	            gridBagConstraints3.gridy = 1;
+	            gridBagConstraints3.weightx = 1.0;
+	            gridBagConstraints3.insets = new Insets(2, 2, 2, 2);
+	            gridBagConstraints3.gridx = 1;
+	            GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
+	            gridBagConstraints2.gridx = 0;
+	            gridBagConstraints2.fill = GridBagConstraints.HORIZONTAL;
+	            gridBagConstraints2.insets = new Insets(2, 2, 2, 2);
+	            gridBagConstraints2.gridy = 1;
+	            GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
+	            gridBagConstraints1.fill = GridBagConstraints.HORIZONTAL;
+	            gridBagConstraints1.gridy = 0;
+	            gridBagConstraints1.weightx = 1.0;
+	            gridBagConstraints1.insets = new Insets(2, 2, 2, 2);
+	            gridBagConstraints1.gridx = 1;
+	            GridBagConstraints gridBagConstraints = new GridBagConstraints();
+	            gridBagConstraints.gridx = 0;
+	            gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+	            gridBagConstraints.insets = new Insets(2, 2, 2, 2);
+	            gridBagConstraints.gridy = 0;
+	            mappingPanel = new JPanel();
+	            mappingPanel.setLayout(new GridBagLayout());
+            	mappingPanel.add(getGmeUrlLabel(), gridBagConstraints);
+            	mappingPanel.add(getGmeUrlTextField(), gridBagConstraints1);
+            	mappingPanel.add(getConfigDirLabel(), gridBagConstraints2);
+                mappingPanel.add(getConfigDirTextField(), gridBagConstraints3);
+                mappingPanel.add(getAutomapPanel(), gridBagConstraints4);
+            }
+        	else {
+        		GridBagConstraints gridBagConstraints4 = new GridBagConstraints();
+ 	            gridBagConstraints4.gridx = 0;
+ 	            gridBagConstraints4.fill = GridBagConstraints.HORIZONTAL;
+ 	            gridBagConstraints4.insets = new Insets(2, 2, 2, 2);
+ 	            gridBagConstraints4.gridwidth = 2;
+ 	            gridBagConstraints4.gridy = 2;
+ 	            GridBagConstraints gridBagConstraints3 = new GridBagConstraints();
+ 	            gridBagConstraints3.fill = GridBagConstraints.HORIZONTAL;
+ 	            gridBagConstraints3.gridy = 1;
+ 	            gridBagConstraints3.weightx = 1.0;
+ 	            gridBagConstraints3.insets = new Insets(2, 2, 2, 2);
+ 	            gridBagConstraints3.gridx = 1;
+ 	            GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
+ 	            gridBagConstraints2.gridx = 0;
+ 	            gridBagConstraints2.fill = GridBagConstraints.HORIZONTAL;
+ 	            gridBagConstraints2.insets = new Insets(2, 2, 2, 2);
+ 	            gridBagConstraints2.gridy = 1;
+ 	            GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
+ 	            gridBagConstraints1.fill = GridBagConstraints.HORIZONTAL;
+ 	            gridBagConstraints1.gridy = 0;
+ 	            gridBagConstraints1.weightx = 1.0;
+ 	            gridBagConstraints1.insets = new Insets(2, 2, 2, 2);
+ 	            gridBagConstraints1.gridx = 1;
+ 	            GridBagConstraints gridBagConstraints = new GridBagConstraints();
+ 	            gridBagConstraints.gridx = 0;
+ 	            gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+ 	            gridBagConstraints.insets = new Insets(2, 2, 2, 2);
+ 	            gridBagConstraints.gridy = 0;
+ 	            mappingPanel = new JPanel();
+ 	            mappingPanel.setLayout(new GridBagLayout());
+             	mappingPanel.add(getConfigDirLabel(), gridBagConstraints);
+                mappingPanel.add(getConfigDirTextField(), gridBagConstraints1);
+                mappingPanel.add(getAutomapPanel(), gridBagConstraints4);
+        	}
         }
         return mappingPanel;
     }
