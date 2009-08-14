@@ -33,6 +33,8 @@
 		<property name="encryptionService" ref="encryptionServicePrototype"/>
 	</bean>
 
+    <bean id="portalUserLoader" class="gov.nih.nci.cagrid.portal.liferay.security.PortalUserLoader" autowire="byName"/>
+
     <bean id="webSSOAutoLogin" parent="autoLoginTemplate"
           class="gov.nih.nci.cagrid.portal.liferay.websso.WebSSOAutoLogin" autowire="byName"/>
 

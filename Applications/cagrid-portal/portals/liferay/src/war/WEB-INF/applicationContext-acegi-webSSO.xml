@@ -237,6 +237,7 @@
             <bean class="gov.nih.nci.cagrid.portal.liferay.websso.SingleSignoutHelper">
                 <constructor-arg index="0"
                                  value="/WEB-INF/classes/cas-client.properties"/>
+                <property name="encoding" value="${url.encoding.scheme}"/>
             </bean>
         </property>
     </bean>
