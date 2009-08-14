@@ -34,5 +34,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     	
    	<bean name="/query_results_meta.json" class="gov.nih.nci.cagrid.portal.portlet.query.results.ExportJSONResultsMetadataController"
     	autowire="byName"/>
+    
+    <bean name="queryResultTableToDataTableMetadataBuilder" class="gov.nih.nci.cagrid.portal.portlet.query.results.QueryResultTableToDataTableMetadataBuilder"
+    	autowire="byName"/>
 
 </beans>
