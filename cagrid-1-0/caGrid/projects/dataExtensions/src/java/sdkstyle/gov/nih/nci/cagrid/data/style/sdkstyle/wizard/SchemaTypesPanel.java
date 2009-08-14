@@ -64,6 +64,7 @@ public class SchemaTypesPanel extends AbstractWizardPanel {
     private JScrollPane packageNamespaceScrollPane = null;
     private PackageSchemasTable packageNamespaceTable = null;
 
+    private static final String GME_SERVICE_NAME = "cagrid/GlobalModelExchange";
 
     public SchemaTypesPanel(ServiceExtensionDescriptionType extensionDescription, ServiceInformation info) {
         super(extensionDescription, info);
@@ -118,20 +119,36 @@ public class SchemaTypesPanel extends AbstractWizardPanel {
 
 
     private void initialize() {
-        GridBagConstraints gridBagConstraints4 = new GridBagConstraints();
-        gridBagConstraints4.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints4.gridy = 1;
-        gridBagConstraints4.weightx = 1.0;
-        gridBagConstraints4.weighty = 1.0;
-        gridBagConstraints4.gridx = 0;
-        GridBagConstraints gridBagConstraints3 = new GridBagConstraints();
-        gridBagConstraints3.gridx = 0;
-        gridBagConstraints3.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints3.gridy = 0;
-        this.setLayout(new GridBagLayout());
-        this.setSize(new java.awt.Dimension(505, 209));
-        this.add(getGmePanel(), gridBagConstraints3);
-        this.add(getPackageNamespaceScrollPane(), gridBagConstraints4);
+    	
+    	 if (ResourceManager.getServiceURLProperty(DataServiceConstants.GME_SERVICE_URL).length() > 0 
+         		&& ResourceManager.getServiceURLProperty(DataServiceConstants.GME_SERVICE_URL).indexOf(GME_SERVICE_NAME) != -1) {
+	        GridBagConstraints gridBagConstraints4 = new GridBagConstraints();
+	        gridBagConstraints4.fill = java.awt.GridBagConstraints.BOTH;
+	        gridBagConstraints4.gridy = 1;
+	        gridBagConstraints4.weightx = 1.0;
+	        gridBagConstraints4.weighty = 1.0;
+	        gridBagConstraints4.gridx = 0;
+	        GridBagConstraints gridBagConstraints3 = new GridBagConstraints();
+	        gridBagConstraints3.gridx = 0;
+	        gridBagConstraints3.fill = java.awt.GridBagConstraints.HORIZONTAL;
+	        gridBagConstraints3.gridy = 0;
+	        this.setLayout(new GridBagLayout());
+	        this.setSize(new java.awt.Dimension(505, 209));
+	        this.add(getGmePanel(), gridBagConstraints3)
+	        this.add(getPackageNamespaceScrollPane(), gridBagConstraints4);
+    	 }
+    	 else {
+    		GridBagConstraints gridBagConstraints4 = new GridBagConstraints();
+ 	        gridBagConstraints4.fill = java.awt.GridBagConstraints.BOTH;
+ 	        gridBagConstraints4.gridy = 1;
+ 	        gridBagConstraints4.weightx = 1.0;
+ 	        gridBagConstraints4.weighty = 1.0;
+ 	        gridBagConstraints4.gridx = 0;
+ 	        this.setLayout(new GridBagLayout());
+ 	        this.setSize(new java.awt.Dimension(505, 209));
+ 	        this.add(getPackageNamespaceScrollPane(), gridBagConstraints4);		 
+    		 
+    	 }
     }
 
 
