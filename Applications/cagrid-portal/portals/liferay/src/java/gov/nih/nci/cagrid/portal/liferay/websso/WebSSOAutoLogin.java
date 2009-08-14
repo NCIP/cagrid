@@ -1,21 +1,25 @@
 package gov.nih.nci.cagrid.portal.liferay.websso;
 
 
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.model.Company;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.auth.AutoLoginException;
+import com.liferay.portal.service.CompanyLocalServiceUtil;
+import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PrefsPropsUtil;
 import com.liferay.portal.util.PropsKeys;
-import gov.nih.nci.cagrid.portal.domain.Person;
 import gov.nih.nci.cagrid.portal.domain.PortalUser;
 import gov.nih.nci.cagrid.portal.liferay.security.AbstractAutoLogin;
+import gov.nih.nci.cagrid.portal.liferay.security.PortalUserLoader;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.cagrid.websso.client.acegi.WebSSOUser;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Locale;
 
 /**
  * <p/>
@@ -28,6 +32,8 @@ import javax.servlet.http.HttpServletResponse;
  * for Liferay 5.x
  */
 public class WebSSOAutoLogin extends AbstractAutoLogin {
+
+    private PortalUserLoader portalUserLoader;
 
     public String[] login(HttpServletRequest request, HttpServletResponse response)
             throws AutoLoginException {
@@ -44,16 +50,23 @@ public class WebSSOAutoLogin extends AbstractAutoLogin {
                 WebSSOUser webssoUser = (WebSSOUser) SecurityContextHolder
                         .getContext().getAuthentication().getPrincipal();
 
+                logger.debug("User logging in with webSSO credentials");
+
                 User user = null;
-                PortalUser portalUser = getPortalUser(webssoUser);
-                if (portalUser.getPortalId() == null) {
-                    logger.debug("creating new User for "
-                            + portalUser.getGridIdentity());
+                // lets check if user already exists
+                PortalUser portalUser = portalUserLoader.getPortalUser(webssoUser);
+                if (portalUser == null) {
+                    logger.debug("No Portal user found. Will create a new Portal user");
 
-                    user = addLiferayUser(portalUser);
+                    // create user through Liferay user service (extended version)
+                    user = addLiferayUser(webssoUser);
 
-                    portalUser.setPortalId(String.valueOf(user.getCompanyId())
-                            + ":" + String.valueOf(user.getUserId()));
+                    // lets load the newly created user
+                    portalUser = portalUserLoader.getPortalUser(user);
+                    logger.debug("Sucesscfully Loaded Portal user for Liferay user");
+
+                    portalUser.setDelegatedEPR(webssoUser.getDelegatedEPR());
+                    portalUser.setGridIdentity(webssoUser.getGridId());
                     getPortalUserDao().save(portalUser);
                 } else {
                     String[] portalId = portalUser.getPortalId().split(":");
@@ -88,26 +101,65 @@ public class WebSSOAutoLogin extends AbstractAutoLogin {
 
     }
 
-    @Transactional
-    private PortalUser getPortalUser(WebSSOUser webSSOUser) {
-        PortalUser portalUser = new PortalUser();
-        portalUser.setGridIdentity(webSSOUser.getGridId());
-        portalUser = getPortalUserDao().getByExample(portalUser);
-        if (portalUser == null) {
-            portalUser = new PortalUser();
-            portalUser.setGridIdentity(webSSOUser.getGridId());
-            Person person = new Person();
-            person.setEmailAddress(webSSOUser.getEmailId());
-            person.setFirstName(webSSOUser.getFirstName());
-            person.setLastName(webSSOUser.getLastName());
-            getPersonDao().save(person);
-            portalUser.setPerson(person);
-        }
-        portalUser.setDelegatedEPR(webSSOUser.getDelegatedEPR());
-        portalUser.setGridCredential(null);
-        getPortalUserDao().save(portalUser);
-        return portalUser;
+    protected User addLiferayUser(WebSSOUser webSSOUser) throws Exception {
+        User user = null;
 
+        long creatorUserId = -1;
+        long companyId = -1;
+        boolean autoPassword = true;
+        String password1 = "";
+        String password2 = "";
+        boolean autoScreenName = true;
+        String screenName = "";
+        String emailAddress = webSSOUser.getEmailId();
+        Locale locale = Locale.US;
+        String firstName = webSSOUser.getFirstName();
+        String middleName = null;
+        String lastName = webSSOUser.getLastName();
+        int prefixId = -1;
+        int suffixId = -1;
+        boolean male = true;
+        int birthdayMonth = 1;
+        int birthdayDay = 1;
+        int birthdayYear = 1;
+        String jobTitle = null;
+        String openId = StringPool.BLANK;
+        long[] organizationIds = new long[0];
+        long[] groupIds = new long[0];
+        long[] roleIds = new long[0];
+        long[] userGroupIds = new long[0];
+        boolean sendEmail = false;
+        ServiceContext serviceContext = new ServiceContext();
+
+        Company company = CompanyLocalServiceUtil
+                .getCompanyByWebId(getCompanyWebId());
+        if (company == null) {
+            throw new AutoLoginException("No Company found for webid: "
+                    + getCompanyWebId());
+        }
+        companyId = company.getCompanyId();
+        User omniuser = UserLocalServiceUtil.getUserByEmailAddress(companyId,
+                getOmniUserEmail());
+        if (omniuser == null) {
+            throw new AutoLoginException("No omniuser found for email: "
+                    + getOmniUserEmail());
+        }
+        creatorUserId = omniuser.getUserId();
+        user = UserLocalServiceUtil.addUser(creatorUserId, companyId,
+                autoPassword, password1, password2, autoScreenName, screenName,
+                emailAddress, openId, locale, firstName, middleName, lastName,
+                prefixId, suffixId, male, birthdayMonth, birthdayDay,
+                birthdayYear, jobTitle, groupIds, organizationIds,
+                roleIds, userGroupIds, sendEmail, serviceContext);
+
+        return user;
     }
 
+    public PortalUserLoader getPortalUserLoader() {
+        return portalUserLoader;
+    }
+
+    public void setPortalUserLoader(PortalUserLoader portalUserLoader) {
+        this.portalUserLoader = portalUserLoader;
+    }
 }
