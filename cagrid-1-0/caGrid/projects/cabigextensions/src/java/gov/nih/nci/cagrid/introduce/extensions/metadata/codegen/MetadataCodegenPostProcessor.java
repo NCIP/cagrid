@@ -64,6 +64,7 @@ public class MetadataCodegenPostProcessor implements CodegenExtensionPostProcess
     // private static final String MAIN_RF_TYPE = "main";
     private static final String SEMANTIC_METADATA_DEFAULTS_DATA_SERVICE = "default-Service-SemanticMetadata-data.xml";
     private static final String SEMANTIC_METADATA_DEFAULTS_ANALYTICAL_SERVICE = "default-Service-SemanticMetadata-analytical.xml";
+    private static final String CADSR_SERVICE_NAME = "cagrid/CaDSRService";
 
     protected static Log LOG = LogFactory.getLog(MetadataCodegenPostProcessor.class.getName());
 
@@ -87,11 +88,13 @@ public class MetadataCodegenPostProcessor implements CodegenExtensionPostProcess
         populateService(metadata.getServiceDescription().getService(), info);
 
         // try to annotate the metadata with cadsr extract
-        try {
-            CaDSRServiceI cadsrService = new CaDSRServiceClient(getCaDSRURL());
-            cadsrService.annotateServiceMetadata(metadata);
-        } catch (Exception e) {
-            LOG.error("Problem annotating ServiceMetadata; using unannotated model. caDSR 1.0 service has been deprecated.", e);
+        if (getCaDSRURL().indexOf(CADSR_SERVICE_NAME) != -1) {
+	        try {
+	            CaDSRServiceI cadsrService = new CaDSRServiceClient(getCaDSRURL());
+	            cadsrService.annotateServiceMetadata(metadata);
+	        } catch (Exception e) {
+	            LOG.error("Problem annotating ServiceMetadata; using unannotated model. caDSR 1.0 service has been deprecated.", e);
+	        }
         }
 
         // serialize the model
