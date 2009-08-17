@@ -3,6 +3,9 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9 http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
 
+    <!--all pre version 2.0 DB changes-->
+    <include file="cagrid_portal-db-20-changelog.xml"/>
+
     <changeSet id="1" author="kherm">
         <tagDatabase tag="version_2.1"/>
     </changeSet>
@@ -1633,7 +1636,7 @@
     </changeSet>
 
     <changeSet author="kherm (generated)" id="61-3">
-          <preConditions onFail="MARK_RAN">
+        <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="cat_entry_tocterms"/>
             </not>
@@ -1673,7 +1676,7 @@
     </changeSet>
 
     <changeSet author="kherm (generated)" id="61-5">
-         <preConditions onFail="MARK_RAN">
+        <preConditions onFail="MARK_RAN">
             <not>
                 <columnExists columnName="image_id" tableName="cat_entry"/>
             </not>
@@ -1684,7 +1687,7 @@
     </changeSet>
 
     <changeSet author="kherm (generated)" id="61-6">
-           <preConditions onFail="MARK_RAN">
+        <preConditions onFail="MARK_RAN">
             <not>
                 <columnExists columnName="thumbnail_id" tableName="cat_entry"/>
             </not>
@@ -1695,7 +1698,7 @@
     </changeSet>
 
     <changeSet author="kherm (generated)" id="61-7">
-           <preConditions onFail="MARK_RAN">
+        <preConditions onFail="MARK_RAN">
             <not>
                 <columnExists columnName="identifier" tableName="cat_terms"/>
             </not>
@@ -1709,40 +1712,45 @@
         <preConditions onFail="MARK_RAN">
             <columnExists tableName="cat_input_desc" columnName="input_desc_type"/>
         </preConditions>
-        <addNotNullConstraint columnDataType="VARCHAR(31)" columnName="input_desc_type" defaultNullValue="" tableName="cat_input_desc"/>
+        <addNotNullConstraint columnDataType="VARCHAR(31)" columnName="input_desc_type" defaultNullValue=""
+                              tableName="cat_input_desc"/>
     </changeSet>
 
     <changeSet author="kherm (generated)" id="61-9">
         <preConditions onFail="MARK_RAN">
             <columnExists tableName="cat_output_column_desc" columnName="output_col_type"/>
         </preConditions>
-        <addNotNullConstraint columnDataType="VARCHAR(31)" columnName="output_col_type" defaultNullValue="" tableName="cat_output_column_desc"/>
+        <addNotNullConstraint columnDataType="VARCHAR(31)" columnName="output_col_type" defaultNullValue=""
+                              tableName="cat_output_column_desc"/>
     </changeSet>
 
     <changeSet author="kherm (generated)" id="61-10">
         <preConditions onFail="MARK_RAN">
             <columnExists tableName="cat_output_desc" columnName="output_desc_type"/>
         </preConditions>
-        <addNotNullConstraint columnDataType="VARCHAR(31)" columnName="output_desc_type" defaultNullValue="" tableName="cat_output_desc"/>
+        <addNotNullConstraint columnDataType="VARCHAR(31)" columnName="output_desc_type" defaultNullValue=""
+                              tableName="cat_output_desc"/>
     </changeSet>
 
     <changeSet author="kherm (generated)" id="61-11">
-          <preConditions onFail="MARK_RAN">
+        <preConditions onFail="MARK_RAN">
             <columnExists tableName="cat_provenance_graph_cat_comments" columnName="cat_provenance_graph_id"/>
         </preConditions>
-        <addNotNullConstraint columnDataType="INT" columnName="cat_provenance_graph_id" defaultNullValue="" tableName="cat_provenance_graph_cat_comments"/>
+        <addNotNullConstraint columnDataType="INT" columnName="cat_provenance_graph_id" defaultNullValue=""
+                              tableName="cat_provenance_graph_cat_comments"/>
     </changeSet>
 
     <changeSet author="kherm (generated)" id="61-12">
-         <preConditions onFail="MARK_RAN">
+        <preConditions onFail="MARK_RAN">
             <columnExists tableName="notification_log" columnName="sendSuccessful"/>
         </preConditions>
-        <addNotNullConstraint columnDataType="BIT" columnName="sendSuccessful" defaultNullValue="" tableName="notification_log"/>
+        <addNotNullConstraint columnDataType="BIT" columnName="sendSuccessful" defaultNullValue=""
+                              tableName="notification_log"/>
     </changeSet>
 
     <changeSet author="kherm (generated)" id="61-13">
-           <preConditions onFail="MARK_RAN">
-                <columnExists columnName="error" tableName="query_instances"/>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="error" tableName="query_instances"/>
         </preConditions>
         <modifyColumn tableName="query_instances">
             <column name="error" type="text"/>
@@ -1750,7 +1758,7 @@
     </changeSet>
 
     <changeSet author="kherm (generated)" id="61-14">
-         <preConditions onFail="MARK_RAN">
+        <preConditions onFail="MARK_RAN">
             <not>
                 <indexExists indexName="FK52FB32C9A3362F2E"/>
             </not>
@@ -1761,7 +1769,7 @@
     </changeSet>
 
     <changeSet author="kherm (generated)" id="61-15">
-         <preConditions onFail="MARK_RAN">
+        <preConditions onFail="MARK_RAN">
             <not>
                 <indexExists indexName="FK52FB32C9C12F11FD"/>
             </not>
@@ -1772,7 +1780,7 @@
     </changeSet>
 
     <changeSet author="kherm (generated)" id="61-16">
-           <preConditions onFail="MARK_RAN">
+        <preConditions onFail="MARK_RAN">
             <not>
                 <indexExists indexName="FK3525B454EFCD066"/>
             </not>
@@ -1783,7 +1791,7 @@
     </changeSet>
 
     <changeSet author="kherm (generated)" id="61-17">
-          <preConditions onFail="MARK_RAN">
+        <preConditions onFail="MARK_RAN">
             <not>
                 <indexExists indexName="FK3525B45AA98F60D"/>
             </not>
@@ -1794,7 +1802,7 @@
     </changeSet>
 
     <changeSet author="kherm (generated)" id="61-18">
-            <preConditions onFail="MARK_RAN">
+        <preConditions onFail="MARK_RAN">
             <not>
                 <indexExists indexName="entry_id"/>
             </not>
@@ -1806,7 +1814,7 @@
     </changeSet>
 
     <changeSet author="kherm (generated)" id="61-19">
-            <preConditions onFail="MARK_RAN">
+        <preConditions onFail="MARK_RAN">
             <not>
                 <indexExists indexName="FK13C0E4914EFCD066"/>
             </not>
@@ -1827,8 +1835,12 @@
         </createIndex>
     </changeSet>
 
+    <changeSet author="kherm (generated)" id="61-21a" failOnError="false">
+        <dropIndex indexName="entry_id-1" tableName="cat_entry_terms"/>
+    </changeSet>
+
     <changeSet author="kherm (generated)" id="61-21">
-          <preConditions onFail="MARK_RAN">
+        <preConditions onFail="MARK_RAN">
             <not>
                 <indexExists indexName="entry_id-1"/>
             </not>
@@ -1840,7 +1852,7 @@
     </changeSet>
 
     <changeSet author="kherm (generated)" id="61-22">
-          <preConditions onFail="MARK_RAN">
+        <preConditions onFail="MARK_RAN">
             <not>
                 <indexExists indexName="FKB3EA25F54EFCD066"/>
             </not>
@@ -1851,7 +1863,7 @@
     </changeSet>
 
     <changeSet author="kherm (generated)" id="61-23">
-          <preConditions onFail="MARK_RAN">
+        <preConditions onFail="MARK_RAN">
             <not>
                 <indexExists indexName="FKB3EA25F5AF4884AD"/>
             </not>
@@ -1862,7 +1874,7 @@
     </changeSet>
 
     <changeSet author="kherm (generated)" id="61-24">
-         <preConditions onFail="MARK_RAN">
+        <preConditions onFail="MARK_RAN">
             <not>
                 <indexExists schemaName="cat_entry_tocterms" indexName="entry_id-2"/>
             </not>
@@ -1874,7 +1886,7 @@
     </changeSet>
 
     <changeSet author="kherm (generated)" id="61-25">
-         <preConditions onFail="MARK_RAN">
+        <preConditions onFail="MARK_RAN">
             <not>
                 <indexExists schemaName="cat_relationship_instance_cat_comments" indexName="comments_id-1"/>
             </not>
@@ -1885,7 +1897,7 @@
     </changeSet>
 
     <changeSet author="kherm (generated)" id="61-26">
-         <preConditions onFail="MARK_RAN">
+        <preConditions onFail="MARK_RAN">
             <not>
                 <indexExists schemaName="cat_role_instance_cat_comments" indexName="comments_id-2"/>
             </not>
@@ -1908,100 +1920,100 @@
 
     <changeSet author="kherm (generated)" id="61-28">
         <preConditions onFail="MARK_RAN">
-                <indexExists indexName="FKA2C079E82DB9B157"/>
+            <indexExists indexName="FKA2C079E82DB9B157"/>
         </preConditions>
         <dropIndex indexName="FKA2C079E82DB9B157" tableName="cat_entry_cat_terms"/>
     </changeSet>
 
     <changeSet author="kherm (generated)" id="61-29">
-         <preConditions onFail="MARK_RAN">
-                <indexExists indexName="FKA2C079E85D72F16B"/>
+        <preConditions onFail="MARK_RAN">
+            <indexExists indexName="FKA2C079E85D72F16B"/>
         </preConditions>
         <dropIndex indexName="FKA2C079E85D72F16B" tableName="cat_entry_cat_terms"/>
     </changeSet>
 
     <changeSet author="kherm (generated)" id="61-30">
-             <preConditions onFail="MARK_RAN">
-                <indexExists indexName="terms_id"/>
+        <preConditions onFail="MARK_RAN">
+            <indexExists indexName="terms_id"/>
         </preConditions>
         <dropIndex indexName="terms_id" tableName="cat_entry_cat_terms"/>
     </changeSet>
 
     <changeSet author="kherm (generated)" id="61-31">
-         <preConditions onFail="MARK_RAN">
-                <indexExists indexName="FK53CA73DEE5AF2F22"/>
+        <preConditions onFail="MARK_RAN">
+            <indexExists indexName="FK53CA73DEE5AF2F22"/>
         </preConditions>
         <dropIndex indexName="FK53CA73DEE5AF2F22" tableName="cat_terms"/>
     </changeSet>
 
     <changeSet author="kherm (generated)" id="61-32">
-          <preConditions onFail="MARK_RAN">
-                <indexExists indexName="FK3ACE7875467B6FFB"/>
+        <preConditions onFail="MARK_RAN">
+            <indexExists indexName="FK3ACE7875467B6FFB"/>
         </preConditions>
         <dropIndex indexName="FK3ACE7875467B6FFB" tableName="portal_users"/>
     </changeSet>
 
     <changeSet author="kherm (generated)" id="61-33">
         <preConditions onFail="MARK_RAN">
-                <columnExists columnName="areasOfFocus_id" tableName="cat_entry_cat_terms"/>
+            <columnExists columnName="areasOfFocus_id" tableName="cat_entry_cat_terms"/>
         </preConditions>
-        <dropColumn columnName="areasOfFocus_id"  tableName="cat_entry_cat_terms"/>
+        <dropColumn columnName="areasOfFocus_id" tableName="cat_entry_cat_terms"/>
     </changeSet>
 
     <changeSet author="kherm (generated)" id="61-34">
-          <preConditions onFail="MARK_RAN">
-                <columnExists columnName="terms_id" tableName="cat_entry_cat_terms"/>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="terms_id" tableName="cat_entry_cat_terms"/>
         </preConditions>
-        <dropColumn columnName="terms_id"   tableName="cat_entry_cat_terms"/>
+        <dropColumn columnName="terms_id" tableName="cat_entry_cat_terms"/>
     </changeSet>
 
     <changeSet author="kherm (generated)" id="61-35">
         <preConditions onFail="MARK_RAN">
-                <columnExists columnName="identifer" tableName="cat_terms"/>
+            <columnExists columnName="identifer" tableName="cat_terms"/>
         </preConditions>
         <dropColumn columnName="identifer" tableName="cat_terms"/>
     </changeSet>
 
     <changeSet author="kherm (generated)" id="61-36">
         <preConditions onFail="MARK_RAN">
-                <columnExists columnName="terms_fk" tableName="cat_terms"/>
+            <columnExists columnName="terms_fk" tableName="cat_terms"/>
         </preConditions>
-        <dropColumn columnName="terms_fk"   tableName="cat_terms"/>
+        <dropColumn columnName="terms_fk" tableName="cat_terms"/>
     </changeSet>
 
     <changeSet author="kherm (generated)" id="61-37">
-          <preConditions onFail="MARK_RAN">
-                <columnExists columnName="catalog_id" tableName="portal_users"/>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="catalog_id" tableName="portal_users"/>
         </preConditions>
-        <dropColumn columnName="catalog_id"  tableName="portal_users"/>
+        <dropColumn columnName="catalog_id" tableName="portal_users"/>
     </changeSet>
-  
+
     <changeSet author="kherm (generated)" id="62">
         <preConditions onFail="MARK_RAN">
             <indexExists indexName="FK52FB32C9A0F2F220"/>
         </preConditions>
         <dropIndex indexName="FK52FB32C9A0F2F220" tableName="cat_entry"/>
     </changeSet>
-    
+
     <changeSet author="kherm (generated)" id="63">
-         <preConditions onFail="MARK_RAN">
+        <preConditions onFail="MARK_RAN">
             <columnExists tableName="cat_entry" columnName="cql_id"/>
         </preConditions>
         <dropColumn columnName="cql_id" tableName="cat_entry"/>
     </changeSet>
-    
+
     <changeSet author="kherm (generated)" id="64">
         <preConditions onFail="MARK_RAN">
             <columnExists tableName="cat_entry" columnName="portal_url"/>
         </preConditions>
-        <dropColumn columnName="portal_url"  tableName="cat_entry"/>
+        <dropColumn columnName="portal_url" tableName="cat_entry"/>
     </changeSet>
-    
+
     <changeSet author="kherm" id="65">
-       <update tableName="cat_entry">
-           <column name="catalog_type" value="tools"/>
-           <where>catalog_type='tool'</where>
-       </update>
+        <update tableName="cat_entry">
+            <column name="catalog_type" value="tools"/>
+            <where>catalog_type='tool'</where>
+        </update>
     </changeSet>
 
     <changeSet author="kherm (generated)" id="66">
@@ -2013,6 +2025,260 @@
         <addColumn tableName="cat_entry">
             <column name="communityUrl" type="TINYBLOB"/>
         </addColumn>
+    </changeSet>
+
+    <changeSet author="kherm (generated)" id="67-1">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="query_result_cell"/>
+            </not>
+        </preConditions>
+        <createTable tableName="query_result_cell">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="value" type="TEXT"/>
+            <column name="row_id" type="INT"/>
+            <column name="column_id" type="INT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="kherm (generated)" id="67-2">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="query_result_col"/>
+            </not>
+        </preConditions>
+        <createTable tableName="query_result_col">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="table_id" type="INT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="kherm (generated)" id="67-3">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="query_result_data"/>
+            </not>
+        </preConditions>
+        <createTable tableName="query_result_data">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="data" type="BLOB"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="kherm (generated)" id="67-4">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="query_result_row"/>
+            </not>
+        </preConditions>
+        <createTable tableName="query_result_row">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="serviceUrl" type="VARCHAR(255)"/>
+            <column name="table_id" type="INT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="kherm (generated)" id="67-5">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="query_result_table"/>
+            </not>
+        </preConditions>
+        <createTable tableName="query_result_table">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="data_id" type="INT"/>
+            <column name="instance_id" type="INT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="kherm (generated)" id="67-6">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="cat_entry" columnName="featured"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="cat_entry">
+            <column name="featured" type="BIT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="kherm (generated)" id="67-7">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="cat_entry" columnName="portalUrl"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="cat_entry">
+            <column name="portalUrl" type="TINYBLOB"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="kherm (generated)" id="67-8">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="cat_entry" columnName="projectLongName"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="cat_entry">
+            <column name="projectLongName" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="kherm (generated)" id="67-9">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="cat_entry" columnName="query_id"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="cat_entry">
+            <column name="query_id" type="INT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="kherm (generated)" id="67-10">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="cat_entry" columnName="version"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="cat_entry">
+            <column name="version" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="kherm (generated)" id="67-11">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="cat_entry" columnName="query_id"/>
+            <not>
+                <indexExists indexName="cat_entry_querid_idx" schemaName="cat_entry"/>
+            </not>
+        </preConditions>
+        <createIndex indexName="cat_entry_querid_idx" tableName="cat_entry" unique="false">
+            <column name="query_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="kherm (generated)" id="67-12">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="cat_relationship_instance_cat_comments" columnName="comments_id"/>
+            <not>
+                <indexExists indexName="cat_relationship_instance_cat_comments_id_idx"
+                             schemaName="cat_relationship_instance_cat_comments"/>
+            </not>
+        </preConditions>
+        <createIndex indexName="cat_relationship_instance_cat_comments_id_idx"
+                     tableName="cat_relationship_instance_cat_comments" unique="false">
+            <column name="comments_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="kherm (generated)" id="67-13">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="cat_relationship_type" columnName="name"/>
+            <not>
+                <indexExists indexName="cat_relationship_type_name" schemaName="cat_relationship_type"/>
+            </not>
+        </preConditions>
+        <createIndex indexName="cat_relationship_type_name" tableName="cat_relationship_type" unique="true">
+            <column name="name"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="kherm (generated)" id="67-14">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="cat_role_type_cat_comments" columnName="comments_id"/>
+            <not>
+                <indexExists indexName="cat_role_type_cat_comments_id_idx" schemaName="cat_role_type_cat_comments"/>
+            </not>
+        </preConditions>
+        <createIndex indexName="cat_role_type_cat_comments_id_idx" tableName="cat_role_type_cat_comments"
+                     unique="false">
+            <column name="comments_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="kherm (generated)" id="67-15">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="query_result_cell" columnName="column_id"/>
+            <not>
+                <indexExists indexName="query_result_cell_comments_id_idx" schemaName="query_result_cell"/>
+            </not>
+        </preConditions>
+        <createIndex indexName="query_result_cell_comments_id_idx" tableName="query_result_cell" unique="false">
+            <column name="column_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="kherm (generated)" id="67-16">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="query_result_cell" columnName="row_id"/>
+            <not>
+                <indexExists indexName="query_result_cell_row_id_idx" schemaName="query_result_cell"/>
+            </not>
+        </preConditions>
+        <createIndex indexName="query_result_cell_row_id_idx" tableName="query_result_cell" unique="false">
+            <column name="row_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="kherm (generated)" id="67-17">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="query_result_col" columnName="table_id"/>
+            <not>
+                <indexExists indexName="query_result_cell_table_id_idx" schemaName="query_result_col"/>
+            </not>
+        </preConditions>
+        <createIndex indexName="query_result_cell_table_id_idx" tableName="query_result_col" unique="false">
+            <column name="table_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="kherm (generated)" id="67-18">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="query_result_row" columnName="table_id"/>
+            <not>
+                <indexExists indexName="query_result_row_tabl_id_idx" schemaName="query_result_row"/>
+            </not>
+        </preConditions>
+        <createIndex indexName="query_result_row_tabl_id_idx" tableName="query_result_row" unique="false">
+            <column name="table_id"/>
+        </createIndex>
+    </changeSet>
+
+
+    <changeSet author="kherm (generated)" id="67-19">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="query_result_table" columnName="instance_id"/>
+            <not>
+                <indexExists indexName="query_result_table_instance_id_idx" schemaName="query_result_table"/>
+            </not>
+        </preConditions>
+        <createIndex indexName="query_result_table_instance_id_idx" tableName="query_result_table" unique="false">
+            <column name="instance_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="kherm (generated)" id="67-20">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="query_result_table" columnName="data_id"/>
+            <not>
+                <indexExists indexName="query_result_table_data_id_idx" schemaName="query_result_table"/>
+            </not>
+        </preConditions>
+        <createIndex indexName="query_result_table_data_id_idx" tableName="query_result_table" unique="false">
+            <column name="data_id"/>
+        </createIndex>
     </changeSet>
 
 </databaseChangeLog>
