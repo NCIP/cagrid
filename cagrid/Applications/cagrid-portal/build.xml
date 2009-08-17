@@ -196,6 +196,12 @@
         </trycatch>
     </target>
 
+    <target name="update-schema" depends="prepare" description="Will upgrade the Portal database and apply all changes">
+        <ant inheritall="false" target="liquibase.updateDB"
+             dir="${projects.dir}/db">
+        </ant>
+    </target>
+
     <target name="load-schema" depends="prepare" unless="skip.schema"
             description="Create the Portal Application Database.">
         <ant inheritall="false" target="load-schema"
