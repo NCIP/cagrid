@@ -1,0 +1,18 @@
+****************************************************************************
+* Meeting: 	caGrid Developer F2F
+* Date: 	2009-08-21 9:30am - 4:00pm
+* Venue:	OSU BRT
+* Attendees: 	Scott, Steve, Shannon, David, Justin, Bill, Joe, Joshua, 
+*		Manav, Ravi, Dinah, Wei, Santhosh, Larry, John
+****************************************************************************
+
+Agenda: https://ncisvn.nci.nih.gov/WebSVN/filedetails.php?repname=cagrid&path=%2Ftrunk%2Fcagrid%2FMeetings%2F200908_caGrid_Developer_F2F%2FAgenda.docx
+
+Notes
+-----
+
+Parking Lot
+-----------
+
+Action Items
+------------
