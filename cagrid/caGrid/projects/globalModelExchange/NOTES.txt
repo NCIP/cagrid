@@ -100,6 +100,7 @@ what query styles to we want to support?  may effect what XSOM information we st
 - free text on the schema
 - look into supporting xpointer for pointing inside schemas:
     - e.g. #xpointer(xs:schema/xs:element[@name="person"]) 
+    - this is probably more appropriate http://www.w3.org/TR/xmlschema-ref/
 
 consistent with the schema specification, the GME server ignores schemaLocation "hints" and
 resolves schema references via its rules.  To address potential issues with using the 
