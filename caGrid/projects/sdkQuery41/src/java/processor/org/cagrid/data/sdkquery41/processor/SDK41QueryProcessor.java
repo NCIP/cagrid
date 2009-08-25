@@ -60,6 +60,12 @@ public class SDK41QueryProcessor extends CQLQueryProcessor {
 
 
     public CQLQueryResults processQuery(CQLQuery cqlQuery) throws MalformedQueryException, QueryProcessingException {
+        try {
+            cqlQuery = CQLAttributeDefaultPredicateUtil.checkDefaultPredicates(cqlQuery);
+        } catch (Exception ex) {
+            throw new QueryProcessingException(
+                "Error checking query for default Attribute predicate values: " + ex.getMessage(), ex);
+        }
         ApplicationService applicationService = getApplicationService();
         List rawResults = null;
         try {
