@@ -161,9 +161,13 @@ public class CQL2HQL {
 	 */
 	private static void processAttribute(Attribute attribute, StringBuilder hql, 
 		List associationTrace, String objectClassName, boolean caseInsensitive) throws QueryProcessingException {
+	    Predicate predicate = attribute.getPredicate();
+	    if (predicate == null) {
+	        predicate = Predicate.EQUAL_TO;
+	    }
 		boolean isBoolAttribute = BooleanAttributeCheckCache.isFieldBoolean(objectClassName, attribute.getName());
-		boolean unaryPredicate = attribute.getPredicate().equals(Predicate.IS_NOT_NULL)
-			|| attribute.getPredicate().equals(Predicate.IS_NULL);
+		boolean unaryPredicate = predicate.equals(Predicate.IS_NOT_NULL)
+			|| predicate.equals(Predicate.IS_NULL);
 		
 		String trace = associationTrace.size() != 0 ? buildAssociationTrace(associationTrace) : null;
 		
@@ -178,7 +182,7 @@ public class CQL2HQL {
 			hql.append(')');
 		}
 		hql.append(' ');
-		String predicateAsString = convertPredicate(attribute.getPredicate());
+		String predicateAsString = convertPredicate(predicate);
 		if (!unaryPredicate) {
 			hql.append(predicateAsString).append(' ');
 			if (caseInsensitive && !isBoolAttribute) {

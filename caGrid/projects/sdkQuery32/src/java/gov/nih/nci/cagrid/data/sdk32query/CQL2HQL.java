@@ -267,6 +267,9 @@ public class CQL2HQL {
 		}
 		
 		Predicate predicate = attrib.getPredicate();
+		if (predicate == null) {
+		    predicate = Predicate.EQUAL_TO;
+		}
 		// unary predicates
 		if (predicate.equals(Predicate.IS_NULL)) {
 			hql.append(" is null");
