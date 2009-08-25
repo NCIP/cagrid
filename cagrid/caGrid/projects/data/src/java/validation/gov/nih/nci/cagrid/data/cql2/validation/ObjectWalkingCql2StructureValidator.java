@@ -9,6 +9,7 @@ import gov.nih.nci.cagrid.cql2.components.CQLGroup;
 import gov.nih.nci.cagrid.cql2.components.CQLObject;
 import gov.nih.nci.cagrid.cql2.components.CQLQuery;
 import gov.nih.nci.cagrid.cql2.components.CQLTargetObject;
+import gov.nih.nci.cagrid.cql2.components.GroupLogicalOperator;
 import gov.nih.nci.cagrid.cql2.modifiers.CQLQueryModifier;
 
 /**
@@ -128,28 +129,46 @@ public class ObjectWalkingCql2StructureValidator implements Cql2StructureValidat
     
     
     private void validateGroup(CQLGroup group) throws StructureValidationException {
+        // validate the logical operation
         if (group.getLogicalOperation() == null) {
             throw new StructureValidationException("No logical operation was specified on a group definition");
         }
+        String logic = group.getLogicalOperation().getValue();
+        if (!logic.equals(GroupLogicalOperator._AND) && !logic.equals(GroupLogicalOperator._OR)) {
+            throw new StructureValidationException("Logical operator " + logic + " is not valid");
+        }
+        
+        // count the number of group members
+        int groupMemberCount = 0;
+        
+        // validate children of the group
         if (group.getBinaryCQLAttribute() != null) {
+            groupMemberCount += group.getBinaryCQLAttribute().length;
             for (BinaryCQLAttribute att : group.getBinaryCQLAttribute()) {
                 validateAttribute(att);
             }
         }
         if (group.getUnaryCQLAttribute() != null) {
+            groupMemberCount += group.getUnaryCQLAttribute().length;
             for (UnaryCQLAttribute att : group.getUnaryCQLAttribute()) {
                 validateAttribute(att);
             }
         }
         if (group.getCQLAssociatedObject() != null) {
+            groupMemberCount += group.getCQLAssociatedObject().length;
             for (CQLAssociatedObject assoc : group.getCQLAssociatedObject()) {
                 validateAssociation(assoc);
             }
         }
         if (group.getCQLGroup() != null) {
+            groupMemberCount += group.getCQLGroup().length;
             for (CQLGroup g : group.getCQLGroup()) {
                 validateGroup(g);
             }
+        }
+        
+        if (groupMemberCount < 2) {
+            throw new StructureValidationException("Groups must have two or more members (found " + groupMemberCount + ")");
         }
     }
     
