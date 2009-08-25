@@ -12,15 +12,15 @@ F2F Artifacts:https://ncisvn.nci.nih.gov/WebSVN/listing.php?repname=cagrid&path=
 Notes
 -----
 1) WebSSO
-  * No Cross Domain Support (Auth with institutional credentials instead of WebSSO Server)
+  * No Cross Domain Support (Authn to institutional instead of WebSSO Server)
   * Transfer of user attributes between WebSSO and WebSSO clients are not in standard format (i.e.) presently transferred as Tokenized String
-  * No Single Sign-out support for grid services, just applications
+  * [Santhosh] No Single Sign-out support for grid services, just applications
+  * [Steve] you can't revoke a proxy ([Ravi]: you wait for it to expire), but you can revoke the cert that signed it and then it wouldn't validate
   Using Shibboleth + CASSHIB
   * http://code.google.com/p/casshib/wiki/CASShibExplained
-  * [Steve] you can't revoke a proxy ([Ravi]: you wait for it to expire), but you can revoke the cert that signed it and then it wouldn't validate
   * [Scott] open feature requests: https://ncisvn.nci.nih.gov/WebSVN/filedetails.php?repname=cagrid&path=%2Ftrunk%2Fcagrid%2FMeetings%2F200908_caGrid_Developer_F2F%2FcaGrid_RFEs.xlsx
   * Soulwing (which is an implementation of several CAS clients) CAS Client rolled into WebSSO. [Steve] should be an incubator project.
-  * [Steve] thinks that support for Shib is strategically important, especially since NIH is moving forward with deployment of Shib to each institution.
+  * [Steve] thinks that support for Shib is strategically important, especially moving forward with incommon since most incommmon members use Shib.
   * [Steve] thinks in general we should take a more Shib-like approach to Single Sign-on and pursue a prototype, but we'll need to work through the implementation details. 
 2) Identifiers
   * Change to new approach (from Handle, which used: dot notation, strings, central registry): standard URI for identifiers themselves. Using HTTP URLs as URIs, central repository is optional
@@ -37,9 +37,9 @@ Notes
   * Enhanced Fault Mechanism
   * Restrict/Limit Computationally Expensive Queries
 4) caGrid 2.0 / Future Work
-  * Committed to being specification-based, JAX-WS Implementation, looking at several toolkits: prototyping with CXF now, Metro is still a possibility. 
+  * Committed to being specification-based, JAX-WS Implementation, looking at several toolkits: prototyping with CXF now, Metro is still a possibility if blocking CXF issues are encountered. 
   * Information Services (future Globus Index Service) - BIRN is first adopter, JP from Globus is leading. [Joshua] is this just service registration or much more? [Ravi] it can be both. 
-  * CTSA/OpenMDR - if OpenMDR succeeds, caGrid should support non-caDSR repositories. 
+  * CTSA/OpenMDR - if projects like OpenMDR succeed, caGrid should support non-caDSR repositories. 
 5) KC Feedback
   * Introduce Extension, suggest that KC add documentation, possibly training to educate senior developers how to build extensions
   * Introduce Extensions (i.e. GME) should have some failsafe mode if the service they consume isn't present (lesson learned from caDSR/EVS deprecation)
@@ -54,5 +54,5 @@ Thu 3) Assertion Repository
 
 Action Items
 ------------
-1) Security Issue should be documented.
+1) RE: single sign-out taking delegation EPR from client, Security Issue should be documented.
 1) [Steve] should join [Scott] and [John]'s weekly call to develop a scope document for next iteration of WebSSO work that we can take to Sichen to allocate [Santhosh's time]. Once we determine that architectural changes should be made to WebSSO, we should socialize those with Patrick and Kalpesh to ensure they will work for CCTS. 
