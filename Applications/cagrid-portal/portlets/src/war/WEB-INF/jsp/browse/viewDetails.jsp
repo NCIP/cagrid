@@ -7,10 +7,10 @@
 <a href="<c:out value="${viewUrl} }"/>">Back to search results</a>
 
 <div id="catalogEntry.name">
-<c:out value="${catalogEntry.name"/>
+<c:out value="${catalogEntry.name}"/>
 </div>
 
 <div id="catalogEntry.description">
-<c:out value="${catalogEntry.description"/>
+<c:out value="${catalogEntry.description}"/>
 </div>
 
