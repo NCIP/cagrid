@@ -281,6 +281,10 @@ public class CQL2HQL {
 		}
 		
 		Predicate predicate = attrib.getPredicate();
+		if (predicate == null) {
+		    // default is EQUAL_TO, but Axis doesn't fill that in
+		    predicate = Predicate.EQUAL_TO;
+		}
 		boolean nullCheck = predicate.equals(Predicate.IS_NULL) || predicate.equals(Predicate.IS_NOT_NULL);
 				
 		if (typeFlag == AttributeTypeDetector.DATE_TYPE && !nullCheck) {
