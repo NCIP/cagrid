@@ -35,6 +35,11 @@ public class SchemaValidationTestCase extends TestCase {
 	public void testQuery2() {
 		assertFileValid(QUERIES_DIR + "exampleQuery2.xml");
 	}
+	
+	
+	public void testQuery2NoPredicate() {
+	    assertFileValid(QUERIES_DIR + "exampleQuery2_NoPredicate.xml");
+	}
 
 
 	public void assertFileValid(String file) {
