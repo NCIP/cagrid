@@ -364,26 +364,26 @@ public class DomainModelBuilder {
 
             // now only process non wildcards (because this criteria is "not"ed
             // so not filtering on the wildcards makes them be excluded)
-            if (!exclude.getSourceClassName().equals(EXCLUDE_WILDCARD)) {
+            if (exclude.getSourceClassName()!=null && !exclude.getSourceClassName().equals(EXCLUDE_WILDCARD)) {
                 if (filterCount++ > 0) {
                     sb.append(" AND ");
                 }
                 sb.append(alias + ".sourceUMLClassMetadata.fullyQualifiedName='" + exclude.getSourceClassName() + "'");
 
             }
-            if (!exclude.getTargetClassName().equals(EXCLUDE_WILDCARD)) {
+            if (exclude.getTargetClassName()!=null && !exclude.getTargetClassName().equals(EXCLUDE_WILDCARD)) {
                 if (filterCount++ > 0) {
                     sb.append(" AND ");
                 }
                 sb.append(alias + ".targetUMLClassMetadata.fullyQualifiedName='" + exclude.getTargetClassName() + "'");
             }
-            if (!exclude.getSourceRoleName().equals(EXCLUDE_WILDCARD)) {
+            if (exclude.getSourceRoleName()!=null && !exclude.getSourceRoleName().equals(EXCLUDE_WILDCARD)) {
                 if (filterCount++ > 0) {
                     sb.append(" AND ");
                 }
                 sb.append(alias + ".sourceRoleName='" + exclude.getSourceRoleName() + "'");
             }
-            if (!exclude.getTargetRoleName().equals(EXCLUDE_WILDCARD)) {
+            if (exclude.getTargetRoleName()!=null && !exclude.getTargetRoleName().equals(EXCLUDE_WILDCARD)) {
                 if (filterCount++ > 0) {
                     sb.append(" AND ");
                 }
