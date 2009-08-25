@@ -259,6 +259,22 @@ public class DomainModelCql2DomainValidator extends Cql2DomainValidator {
             throw new DomainValidationException("No association from " + current.getClassName() + " to " + assoc.getClassName()
                 + " with role name " + assoc.getSourceRoleName());
         }
+        
+        // validate instanceof (must be a subclass of the association's named class
+        if (assoc.get_instanceof() != null) {
+            boolean validInstanceof = false;
+            // verify the association's named class is a superclass of the instanceof
+            String[] superclasses = getClassHierarchy(assoc.get_instanceof());
+            for (String sup : superclasses) {
+                if (sup.equals(assoc.getClassName())) {
+                    validInstanceof = true;
+                    break;
+                }
+            }
+            if (!validInstanceof) {
+                throw new DomainValidationException(assoc.get_instanceof() + " is not a subclass of " + assoc.getClassName());
+            }
+        }
     }
     
     
