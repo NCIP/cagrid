@@ -1,5 +1,6 @@
 package gov.nih.nci.cagrid.data.sdk32query.experimental.directcql;
 
+import gov.nih.nci.cagrid.cqlquery.Predicate;
 import gov.nih.nci.cagrid.data.QueryProcessingException;
 import gov.nih.nci.system.query.cql.CQLAssociation;
 import gov.nih.nci.system.query.cql.CQLAttribute;
@@ -66,7 +67,7 @@ public class CQL2CoreCQL {
 	private static CQLAttribute convertAttribute(gov.nih.nci.cagrid.cqlquery.Attribute attribute) {
 		CQLAttribute convertedAttribute = new CQLAttribute();
 		convertedAttribute.setName(attribute.getName());
-		convertedAttribute.setPredicate(convertPredicate(attribute.getPredicate()));
+		convertedAttribute.setPredicate(convertPredicate(attribute.getPredicate() != null ? attribute.getPredicate() : Predicate.EQUAL_TO));
 		convertedAttribute.setValue(attribute.getValue().toString());
 		return convertedAttribute;
 	}
