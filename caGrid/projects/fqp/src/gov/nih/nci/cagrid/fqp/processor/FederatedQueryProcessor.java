@@ -287,8 +287,12 @@ class FederatedQueryProcessor {
         // convert these to IS_NULL and IS_NOT_NULL (which won't affect list
         // size) but other predicates we will filter out (thus
         // changing the list size)
-        if (!joinCondition.getPredicate().equals(ForeignPredicate.EQUAL_TO)
-            && !joinCondition.getPredicate().equals(ForeignPredicate.NOT_EQUAL_TO)) {
+        // NOTE: the predicate is set in XSD to default to EQUAL_TO, but Axis 
+        // won't do this for you and returns null if the client didn't fill it in
+        ForeignPredicate predicate = joinCondition.getPredicate();
+        if (predicate != null // default as EQUAL_TO
+            && !ForeignPredicate.EQUAL_TO.equals(predicate)
+            && !ForeignPredicate.NOT_EQUAL_TO.equals(predicate)) {
             for (int i = 0; i < list.size(); i++) {
                 if (list.get(i) == null) {
                     // since these come from DISTINCT values, there should be
@@ -364,30 +368,36 @@ class FederatedQueryProcessor {
         gov.nih.nci.cagrid.cqlquery.Attribute attr = new gov.nih.nci.cagrid.cqlquery.Attribute();
         // set the local property name
         attr.setName(property);
+        ForeignPredicate predicate = joinCondition.getPredicate();
+        Predicate cqlPredicate = null;
         if (value == null) {
-            if (joinCondition.getPredicate().equals(ForeignPredicate.EQUAL_TO)) {
+            if (predicate == null || ForeignPredicate.EQUAL_TO.equals(predicate)) {
                 // we got null, and are supposed to compare it as =, so that
                 // means is_null
-                attr.setPredicate(Predicate.IS_NULL);
-                attr.setValue("");
-            } else if (joinCondition.getPredicate().equals(ForeignPredicate.NOT_EQUAL_TO)) {
+                cqlPredicate = Predicate.IS_NULL;
+            } else if (ForeignPredicate.NOT_EQUAL_TO.equals(predicate)) {
                 // we got null, and are supposed to compare it as !=, so that
                 // means is_not_null
-                attr.setPredicate(Predicate.IS_NOT_NULL);
-                attr.setValue("");
+                cqlPredicate = Predicate.IS_NOT_NULL;                
             } else {
                 // should not get here, nulls should have been filtered out
                 throw new FederatedQueryProcessingException(
                     "Internal problem processing query. Got unexpected null values.");
             }
+            attr.setValue("");
         } else {
             // set the predicate to the join predicate (this requires DCQL
             // to use the same representation as CQL)
-            attr.setPredicate(Predicate.fromValue(joinCondition.getPredicate().getValue()));
+            if (predicate == null) {
+                cqlPredicate = Predicate.EQUAL_TO;
+            } else {
+                cqlPredicate = Predicate.fromValue(predicate.getValue());
+            }
             // set the value to the string representation of the "foreign
             // result value"
             attr.setValue(value.toString());
         }
+        attr.setPredicate(cqlPredicate);
         return attr;
     }
 
