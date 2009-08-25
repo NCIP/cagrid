@@ -76,6 +76,11 @@ public class AsynchronousExecutionStory extends Story {
             FQPTestingConstants.GOLD_LOCATION + File.separator + "exampleDistributedJoin1_gold.xml", 
             fqpClient, serviceUrls));
         
+        // asynchronous execution with a missing (default) foreign join predicate
+        steps.add(new AsynchronousQueryExecutionStep(FQPTestingConstants.QUERIES_LOCATION + File.separator + "exampleDistributedJoin1_NoPredicate.xml",
+            FQPTestingConstants.GOLD_LOCATION + File.separator + "exampleDistributedJoin1_gold.xml", 
+            fqpClient, serviceUrls));
+        
         // asynchronous execution which fails
         steps.add(new AsynchronousQueryExecutionFailsStep(
             fqpClient, FQPTestingConstants.QUERIES_LOCATION + File.separator + "exampleDistributedJoin1.xml"));
