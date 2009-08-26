@@ -86,7 +86,6 @@
 	<classpathentry kind="lib" path="ext/default/jars/globus_wsrf_mds_aggregator.jar"/>
 	<classpathentry kind="lib" path="ext/default/jars/globus_wsrf_servicegroup_stubs.jar"/>
 	<classpathentry kind="lib" path="ext/default/jars/globus_wsrf_servicegroup.jar"/>
-	<classpathentry kind="lib" path="ext/default/jars/hibernate3.jar"/>
 	<classpathentry kind="lib" path="ext/default/jars/hibernate-annotations.jar"/>
 	<classpathentry kind="lib" path="ext/default/jars/hibernate-commons-annotations.jar"/>
 	<classpathentry kind="lib" path="ext/default/jars/hibernate-search.jar"/>
@@ -136,5 +135,6 @@
 	<classpathentry kind="lib" path="ext/test/jars/junit-4.4.jar"/>
 	<classpathentry kind="lib" path="ext/test/jars/mockito-all-1.6.jar"/>
 	<classpathentry kind="lib" path="ext/test/jars/spring-test-2.5.5.jar"/>
+	<classpathentry kind="lib" path="ext/default/jars/hibernate3-patch.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -24,6 +24,10 @@
             <param name="beanName" value="credentialManagerFacade"/>
         </create>
         
+        <create creator="spring" javascript="RegistrationManager">
+            <param name="beanName" value="registrationManager"/>
+        </create>
+        
         <create creator="spring" javascript="CatalogEntryManagerFacade">
             <param name="beanName" value="catalogEntryManagerFacade"/>
         </create>

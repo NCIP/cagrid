@@ -32,7 +32,6 @@
 	<classpathentry kind="lib" path="ext/default/jars/dom4j-1.6.1.jar"/>
 	<classpathentry kind="lib" path="ext/default/jars/ehcache-1.2.3.jar"/>
 	<classpathentry kind="lib" path="ext/default/jars/ejb3-persistence.jar"/>
-	<classpathentry kind="lib" path="ext/default/jars/hibernate3.jar"/>
 	<classpathentry kind="lib" path="ext/default/jars/hibernate-annotations.jar"/>
 	<classpathentry kind="lib" path="ext/default/jars/hibernate-commons-annotations.jar"/>
 	<classpathentry kind="lib" path="ext/default/jars/hibernate-search.jar"/>
@@ -93,7 +92,6 @@
 	<classpathentry kind="lib" path="ext/test/jars/dom4j-1.6.1.jar"/>
 	<classpathentry kind="lib" path="ext/test/jars/ehcache-1.2.3.jar"/>
 	<classpathentry kind="lib" path="ext/test/jars/ejb3-persistence.jar"/>
-	<classpathentry kind="lib" path="ext/test/jars/hibernate3.jar"/>
 	<classpathentry kind="lib" path="ext/test/jars/hibernate-annotations.jar"/>
 	<classpathentry kind="lib" path="ext/test/jars/hibernate-commons-annotations.jar"/>
 	<classpathentry kind="lib" path="ext/test/jars/hibernate-search.jar"/>
@@ -126,5 +124,6 @@
 	<classpathentry kind="lib" path="ext/test/jars/xml-apis-2.7.1.jar"/>
 	<classpathentry kind="lib" path="ext/test/jars/xmlsec.jar"/>
 	<classpathentry kind="lib" path="ext/test/jars/xmltask-v1.14-1.14.jar"/>
+	<classpathentry kind="lib" path="ext/default/jars/hibernate3-patch.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

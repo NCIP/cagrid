@@ -4,7 +4,6 @@
 package gov.nih.nci.cagrid.portal.portlet.credmgr;
 
 import gov.nih.nci.cagrid.authentication.stubs.types.InvalidCredentialFault;
-
 import gov.nih.nci.cagrid.portal.domain.IdPAuthentication;
 import gov.nih.nci.cagrid.portal.domain.IdentityProvider;
 import gov.nih.nci.cagrid.portal.domain.PortalUser;
@@ -14,8 +13,10 @@ import gov.nih.nci.cagrid.portal.security.AuthnTimeoutException;
 import gov.nih.nci.cagrid.portal.security.EncryptionService;
 import gov.nih.nci.cagrid.portal.security.ProxyUtil;
 
+import java.io.ByteArrayInputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -55,9 +56,18 @@ public class CredentialManagerFacade {
 
 			credentials = new ArrayList<CredentialBean>();
 			for (IdPAuthentication idpAuth : portalUser.getAuthentications()) {
-				credentials.add(new CredentialBean(idpAuth.getIdentity(),
-						new IdPBean(idpAuth.getIdentityProvider().getLabel(),
-								idpAuth.getIdentityProvider().getUrl())));
+				String credStr = this.getEncryptionService().decrypt(
+						idpAuth.getGridCredential());
+				GlobusCredential globusCred = new GlobusCredential(
+						new ByteArrayInputStream(credStr.getBytes()));
+				Date validUntil = new Date(System.currentTimeMillis()
+						+ globusCred.getTimeLeft());
+				CredentialBean credBean = new CredentialBean(idpAuth.getIdentity(),
+						validUntil, new IdPBean(idpAuth.getIdentityProvider()
+								.getLabel(), idpAuth.getIdentityProvider()
+								.getUrl()));
+				credBean.setDefaultCredential(idpAuth.isDefault());
+				credentials.add(credBean);
 			}
 		} catch (Exception ex) {
 			String msg = "Error listing credentials: " + ex.getMessage();
@@ -165,18 +175,52 @@ public class CredentialManagerFacade {
 		return message;
 	}
 
-	public String login(String userId, String username, String password,
-			String url, int proxyLifetimeHours, int delegationPathLength) {
-		logger.debug("Logging in user: userId=" + userId + ", username='"
-				+ username + "', password='" + password + "', url='" + url
-				+ "'.");
-		logger.debug("IFS URL: " + getIfsUrl());
+	public CredentialBean refresh(String userId, String identity) {
 
-		String message = "Successfully authenticated to " + url;
+		CredentialBean credBean = null;
+
+		logger.debug("Refreshing credential '" + identity + "' for user: "
+				+ userId);
+		IdPAuthentication idpAuthn = null;
+		try {
+			PortalUser user = getPortalUser(userId);
+
+			for (IdPAuthentication ia : user.getAuthentications()) {
+				if (ia.getIdentity().equals(identity)) {
+					idpAuthn = ia;
+					break;
+				}
+			}
+			if (idpAuthn == null) {
+				throw new RuntimeException(
+						"No authentication found for identity: " + identity);
+			}
+			String username = idpAuthn.getUsername();
+			String password = this.getEncryptionService().decrypt(
+					idpAuthn.getPassword());
+			credBean = authenticate(userId, username, password, idpAuthn
+					.getIdentityProvider().getUrl(), 4, 0);
+
+		} catch (RuntimeException ex) {
+			String msg = "Error refreshing credential: " + ex.getMessage();
+			logger.error(msg, ex);
+			throw new RuntimeException(msg, ex);
+		}
+
+		return credBean;
+	}
+
+	public CredentialBean authenticate(String userId, String username,
+			String password, String url, int proxyLifetimeHours,
+			int delegationPathLength) {
+		CredentialBean credBean = null;
 		try {
 			if (userId == null) {
-				throw new RuntimeException("User is not authenticated.");
+				throw new RuntimeException(
+						"User is not authenticated to the portal.");
 			} else {
+
+				PortalUser user = getPortalUser(userId);
 
 				GlobusCredential globusCred = null;
 				try {
@@ -195,17 +239,24 @@ public class CredentialManagerFacade {
 				}
 
 				IdentityProvider idp = getIdentityProvider(url);
-				PortalUser user = getPortalUser(userId);
+
 				String identity = globusCred.getIdentity();
+
+				// See if the user already has an authentication for
+				// this identity.
 				IdPAuthentication idpAuthn = null;
 				for (IdPAuthentication ia : user.getAuthentications()) {
 					if (ia.getIdentity().equals(identity)) {
 						idpAuthn = ia;
-						break;
+						ia.setDefault(true);
+					} else {
+						ia.setDefault(false);
 					}
+					getHibernateTemplate().update(ia);
 				}
 				if (idpAuthn == null) {
 					idpAuthn = new IdPAuthentication();
+					idpAuthn.setDefault(true);
 					idpAuthn.setIdentityProvider(idp);
 					idpAuthn.setPortalUser(user);
 					idpAuthn.setIdentity(identity);
@@ -218,19 +269,38 @@ public class CredentialManagerFacade {
 					idpAuthn.setGridCredential(getEncryptionService().encrypt(
 							ProxyUtil.getProxyString(globusCred)));
 					getHibernateTemplate().update(idpAuthn);
-					
+
 				} catch (Exception ex) {
 					throw new RuntimeException("Error saving credentials: "
 							+ ex.getMessage(), ex);
 				}
 				user.setGridCredential(idpAuthn.getGridCredential());
-
+				Date validUntil = new Date(System.currentTimeMillis()
+						+ globusCred.getTimeLeft());
+				IdPBean idpBean = new IdPBean(idpAuthn.getIdentityProvider()
+						.getLabel(), idpAuthn.getIdentityProvider().getUrl());
+				credBean = new CredentialBean(globusCred.getIdentity(),
+						validUntil, idpBean);
+				credBean.setDefaultCredential(true);
 			}
 		} catch (RuntimeException ex) {
 			String msg = "Error logging in: " + ex.getMessage();
 			logger.error(msg, ex);
 			throw ex;
 		}
+		return credBean;
+	}
+
+	// TODO: remove this method - replaced by authenticate
+	public String login(String userId, String username, String password,
+			String url, int proxyLifetimeHours, int delegationPathLength) {
+		logger.debug("Logging in user: userId=" + userId + ", username='"
+				+ username + "', url='" + url + "'.");
+		logger.debug("IFS URL: " + getIfsUrl());
+
+		String message = "Successfully authenticated to " + url;
+		authenticate(userId, username, password, url, proxyLifetimeHours,
+				delegationPathLength);
 		return message;
 	}
 
@@ -251,18 +321,16 @@ public class CredentialManagerFacade {
 				getHibernateTemplate().update(ia);
 			}
 			if (idpAuthn == null) {
-				throw new RuntimeException("No authentication found for identity: "
-						+ identity);
+				throw new RuntimeException(
+						"No authentication found for identity: " + identity);
 			}
 			user.setGridCredential(idpAuthn.getGridCredential());
-			
+
 		} catch (RuntimeException ex) {
 			String msg = "Error setting default credential: " + ex.getMessage();
 			logger.error(msg, ex);
 			throw new RuntimeException(msg, ex);
 		}
-		
-		
 
 		return message;
 	}

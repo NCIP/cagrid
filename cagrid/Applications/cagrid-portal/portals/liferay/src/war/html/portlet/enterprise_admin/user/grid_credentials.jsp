@@ -70,7 +70,7 @@ function listCredentials(){
 						jQuery('#cagrid_credsDiv > select').append('<option value="' + credentials[i].identity + '">' + credentials[i].identity + '</option>');
 					}	
 				}
-			}	
+			}
     	},
     	errorHandler:function(errorString, exception){
     		alert("Error getting credentials: " + errorString);

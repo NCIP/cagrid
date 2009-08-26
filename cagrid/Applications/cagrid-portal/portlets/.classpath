@@ -168,5 +168,13 @@
 	<classpathentry kind="lib" path="ext/default/jars/slf4j-api-1.5.6.jar"/>
 	<classpathentry kind="lib" path="ext/default/jars/slf4j-log4j12-1.5.6.jar"/>
 	<classpathentry kind="lib" path="ext/default/jars/hibernate3-patch.jar"/>
+	<classpathentry kind="lib" path="ext/default/jars/caGrid-portal-search.jar"/>
+	<classpathentry kind="lib" path="ext/default/jars/caGrid-Transfer-client-1.3.jar"/>
+	<classpathentry kind="lib" path="ext/default/jars/caGrid-Transfer-common-1.3.jar"/>
+	<classpathentry kind="lib" path="ext/default/jars/caGrid-Transfer-stubs-1.3.jar"/>
+	<classpathentry kind="lib" path="ext/default/jars/commons-fileupload-1.2.1.jar"/>
+	<classpathentry kind="lib" path="ext/default/jars/commons-httpclient-3.0.jar"/>
+	<classpathentry kind="lib" path="ext/default/jars/commons-httpclient-3.1.jar"/>
+	<classpathentry kind="lib" path="ext/test/jars/caGrid-portal-aggr-test.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

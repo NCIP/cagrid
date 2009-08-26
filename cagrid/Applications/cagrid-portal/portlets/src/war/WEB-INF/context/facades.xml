@@ -98,6 +98,10 @@
 		<property name="encryptionService" ref="encryptionServicePrototype"/>
 		<property name="hibernateTemplate" ref="hibernateTemplate"/>
     </bean>
+    
+    <bean id="registrationManager" class="gov.nih.nci.cagrid.portal.portlet.register.RegistrationManager">
+        <property name="ifsUrl" value="${cagrid.portal.ifsUrl}"/>
+    </bean>    
 
     <bean class="gov.nih.nci.cagrid.portal.portlet.browse.ajax.CatalogEntryManagerAspect"
           parent="abstractSolrCommandExecutor">

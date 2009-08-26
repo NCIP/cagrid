@@ -39,6 +39,8 @@ public class CaGridPortalUserLocalServiceImpl extends UserLocalServiceImpl
 		super();
 	}
 
+	//TODO: need update operation to keep in sync with liferay user management changes.
+	
 	public User addUser(long creatorUserId, long companyId,
 			boolean autoPassword, String password1, String password2,
 			boolean autoScreenName, String screenName, String emailAddress,
@@ -78,9 +80,12 @@ public class CaGridPortalUserLocalServiceImpl extends UserLocalServiceImpl
 		portalUser.setCatalog(personCatalogEntry);
 		getPortalUserDao().save(portalUser);
 
+
 		ResourceLocalServiceUtil.addResources(user.getCompanyId(), 0, user
 				.getUserId(), CatalogEntry.class.getName(), String
 				.valueOf(personCatalogEntry.getId()), false, false, false);
+		
+		//TODO: add user to appropriate groups (e.g. to enable creation of catalog entries)
 
 		return user;
 	}

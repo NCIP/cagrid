@@ -1,7 +1,7 @@
 <script type="text/javascript">
 var state = 'open';
 jQuery(document).ready(function(){
-    jQuery('a#comments-toggle').click(function(){
+    jQuery('#comments-toggle').click(function(){
         switch (state) {
             case 'closed':
                 jQuery('#comments').show();
