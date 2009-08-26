@@ -132,5 +132,6 @@
 	<classpathentry kind="lib" path="build/sdk/SDK4/output/example41/package/remote-client/lib/spring.jar"/>
 	<classpathentry kind="lib" path="build/sdk/SDK4/output/example41/package/remote-client/lib/xercesImpl.jar"/>
 	<classpathentry kind="lib" path="build/sdk/SDK4/output/example41/package/remote-client/conf"/>
+	<classpathentry kind="lib" path="ext/dependencies/jars/jdom-1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
