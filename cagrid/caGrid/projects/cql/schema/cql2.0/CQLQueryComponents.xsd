@@ -32,6 +32,7 @@
 		<xsd:complexContent>
 			<xsd:extension base="com:CQLObject">
 				<xsd:attribute name="sourceRoleName" type="xsd:string" use="required"/>
+				<xsd:attribute name="instanceof" type="xsd:string" use="optional"/>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
