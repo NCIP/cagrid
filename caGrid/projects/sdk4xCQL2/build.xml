@@ -22,7 +22,7 @@
 	<property name="build.dir" location="build" />
 	<property name="build.processor.dest" location="${build.dir}/processor" />
 	<property name="build.jars.dir" location="build/lib" />
-
+	
 	<!-- jar names -->
 	<property name="processor.jar.name" value="${project.jar.prefix}processor${project.jar.suffix}" />
 	
@@ -43,6 +43,8 @@
 	<property name="test.classes.dir" location="${build.dir}/test/classes" />
 	<property name="test.logs.dir" location="${test.dir}/logs" />
 	<property name="test.project.jar" location="${build.jars.dir}/${project.jar.prefix}tests${project.jar.suffix}" />
+	<!-- for testing - comma separated class directories -->
+	<property name="build.dirs.list" value="${build.processor.dest}"/>
 	<import file="test\test.xml" />
 
 	<!-- =============================================================== -->
