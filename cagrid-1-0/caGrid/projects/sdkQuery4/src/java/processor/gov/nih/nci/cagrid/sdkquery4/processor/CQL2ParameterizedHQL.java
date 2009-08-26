@@ -230,10 +230,16 @@ public class CQL2ParameterizedHQL {
         }
         LOG.debug("Attribute found to be of type " + attributeFieldType);
         
+        // get the predicate, check for a default value
+        Predicate predicate = attribute.getPredicate();
+        if (predicate == null) {
+            predicate = Predicate.EQUAL_TO;
+        }
+        
         // determine some flags needed for proper query construction
 		boolean isBoolAttribute = attributeFieldType.equals(Boolean.class.getName()); 
-		boolean unaryPredicate = attribute.getPredicate().equals(Predicate.IS_NOT_NULL)
-			|| attribute.getPredicate().equals(Predicate.IS_NULL);
+		boolean unaryPredicate = predicate.equals(Predicate.IS_NOT_NULL)
+			|| predicate.equals(Predicate.IS_NULL);
 		
         // construct the query fragment
         // TODO: does Hibernate 3.2.0ga not allow lower() for booleans?  
@@ -252,14 +258,14 @@ public class CQL2ParameterizedHQL {
         
         // append the predicate
 		hql.append(' ');
-		String predicateAsString = predicateValues.get(attribute.getPredicate());
+		String predicateAsString = predicateValues.get(predicate);
 		if (!unaryPredicate) {
 			hql.append(predicateAsString).append(' ');
 
             // add a placeholder parameter to the HQL query
 			hql.append('?');
 
-			// convert the attribtue value to the specific data type of the attribute
+			// convert the attribute value to the specific data type of the attribute
             java.lang.Object value = valueToObject(attributeFieldType, 
                 caseInsensitive ? attribute.getValue().toLowerCase() : attribute.getValue());
 
