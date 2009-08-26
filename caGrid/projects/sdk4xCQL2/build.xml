@@ -41,7 +41,6 @@
 	<property name="test.dir" location="${basedir}/test" />
 	<property name="test.src.dir" location="${test.dir}/src" />
 	<property name="test.classes.dir" location="${build.dir}/test/classes" />
-	<property name="test.lib.dir" location="${test.dir}/lib" />
 	<property name="test.logs.dir" location="${test.dir}/logs" />
 	<property name="test.project.jar" location="${build.jars.dir}/${project.jar.prefix}tests${project.jar.suffix}" />
 	<import file="test\test.xml" />
@@ -57,9 +56,6 @@
 			<include name="**/*.jar" />
 			<!-- castor is supplied from the remote-client -->
 			<exclude name="castor-0.9.9.jar" />
-		</fileset>
-		<fileset dir="${test.lib.dir}">
-			<include name="**/*.jar" />
 		</fileset>
 		<fileset dir="${ext.test.lib.dir}">
 			<include name="**/*.jar" />
@@ -80,11 +76,7 @@
 		<fileset dir="${lib.dir}">
 			<include name="**/*.jar" />
 		</fileset>
-
 		<fileset dir="${ext.lib.dir}">
-			<include name="**/*.jar" />
-		</fileset>
-		<fileset dir="${test.lib.dir}">
 			<include name="**/*.jar" />
 		</fileset>
 		<fileset dir="${ext.test.lib.dir}">
@@ -131,22 +123,7 @@
 	<!-- compiles the testing source code -->
 	<target name="compileTests" depends="compileProcessor">
 		<javac srcdir="${test.src.dir}" destdir="${test.classes.dir}" debug="${java.debug}" source="${java.source}">
-			<classpath>
-				<pathelement location="${build.processor.dest}" />
-				<fileset dir="${lib.dir}">
-					<include name="*.jar" />
-				</fileset>
-				<fileset dir="${ext.lib.dir}">
-					<include name="*.jar" />
-				</fileset>
-				<fileset dir="${ext.test.lib.dir}">
-					<include name="*.jar" />
-				</fileset>
-				<fileset dir="${globus.dir}/lib">
-					<include name="*.jar" />
-                    <exclude name="junit.jar"/>
-				</fileset>
-			</classpath>
+			<classpath refid="test.classpath"/>
 			<include name="**/*.java" />
 		</javac>
 	</target>
