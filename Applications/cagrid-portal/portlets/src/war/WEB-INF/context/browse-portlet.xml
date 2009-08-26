@@ -70,6 +70,12 @@
           autowire="byName">
         <property name="objectName" value="catalogEntryViewBean"/>
     </bean>
+    
+    <bean id="browseViewProfileController"
+          class="gov.nih.nci.cagrid.portal.portlet.browse.BrowseViewProfileController"
+          autowire="byName">
+        <property name="objectName" value="catalogEntryViewBean"/>
+    </bean>
 
 
     <bean id="catalogEntryFactory" class="gov.nih.nci.cagrid.portal.portlet.browse.CatalogEntryFactory"
@@ -168,6 +174,7 @@
                     <map>
                         <entry key="view" value-ref="browseViewController"/>
                         <entry key="viewDetails" value-ref="browseViewDetailsController"/>
+                        <entry key="viewProfile" value-ref="browseViewProfileController"/>
                         <entry key="createCatalogEntry" value-ref="createCatalogEntryController"/>
                         <entry key="editCatalogEntry" value-ref="editCatalogEntryController"/>
                         <entry key="deleteCatalogEntry" value-ref="deleteCatalogEntryController"/>

@@ -36,10 +36,33 @@ public class BrowseViewDetailsController extends AbstractController {
 
 	protected ModelAndView handleRenderRequestInternal(RenderRequest request,
 			RenderResponse response) throws Exception {
+		
+		CatalogEntry entry = getCatalogEntry(request);
+		if (entry == null) {
+			throw new RuntimeException("No catalog entry found.");
+		}
+		getUserModel().setCurrentCatalogEntry(entry);
+		
+		
+		String viewName = (String) PortletUtils.getMapValueForType(entry.getClass(),
+				getEntryTypeViewMap());
+		if (viewName == null) {
+			throw new RuntimeException("Couldn't determine view name for: "
+					+ entry);
+		}
+		ModelAndView mav = null;		
+		mav = new ModelAndView(viewName);
+		mav.addObject(getObjectName(), getCatalogEntryViewBeanFactory()
+				.newCatalogEntryViewBean(entry));
+		if(request.getParameter("viewMode") != null){
+			mav.addObject("viewMode", request.getParameter("viewMode"));
+		}
 
-		ModelAndView mav = null;
+		return mav;
+	}
+	
+	protected CatalogEntry getCatalogEntry(RenderRequest request){
 		CatalogEntry entry = null;
-
 		Integer entryId = null;
 		try {
 			entryId = Integer.valueOf(request.getParameter("entryId"));
@@ -50,33 +73,13 @@ public class BrowseViewDetailsController extends AbstractController {
 			entry = getCatalogEntryDao().getById(entryId);
 		} else {
 			entry = getUserModel().getCurrentCatalogEntry();
-		}
-
-		String viewName = null;
-		if (entry == null) {
-			throw new RuntimeException("No catalog entry found.");
-		}
-		if(entry.getId() != null){
+			if(entry == null){
+				throw new RuntimeException("No current catalog entry.");
+			}
 			entry = getCatalogEntryDao().getById(entry.getId());
-			getUserModel().setCurrentCatalogEntry(entry);
-		}
-		
-		viewName = (String) PortletUtils.getMapValueForType(entry.getClass(),
-				getEntryTypeViewMap());
-
-		if (viewName == null) {
-			throw new RuntimeException("Couldn't determine view name for: "
-					+ entry);
 		}
 
-		mav = new ModelAndView(viewName);
-		mav.addObject(getObjectName(), getCatalogEntryViewBeanFactory()
-				.newCatalogEntryViewBean(entry));
-		if(request.getParameter("viewMode") != null){
-			mav.addObject("viewMode", request.getParameter("viewMode"));
-		}
-
-		return mav;
+		return entry;
 	}
 
 	public CatalogEntryDao getCatalogEntryDao() {
