@@ -23,6 +23,8 @@ import java.util.Set;
 /** 
  *  QueryModifierProcessor
  *  Applies query modifiers to a query results list
+ *  
+ *  TODO: The things this class does should be pushed into the HQL query
  * 
  * @author David Ervin
  * 
