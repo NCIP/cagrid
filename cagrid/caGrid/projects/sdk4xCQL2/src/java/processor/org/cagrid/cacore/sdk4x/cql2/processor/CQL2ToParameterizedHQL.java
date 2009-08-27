@@ -401,24 +401,17 @@ public class CQL2ToParameterizedHQL {
     }
 
 
-    private String generateAssociationFetchClause(String targetClassName, AssociationPopulationSpecification spec)
-        throws Exception {
+    private String generateAssociationFetchClause(String targetClassName, AssociationPopulationSpecification spec) {
         StringBuffer clause = new StringBuffer();
         if (spec.getPopulationDepth() != null) {
-            int maxDepth = -1;
-            if (spec.getPopulationDepth().isInfinite()) {
-                maxDepth = Integer.MAX_VALUE;
-            } else {
-                maxDepth = spec.getPopulationDepth().getDepth().intValue();
-            }
+            int maxDepth = spec.getPopulationDepth().getDepth();
             Set<String> joinedAssociations = new HashSet<String>();
             appendJoinsByDepth(clause, targetClassName, TARGET_ALIAS, 0, 0, maxDepth, joinedAssociations);
         } else {
-            System.out.println("Using named associations");
             int aliasIndex = 0;
             NamedAssociation[] namedAssociations = spec.getNamedAssociationList().getNamedAssociation();
             for (NamedAssociation na : namedAssociations) {
-                appendNamedJoins(clause, na, TARGET_ALIAS, aliasIndex);
+                appendNamedJoins(clause, na, targetClassName, TARGET_ALIAS, aliasIndex);
             }
         }
         return clause.toString();
@@ -426,7 +419,9 @@ public class CQL2ToParameterizedHQL {
 
 
     private void appendJoinsByDepth(StringBuffer buff, String parentClassName, String parentAlias, int aliasIndex,
-        int currentDepth, int maxDepth, Set<String> joinedAssociations) throws Exception {
+        int currentDepth, int maxDepth, Set<String> joinedAssociations) {
+        LOG.debug("Populating associations of " + parentClassName + " to depth" + maxDepth 
+            + "(currently at level " + currentDepth + ")");
         currentDepth++;
         if (currentDepth > maxDepth) {
             return;
@@ -442,23 +437,30 @@ public class CQL2ToParameterizedHQL {
                     .append(ca.getRoleName()).append(" as ").append(myAlias).append(' ');
                 int newMaxDepth = maxDepth;
                 int newCurrentDepth = currentDepth;
-                appendJoinsByDepth(buff, ca.getClassName(), myAlias, aliasIndex, newCurrentDepth, newMaxDepth,
-                    joinedAssociations);
+                appendJoinsByDepth(buff, ca.getClassName(), myAlias, aliasIndex, 
+                    newCurrentDepth, newMaxDepth, joinedAssociations);
             }
         }
     }
 
 
-    private void appendNamedJoins(StringBuffer buff, NamedAssociation na, String parentAlias, int aliasIndex) {
+    private void appendNamedJoins(StringBuffer buff, NamedAssociation na, String parentClassName, String parentAlias, int aliasIndex) {
+        LOG.debug("Populating named associations");
         String myAlias = "fetchAlias" + aliasIndex;
+        String associationClassName = roleNameResolver
+            .getClassNameOfAssociationByRoleName(parentClassName, na.getRoleName());
         aliasIndex++;
         buff.append("left join fetch ").append(parentAlias).append('.')
             .append(na.getRoleName()).append(" as ").append(
             myAlias).append(' ');
         if (na.getNamedAssociation() != null) {
             for (NamedAssociation subAssociation : na.getNamedAssociation()) {
-                appendNamedJoins(buff, subAssociation, myAlias, aliasIndex);
+                appendNamedJoins(buff, subAssociation, associationClassName, myAlias, aliasIndex);
             }
+        } else if (na.getPopulationDepth() != null) {
+            int depth = na.getPopulationDepth().getDepth();
+            Set<String> joinedAssociations = new HashSet<String>();
+            appendJoinsByDepth(buff, associationClassName, myAlias, aliasIndex, 0, depth, joinedAssociations);
         }
     }
 

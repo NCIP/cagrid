@@ -415,12 +415,7 @@ public class CQL2ToParameterizedHQL {
         throws Exception {
         StringBuffer clause = new StringBuffer();
         if (spec.getPopulationDepth() != null) {
-            int maxDepth = -1;
-            if (spec.getPopulationDepth().isInfinite()) {
-                maxDepth = Integer.MAX_VALUE;
-            } else {
-                maxDepth = spec.getPopulationDepth().getDepth().intValue();
-            }
+            int maxDepth = spec.getPopulationDepth().getDepth();
             Set<String> joinedAssociations = new HashSet<String>();
             appendJoinsByDepth(clause, targetClassName, TARGET_ALIAS, 0, 0, maxDepth, joinedAssociations);
         } else {

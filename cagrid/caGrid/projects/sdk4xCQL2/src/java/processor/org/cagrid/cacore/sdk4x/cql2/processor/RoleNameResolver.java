@@ -45,7 +45,7 @@ public class RoleNameResolver {
      *      The determined role name
      * @throws Exception
      */
-    public List<ClassAssociation> getAssociationRoleNames(String parentClassName) throws Exception {
+    public List<ClassAssociation> getAssociationRoleNames(String parentClassName) {
         List<ClassAssociation> names = roleNames.get(parentClassName);
         if (names == null) {
             LOG.debug("Role names for " + parentClassName + " not found in cache, locating in model");
@@ -83,6 +83,34 @@ public class RoleNameResolver {
         }
         
         return names;
+    }
+    
+    
+    public String getClassNameOfAssociationByRoleName(String parentClassName, String associationRoleName) {
+        UMLClassReference ref = domainModelUtil.getClassReference(parentClassName);
+        UMLClassReference associationRef = null;
+        String associationClassName = null;
+        for (UMLAssociation association : domainModel.getExposedUMLAssociationCollection().getUMLAssociation()) {
+            if (association.getSourceUMLAssociationEdge().getUMLAssociationEdge()
+                .getUMLClassReference().getRefid().equals(ref.getRefid()) 
+                && association.getTargetUMLAssociationEdge().getUMLAssociationEdge()
+                    .getRoleName().equals(associationRoleName)) {
+                associationRef = association.getTargetUMLAssociationEdge().getUMLAssociationEdge().getUMLClassReference();
+                break;
+            } else if (association.isBidirectional()
+                && association.getTargetUMLAssociationEdge().getUMLAssociationEdge()
+                    .getUMLClassReference().getRefid().equals(ref.getRefid()) 
+                && association.getSourceUMLAssociationEdge().getUMLAssociationEdge()
+                    .getRoleName().equals(associationRoleName)) {
+                associationRef = association.getSourceUMLAssociationEdge().getUMLAssociationEdge().getUMLClassReference();
+                break;
+            }
+        }
+        if (associationRef != null) {
+            UMLClass associationClass = domainModelUtil.getReferencedUMLClass(associationRef);
+            associationClassName = DomainModelUtil.getQualifiedClassname(associationClass);
+        }
+        return associationClassName;
     }
     
     

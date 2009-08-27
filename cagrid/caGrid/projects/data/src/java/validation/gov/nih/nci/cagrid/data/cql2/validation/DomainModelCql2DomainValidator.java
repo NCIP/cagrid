@@ -85,8 +85,8 @@ public class DomainModelCql2DomainValidator extends Cql2DomainValidator {
     
     
     private void validateAssociationPopulation(String targetClassName, AssociationPopulationSpecification spec) throws DomainValidationException {
-        if (spec.getPopulationDepth() != null && spec.getPopulationDepth().getDepth() != null) {
-            if (spec.getPopulationDepth().getDepth().intValue() < 0) {
+        if (spec.getPopulationDepth() != null) {
+            if (spec.getPopulationDepth().getDepth() < 0) {
                 throw new DomainValidationException("Negative association population depth specified");
             }
         } else if (spec.getNamedAssociationList() != null && spec.getNamedAssociationList().getNamedAssociation() != null) {
