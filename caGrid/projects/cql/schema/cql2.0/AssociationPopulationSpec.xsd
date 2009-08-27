@@ -10,22 +10,19 @@
 	</xsd:complexType>
 	<xsd:element name="PopulationDepth" type="assoc:PopulationDepth"/>
 	<xsd:complexType name="PopulationDepth">
-		<xsd:sequence>
-			<xsd:element name="Depth" type="xsd:int" minOccurs="0"/>
-		</xsd:sequence>
-		<xsd:attribute name="infinite" type="xsd:boolean" use="required"/>
+		<xsd:attribute name="depth" type="xsd:int" use="required"/>
 	</xsd:complexType>
 	<xsd:element name="NamedAssociationList" type="assoc:NamedAssociationList"/>
 	<xsd:complexType name="NamedAssociationList">
 		<xsd:sequence>
-			<xsd:element ref="assoc:NamedAssociation" maxOccurs="unbounded"/>
+			<xsd:element ref="assoc:NamedAssociation" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:element name="NamedAssociation" type="assoc:NamedAssociation"/>
 	<xsd:complexType name="NamedAssociation">
 		<xsd:choice>
 			<xsd:element ref="assoc:NamedAssociation" minOccurs="0" maxOccurs="unbounded"/>
-			<xsd:element ref="assoc:PopulationDepth" minOccurs="0"/>
+			<xsd:element ref="assoc:PopulationDepth" minOccurs="0" maxOccurs="1"/>
 		</xsd:choice>
 		<xsd:attribute name="roleName" type="xsd:string" use="required"/>
 		<xsd:attribute name="instanceof" type="xsd:string" use="optional"/>
