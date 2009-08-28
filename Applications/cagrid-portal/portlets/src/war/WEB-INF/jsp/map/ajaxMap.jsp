@@ -38,8 +38,16 @@ function() {
 <c:choose>
 <c:when test="${fn:length(pNode.participants) eq 1}">
 <c:set var="participant" value="${pNode.participants[0]}"/>
-"<a href=\"javascript:selectItemForDiscovery('${participant.id}','PARTICIPANT');\" " +
+<%--link to catalog--%>
+<c:choose>
+<c:when test="${!empty participant.catalog}">
+"<a href=\"javascript:selectItemForDiscovery('${participant.catalog.id}','PARTICIPANT');\" " +
 "><c:out value="${participant.name}"/></a><br/>" +
+</c:when>
+<c:otherwise>
+<c:out value="${participant.name}"/> +
+</c:otherwise>
+ </c:choose>
 "<b>Homepage:</b> <a target=\"_blank\" href=\"<c:out value="${participant.homepageUrl}"/>\"><c:out value="${participant.homepageUrl}"/></a>" +
 </c:when>
 <c:otherwise>
@@ -124,13 +132,22 @@ function() {
 <c:choose>
 <c:when test="${numSvcs eq 1}">
 <c:set var="svcInfo" value="${svcNode.serviceInfos[0]}"/>
-"<a href=\"javascript:selectItemForDiscovery('${svcInfo.id}','SERVICE');\" " +
+<%--link to catalog--%>
+<c:choose>
+<c:when test="${!empty svcInfo.catalog}">
+"<a href=\"javascript:selectItemForDiscovery('${svcInfo.catalog.id}','SERVICE');\" " +
 "><c:out value="${svcInfo.name}"/></a><br/>" +
+</c:when>
+<c:otherwise>
+<c:out value="${svcInfo.name}"/> +
+</c:otherwise>
+</c:choose>
+
 "<b>Center:</b> <c:out value="${svcInfo.center}"/><br/>" +
 "<b>Status:</b> <c:out value="${svcInfo.status}"/><br/>" +
 </c:when>
 <c:otherwise>
-<c:set var="serviceIds"><c:forEach var="svcInfo" items="${svcNode.serviceInfos}" varStatus="status"><c:out value="${svcInfo.id}"/><c:if test="${status.count lt numSvcs}">,</c:if></c:forEach></c:set>
+<c:set var="serviceIds"><c:forEach var="svcInfo" items="${svcNode.serviceInfos}" varStatus="status"><c:out value="${svcInfo.catalog.id}"/><c:if test="${status.count lt numSvcs}">,</c:if></c:forEach></c:set>
 "There are <b>" + "<c:out value="${numSvcs}"/></b> services at this location. " +
 "<a href=\"javascript:selectItemsForDiscovery('${serviceIds}','SERVICE');\" " +
 ">View...</a>" +
@@ -145,6 +162,6 @@ map.addOverlay(<c:out value="${markerId}"/>);
 </c:if>
 
 
- 
+
 //]]>
 </script>

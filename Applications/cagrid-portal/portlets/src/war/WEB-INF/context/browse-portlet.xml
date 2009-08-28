@@ -114,6 +114,12 @@
           class="gov.nih.nci.cagrid.portal.portlet.browse.DeleteRelationshipTypeController"
           autowire="byName"/>
 
+    <bean id="copySharedQueryCatalog"
+          class="gov.nih.nci.cagrid.portal.portlet.browse.sharedQuery.CopySharedQueryCatalogEntryController"
+          autowire="byName" parent="browseViewDetailsController">
+        <property name="queryCopyParam" value="queryCopy"/>
+        <property name="sharedQueryEntryType" value="SHAREDQUERY"/>
+    </bean>
 
     <bean id="browseViewController"
           class="gov.nih.nci.cagrid.portal.portlet.browse.BrowseViewController"
@@ -178,6 +184,7 @@
                         <entry key="createCatalogEntry" value-ref="createCatalogEntryController"/>
                         <entry key="editCatalogEntry" value-ref="editCatalogEntryController"/>
                         <entry key="deleteCatalogEntry" value-ref="deleteCatalogEntryController"/>
+                        <entry key="copySharedQueryCatalog" value-ref="copySharedQueryCatalog"/>
                     </map>
                 </entry>
             </map>

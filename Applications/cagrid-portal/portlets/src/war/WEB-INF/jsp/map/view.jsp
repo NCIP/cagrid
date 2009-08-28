@@ -1,4 +1,6 @@
 <%@ include file="/WEB-INF/jsp/include/includes.jspf" %>
+<%@ include file="/WEB-INF/jsp/include/liferay-includes.jspf" %>
+
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <script type="text/javascript" src='<c:url value="/dwr/engine.js"/>'></script>
@@ -17,16 +19,22 @@
 
 <c:set var="prefix"><portlet:namespace/></c:set>
 <c:set var="mapNodeId">${prefix}-gmap</c:set>
-<c:set var="selectItemOperationName" value="selectItemForDiscovery"/>
-<c:set var="selectItemsOperationName" value="selectItemsForDiscovery"/>
-<portlet:actionURL var="action"/>
 
+<liferay-portlet:renderURL var="viewDetailsLink" portletName="BrowsePortlet_WAR_cagridportlets"
+                           portletMode="view">
+    <liferay-portlet:param name="operation" value="viewDetails"/>
+</liferay-portlet:renderURL>
+
+<liferay-portlet:renderURL var="viewCatalogs" portletName="BrowsePortlet_WAR_cagridportlets"
+                           portletMode="view">
+    <liferay-portlet:param name="operation" value="view"/>
+</liferay-portlet:renderURL>
 
 
 <div class="mapContainer">
 
-<div id="<c:out value="${mapNodeId}"/>" class="mapNode"><!-- for ie --></div>
-     </div>
+    <div id="<c:out value="${mapNodeId}"/>" class="mapNode"><!-- for ie --></div>
+</div>
 
 <div style="display:none;">
     <div id="${prefix}loadingDiv" class="mapLoadingMsg">
@@ -70,11 +78,11 @@
     partCtr.image = "<c:url value="/images/participant_institute.png"/>";
 
 
-jQuery(document).ready(function() {
+    jQuery(document).ready(function() {
 
         if (GBrowserIsCompatible()) {
 
-            map= new GMap2(document.getElementById("${prefix}-gmap"));
+            map = new GMap2(document.getElementById("${prefix}-gmap"));
             map.setCenter(
                     new GLatLng(
                             <c:out value="${mapBean.centerLatitude}"/>,
@@ -84,7 +92,9 @@ jQuery(document).ready(function() {
             map.enableDoubleClickZoom();
             map.addControl(new GSmallMapControl());
 
-            function LoadingControl(){}
+            function LoadingControl() {
+            }
+
             LoadingControl.prototype = new GControl();
 
             LoadingControl.prototype.initialize = function(map) {
@@ -100,75 +110,76 @@ jQuery(document).ready(function() {
             map.addControl(new LoadingControl());
             loadMap();
         }
-});
+    });
 
-    function loadMap(){
-            map.clearOverlays();
-            document.getElementById('${prefix}loadingDiv').innerHTML='Loading Map...';
+    function loadMap() {
+        map.clearOverlays();
+        document.getElementById('${prefix}loadingDiv').innerHTML = 'Loading Map...';
 
-            dwr.engine.beginBatch({timeout:90000});
-            MapService.getMap($('${prefix}directory').value, function(result){
-                document.getElementById('${prefix}loadingDiv').innerHTML='';
-                var temp = result;
+        dwr.engine.beginBatch({timeout:90000});
+        MapService.getMap($('${prefix}directory').value, function(result) {
+            document.getElementById('${prefix}loadingDiv').innerHTML = '';
+            var temp = result;
 
-                while(true) {
-                   var sindex = temp.indexOf("<script"+">");
-                   if(sindex < 0) break;
-                   var eindex = temp.indexOf("</"+"script>",sindex);
-                   var js = temp.substring(sindex+8,eindex);
-                   eval(js);
-                   temp = temp.substring(eindex+9);
-                 }
-
-
-            });
-
-            dwr.engine.endBatch({
-                async:true,
-                errorHandler:function(errorString, exception) {
-                    $('${prefix}loadingDiv').innerHTML='Server Error. Please refresh the page'}
-            });
-
-            var bName = navigator.appName;
-            var appVer = navigator.appVersion.toLowerCase();
-            var iePos = appVer.indexOf('msie');
-            if (iePos !=-1) {
-                is_minor = parseFloat(appVer.substring(iePos+5,appVer.indexOf(';',iePos)))
-                is_major = parseInt(is_minor);
+            while (true) {
+                var sindex = temp.indexOf("<script" + ">");
+                if (sindex < 0) break;
+                var eindex = temp.indexOf("</" + "script>", sindex);
+                var js = temp.substring(sindex + 8, eindex);
+                eval(js);
+                temp = temp.substring(eindex + 9);
             }
 
-            if (bName == "Microsoft Internet Explorer" &&
-                is_major <=6)
-            {
-                document.getElementById('${mapNodeId}').style.width="600px";
-                document.getElementById('${mapNodeId}').style.height="350px";
+
+        });
+
+        dwr.engine.endBatch({
+            async:true,
+            errorHandler:function(errorString, exception) {
+                $('${prefix}loadingDiv').innerHTML = 'Server Error. Please refresh the page'
             }
+        });
+
+        var bName = navigator.appName;
+        var appVer = navigator.appVersion.toLowerCase();
+        var iePos = appVer.indexOf('msie');
+        if (iePos != -1) {
+            is_minor = parseFloat(appVer.substring(iePos + 5, appVer.indexOf(';', iePos)))
+            is_major = parseInt(is_minor);
+        }
+
+        if (bName == "Microsoft Internet Explorer" &&
+            is_major <= 6)
+        {
+            document.getElementById('${mapNodeId}').style.width = "600px";
+            document.getElementById('${mapNodeId}').style.height = "350px";
+        }
     }
 
 
 </script>
 
 <c:set var="formName">${prefix}mapNodeForm</c:set>
-<form:form id="${formName}" action="${action}">
-    <input type="hidden" name="operation"/>
-    <input type="hidden" name="selectedId"/>
-    <input type="hidden" name="type"/>
+<form:form id="${formName}">
+    <input type="hidden" name="entryId"/>
     <input type="hidden" name="selectedIds"/>
 </form:form>
 
 
 <script type="text/javascript">
-    function selectItemForDiscovery(id,type){
-        $('${prefix}mapNodeForm').operation.value = "${selectItemOperationName}";
-        $('${prefix}mapNodeForm').selectedId.value = id;
-        $('${prefix}mapNodeForm').type.value = type;
+    function selectItemForDiscovery(id, type) {
+        $('${prefix}mapNodeForm').entryId.value = id;
+        var viewDetailsLink = "${viewDetailsLink}";
+        viewDetailsLink = viewDetailsLink.replace("/guest/home", "/guest/catalog/all");
+        $("${prefix}mapNodeForm").action = viewDetailsLink;
         $('${prefix}mapNodeForm').submit();
     }
 
-    function selectItemsForDiscovery(ids,type){
-        $('${prefix}mapNodeForm').operation.value = "${selectItemsOperationName}";
+    function selectItemsForDiscovery(ids, type) {
         $('${prefix}mapNodeForm').selectedIds.value = ids;
-        $('${prefix}mapNodeForm').type.value = type;
+        var viewCatalogsLink = "${viewCatalogs}";
+        viewCatalogsLink = viewCatalogsLink.replace("/guest/home", "/guest/catalog/all");
+        $("${prefix}mapNodeForm").action = viewCatalogsLink;
         $('${prefix}mapNodeForm').submit();
     }
 

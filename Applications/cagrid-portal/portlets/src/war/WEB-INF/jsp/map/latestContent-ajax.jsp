@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ include file="/WEB-INF/jsp/include/includes.jspf" %>
 
 
@@ -25,7 +27,6 @@
         <tags:catalogEntryPopup id="${catalog.id}" entry="${catalog}" link_text="${catalog.name}"
                                 link_text_max_length="30"
                                 link_href="javascript:viewDetails(${catalog.id})"/>
-    </div>
     </div>
 
 </c:forEach>

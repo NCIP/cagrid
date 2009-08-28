@@ -5,6 +5,7 @@
       href="<c:url value="/js/yui/assets/skins/sam/datatable.css"/>"/>
 <link type="text/css" rel="stylesheet" href="<c:url value="/js/yui/treeview/assets/css/menu/tree.css"/>"/>
 <link rel="stylesheet" type="text/css" href="<c:url value="/js/yui/paginator/assets/skins/sam/paginator.css"/>"/>
+<link rel="stylesheet" type="text/css" href="<c:url value="/js/yui/container/assets/skins/sam/container.css"/>"/>
 
 <script type="text/javascript" src="<c:url value="/js/scriptaculous/prototype.js"/>"></script>
 
@@ -15,6 +16,9 @@
 <script type="text/javascript" src="<c:url value="/js/yui/connection/connection-min.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/yui/get/get-min.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/yui/logger/logger-min.js"/>"></script>
+<!-- yahoo container Dependencies -->
+<script type="text/javascript" src="<c:url value="/js/yui/container/container-min.js"/>"></script>
+
 <script src="<c:url value="/js/yui/treeview/treeview-min.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/js/yui/paginator/paginator-min.js"/>"></script>
 <c:set var="ns"><portlet:namespace/></c:set>
@@ -153,7 +157,9 @@ var Catalogs = Class.create({
         this.paginator = new YAHOO.widget.Paginator({
             rowsPerPage  : this.rowsPerPage,
             alwaysVisible: false,
-            containers   : [this.config.paginatorDiv]
+            containers   : [this.config.paginatorDiv],
+            template : "{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} <div>{CurrentPageReport}</div>", 
+             rowsPerPageOptions : [10, 20, 30, 5]
         });
 
         this.paginator.subscribe('changeRequest', this.handlePagination, this);
@@ -192,6 +198,7 @@ var Catalogs = Class.create({
 
         this.query.removeAllFacets();
         this.query.setTree(false);
+        this.query.setRowsPerPage(this.rowsPerPage);
 
         if (this.config.catalog) {
             YAHOO.log("Adding catalog_type facet");
@@ -271,6 +278,7 @@ var Catalogs = Class.create({
     handlePagination: function(newState, cat) {
         cat.paginator.setState(newState);
         cat.query.setStartValue(newState.recordOffset);
+        cat.rowsPerPage=newState.rowsPerPage;
         cat.runQuery(true);
     }
 });
