@@ -1,12 +1,9 @@
+<%@ include file="/WEB-INF/jsp/include/liferay-includes.jspf" %>
+
 <link type="text/css" rel="stylesheet"
       href="<c:url value="/css/latest-content.css"/>"/>
 <script type="text/javascript" src='<c:url value="/dwr/interface/LatestContentService.js"/>'></script>
 
-<%@ taglib uri="http://liferay.com/tld/portlet" prefix="liferay-portlet" %>
-<%@ taglib uri="http://liferay.com/tld/security" prefix="liferay-security" %>
-<%@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %>
-<%@ taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
-<%@ taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
 <portlet:defineObjects/>
 <liferay-theme:defineObjects/>

@@ -16,3 +16,8 @@
 #paginatorSummaryDiv{
     float:right;
 }
+
+
+.sortOrder{
+         cursor:pointer;
+}
