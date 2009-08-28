@@ -65,7 +65,7 @@ public class RoleNameResolver {
                 // get associations from the source to the target
                 List<UMLAssociation> associations = getUmlAssociations(parentName, assoc.getName());
                 
-                // verify only ONE association has been found, else abmiguous
+                // verify only ONE association has been found, else ambiguous
                 if (associations.size() > 1) {
                     throw new QueryProcessingException("Association from " + parentName 
                         + " to " + assoc.getName() + " is ambiguous without role name specified (" 
