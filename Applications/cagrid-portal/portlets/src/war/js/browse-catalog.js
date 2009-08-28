@@ -110,6 +110,11 @@ this.start=this.start+this.rows;
 this.addParam("start="+ this.start);
 YAHOO.log("Moved to next page");
 },
+<!--Will reset the rows per page setting-->
+setRowsPerPage: function(rows){
+this.setRows(rows);
+this.rows=rows;
+},
 <!--Will set rows but not reset the instance variable-->
 setRows: function(rows){
 this.removeParam("rows="+this.rows);
