@@ -413,7 +413,7 @@ public class CQL2ParameterizedHQL {
 	
 	
 	/**
-	 * Converts a logical operator to its HQL string equiavalent.
+	 * Converts a logical operator to its HQL string equivalent.
 	 * 
 	 * @param op
 	 * 		The logical operator to convert
