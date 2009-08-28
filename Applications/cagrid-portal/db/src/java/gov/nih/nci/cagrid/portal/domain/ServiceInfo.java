@@ -4,6 +4,7 @@
 package gov.nih.nci.cagrid.portal.domain;
 
 import gov.nih.nci.cagrid.portal.domain.metadata.common.ResearchCenter;
+import gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntry;
 import gov.nih.nci.cagrid.portal.util.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -29,6 +30,7 @@ public class ServiceInfo {
     private ServiceType type;
     private boolean secure;
     private String version;
+    private CatalogEntry catalog;
 
     //Todo make it admin configurable
     public static final int URL_MAX_LENGTH_ALLOWED = 30;
@@ -48,6 +50,9 @@ public class ServiceInfo {
             logger.warn("Error getting Service Description for service: " + getUrl());
             setName(formulateNameFromUrl(getUrl()));
         }
+          if(service.getCatalog()!=null){
+              catalog=service.getCatalog();
+          }
 
         ResearchCenter rc = service.getServiceMetadata().getHostingResearchCenter();
         if (rc != null) {
@@ -180,5 +185,13 @@ public class ServiceInfo {
 
     private String abbreviate(String longStr, int maxLength) {
         return StringUtils.abbreviate(longStr, maxLength);
+    }
+
+    public CatalogEntry getCatalog() {
+        return catalog;
+    }
+
+    public void setCatalog(CatalogEntry catalog) {
+        this.catalog = catalog;
     }
 }
