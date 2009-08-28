@@ -85,10 +85,8 @@
                 </entity>
             </entity>
             <entity name="ratings"
-                    query="select id from cat_ratings where catalog_id='${AllCatalogs.id}'">
+                    query="select * from cat_ratings where catalog_id='${AllCatalogs.id}'">
                 <field name="rating" column="rating"/>
-                <field name="createdAt" column="createdAt"/>
-                <field name="updatedAt" column="updatedAt"/>
             </entity>
         </entity>
 
