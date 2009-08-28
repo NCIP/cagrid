@@ -42,13 +42,13 @@ function() {
 <c:choose>
 <c:when test="${!empty participant.catalog}">
 "<a href=\"javascript:selectItemForDiscovery('${participant.catalog.id}','PARTICIPANT');\" " +
-"><c:out value="${participant.name}"/></a><br/>" +
+"><c:out value="${participant.name}"/></a>" +
 </c:when>
 <c:otherwise>
-<c:out value="${participant.name}"/> +
+"<c:out value="${participant.name}"/>" +
 </c:otherwise>
  </c:choose>
-"<b>Homepage:</b> <a target=\"_blank\" href=\"<c:out value="${participant.homepageUrl}"/>\"><c:out value="${participant.homepageUrl}"/></a>" +
+"<br/><b>Homepage:</b> <a target=\"_blank\" href=\"<c:out value="${participant.homepageUrl}"/>\"><c:out value="${participant.homepageUrl}"/></a>" +
 </c:when>
 <c:otherwise>
 <c:set var="numParticipants" value="${fn:length(pNode.participants)}"/>
@@ -136,13 +136,13 @@ function() {
 <c:choose>
 <c:when test="${!empty svcInfo.catalog}">
 "<a href=\"javascript:selectItemForDiscovery('${svcInfo.catalog.id}','SERVICE');\" " +
-"><c:out value="${svcInfo.name}"/></a><br/>" +
+"><c:out value="${svcInfo.name}"/></a>" +
 </c:when>
 <c:otherwise>
-<c:out value="${svcInfo.name}"/> +
+"<c:out value="${svcInfo.name}"/>" +
 </c:otherwise>
 </c:choose>
-
+"<br/>" +
 "<b>Center:</b> <c:out value="${svcInfo.center}"/><br/>" +
 "<b>Status:</b> <c:out value="${svcInfo.status}"/><br/>" +
 </c:when>
