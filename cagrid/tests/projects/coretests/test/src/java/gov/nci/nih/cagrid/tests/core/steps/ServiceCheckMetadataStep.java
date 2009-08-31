@@ -10,6 +10,8 @@ import gov.nih.nci.cagrid.metadata.ServiceMetadata;
 import gov.nih.nci.cagrid.testing.system.haste.Step;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.axis.message.addressing.Address;
 import org.apache.axis.message.addressing.EndpointReferenceType;
@@ -41,7 +43,10 @@ public class ServiceCheckMetadataStep extends Step {
         ServiceMetadata localMetadata = (ServiceMetadata) Utils.deserializeDocument(this.localMetadata.toString(),
             ServiceMetadata.class);
 
-        new BeanComparator(this).assertEquals(localMetadata, serviceMetadata);
+        List<String> ignoreMethods= new ArrayList<String>();
+        //ignore the caDSR materialized view ids, which change
+        ignoreMethods.add("getId");
+        new BeanComparator(this,ignoreMethods).assertEquals(localMetadata, serviceMetadata);
     }
 
 
