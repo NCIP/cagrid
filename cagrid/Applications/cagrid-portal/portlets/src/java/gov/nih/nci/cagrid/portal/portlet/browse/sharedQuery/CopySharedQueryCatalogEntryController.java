@@ -1,6 +1,7 @@
 package gov.nih.nci.cagrid.portal.portlet.browse.sharedQuery;
 
 import gov.nih.nci.cagrid.portal.dao.catalog.CatalogEntryDao;
+import gov.nih.nci.cagrid.portal.domain.catalog.CatalogEntry;
 import gov.nih.nci.cagrid.portal.domain.catalog.SharedQueryCatalogEntry;
 import gov.nih.nci.cagrid.portal.portlet.UserModel;
 import gov.nih.nci.cagrid.portal.portlet.browse.BrowseViewDetailsController;
@@ -9,8 +10,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.web.portlet.ModelAndView;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
@@ -31,7 +30,7 @@ public class CopySharedQueryCatalogEntryController extends BrowseViewDetailsCont
     private static final Log logger = LogFactory
             .getLog(CopySharedQueryCatalogEntryController.class);
 
-    protected void handleActionRequestInternal(ActionRequest request, ActionResponse response) throws Exception {
+    protected ModelAndView handleRenderRequestInternal(RenderRequest request, RenderResponse response) throws Exception {
         Integer entryId = null;
         try {
             entryId = Integer.valueOf(request.getParameter("entryId"));
@@ -48,20 +47,23 @@ public class CopySharedQueryCatalogEntryController extends BrowseViewDetailsCont
         logger.debug("Creating a copy of shared query");
         SharedQueryCatalogEntry copyCatalogEntry = (SharedQueryCatalogEntry) (getCatalogEntryFactory().newCatalogEntry(sharedQueryEntryType));
         copyCatalogEntry.setAreasOfFocus(catalogEntry.getAreasOfFocus());
-        copyCatalogEntry.setDescription(copyCatalogEntry.getDescription());
+        copyCatalogEntry.setDescription(catalogEntry.getDescription());
 
         getUserModel().setCurrentCatalogEntry(copyCatalogEntry);
-        response.setRenderParameter(queryCopyParam, catalogEntry.getAbout().getXml());
-        response.setRenderParameter("operation", "copySharedQueryCatalog");
-        response.setRenderParameter("viewMode", "edit");
-    }
 
-    protected ModelAndView handleRenderRequestInternal(RenderRequest renderRequest, RenderResponse renderResponse) throws Exception {
-        ModelAndView mav = super.handleRenderRequestInternal(renderRequest, renderResponse);
-        mav.addObject(queryCopyParam, renderRequest.getParameter(queryCopyParam));
+        ModelAndView mav = super.handleRenderRequestInternal(request, response);
+        mav.addObject(queryCopyParam, catalogEntry.getAbout().getXml());
         return mav;
     }
 
+    @Override
+    /**
+     * Overriden method. Will load from session instead of the DB.
+     * Since this is a copy of the CE and not yet persisted in the DB
+     */
+    protected CatalogEntry getCatalogEntry(RenderRequest request) {
+        return getUserModel().getCurrentCatalogEntry();
+    }
 
     public String getQueryCopyParam() {
         return queryCopyParam;
