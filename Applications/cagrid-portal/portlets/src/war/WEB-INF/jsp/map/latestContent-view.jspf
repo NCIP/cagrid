@@ -82,7 +82,7 @@
         });
 
         dwr.engine.endBatch({
-            async:false,
+            async:true,
             errorHandler:function(errorString, exception) {
                 $('${prefix}loadingDiv').innerHTML = $('${prefix}errorDiv').innerHTML
             }
