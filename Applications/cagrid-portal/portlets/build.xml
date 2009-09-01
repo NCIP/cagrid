@@ -57,7 +57,7 @@
 
     <target name="build-war-dir" depends="compile">
 
-    	<mkdir dir="${build.war.webinf.dir}/lib"/>
+        <mkdir dir="${build.war.webinf.dir}/lib"/>
         <mkdir dir="${build.war.build.classes.dir}"/>
 
         <copy todir="${build.war.dir}" overwrite="true" filtering="false">
@@ -77,17 +77,17 @@
                 <include name="*.jar"/>
             </fileset>
         </copy>
-        
+
         <copy todir="${build.war.build.classes.dir}">
+            <fileset dir="${build.classes.dir}">
+                <include name="**/*"/>
+            </fileset>
             <fileset dir="${ext.xml.dir}">
                 <include name="*.xml"/>
             </fileset>
             <fileset dir="${ext.xsd.dir}">
                 <include name="*.xsd"/>
                 <exclude name="*Results*.xsd"/>
-            </fileset>
-            <fileset dir="${build.classes.dir}">
-                <include name="**/*"/>
             </fileset>
         </copy>
 
@@ -135,6 +135,17 @@
     <target name="war" depends="build-war-dir" description="Will create a deployable war file">
         <mkdir dir="${build.wars.dir}"/>
         <jar destfile="${cagrid.portlets.war.file}" basedir="${build.war.dir}"/>
+    </target>
+
+
+    <target name="trust-websso" depends="prepare-test" >
+        <input message="Enter webSSO server URL: host[:port]" addproperty="websso.server.url"/>
+        <input message="Enter passphrase" addproperty="websso.server.pass" defaultvalue="changeit"/>
+
+        <java classname="gov.nih.nci.cagrid.portal.portlet.InstallCert" classpathref="test.run.cp">
+            <arg value="${websso.server.url}"/>
+            <arg value="${websso.server.pass}"/>
+        </java>
     </target>
 
 
