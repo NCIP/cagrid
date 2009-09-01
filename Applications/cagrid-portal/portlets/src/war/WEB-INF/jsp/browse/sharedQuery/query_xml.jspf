@@ -1,7 +1,9 @@
-<portlet:actionURL var="copySharedQueryCatalog">
+<portlet:renderURL var="copySharedQueryCatalog">
     <portlet:param name="operation" value="copySharedQueryCatalog"/>
     <portlet:param name="entryId" value="${catalogEntry.id}"/>
-</portlet:actionURL>
+    <portlet:param name="viewMode" value="edit"/>
+
+</portlet:renderURL>
 
 <div>
 
