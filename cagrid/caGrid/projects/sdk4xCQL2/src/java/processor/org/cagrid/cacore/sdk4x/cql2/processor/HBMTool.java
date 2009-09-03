@@ -84,12 +84,13 @@ public class HBMTool {
             
             // if there's a discriminator element, we're using a String
             String shortClassname = getShortClassName(subclassName);
-            List<?> discriminatorElements = hbmElem.getContent(discriminatorFilter);
-            if (discriminatorElements.size() != 0) {
+            Iterator<?> discriminatorElements = hbmElem.getDescendants(discriminatorFilter);
+            if (discriminatorElements.hasNext()) {
                 identifier = shortClassname;
             } else {
                 // using an integer, but we need to know which one
                 Element classElem = hbmElem.getChild("class", hbmElem.getNamespace());
+                // TODO: two+ level inheritance
                 List<?> subclassElements = classElem.getChildren("joined-subclass", classElem.getNamespace());
                 Iterator<?> subclassIter = subclassElements.iterator();
                 int index = 0;
