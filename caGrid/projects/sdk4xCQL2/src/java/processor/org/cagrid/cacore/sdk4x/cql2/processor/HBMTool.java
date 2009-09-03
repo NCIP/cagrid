@@ -5,10 +5,10 @@ import gov.nih.nci.cagrid.common.XMLUtilities;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.jdom.Element;
+import org.jdom.filter.ElementFilter;
 import org.jdom.filter.Filter;
 
 /**
@@ -24,20 +24,15 @@ public class HBMTool {
     private Map<String, String> instanceIdentifiers = null;
     
     private Filter discriminatorFilter = null;
+    private Filter joinedSubclassFilter = null;
 
     public HBMTool() {
         subclassIdentifiers = new HashMap<String, Object>();
         instanceIdentifiers = new HashMap<String, String>();
-        // JDom filter for discriminator elements
-        this.discriminatorFilter = new Filter() {
-            public boolean matches(Object o) {
-                if (o instanceof Element) {
-                    Element e = (Element) o;
-                    return e.getName().equals("discriminator");
-                }
-                return false;
-            }
-        };
+        // filter for discriminator elements
+        this.discriminatorFilter = new ElementFilter("discriminator");
+        // filter for joined-subclass elements
+        this.joinedSubclassFilter = new ElementFilter("joined-subclass");
     }
     
     
@@ -90,9 +85,10 @@ public class HBMTool {
             } else {
                 // using an integer, but we need to know which one
                 Element classElem = hbmElem.getChild("class", hbmElem.getNamespace());
-                // TODO: two+ level inheritance
-                List<?> subclassElements = classElem.getChildren("joined-subclass", classElem.getNamespace());
-                Iterator<?> subclassIter = subclassElements.iterator();
+                // TODO: is the search for subclass index ID breadth or depth first?  
+                // I'm assuming depth, since I have nothing else to go on
+                // JDom's getDescendents operation works depth first
+                Iterator<?> subclassIter = classElem.getDescendants(joinedSubclassFilter);
                 int index = 0;
                 while (subclassIter.hasNext()) {
                     index++; // first subclass is index 1, so this is fine
