@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package gov.nih.nci.cagrid.portal.portlet.browse;
 
@@ -21,114 +21,117 @@ import org.springframework.web.portlet.mvc.AbstractController;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com>Joshua Phillips</a>
- * 
+ * @author <a href="mailto:manav.kher@semanticbits.com>Manav Kher</a>
  */
 public class BrowseViewDetailsController extends AbstractController {
 
-	private static final Log logger = LogFactory
-			.getLog(BrowseViewDetailsController.class);
-	private CatalogEntryDao catalogEntryDao;
-	private String objectName;
-	private Map<String, String> entryTypeViewMap = new HashMap<String, String>();
-	private String emptyViewName;
-	private CatalogEntryViewBeanFactory catalogEntryViewBeanFactory;
-	private UserModel userModel;
+    private static final Log logger = LogFactory
+            .getLog(BrowseViewDetailsController.class);
+    private CatalogEntryDao catalogEntryDao;
+    private String objectName;
+    private Map<String, String> entryTypeViewMap = new HashMap<String, String>();
+    private String emptyViewName;
+    private CatalogEntryViewBeanFactory catalogEntryViewBeanFactory;
+    private UserModel userModel;
 
-	protected ModelAndView handleRenderRequestInternal(RenderRequest request,
-			RenderResponse response) throws Exception {
-		
-		CatalogEntry entry = getCatalogEntry(request);
-		if (entry == null) {
-			throw new RuntimeException("No catalog entry found.");
-		}
-		getUserModel().setCurrentCatalogEntry(entry);
-		
-		
-		String viewName = (String) PortletUtils.getMapValueForType(entry.getClass(),
-				getEntryTypeViewMap());
-		if (viewName == null) {
-			throw new RuntimeException("Couldn't determine view name for: "
-					+ entry);
-		}
-		ModelAndView mav = null;		
-		mav = new ModelAndView(viewName);
-		mav.addObject(getObjectName(), getCatalogEntryViewBeanFactory()
-				.newCatalogEntryViewBean(entry));
-		if(request.getParameter("viewMode") != null){
-			mav.addObject("viewMode", request.getParameter("viewMode"));
-		}
+    protected ModelAndView handleRenderRequestInternal(RenderRequest request,
+                                                       RenderResponse response) throws Exception {
 
-		return mav;
-	}
-	
-	protected CatalogEntry getCatalogEntry(RenderRequest request){
-		CatalogEntry entry = null;
-		Integer entryId = null;
-		try {
-			entryId = Integer.valueOf(request.getParameter("entryId"));
-		} catch (Exception ex) {
-			
-		}
-		if (entryId != null) {
-			entry = getCatalogEntryDao().getById(entryId);
-		} else {
-			entry = getUserModel().getCurrentCatalogEntry();
-			if(entry == null){
-				throw new RuntimeException("No current catalog entry.");
-			}
-			entry = getCatalogEntryDao().getById(entry.getId());
-		}
+        CatalogEntry entry = getCatalogEntry(request);
+        if (entry == null) {
+            throw new RuntimeException("No catalog entry found.");
+        }
+        getUserModel().setCurrentCatalogEntry(entry);
 
-		return entry;
-	}
 
-	public CatalogEntryDao getCatalogEntryDao() {
-		return catalogEntryDao;
-	}
+        String viewName = (String) PortletUtils.getMapValueForType(entry.getClass(),
+                getEntryTypeViewMap());
+        if (viewName == null) {
+            throw new RuntimeException("Couldn't determine view name for: "
+                    + entry);
+        }
+        ModelAndView mav = null;
+        mav = new ModelAndView(viewName);
+        mav.addObject(getObjectName(), getCatalogEntryViewBeanFactory()
+                .newCatalogEntryViewBean(entry));
+        if (request.getParameter("viewMode") != null) {
+            mav.addObject("viewMode", request.getParameter("viewMode"));
+        }
 
-	public void setCatalogEntryDao(CatalogEntryDao catalogEntryDao) {
-		this.catalogEntryDao = catalogEntryDao;
-	}
+        return mav;
+    }
 
-	public String getObjectName() {
-		return objectName;
-	}
+    protected CatalogEntry getCatalogEntry(RenderRequest request) {
+        CatalogEntry entry = null;
+        Integer entryId = null;
+        try {
+            entryId = Integer.valueOf(request.getParameter("entryId"));
+        } catch (Exception ex) {
 
-	public void setObjectName(String objectName) {
-		this.objectName = objectName;
-	}
+        }
+        if (entryId != null) {
+            entry = getCatalogEntryDao().getById(entryId);
+        } else {
+            entry = getUserModel().getCurrentCatalogEntry();
+            if (entry == null) {
+                throw new RuntimeException("No current catalog entry.");
+            }
+            //do not load if this is a new CE being created            
+            if (entry.getId() != null) {
+                entry = getCatalogEntryDao().getById(entry.getId());
+            }
+        }
 
-	public Map<String, String> getEntryTypeViewMap() {
-		return entryTypeViewMap;
-	}
+        return entry;
+    }
 
-	public void setEntryTypeViewMap(Map<String, String> entryTypeViewMap) {
-		this.entryTypeViewMap = entryTypeViewMap;
-	}
+    public CatalogEntryDao getCatalogEntryDao() {
+        return catalogEntryDao;
+    }
 
-	public String getEmptyViewName() {
-		return emptyViewName;
-	}
+    public void setCatalogEntryDao(CatalogEntryDao catalogEntryDao) {
+        this.catalogEntryDao = catalogEntryDao;
+    }
 
-	public void setEmptyViewName(String emptyViewName) {
-		this.emptyViewName = emptyViewName;
-	}
+    public String getObjectName() {
+        return objectName;
+    }
 
-	public CatalogEntryViewBeanFactory getCatalogEntryViewBeanFactory() {
-		return catalogEntryViewBeanFactory;
-	}
+    public void setObjectName(String objectName) {
+        this.objectName = objectName;
+    }
 
-	public void setCatalogEntryViewBeanFactory(
-			CatalogEntryViewBeanFactory catalogEntryViewBeanFactory) {
-		this.catalogEntryViewBeanFactory = catalogEntryViewBeanFactory;
-	}
+    public Map<String, String> getEntryTypeViewMap() {
+        return entryTypeViewMap;
+    }
 
-	public UserModel getUserModel() {
-		return userModel;
-	}
+    public void setEntryTypeViewMap(Map<String, String> entryTypeViewMap) {
+        this.entryTypeViewMap = entryTypeViewMap;
+    }
 
-	public void setUserModel(UserModel userModel) {
-		this.userModel = userModel;
-	}
+    public String getEmptyViewName() {
+        return emptyViewName;
+    }
+
+    public void setEmptyViewName(String emptyViewName) {
+        this.emptyViewName = emptyViewName;
+    }
+
+    public CatalogEntryViewBeanFactory getCatalogEntryViewBeanFactory() {
+        return catalogEntryViewBeanFactory;
+    }
+
+    public void setCatalogEntryViewBeanFactory(
+            CatalogEntryViewBeanFactory catalogEntryViewBeanFactory) {
+        this.catalogEntryViewBeanFactory = catalogEntryViewBeanFactory;
+    }
+
+    public UserModel getUserModel() {
+        return userModel;
+    }
+
+    public void setUserModel(UserModel userModel) {
+        this.userModel = userModel;
+    }
 
 }
