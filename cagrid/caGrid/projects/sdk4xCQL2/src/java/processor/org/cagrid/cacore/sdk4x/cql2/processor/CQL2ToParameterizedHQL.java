@@ -35,7 +35,7 @@ import org.cagrid.cacore.sdk4x.cql2.processor.RoleNameResolver.ClassAssociation;
 /**
  * CQL2ToParameterizedHQL Converter utility to turn CQL 2 into HQL using
  * positional parameters compatible with Hibernate 3.2.0ga for use with caCORE
- * SDK 4 / 4.1
+ * SDK 4 / 4.1 (and probably 4.2 when it's released)
  * 
  * @author David Ervin
  * 
@@ -44,11 +44,12 @@ import org.cagrid.cacore.sdk4x.cql2.processor.RoleNameResolver.ClassAssociation;
  *          Exp $
  */
 public class CQL2ToParameterizedHQL {
+    // default alias for the target data type
     public static final String TARGET_ALIAS = "__TargetAlias__";
 
     private static Logger LOG = Logger.getLogger(CQL2ToParameterizedHQL.class);
 
-    // maps a CQL predicate to its HQL string representation
+    // maps a CQL 2 predicate to its HQL string representation
     private static Map<Object, String> predicateValues = null;
     static {
         predicateValues = new HashMap<Object, String>();
@@ -65,19 +66,22 @@ public class CQL2ToParameterizedHQL {
 
     private RoleNameResolver roleNameResolver = null;
     private DomainModelUtil domainModelUtil = null;
+    private boolean caseInsensitive = false;
 
 
-    public CQL2ToParameterizedHQL(DomainModel model) {
+    public CQL2ToParameterizedHQL(DomainModel model, boolean caseInsensitive) {
         this.roleNameResolver = new RoleNameResolver(model);
         this.domainModelUtil = new DomainModelUtil(model);
+        this.caseInsensitive = caseInsensitive;
     }
 
 
     /**
      * Converts CQL to parameterized HQL suitable for use with Hibernate
      * v3.2.0ga and the caCORE SDK version 4.0. This translation process <b>does
-     * not</b> include application of CQL 2 Query Modifiers; this functionality should be
-     * implemented as a post-processing operation in the CQL2QueryProcessor class.
+     * not</b> include application of CQL 2 Query Modifiers; this functionality
+     * should be implemented as a post-processing operation in the
+     * CQL2QueryProcessor class.
      * 
      * @param query
      *            The query to convert
@@ -98,8 +102,8 @@ public class CQL2ToParameterizedHQL {
             + (hasSubclasses ? " has " + subclasses.length + " subclasses" : " has no subclasses"));
 
         // begin processing at the target level
-        processTarget(query.getCQLTargetObject(), query.getAssociationPopulationSpecification(), 
-            rawHql, parameters,hasSubclasses);
+        processTarget(query.getCQLTargetObject(), query.getAssociationPopulationSpecification(),
+            rawHql, parameters, hasSubclasses);
 
         // build the final query object
         ParameterizedHqlQuery hqlQuery = new ParameterizedHqlQuery(rawHql.toString(), parameters);
@@ -141,8 +145,7 @@ public class CQL2ToParameterizedHQL {
 
         if (target.getCQLAssociatedObject() != null) {
             hql.append("where ");
-            processAssociation(target.getCQLAssociatedObject(), hql, 
-                parameters, associationStack, target, TARGET_ALIAS);
+            processAssociation(target.getCQLAssociatedObject(), hql, parameters, associationStack, target, TARGET_ALIAS);
         }
         if (target.getBinaryCQLAttribute() != null || target.getUnaryCQLAttribute() != null) {
             hql.append("where ");
@@ -195,25 +198,42 @@ public class CQL2ToParameterizedHQL {
 
         boolean unaryAttribute = attribute instanceof UnaryCQLAttribute;
 
-        // construct the query fragment
-        // append the path to the attribute itself
-        hql.append(queryObjectAlias).append('.').append(attribute.getName());
+        // construct the attribute path
+        String attributePath = queryObjectAlias + "." + attribute.getName();
 
-        // append the predicate
         hql.append(' ');
         if (unaryAttribute) {
-            // unary predicates just get appended w/o values associated with them
+            // unary predicates just get appended w/o values associated with
+            // them
+            // append the path
+            hql.append(attributePath);
+            // append the predicate
             String predicateAsString = predicateValues.get(((UnaryCQLAttribute) attribute).getPredicate());
             hql.append(predicateAsString);
         } else {
             // binary predicates have a predicate string and a value
+            // use lowercase for case insensitivity stuff
+            if (caseInsensitive) {
+                hql.append("lower(");
+            }
+            hql.append(attributePath);
+            if (caseInsensitive) {
+                hql.append(")");
+            }
+
             String predicateAsString = predicateValues.get(((BinaryCQLAttribute) attribute).getPredicate());
             AttributeValue rawValue = ((BinaryCQLAttribute) attribute).getAttributeValue();
 
             hql.append(predicateAsString).append(' ');
 
+            if (caseInsensitive) {
+                hql.append("lower(");
+            }
             // add a placeholder parameter to the HQL query
             hql.append('?');
+            if (caseInsensitive) {
+                hql.append(')');
+            }
 
             // add the parameter to the positional params list
             parameters.add(getAttributeValueObject(rawValue));
@@ -247,7 +267,8 @@ public class CQL2ToParameterizedHQL {
         LOG.debug("Role name determined to be " + roleName);
 
         // determine the alias for this association
-        String alias = getAssociationAlias(sourceQueryObject.getClassName(), association.getClassName(), roleName);
+        String alias = getAssociationAlias(sourceQueryObject.getClassName(), 
+            association.getClassName(), roleName);
         LOG.debug("Association alias determined to be " + alias);
 
         // add this association to the stack
@@ -261,31 +282,46 @@ public class CQL2ToParameterizedHQL {
             // add clause to select things from this association
             hql.append(sourceAlias).append('.').append(roleName);
             hql.append(".id in (select ").append(alias).append(".id from ");
-            hql.append(association.getClassName()).append(" as ").append(alias).append(" where ");
-            processAssociation(association.getCQLAssociatedObject(), hql, parameters, associationStack, association,
-                alias);
+            hql.append(association.getClassName()).append(" as ")
+                .append(alias).append(" where ");
+            processAssociation(association.getCQLAssociatedObject(), hql, parameters,
+                associationStack, association, alias);
             hql.append(") ");
         }
-        if (association.getBinaryCQLAttribute() != null || association.getUnaryCQLAttribute() != null) {
+        if (association.getBinaryCQLAttribute() != null 
+            || association.getUnaryCQLAttribute() != null) {
             simpleNullCheck = false;
             CQLAttribute attrib = association.getBinaryCQLAttribute();
             if (attrib == null) {
                 attrib = association.getUnaryCQLAttribute();
             }
-            processAttribute(attrib, hql, parameters, association, sourceAlias + "." + roleName);
+            hql.append(sourceAlias).append('.').append(roleName);
+            hql.append(".id in (select ").append(alias).append(".id from ");
+            hql.append(association.getClassName()).append(" as ").append(alias).append(" where ");
+            processAttribute(attrib, hql, parameters, association, 
+                sourceAlias + "." + roleName);
+            hql.append(")");
         }
         if (association.getCQLGroup() != null) {
             simpleNullCheck = false;
             hql.append(sourceAlias).append('.').append(roleName);
             hql.append(".id in (select ").append(alias).append(".id from ");
-            hql.append(association.getClassName()).append(" as ").append(alias).append(" where ");
-            processGroup(association.getCQLGroup(), hql, parameters, associationStack, association, alias);
+            hql.append(association.getClassName()).append(" as ")
+                .append(alias).append(" where ");
+            processGroup(association.getCQLGroup(), hql, parameters, 
+                associationStack, association, alias);
             hql.append(") ");
         }
 
         if (simpleNullCheck) {
             // query is checking for the association to exist and be non-null
-            hql.append(sourceAlias).append('.').append(roleName).append(".id is not null ");
+            hql.append(sourceAlias).append('.').append(roleName)
+                .append(".id is not null ");
+        }
+        
+        if (association.get_instanceof() != null) {
+            hql.append("and ").append(alias).append(".class = ?");
+            parameters.add(association.get_instanceof());
         }
 
         // pop this association off the stack
@@ -342,7 +378,8 @@ public class CQL2ToParameterizedHQL {
             }
             for (int i = 0; i < groupAttributes.size(); i++) {
                 mustAddLogic = true;
-                processAttribute(groupAttributes.get(i), hql, parameters, sourceQueryObject, sourceAlias);
+                processAttribute(groupAttributes.get(i), hql, parameters, 
+                    sourceQueryObject, sourceAlias);
                 if (i + 1 < groupAttributes.size()) {
                     hql.append(' ').append(logic).append(' ');
                 }
@@ -353,8 +390,8 @@ public class CQL2ToParameterizedHQL {
                 hql.append(' ').append(logic).append(' ');
             }
             for (int i = 0; i < group.getCQLGroup().length; i++) {
-                processGroup(group.getCQLGroup(i), hql, parameters, 
-                    associationStack, sourceQueryObject, sourceAlias);
+                processGroup(group.getCQLGroup(i), hql, parameters, associationStack,
+                    sourceQueryObject, sourceAlias);
                 if (i + 1 < group.getCQLGroup().length) {
                     hql.append(' ').append(logic).append(' ');
                 }
@@ -444,15 +481,15 @@ public class CQL2ToParameterizedHQL {
     }
 
 
-    private void appendNamedJoins(StringBuffer buff, NamedAssociation na, String parentClassName, String parentAlias, int aliasIndex) {
+    private void appendNamedJoins(StringBuffer buff, NamedAssociation na, String parentClassName, 
+        String parentAlias, int aliasIndex) {
         LOG.debug("Populating named associations");
         String myAlias = "fetchAlias" + aliasIndex;
-        String associationClassName = roleNameResolver
-            .getClassNameOfAssociationByRoleName(parentClassName, na.getRoleName());
+        String associationClassName = roleNameResolver.getClassNameOfAssociationByRoleName(
+            parentClassName, na.getRoleName());
         aliasIndex++;
-        buff.append("left join fetch ").append(parentAlias).append('.')
-            .append(na.getRoleName()).append(" as ").append(
-            myAlias).append(' ');
+        buff.append("left join fetch ").append(parentAlias).append('.').append(na.getRoleName())
+            .append(" as ").append(myAlias).append(' ');
         if (na.getNamedAssociation() != null) {
             for (NamedAssociation subAssociation : na.getNamedAssociation()) {
                 appendNamedJoins(buff, subAssociation, associationClassName, myAlias, aliasIndex);

@@ -5,24 +5,24 @@ import gov.nih.nci.cagrid.cql2.results.CQLAggregateResult;
 import gov.nih.nci.cagrid.cql2.results.CQLAttributeResult;
 import gov.nih.nci.cagrid.cql2.results.CQLObjectResult;
 import gov.nih.nci.cagrid.cql2.results.CQLQueryResults;
-import gov.nih.nci.cagrid.data.InitializationException;
 import gov.nih.nci.cagrid.data.QueryProcessingException;
 import gov.nih.nci.cagrid.data.cql2.CQL2QueryProcessor;
 import gov.nih.nci.cagrid.metadata.dataservice.DomainModel;
-import gov.nih.nci.cagrid.sdkquery4.beans.domaininfo.DomainTypesInformation;
-import gov.nih.nci.cagrid.sdkquery4.processor.DomainTypesInformationUtil;
 import gov.nih.nci.system.applicationservice.ApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
-import java.io.FileReader;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Properties;
 
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPException;
 
 import org.apache.axis.message.MessageElement;
+import org.cagrid.cacore.sdk4x.cql2.processor.CQL2ToParameterizedHQL;
+import org.cagrid.cacore.sdk4x.cql2.processor.ParameterizedHqlQuery;
+import org.cagrid.cacore.sdk4x.cql2.processor.QueryModifierProcessor;
 import org.globus.wsrf.Resource;
 import org.globus.wsrf.ResourceContext;
 import org.globus.wsrf.security.SecurityManager;
@@ -35,7 +35,6 @@ public class SDK4CQL2QueryProcessor extends CQL2QueryProcessor {
     public static final String PROPERTY_HOST_NAME = "applicationHostName"; // only for remote
     public static final String PROPERTY_HOST_PORT = "applicationHostPort"; // only for remote
     public static final String PROPERTY_CASE_INSENSITIVE_QUERYING = "queryCaseInsensitive";
-    public static final String PROPERTY_DOMAIN_TYPES_INFO_FILENAME = "domainTypesInfoFilename";
     public static final String PROPERTY_USE_LOGIN = "useServiceLogin";
     public static final String PROPERTY_USE_GRID_IDENTITY_LOGIN = "useGridIdentityLogin";
     public static final String PROPERTY_STATIC_LOGIN_USERNAME = "staticLoginUsername";
@@ -53,6 +52,22 @@ public class SDK4CQL2QueryProcessor extends CQL2QueryProcessor {
 
     public SDK4CQL2QueryProcessor() {
         // TODO Auto-generated constructor stub
+    }
+    
+    
+    public Properties getRequiredParameters() {
+        Properties props = new Properties();
+        props.setProperty(PROPERTY_APPLICATION_NAME, "");
+        props.setProperty(PROPERTY_HOST_NAME, "");
+        props.setProperty(PROPERTY_HOST_PORT, "");
+        props.setProperty(PROPERTY_ORM_JAR_NAME, "");
+        props.setProperty(PROPERTY_USE_LOCAL_API, DEFAULT_USE_LOCAL_API);
+        props.setProperty(PROPERTY_CASE_INSENSITIVE_QUERYING, DEFAULT_CASE_INSENSITIVE_QUERYING);
+        props.setProperty(PROPERTY_USE_LOGIN, DEFAULT_USE_LOGIN);
+        props.setProperty(PROPERTY_USE_GRID_IDENTITY_LOGIN, DEFAULT_USE_GRID_IDENTITY_LOGIN);
+        props.setProperty(PROPERTY_STATIC_LOGIN_USERNAME, "");
+        props.setProperty(PROPERTY_STATIC_LOGIN_PASSWORD, "");
+        return props;
     }
 
     
@@ -111,18 +126,8 @@ public class SDK4CQL2QueryProcessor extends CQL2QueryProcessor {
     
     private CQL2ToParameterizedHQL getCqlTranslator() throws Exception {
         if (cqlTranslator == null) {
-            String domainTypesFilename = 
-                getConfiguredParameters().getProperty(PROPERTY_DOMAIN_TYPES_INFO_FILENAME);
-            DomainTypesInformation typesInfo = null;
-            try {
-                FileReader reader = new FileReader(domainTypesFilename);
-                typesInfo = DomainTypesInformationUtil.deserializeDomainTypesInformation(reader);
-                reader.close();
-            } catch (Exception ex) {
-                throw new InitializationException("Error deserializing domain types information from " 
-                    + domainTypesFilename + ": " + ex.getMessage(), ex);
-            }
-            cqlTranslator = new CQL2ToParameterizedHQL(typesInfo, getDomainModel());
+            cqlTranslator = new CQL2ToParameterizedHQL(
+                getDomainModel(), useCaseInsensitiveQueries());
         }
         return cqlTranslator;
     }
@@ -164,7 +169,7 @@ public class SDK4CQL2QueryProcessor extends CQL2QueryProcessor {
                 } else {
                     SecurityManager securityManager = SecurityManager.getManager();
                     username = securityManager.getCaller();
-                    // TODO: password?
+                    passwd = ""; // empty string so the application service doesn't NPE
                 }
             }
             
@@ -200,11 +205,6 @@ public class SDK4CQL2QueryProcessor extends CQL2QueryProcessor {
     
     private String getRemoteApplicationUrl() {
         String hostname = getConfiguredParameters().getProperty(PROPERTY_HOST_NAME);
-        /*
-        if (!hostname.startsWith("http://") || !hostname.startsWith("https://")) {
-            hostname = "http://" + hostname;
-        }
-        */
         String port = getConfiguredParameters().getProperty(PROPERTY_HOST_PORT);
         while (hostname.endsWith("/")) {
             hostname = hostname.substring(0, hostname.length() - 1);
