@@ -21,11 +21,14 @@ import org.jdom.filter.Filter;
 public class HBMTool {
     
     private Map<String, Object> subclassIdentifiers = null;
+    private Map<String, String> instanceIdentifiers = null;
     
     private Filter discriminatorFilter = null;
 
     public HBMTool() {
         subclassIdentifiers = new HashMap<String, Object>();
+        instanceIdentifiers = new HashMap<String, String>();
+        // JDom filter for discriminator elements
         this.discriminatorFilter = new Filter() {
             public boolean matches(Object o) {
                 if (o instanceof Element) {
@@ -35,6 +38,30 @@ public class HBMTool {
                 return false;
             }
         };
+    }
+    
+    
+    /**
+     * Hibernate allows for configurable identifier fields for each class.  Typically,
+     * this is just "id", but custom mappings could be different.  This method reads
+     * the HMB file for the class in question and figures out the identifier field.
+     * 
+     * @param className
+     *      The name of the base class for which an identifier field name is to be determined.
+     *      This CANNOT be a subclass within your domain model and MUST be the base class.
+     * @return
+     */
+    public String getInstanceIdentifierField(String className) throws Exception {
+        // TODO: deal with subclasses being passed in here... and use the base class name?
+        String identifier = instanceIdentifiers.get(className);
+        if (identifier == null) {
+            Element hbmElem = getHbmElement(className);
+            Element classElem = hbmElem.getChild("class", hbmElem.getNamespace());
+            Element idElem = classElem.getChild("id", classElem.getNamespace());
+            identifier = idElem.getAttributeValue("name");
+            instanceIdentifiers.put(className, identifier);
+        }
+        return identifier;
     }
     
     
@@ -50,15 +77,10 @@ public class HBMTool {
      * @return
      * @throws Exception
      */
-    public Object getClassIdentifier(String parentClassName, String subclassName) throws Exception {
+    public Object getClassFieldIdentifierValue(String parentClassName, String subclassName) throws Exception {
         Object identifier = subclassIdentifiers.get(subclassName);
         if (identifier == null) {
-            // load the HBM XML document from the classpath
-            String hbmResourceName = getHbmResourceName(parentClassName);
-            InputStream hbmStream = Thread.currentThread().getContextClassLoader()
-                .getResourceAsStream(hbmResourceName);
-            Element hbmElem = XMLUtilities.streamToDocument(hbmStream).getRootElement();
-            hbmStream.close();
+            Element hbmElem = getHbmElement(parentClassName);
             
             // if there's a discriminator element, we're using a String
             String shortClassname = getShortClassName(subclassName);
@@ -85,6 +107,17 @@ public class HBMTool {
             subclassIdentifiers.put(subclassName, identifier);
         }
         return identifier;
+    }
+    
+    
+    private Element getHbmElement(String className) throws Exception {
+        // load the HBM XML document from the classpath
+        String hbmResourceName = getHbmResourceName(className);
+        InputStream hbmStream = Thread.currentThread().getContextClassLoader()
+            .getResourceAsStream(hbmResourceName);
+        Element hbmElem = XMLUtilities.streamToDocument(hbmStream).getRootElement();
+        hbmStream.close();
+        return hbmElem;
     }
     
     
