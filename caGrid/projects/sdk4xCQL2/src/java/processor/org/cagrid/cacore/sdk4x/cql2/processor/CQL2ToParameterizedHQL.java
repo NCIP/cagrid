@@ -66,12 +66,14 @@ public class CQL2ToParameterizedHQL {
 
     private RoleNameResolver roleNameResolver = null;
     private DomainModelUtil domainModelUtil = null;
+    private HBMTool hbmTool = null;
     private boolean caseInsensitive = false;
 
 
     public CQL2ToParameterizedHQL(DomainModel model, boolean caseInsensitive) {
         this.roleNameResolver = new RoleNameResolver(model);
         this.domainModelUtil = new DomainModelUtil(model);
+        this.hbmTool = new HBMTool();
         this.caseInsensitive = caseInsensitive;
     }
 
@@ -170,9 +172,10 @@ public class CQL2ToParameterizedHQL {
                 hql.append(" and ");
             }
             hql.append(TARGET_ALIAS).append(".class = ?");
-            // 0 is the targeted class, 1 is the first subclass, 2 is the
-            // next...
-            parameters.add(Integer.valueOf(0));
+            // read the HBMs to determine the class identifier
+            Object classDiscriminator = hbmTool.getClassFieldIdentifierValue(
+                target.getClassName(), target.getClassName());
+            parameters.add(classDiscriminator);
         }
     }
 
@@ -203,9 +206,7 @@ public class CQL2ToParameterizedHQL {
 
         hql.append(' ');
         if (unaryAttribute) {
-            // unary predicates just get appended w/o values associated with
-            // them
-            // append the path
+            // unary predicates just get appended w/o values
             hql.append(attributePath);
             // append the predicate
             String predicateAsString = predicateValues.get(((UnaryCQLAttribute) attribute).getPredicate());
@@ -321,7 +322,9 @@ public class CQL2ToParameterizedHQL {
         
         if (association.get_instanceof() != null) {
             hql.append("and ").append(alias).append(".class = ?");
-            parameters.add(association.get_instanceof());
+            Object discriminator = hbmTool.getClassFieldIdentifierValue(
+                association.getClassName(), association.get_instanceof());
+            parameters.add(discriminator);
         }
 
         // pop this association off the stack
