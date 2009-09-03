@@ -87,7 +87,7 @@ public class HBMTool {
                 Element classElem = hbmElem.getChild("class", hbmElem.getNamespace());
                 // TODO: is the search for subclass index ID breadth or depth first?  
                 // I'm assuming depth, since I have nothing else to go on
-                // JDom's getDescendents operation works depth first
+                // JDom's getDescendents() operation works depth first
                 Iterator<?> subclassIter = classElem.getDescendants(joinedSubclassFilter);
                 int index = 0;
                 while (subclassIter.hasNext()) {
@@ -98,6 +98,11 @@ public class HBMTool {
                         identifier = Integer.valueOf(index);
                         break;
                     }
+                }
+                
+                // handle the case of checking the base class
+                if (identifier == null && parentClassName.equals(subclassName)) {
+                    identifier = Integer.valueOf(0);
                 }
             }
             
