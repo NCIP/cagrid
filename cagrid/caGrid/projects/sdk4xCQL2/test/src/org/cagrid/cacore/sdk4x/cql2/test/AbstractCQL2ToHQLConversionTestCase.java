@@ -119,6 +119,21 @@ public abstract class AbstractCQL2ToHQLConversionTestCase extends TestCase {
     }
     
     
+    public void testCountDistinctAttributeOfTarget() {
+        translateQuery("countDistinctAttributeOfTarget.xml");
+    }
+    
+    
+    public void testMinDistinctAttributeOfTarget() {
+        translateQuery("minDistinctAttributeOfTarget.xml");
+    }
+    
+    
+    public void testMaxDistinctAttributeOfTarget() {
+        translateQuery("maxDistinctAttributeOfTarget.xml");
+    }
+    
+    
     protected void translateQuery(String filename) {
         CQLQuery query = loadQuery(filename);
         ParameterizedHqlQuery hql = null;
