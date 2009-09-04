@@ -7,17 +7,12 @@ import gov.nih.nci.cagrid.metadata.dataservice.DomainModel;
 
 import java.io.File;
 import java.io.FileReader;
-import java.io.FilenameFilter;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
+
+import junit.framework.TestCase;
 
 import org.cagrid.cacore.sdk4x.cql2.processor.CQL2ToParameterizedHQL;
 import org.cagrid.cacore.sdk4x.cql2.processor.ParameterizedHqlQuery;
-
-import junit.framework.TestCase;
 
 public abstract class AbstractCQL2ToHQLConversionTestCase extends TestCase {
     
@@ -30,42 +25,13 @@ public abstract class AbstractCQL2ToHQLConversionTestCase extends TestCase {
         super(name);
     }
     
-
-    protected abstract String getSdkLibDir();
-    
     
     protected abstract String getDomainModelFilename();
     
     
     public void setUp() {
         DomainModel model = getDomainModel();
-        // load up libraries for the SDK version being tested
-        File libDir = new File(getSdkLibDir());
-        assertTrue("SDK library dir " + libDir.getAbsolutePath() + " not found", libDir.exists());
-        File[] jars = libDir.listFiles(new FilenameFilter() {
-            
-            public boolean accept(File dir, String name) {
-                return name.toLowerCase().endsWith(".jar");
-            }
-        });
-        URL[] jarUrls = new URL[jars.length];
-        for (int i = 0; i < jars.length; i++) {
-            try {
-                jarUrls[i] = jars[i].toURL();
-            } catch (MalformedURLException ex) {
-                ex.printStackTrace();
-                fail("Error converting file " + jars[i].getAbsolutePath() + " to a URL: " + ex.getMessage());
-            }
-        }
-        URLClassLoader sdkLibClassloader = new URLClassLoader(jarUrls, Thread.currentThread().getContextClassLoader());
-        try {
-            Class<?> translatorClass = sdkLibClassloader.loadClass(CQL2ToParameterizedHQL.class.getName());
-            Constructor<?> translatorConstructor = translatorClass.getConstructor(DomainModel.class, boolean.class);
-            cqlTranslator = (CQL2ToParameterizedHQL) translatorConstructor.newInstance(model, CASE_INSENSITIVE_QUERIES);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            fail("Error instantiating CQL2 Translator: " + ex.getMessage());
-        }
+        cqlTranslator = new CQL2ToParameterizedHQL(model, CASE_INSENSITIVE_QUERIES);
     }
     
     
@@ -131,6 +97,11 @@ public abstract class AbstractCQL2ToHQLConversionTestCase extends TestCase {
     
     public void testMaxDistinctAttributeOfTarget() {
         translateQuery("maxDistinctAttributeOfTarget.xml");
+    }
+    
+    
+    public void testTargetWithSubclassedAssociation() {
+        translateQuery("targetWithSubclassedAssociation.xml");
     }
     
     
