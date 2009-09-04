@@ -6,15 +6,32 @@
       xmlns:ns2="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service">
       <ns2:pointOfContactCollection>
         <ns3:PointOfContact affiliation="Duke Comprehensive Cancer Center" email="patrick.mcconnell@duke.edu"
-          firstName="Patrick" lastName="McConnell" role="developer" xmlns:ns3="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common" />
+          firstName="Patrick" lastName="McConnell" role="developer"
+          xmlns:ns3="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common" />
       </ns2:pointOfContactCollection>
       <ns2:serviceContextCollection>
         <ns2:ServiceContext description="" name="BasicAnalyticalServiceWithMetadata">
           <ns2:operationCollection>
             <ns2:Operation description="" name="getServiceSecurityMetadata">
               <ns2:inputParameterCollection />
-              <ns2:Output qName="ns3:ServiceSecurityMetadata" dimensionality="1" isArray="false"
-                xmlns:ns3="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" />
+              <ns2:Output qName="ns4:ServiceSecurityMetadata" dimensionality="1" isArray="false"
+                xmlns:ns4="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security">
+                <ns5:UMLClass className="ServiceSecurityMetadata" description="An instance of the Security Service Metadata."
+                  id="7208423A-A6C0-5F09-E040-BB89AD433CB2" packageName="gov.nih.nci.cagrid.metadata.security"
+                  projectName="Metadata_Models" projectVersion="1"
+                  xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+                  <ns5:umlAttributeCollection />
+                  <ns5:SemanticMetadata conceptCode="C80736"
+                    conceptDefinition="A software system providing a public need." conceptName="Software Service"
+                    order="2" />
+                  <ns5:SemanticMetadata conceptCode="C25669"
+                    conceptDefinition="Security; freedom from anxiety or fear." conceptName="Security"
+                    order="1" />
+                  <ns5:SemanticMetadata conceptCode="C52095"
+                    conceptDefinition="Data about data; information that describes another set of data."
+                    conceptName="Metadata" order="0" />
+                </ns5:UMLClass>
+              </ns2:Output>
               <ns2:faultCollection />
             </ns2:Operation>
             <ns2:Operation description="" name="reverseTranslate">
@@ -61,7 +78,8 @@
         street1="2424 Erwin Rd" />
       <ns6:pointOfContactCollection>
         <ns3:PointOfContact affiliation="Duke Comprehensive Cancer Center" email="patrick.mcconnell@duke.edu"
-          firstName="Patrick" lastName="McConnell" role="developer" xmlns:ns3="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common" />
+          firstName="Patrick" lastName="McConnell" role="developer"
+          xmlns:ns3="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common" />
       </ns6:pointOfContactCollection>
     </ns6:ResearchCenter>
   </ns1:hostingResearchCenter>
