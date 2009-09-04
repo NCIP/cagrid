@@ -94,6 +94,16 @@ public abstract class AbstractCQL2ToHQLConversionTestCase extends TestCase {
     }
     
     
+    public void testTargetWithNestedAssociation() {
+        translateQuery("targetWithNestedAssociation.xml");
+    }
+    
+    
+    public void testTargetWithNestedAssociationWithAttribute() {
+        translateQuery("targetWithNestedAssociationWithAttribute.xml");
+    }
+    
+    
     protected void translateQuery(String filename) {
         CQLQuery query = loadQuery(filename);
         ParameterizedHqlQuery hql = null;
