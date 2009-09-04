@@ -207,7 +207,7 @@ public class CQL2ToParameterizedHQL {
         hql.append(' ');
         if (unaryAttribute) {
             // unary predicates just get appended w/o values
-            hql.append(attributePath);
+            hql.append(attributePath).append(' ');
             // append the predicate
             String predicateAsString = predicateValues.get(((UnaryCQLAttribute) attribute).getPredicate());
             hql.append(predicateAsString);
@@ -221,11 +221,11 @@ public class CQL2ToParameterizedHQL {
             if (caseInsensitive) {
                 hql.append(")");
             }
-
+            
             String predicateAsString = predicateValues.get(((BinaryCQLAttribute) attribute).getPredicate());
             AttributeValue rawValue = ((BinaryCQLAttribute) attribute).getAttributeValue();
 
-            hql.append(predicateAsString).append(' ');
+            hql.append(' ').append(predicateAsString).append(' ');
 
             if (caseInsensitive) {
                 hql.append("lower(");
