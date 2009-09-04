@@ -1,5 +1,6 @@
 package org.cagrid.cacore.sdk4x.cql2.processor;
 
+import gov.nih.nci.cagrid.cql2.aggregations.Aggregation;
 import gov.nih.nci.cagrid.cql2.associations.AssociationPopulationSpecification;
 import gov.nih.nci.cagrid.cql2.associations.NamedAssociation;
 import gov.nih.nci.cagrid.cql2.attribute.AttributeValue;
@@ -12,6 +13,7 @@ import gov.nih.nci.cagrid.cql2.components.CQLObject;
 import gov.nih.nci.cagrid.cql2.components.CQLQuery;
 import gov.nih.nci.cagrid.cql2.components.CQLTargetObject;
 import gov.nih.nci.cagrid.cql2.components.GroupLogicalOperator;
+import gov.nih.nci.cagrid.cql2.modifiers.CQLQueryModifier;
 import gov.nih.nci.cagrid.cql2.predicates.BinaryPredicate;
 import gov.nih.nci.cagrid.cql2.predicates.UnaryPredicate;
 import gov.nih.nci.cagrid.data.QueryProcessingException;
@@ -106,6 +108,11 @@ public class CQL2ToParameterizedHQL {
         // begin processing at the target level
         processTarget(query.getCQLTargetObject(), query.getAssociationPopulationSpecification(),
             rawHql, parameters, hasSubclasses);
+        
+        // add any query modifiers
+        if (query.getCQLQueryModifier() != null) {
+            processQueryModifiers(rawHql, query.getCQLQueryModifier());
+        }
 
         // build the final query object
         ParameterizedHqlQuery hqlQuery = new ParameterizedHqlQuery(rawHql.toString(), parameters);
@@ -512,5 +519,39 @@ public class CQL2ToParameterizedHQL {
             : associationClassName;
         String alias = "__" + parentShortName + "_" + associationShortName + "_" + roleName;
         return alias;
+    }
+    
+    
+    private void processQueryModifiers(StringBuilder hql, CQLQueryModifier mods) {
+        StringBuilder modHql = new StringBuilder();
+        if (mods.getCountOnly() != null && mods.getCountOnly().booleanValue()) {
+            modHql.append("Select count(id)");
+        } else if (mods.getDistinctAttribute() != null) {
+            modHql.append("Select ");
+            Aggregation aggregation = mods.getDistinctAttribute().getAggregation();
+            if (aggregation != null) {
+                if (Aggregation.COUNT.equals(aggregation)) {
+                    modHql.append("count(");
+                } else if (Aggregation.MAX.equals(aggregation)) {
+                    modHql.append("max(");
+                } else if (Aggregation.MIN.equals(aggregation)) {
+                    modHql.append("min(");
+                }
+            }
+            modHql.append("distinct(").append(mods.getDistinctAttribute().getAttributeName()).append(")");
+            if (aggregation != null) {
+                modHql.append(')');
+            }
+        } else if (mods.getNamedAttribute() != null && mods.getNamedAttribute().length != 0) {
+            modHql.append("Select ");
+            for (int i = 0; i < mods.getNamedAttribute().length; i++) {
+                modHql.append(TARGET_ALIAS).append('.').append(mods.getNamedAttribute());
+                if (i + 1 < mods.getNamedAttribute().length) {
+                    modHql.append(", ");
+                }
+            }
+        }
+        modHql.append(" ");
+        hql.insert(0, modHql.toString());
     }
 }
