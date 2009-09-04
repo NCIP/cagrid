@@ -545,7 +545,7 @@ public class CQL2ToParameterizedHQL {
         } else if (mods.getNamedAttribute() != null && mods.getNamedAttribute().length != 0) {
             modHql.append("Select ");
             for (int i = 0; i < mods.getNamedAttribute().length; i++) {
-                modHql.append(TARGET_ALIAS).append('.').append(mods.getNamedAttribute());
+                modHql.append(TARGET_ALIAS).append('.').append(mods.getNamedAttribute(i).getAttributeName());
                 if (i + 1 < mods.getNamedAttribute().length) {
                     modHql.append(", ");
                 }
