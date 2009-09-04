@@ -79,6 +79,11 @@ public abstract class AbstractCQL2ToHQLConversionTestCase extends TestCase {
     }
     
     
+    public void testPlainTargetObject() {
+        translateQuery("plainTargetObject.xml");
+    }
+    
+    
     protected void translateQuery(String filename) {
         CQLQuery query = loadQuery(filename);
         ParameterizedHqlQuery hql = null;
