@@ -275,8 +275,7 @@ public class CQL2ToParameterizedHQL {
         // add this association to the stack
         associationStack.push(association);
 
-        // flag indicates the query is only verifying the association is
-        // populated
+        // flag indicates the query is only verifying the association is populated
         boolean simpleNullCheck = true;
         if (association.getCQLAssociatedObject() != null) {
             simpleNullCheck = false;
@@ -299,8 +298,7 @@ public class CQL2ToParameterizedHQL {
             hql.append(sourceAlias).append('.').append(roleName);
             hql.append(".id in (select ").append(alias).append(".id from ");
             hql.append(association.getClassName()).append(" as ").append(alias).append(" where ");
-            processAttribute(attrib, hql, parameters, association, 
-                sourceAlias + "." + roleName);
+            processAttribute(attrib, hql, parameters, association, alias);
             hql.append(")");
         }
         if (association.getCQLGroup() != null) {
