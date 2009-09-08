@@ -75,6 +75,10 @@
 	<!-- The Test Classpath                                              -->
 	<!-- =============================================================== -->
 	<path id="test.classpath">
+		<fileset dir="${test.dir}/lib/sdk4.0">
+			<include name="hibernate3.jar"/>
+			<include name="sdk-client-framework.jar"/>
+		</fileset>
 		<fileset dir="${lib.dir}">
 			<include name="**/*.jar" />
 		</fileset>
