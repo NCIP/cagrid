@@ -36,6 +36,7 @@
 		<mkdir dir="${junit.results.dir}"/>
 		<junit dir="${basedir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" fork="yes" forkmode="once">
 			<sysproperty key="build.dirs.list" value="${build.dirs.list}" />
+			<sysproperty key="sdk.application.url" value="http://sdkexamples.bmi.ohio-state.edu:8040/example40"/>
 			<classpath refid="test.run.classpath" />
 			<classpath>
 				<fileset dir="${test.lib.dir}/sdk4.0">
@@ -57,6 +58,7 @@
 		<mkdir dir="${junit.results.dir}"/>
 		<junit dir="${basedir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" fork="yes" forkmode="once">
 			<sysproperty key="build.dirs.list" value="${build.dirs.list}" />
+			<sysproperty key="sdk.application.url" value="http://sdkexamples.bmi.ohio-state.edu:8041/example41"/>
 			<classpath refid="test.run.classpath" />
 			<classpath>
 				<fileset dir="${test.lib.dir}/sdk4.1.1">
