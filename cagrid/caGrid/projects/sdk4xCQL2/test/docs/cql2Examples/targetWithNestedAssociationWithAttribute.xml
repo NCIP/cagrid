@@ -3,10 +3,10 @@
 	<CQLTargetObject className="gov.nih.nci.cacoresdk.domain.other.levelassociation.Deck">
 		<CQLAssociatedObject className="gov.nih.nci.cacoresdk.domain.other.levelassociation.Suit" sourceRoleName="suitCollection">
 			<CQLAssociatedObject className="gov.nih.nci.cacoresdk.domain.other.levelassociation.Card" sourceRoleName="cardCollection">
-				<att:BinaryCQLAttribute name="name">
+				<att:BinaryCQLAttribute name="id">
 					<att:Predicate>EQUAL_TO</att:Predicate>
 					<att:AttributeValue>
-						<att:StringValue>Ace</att:StringValue>
+						<att:IntegerValue>1</att:IntegerValue>
 					</att:AttributeValue>
 				</att:BinaryCQLAttribute>
 			</CQLAssociatedObject>
