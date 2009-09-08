@@ -527,18 +527,26 @@ public class CQL2ToParameterizedHQL {
         if (mods.getCountOnly() != null && mods.getCountOnly().booleanValue()) {
             modHql.append("Select count(id)");
         } else if (mods.getDistinctAttribute() != null) {
+            boolean reallyDistinct = false;
             modHql.append("Select ");
             Aggregation aggregation = mods.getDistinctAttribute().getAggregation();
             if (aggregation != null) {
                 if (Aggregation.COUNT.equals(aggregation)) {
                     modHql.append("count(");
+                    reallyDistinct = true;
                 } else if (Aggregation.MAX.equals(aggregation)) {
                     modHql.append("max(");
                 } else if (Aggregation.MIN.equals(aggregation)) {
                     modHql.append("min(");
                 }
             }
-            modHql.append("distinct(").append(mods.getDistinctAttribute().getAttributeName()).append(")");
+            if (reallyDistinct) {
+                modHql.append("distinct(");
+            }
+            modHql.append(mods.getDistinctAttribute().getAttributeName());
+            if (reallyDistinct) {
+                modHql.append(")");
+            }
             if (aggregation != null) {
                 modHql.append(')');
             }
