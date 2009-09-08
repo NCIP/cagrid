@@ -1,0 +1,36 @@
+<ns1:DomainModel projectShortName="RProteomics" projectVersion="1" xmlns:ns1="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.dataservice">
+ <ns1:exposedUMLAssociationCollection>
+ </ns1:exposedUMLAssociationCollection>
+ <ns1:exposedUMLClassCollection>
+  <ns1:UMLClass allowableAsTarget="true" className="Array" id="EAID_0F0E92DD_E304_40aa_9ADE_4BEB771EAF2D" packageName=" StatML.edu.duke.cabig.rproteomics.model.statml" projectName="RProteomics" projectVersion="1">
+   <ns2:umlAttributeCollection xmlns:ns2="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns2:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-1201986365" version="1.0"/>
+    <ns2:UMLAttribute dataTypeName="java.lang.Integer" name="dimensions" publicID="-1240497206" version="1.0"/>
+    <ns2:UMLAttribute dataTypeName="java.lang.String" name="type" publicID="-45244603" version="1.0"/>
+   </ns2:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="List" id="EAID_3B32C53B_66AF_4865_ACE8_5EF7FBEEE7C8" packageName="StatML.edu.duke.cabig.rproteomics.model.statml" projectName="RProteomics" projectVersion="1">
+   <ns3:umlAttributeCollection xmlns:ns3="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">   
+    <ns2:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-1201986365" version="1.0"/>
+    <ns2:UMLAttribute dataTypeName="java.lang.Integer" name="length" publicID="-1240497206" version="1.0"/>
+    <ns2:UMLAttribute dataTypeName="java.lang.String" name="type" publicID="-45244603" version="1.0"/>
+   </ns3:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Scalar" id="EAID_848B618E_4867_4115_B819_F79DA3272CC3" packageName="StatML.edu.duke.cabig.rproteomics.model.statml" projectName="RProteomics" projectVersion="1">
+   <ns4:umlAttributeCollection xmlns:ns4="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns4:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-1240497206" version="1.0"/>
+    <ns4:UMLAttribute dataTypeName="java.lang.String" name="type" publicID="-45244603" version="1.0"/>
+   </ns4:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Data" id="EAID_99A644B0_2028_4462_8301_4D34931B9995" packageName="StatML.edu.duke.cabig.rproteomics.model.statml" projectName="RProteomics" projectVersion="1">
+   <ns5:umlAttributeCollection xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+   </ns5:umlAttributeCollection>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Null" id="EAID_70624BD2_6DBD_4d52_ACD4_B3C8E777AFBE" packageName="StatML.edu.duke.cabig.rproteomics.model.statml" projectName="RProteomics" projectVersion="1">
+   <ns6:umlAttributeCollection xmlns:ns6="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+   </ns6:umlAttributeCollection>
+  </ns1:UMLClass>
+ </ns1:exposedUMLClassCollection>
+ <ns1:umlGeneralizationCollection>
+ </ns1:umlGeneralizationCollection>
+</ns1:DomainModel>

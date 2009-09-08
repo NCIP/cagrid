@@ -131,7 +131,7 @@
 
      </ns15:AdditionalLibraries>
 
-         <ns15:CadsrInformation projectLongName="RProteomics" projectVersion="1" serviceUrl="http://cagrid05.bmi.ohio-state.edu:8080/wsrf/services/cagrid/CaDSRService" xsi:type="ns15:CadsrInformation">
+         <ns15:CadsrInformation projectLongName="RProteomics" projectVersion="1" useSuppliedModel="true" serviceUrl="http://cagrid05.bmi.ohio-state.edu:8080/wsrf/services/cagrid/CaDSRService" xsi:type="ns15:CadsrInformation">
           <ns15:Packages mappedNamespace="gme://RProteomics.caBIG/2.0/edu.duke.cabig.rproteomics.model.statml" name="StatML.edu.duke.cabig.rproteomics.model.statml" xsi:type="ns15:CadsrPackage">
            <ns15:CadsrClass className="Array" elementName="Array" selected="true" targetable="true" xsi:type="ns15:ClassMapping"/>
 
