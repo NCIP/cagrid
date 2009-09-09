@@ -31,3 +31,7 @@ a.infoPopupLink {
     text-decoration: none;
     font-weight: bold;
 }
+
+a.inactiveEndpoint {
+    color:#666666;
+}
