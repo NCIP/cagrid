@@ -1,36 +1,721 @@
-<ns1:DomainModel projectShortName="RProteomics" projectVersion="1" xmlns:ns1="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.dataservice">
+<ns1:DomainModel projectDescription="RProteomics is based on 5 data models. This form addresses the service interface model (the path to accessing the data) i.e. all of the data elements for the parameters to the RProteomics service interfaces." projectLongName="RProteomics" projectShortName="RProteomics" projectVersion="1" xmlns:ns1="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.dataservice">
  <ns1:exposedUMLAssociationCollection>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="userComments">
+     <ns1:UMLClassReference refid="73291FDF-B7E6-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="">
+     <ns1:UMLClassReference refid="73291FDF-B7E3-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="array">
+     <ns1:UMLClassReference refid="73291FDF-B755-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="">
+     <ns1:UMLClassReference refid="73291FDF-B759-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="null">
+     <ns1:UMLClassReference refid="73291FDF-B758-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="">
+     <ns1:UMLClassReference refid="73291FDF-B756-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="list">
+     <ns1:UMLClassReference refid="73291FDF-B756-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="">
+     <ns1:UMLClassReference refid="73291FDF-B759-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="list">
+     <ns1:UMLClassReference refid="73291FDF-B756-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="">
+     <ns1:UMLClassReference refid="73291FDF-B756-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="list">
+     <ns1:UMLClassReference refid="73291FDF-B756-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="">
+     <ns1:UMLClassReference refid="73291FDF-B7E5-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="output">
+     <ns1:UMLClassReference refid="73291FDF-B7E2-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="">
+     <ns1:UMLClassReference refid="73291FDF-B7E1-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="userComments">
+     <ns1:UMLClassReference refid="73291FDF-B7E6-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="">
+     <ns1:UMLClassReference refid="73291FDF-B7E1-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="invoker">
+     <ns1:UMLClassReference refid="73291FDF-B7E9-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="">
+     <ns1:UMLClassReference refid="73291FDF-B7E1-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="array">
+     <ns1:UMLClassReference refid="73291FDF-B755-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="">
+     <ns1:UMLClassReference refid="73291FDF-B7E5-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="context">
+     <ns1:UMLClassReference refid="73291FDF-B756-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="">
+     <ns1:UMLClassReference refid="73291FDF-B756-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="analysisRun">
+     <ns1:UMLClassReference refid="73291FDF-B7E1-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="">
+     <ns1:UMLClassReference refid="73291FDF-B7E3-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="outputData">
+     <ns1:UMLClassReference refid="73291FDF-B7E5-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="">
+     <ns1:UMLClassReference refid="73291FDF-B7E2-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="value">
+     <ns1:UMLClassReference refid="73291FDF-B7E7-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="">
+     <ns1:UMLClassReference refid="73291FDF-B7E5-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="analysisRoutine">
+     <ns1:UMLClassReference refid="73291FDF-B7E8-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="">
+     <ns1:UMLClassReference refid="73291FDF-B7E1-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="scalar">
+     <ns1:UMLClassReference refid="73291FDF-B757-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="">
+     <ns1:UMLClassReference refid="73291FDF-B759-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="outputData">
+     <ns1:UMLClassReference refid="73291FDF-B759-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="">
+     <ns1:UMLClassReference refid="73291FDF-B7E2-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="array">
+     <ns1:UMLClassReference refid="73291FDF-B755-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="">
+     <ns1:UMLClassReference refid="73291FDF-B756-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="input">
+     <ns1:UMLClassReference refid="73291FDF-B7E4-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="">
+     <ns1:UMLClassReference refid="73291FDF-B7E1-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="null">
+     <ns1:UMLClassReference refid="73291FDF-B758-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="">
+     <ns1:UMLClassReference refid="73291FDF-B759-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="0" roleName="value">
+     <ns1:UMLClassReference refid="73291FDF-B7E7-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="">
+     <ns1:UMLClassReference refid="73291FDF-B759-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="null">
+     <ns1:UMLClassReference refid="73291FDF-B758-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="">
+     <ns1:UMLClassReference refid="73291FDF-B7E5-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="inputData">
+     <ns1:UMLClassReference refid="73291FDF-B759-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="">
+     <ns1:UMLClassReference refid="73291FDF-B7E4-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="inputData">
+     <ns1:UMLClassReference refid="73291FDF-B7E5-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="">
+     <ns1:UMLClassReference refid="73291FDF-B7E4-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="scalar">
+     <ns1:UMLClassReference refid="73291FDF-B757-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="">
+     <ns1:UMLClassReference refid="73291FDF-B7E5-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
+  <ns1:UMLAssociation bidirectional="false">
+   <ns1:targetUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="-1" minCardinality="0" roleName="scalar">
+     <ns1:UMLClassReference refid="73291FDF-B757-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:targetUMLAssociationEdge>
+   <ns1:sourceUMLAssociationEdge>
+    <ns1:UMLAssociationEdge maxCardinality="1" minCardinality="1" roleName="">
+     <ns1:UMLClassReference refid="73291FDF-B756-FD5A-E040-BB89AD431E7C"/>
+    </ns1:UMLAssociationEdge>
+   </ns1:sourceUMLAssociationEdge>
+  </ns1:UMLAssociation>
  </ns1:exposedUMLAssociationCollection>
  <ns1:exposedUMLClassCollection>
-  <ns1:UMLClass allowableAsTarget="true" className="Array" id="EAID_0F0E92DD_E304_40aa_9ADE_4BEB771EAF2D" packageName="StatML.edu.duke.cabig.rproteomics.model.statml" projectName="RProteomics" projectVersion="1">
+  <ns1:UMLClass allowableAsTarget="true" className="Array" description="A non-ragged array of scalar values.  The array must be homogenous in type.  The values must be encoded in base64." id="73291FDF-B755-FD5A-E040-BB89AD431E7C" packageName="StatML.edu.duke.cabig.rproteomics.model.statml" projectName="RProteomics" projectVersion="1">
    <ns2:umlAttributeCollection xmlns:ns2="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
-    <ns2:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-1201986365" version="1.0"/>
-    <ns2:UMLAttribute dataTypeName="java.lang.Integer" name="dimensions" publicID="-1240497206" version="1.0"/>
-    <ns2:UMLAttribute dataTypeName="java.lang.String" name="type" publicID="-45244603" version="1.0"/>
+    <ns2:UMLAttribute dataTypeName="java.lang.String" description="The name of the array" name="name" publicID="2423519" version="1.0">
+     <ns2:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+     <ns2:ValueDomain longName="java.lang.String">
+      <ns2:enumerationCollection/>
+     </ns2:ValueDomain>
+    </ns2:UMLAttribute>
+    <ns2:UMLAttribute dataTypeName="java.lang.String" description="A non-ragged array of scalar values.  The array must be homogenous in type.  The values must be encoded in base64." name="base64Value" publicID="2423517" version="1.0">
+     <ns2:SemanticMetadata conceptCode="C47879" conceptDefinition="A file format using 64 ASCII characters to encode the six bit binary data values 0-63. Base 64 is used when transmitting binary data through text-only media such as electronic mail." conceptName="Base 64" order="1"/>
+     <ns2:SemanticMetadata conceptCode="C25712" conceptDefinition="A numerical quantity measured or assigned or computed." conceptName="Value" order="0"/>
+     <ns2:ValueDomain longName="java.lang.String">
+      <ns2:enumerationCollection/>
+     </ns2:ValueDomain>
+    </ns2:UMLAttribute>
+    <ns2:UMLAttribute dataTypeName="java.lang.String" description="A comma-delimited integer list of the dimensions of the array." name="dimensions" publicID="2423518" version="1.0">
+     <ns2:SemanticMetadata conceptCode="C25483" conceptDefinition="Dimension; the magnitude of something in a particular direction, especially length or width or height." conceptName="Dimension" order="0"/>
+     <ns2:ValueDomain longName="java.lang.String">
+      <ns2:enumerationCollection/>
+     </ns2:ValueDomain>
+    </ns2:UMLAttribute>
+    <ns2:UMLAttribute dataTypeName="java.lang.String" description="The type of all the values." name="type" publicID="2423520" version="1.0">
+     <ns2:SemanticMetadata conceptCode="C25284" conceptDefinition="Type; a subdivision of a particular kind of thing." conceptName="Type" order="0"/>
+     <ns2:ValueDomain longName="java.lang.String">
+      <ns2:enumerationCollection/>
+     </ns2:ValueDomain>
+    </ns2:UMLAttribute>
    </ns2:umlAttributeCollection>
+   <ns3:SemanticMetadata conceptCode="C26358" conceptDefinition="An orderly arrangement. (from the American Heritage Dictionary)" conceptName="Array" order="0" xmlns:ns3="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
   </ns1:UMLClass>
-  <ns1:UMLClass allowableAsTarget="true" className="List" id="EAID_3B32C53B_66AF_4865_ACE8_5EF7FBEEE7C8" packageName="StatML.edu.duke.cabig.rproteomics.model.statml" projectName="RProteomics" projectVersion="1">
-   <ns3:umlAttributeCollection xmlns:ns3="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">   
-    <ns3:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-1201986365" version="1.0"/>
-    <ns3:UMLAttribute dataTypeName="java.lang.Integer" name="length" publicID="-1240497206" version="1.0"/>
-    <ns3:UMLAttribute dataTypeName="java.lang.String" name="type" publicID="-45244603" version="1.0"/>
-   </ns3:umlAttributeCollection>
-  </ns1:UMLClass>
-  <ns1:UMLClass allowableAsTarget="true" className="Scalar" id="EAID_848B618E_4867_4115_B819_F79DA3272CC3" packageName="StatML.edu.duke.cabig.rproteomics.model.statml" projectName="RProteomics" projectVersion="1">
+  <ns1:UMLClass allowableAsTarget="true" className="List" description="A list contains any number of lists, arrays, and values" id="73291FDF-B756-FD5A-E040-BB89AD431E7C" packageName="StatML.edu.duke.cabig.rproteomics.model.statml" projectName="RProteomics" projectVersion="1">
    <ns4:umlAttributeCollection xmlns:ns4="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
-    <ns4:UMLAttribute dataTypeName="java.lang.String" name="name" publicID="-1240497206" version="1.0"/>
-    <ns4:UMLAttribute dataTypeName="java.lang.String" name="type" publicID="-45244603" version="1.0"/>
+    <ns4:UMLAttribute dataTypeName="java.lang.String" description="The name of the list." name="name" publicID="2423522" version="1.0">
+     <ns4:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+     <ns4:ValueDomain longName="java.lang.String">
+      <ns4:enumerationCollection/>
+     </ns4:ValueDomain>
+    </ns4:UMLAttribute>
+    <ns4:UMLAttribute dataTypeName="java.lang.Integer" description="The number of items (elements) in the list." name="length" publicID="2423521" version="1.0">
+     <ns4:SemanticMetadata conceptCode="C25334" conceptDefinition="Length; the linear extent in space from one end to the other." conceptName="Length" order="0"/>
+     <ns4:ValueDomain longName="java.lang.Integer">
+      <ns4:enumerationCollection/>
+     </ns4:ValueDomain>
+    </ns4:UMLAttribute>
+    <ns4:UMLAttribute dataTypeName="java.lang.String" description="If this list is contains all scalars of the same type, that type is repeated here." name="type" publicID="2423523" version="1.0">
+     <ns4:SemanticMetadata conceptCode="C25284" conceptDefinition="Type; a subdivision of a particular kind of thing." conceptName="Type" order="0"/>
+     <ns4:ValueDomain longName="java.lang.String">
+      <ns4:enumerationCollection/>
+     </ns4:ValueDomain>
+    </ns4:UMLAttribute>
    </ns4:umlAttributeCollection>
+   <ns5:SemanticMetadata conceptCode="C43432" conceptDefinition="A series of names, words, or other items written, printed, or imagined one after the other. (American Heritage Dictionary: Bartleby.com)" conceptName="List" order="0" xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
   </ns1:UMLClass>
-  <ns1:UMLClass allowableAsTarget="true" className="Data" id="EAID_99A644B0_2028_4462_8301_4D34931B9995" packageName="StatML.edu.duke.cabig.rproteomics.model.statml" projectName="RProteomics" projectVersion="1">
-   <ns5:umlAttributeCollection xmlns:ns5="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
-   </ns5:umlAttributeCollection>
-  </ns1:UMLClass>
-  <ns1:UMLClass allowableAsTarget="true" className="Null" id="EAID_70624BD2_6DBD_4d52_ACD4_B3C8E777AFBE" packageName="StatML.edu.duke.cabig.rproteomics.model.statml" projectName="RProteomics" projectVersion="1">
+  <ns1:UMLClass allowableAsTarget="true" className="Scalar" description="A single value, encoded in the XML" id="73291FDF-B757-FD5A-E040-BB89AD431E7C" packageName="StatML.edu.duke.cabig.rproteomics.model.statml" projectName="RProteomics" projectVersion="1">
    <ns6:umlAttributeCollection xmlns:ns6="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns6:UMLAttribute dataTypeName="java.lang.String" description="A single value, encoded in the XML" name="value" publicID="2423526" version="1.0">
+     <ns6:SemanticMetadata conceptCode="C25712" conceptDefinition="A numerical quantity measured or assigned or computed." conceptName="Value" order="0"/>
+     <ns6:ValueDomain longName="java.lang.String">
+      <ns6:enumerationCollection/>
+     </ns6:ValueDomain>
+    </ns6:UMLAttribute>
+    <ns6:UMLAttribute dataTypeName="java.lang.String" description="The name of the scalar value" name="name" publicID="2423524" version="1.0">
+     <ns6:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+     <ns6:ValueDomain longName="java.lang.String">
+      <ns6:enumerationCollection/>
+     </ns6:ValueDomain>
+    </ns6:UMLAttribute>
+    <ns6:UMLAttribute dataTypeName="java.lang.String" description="The data type of the scalar value" name="type" publicID="2423525" version="1.0">
+     <ns6:SemanticMetadata conceptCode="C25284" conceptDefinition="Type; a subdivision of a particular kind of thing." conceptName="Type" order="0"/>
+     <ns6:ValueDomain longName="java.lang.String">
+      <ns6:enumerationCollection/>
+     </ns6:ValueDomain>
+    </ns6:UMLAttribute>
    </ns6:umlAttributeCollection>
+   <ns7:SemanticMetadata conceptCode="C47839" conceptDefinition="Any data type that stores a single value (e.g. a number or Boolean), as opposed to an aggregate data type that has many elements. (from Free On-Line Dictionary of Computing)" conceptName="Scalar" order="0" xmlns:ns7="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Null" description="No Definition Loaded." id="73291FDF-B758-FD5A-E040-BB89AD431E7C" packageName="StatML.edu.duke.cabig.rproteomics.model.statml" projectName="RProteomics" projectVersion="1">
+   <ns8:umlAttributeCollection xmlns:ns8="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns9:SemanticMetadata conceptCode="C47840" conceptDefinition="A special value that may be stored in some database columns to represent an unknown, missing, not applicable, or undefined value. (from Free On-Line Dictionary of Computing)" conceptName="Null" order="0" xmlns:ns9="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Data" description="The root element contains any number of lists, arrays, and values" id="73291FDF-B759-FD5A-E040-BB89AD431E7C" packageName="StatML.edu.duke.cabig.rproteomics.model.statml" projectName="RProteomics" projectVersion="1">
+   <ns10:umlAttributeCollection xmlns:ns10="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns11:SemanticMetadata conceptCode="C25474" conceptDefinition="A collection of facts from which conclusions may be drawn." conceptName="Data" order="0" xmlns:ns11="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Quantile" description="Fraction of data points below a certain value; Is percentile / 100." id="73291FDF-B7CF-FD5A-E040-BB89AD431E7C" packageName="edu.duke.cabig.rproteomics.model.serviceInterface" projectName="RProteomics" projectVersion="1">
+   <ns12:umlAttributeCollection xmlns:ns12="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns12:UMLAttribute dataTypeName="java.lang.Integer" description="Quantile value in the range[0, 1]" name="value" publicID="2423477" version="1.0">
+     <ns12:SemanticMetadata conceptCode="C25712" conceptDefinition="A numerical quantity measured or assigned or computed." conceptName="Value" order="0"/>
+     <ns12:ValueDomain longName="java.lang.Integer">
+      <ns12:enumerationCollection/>
+     </ns12:ValueDomain>
+    </ns12:UMLAttribute>
+   </ns12:umlAttributeCollection>
+   <ns13:SemanticMetadata conceptCode="C48920" conceptDefinition="Division of a distribution into equal, ordered subgroups; a set of 'cut points' that divide a sample of data into groups containing (as far as possible) equal numbers of observations." conceptName="Quantile" order="0" xmlns:ns13="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="PolynomialDegree" description="The highest power of any term in a polynomial used for fitting or other purposes" id="73291FDF-B7D0-FD5A-E040-BB89AD431E7C" packageName="edu.duke.cabig.rproteomics.model.serviceInterface" projectName="RProteomics" projectVersion="1">
+   <ns14:umlAttributeCollection xmlns:ns14="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns14:UMLAttribute dataTypeName="java.lang.Integer" description="Value of degree as a positive integer" name="value" publicID="2423478" version="1.0">
+     <ns14:SemanticMetadata conceptCode="C25712" conceptDefinition="A numerical quantity measured or assigned or computed." conceptName="Value" order="0"/>
+     <ns14:ValueDomain longName="java.lang.Integer">
+      <ns14:enumerationCollection/>
+     </ns14:ValueDomain>
+    </ns14:UMLAttribute>
+   </ns14:umlAttributeCollection>
+   <ns15:SemanticMetadata conceptCode="C48924" conceptDefinition="The highest power of any term in a polynomial." conceptName="Polynomial Degree" order="0" xmlns:ns15="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Threshold" description="minimum level of some kind used for some classification purpose" id="73291FDF-B7D1-FD5A-E040-BB89AD431E7C" packageName="edu.duke.cabig.rproteomics.model.serviceInterface" projectName="RProteomics" projectVersion="1">
+   <ns16:umlAttributeCollection xmlns:ns16="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns16:UMLAttribute dataTypeName="java.lang.Double" description="thld = multiplier*noiseEstimate from data" name="multiplier" publicID="2423479" version="1.0">
+     <ns16:SemanticMetadata conceptCode="C48229" conceptDefinition="A number by which another number is multiplied." conceptName="Multiplier" order="0"/>
+     <ns16:ValueDomain longName="java.lang.Double">
+      <ns16:enumerationCollection/>
+     </ns16:ValueDomain>
+    </ns16:UMLAttribute>
+    <ns16:UMLAttribute dataTypeName="java.lang.String" description="Mean absolute deviation or Classical numerical std estimate" name="varianceEstimator" publicID="2423482" version="1.0">
+     <ns16:SemanticMetadata conceptCode="C48918" conceptDefinition="The second moment around the mean; the expected value of the square of the deviations of a random variable from its mean value." conceptName="Variance" order="0"/>
+     <ns16:SemanticMetadata conceptCode="C25498" conceptDefinition="Estimated; calculated approximately." conceptName="Estimate" order="1"/>
+     <ns16:ValueDomain longName="java.lang.String">
+      <ns16:enumerationCollection/>
+     </ns16:ValueDomain>
+    </ns16:UMLAttribute>
+    <ns16:UMLAttribute dataTypeName="java.lang.String" description="Soft thresholding or Hard thresholding" name="type" publicID="2423480" version="1.0">
+     <ns16:SemanticMetadata conceptCode="C25284" conceptDefinition="Type; a subdivision of a particular kind of thing." conceptName="Type" order="0"/>
+     <ns16:ValueDomain longName="java.lang.String">
+      <ns16:enumerationCollection/>
+     </ns16:ValueDomain>
+    </ns16:UMLAttribute>
+    <ns16:UMLAttribute dataTypeName="java.lang.Double" description="fixed threshold to use ( e.g., 14 )" name="value" publicID="2423481" version="1.0">
+     <ns16:SemanticMetadata conceptCode="C25712" conceptDefinition="A numerical quantity measured or assigned or computed." conceptName="Value" order="0"/>
+     <ns16:ValueDomain longName="java.lang.Double">
+      <ns16:enumerationCollection/>
+     </ns16:ValueDomain>
+    </ns16:UMLAttribute>
+   </ns16:umlAttributeCollection>
+   <ns17:SemanticMetadata conceptCode="C48228" conceptDefinition="The lowest limit at which something becomes detectable or relevant." conceptName="Threshold" order="0" xmlns:ns17="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Percentile" description="A percentile with values in the range [0,100]; is quantile * 100" id="73291FDF-B7D2-FD5A-E040-BB89AD431E7C" packageName="edu.duke.cabig.rproteomics.model.serviceInterface" projectName="RProteomics" projectVersion="1">
+   <ns18:umlAttributeCollection xmlns:ns18="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns18:UMLAttribute dataTypeName="java.lang.Integer" description="value of the percentile in the range[0,1000]" name="value" publicID="2423483" version="1.0">
+     <ns18:SemanticMetadata conceptCode="C25712" conceptDefinition="A numerical quantity measured or assigned or computed." conceptName="Value" order="0"/>
+     <ns18:ValueDomain longName="java.lang.Integer">
+      <ns18:enumerationCollection/>
+     </ns18:ValueDomain>
+    </ns18:UMLAttribute>
+   </ns18:umlAttributeCollection>
+   <ns19:SemanticMetadata conceptCode="C48919" conceptDefinition="Any of the 99 numbered points that divide an ordered set of scores into 100 parts each of which contains one-hundredth of the total." conceptName="Percentile" order="0" xmlns:ns19="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Lsid" description="A life sciences identifier" id="73291FDF-B7D3-FD5A-E040-BB89AD431E7C" packageName="edu.duke.cabig.rproteomics.model.serviceInterface" projectName="RProteomics" projectVersion="1">
+   <ns20:umlAttributeCollection xmlns:ns20="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns20:UMLAttribute dataTypeName="java.lang.String" description="A life sciences identifier" name="value" publicID="2423484" version="1.0">
+     <ns20:SemanticMetadata conceptCode="C25712" conceptDefinition="A numerical quantity measured or assigned or computed." conceptName="Value" order="0"/>
+     <ns20:ValueDomain longName="java.lang.String">
+      <ns20:enumerationCollection/>
+     </ns20:ValueDomain>
+    </ns20:UMLAttribute>
+   </ns20:umlAttributeCollection>
+   <ns21:SemanticMetadata conceptCode="C47841" conceptDefinition="The Life Sciences Identifier (LSID) is an I3C and OMG Life Sciences Research (LSR) Uniform Resource Name (URN) specification. The LSID concept introduces a straightforward approach to naming and identifying data resources stored in multiple, distributed data stores in a manner that overcomes the limitations of naming schemes in use today. By defining a simple, common way to identify and access biologically significant data, whether that data is stored in files, relational databases, in applications, or in internal or public data sources, LSID provides a naming standard underpinning for wide-area science and interoperability. (from W3C)" conceptName="Life Sciences Identifier" order="0" xmlns:ns21="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="RoutineOption" description="No Definition Loaded." id="73291FDF-B7D4-FD5A-E040-BB89AD431E7C" packageName="edu.duke.cabig.rproteomics.model.serviceInterface" projectName="RProteomics" projectVersion="1">
+   <ns22:umlAttributeCollection xmlns:ns22="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns22:UMLAttribute dataTypeName="java.lang.String" description="The name of a  parameter passed into an analytical routine" name="name" publicID="2423485" version="1.0">
+     <ns22:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+     <ns22:ValueDomain longName="java.lang.String">
+      <ns22:enumerationCollection/>
+     </ns22:ValueDomain>
+    </ns22:UMLAttribute>
+    <ns22:UMLAttribute dataTypeName="java.lang.String" description="The value of a parameter passed into an analytical routine" name="value" publicID="2423486" version="1.0">
+     <ns22:SemanticMetadata conceptCode="C25712" conceptDefinition="A numerical quantity measured or assigned or computed." conceptName="Value" order="0"/>
+     <ns22:ValueDomain longName="java.lang.String">
+      <ns22:enumerationCollection/>
+     </ns22:ValueDomain>
+    </ns22:UMLAttribute>
+   </ns22:umlAttributeCollection>
+   <ns23:SemanticMetadata conceptCode="C48925" conceptDefinition="A name/value parameter passed into an analytical routine." conceptName="Routine Operation" order="0" xmlns:ns23="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Lambda" description="A mixing parameter; it typically giving a degree of smoothing used, or relaxation parameter defining rate of convergence" id="73291FDF-B7D5-FD5A-E040-BB89AD431E7C" packageName="edu.duke.cabig.rproteomics.model.serviceInterface" projectName="RProteomics" projectVersion="1">
+   <ns24:umlAttributeCollection xmlns:ns24="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns24:UMLAttribute dataTypeName="java.lang.Double" description="Lambda value usually in the range [0,1]" name="value" publicID="2423487" version="1.0">
+     <ns24:SemanticMetadata conceptCode="C25712" conceptDefinition="A numerical quantity measured or assigned or computed." conceptName="Value" order="0"/>
+     <ns24:ValueDomain longName="java.lang.Double">
+      <ns24:enumerationCollection/>
+     </ns24:ValueDomain>
+    </ns24:UMLAttribute>
+   </ns24:umlAttributeCollection>
+   <ns25:SemanticMetadata conceptCode="C48926" conceptDefinition="A mixing parameter typically giving a degree of smoothing used, or a relaxation parameter defining a rate of convergence." conceptName="Lambda" order="0" xmlns:ns25="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="ValuesNearToCutoff" description="The number of values near the percentile to cutoff" id="73291FDF-B7D6-FD5A-E040-BB89AD431E7C" packageName="edu.duke.cabig.rproteomics.model.serviceInterface" projectName="RProteomics" projectVersion="1">
+   <ns26:umlAttributeCollection xmlns:ns26="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns26:UMLAttribute dataTypeName="java.lang.Double" description="The number of values near the percentile to cutoff" name="value" publicID="2423488" version="1.0">
+     <ns26:SemanticMetadata conceptCode="C25712" conceptDefinition="A numerical quantity measured or assigned or computed." conceptName="Value" order="0"/>
+     <ns26:ValueDomain longName="java.lang.Double">
+      <ns26:enumerationCollection/>
+     </ns26:ValueDomain>
+    </ns26:UMLAttribute>
+   </ns26:umlAttributeCollection>
+   <ns27:SemanticMetadata conceptCode="C47877" conceptDefinition="A designated limit beyond which something cannot function or must be terminated." conceptName="Cutoff" order="2" xmlns:ns27="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns28:SemanticMetadata conceptCode="C48927" conceptDefinition="Not far distant in time or space or degree or circumstances." conceptName="Near" order="1" xmlns:ns28="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns29:SemanticMetadata conceptCode="C25712" conceptDefinition="A numerical quantity measured or assigned or computed." conceptName="Value" order="0" xmlns:ns29="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Noise" description="Random signal that is often modeled in terms of one or more statistical distribution; examples are Gaussian or Poisson noise" id="73291FDF-B7D7-FD5A-E040-BB89AD431E7C" packageName="edu.duke.cabig.rproteomics.model.serviceInterface" projectName="RProteomics" projectVersion="1">
+   <ns30:umlAttributeCollection xmlns:ns30="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns30:UMLAttribute dataTypeName="java.lang.Double" description="The lowest allowable noise for cutoff." name="minimum" publicID="2423489" version="1.0">
+     <ns30:SemanticMetadata conceptCode="C25570" conceptDefinition="The smallest possible quantity." conceptName="Minimum" order="0"/>
+     <ns30:ValueDomain longName="java.lang.Double">
+      <ns30:enumerationCollection/>
+     </ns30:ValueDomain>
+    </ns30:UMLAttribute>
+   </ns30:umlAttributeCollection>
+   <ns31:SemanticMetadata conceptCode="C45783" conceptDefinition="Any part of a signal that is not the true or original signal but is introduced by the communication mechanism." conceptName="Noise" order="0" xmlns:ns31="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="JpegImage" description="Joint Photographic Experts Group (development group for lossy compressed 24 bit color image storage format; also a file extension). Extends ImageType" id="73291FDF-B7D8-FD5A-E040-BB89AD431E7C" packageName="edu.duke.cabig.rproteomics.model.serviceInterface" projectName="RProteomics" projectVersion="1">
+   <ns32:umlAttributeCollection xmlns:ns32="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns32:UMLAttribute dataTypeName="java.lang.String" description="No definition loaded" name="data" publicID="2423495" version="1.0">
+     <ns32:SemanticMetadata conceptCode="C25474" conceptDefinition="A collection of facts from which conclusions may be drawn." conceptName="Data" order="0"/>
+     <ns32:ValueDomain longName="java.lang.String">
+      <ns32:enumerationCollection/>
+     </ns32:ValueDomain>
+    </ns32:UMLAttribute>
+   </ns32:umlAttributeCollection>
+   <ns33:SemanticMetadata conceptCode="C48230" conceptDefinition="A file compression format mostly used for color and greyscale photographs." conceptName="JPEG" order="1" xmlns:ns33="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns34:SemanticMetadata conceptCode="C48179" conceptDefinition="Any record of an imaging event whether physical or electronic." conceptName="Image" order="0" xmlns:ns34="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Image" description="Digital image file type as JPEG, GIF, TIFF, PNG, BMP used to encode a picture or graphic" id="73291FDF-B7D9-FD5A-E040-BB89AD431E7C" packageName="edu.duke.cabig.rproteomics.model.serviceInterface" projectName="RProteomics" projectVersion="1">
+   <ns35:umlAttributeCollection xmlns:ns35="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns35:UMLAttribute dataTypeName="java.lang.String" description="The base64 encoded bytes of the image" name="data" publicID="2423490" version="1.0">
+     <ns35:SemanticMetadata conceptCode="C25474" conceptDefinition="A collection of facts from which conclusions may be drawn." conceptName="Data" order="0"/>
+     <ns35:ValueDomain longName="java.lang.String">
+      <ns35:enumerationCollection/>
+     </ns35:ValueDomain>
+    </ns35:UMLAttribute>
+   </ns35:umlAttributeCollection>
+   <ns36:SemanticMetadata conceptCode="C48179" conceptDefinition="Any record of an imaging event whether physical or electronic." conceptName="Image" order="0" xmlns:ns36="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Window" description="Section or interval of data. Window may be fixed or adjustable in size." id="73291FDF-B7DA-FD5A-E040-BB89AD431E7C" packageName="edu.duke.cabig.rproteomics.model.serviceInterface" projectName="RProteomics" projectVersion="1">
+   <ns37:umlAttributeCollection xmlns:ns37="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns37:UMLAttribute dataTypeName="java.lang.Integer" description="vector of window sizes; when handling 1-dimensional data, the vector contains has just one value, namely the window width." name="size" publicID="2423491" version="1.0">
+     <ns37:SemanticMetadata conceptCode="C25681" conceptDefinition="Size; the physical magnitude of something." conceptName="Size" order="0"/>
+     <ns37:ValueDomain longName="java.lang.Integer">
+      <ns37:enumerationCollection/>
+     </ns37:ValueDomain>
+    </ns37:UMLAttribute>
+   </ns37:umlAttributeCollection>
+   <ns38:SemanticMetadata conceptCode="C48921" conceptDefinition="A time period, or other type of interval, during which something may be achieved." conceptName="Window" order="0" xmlns:ns38="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Span" description="A parameter  that controls the degree of smoothing, as used in loess smoothing" id="73291FDF-B7DB-FD5A-E040-BB89AD431E7C" packageName="edu.duke.cabig.rproteomics.model.serviceInterface" projectName="RProteomics" projectVersion="1">
+   <ns39:umlAttributeCollection xmlns:ns39="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns39:UMLAttribute dataTypeName="java.lang.Double" description="value in the range [0,1]" name="value" publicID="2423492" version="1.0">
+     <ns39:SemanticMetadata conceptCode="C25712" conceptDefinition="A numerical quantity measured or assigned or computed." conceptName="Value" order="0"/>
+     <ns39:ValueDomain longName="java.lang.Double">
+      <ns39:enumerationCollection/>
+     </ns39:ValueDomain>
+    </ns39:UMLAttribute>
+   </ns39:umlAttributeCollection>
+   <ns40:SemanticMetadata conceptCode="C48929" conceptDefinition="A smoothing parameter." conceptName="Span" order="0" xmlns:ns40="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Coefficients" description="A numerical multiplier" id="73291FDF-B7DC-FD5A-E040-BB89AD431E7C" packageName="edu.duke.cabig.rproteomics.model.serviceInterface" projectName="RProteomics" projectVersion="1">
+   <ns41:umlAttributeCollection xmlns:ns41="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns41:UMLAttribute dataTypeName="java.lang.Integer" description="The number of coefficients to drop" name="numberToDrop" publicID="2423493" version="1.0">
+     <ns41:SemanticMetadata conceptCode="C48930" conceptDefinition="Leave undone or leave out; get rid of." conceptName="Drop" order="1"/>
+     <ns41:SemanticMetadata conceptCode="C25337" conceptDefinition="Number; a concept of quantity derived from zero and units; a numeral or string of numerals that is used for identification." conceptName="Number" order="0"/>
+     <ns41:ValueDomain longName="java.lang.Integer">
+      <ns41:enumerationCollection/>
+     </ns41:ValueDomain>
+    </ns41:UMLAttribute>
+   </ns41:umlAttributeCollection>
+   <ns42:SemanticMetadata conceptCode="C48922" conceptDefinition="A constant number that serves as a measure of some property or characteristic." conceptName="Coefficient" order="0" xmlns:ns42="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Exponent" description="Power to which a variable is raised" id="73291FDF-B7DD-FD5A-E040-BB89AD431E7C" packageName="edu.duke.cabig.rproteomics.model.serviceInterface" projectName="RProteomics" projectVersion="1">
+   <ns43:umlAttributeCollection xmlns:ns43="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns43:UMLAttribute dataTypeName="java.lang.Double" description="value of an exponent as a real number" name="value" publicID="2423494" version="1.0">
+     <ns43:SemanticMetadata conceptCode="C25712" conceptDefinition="A numerical quantity measured or assigned or computed." conceptName="Value" order="0"/>
+     <ns43:ValueDomain longName="java.lang.Double">
+      <ns43:enumerationCollection/>
+     </ns43:ValueDomain>
+    </ns43:UMLAttribute>
+   </ns43:umlAttributeCollection>
+   <ns44:SemanticMetadata conceptCode="C48923" conceptDefinition="The number of times a quantity is multiplied by itself." conceptName="Coefficient" order="0" xmlns:ns44="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="AnalysisRun" description="A single analysis instance (run)." id="73291FDF-B7E1-FD5A-E040-BB89AD431E7C" packageName="AML-run.edu.duke.cabig.rproteomics.model.amlrun" projectName="RProteomics" projectVersion="1">
+   <ns45:umlAttributeCollection xmlns:ns45="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns46:SemanticMetadata conceptCode="C25391" conceptDefinition="Analysis; examination and interpretation." conceptName="Analysis" order="1" xmlns:ns46="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns47:SemanticMetadata conceptCode="C47911" conceptDefinition="The act of testing or performing something." conceptName="Run" order="0" xmlns:ns47="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Output" description="The output of the analysis run point to external data sources." id="73291FDF-B7E2-FD5A-E040-BB89AD431E7C" packageName="AML-run.edu.duke.cabig.rproteomics.model.amlrun" projectName="RProteomics" projectVersion="1">
+   <ns48:umlAttributeCollection xmlns:ns48="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns49:SemanticMetadata conceptCode="C47906" conceptDefinition="Anything coming out of a system." conceptName="Output" order="0" xmlns:ns49="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="AnalysisRunSet" description="A set of analyses contains 1 or more actual analysis instances." id="73291FDF-B7E3-FD5A-E040-BB89AD431E7C" packageName="AML-run.edu.duke.cabig.rproteomics.model.amlrun" projectName="RProteomics" projectVersion="1">
+   <ns50:umlAttributeCollection xmlns:ns50="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns50:UMLAttribute dataTypeName="java.lang.String" description="The identifier for this analys run set" name="lsid" publicID="2425565" version="1.0">
+     <ns50:SemanticMetadata conceptCode="C47841" conceptDefinition="The Life Sciences Identifier (LSID) is an I3C and OMG Life Sciences Research (LSR) Uniform Resource Name (URN) specification. The LSID concept introduces a straightforward approach to naming and identifying data resources stored in multiple, distributed data stores in a manner that overcomes the limitations of naming schemes in use today. By defining a simple, common way to identify and access biologically significant data, whether that data is stored in files, relational databases, in applications, or in internal or public data sources, LSID provides a naming standard underpinning for wide-area science and interoperability. (from W3C)" conceptName="Life Sciences Identifier" order="0"/>
+     <ns50:ValueDomain longName="java.lang.String">
+      <ns50:enumerationCollection/>
+     </ns50:ValueDomain>
+    </ns50:UMLAttribute>
+   </ns50:umlAttributeCollection>
+   <ns51:SemanticMetadata conceptCode="C25391" conceptDefinition="Analysis; examination and interpretation." conceptName="Analysis" order="2" xmlns:ns51="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns52:SemanticMetadata conceptCode="C47911" conceptDefinition="The act of testing or performing something." conceptName="Run" order="1" xmlns:ns52="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns53:SemanticMetadata conceptCode="C47894" conceptDefinition="A group of things of the same kind that belong together and are so used." conceptName="Set" order="0" xmlns:ns53="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Input" description="The input parameters used point to external data sources." id="73291FDF-B7E4-FD5A-E040-BB89AD431E7C" packageName="AML-run.edu.duke.cabig.rproteomics.model.amlrun" projectName="RProteomics" projectVersion="1">
+   <ns54:umlAttributeCollection xmlns:ns54="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns55:SemanticMetadata conceptCode="C47905" conceptDefinition="Anything added into a sytem." conceptName="Input" order="0" xmlns:ns55="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Data" description="A pointer to an external data source." id="73291FDF-B7E5-FD5A-E040-BB89AD431E7C" packageName="AML-run.edu.duke.cabig.rproteomics.model.amlrun" projectName="RProteomics" projectVersion="1">
+   <ns56:umlAttributeCollection xmlns:ns56="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns56:UMLAttribute dataTypeName="java.lang.String" description="The name of this parameter, corresponding to the name in the WSDL document." name="parameterName" publicID="2425567" version="1.0">
+     <ns56:SemanticMetadata conceptCode="C44175" conceptDefinition="A Parameter is a replaceable value in a Parameterizable class.  Examples of Parameters include: scanning wavelength, laser power, centrifuge speed, multiplicative errors, the number of input nodes to a SOM, and PCR temperatures." conceptName="Parameter" order="1"/>
+     <ns56:SemanticMetadata conceptCode="C42614" conceptDefinition="The words or language units by which a thing is known." conceptName="Name" order="0"/>
+     <ns56:ValueDomain longName="java.lang.String">
+      <ns56:enumerationCollection/>
+     </ns56:ValueDomain>
+    </ns56:UMLAttribute>
+    <ns56:UMLAttribute dataTypeName="java.lang.String" description="A reference to the data." name="lsid" publicID="2425566" version="1.0">
+     <ns56:SemanticMetadata conceptCode="C47841" conceptDefinition="The Life Sciences Identifier (LSID) is an I3C and OMG Life Sciences Research (LSR) Uniform Resource Name (URN) specification. The LSID concept introduces a straightforward approach to naming and identifying data resources stored in multiple, distributed data stores in a manner that overcomes the limitations of naming schemes in use today. By defining a simple, common way to identify and access biologically significant data, whether that data is stored in files, relational databases, in applications, or in internal or public data sources, LSID provides a naming standard underpinning for wide-area science and interoperability. (from W3C)" conceptName="Life Sciences Identifier" order="0"/>
+     <ns56:ValueDomain longName="java.lang.String">
+      <ns56:enumerationCollection/>
+     </ns56:ValueDomain>
+    </ns56:UMLAttribute>
+   </ns56:umlAttributeCollection>
+   <ns57:SemanticMetadata conceptCode="C25474" conceptDefinition="A collection of facts from which conclusions may be drawn." conceptName="Data" order="0" xmlns:ns57="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="UserComments" description="Comments on a particular analysis set or run" id="73291FDF-B7E6-FD5A-E040-BB89AD431E7C" packageName="AML-run.edu.duke.cabig.rproteomics.model.amlrun" projectName="RProteomics" projectVersion="1">
+   <ns58:umlAttributeCollection xmlns:ns58="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns58:UMLAttribute dataTypeName="java.lang.String[]" description="A textual comment." name="comment" publicID="2425589" version="1.0">
+     <ns58:SemanticMetadata conceptCode="C25393" conceptDefinition="A written explanation, observation or criticism added to textual material." conceptName="Comment" order="0"/>
+     <ns58:ValueDomain longName="java.lang.StringArray">
+      <ns58:enumerationCollection/>
+     </ns58:ValueDomain>
+    </ns58:UMLAttribute>
+   </ns58:umlAttributeCollection>
+   <ns59:SemanticMetadata conceptCode="C42745" conceptDefinition="An individual who uses a computer, program, network, or related service for work or entertainment. (from http://www.computeruser.com/resources/dictionary/index.html)" conceptName="User" order="1" xmlns:ns59="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns60:SemanticMetadata conceptCode="C25393" conceptDefinition="A written explanation, observation or criticism added to textual material." conceptName="Comment" order="0" xmlns:ns60="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Value" description="The actual data associated with the parameter if it is a simple type not found on the grid." id="73291FDF-B7E7-FD5A-E040-BB89AD431E7C" packageName="AML-run.edu.duke.cabig.rproteomics.model.amlrun" projectName="RProteomics" projectVersion="1">
+   <ns61:umlAttributeCollection xmlns:ns61="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns61:UMLAttribute dataTypeName="java.lang.String" description="The actual data associated with the parameter if it is a simple type not found on the grid." name="value" publicID="2425569" version="1.0">
+     <ns61:SemanticMetadata conceptCode="C25712" conceptDefinition="A numerical quantity measured or assigned or computed." conceptName="Value" order="0"/>
+     <ns61:ValueDomain longName="java.lang.String">
+      <ns61:enumerationCollection/>
+     </ns61:ValueDomain>
+    </ns61:UMLAttribute>
+    <ns61:UMLAttribute dataTypeName="java.lang.String" description="The type of the parameter, expressed as a standard XML Schema type or in free-text." name="type" publicID="2425568" version="1.0">
+     <ns61:SemanticMetadata conceptCode="C25284" conceptDefinition="Type; a subdivision of a particular kind of thing." conceptName="Type" order="0"/>
+     <ns61:ValueDomain longName="java.lang.String">
+      <ns61:enumerationCollection/>
+     </ns61:ValueDomain>
+    </ns61:UMLAttribute>
+   </ns61:umlAttributeCollection>
+   <ns62:SemanticMetadata conceptCode="C25712" conceptDefinition="A numerical quantity measured or assigned or computed." conceptName="Value" order="0" xmlns:ns62="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="AnalysisRoutine" description="An external pointer to the metadata for the analysis routine itself." id="73291FDF-B7E8-FD5A-E040-BB89AD431E7C" packageName="AML-run.edu.duke.cabig.rproteomics.model.amlrun" projectName="RProteomics" projectVersion="1">
+   <ns63:umlAttributeCollection xmlns:ns63="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns63:UMLAttribute dataTypeName="java.lang.String" description="The LSID for the analysis routine metadata (an AML-routine document, for example)." name="routineLsid" publicID="2425570" version="1.0">
+     <ns63:SemanticMetadata conceptCode="C47841" conceptDefinition="The Life Sciences Identifier (LSID) is an I3C and OMG Life Sciences Research (LSR) Uniform Resource Name (URN) specification. The LSID concept introduces a straightforward approach to naming and identifying data resources stored in multiple, distributed data stores in a manner that overcomes the limitations of naming schemes in use today. By defining a simple, common way to identify and access biologically significant data, whether that data is stored in files, relational databases, in applications, or in internal or public data sources, LSID provides a naming standard underpinning for wide-area science and interoperability. (from W3C)" conceptName="Life Sciences Identifier" order="0"/>
+     <ns63:SemanticMetadata conceptCode="C47893" conceptDefinition="An unvarying or habitual method or procedure." conceptName="Routine" order="1"/>
+     <ns63:ValueDomain longName="java.lang.String">
+      <ns63:enumerationCollection/>
+     </ns63:ValueDomain>
+    </ns63:UMLAttribute>
+    <ns63:UMLAttribute dataTypeName="java.lang.String" description="A link to the actual service invoked" name="serviceLink" publicID="2425571" version="1.0">
+     <ns63:SemanticMetadata conceptCode="C47920" conceptDefinition="Work, or a product of that work, done by one person or group that benefits another." conceptName="Service" order="1"/>
+     <ns63:SemanticMetadata conceptCode="C47919" conceptDefinition="A reference (link) from some point in one hypertext document to another document, another place in the same document, or a website. (from Free On-Line Dictionary of Computing)" conceptName="Hyperlink" order="0"/>
+     <ns63:ValueDomain longName="java.lang.String">
+      <ns63:enumerationCollection/>
+     </ns63:ValueDomain>
+    </ns63:UMLAttribute>
+   </ns63:umlAttributeCollection>
+   <ns64:SemanticMetadata conceptCode="C25391" conceptDefinition="Analysis; examination and interpretation." conceptName="Analysis" order="1" xmlns:ns64="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns65:SemanticMetadata conceptCode="C47893" conceptDefinition="An unvarying or habitual method or procedure." conceptName="Routine" order="0" xmlns:ns65="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+  </ns1:UMLClass>
+  <ns1:UMLClass allowableAsTarget="true" className="Invoker" description="Information about the person that invoked this analysis routine." id="73291FDF-B7E9-FD5A-E040-BB89AD431E7C" packageName="AML-run.edu.duke.cabig.rproteomics.model.amlrun" projectName="RProteomics" projectVersion="1">
+   <ns66:umlAttributeCollection xmlns:ns66="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common">
+    <ns66:UMLAttribute dataTypeName="java.lang.String" description="The user who invoked the routine." name="user" publicID="2425574" version="1.0">
+     <ns66:SemanticMetadata conceptCode="C42745" conceptDefinition="An individual who uses a computer, program, network, or related service for work or entertainment. (from http://www.computeruser.com/resources/dictionary/index.html)" conceptName="User" order="0"/>
+     <ns66:ValueDomain longName="java.lang.String">
+      <ns66:enumerationCollection/>
+     </ns66:ValueDomain>
+    </ns66:UMLAttribute>
+    <ns66:UMLAttribute dataTypeName="java.util.Date" description="The time the routine completed." name="completeTime" publicID="2425572" version="1.0">
+     <ns66:SemanticMetadata conceptCode="C25250" conceptDefinition="Complete; having every necessary or normal part or component or step; or having come or been brought to a conclusion." conceptName="Complete" order="1"/>
+     <ns66:SemanticMetadata conceptCode="C25207" conceptDefinition="the continuum of experience in which events pass from the future through the present to the past." conceptName="Time" order="0"/>
+     <ns66:ValueDomain longName="java.util.Date">
+      <ns66:enumerationCollection/>
+     </ns66:ValueDomain>
+    </ns66:UMLAttribute>
+    <ns66:UMLAttribute dataTypeName="java.util.Date" description="The time that the request to invoke the routine was submitted." name="submitTime" publicID="2425573" version="1.0">
+     <ns66:SemanticMetadata conceptCode="C25207" conceptDefinition="the continuum of experience in which events pass from the future through the present to the past." conceptName="Time" order="0"/>
+     <ns66:SemanticMetadata conceptCode="C25695" conceptDefinition="Submitted; referred for judgment or consideration." conceptName="Submission" order="1"/>
+     <ns66:ValueDomain longName="java.util.Date">
+      <ns66:enumerationCollection/>
+     </ns66:ValueDomain>
+    </ns66:UMLAttribute>
+   </ns66:umlAttributeCollection>
+   <ns67:SemanticMetadata conceptCode="C25397" conceptDefinition="Application; the work of applying something." conceptName="Application" order="1" xmlns:ns67="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
+   <ns68:SemanticMetadata conceptCode="C25190" conceptDefinition="Person; a human being." conceptName="Person" order="0" xmlns:ns68="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"/>
   </ns1:UMLClass>
  </ns1:exposedUMLClassCollection>
  <ns1:umlGeneralizationCollection>
+  <ns1:UMLGeneralization>
+   <ns1:subClassReference refid="73291FDF-B7D8-FD5A-E040-BB89AD431E7C"/>
+   <ns1:superClassReference refid="73291FDF-B7D9-FD5A-E040-BB89AD431E7C"/>
+  </ns1:UMLGeneralization>
  </ns1:umlGeneralizationCollection>
 </ns1:DomainModel>
