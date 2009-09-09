@@ -541,12 +541,9 @@ public class CQL2ToParameterizedHQL {
                 }
             }
             if (reallyDistinct) {
-                modHql.append("distinct(");
+                modHql.append("distinct ");
             }
             modHql.append(mods.getDistinctAttribute().getAttributeName());
-            if (reallyDistinct) {
-                modHql.append(")");
-            }
             if (aggregation != null) {
                 modHql.append(')');
             }
