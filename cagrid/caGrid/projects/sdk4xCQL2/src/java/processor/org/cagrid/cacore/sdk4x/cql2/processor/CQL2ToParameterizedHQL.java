@@ -112,6 +112,8 @@ public class CQL2ToParameterizedHQL {
         // add any query modifiers
         if (query.getCQLQueryModifier() != null) {
             processQueryModifiers(rawHql, query.getCQLQueryModifier());
+        } else {
+            rawHql.insert(0, "Select distinct " + TARGET_ALIAS + " ");
         }
 
         // build the final query object
