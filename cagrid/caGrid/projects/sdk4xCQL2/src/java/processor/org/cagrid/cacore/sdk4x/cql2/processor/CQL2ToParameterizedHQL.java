@@ -326,7 +326,13 @@ public class CQL2ToParameterizedHQL {
         }
         
         if (association.get_instanceof() != null) {
-            hql.append("and ").append(alias).append(".class = ?");
+            hql.append("and ");
+            if (simpleNullCheck) {
+                hql.append(sourceAlias).append('.').append(roleName);
+            } else {
+                hql.append(alias);
+            }
+            hql.append(".class = ?");
             Object discriminator = hbmTool.getClassFieldIdentifierValue(
                 association.getClassName(), association.get_instanceof());
             parameters.add(discriminator);
