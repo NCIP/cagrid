@@ -7,12 +7,15 @@ import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.cagrid.cacore.sdk4x.cql2.processor.ParameterizedHqlQuery;
 
 
 public abstract class AbstractCQL2toHQLQueryTestCase extends AbstractCQL2ExamplesTestCase {
     
     public static final String APPSERVICE_URL_PROPERTY = "sdk.application.url";
+    public static final Log LOG = LogFactory.getLog(AbstractCQL2toHQLQueryTestCase.class);
     
     protected ApplicationService appservice = null;
     
@@ -47,6 +50,7 @@ public abstract class AbstractCQL2toHQLQueryTestCase extends AbstractCQL2Example
             ex.printStackTrace();
             fail("Error translating CQL to HQL: " + ex.getMessage());
         }
+        LOG.debug("Executing HQL: " + parameterizedHQL.toString());
         HQLCriteria criteria = new HQLCriteria(parameterizedHQL.getHql(), parameterizedHQL.getParameters());
         List<?> results = null;
         try {
