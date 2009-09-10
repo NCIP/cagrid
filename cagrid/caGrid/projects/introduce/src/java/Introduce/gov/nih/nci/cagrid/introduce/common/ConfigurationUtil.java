@@ -19,11 +19,10 @@ import org.cagrid.grape.model.Application;
 public class ConfigurationUtil {
 
     private static ConfigurationUtil util = null;
-    private ConfigurationManager configurationManager = null;
+    private static ConfigurationManager configurationManager = null;
 
 
     private ConfigurationUtil() throws Exception {
-
         if (GridApplication.getContext() != null) {
             configurationManager = GridApplication.getContext().getConfigurationManager();
         } else {
@@ -36,20 +35,23 @@ public class ConfigurationUtil {
     }
 
 
-    private static void load() throws Exception {
+    private static synchronized void load() throws Exception {
         if (util == null) {
             util = new ConfigurationUtil();
         }
     }
 
 
-    public static ConfigurationUtil getInstance() throws Exception {
+    public static synchronized  ConfigurationUtil getInstance() throws Exception {
         load();
         return util;
     }
 
+    public static synchronized  void saveConfiguration() throws Exception {
+        getInstance().configurationManager.saveAll();
+    }
 
-    public static IntroducePortalConfiguration getIntroducePortalConfiguration() {
+    public static synchronized IntroducePortalConfiguration getIntroducePortalConfiguration() {
         try {
             return (IntroducePortalConfiguration) getInstance().configurationManager
                 .getConfigurationObject("introducePortal");
@@ -60,7 +62,7 @@ public class ConfigurationUtil {
     }
 
 
-    public static IntroduceServiceDefaults getIntroduceServiceDefaults() {
+    public static synchronized IntroduceServiceDefaults getIntroduceServiceDefaults() {
         try {
             return (IntroduceServiceDefaults) getInstance().configurationManager
                 .getConfigurationObject("introduceServiceDefaults");
@@ -71,7 +73,7 @@ public class ConfigurationUtil {
     }
 
 
-    public static Properties getGlobalExtensionProperties() {
+    public static synchronized Properties getGlobalExtensionProperties() {
         try {
             return (Properties) getInstance().configurationManager
                 .getConfigurationObject("introduceGlobalExtensionProperties");
@@ -82,7 +84,7 @@ public class ConfigurationUtil {
     }
 
 
-    public static PropertiesProperty getGlobalExtensionProperty(String key) throws Exception {
+    public static synchronized PropertiesProperty getGlobalExtensionProperty(String key) throws Exception {
         getInstance();
         if (getGlobalExtensionProperties() != null && getGlobalExtensionProperties().getProperty() != null) {
             for (int i = 0; i < getGlobalExtensionProperties().getProperty().length; i++) {
