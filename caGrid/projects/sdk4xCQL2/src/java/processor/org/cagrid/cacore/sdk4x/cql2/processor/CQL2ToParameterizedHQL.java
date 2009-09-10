@@ -233,15 +233,16 @@ public class CQL2ToParameterizedHQL {
             
             String predicateAsString = predicateValues.get(((BinaryCQLAttribute) attribute).getPredicate());
             AttributeValue rawValue = ((BinaryCQLAttribute) attribute).getAttributeValue();
+            boolean stringAttributeValue = rawValue.getStringValue() != null;
 
             hql.append(' ').append(predicateAsString).append(' ');
 
-            if (caseInsensitive) {
+            if (caseInsensitive && stringAttributeValue) {
                 hql.append("lower(");
             }
             // add a placeholder parameter to the HQL query
             hql.append('?');
-            if (caseInsensitive) {
+            if (caseInsensitive && stringAttributeValue) {
                 hql.append(')');
             }
 
@@ -556,7 +557,7 @@ public class CQL2ToParameterizedHQL {
                 modHql.append(')');
             }
         } else if (mods.getNamedAttribute() != null && mods.getNamedAttribute().length != 0) {
-            modHql.append("Select ");
+            modHql.append("Select distinct "); // FIXME: this is problematic because it will select distinct tuples, NOT necessarily matching 1:1 with data instances
             for (int i = 0; i < mods.getNamedAttribute().length; i++) {
                 modHql.append(TARGET_ALIAS).append('.').append(mods.getNamedAttribute(i).getAttributeName());
                 if (i + 1 < mods.getNamedAttribute().length) {
