@@ -72,30 +72,26 @@
 
 
 	<!-- =============================================================== -->
-	<!-- The Test Classpath                                              -->
+	<!-- The Test Classpaths                                             -->
 	<!-- =============================================================== -->
-	<path id="test.classpath">
-		<fileset dir="${test.dir}/lib/sdk4.0">
-			<include name="hibernate3.jar"/>
-			<include name="sdk-client-framework.jar"/>
-		</fileset>
-		<fileset dir="${lib.dir}">
-			<include name="**/*.jar" />
-		</fileset>
-		<fileset dir="${ext.lib.dir}">
-			<include name="**/*.jar" />
-		</fileset>
-		<fileset dir="${ext.test.lib.dir}">
-			<include name="**/*.jar" />
-		</fileset>
-		<fileset dir="${globus.dir}/lib">
-			<include name="**/*.jar" />
-            <exclude name="junit.jar"/>
-		</fileset>
-		<pathelement location="${test.resources.jar}" />
+	<path id="test.base.classpath">
+		<path refid="build.classpath"/>
 		<pathelement location="${build.processor.dest}" />
 	</path>
 
+	
+	<path id="test.build.classpath">
+		<path refid="test.base.classpath"/>
+		<fileset dir="${test.dir}/lib/sdk4.0">
+			<include name="**/*.jar"/>
+			<!--
+			<include name="hibernate3.jar"/>
+			<include name="sdk-client-framework.jar"/>
+			-->
+		</fileset>
+	</path>
+	
+	
 	<!-- creates output directories -->
 	<target name="init" depends="defineContribTasks">
 		<mkdir dir="${build.dir}" />
@@ -129,8 +125,9 @@
 	<!-- compiles the testing source code -->
 	<target name="compileTests" depends="compileProcessor">
 		<javac srcdir="${test.src.dir}" destdir="${test.classes.dir}" debug="${java.debug}" source="${java.source}">
-			<classpath refid="test.classpath"/>
+			<classpath refid="test.build.classpath"/>
 			<include name="**/*.java" />
+			<exclude name="HQLRunner.java"/>
 		</javac>
 	</target>
 
