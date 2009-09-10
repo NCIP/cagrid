@@ -6,7 +6,7 @@
 	<property name="test.lib.dir" location="${test.dir}/lib"/>
 	
 	<path id="test.run.classpath">
-		<path refid="test.classpath"/>
+		<path refid="test.base.classpath"/>
 		<fileset dir="${build.jars.dir}">
 			<include name="**/*.jar"/>
 		</fileset>
