@@ -10,15 +10,13 @@ import gov.nih.nci.cagrid.introduce.beans.extension.Properties;
 import gov.nih.nci.cagrid.introduce.beans.extension.PropertiesProperty;
 import gov.nih.nci.cagrid.introduce.beans.extension.ResourcePropertyEditorExtensionDescriptionType;
 import gov.nih.nci.cagrid.introduce.beans.extension.ServiceExtensionDescriptionType;
-import gov.nih.nci.cagrid.introduce.common.IntroducePropertiesManager;
+import gov.nih.nci.cagrid.introduce.common.ConfigurationUtil;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.cagrid.grape.ConfigurationManager;
-import org.cagrid.grape.model.Application;
 
 
 public class ExtensionsLoader {
@@ -152,13 +150,8 @@ public class ExtensionsLoader {
                 PropertiesProperty prop = properties.getProperty(i);
                 try {
                     if (prop != null && prop.getMakeGlobal() != null && prop.getMakeGlobal().booleanValue()) {
-                        Application app = null;
-                        app = (Application) Utils.deserializeDocument(IntroducePropertiesManager
-                            .getIntroduceConfigurationFile(), Application.class);
-                        ConfigurationManager configurationManager = new ConfigurationManager(app.getConfiguration(),
-                            null);
-                        Properties globalExtensionProperties = (Properties) configurationManager
-                            .getConfigurationObject("introduceGlobalExtensionProperties");
+
+                        Properties globalExtensionProperties = ConfigurationUtil.getGlobalExtensionProperties();
 
                         if (globalExtensionProperties != null && globalExtensionProperties.getProperty() != null) {
                             boolean found = false;
@@ -181,7 +174,7 @@ public class ExtensionsLoader {
                             props[0] = prop;
                             globalExtensionProperties.setProperty(props);
                         }
-                        configurationManager.saveAll();
+                        ConfigurationUtil.saveConfiguration();
 
                     }
                 } catch (Exception e) {
