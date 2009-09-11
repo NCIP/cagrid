@@ -363,12 +363,6 @@
 				<include name="cagrid/**" />
 			</fileset>
 		</copy>
-		<!-- DomainModel client-config.wsdd -->
-		<copy todir="${introduce.extensions.dir}/data">
-			<fileset dir="${basedir}">
-				<include name="DomainModel-client-config.wsdd" />
-			</fileset>
-		</copy>
 		<!-- the extension definition -->
 		<copy todir="${introduce.extensions.dir}/data">
 			<fileset dir="${extension.dir}">
