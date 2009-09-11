@@ -124,6 +124,7 @@
 			<include name="**/*.jar" />
             <exclude name="junit.jar"/>
 		</fileset>
+		<pathelement location="${globus.dir}"/>
 	</path>
 
 
@@ -427,7 +428,6 @@
 				<include name="**/*.java" />
 				<include name="**/*.xml" />
 			</fileset>
-			<filename name="${basedir}/DomainModel-client-config.wsdd" />
 		</jar>
 	</target>
 
