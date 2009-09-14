@@ -27,7 +27,7 @@
     
     <conf name="full" visibility="public" extends="service,tools"/>
 
-    <conf name="test" visibility="public" extends="full,impl-test"/>
+    <conf name="test" visibility="public" extends="full"/>
 
     <conf name="cql-examples" visibility="public"/>
 
