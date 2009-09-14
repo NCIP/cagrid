@@ -14,9 +14,17 @@
 	
 
 	<!-- call the test target for each project and aggregates the log resutls  -->
-	<target name="test" description="Runs the tests." depends="testSDK40, testSDK411">
+	<target name="test" description="Runs the tests." depends="testBase, testSDK40, testSDK411">
+		<fail message="Base Tests failed! Check test reports." if="test.base.failed" />
+		<fail message="SDK 4.0 Tests failed! Check test reports." if="test.sdk40.failed" />
+		<fail message="SDK 4.1.1 Tests failed! Check test reports." if="test.sdk411.failed" />
+	</target>
+	
+
+	<target name="testBase">
 		<mkdir dir="${junit.results.dir}"/>
-		<junit dir="${basedir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" fork="yes" forkmode="once">
+		<junit dir="${basedir}" printsummary="yes" errorproperty="test.base.failed" failureproperty="test.base.failed" showoutput="true" fork="yes" forkmode="once">
+			<!-- sysproperty needed for cycle test to know where to look for classes -->
 			<sysproperty key="build.dirs.list" value="${build.dirs.list}" />
 			<classpath refid="test.run.classpath" />
 			<formatter type="xml" />
@@ -28,14 +36,12 @@
 				</fileset>
 			</batchtest>
 		</junit>
-		<fail message="Tests failed! Check test reports." if="test.failed" />
 	</target>
 	
 	
-	<target name="testSDK40" description="Runs SDK 4.0 related tests">
+	<target name="testSDK40">
 		<mkdir dir="${junit.results.dir}"/>
-		<junit dir="${basedir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" fork="yes" forkmode="once">
-			<sysproperty key="build.dirs.list" value="${build.dirs.list}" />
+		<junit dir="${basedir}" printsummary="yes" errorproperty="test.sdk40.failed" failureproperty="test.sdk40.failed" showoutput="true" fork="yes" forkmode="once">
 			<sysproperty key="sdk.application.url" value="http://sdkexamples.bmi.ohio-state.edu:8040/example40"/>
 			<classpath refid="test.run.classpath" />
 			<classpath>
@@ -50,14 +56,12 @@
 				</fileset>
 			</batchtest>
 		</junit>
-		<fail message="Tests failed! Check test reports." if="test.failed" />
 	</target>
 	
 	
-	<target name="testSDK411" description="Runs SDK 4.1.1 related tests">
+	<target name="testSDK411">
 		<mkdir dir="${junit.results.dir}"/>
-		<junit dir="${basedir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" fork="yes" forkmode="once">
-			<sysproperty key="build.dirs.list" value="${build.dirs.list}" />
+		<junit dir="${basedir}" printsummary="yes" errorproperty="test.sdk411.failed" failureproperty="test.sdk411.failed" showoutput="true" fork="yes" forkmode="once">
 			<sysproperty key="sdk.application.url" value="http://sdkexamples.bmi.ohio-state.edu:8041/example41"/>
 			<classpath refid="test.run.classpath" />
 			<classpath>
@@ -72,6 +76,5 @@
 				</fileset>
 			</batchtest>
 		</junit>
-		<fail message="Tests failed! Check test reports." if="test.failed" />
 	</target>	
 </project>

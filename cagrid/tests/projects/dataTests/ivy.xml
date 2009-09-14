@@ -29,7 +29,7 @@
     <dependency rev="latest.integration" org="caGrid" name="introduce" conf="default->extension-test"/>
     
     <!-- Data core -->
-    <dependency rev="latest.integration" org="caGrid" name="data" conf="default->full"/>
+    <dependency rev="latest.integration" org="caGrid" name="data" conf="default->service"/>
     
     <!-- CQL stubs -->
     <dependency rev="latest.integration" org="caGrid" name="cql" conf="default->cql"/>
