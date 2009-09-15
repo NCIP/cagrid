@@ -111,13 +111,15 @@
 		<fileset dir="${lib.dir}">
 			<include name="**/*.jar" />
 		</fileset>
-
 		<fileset dir="${ext.lib.dir}">
 			<include name="**/*.jar" />
 		</fileset>
 		<fileset dir="${ext.remote-client.lib.dir}">
 			<include name="*.jar" />
 			<!-- TODO: include more stuff? -->
+		</fileset>
+		<fileset dir="${ext.local-client.lib.dir}">
+			<include name="*-orm.jar"/>
 		</fileset>
 		<fileset dir="${test.lib.dir}">
 			<include name="**/*.jar" />
