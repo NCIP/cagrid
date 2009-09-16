@@ -130,7 +130,7 @@ public class FederatedQueryEngine {
         List<Future<CQLQueryResults>> queryFutures = null;
         try {
             queryFutures = workExecutor.invokeAll(queryTasks);
-            for (Future queryFuture : queryFutures) {
+            for (Future<?> queryFuture : queryFutures) {
                 failureListener.addFuture(queryFuture);
             }
         } catch (InterruptedException ex) {
@@ -153,7 +153,7 @@ public class FederatedQueryEngine {
                 dcqlResult.setTargetServiceURL(serviceURL);
                 dcqlResult.setCQLQueryResultCollection(results);
                 dcqlResults.add(dcqlResult);
-                int resultsCount = results.getObjectResult().length;
+                int resultsCount = results.getObjectResult() != null ? results.getObjectResult().length : 0;
                 // fire results range for target service
                 ResultsRange range = new ResultsRange();
                 range.setStartElementIndex(totalObjectResults);
@@ -333,7 +333,7 @@ public class FederatedQueryEngine {
             long retryTimeout = (behavior.getTimeoutPerRetry() != null ?
                 behavior.getTimeoutPerRetry().intValue() :
                     FQPConstants.DEFAULT_TARGET_QUERY_BEHAVIOR.getTimeoutPerRetry().intValue())
-                    * 1000; // miliseconds
+                    * 1000; // milliseconds
             
             // run the query, accounting for the max number of retries
             CQLQueryResults results = null;
@@ -345,7 +345,7 @@ public class FederatedQueryEngine {
                         query, serviceURL, clientCredential);
                     // clear any previous exception state.  
                     // If this query succeeded and a previous one failed, 
-                    // the exception is erronious
+                    // the exception is erroneous
                     queryException = null;
                 } catch (RemoteDataServiceException ex) {
                     LOG.warn("Query failed to execute: " + ex.getMessage());
@@ -365,7 +365,7 @@ public class FederatedQueryEngine {
             // verify we have Object results
             boolean invalidQueryResponse = false;
             if (results != null) {
-                if (results.getObjectResult() == null) {
+                if (results.getAttributeResult() != null || results.getCountResult() != null || results.getIdentifierResult() != null) {
                     invalidQueryResponse = true;
                     queryException = new RemoteDataServiceException(
                         "Remote data service " + serviceURL + " returned non-object results");
@@ -415,20 +415,20 @@ public class FederatedQueryEngine {
     
     
     private static class FutureGroupFailureListener {
-        private List<Future> futures = null;
+        private List<Future<?>> futures = null;
         
         public FutureGroupFailureListener() {
-            this.futures = new LinkedList<Future>();
+            this.futures = new LinkedList<Future<?>>();
         }
         
         
-        public synchronized void addFuture(Future f) {
+        public synchronized void addFuture(Future<?> f) {
             this.futures.add(f);
         }
         
         
         public synchronized void failAllFutures() {
-            for (Future future : futures) {
+            for (Future<?> future : futures) {
                 future.cancel(true);
             }
         }
