@@ -18,7 +18,7 @@ public interface FQPConstants {
         new TargetDataServiceQueryBehavior(Boolean.TRUE, Integer.valueOf(0), Integer.valueOf(5));
     
     /**
-     * The default Query Execution Parapeters.  Derived from the XSD
+     * The default Query Execution Parameters.  Derived from the XSD
      * definition, since Axis doesn't set the defaults with the no-arg constructor
      */
     public static final QueryExecutionParameters DEFAULT_QUERY_EXECUTION_PARAMETERS = 
