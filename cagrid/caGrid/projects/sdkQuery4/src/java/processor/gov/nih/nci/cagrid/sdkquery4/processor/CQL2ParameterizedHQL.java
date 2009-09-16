@@ -133,9 +133,10 @@ public class CQL2ParameterizedHQL {
 			}
 			prepend.append(')');
 		} else {
-			prepend.append("select ");
+		    // select distinct tuples
+			prepend.append("select distinct ");
 			if (mods.getDistinctAttribute() != null) {
-				prepend.append("distinct ").append(mods.getDistinctAttribute());
+				prepend.append(mods.getDistinctAttribute());
 			} else {
 				for (int i = 0; i < mods.getAttributeNames().length; i++) {
 					prepend.append(mods.getAttributeNames(i));
