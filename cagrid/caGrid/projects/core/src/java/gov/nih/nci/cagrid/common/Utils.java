@@ -154,7 +154,7 @@ public class Utils {
 	}
     
 
-	public static Object deserializeDocument(String fileName, Class objectType)
+	public static Object deserializeDocument(String fileName, Class<?> objectType)
 			throws Exception {
 		InputStream inputStream = null;
 
@@ -240,7 +240,7 @@ public class Utils {
 	 * @throws ArrayStoreException
 	 *             uses System.arrarycopy and has same contract
 	 */
-	public static java.lang.Object concatenateArrays(Class resultClass,
+	public static java.lang.Object concatenateArrays(Class<?> resultClass,
 			java.lang.Object arr1, java.lang.Object arr2)
 			throws ArrayStoreException {
 		if (arr1 == null) {
@@ -270,7 +270,7 @@ public class Utils {
 	 */
 	public static java.lang.Object appendToArray(java.lang.Object array,
 			java.lang.Object appendix) {
-		Class arrayType = array.getClass().getComponentType();
+		Class<?> arrayType = array.getClass().getComponentType();
 		java.lang.Object newArray = Array.newInstance(arrayType, Array
 				.getLength(array) + 1);
 		System.arraycopy(array, 0, newArray, 0, Array.getLength(array));
@@ -280,7 +280,7 @@ public class Utils {
     
 
 	/**
-	 * Removed an object from an array.
+	 * Removes an object from an array.
 	 * 
 	 * @param array
 	 * @param removal
@@ -288,7 +288,7 @@ public class Utils {
 	 */
 	public static java.lang.Object removeFromArray(java.lang.Object array,
 			java.lang.Object removal) {
-		Class arrayType = array.getClass().getComponentType();
+		Class<?> arrayType = array.getClass().getComponentType();
 		int length = Array.getLength(array);
 		List<Object> temp = new ArrayList<Object>(length - 1);
 		for (int i = 0; i < length; i++) {
@@ -300,6 +300,23 @@ public class Utils {
 		java.lang.Object newArray = Array.newInstance(arrayType, temp.size());
 		System.arraycopy(temp.toArray(), 0, newArray, 0, temp.size());
 		return newArray;
+	}
+	
+	
+	/**
+	 * Trims an array
+	 * 
+	 * @param array
+	 * @param startIndex
+	 * @param endIndex
+	 * @return
+	 */
+	public static java.lang.Object trimArray(java.lang.Object array, int startIndex, int endIndex) {
+	    Class<?> arrayType = array.getClass().getComponentType();
+	    int length = endIndex - startIndex;
+	    java.lang.Object newArray = Array.newInstance(arrayType, length);
+	    System.arraycopy(array, startIndex, newArray, 0, length);
+	    return newArray;
 	}
     
 
@@ -418,7 +435,7 @@ public class Utils {
 	 * @throws SAXException
 	 * @throws DeserializationException
 	 */
-	public static Object deserializeObject(Reader xmlReader, Class clazz,
+	public static Object deserializeObject(Reader xmlReader, Class<?> clazz,
 			InputStream wsdd) throws SAXException, DeserializationException {
 		// input source for the xml
 		InputSource xmlSource = new InputSource(xmlReader);
@@ -427,7 +444,7 @@ public class Utils {
 	}
 
     
-	public static Object deserializeObject(Reader xmlReader, Class clazz)
+	public static Object deserializeObject(Reader xmlReader, Class<?> clazz)
 			throws Exception {
 		org.w3c.dom.Document doc = XMLUtils.newDocument(new InputSource(
 				xmlReader));
@@ -463,6 +480,13 @@ public class Utils {
 	}
 
     
+	/**
+	 * Like Object.equals, but if o1 == null && o2 == null, returns true
+	 * 
+	 * @param o1
+	 * @param o2
+	 * @return
+	 */
 	public static boolean equals(Object o1, Object o2) {
 		if (o1 == null) {
 			return o2 == null;
@@ -478,7 +502,7 @@ public class Utils {
 	 * @return The QName corresponding to the class registered in the Axis type
 	 *         mappings
 	 */
-	public static QName getRegisteredQName(Class clazz) {
+	public static QName getRegisteredQName(Class<?> clazz) {
 		return MessageContext.getCurrentContext().getTypeMapping()
 				.getTypeQName(clazz);
 	}
@@ -491,7 +515,7 @@ public class Utils {
 	 * @return The class corresponding to the QName as registered in the Axis
 	 *         type mappings
 	 */
-	public static Class getRegisteredClass(QName qname) {
+	public static Class<?> getRegisteredClass(QName qname) {
 		return MessageContext.getCurrentContext().getTypeMapping()
 				.getClassForQName(qname);
 	}
@@ -578,7 +602,7 @@ public class Utils {
 			parentDir = parentDir.getParentFile();
 		}
 		Collections.reverse(parentPaths);
-		for (Iterator i = parentPaths.iterator(); i.hasNext();) {
+		for (Iterator<String> i = parentPaths.iterator(); i.hasNext();) {
 			relPath.append(i.next()).append(File.separatorChar);
 		}
 		if (!destination.isDirectory()) {
