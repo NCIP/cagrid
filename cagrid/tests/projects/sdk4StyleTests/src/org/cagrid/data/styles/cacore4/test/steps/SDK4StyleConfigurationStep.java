@@ -61,7 +61,8 @@ import org.cagrid.mms.domain.UMLProjectIdentifer;
 public class SDK4StyleConfigurationStep extends Step {
     public static final String SDK_4_TESTS_BASE_DIR_PROPERTY = "sdk4.tests.base.dir";    
     
-    public static final String EXT_SDK_DIR = File.separator + "build" + File.separator + "remote-client";
+    public static final String EXT_REMOTE_SDK_DIR = File.separator + "build" + File.separator + "remote-client";
+    public static final String EXT_LOCAL_SDK_DIR = File.separator + "build" + File.separator + "local-client";
     public static final String DOMAIN_MODEL_FILE = File.separator + "resources" + File.separator + "sdkExampleDomainModel.xml";
     public static final String PROPERTY_REMOTE_HOST_NAME = "remote.sdk.host.name";
     public static final String PROPERTY_REMOTE_HOST_PORT = "remote.sdk.host.port";
@@ -113,8 +114,11 @@ public class SDK4StyleConfigurationStep extends Step {
         File remoteClientDir = new File(getSdkRemoteClientDir());
         File remoteClientLibDir = new File(remoteClientDir, "lib");
         File remoteClientConfDir = new File(remoteClientDir, "conf");
+        File localClientDir = new File(getSdkLocalClientDir());
+        File localClientLibDir = new File(localClientDir, "lib");
         configuration.setApplicationName("example40");
         configuration.setBeansJarLocation(new File(remoteClientLibDir, "example40-beans.jar").getAbsolutePath());
+        configuration.setOrmJarLocation(new File(localClientLibDir, "example40-orm.jar").getAbsolutePath());
         configuration.setCaseInsensitiveQueries(false);
         configuration.setRemoteConfigDir(remoteClientConfDir.getAbsolutePath());
         configuration.setUseLocalApi(false);
@@ -286,14 +290,11 @@ public class SDK4StyleConfigurationStep extends Step {
         ModelPackage[] packages = new ModelPackage[packageClasses.keySet().size()];
         String[] packageNames = new String[packages.length];
         int packIndex = 0;
-        Iterator packageNameIter = packageClasses.keySet().iterator();
+        Iterator<String> packageNameIter = packageClasses.keySet().iterator();
         while (packageNameIter.hasNext()) {
-            String packName = (String) packageNameIter.next();
-            String mappedNamespace = suggestNamespaceString(
-                model.getProjectShortName(), model.getProjectVersion(), packName);
+            String packName = packageNameIter.next();
             ModelPackage pack = new ModelPackage();
             pack.setPackageName(packName);
-            // getModelInfoUtil().setMappedNamespace(packName, mappedNamespace);
             // create model classes for the package's classes
             List<String> classNameList = packageClasses.get(packName);
             ModelClass[] classes = new ModelClass[classNameList.size()];
@@ -313,15 +314,6 @@ public class SDK4StyleConfigurationStep extends Step {
         info.setModelPackage(packages);
         extensionData.setModelInformation(info);
         storeExtensionData(extensionData);
-    }
-    
-    
-    private String suggestNamespaceString(String projectShortName, String projectVersion, String packName) {
-        String modVersion = projectVersion;
-        if (modVersion.indexOf('.') == -1) {
-            modVersion += ".0";
-        }
-        return "gme://" + projectShortName + ".caBIG/" + modVersion + "/" + packName;
     }
     
     
@@ -380,7 +372,14 @@ public class SDK4StyleConfigurationStep extends Step {
     private String getSdkRemoteClientDir() {
         String basedir = System.getProperty(SDK_4_TESTS_BASE_DIR_PROPERTY);
         assertNotNull("System property " + SDK_4_TESTS_BASE_DIR_PROPERTY + " was not defined!", basedir);
-        return basedir + EXT_SDK_DIR;
+        return basedir + EXT_REMOTE_SDK_DIR;
+    }
+    
+    
+    private String getSdkLocalClientDir() {
+        String basedir = System.getProperty(SDK_4_TESTS_BASE_DIR_PROPERTY);
+        assertNotNull("System property " + SDK_4_TESTS_BASE_DIR_PROPERTY + " was not defined!", basedir);
+        return basedir + EXT_LOCAL_SDK_DIR;
     }
     
     

@@ -69,6 +69,10 @@ public class InvokeSDK4DataServiceStep extends Step {
         testNestedGroups();
         testSingleAttributeFromCash();
         testAllSuperclass();
+        testTablePerClassBaseClass();
+        testTablePerClassSubClass();
+        testTablePerHierarchyBaseClass();
+        testTablePerHierarchySubClass();
         
         // invalid queries
         testNonExistantTarget();
@@ -235,6 +239,38 @@ public class InvokeSDK4DataServiceStep extends Step {
     }
     
     
+    private void testTablePerClassBaseClass() {
+        LOG.debug("testTablePerClassBaseClass");
+        CQLQuery query = loadQuery("tablePerClassBaseClass.xml");
+        CQLQueryResults goldResults = loadQueryResults("goldTablePerClassBaseClass.xml");
+        invokeValidQueryValidResults(query, goldResults);
+    }
+    
+    
+    private void testTablePerClassSubClass() {
+        LOG.debug("testTablePerClassSubClass");
+        CQLQuery query = loadQuery("tablePerClassSubClass.xml");
+        CQLQueryResults goldResults = loadQueryResults("goldTablePerClassSubClass.xml");
+        invokeValidQueryValidResults(query, goldResults);
+    }
+    
+    
+    private void testTablePerHierarchyBaseClass() {
+        LOG.debug("testTablePerClassSubClass");
+        CQLQuery query = loadQuery("tablePerHierarchyBaseClass.xml");
+        CQLQueryResults goldResults = loadQueryResults("goldTablePerHierarchyBaseClass.xml");
+        invokeValidQueryValidResults(query, goldResults);
+    }
+    
+    
+    private void testTablePerHierarchySubClass() {
+        LOG.debug("testTablePerHierarchySubClass");
+        CQLQuery query = loadQuery("tablePerHierarchySubClass.xml");
+        CQLQueryResults goldResults = loadQueryResults("goldTablePerHierarchySubClass.xml");
+        invokeValidQueryValidResults(query, goldResults);
+    }
+    
+    
     private CQLQuery loadQuery(String filename) {
         String fullFilename = TEST_QUERIES_DIR + filename;
         CQLQuery query = null;
@@ -365,7 +401,6 @@ public class InvokeSDK4DataServiceStep extends Step {
             List<TargetAttribute[]> testAttributes = recastList(testObjects);
             compareTargetAttributes(goldAttributes, testAttributes);
         } else {
-            // assertTrue("Gold and Test contained different objects", goldObjects.containsAll(testObjects));
             compareObjects(goldObjects, testObjects);
         }
     }
