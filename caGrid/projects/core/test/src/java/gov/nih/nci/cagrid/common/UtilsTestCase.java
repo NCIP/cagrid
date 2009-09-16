@@ -67,6 +67,42 @@ public class UtilsTestCase extends TestCase {
 	}
 	
 	
+	public void testArrayTrimEnd() {
+	    String[] arr1 = new String[] {"0", "1", "2"};
+	    String[] gold1 = new String[] {"0", "1"};
+	    String[] gold2 = new String[] {"0"};
+	    
+	    String[] trim1 = (String[]) Utils.trimArray(arr1, 0, arr1.length - 1);
+	    String[] trim2 = (String[]) Utils.trimArray(arr1, 0, arr1.length - 2);
+	    
+	    assertTrue(Arrays.deepEquals(gold1, trim1));
+	    assertTrue(Arrays.deepEquals(gold2, trim2));
+	}
+	
+	
+	public void testArrayTrimStart() {
+	    String[] arr1 = new String[] {"0", "1", "2"};
+        String[] gold1 = new String[] {"1", "2"};
+        String[] gold2 = new String[] {"2"};
+        
+        String[] trim1 = (String[]) Utils.trimArray(arr1, 1, arr1.length);
+        String[] trim2 = (String[]) Utils.trimArray(arr1, 2, arr1.length);
+        
+        assertTrue(Arrays.deepEquals(gold1, trim1));
+        assertTrue(Arrays.deepEquals(gold2, trim2));
+	}
+	
+	
+	public void testArrayTrimBoth() {
+	    String[] arr1 = new String[] {"0", "1", "2"};
+        String[] gold1 = new String[] {"1"};
+        
+        String[] trim1 = (String[]) Utils.trimArray(arr1, 1, arr1.length - 1);
+        
+        assertTrue(Arrays.deepEquals(gold1, trim1));
+	}
+	
+	
 	public void testReadFile() {
 		String garbageText = generateGarbageText();
 		try {
