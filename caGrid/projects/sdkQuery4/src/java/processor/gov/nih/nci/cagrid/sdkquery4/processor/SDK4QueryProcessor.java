@@ -4,6 +4,7 @@ import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.cqlquery.QueryModifier;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
+import gov.nih.nci.cagrid.data.DataServiceConstants;
 import gov.nih.nci.cagrid.data.InitializationException;
 import gov.nih.nci.cagrid.data.MalformedQueryException;
 import gov.nih.nci.cagrid.data.QueryProcessingException;
@@ -86,7 +87,23 @@ public class SDK4QueryProcessor extends CQLQueryProcessor {
 
 
     public CQLQueryResults processQuery(CQLQuery cqlQuery) throws MalformedQueryException, QueryProcessingException {
-        List<?> rawResults = queryCoreService(cqlQuery);
+        CQLQuery runQuery = cqlQuery;
+        if (runQuery.getQueryModifier() != null && runQuery.getQueryModifier().getAttributeNames() != null) {
+            // HQL will return distinct tuples of attribute names, so we need to include
+            // the id attribute in those tuples to get a 1:1 correspondence with
+            // actual data instances in the database
+            try {
+                runQuery = (CQLQuery) Utils.cloneBean(cqlQuery, DataServiceConstants.CQL_QUERY_QNAME);
+                String[] attributeNames = runQuery.getQueryModifier().getAttributeNames();
+                attributeNames = (String[]) Utils.appendToArray(attributeNames, "id");
+                runQuery.getQueryModifier().setAttributeNames(attributeNames);
+            } catch (Exception ex) {
+                String message = "Error pre-processing query modifier attribute names: " + ex.getMessage();
+                LOG.error(message, ex);
+                throw new QueryProcessingException(message, ex);
+            }
+        }
+        List<?> rawResults = queryCoreService(runQuery);
         // trace is lower than debug, so this shouldn't get run unless somebody REALLY wants to see everything
         if (LOG.isTraceEnabled()) {
             // print the SDK's output iff trace is enabled
@@ -102,30 +119,30 @@ public class SDK4QueryProcessor extends CQLQueryProcessor {
         }
         CQLQueryResults cqlResults = null;
         // determine which type of results to package up
-        if (cqlQuery.getQueryModifier() != null) {
-            QueryModifier mods = cqlQuery.getQueryModifier();
+        if (runQuery.getQueryModifier() != null) {
+            QueryModifier mods = runQuery.getQueryModifier();
             if (mods.isCountOnly()) {
                 long count = Long.parseLong(rawResults.get(0).toString());
-                cqlResults = CQLResultsCreationUtil.createCountResults(count, cqlQuery.getTarget().getName());
+                cqlResults = CQLResultsCreationUtil.createCountResults(count, runQuery.getTarget().getName());
             } else { // attributes
                 String[] attributeNames = null;
                 List<Object[]> resultsAsArrays = null;
                 if (mods.getDistinctAttribute() != null) {
+                    // distinct attribute
                     attributeNames = new String[] {mods.getDistinctAttribute()};
                     resultsAsArrays = new LinkedList<Object[]>();
                     for (Object o : rawResults) {
                         resultsAsArrays.add(new Object[] {o});
                     }
-                } else { // multiple attributes
+                } else {
+                    // multiple attributes
                     attributeNames = mods.getAttributeNames();
+                    attributeNames = (String[]) Utils.trimArray(attributeNames, 0, attributeNames.length - 1);
                     resultsAsArrays = new LinkedList<Object[]>();
                     for (Object o : rawResults) {
-                        Object[] array = null;
-                        if (o.getClass().isArray()) {
-                            array = (Object[]) o;
-                        } else {
-                            array = new Object[] {o};
-                        }
+                        // will always have > 1 object since we're appending the id attribute
+                        Object[] array = (Object[]) o;
+                        array = (Object[]) Utils.trimArray(array, 0, array.length - 1);
                         resultsAsArrays.add(array);
                     }
                 }
