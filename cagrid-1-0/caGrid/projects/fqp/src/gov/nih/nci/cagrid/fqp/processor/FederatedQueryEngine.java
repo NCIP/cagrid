@@ -150,7 +150,7 @@ public class FederatedQueryEngine {
                 dcqlResult.setTargetServiceURL(serviceURL);
                 dcqlResult.setCQLQueryResultCollection(results);
                 dcqlResults.add(dcqlResult);
-                int resultsCount = results.getObjectResult().length;
+                int resultsCount = results.getObjectResult() != null ? results.getObjectResult().length : 0;
                 // fire results range for target service
                 ResultsRange range = new ResultsRange();
                 range.setStartElementIndex(totalObjectResults);
@@ -362,7 +362,7 @@ public class FederatedQueryEngine {
             // verify we have Object results
             boolean invalidQueryResponse = false;
             if (results != null) {
-                if (results.getObjectResult() == null) {
+                if (results.getAttributeResult() != null || results.getCountResult() != null || results.getIdentifierResult() != null) {
                     invalidQueryResponse = true;
                     queryException = new RemoteDataServiceException(
                         "Remote data service " + serviceURL + " returned non-object results");
