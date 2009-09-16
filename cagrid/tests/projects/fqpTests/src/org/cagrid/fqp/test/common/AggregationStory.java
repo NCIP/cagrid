@@ -63,6 +63,9 @@ public class AggregationStory extends Story {
         steps.add(new AggregationStep(FQPTestingConstants.QUERIES_LOCATION + "exampleAggregation2.xml",
             FQPTestingConstants.GOLD_LOCATION + "aggregation" + File.separator + "exampleAggregation2_gold.xml",
             queryHelper, serviceUrls));
+        steps.add(new AggregationStep(FQPTestingConstants.QUERIES_LOCATION + "emptyResultsAggregation.xml",
+            FQPTestingConstants.GOLD_LOCATION + "aggregation" + File.separator + "emptyResultsAggregation_gold.xml",
+            queryHelper, serviceUrls));
         return steps;
     }
 }
