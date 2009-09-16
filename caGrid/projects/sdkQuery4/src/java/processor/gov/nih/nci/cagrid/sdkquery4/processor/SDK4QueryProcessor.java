@@ -62,10 +62,13 @@ public class SDK4QueryProcessor extends CQLQueryProcessor {
     public static final String DEFAULT_USE_LOGIN = String.valueOf(false);
     public static final String DEFAULT_USE_GRID_IDENTITY_LOGIN = String.valueOf(false);
     
+    public static final String EMPTY_PASSWORD = "EMPTYPASSWORD";
+    
     // logger
     private static final Log LOG = LogFactory.getLog(SDK4QueryProcessor.class);
     
     private CQL2ParameterizedHQL cqlTranslator;
+    private Mappings classToQnameMappings;
         
     public SDK4QueryProcessor() {
         super();
@@ -73,11 +76,12 @@ public class SDK4QueryProcessor extends CQLQueryProcessor {
     
     
     /**
-     * Overriden to add initialization of the inheritance manager
+     * Overridden to add initialization of the CQL to HQL translator
      */
     public void initialize(Properties parameters, InputStream wsdd) throws InitializationException {
         super.initialize(parameters, wsdd);
         initializeCqlToHqlTranslator();
+        initializeClassToQnameMappings();
     }
 
 
@@ -92,7 +96,7 @@ public class SDK4QueryProcessor extends CQLQueryProcessor {
                 try {
                     LOG.trace(m.toXML(o));
                 } catch (Exception ex) {
-                    ex.printStackTrace();
+                    LOG.trace(ex);
                 }
             }
         }
@@ -129,15 +133,9 @@ public class SDK4QueryProcessor extends CQLQueryProcessor {
                     resultsAsArrays, cqlQuery.getTarget().getName(), attributeNames);
             }
         } else {
-            Mappings classToQname = null;
-            try {
-                classToQname = getClassToQnameMappings();
-            } catch (Exception ex) {
-                throw new QueryProcessingException("Error loading class to QName mappings: " + ex.getMessage(), ex);
-            }
             try {
                 cqlResults = CQLResultsCreationUtil.createObjectResults(
-                    rawResults, cqlQuery.getTarget().getName(), classToQname);
+                    rawResults, cqlQuery.getTarget().getName(), classToQnameMappings);
             } catch (ResultsCreationException ex) {
                 throw new QueryProcessingException("Error packaging query results: " + ex.getMessage(), ex);
             }
@@ -170,12 +168,6 @@ public class SDK4QueryProcessor extends CQLQueryProcessor {
     }
     
     
-    public String getConfigurationUiClassname() {
-        // TODO: return the UI classname once the class is written
-        return null;
-    }
-    
-    
     private ApplicationService getApplicationService() throws QueryProcessingException {
         ApplicationService service = null;
         
@@ -192,7 +184,7 @@ public class SDK4QueryProcessor extends CQLQueryProcessor {
                 } else {
                     SecurityManager securityManager = SecurityManager.getManager();
                     username = securityManager.getCaller();
-                    // TODO: password?
+                    passwd = EMPTY_PASSWORD;
                 }
             }
             
@@ -220,11 +212,6 @@ public class SDK4QueryProcessor extends CQLQueryProcessor {
     
     private String getRemoteApplicationUrl() {
         String hostname = getConfiguredParameters().getProperty(PROPERTY_HOST_NAME);
-        /*
-        if (!hostname.startsWith("http://") || !hostname.startsWith("https://")) {
-            hostname = "http://" + hostname;
-        }
-        */
         String port = getConfiguredParameters().getProperty(PROPERTY_HOST_PORT);
         while (hostname.endsWith("/")) {
             hostname = hostname.substring(0, hostname.length() - 1);
@@ -276,15 +263,6 @@ public class SDK4QueryProcessor extends CQLQueryProcessor {
     }
     
     
-    private Mappings getClassToQnameMappings() throws Exception {
-        // get the mapping file name
-        String filename = ServiceConfigUtil.getClassToQnameMappingsFile();
-        // String filename = "mapping.xml";
-        Mappings mappings = (Mappings) Utils.deserializeDocument(filename, Mappings.class);
-        return mappings;
-    }
-    
-    
     private DomainModel getDomainModel() throws Exception {
         DomainModel domainModel = null;
         Resource serviceBaseResource = ResourceContext.getResourceContext().getResource();
@@ -316,7 +294,8 @@ public class SDK4QueryProcessor extends CQLQueryProcessor {
         try {
             targetObjects = service.query(hqlCriteria);
         } catch (Exception ex) {
-            throw new QueryProcessingException("Error querying caCORE Application Service: " + ex.getMessage(), ex);
+            String message = "Error querying caCORE Application Service: " + ex.getMessage();
+            throw new QueryProcessingException(message, ex);
         }
         return targetObjects;
     }
@@ -332,24 +311,47 @@ public class SDK4QueryProcessor extends CQLQueryProcessor {
             typesInfo = DomainTypesInformationUtil.deserializeDomainTypesInformation(reader);
             reader.close();
         } catch (Exception ex) {
-            throw new InitializationException("Error deserializing domain types information from " 
-                + domainTypesFilename + ": " + ex.getMessage(), ex);
+            String message = "Error deserializing domain types information from " 
+                + domainTypesFilename + ": " + ex.getMessage();
+            LOG.error(message, ex);
+            throw new InitializationException(message, ex);
         }
         // get the domain model
         DomainModel domainModel = null;
         try {
             domainModel = getDomainModel();
         } catch (Exception ex) {
-            throw new InitializationException("Error obtaining domain model: " + ex.getMessage(), ex);
+            String message = "Error obtaining domain model: " + ex.getMessage();
+            LOG.error(message, ex);
+            throw new InitializationException(message, ex);
         }
-        RoleNameResolver resolver = new RoleNameResolver(domainModel);
+        // set up the role name resolver
+        RoleNameResolver roleNameResolver = new RoleNameResolver(domainModel);
+        // set up the default class discriminator resolver
+        ClassDiscriminatorResolver classResolver = new HBMClassDiscriminatorResolver(domainModel);
         // create the query translator instance
         try {
-            cqlTranslator = new CQL2ParameterizedHQL(typesInfo, resolver, useCaseInsensitiveQueries());
+            cqlTranslator = new CQL2ParameterizedHQL(typesInfo, roleNameResolver, 
+                classResolver, useCaseInsensitiveQueries());
         } catch (Exception ex) {
-            throw new InitializationException("Error instantiating CQL to HQL translator: " 
-                + ex.getMessage(), ex);
+            String message = "Error instantiating CQL to HQL translator: " + ex.getMessage();
+            LOG.error(message, ex);
+            throw new InitializationException(message, ex);
         }
         LOG.debug("CQL to HQL translator initialized");
+    }
+    
+    
+    private void initializeClassToQnameMappings() throws InitializationException {
+        try {
+            // get the mapping file name
+            String filename = ServiceConfigUtil.getClassToQnameMappingsFile();
+            // String filename = "mapping.xml";
+            this.classToQnameMappings = (Mappings) Utils.deserializeDocument(filename, Mappings.class);
+        } catch (Exception ex) {
+            String message = "Error initializing class to QName mappings: " + ex.getMessage();
+            LOG.error(message, ex);
+            throw new InitializationException(message, ex);
+        }
     }
 }
