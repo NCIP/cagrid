@@ -15,8 +15,11 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.lang.reflect.Array;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -646,5 +649,12 @@ public class Utils {
 		return deserializeObject(
 				new StringReader(writer.getBuffer().toString()),
                     bean.getClass());
+	}
+	
+	
+	public static String decodeUrl(URL url) throws UnsupportedEncodingException {
+	    String enc = System.getProperty("file.encoding");
+        String decode = URLDecoder.decode(url.getFile(), enc);
+        return decode;
 	}
 }
