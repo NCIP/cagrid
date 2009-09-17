@@ -391,7 +391,8 @@ public class FederatedQueryEngine {
             if (queryException != null) {
                 boolean isConnectException = false;
                 Throwable cause = queryException;
-                while (cause != null && !(cause instanceof ConnectException)) {
+                while (cause != null && !isConnectException) {
+                    isConnectException = cause instanceof ConnectException;
                     cause = cause.getCause();
                 }
                 if (isConnectException) {
