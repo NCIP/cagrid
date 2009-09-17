@@ -62,7 +62,7 @@
 			<xsd:documentation>An attribute (name and value pair) of a target data object instance</xsd:documentation>
 		</xsd:annotation>
 		<xsd:attribute name="name" type="xsd:string" use="required"/>
-		<xsd:attribute name="value" type="xsd:anySimpleType" use="required"/>
+		<xsd:attribute name="value" type="xsd:anySimpleType" use="optional"/>
 	</xsd:complexType>
 	
 	<xsd:complexType name="CQLAggregateResult">
