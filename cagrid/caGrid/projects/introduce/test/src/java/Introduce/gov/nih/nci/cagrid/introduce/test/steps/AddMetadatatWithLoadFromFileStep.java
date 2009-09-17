@@ -32,8 +32,9 @@ public class AddMetadatatWithLoadFromFileStep extends BaseStep {
 				.deserializeDocument(getBaseDir() + File.separator
 						+ tci.getDir() + File.separator + "introduce.xml",
 						ServiceDescription.class);
-		Utils.copyFile(new File(this.getClass().getResource("/schema/"
-				+ "CommonServiceMetadata.xsd").getFile()), new File(getBaseDir()
+		File schemaFile = new File(Utils.decodeUrl(this.getClass().getResource(
+		    "/schema/CommonServiceMetadata.xsd")));
+		Utils.copyFile(schemaFile, new File(getBaseDir()
 				+ File.separator + tci.getDir() + File.separator + "schema"
 				+ File.separator + tci.getName() + File.separator
 				+ "CommonServiceMetadata.xsd"));
