@@ -386,7 +386,12 @@ public class FederatedQueryEngine {
             }
             
             if (queryException != null) {
-                if (queryException.getCause().getCause() instanceof ConnectException) {
+                boolean isConnectException = false;
+                Throwable cause = queryException;
+                while (cause != null && !(cause instanceof ConnectException)) {
+                    cause = cause.getCause();
+                }
+                if (isConnectException) {
                     // connect exception is a special case
                     fireConnectionRefused(serviceURL);
                 } else if (invalidQueryResponse) {
