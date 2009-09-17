@@ -27,7 +27,9 @@ public class DCQLAggregator {
         List<CQLObjectResult> objectResults = new LinkedList<CQLObjectResult>();
         for (DCQLResult result : dcqlResults.getDCQLResult()) {
             CQLObjectResult[] objects = result.getCQLQueryResultCollection().getObjectResult();
-            Collections.addAll(objectResults, objects);
+            if (objects != null && objects.length != 0) {
+                Collections.addAll(objectResults, objects);
+            }
         }
         
         // generate the aggregate query result
