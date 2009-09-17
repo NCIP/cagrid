@@ -23,7 +23,7 @@ public class AddGetPersistenceResourceMethodImplStep extends BaseStep {
     public void runStep() throws Throwable {
         System.out.println("Adding a simple methods implementation.");
 
-        File inFileClient = new File(this.getClass().getResource("/gold/persistence/" + tci.getName() + "ClientGetPersistentResource.java").getFile());
+        File inFileClient = new File(Utils.decodeUrl(this.getClass().getResource("/gold/persistence/" + tci.getName() + "ClientGetPersistentResource.java")));
         File outFileClient = new File(tci.getDir() + File.separator + "src" + File.separator + tci.getPackageDir()
             + File.separator + "client" + File.separator + tci.getName() + "Client.java");
 

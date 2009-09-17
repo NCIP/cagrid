@@ -23,7 +23,7 @@ public class AddGetPersistenceNotificationResourceMethodImplStep extends BaseSte
     public void runStep() throws Throwable {
         System.out.println("Adding a simple methods implementation.");
 
-        File inFileClient = new File(this.getClass().getResource("/gold/persistentnotification/" + tci.getName() + "GetClient.java").getFile());
+        File inFileClient = new File(Utils.decodeUrl(this.getClass().getResource("/gold/persistentnotification/" + tci.getName() + "GetClient.java")));
         File outFileClient = new File(tci.getDir() + File.separator + "src" + File.separator + tci.getPackageDir()
             + File.separator + "client" + File.separator + tci.getName() + "Client.java");
 
