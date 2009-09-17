@@ -557,7 +557,12 @@ public class CQL2ToParameterizedHQL {
                 modHql.append(')');
             }
         } else if (mods.getNamedAttribute() != null && mods.getNamedAttribute().length != 0) {
-            modHql.append("Select distinct "); // FIXME: this is problematic because it will select distinct tuples, NOT necessarily matching 1:1 with data instances
+            /*
+             * NOTE: this causes distinct TUPLES of attribute values to be returned from Hibernate.  
+             * If you want attributes for each object, regardless of repeats, you have to ask for 
+             * the ID attribute as well and post-process it out.
+             */
+            modHql.append("Select distinct "); 
             for (int i = 0; i < mods.getNamedAttribute().length; i++) {
                 modHql.append(TARGET_ALIAS).append('.').append(mods.getNamedAttribute(i).getAttributeName());
                 if (i + 1 < mods.getNamedAttribute().length) {
