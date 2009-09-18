@@ -6,6 +6,8 @@ import gov.nih.nci.cagrid.common.StreamGobbler.LogPriority;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import org.apache.commons.logging.Log;
@@ -56,32 +58,39 @@ public class FixXmiExecutor {
     public static File fixEaXmiModel(File originalModel, File sdkDir) throws IOException,
         InterruptedException {
         File cleanModelFile = cleanXmi(originalModel);
-        StringBuilder command = new StringBuilder();
+        List<String> command = new ArrayList<String>();
         // get the base ant command
-        command.append(getAntCall(sdkDir.getAbsolutePath())).append(" ");
+        command.addAll(getAntCall(sdkDir.getAbsolutePath()));
         // add properties and their values
-        command.append("-D").append(MODEL_DIR_PROPERTY).append("=");
+        String modelDirProp = "-D" + MODEL_DIR_PROPERTY + "=";
         String modelFileDir = cleanModelFile.getAbsoluteFile().getParent();
         if (osIsWindows()) {
-            command.append("\"");
-            command.append(modelFileDir);
+            modelDirProp += modelFileDir;
         } else {
             // escape spaces
-            command.append(modelFileDir.replace(" ", "\\ "));
+            modelDirProp += modelFileDir.replace(" ", "\\ ");
         }
+        command.add(modelDirProp);
+        command.add("-D" + MODEL_FILENAME_PROPERTY + "=" + cleanModelFile.getName());
+        command.add("-D" + FIXED_MODEL_FILENAME_PROPERTY + "=fixed_" + originalModel.getName());
+        command.add("-D" + PREPROCESSOR_PROPERTY + "=" + EA_XMI_PREPROCESSOR);
+        // windows command line issues: http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6468220
+        String[] cmdArray = command.toArray(new String[0]);
         if (osIsWindows()) {
-            command.append("\"");
+            for (int i = 0; i < cmdArray.length; i++) {
+                if (needsQuoting(cmdArray[i])) {
+                    cmdArray[i] = winQuote(cmdArray[i]);
+                }
+            }
         }
-        command.append(" ");
-        command.append("-D").append(MODEL_FILENAME_PROPERTY)
-            .append("=").append(cleanModelFile.getName()).append(" ");
-        command.append("-D").append(FIXED_MODEL_FILENAME_PROPERTY)
-            .append("=").append("fixed_").append(originalModel.getName()).append(" ");
-        command.append("-D").append(PREPROCESSOR_PROPERTY)
-            .append("=").append(EA_XMI_PREPROCESSOR);
+        //System.out.println("Executing command...");
+        LOG.debug("Executing command...");
+        for (String c : cmdArray) {
+            LOG.debug("\t" + c);
+            //System.out.println("\t" + c);
+        }
         // execute the command
-        LOG.debug("Executing " + command.toString());
-        Process proc = Runtime.getRuntime().exec(command.toString());
+        Process proc = Runtime.getRuntime().exec(cmdArray);
         // streams to LOG
         new StreamGobbler(proc.getInputStream(), StreamGobbler.TYPE_OUT,
             LOG, LogPriority.DEBUG).start();
@@ -97,24 +106,28 @@ public class FixXmiExecutor {
     }
     
     
-    private static String getAntCall(String buildFileDir) {
-        StringBuilder cmd = new StringBuilder();
+    private static List<String> getAntCall(String buildFileDir) {
+        List<String> command = new ArrayList<String>();
         if (osIsWindows()) {
-            cmd.append("java.exe ");
-            cmd.append("-classpath \"").append(getAntLauncherJarLocation(System.getProperty("java.class.path")));
-            cmd.append("\" org.apache.tools.ant.launch.Launcher -buildfile \"").append(buildFileDir);
-            cmd.append(File.separator).append("build.xml\"");
+            command.add("java.exe");
+            command.add("-classpath");
+            command.add(getAntLauncherJarLocation(System.getProperty("java.class.path")));
+            command.add("org.apache.tools.ant.launch.Launcher");
+            command.add("-buildfile");
+            command.add(buildFileDir + File.separator + "build.xml");
         } else {
             // escape out the spaces.....
             buildFileDir = buildFileDir.replace(" ", "\\ ");
-            cmd.append("java ");
-            cmd.append("-classpath ").append(getAntLauncherJarLocation(System.getProperty("java.class.path")));
-            cmd.append(" org.apache.tools.ant.launch.Launcher -buildfile ").append(buildFileDir);
-            cmd.append(File.separator).append("build.xml");
+            command.add("java");
+            command.add("-classpath");
+            command.add(getAntLauncherJarLocation(System.getProperty("java.class.path").replace(" ", "\\ ")));
+            command.add("org.apache.tools.ant.launch.Launcher");
+            command.add("-buildfile");
+            command.add(buildFileDir + File.separator + "build.xml");
         }
         // add targets
-        cmd.append(" ").append(FIX_XMI_TASK);
-        return cmd.toString();
+        command.add(FIX_XMI_TASK);
+        return command;
     }
     
     
@@ -146,5 +159,27 @@ public class FixXmiExecutor {
             isWindows = Boolean.valueOf(os.contains("windows"));
         }
         return isWindows.booleanValue();
+    }
+    
+
+    static boolean needsQuoting(String s) {
+        int len = s.length();
+        if (len == 0) // empty string have to be quoted
+            return true;
+        for (int i = 0; i < len; i++) {
+            switch (s.charAt(i)) {
+                case ' ': case '\t': case '\\': case '"':
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    static String winQuote(String s) {
+        if (! needsQuoting(s))
+            return s;
+        s = s.replaceAll("([\\\\]*)\"", "$1$1\\\\\"");
+        s = s.replaceAll("([\\\\]*)\\z", "$1$1");
+        return "\"" + s + "\"";
     }
 }
