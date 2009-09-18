@@ -105,11 +105,11 @@ public class FixXmiExecutor {
             buildFileDir = buildFileDir.replaceAll("\\s", "\\ ");
             cmd.append("java ");
             cmd.append("-classpath ").append(getAntLauncherJarLocation(System.getProperty("java.class.path")));
-            cmd.append(" org.apache.tools.ant.launch.Launcher -buildfile ").append(buildFileDir);
-            cmd.append(File.separator).append("build.xml");
+            cmd.append(" org.apache.tools.ant.launch.Launcher -buildfile \"").append(buildFileDir);
+            cmd.append(File.separator).append("build.xml\"");
         }
         // add targets
-        cmd.append(" ")/*.append(COMPILE_GENERATOR_TASK).append(" ")*/.append(FIX_XMI_TASK);
+        cmd.append(" ").append(FIX_XMI_TASK);
         return cmd.toString();
     }
     
