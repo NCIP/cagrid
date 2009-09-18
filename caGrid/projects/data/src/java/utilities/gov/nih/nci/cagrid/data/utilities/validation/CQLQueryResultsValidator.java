@@ -161,18 +161,13 @@ public class CQLQueryResultsValidator {
 		Map<String, Element> schemas = new HashMap<String, Element>();
 		WSDLUtils.walkWSDLFindingSchema(wsdlDefinition, schemas);
 
-		try {
-			// determine SERVICE_URL_TO_CQL_RESULT_XSD
-			String resultURI = DataServiceConstants.CQL_RESULT_COLLECTION_QNAME.getNamespaceURI();
-			URI cqlResultXSDLocationURI = WSDLUtils.determineSchemaLocation(schemas, resultURI);
-			if (cqlResultXSDLocationURI == null) {
-				throw new SchemaValidationException("Unable to determine remote location of :" + resultURI);
-			}
-			this.cqlResultXSDLocation = cqlResultXSDLocationURI.toString();
-		} catch (URISyntaxException e) {
-			LOG.error(e);
-			throw new SchemaValidationException("Unable to process service's WSDL!", e);
+		// determine SERVICE_URL_TO_CQL_RESULT_XSD
+		String resultURI = DataServiceConstants.CQL_RESULT_COLLECTION_QNAME.getNamespaceURI();
+		URI cqlResultXSDLocationURI = WSDLUtils.determineSchemaLocation(schemas, resultURI);
+		if (cqlResultXSDLocationURI == null) {
+		    throw new SchemaValidationException("Unable to determine remote location of :" + resultURI);
 		}
+		this.cqlResultXSDLocation = cqlResultXSDLocationURI.toString();
 
 		// determine SERVICE_TYPES_NAMESPACE
 		String serviceNamespaceURI = wsdlDefinition.getQName().getNamespaceURI();
@@ -181,18 +176,13 @@ public class CQLQueryResultsValidator {
 		this.serviceResultTypesNamespace = cqlResultTypesURI.toString();
 
 		// determine SERVICE_URL_TO_TYPES_XSD
-		try {
-			URI cqlResultTypesXSDLocationURI = WSDLUtils.determineSchemaLocation(schemas,
-				this.serviceResultTypesNamespace);
-			if (cqlResultTypesXSDLocationURI == null) {
-				throw new SchemaValidationException("Unable to determine remote location of schema "
-					+ this.serviceResultTypesNamespace);
-			}
-			this.serviceResultTypesXSDLocation = cqlResultTypesXSDLocationURI.toString();
-		} catch (URISyntaxException e) {
-			LOG.error(e);
-			throw new SchemaValidationException("Unable to process service's WSDL!", e);
+		URI cqlResultTypesXSDLocationURI = WSDLUtils.determineSchemaLocation(schemas,
+		    this.serviceResultTypesNamespace);
+		if (cqlResultTypesXSDLocationURI == null) {
+		    throw new SchemaValidationException("Unable to determine remote location of schema "
+		        + this.serviceResultTypesNamespace);
 		}
+		this.serviceResultTypesXSDLocation = cqlResultTypesXSDLocationURI.toString();
 	}
 
 
