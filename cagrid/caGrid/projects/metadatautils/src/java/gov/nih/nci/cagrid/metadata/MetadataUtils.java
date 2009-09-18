@@ -153,7 +153,7 @@ public class MetadataUtils {
         if (xmlReader == null) {
             throw new IllegalArgumentException("Null is not a valid argument");
         }
-        return (ServiceMetadata) Utils.deserializeObject(xmlReader, ServiceMetadata.class);
+        return Utils.deserializeObject(xmlReader, ServiceMetadata.class);
     }
 
 
@@ -187,6 +187,6 @@ public class MetadataUtils {
         if (xmlReader == null) {
             throw new IllegalArgumentException("Null is not a valid argument");
         }
-        return (DomainModel) Utils.deserializeObject(xmlReader, DomainModel.class);
+        return  Utils.deserializeObject(xmlReader, DomainModel.class);
     }
 }
