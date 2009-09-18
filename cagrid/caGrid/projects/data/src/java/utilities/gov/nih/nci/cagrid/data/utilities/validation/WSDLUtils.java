@@ -1,7 +1,8 @@
 package gov.nih.nci.cagrid.data.utilities.validation;
 
+import gov.nih.nci.cagrid.common.Utils;
+
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -85,7 +86,7 @@ public class WSDLUtils {
 		if (wsdlDefinition != null) {
 			Types types = wsdlDefinition.getTypes();
 			if (types != null) {
-				List extensibilityElements = types.getExtensibilityElements();
+			    List extensibilityElements = types.getExtensibilityElements();
 				for (int i = 0; i < extensibilityElements.size(); i++) {
 					ExtensibilityElement schemaExtElem = (ExtensibilityElement) extensibilityElements.get(i);
 					if (schemaExtElem != null) {
@@ -104,22 +105,22 @@ public class WSDLUtils {
 	}
 
 
-	public static URI determineSchemaLocation(Map schemas, String namespace) throws URISyntaxException {
+	public static URI determineSchemaLocation(Map<String, org.jdom.Element> schemas, String namespace) {
 		LOG.debug("Trying to find XSD location of namespace:" + namespace);
 		if (schemas != null) {
-			Iterator iterator = schemas.keySet().iterator();
+			Iterator<String> iterator = schemas.keySet().iterator();
 
 			while (iterator.hasNext()) {
-				String mainURI = (String) iterator.next();
-				org.jdom.Element schema = (org.jdom.Element) schemas.get(mainURI);
-				List children = schema.getChildren("import", schema.getNamespace());
-				for (int j = 0; j < children.size(); j++) {
-					org.jdom.Element importElm = (org.jdom.Element) children.get(j);
+				String mainURI = iterator.next();
+				org.jdom.Element schema = schemas.get(mainURI);
+				Iterator<?> childIter = schema.getChildren("import", schema.getNamespace()).iterator();
+				while (childIter.hasNext()) {
+					org.jdom.Element importElm = (org.jdom.Element) childIter.next();
 					String ns = importElm.getAttributeValue("namespace");
 					if (ns.equals(namespace)) {
 						String location = importElm.getAttributeValue("schemaLocation");
 						LOG.debug("Found relative XSD location of namespace (" + namespace + ")=" + location);
-						URI schemaURI = URI.create(mainURI);
+						URI schemaURI = URI.create(Utils.encodeUrl(mainURI));
 						URI importURI = schemaURI.resolve(location);
 						LOG.debug("Converted complete location of namespace (" + namespace + ") to: "
 							+ importURI.toString());
