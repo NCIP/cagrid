@@ -657,4 +657,14 @@ public class Utils {
         String decode = URLDecoder.decode(url.getFile(), enc);
         return decode;
 	}
+	
+	
+	public static String encodeUrl(String url) {
+	    char[] badChars = ";?#&=+$, <>~".toCharArray();
+        String[] replace = {"%3B", "%3F", "%23", "%24", "%3D", "%2B", "%26", "%2C", "%20", "%3C", "%3E", "%7E"};
+        for (int i = 0; i < badChars.length; i++) {
+            url = url.replace(String.valueOf(badChars[i]), replace[i]);
+        }
+        return url;
+	}
 }
