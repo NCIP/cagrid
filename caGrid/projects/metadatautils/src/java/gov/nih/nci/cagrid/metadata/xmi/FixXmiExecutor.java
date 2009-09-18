@@ -61,10 +61,14 @@ public class FixXmiExecutor {
         command.append(getAntCall(sdkDir.getAbsolutePath())).append(" ");
         // add properties and their values
         command.append("-D").append(MODEL_DIR_PROPERTY).append("=");
+        String modelFileDir = cleanModelFile.getAbsoluteFile().getParent();
         if (osIsWindows()) {
             command.append("\"");
+            command.append(modelFileDir);
+        } else {
+            // escape spaces
+            command.append(modelFileDir.replace(" ", "\\ "));
         }
-        command.append(cleanModelFile.getAbsoluteFile().getParent());
         if (osIsWindows()) {
             command.append("\"");
         }
@@ -102,11 +106,11 @@ public class FixXmiExecutor {
             cmd.append(File.separator).append("build.xml\"");
         } else {
             // escape out the spaces.....
-            buildFileDir = buildFileDir.replaceAll("\\s", "\\ ");
+            buildFileDir = buildFileDir.replace(" ", "\\ ");
             cmd.append("java ");
             cmd.append("-classpath ").append(getAntLauncherJarLocation(System.getProperty("java.class.path")));
-            cmd.append(" org.apache.tools.ant.launch.Launcher -buildfile \"").append(buildFileDir);
-            cmd.append(File.separator).append("build.xml\"");
+            cmd.append(" org.apache.tools.ant.launch.Launcher -buildfile ").append(buildFileDir);
+            cmd.append(File.separator).append("build.xml");
         }
         // add targets
         cmd.append(" ").append(FIX_XMI_TASK);
