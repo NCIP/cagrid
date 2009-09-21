@@ -129,17 +129,15 @@ public class QueryProcessorBaseConfigurationStep extends AbstractStyleConfigurat
             CompositeErrorDialog.showErrorDialog("Error extracting castor mapping files", ex.getMessage(), ex);
         }
         
-        // if local API, copy in the orm jar
-        if (useLocalApi) {
-            File ormFile = new File(ormJarLocation);
-            File ormDest = new File(getServiceInformation().getBaseDirectory(), 
-                "lib" + File.separator + ormFile.getName());
-            try {
-                Utils.copyFile(ormFile, ormDest);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-                CompositeErrorDialog.showErrorDialog("Error copying orm jar", ex.getMessage(), ex);
-            }
+        // always copy the ORM jar along so we can use it for determining class discriminators in HQL
+        File ormFile = new File(ormJarLocation);
+        File ormDest = new File(getServiceInformation().getBaseDirectory(), 
+            "lib" + File.separator + ormFile.getName());
+        try {
+            Utils.copyFile(ormFile, ormDest);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            CompositeErrorDialog.showErrorDialog("Error copying orm jar", ex.getMessage(), ex);
         }
     }
 

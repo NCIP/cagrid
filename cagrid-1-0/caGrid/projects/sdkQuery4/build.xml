@@ -119,6 +119,9 @@
 			<include name="*.jar" />
 			<!-- TODO: include more stuff? -->
 		</fileset>
+		<fileset dir="${ext.local-client.lib.dir}">
+			<include name="*orm.jar"/>
+		</fileset>
 		<fileset dir="${test.lib.dir}">
 			<include name="**/*.jar" />
 		</fileset>

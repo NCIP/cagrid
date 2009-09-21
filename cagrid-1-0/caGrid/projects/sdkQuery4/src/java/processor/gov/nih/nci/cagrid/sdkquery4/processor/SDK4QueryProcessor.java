@@ -341,10 +341,14 @@ public class SDK4QueryProcessor extends CQLQueryProcessor {
         } catch (Exception ex) {
             throw new InitializationException("Error obtaining domain model: " + ex.getMessage(), ex);
         }
-        RoleNameResolver resolver = new RoleNameResolver(domainModel);
+        // set up the role name resolver
+        RoleNameResolver roleNameResolver = new RoleNameResolver(domainModel);
+        // set up the default class discriminator resolver
+        ClassDiscriminatorResolver classResolver = new HBMClassDiscriminatorResolver(domainModel);
         // create the query translator instance
         try {
-            cqlTranslator = new CQL2ParameterizedHQL(typesInfo, resolver, useCaseInsensitiveQueries());
+            cqlTranslator = new CQL2ParameterizedHQL(typesInfo, roleNameResolver, 
+                classResolver, useCaseInsensitiveQueries());
         } catch (Exception ex) {
             throw new InitializationException("Error instantiating CQL to HQL translator: " 
                 + ex.getMessage(), ex);

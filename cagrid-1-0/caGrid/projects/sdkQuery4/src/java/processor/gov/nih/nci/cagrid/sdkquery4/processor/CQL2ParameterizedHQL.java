@@ -34,7 +34,7 @@ import org.apache.commons.logging.LogFactory;
  * @author David Ervin
  * 
  * @created Mar 2, 2007 10:26:47 AM
- * @version $Id: CQL2ParameterizedHQL.java,v 1.13.2.1 2009-04-24 14:53:57 dervin Exp $ 
+ * @version $Id: CQL2ParameterizedHQL.java,v 1.14 2009-04-24 14:53:56 dervin Exp $ 
  */
 public class CQL2ParameterizedHQL {
     public static final String TARGET_ALIAS = "__TargetAlias__";
@@ -46,13 +46,15 @@ public class CQL2ParameterizedHQL {
     
     private DomainTypesInformationUtil typesInfoUtil = null;
     private RoleNameResolver roleNameResolver = null;
+    private ClassDiscriminatorResolver classResolver = null;
     private boolean caseInsensitive;
     
     
     public CQL2ParameterizedHQL(DomainTypesInformation typesInfo, 
-        RoleNameResolver roleNameResolver, boolean caseInsensitive) {
+        RoleNameResolver roleNameResolver, ClassDiscriminatorResolver classResolver, boolean caseInsensitive) {
         this.typesInfoUtil = new DomainTypesInformationUtil(typesInfo);
         this.roleNameResolver = roleNameResolver;
+        this.classResolver = classResolver;
         this.caseInsensitive = caseInsensitive;
         initPredicateValues();
     }
@@ -131,9 +133,10 @@ public class CQL2ParameterizedHQL {
 			}
 			prepend.append(')');
 		} else {
-			prepend.append("select ");
+		    // select distinct tuples
+			prepend.append("select distinct ");
 			if (mods.getDistinctAttribute() != null) {
-				prepend.append("distinct ").append(mods.getDistinctAttribute());
+				prepend.append(mods.getDistinctAttribute());
 			} else {
 				for (int i = 0; i < mods.getAttributeNames().length; i++) {
 					prepend.append(mods.getAttributeNames(i));
@@ -197,8 +200,15 @@ public class CQL2ParameterizedHQL {
 				hql.append(" and ");
 			}
 			hql.append(TARGET_ALIAS).append(".class = ?");
-            // 0 is the targeted class, 1 is the first subclass, 2 is the next...
-            parameters.add(Integer.valueOf(0));
+			java.lang.Object classDiscriminatorInstance = null;
+			try {
+			    classDiscriminatorInstance = classResolver.getClassDiscriminatorValue(target.getName());
+			} catch (Exception ex) {
+			    String message = "Error determining class discriminator for " + target.getName() + ": " + ex.getMessage();
+			    LOG.error(message, ex);
+			    throw new QueryProcessingException(message, ex);
+			}
+            parameters.add(classDiscriminatorInstance);
 		}
 	}
 	
@@ -327,7 +337,11 @@ public class CQL2ParameterizedHQL {
 		}
 		if (association.getAttribute() != null) {
             simpleNullCheck = false;
-			processAttribute(association.getAttribute(), hql, parameters, association, sourceAlias + "." + roleName);
+            hql.append(sourceAlias).append('.').append(roleName);
+            hql.append(".id in (select ").append(alias).append(".id from ");
+            hql.append(association.getName()).append(" as ").append(alias).append(" where ");
+			processAttribute(association.getAttribute(), hql, parameters, association, alias);
+			hql.append(") ");
 		}
 		if (association.getGroup() != null) {
             simpleNullCheck = false;
@@ -413,7 +427,7 @@ public class CQL2ParameterizedHQL {
 	
 	
 	/**
-	 * Converts a logical operator to its HQL string equiavalent.
+	 * Converts a logical operator to its HQL string equivalent.
 	 * 
 	 * @param op
 	 * 		The logical operator to convert
