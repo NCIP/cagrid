@@ -50,6 +50,16 @@ public class CQL2ParameterizedHQL {
     private boolean caseInsensitive;
     
     
+    public CQL2ParameterizedHQL(DomainTypesInformation typesInfo,
+        RoleNameResolver roleNameResolver, boolean caseInsensitive) {
+        this(typesInfo, roleNameResolver, null, caseInsensitive);
+        LOG.warn("This constructor has been included as a backwards-compatibility measure.");
+        LOG.warn("Without a ClassDiscriminatorResolver, the CQL to HQL translation process may produce");
+        LOG.warn("invalid HQL queries for certain types of domain class inheritance mappings");
+        LOG.warn("http://gforge.nci.nih.gov/tracker/index.php?func=detail&aid=18649&group_id=25&atid=174");
+    }
+    
+    
     public CQL2ParameterizedHQL(DomainTypesInformation typesInfo, 
         RoleNameResolver roleNameResolver, ClassDiscriminatorResolver classResolver, boolean caseInsensitive) {
         this.typesInfoUtil = new DomainTypesInformationUtil(typesInfo);
@@ -201,12 +211,17 @@ public class CQL2ParameterizedHQL {
 			}
 			hql.append(TARGET_ALIAS).append(".class = ?");
 			java.lang.Object classDiscriminatorInstance = null;
-			try {
-			    classDiscriminatorInstance = classResolver.getClassDiscriminatorValue(target.getName());
-			} catch (Exception ex) {
-			    String message = "Error determining class discriminator for " + target.getName() + ": " + ex.getMessage();
-			    LOG.error(message, ex);
-			    throw new QueryProcessingException(message, ex);
+			if (classResolver != null) {
+			    try {
+			        classDiscriminatorInstance = classResolver.getClassDiscriminatorValue(target.getName());
+			    } catch (Exception ex) {
+			        String message = "Error determining class discriminator for " + target.getName() + ": " + ex.getMessage();
+			        LOG.error(message, ex);
+			        throw new QueryProcessingException(message, ex);
+			    }
+			} else {
+			    LOG.warn("No class discriminator resolver found.  Using default integer value 0");
+			    classDiscriminatorInstance = Integer.valueOf(0);
 			}
             parameters.add(classDiscriminatorInstance);
 		}
