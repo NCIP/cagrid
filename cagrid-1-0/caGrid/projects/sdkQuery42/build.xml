@@ -40,7 +40,7 @@
 	<!-- libraries -->
 	<property name="ext.lib.dir" location="${basedir}/ext/dependencies/jars" />
 	<property name="ext.test.lib.dir" location="${basedir}/ext/dependencies/test/jars" />
-	<property name="ext.zip.dir" location="${basedir}/sdk" />
+	<property name="ext.zip.dir" location="${basedir}/ext/dependencies/zips" />
 
 	<!-- sdk artifacts -->
 	<property name="sdk.zip.file" location="${ext.zip.dir}/sdk42-example-trimmed.zip" />
