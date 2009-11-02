@@ -362,12 +362,11 @@ public class DataServiceQueryOperationProviderCreator implements CreationExtensi
                     if (styleContainer == null) {
                         throw new CreationExtensionException("Could not load service style " + features.getServiceStyle());
                     }
-                    // copy libraries from the style into the service's lib
-                    // directory
-                    File[] styleLibs = styleContainer.getStyleLibraries();
-                    File serviceLibDir = new File(info.getBaseDirectory().getAbsolutePath() + File.separator + "lib");
-                    for (File lib : styleLibs) {
-                        Utils.copyFile(lib, new File(serviceLibDir.getAbsolutePath() + File.separator + lib.getName()));
+                    // copy libraries from the style into the service's lib directory
+                    File[] copyStyleLibs = styleContainer.getStyleCopyLibs();
+                    File serviceLibDir = new File(info.getBaseDirectory(), "lib");
+                    for (File lib : copyStyleLibs) {
+                        Utils.copyFile(lib, new File(serviceLibDir, lib.getName()));
                     }
                     StyleCreationPostProcessor processor = styleContainer.loadCreationPostProcessor();
                     if (processor != null) {
