@@ -8,7 +8,7 @@
 	<!-- Information -->
 	<property name="project.name" value="${ant.project.name}" />
 
-	<property name="temp.dir" location="c:/tmp" />
+	<property name="temp.dir" location="${basedir}/temp" />
 	<property name="src.dir" location="${basedir}/src/java" />
 	<property name="test.src.dir" location="${basedir}/test/src/java" />
 	<property name="build.dir" location="${basedir}/build" />
