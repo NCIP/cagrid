@@ -222,7 +222,7 @@
 
      </ns15:AdditionalLibraries>
 
-     <ns15:CadsrInformation projectLongName="RProteomics" projectVersion="1"
+     <ns15:CadsrInformation useSuppliedModel="true" projectLongName="RProteomics" projectVersion="1"
       serviceUrl="http://cagrid05.bmi.ohio-state.edu:8080/wsrf/services/cagrid/CaDSRService"
       xsi:type="ns15:CadsrInformation">
       <ns15:Packages
