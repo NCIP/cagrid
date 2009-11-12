@@ -214,7 +214,7 @@ public class ExtensionsManagerPanel extends JPanel {
                         }
                         info.getIntroduceServiceProperties().setProperty(
                             IntroduceConstants.INTRODUCE_SKELETON_EXTENSIONS, extS);
-                        JOptionPane.showMessageDialog(GridApplication.getContext().getApplication(), "After adding a new extension a save should be perfomred in order for the extension to be active.");
+                        JOptionPane.showMessageDialog(GridApplication.getContext().getApplication(), "After adding a new extension a save should be performed in order for the extension to be active.");
                     }
                 }
             });
