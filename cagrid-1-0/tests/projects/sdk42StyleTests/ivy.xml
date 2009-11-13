@@ -65,8 +65,5 @@
     
     <!-- SDK Query 4.2 style from incubator -->
     <dependency rev="1.3" org="caGrid" name="sdkQuery42" conf="stylePackage->package;default->style,processor"/>
-    <!--
-    <dependency rev="1.3" org="caGrid" name="sdkQuery42" conf="default->style,processor"/>
-    -->
   </dependencies>
 </ivy-module>
