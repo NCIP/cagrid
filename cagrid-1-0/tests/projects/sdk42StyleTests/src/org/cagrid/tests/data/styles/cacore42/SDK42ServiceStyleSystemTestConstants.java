@@ -18,6 +18,9 @@ public class SDK42ServiceStyleSystemTestConstants {
     
     // system property to locate the Introduce base directory
     public static final String INTRODUCE_DIR_PROPERTY = "introduce.base.dir";
+    
+    // system property to locate the SDK 4.2 data service style zip
+    public static final String STYLE_ZIP_PROPERTY = "style.zip.location";
 
     // test service naming
     public static final String SERVICE_PACKAGE = "org.cagrid.sdkquery42.test";

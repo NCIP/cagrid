@@ -24,6 +24,9 @@
 	<property name="example.project.unpack.dir" location="${build.dir}/cacore/example"/>
 	<property name="sdk.application.name" value="example42"/>
 	
+	<!-- dependency on SDK 4.2 data service style -->
+	<property name="style.zip.location" location="${ext.resources.dir}/style/caGrid-sdkQuery42-package.zip"/>
+	
 	<!-- depends on Introduce toolkit -->
 	<property name="introduce.dir" location="${basedir}/../../../caGrid/projects/introduce" />
 	

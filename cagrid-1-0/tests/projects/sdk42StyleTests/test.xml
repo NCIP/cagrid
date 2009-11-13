@@ -36,6 +36,7 @@
 		<junit dir="${introduce.dir}" printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" showoutput="true" fork="yes" forkmode="once">
 			<!-- is this needed any more? -->
 			<sysproperty key="introduce.base.dir" value="${introduce.dir}" />
+			<sysproperty key="style.zip.location" value="${style.zip.location}"/>
 			<sysproperty key="sdk42.tests.base.dir" value="${sdk42.tests.base.dir}"/>
 			<sysproperty key="sdk.unpack.dir" value="${sdk.unpack.dir}"/>
 			<sysproperty key="testing.port.assignment.mode" value="${testing.port.assignment.mode}"/>

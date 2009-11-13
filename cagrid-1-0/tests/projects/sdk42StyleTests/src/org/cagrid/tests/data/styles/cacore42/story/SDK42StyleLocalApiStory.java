@@ -21,6 +21,7 @@ import java.util.Vector;
 import org.cagrid.data.test.creation.DataTestCaseInfo;
 import org.cagrid.tests.data.styles.cacore42.SDK42ServiceStyleSystemTestConstants;
 import org.cagrid.tests.data.styles.cacore42.steps.CreateDataServiceStep;
+import org.cagrid.tests.data.styles.cacore42.steps.InstallStyleStep;
 import org.cagrid.tests.data.styles.cacore42.steps.InvokeDataServiceStep;
 
 public class SDK42StyleLocalApiStory extends Story {
@@ -55,6 +56,7 @@ public class SDK42StyleLocalApiStory extends Story {
 
     protected Vector steps() {
         Vector<Step> steps = new Vector<Step>();
+        steps.add(new InstallStyleStep());
         steps.add(new CreateDataServiceStep(testInfo, getIntroduceBaseDir()));
         steps.add(new UnpackContainerStep(container));
         List<String> deploymentArgs = 
