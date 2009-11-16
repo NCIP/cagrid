@@ -80,7 +80,6 @@
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/caGrid-Introduce-serviceTools-1.3.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/csmapi.jar" sourcepath="/csm"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/asm.jar"/>
-	<classpathentry kind="lib" path="ext/dependencies/impl/jars/c3p0-0.9.0.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/cglib-2.1_3.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/clm.jar"/>
 	<classpathentry kind="lib" path="ext/dependencies/impl/jars/commons-dbcp-1.2.1.jar"/>
