@@ -116,7 +116,9 @@ public class SDK4QueryProcessor extends CQLQueryProcessor {
                     resultsAsArrays = new LinkedList<Object[]>();
                     for (Object o : rawResults) {
                         Object[] array = null;
-                        if (o.getClass().isArray()) {
+                        if (o == null) {
+                            array = new Object[attributeNames.length];
+                        } else if (o.getClass().isArray()) {
                             array = (Object[]) o;
                         } else {
                             array = new Object[] {o};
