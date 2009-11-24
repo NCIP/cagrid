@@ -18,8 +18,8 @@
 	<property name="ext.resources.dir" location="${basedir}/ext/dependencies/resources"/>
 	
 	<!-- dependencies on SDK -->
-	<property name="sdk.zip" location="${ext.resources.dir}/sdk/caCORE_SDK_42.zip"/>
-	<property name="example.project.zip" location="${ext.resources.dir}/sdk/sdk42-example-trimmed.zip"/>
+	<property name="sdk.zip" location="${basedir}/sdk/caCORE_SDK_42.zip"/>
+	<property name="example.project.zip" location="${basedir}/sdk/sdk42-example-trimmed.zip"/>
 	<property name="sdk.unpack.dir" location="${build.dir}/cacore/sdk"/>
 	<property name="example.project.unpack.dir" location="${build.dir}/cacore/example"/>
 	<property name="sdk.application.name" value="example42"/>
