@@ -45,7 +45,7 @@ public class ConfigureJBossTask extends CaGridInstallerAntTask {
 			.execute(model);
 			setLastStep(3);
 		} else {
-			setStepCount(6);
+			setStepCount(7);
 			new AntExecutionTask("", "", getBuildFilePath(), "insert-secure-connector", env, sysProps)
 					.execute(model);
 			setLastStep(1);
@@ -60,6 +60,9 @@ public class ConfigureJBossTask extends CaGridInstallerAntTask {
 			new AntExecutionTask("", "", getBuildFilePath(), "configure-server-config", env, sysProps)
 					.execute(model);
 			setLastStep(5);
+			new AntExecutionTask("", "", getBuildFilePath(), "configure-secure-redirect-port", env, sysProps)
+				.execute(model);
+			setLastStep(6);
 		}
 		
 		new AntExecutionTask("", "", getBuildFilePath(), "fix-permissions", env, sysProps)
