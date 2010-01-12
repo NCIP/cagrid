@@ -131,6 +131,8 @@
 	<!-- Cleans up generated stuff                                      -->
 	<!-- ============================================================== -->
 	<target name="clean" depends="" description="Removes generated files.">
+		<!-- delete the ivy cache for this project -->
+		<delete dir="${user.dir}/.sdk42-style-test-cache"/>
 		<delete dir="${build.dir}" />
 	</target>
 

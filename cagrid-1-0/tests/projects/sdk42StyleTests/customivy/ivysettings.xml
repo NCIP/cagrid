@@ -6,7 +6,10 @@
     The cache was correct, but it was not copying artificats to projects if the previous date was newer than the new date
     It should retrieve the necessary version regardless of the date... not sure why it does that.   
   -->
-  <caches checkUpToDate="false" defaultCacheDir="${user.dir}/.cache" useOrigin="true"/>
+  <!--
+  Using an Ivy cache dir specific to this project 
+   -->
+  <caches checkUpToDate="false" defaultCacheDir="${user.dir}/.sdk42-style-test-cache" useOrigin="true"/>
 
   <macrodef name="cagrid-fs-resolver">
     <attribute name="repo.dir"/>
@@ -25,7 +28,7 @@
       <cagrid-fs-resolver repo.dir="${repository.dir}" name="caGrid-external"/>
       
       <!-- Last, use the incubator last successful build repository -->
-	  <url name="remote-incubator-ivy-resolver">
+	  <url name="remote-incubator-ivy-resolver" checksums="">
 		<ivy pattern="http://quality.cagrid.org/job/cagrid-communityProjects-Continuous/lastSuccessfulBuild/artifact/communityProjects/integration-repository/[organisation]/[module]/ivy-[revision].xml"/>
 		<artifact pattern="http://quality.cagrid.org/job/cagrid-communityProjects-Continuous/lastSuccessfulBuild/artifact/communityProjects/integration-repository/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"/>
 		<artifact pattern="http://quality.cagrid.org/job/cagrid-communityProjects-Continuous/lastSuccessfulBuild/artifact/communityProjects/integration-repository/[organisation]/[module]/[revision]/[artifact].[ext]"/>
