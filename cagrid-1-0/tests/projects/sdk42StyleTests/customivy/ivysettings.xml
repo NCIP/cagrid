@@ -28,7 +28,7 @@
       <cagrid-fs-resolver repo.dir="${repository.dir}" name="caGrid-external"/>
       
       <!-- Last, use the incubator last successful build repository -->
-	  <url name="remote-incubator-ivy-resolver" checksums="">
+	  <url name="remote-incubator-ivy-resolver">
 		<ivy pattern="http://quality.cagrid.org/job/cagrid-communityProjects-Continuous/lastSuccessfulBuild/artifact/communityProjects/integration-repository/[organisation]/[module]/ivy-[revision].xml"/>
 		<artifact pattern="http://quality.cagrid.org/job/cagrid-communityProjects-Continuous/lastSuccessfulBuild/artifact/communityProjects/integration-repository/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"/>
 		<artifact pattern="http://quality.cagrid.org/job/cagrid-communityProjects-Continuous/lastSuccessfulBuild/artifact/communityProjects/integration-repository/[organisation]/[module]/[revision]/[artifact].[ext]"/>
