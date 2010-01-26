@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://tools.tutorial.introduce.cagrid.org/StockTools" targetNamespace="http://tools.tutorial.introduce.cagrid.org/StockTools">
+  <complexType name="Quote">
+    <sequence>
+      <element ref="tns:Symbol" />
+      <element type="string" name="Quote" />
+      <element type="string" name="Date" />
+      <element type="string" name="Time" />
+      <element type="string" name="Change" />
+      <element type="string" name="Opening" />
+      <element type="string" name="High" />
+      <element type="string" name="Low" />
+      <element type="string" name="Volume" />
+    </sequence>
+  </complexType>
+  <element name="Portfolio" type="tns:Portfolio" />
+  <element name="Quote" type="tns:Quote" />
+  <element name="PortfolioInstance" type="tns:PortfolioInstance" />
+  <complexType name="PortfolioInstance">
+    <sequence>
+      <element ref="tns:Portfolio" />
+      <element ref="tns:Quotes" />
+    </sequence>
+  </complexType>
+  <complexType name="Quotes">
+    <sequence>
+      <element ref="tns:Quote" maxOccurs="unbounded" minOccurs="0" />
+    </sequence>
+  </complexType>
+  <complexType name="Portfolio">
+    <sequence>
+      <element name="Name" type="string" />
+      <element ref="tns:Symbols" />
+    </sequence>
+  </complexType>
+  <simpleType name="Symbol">
+    <restriction base="string">
+      <maxLength value="4" />
+      <minLength value="1" />
+    </restriction>
+  </simpleType>
+  <element name="Symbol" type="tns:Symbol" />
+  <complexType name="Symbols">
+    <sequence>
+      <element ref="tns:Symbol" maxOccurs="unbounded" minOccurs="0" />
+    </sequence>
+  </complexType>
+  <element name="Symbols" type="tns:Symbols" />
+  <element name="Quotes" type="tns:Quotes" />
+</schema>
+

@@ -1,0 +1,335 @@
+<ns1:ServiceDescription introduceVersion="1.3" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
+ <ns2:Namespaces xsi:type="ns2:NamespacesType" xmlns:ns2="gme://gov.nih.nci.cagrid.introduce/1/Namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns2:Namespace location="./StockTools.xsd" namespace="http://tools.tutorial.introduce.cagrid.org/StockTools" packageName="org.cagrid.introduce.tutorial.tools.beans" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="Portfolio" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="PortfolioInstance" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Quote" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Quotes" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Symbol" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Symbols" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace generateStubs="false" namespace="http://www.w3.org/2001/XMLSchema" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="anySimpleType" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="anyType" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="anyURI" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="base64Binary" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="boolean" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="byte" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="date" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="dateTime" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="decimal" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="double" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="duration" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ENTITIES" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ENTITY" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="float" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="gDay" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="gMonth" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="gMonthDay" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="gYear" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="gYearMonth" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="hexBinary" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ID" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="IDREF" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="IDREFS" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="int" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="integer" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="language" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="long" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Name" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="NCName" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="negativeInteger" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="NMTOKEN" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="NMTOKENS" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="nonNegativeInteger" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="nonPositiveInteger" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="normalizedString" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="NOTATION" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="positiveInteger" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="QName" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="short" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="string" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="time" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="token" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="unsignedByte" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="unsignedInt" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="unsignedLong" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="unsignedShort" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace location="./StockManagerTypes.xsd" namespace="http://stockmanager.tutorial.introduce.cagrid.org/StockManager/types" packageName="org.cagrid.introduce.tutorial.stockmanager.stubs.types" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="StockManagerReference" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace generateStubs="false" location="./xsd/cagrid/types/security/security.xsd" namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" packageName="gov.nih.nci.cagrid.metadata.security" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="CommunicationMechanism" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="CommunicationStyle" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="GSISecureConversation" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="GSISecureMessage" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="GSITransport" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="None" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Operation" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ServiceSecurityMetadata" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace generateStubs="false" location="./TransferServiceContextTypes.xsd" namespace="http://transfer.cagrid.org/TransferService/Context/types" packageName="org.cagrid.transfer.context.stubs.types" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="TransferServiceContextReference" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace generateStubs="false" location="./caGrid_Transfer.xsd" namespace="http://transfer.cagrid.org/Transfer" packageName="org.cagrid.transfer.descriptor" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="DataDescriptor" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="DataStorageDescriptor" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="DataTransferDescriptor" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Status" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace location="./StockPortfolioManagerTypes.xsd" namespace="http://stockmanager.tutorial.introduce.cagrid.org/StockManager/Portfolio/types" packageName="org.cagrid.introduce.tutorial.stockmanager.portfolio.stubs.types" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="PortfolioEnumerationException" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="StockPortfolioManagerReference" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace generateStubs="false" location="./enumeration.xsd" namespace="http://schemas.xmlsoap.org/ws/2004/09/enumeration" packageName="org.xmlsoap.schemas.ws._2004._09.enumeration" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="Enumerate" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="EnumerateResponse" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="EnumerationEnd" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="GetStatus" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="GetStatusResponse" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Pull" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="PullResponse" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Release" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Renew" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="RenewResponse" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="SupportedDialect" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace generateStubs="false" location="./addressing.xsd" namespace="http://schemas.xmlsoap.org/ws/2004/08/addressing" packageName="org.globus.addressing" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="Action" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="EndpointReference" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="FaultTo" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="From" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="MessageID" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="RelatesTo" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ReplyAfter" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ReplyTo" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="To" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace generateStubs="false" location="./EnumerationResponseContainer.xsd" namespace="http://gov.nih.nci.cagrid.enumeration/EnumerationResponseContainer" packageName="gov.nih.nci.cagrid.enumeration.stubs.response" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="EnumerationResponseContainer" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace location="./CaGridEnumerationTypes.xsd" namespace="http://gov.nih.nci.cagrid.enumeration/CaGridEnumeration/types" packageName="gov.nih.nci.cagrid.enumeration.stubs.types" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="CaGridEnumerationReference" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace location="../wsrf/lifetime/WS-ResourceLifetime.xsd" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd" packageName="org.oasis.wsrf.lifetime" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="CurrentTime" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="TerminationNotification" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="TerminationTime" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace generateStubs="false" location="./xsd/cagrid/types/caGridMetadata.xsd" namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" packageName="gov.nih.nci.cagrid.metadata" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="ServiceMetadata" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace generateStubs="false" location="./xsd/cagrid/types/service/servicemodel.xsd" namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service" packageName="gov.nih.nci.cagrid.metadata.service" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="CaDSRRegistration" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ContextProperty" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Fault" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="InputParameter" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Operation" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Output" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Service" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ServiceContext" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+  <ns2:Namespace generateStubs="false" location="./xsd/cagrid/types/common/common.xsd" namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common" packageName="gov.nih.nci.cagrid.metadata.common" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement type="Address" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="Enumeration" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="PointOfContact" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ResearchCenter" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ResearchCenterDescription" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="SemanticMetadata" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="UMLAttribute" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="UMLClass" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="ValueDomain" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
+ </ns2:Namespaces>
+ <ns3:Services xsi:type="ns3:ServicesType" xmlns:ns3="gme://gov.nih.nci.cagrid.introduce/1/Services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns3:Service name="StockManager" namespace="http://stockmanager.tutorial.introduce.cagrid.org/StockManager" packageName="org.cagrid.introduce.tutorial.stockmanager" xsi:type="ns3:ServiceType">
+   <ns4:Methods xsi:type="ns4:MethodsType" xmlns:ns4="gme://gov.nih.nci.cagrid.introduce/1/Methods">
+    <ns4:Method isImported="true" isProvided="true" name="GetMultipleResourceProperties" xsi:type="ns4:MethodType">
+     <ns4:Output qName="void" isArray="false"/>
+     <ns5:MethodSecurity xsi:type="ns5:MethodSecurity" xmlns:ns5="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns5:SecuritySetting xsi:type="ns5:SecuritySetting">None</ns5:SecuritySetting>
+     </ns5:MethodSecurity>
+     <ns4:ImportInformation fromIntroduce="false" inputMessage="ns6:GetMultipleResourcePropertiesRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" outputMessage="ns6:GetMultipleResourcePropertiesResponse" packageName="org.oasis.wsrf.properties" portTypeName="GetMultipleResourceProperties" wsdlFile="../wsrf/properties/WS-ResourceProperties.wsdl" xmlns:ns6="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl"/>
+     <ns4:ProviderInformation providerClass="GetMRPProvider"/>
+    </ns4:Method>
+    <ns4:Method isImported="true" isProvided="true" name="GetResourceProperty" xsi:type="ns4:MethodType">
+     <ns4:Output qName="void" isArray="false"/>
+     <ns7:MethodSecurity xsi:type="ns7:MethodSecurity" xmlns:ns7="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns7:SecuritySetting xsi:type="ns7:SecuritySetting">None</ns7:SecuritySetting>
+     </ns7:MethodSecurity>
+     <ns4:ImportInformation fromIntroduce="false" inputMessage="ns8:GetResourcePropertyRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" outputMessage="ns8:GetResourcePropertyResponse" packageName="org.oasis.wsrf.properties" portTypeName="GetResourceProperty" wsdlFile="../wsrf/properties/WS-ResourceProperties.wsdl" xmlns:ns8="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl"/>
+     <ns4:ProviderInformation providerClass="GetRPProvider"/>
+    </ns4:Method>
+    <ns4:Method isImported="true" isProvided="true" name="QueryResourceProperties" xsi:type="ns4:MethodType">
+     <ns4:Output qName="void" isArray="false"/>
+     <ns9:MethodSecurity xsi:type="ns9:MethodSecurity" xmlns:ns9="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns9:SecuritySetting xsi:type="ns9:SecuritySetting">None</ns9:SecuritySetting>
+     </ns9:MethodSecurity>
+     <ns4:ImportInformation fromIntroduce="false" inputMessage="ns10:QueryResourcePropertiesRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" outputMessage="ns10:QueryResourcePropertiesResponse" packageName="org.oasis.wsrf.properties" portTypeName="QueryResourceProperties" wsdlFile="../wsrf/properties/WS-ResourceProperties.wsdl" xmlns:ns10="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl"/>
+     <ns4:ProviderInformation providerClass="QueryRPProvider"/>
+    </ns4:Method>
+    <ns4:Method isImported="true" isProvided="true" name="getServiceSecurityMetadata" xsi:type="ns4:MethodType">
+     <ns4:Output qName="ns11:ServiceSecurityMetadata" isArray="false" isClientHandle="false" xmlns:ns11="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+     <ns12:MethodSecurity xsi:type="ns12:MethodSecurity" xmlns:ns12="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns12:SecuritySetting xsi:type="ns12:SecuritySetting">None</ns12:SecuritySetting>
+      <ns12:MethodAuthorization xsi:type="ns12:MethodAuthorization">
+       <ns12:NoAuthorization xsi:type="ns12:NoAuthorization"/>
+      </ns12:MethodAuthorization>
+     </ns12:MethodSecurity>
+     <ns4:ImportInformation namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" packageName="gov.nih.nci.cagrid.introduce.security.stubs" portTypeName="ServiceSecurityPortType" wsdlFile="ServiceSecurity.wsdl"/>
+     <ns4:ProviderInformation providerClass="gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl"/>
+    </ns4:Method>
+    <ns4:Method description="returns a stock quote for a given symbol" isImported="false" isProvided="false" name="getQuote" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="ns13:Symbol" description="" isArray="false" name="symbol" xmlns:ns13="http://tools.tutorial.introduce.cagrid.org/StockTools"/>
+     </ns4:Inputs>
+     <ns4:Output qName="ns14:Quote" description="" isArray="false" xmlns:ns14="http://tools.tutorial.introduce.cagrid.org/StockTools"/>
+     <ns4:Exceptions/>
+    </ns4:Method>
+    <ns4:Method description="Retrieve a stock chart for a given symbol" isImported="false" isProvided="false" name="getChart" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="ns15:Symbol" description="" isArray="false" name="symbol" xmlns:ns15="http://tools.tutorial.introduce.cagrid.org/StockTools"/>
+     </ns4:Inputs>
+     <ns4:Output qName="ns16:TransferServiceContextReference" description="" isArray="false" xmlns:ns16="http://transfer.cagrid.org/TransferService/Context/types"/>
+     <ns4:Exceptions/>
+    </ns4:Method>
+    <ns4:Method description="Create a new portfolio instance" isImported="false" isProvided="false" name="createPortfolio" xsi:type="ns4:MethodType">
+     <ns4:Inputs>
+      <ns4:Input qName="xsd:string" description="" isArray="false" name="portfolioName" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+     </ns4:Inputs>
+     <ns4:Output qName="ns17:StockPortfolioManagerReference" clientHandleClass="org.cagrid.introduce.tutorial.stockmanager.portfolio.client.StockPortfolioManagerClient" description="" isArray="false" isClientHandle="true" isCreatingResourceForClientHandle="true" resourceClientIntroduceServiceName="StockPortfolioManager" xmlns:ns17="http://stockmanager.tutorial.introduce.cagrid.org/StockManager/Portfolio/types"/>
+     <ns4:Exceptions/>
+    </ns4:Method>
+   </ns4:Methods>
+   <ns18:ResourcePropertiesList xsi:type="ns18:ResourcePropertiesListType" xmlns:ns18="gme://gov.nih.nci.cagrid.introduce/1/Resources">
+    <ns18:ResourceProperty qName="ns19:ServiceMetadata" description="" fileLocation="serviceMetadata.xml" populateFromFile="true" register="true" xsi:type="ns18:ResourcePropertyType" xmlns:ns19="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata"/>
+   </ns18:ResourcePropertiesList>
+   <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
+    <ns3:Main xsi:type="ns3:Main"/>
+    <ns3:Singleton xsi:type="ns3:Singleton"/>
+    <ns3:Identifiable xsi:type="ns3:Identifiable"/>
+    <ns3:ResourcePropertyManagement xsi:type="ns3:ResourcePropertyManagement"/>
+   </ns3:ResourceFrameworkOptions>
+  </ns3:Service>
+  <ns3:Service name="StockPortfolioManager" namespace="http://stockmanager.tutorial.introduce.cagrid.org/StockManager/Portfolio" packageName="org.cagrid.introduce.tutorial.stockmanager.portfolio" xsi:type="ns3:ServiceType">
+   <ns20:Methods xsi:type="ns20:MethodsType" xmlns:ns20="gme://gov.nih.nci.cagrid.introduce/1/Methods">
+    <ns20:Method description="adds a stock to monitor in this portfolio" isImported="false" isProvided="false" name="addStock" xsi:type="ns20:MethodType">
+     <ns20:Inputs>
+      <ns20:Input qName="ns21:Symbol" description="" isArray="false" name="symbol" xmlns:ns21="http://tools.tutorial.introduce.cagrid.org/StockTools"/>
+     </ns20:Inputs>
+     <ns20:Output qName="void" description="" isArray="false"/>
+     <ns20:Exceptions/>
+    </ns20:Method>
+    <ns20:Method description="returns the current stock quotes for the portfolio" isImported="false" isProvided="false" name="getPortfolioQuote" xsi:type="ns20:MethodType">
+     <ns20:Inputs/>
+     <ns20:Output qName="ns22:PortfolioInstance" description="" isArray="false" xmlns:ns22="http://tools.tutorial.introduce.cagrid.org/StockTools"/>
+     <ns20:Exceptions/>
+    </ns20:Method>
+    <ns20:Method isImported="true" isProvided="true" name="getServiceSecurityMetadata" xsi:type="ns20:MethodType">
+     <ns20:Output qName="ns23:ServiceSecurityMetadata" isArray="false" isClientHandle="false" xmlns:ns23="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+     <ns24:MethodSecurity xsi:type="ns24:MethodSecurity" xmlns:ns24="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns24:SecuritySetting xsi:type="ns24:SecuritySetting">None</ns24:SecuritySetting>
+      <ns24:MethodAuthorization xsi:type="ns24:MethodAuthorization">
+       <ns24:NoAuthorization xsi:type="ns24:NoAuthorization"/>
+      </ns24:MethodAuthorization>
+     </ns24:MethodSecurity>
+     <ns20:ImportInformation namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" packageName="gov.nih.nci.cagrid.introduce.security.stubs" portTypeName="ServiceSecurityPortType" wsdlFile="ServiceSecurity.wsdl"/>
+     <ns20:ProviderInformation providerClass="gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl"/>
+    </ns20:Method>
+    <ns20:Method description="Enumerate over stocks in the portfolio" isImported="false" isProvided="false" name="enumerateStocks" xsi:type="ns20:MethodType">
+     <ns20:Inputs/>
+     <ns20:Output qName="ns25:EnumerationResponseContainer" description="" isArray="false" xmlns:ns25="http://gov.nih.nci.cagrid.enumeration/EnumerationResponseContainer"/>
+     <ns20:Exceptions>
+      <ns20:Exception description="" name="PortfolioEnumerationException" qname="ns26:PortfolioEnumerationException" xmlns:ns26="http://stockmanager.tutorial.introduce.cagrid.org/StockManager/Portfolio/types"/>
+     </ns20:Exceptions>
+    </ns20:Method>
+    <ns20:Method isImported="true" isProvided="true" name="Destroy" xsi:type="ns20:MethodType">
+     <ns20:Output qName="void" isArray="false"/>
+     <ns20:ImportInformation fromIntroduce="false" inputMessage="ns27:DestroyRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" outputMessage="ns27:DestroyResponse" packageName="org.oasis.wsrf.lifetime" portTypeName="ImmediateResourceTermination" wsdlFile="../wsrf/lifetime/WS-ResourceLifetime.wsdl" xmlns:ns27="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl"/>
+     <ns20:ProviderInformation providerClass="DestroyProvider"/>
+    </ns20:Method>
+    <ns20:Method isImported="true" isProvided="true" name="SetTerminationTime" xsi:type="ns20:MethodType">
+     <ns20:Output qName="void" isArray="false"/>
+     <ns20:ImportInformation fromIntroduce="false" inputMessage="ns28:SetTerminationTimeRequest" namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" outputMessage="ns28:SetTerminationTimeResponse" packageName="org.oasis.wsrf.lifetime" portTypeName="ScheduledResourceTermination" wsdlFile="../wsrf/lifetime/WS-ResourceLifetime.wsdl" xmlns:ns28="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl"/>
+     <ns20:ProviderInformation providerClass="SetTerminationTimeProvider"/>
+    </ns20:Method>
+    <ns20:Method isImported="true" isProvided="true" name="Subscribe" xsi:type="ns20:MethodType">
+     <ns20:Output qName="void" isArray="false"/>
+     <ns20:ImportInformation fromIntroduce="false" inputMessage="ns29:SubscribeRequest" namespace="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" outputMessage="ns29:SubscribeResponse" packageName="org.oasis.wsn" portTypeName="NotificationProducer" wsdlFile="../wsrf/notification/WS-BaseN.wsdl" xmlns:ns29="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl"/>
+     <ns20:ProviderInformation providerClass="SubscribeProvider"/>
+    </ns20:Method>
+   </ns20:Methods>
+   <ns30:ResourcePropertiesList xsi:type="ns30:ResourcePropertiesListType" xmlns:ns30="gme://gov.nih.nci.cagrid.introduce/1/Resources">
+    <ns30:ResourceProperty qName="ns31:Portfolio" description="" fileLocation="StockPortfolioManager_portfolio.xml" populateFromFile="false" register="false" xsi:type="ns30:ResourcePropertyType" xmlns:ns31="http://tools.tutorial.introduce.cagrid.org/StockTools"/>
+    <ns30:ResourceProperty qName="ns32:CurrentTime" populateFromFile="false" register="false" xsi:type="ns30:ResourcePropertyType" xmlns:ns32="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+    <ns30:ResourceProperty qName="ns33:TerminationTime" populateFromFile="false" register="false" xsi:type="ns30:ResourcePropertyType" xmlns:ns33="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+   </ns30:ResourcePropertiesList>
+   <ns3:description xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"></ns3:description>
+   <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
+    <ns3:Lifetime xsi:type="ns3:Lifetime"/>
+    <ns3:Identifiable xsi:type="ns3:Identifiable"/>
+    <ns3:Persistent xsi:type="ns3:Persistent"/>
+    <ns3:Notification xsi:type="ns3:Notification"/>
+   </ns3:ResourceFrameworkOptions>
+  </ns3:Service>
+  <ns3:Service name="CaGridEnumeration" namespace="http://gov.nih.nci.cagrid.enumeration/CaGridEnumeration" packageName="gov.nih.nci.cagrid.enumeration" xsi:type="ns3:ServiceType">
+   <ns34:Methods xsi:type="ns34:MethodsType" xmlns:ns34="gme://gov.nih.nci.cagrid.introduce/1/Methods">
+    <ns34:Method isImported="true" isProvided="true" name="PullOp" xsi:type="ns34:MethodType">
+     <ns34:Inputs>
+      <ns34:Input qName="ns35:Pull" isArray="false" name="pull" xmlns:ns35="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
+     </ns34:Inputs>
+     <ns34:Output qName="ns36:PullResponse" isArray="false" xmlns:ns36="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
+     <ns34:ImportInformation fromIntroduce="false" inputMessage="ns37:PullMessage" namespace="http://schemas.xmlsoap.org/ws/2004/09/enumeration" outputMessage="ns37:PullResponseMessage" packageName="org.globus.ws.enumeration" portTypeName="DataSource" wsdlFile="enumeration.wsdl" xmlns:ns37="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
+     <ns34:ProviderInformation providerClass="org.globus.ws.enumeration.EnumProvider"/>
+    </ns34:Method>
+    <ns34:Method isImported="true" isProvided="true" name="RenewOp" xsi:type="ns34:MethodType">
+     <ns34:Inputs>
+      <ns34:Input qName="ns38:Renew" isArray="false" name="renew" xmlns:ns38="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
+     </ns34:Inputs>
+     <ns34:Output qName="ns39:RenewResponse" isArray="false" xmlns:ns39="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
+     <ns34:ImportInformation fromIntroduce="false" inputMessage="ns40:RenewMessage" namespace="http://schemas.xmlsoap.org/ws/2004/09/enumeration" outputMessage="ns40:RenewResponseMessage" packageName="org.globus.ws.enumeration" portTypeName="DataSource" wsdlFile="enumeration.wsdl" xmlns:ns40="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
+     <ns34:ProviderInformation providerClass="org.globus.ws.enumeration.EnumProvider"/>
+    </ns34:Method>
+    <ns34:Method isImported="true" isProvided="true" name="GetStatusOp" xsi:type="ns34:MethodType">
+     <ns34:Inputs>
+      <ns34:Input qName="ns41:GetStatus" isArray="false" name="status" xmlns:ns41="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
+     </ns34:Inputs>
+     <ns34:Output qName="ns42:GetStatusResponse" isArray="false" xmlns:ns42="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
+     <ns34:ImportInformation fromIntroduce="false" inputMessage="ns43:GetStatusMessage" namespace="http://schemas.xmlsoap.org/ws/2004/09/enumeration" outputMessage="ns43:GetStatusResponseMessage" packageName="org.globus.ws.enumeration" portTypeName="DataSource" wsdlFile="enumeration.wsdl" xmlns:ns43="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
+     <ns34:ProviderInformation providerClass="org.globus.ws.enumeration.EnumProvider"/>
+    </ns34:Method>
+    <ns34:Method isImported="true" isProvided="true" name="ReleaseOp" xsi:type="ns34:MethodType">
+     <ns34:Inputs>
+      <ns34:Input qName="ns44:Release" isArray="false" name="release" xmlns:ns44="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
+     </ns34:Inputs>
+     <ns34:Output qName="void" isArray="false"/>
+     <ns34:ImportInformation fromIntroduce="false" inputMessage="ns45:ReleaseMessage" namespace="http://schemas.xmlsoap.org/ws/2004/09/enumeration" outputMessage="ns45:ReleaseResponseMessage" packageName="org.globus.ws.enumeration" portTypeName="DataSource" wsdlFile="enumeration.wsdl" xmlns:ns45="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
+     <ns34:ProviderInformation providerClass="org.globus.ws.enumeration.EnumProvider"/>
+    </ns34:Method>
+    <ns34:Method isImported="true" isProvided="true" name="getServiceSecurityMetadata" xsi:type="ns34:MethodType">
+     <ns34:Output qName="ns46:ServiceSecurityMetadata" isArray="false" isClientHandle="false" xmlns:ns46="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+     <ns47:MethodSecurity xsi:type="ns47:MethodSecurity" xmlns:ns47="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns47:SecuritySetting xsi:type="ns47:SecuritySetting">None</ns47:SecuritySetting>
+      <ns47:MethodAuthorization xsi:type="ns47:MethodAuthorization">
+       <ns47:NoAuthorization xsi:type="ns47:NoAuthorization"/>
+      </ns47:MethodAuthorization>
+     </ns47:MethodSecurity>
+     <ns34:ImportInformation namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" packageName="gov.nih.nci.cagrid.introduce.security.stubs" portTypeName="ServiceSecurityPortType" wsdlFile="ServiceSecurity.wsdl"/>
+     <ns34:ProviderInformation providerClass="gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl"/>
+    </ns34:Method>
+   </ns34:Methods>
+   <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
+    <ns3:Custom xsi:type="ns3:Custom"/>
+   </ns3:ResourceFrameworkOptions>
+  </ns3:Service>
+ </ns3:Services>
+ <ns48:Extensions xsi:type="ns48:ExtensionsType" xmlns:ns48="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns48:Extension name="caGrid_Transfer" version="1.3" xsi:type="ns48:ExtensionType"/>
+  <ns48:Extension name="cagrid_wsEnum" version="1.3" xsi:type="ns48:ExtensionType"/>
+  <ns48:Extension name="cagrid_metadata" version="1.3" xsi:type="ns48:ExtensionType"/>
+ </ns48:Extensions>
+ <ns49:ServiceProperties xmlns:ns49="gme://gov.nih.nci.cagrid.introduce/1/Property">
+  <ns49:Property description="" isFromETC="false" key="caGridWsEnumeration_iterImplType" value="CAGRID_CONCURRENT_COMPLETE"/>
+ </ns49:ServiceProperties>
+</ns1:ServiceDescription>
