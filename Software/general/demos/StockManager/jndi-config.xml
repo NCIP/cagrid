@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jndiConfig xmlns="http://wsrf.globus.org/jndi/config">
+  <service name="SERVICE-INSTANCE-PREFIX/CaGridEnumeration">
+    <resource name="configuration" type="gov.nih.nci.cagrid.enumeration.service.globus.resource.CaGridEnumerationResourceConfiguration">
+      <resourceParams>
+        <parameter>
+          <name>factory</name>
+          <value>org.globus.wsrf.jndi.BeanFactory</value>
+        </parameter>
+        <parameter>
+          <name>performRegistration</name>
+          <!-- Set this to false to skip ServiceGroup registration -->
+          <value>PERFORM_REGISTRATION</value>
+        </parameter>
+        <parameter>
+          <name>registrationTemplateFile</name>
+          <!-- Set this to the relative path (from the container root, e.g GLOBUS_LOCATION for globus container) of the registration parameters template file (ignored if performRegistration is false) -->
+          <value>ETC-PATH/CaGridEnumeration_registration.xml</value>
+        </parameter>
+      </resourceParams>
+    </resource>
+    <!-- THIS SERVICE HAS BEEN SET TO HAVE A CUSTOM RESOURCE
+		     PLEASE BE SURE TO ADD IN THE RESOURCE FOR THE SERVICE
+		     HOME  -->
+    <resourceLink name="serviceconfiguration" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/StockManager/serviceconfiguration" />
+    <resourceLink name="stockManagerHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/StockManager/home" />
+    <resourceLink name="stockPortfolioManagerHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/StockPortfolioManager/home" />
+  </service>
+  <service name="SERVICE-INSTANCE-PREFIX/StockPortfolioManager">
+    <resource name="configuration" type="org.cagrid.introduce.tutorial.stockmanager.portfolio.service.globus.resource.StockPortfolioManagerResourceConfiguration">
+      <resourceParams>
+        <parameter>
+          <name>factory</name>
+          <value>org.globus.wsrf.jndi.BeanFactory</value>
+        </parameter>
+        <parameter>
+          <name>performRegistration</name>
+          <!-- Set this to false to skip ServiceGroup registration -->
+          <value>PERFORM_REGISTRATION</value>
+        </parameter>
+        <parameter>
+          <name>registrationTemplateFile</name>
+          <!-- Set this to the relative path (from the container root, e.g GLOBUS_LOCATION for globus container) of the registration parameters template file (ignored if performRegistration is false) -->
+          <value>ETC-PATH/StockPortfolioManager_registration.xml</value>
+        </parameter>
+      </resourceParams>
+    </resource>
+    <resource name="home" type="org.cagrid.introduce.tutorial.stockmanager.portfolio.service.globus.resource.StockPortfolioManagerResourceHome">
+      <resourceParams>
+        <parameter>
+          <name>factory</name>
+          <value>org.globus.wsrf.jndi.BeanFactory</value>
+        </parameter>
+        <parameter>
+          <name>resourceClass</name>
+          <value>org.cagrid.introduce.tutorial.stockmanager.portfolio.service.globus.resource.StockPortfolioManagerResource</value>
+        </parameter>
+        <parameter>
+          <name>resourceKeyName</name>
+          <value>{http://stockmanager.tutorial.introduce.cagrid.org/StockManager/Portfolio}StockPortfolioManagerResultsKey</value>
+        </parameter>
+        <parameter>
+          <name>resourceKeyType</name>
+          <value>java.lang.String</value>
+        </parameter>
+      </resourceParams>
+    </resource>
+    <resourceLink name="serviceconfiguration" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/StockManager/serviceconfiguration" />
+    <resourceLink name="stockManagerHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/StockManager/home" />
+    <resourceLink name="caGridEnumerationHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/CaGridEnumeration/home" />
+  </service>
+  <service name="SERVICE-INSTANCE-PREFIX/StockManager">
+    <resource name="configuration" type="org.cagrid.introduce.tutorial.stockmanager.service.globus.resource.StockManagerResourceConfiguration">
+      <resourceParams>
+        <parameter>
+          <name>factory</name>
+          <value>org.globus.wsrf.jndi.BeanFactory</value>
+        </parameter>
+        <parameter>
+          <name>performRegistration</name>
+          <!-- Set this to false to skip ServiceGroup registration -->
+          <value>PERFORM_REGISTRATION</value>
+        </parameter>
+        <parameter>
+          <name>registrationTemplateFile</name>
+          <!-- Set this to the relative path (from the container root, e.g GLOBUS_LOCATION for globus container) of the registration parameters template file (ignored if performRegistration is false) -->
+          <value>ETC-PATH/StockManager_registration.xml</value>
+        </parameter>
+        <parameter>
+          <name>serviceMetadataFile</name>
+          <!-- Set this to the relative path (from the container root, e.g GLOBUS_LOCATION for globus container) of the serviceMetadata extract -->
+          <value>ETC-PATH/serviceMetadata.xml</value>
+        </parameter>
+      </resourceParams>
+    </resource>
+    <resource name="serviceconfiguration" type="org.cagrid.introduce.tutorial.stockmanager.service.StockManagerConfiguration">
+      <resourceParams>
+        <parameter>
+          <name>factory</name>
+          <value>org.globus.wsrf.jndi.BeanFactory</value>
+        </parameter>
+        <parameter>
+          <name>etcDirectoryPath</name>
+          <value>ETC-PATH</value>
+        </parameter>
+        <parameter>
+          <name>caGridWsEnumeration_iterImplType</name>
+          <value>@caGridWsEnumeration_iterImplType@</value>
+        </parameter>
+      </resourceParams>
+    </resource>
+    <resource name="home" type="org.cagrid.introduce.tutorial.stockmanager.service.globus.resource.StockManagerResourceHome">
+      <resourceParams>
+        <parameter>
+          <name>factory</name>
+          <value>org.globus.wsrf.jndi.BeanFactory</value>
+        </parameter>
+      </resourceParams>
+    </resource>
+    <resourceLink name="stockPortfolioManagerHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/StockPortfolioManager/home" />
+    <resourceLink name="caGridEnumerationHome" target="java:comp/env/services/SERVICE-INSTANCE-PREFIX/CaGridEnumeration/home" />
+  </service>
+</jndiConfig>
+

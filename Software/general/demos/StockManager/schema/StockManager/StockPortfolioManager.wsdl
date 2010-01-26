@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://stockmanager.tutorial.introduce.cagrid.org/StockManager/Portfolio" xmlns:wsrp="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd" xmlns:wsrlw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" xmlns:wsdlpp="http://www.globus.org/namespaces/2004/10/WSDLPreprocessor" xmlns:gtwsdl1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:wsntw="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" xmlns:wsrbfw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" xmlns:wsrpw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" xmlns:wns0="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" xmlns:wns2="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" xmlns:ns4="http://transfer.cagrid.org/Transfer" xmlns:ns7="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:ns11="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" xmlns:ns5="http://stockmanager.tutorial.introduce.cagrid.org/StockManager/Portfolio/types" xmlns:ns8="http://gov.nih.nci.cagrid.enumeration/EnumerationResponseContainer" xmlns:ns2="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" xmlns:ns6="http://schemas.xmlsoap.org/ws/2004/09/enumeration" xmlns:ns13="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common" xmlns:ns1="http://stockmanager.tutorial.introduce.cagrid.org/StockManager/types" xmlns:ns12="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service" xmlns:ns3="http://transfer.cagrid.org/TransferService/Context/types" xmlns:ns0="http://tools.tutorial.introduce.cagrid.org/StockTools" xmlns:ns9="http://gov.nih.nci.cagrid.enumeration/CaGridEnumeration/types" xmlns:ns10="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd" name="StockPortfolioManager" targetNamespace="http://stockmanager.tutorial.introduce.cagrid.org/StockManager/Portfolio">
+  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" location="../wsrf/properties/WS-ResourceProperties.wsdl" />
+  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" location="../wsrf/faults/WS-BaseFaults.wsdl" />
+  <import namespace="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" location="../wsrf/notification/WS-BaseN.wsdl" />
+  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" location="./../wsrf/lifetime/WS-ResourceLifetime.wsdl" />
+  <import namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" location="./ServiceSecurity.wsdl" />
+  <import namespace="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" location="./../wsrf/notification/WS-BaseN.wsdl" />
+  <!--============================================================
+
+                      T Y P E S
+                      
+  ============================================================-->
+  <types>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsrbf="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" targetNamespace="http://stockmanager.tutorial.introduce.cagrid.org/StockManager/Portfolio" elementFormDefault="qualified" attributeFormDefault="unqualified">
+      <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" schemaLocation="../wsrf/faults/WS-BaseFaults.xsd" />
+      <import namespace="http://transfer.cagrid.org/Transfer" schemaLocation="./caGrid_Transfer.xsd" />
+      <import namespace="http://schemas.xmlsoap.org/ws/2004/08/addressing" schemaLocation="./addressing.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" schemaLocation="./xsd/cagrid/types/caGridMetadata.xsd" />
+      <import namespace="http://stockmanager.tutorial.introduce.cagrid.org/StockManager/Portfolio/types" schemaLocation="./StockPortfolioManagerTypes.xsd" />
+      <import namespace="http://gov.nih.nci.cagrid.enumeration/EnumerationResponseContainer" schemaLocation="./EnumerationResponseContainer.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" schemaLocation="./xsd/cagrid/types/security/security.xsd" />
+      <import namespace="http://schemas.xmlsoap.org/ws/2004/09/enumeration" schemaLocation="./enumeration.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common" schemaLocation="./xsd/cagrid/types/common/common.xsd" />
+      <import namespace="http://stockmanager.tutorial.introduce.cagrid.org/StockManager/types" schemaLocation="./StockManagerTypes.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service" schemaLocation="./xsd/cagrid/types/service/servicemodel.xsd" />
+      <import namespace="http://transfer.cagrid.org/TransferService/Context/types" schemaLocation="./TransferServiceContextTypes.xsd" />
+      <import namespace="http://tools.tutorial.introduce.cagrid.org/StockTools" schemaLocation="./StockTools.xsd" />
+      <import namespace="http://gov.nih.nci.cagrid.enumeration/CaGridEnumeration/types" schemaLocation="./CaGridEnumerationTypes.xsd" />
+      <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd" schemaLocation="../wsrf/lifetime/WS-ResourceLifetime.xsd" />
+      <element name="AddStockRequest">
+        <complexType>
+          <sequence>
+            <element name="symbol">
+              <complexType>
+                <sequence>
+                  <element ref="ns0:Symbol" minOccurs="1" maxOccurs="1" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="AddStockResponse">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="GetPortfolioQuoteRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="GetPortfolioQuoteResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns0:PortfolioInstance" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="EnumerateStocksRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="EnumerateStocksResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns8:EnumerationResponseContainer" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="StockPortfolioManagerResourceProperties">
+        <complexType>
+          <sequence>
+            <element ref="ns0:Portfolio" />
+            <element ref="ns10:CurrentTime" />
+            <element ref="ns10:TerminationTime" />
+          </sequence>
+        </complexType>
+      </element>
+    </schema>
+  </types>
+  <!--  place service messages here -->
+  <message name="AddStockRequest">
+    <part name="parameters" element="tns:AddStockRequest" />
+  </message>
+  <message name="AddStockResponse">
+    <part name="parameters" element="tns:AddStockResponse" />
+  </message>
+  <message name="GetPortfolioQuoteRequest">
+    <part name="parameters" element="tns:GetPortfolioQuoteRequest" />
+  </message>
+  <message name="GetPortfolioQuoteResponse">
+    <part name="parameters" element="tns:GetPortfolioQuoteResponse" />
+  </message>
+  <message name="EnumerateStocksRequest">
+    <part name="parameters" element="tns:EnumerateStocksRequest" />
+  </message>
+  <message name="EnumerateStocksResponse">
+    <part name="parameters" element="tns:EnumerateStocksResponse" />
+  </message>
+  <message name="PortfolioEnumerationExceptionFaultMessage">
+    <part name="fault" element="ns5:PortfolioEnumerationException" />
+  </message>
+  <!--============================================================
+
+                       P O R T T Y P E
+                      
+  ============================================================-->
+  <portType name="StockPortfolioManagerPortType" wsrp:ResourceProperties="tns:StockPortfolioManagerResourceProperties">
+    <operation name="addStock">
+      <input message="tns:AddStockRequest" wsa:Action="http://stockmanager.tutorial.introduce.cagrid.org/StockManager/Portfolio/AddStockRequest" />
+      <output message="tns:AddStockResponse" wsa:Action="http://stockmanager.tutorial.introduce.cagrid.org/StockManager/Portfolio/AddStockResponse" />
+    </operation>
+    <operation name="getPortfolioQuote">
+      <input message="tns:GetPortfolioQuoteRequest" wsa:Action="http://stockmanager.tutorial.introduce.cagrid.org/StockManager/Portfolio/GetPortfolioQuoteRequest" />
+      <output message="tns:GetPortfolioQuoteResponse" wsa:Action="http://stockmanager.tutorial.introduce.cagrid.org/StockManager/Portfolio/GetPortfolioQuoteResponse" />
+    </operation>
+    <operation name="enumerateStocks">
+      <input message="tns:EnumerateStocksRequest" wsa:Action="http://stockmanager.tutorial.introduce.cagrid.org/StockManager/Portfolio/EnumerateStocksRequest" />
+      <output message="tns:EnumerateStocksResponse" wsa:Action="http://stockmanager.tutorial.introduce.cagrid.org/StockManager/Portfolio/EnumerateStocksResponse" />
+      <fault name="PortfolioEnumerationException" message="tns:PortfolioEnumerationExceptionFaultMessage" wsa:Action="http://stockmanager.tutorial.introduce.cagrid.org/StockManager/Portfolio/PortfolioEnumerationExceptionFaultMessage" />
+    </operation>
+    <operation name="getServiceSecurityMetadata">
+      <input message="wns0:GetServiceSecurityMetadataRequest" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataRequest" />
+      <output message="wns0:GetServiceSecurityMetadataResponse" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataResponse" />
+    </operation>
+    <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="Destroy">
+      <wsdl:input message="wsrlw:DestroyRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime/Destroy" />
+      <wsdl:output message="wsrlw:DestroyResponse" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime/DestroyResponse" />
+      <wsdl:fault message="wsrlw:ResourceNotDestroyedFault" name="ResourceNotDestroyedFault" />
+      <wsdl:fault message="wsrlw:ResourceUnknownFault" name="ResourceUnknownFault" />
+    </wsdl:operation>
+    <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="SetTerminationTime">
+      <wsdl:input message="wsrlw:SetTerminationTimeRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime/SetTerminationTime" />
+      <wsdl:output message="wsrlw:SetTerminationTimeResponse" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime/SetTerminationTimeResponse" />
+      <wsdl:fault message="wsrlw:UnableToSetTerminationTimeFault" name="UnableToSetTerminationTimeFault" />
+      <wsdl:fault message="wsrlw:ResourceUnknownFault" name="ResourceUnknownFault" />
+      <wsdl:fault message="wsrlw:TerminationTimeChangeRejectedFault" name="TerminationTimeChangeRejectedFault" />
+    </wsdl:operation>
+    <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="Subscribe">
+      <wsdl:input message="wsntw:SubscribeRequest" wsa:Action="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification/Subscribe" />
+      <wsdl:output message="wsntw:SubscribeResponse" wsa:Action="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification/SubscribeResponse" />
+      <wsdl:fault name="ResourceUnknownFault" message="wsntw:ResourceUnknownFault" />
+      <wsdl:fault name="SubscribeCreationFailedFault" message="wsntw:SubscribeCreationFailedFault" />
+      <wsdl:fault name="TopicPathDialectUnknownFault" message="wsntw:TopicPathDialectUnknownFault" />
+      <wsdl:fault name="InvalidTopicExpressionFault" message="wsntw:InvalidTopicExpressionFault" />
+      <wsdl:fault name="TopicNotSupportedFault" message="wsntw:TopicNotSupportedFault" />
+    </wsdl:operation>
+  </portType>
+</definitions>
+
