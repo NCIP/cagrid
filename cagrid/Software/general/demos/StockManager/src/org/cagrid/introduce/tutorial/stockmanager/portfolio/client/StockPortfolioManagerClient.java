@@ -76,6 +76,15 @@ public class StockPortfolioManagerClient extends StockPortfolioManagerClientBase
 		}
 	}
 
+  public org.cagrid.transfer.context.stubs.types.TransferServiceContextReference addPortfolioSymbols() throws RemoteException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"addPortfolioSymbols");
+    org.cagrid.introduce.tutorial.stockmanager.portfolio.stubs.AddPortfolioSymbolsRequest params = new org.cagrid.introduce.tutorial.stockmanager.portfolio.stubs.AddPortfolioSymbolsRequest();
+    org.cagrid.introduce.tutorial.stockmanager.portfolio.stubs.AddPortfolioSymbolsResponse boxedResult = portType.addPortfolioSymbols(params);
+    return boxedResult.getTransferServiceContextReference();
+    }
+  }
+
   public void addStock(java.lang.String symbol) throws RemoteException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"addStock");

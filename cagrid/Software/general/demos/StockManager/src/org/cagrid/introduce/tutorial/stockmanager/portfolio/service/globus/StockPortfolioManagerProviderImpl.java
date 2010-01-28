@@ -26,6 +26,12 @@ public class StockPortfolioManagerProviderImpl{
 	}
 	
 
+    public org.cagrid.introduce.tutorial.stockmanager.portfolio.stubs.AddPortfolioSymbolsResponse addPortfolioSymbols(org.cagrid.introduce.tutorial.stockmanager.portfolio.stubs.AddPortfolioSymbolsRequest params) throws RemoteException {
+    org.cagrid.introduce.tutorial.stockmanager.portfolio.stubs.AddPortfolioSymbolsResponse boxedResult = new org.cagrid.introduce.tutorial.stockmanager.portfolio.stubs.AddPortfolioSymbolsResponse();
+    boxedResult.setTransferServiceContextReference(impl.addPortfolioSymbols());
+    return boxedResult;
+  }
+
     public org.cagrid.introduce.tutorial.stockmanager.portfolio.stubs.AddStockResponse addStock(org.cagrid.introduce.tutorial.stockmanager.portfolio.stubs.AddStockRequest params) throws RemoteException {
     org.cagrid.introduce.tutorial.stockmanager.portfolio.stubs.AddStockResponse boxedResult = new org.cagrid.introduce.tutorial.stockmanager.portfolio.stubs.AddStockResponse();
     impl.addStock(params.getSymbol().getSymbol());
