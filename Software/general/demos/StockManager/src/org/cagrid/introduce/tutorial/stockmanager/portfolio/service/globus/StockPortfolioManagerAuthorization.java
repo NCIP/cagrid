@@ -82,6 +82,10 @@ public class StockPortfolioManagerAuthorization implements PDP {
 	public void authorizeSubscribe(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 		
 	}
+	   				
+	public void authorizeAddPortfolioSymbols(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+		
+	}
 	   
 	
 	public boolean isPermitted(Subject peerSubject, MessageContext context, QName operation)
@@ -110,6 +114,9 @@ public class StockPortfolioManagerAuthorization implements PDP {
 			return true;
 		} else if(operation.getLocalPart().equals("subscribe")){
 			authorizeSubscribe(peerSubject, context, operation);
+			return true;
+		} else if(operation.getLocalPart().equals("addPortfolioSymbols")){
+			authorizeAddPortfolioSymbols(peerSubject, context, operation);
 			return true;
 		} 		
 		return false;

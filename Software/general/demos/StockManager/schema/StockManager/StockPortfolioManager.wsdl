@@ -70,6 +70,18 @@
           </sequence>
         </complexType>
       </element>
+      <element name="AddPortfolioSymbolsRequest">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="AddPortfolioSymbolsResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns3:TransferServiceContextReference" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
       <element name="StockPortfolioManagerResourceProperties">
         <complexType>
           <sequence>
@@ -100,6 +112,12 @@
   <message name="EnumerateStocksResponse">
     <part name="parameters" element="tns:EnumerateStocksResponse" />
   </message>
+  <message name="AddPortfolioSymbolsRequest">
+    <part name="parameters" element="tns:AddPortfolioSymbolsRequest" />
+  </message>
+  <message name="AddPortfolioSymbolsResponse">
+    <part name="parameters" element="tns:AddPortfolioSymbolsResponse" />
+  </message>
   <message name="PortfolioEnumerationExceptionFaultMessage">
     <part name="fault" element="ns5:PortfolioEnumerationException" />
   </message>
@@ -121,6 +139,10 @@
       <input message="tns:EnumerateStocksRequest" wsa:Action="http://stockmanager.tutorial.introduce.cagrid.org/StockManager/Portfolio/EnumerateStocksRequest" />
       <output message="tns:EnumerateStocksResponse" wsa:Action="http://stockmanager.tutorial.introduce.cagrid.org/StockManager/Portfolio/EnumerateStocksResponse" />
       <fault name="PortfolioEnumerationException" message="tns:PortfolioEnumerationExceptionFaultMessage" wsa:Action="http://stockmanager.tutorial.introduce.cagrid.org/StockManager/Portfolio/PortfolioEnumerationExceptionFaultMessage" />
+    </operation>
+    <operation name="addPortfolioSymbols">
+      <input message="tns:AddPortfolioSymbolsRequest" wsa:Action="http://stockmanager.tutorial.introduce.cagrid.org/StockManager/Portfolio/AddPortfolioSymbolsRequest" />
+      <output message="tns:AddPortfolioSymbolsResponse" wsa:Action="http://stockmanager.tutorial.introduce.cagrid.org/StockManager/Portfolio/AddPortfolioSymbolsResponse" />
     </operation>
     <operation name="getServiceSecurityMetadata">
       <input message="wns0:GetServiceSecurityMetadataRequest" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataRequest" />

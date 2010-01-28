@@ -16,17 +16,24 @@ import org.oasis.wsrf.properties.GetResourcePropertyResponse;
 
 import org.globus.gsi.GlobusCredential;
 
+import org.cagrid.introduce.tutorial.stockmanager.portfolio.client.StockPortfolioManagerClient;
 import org.cagrid.introduce.tutorial.stockmanager.stubs.StockManagerPortType;
 import org.cagrid.introduce.tutorial.stockmanager.stubs.service.StockManagerServiceAddressingLocator;
 import org.cagrid.introduce.tutorial.stockmanager.common.StockManagerI;
+import org.cagrid.introduce.tutorial.tools.beans.Symbols;
+
 import gov.nih.nci.cagrid.introduce.security.client.ServiceSecurityClient;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.StringWriter;
+
 import org.cagrid.transfer.context.client.TransferServiceContextClient;
 import org.cagrid.transfer.context.client.helper.TransferClientHelper;
 import org.cagrid.transfer.context.stubs.types.TransferServiceContextReference;
+import org.cagrid.transfer.descriptor.Status;
 
 import org.globus.ws.enumeration.ClientEnumIterator;
 import gov.nih.nci.cagrid.enumeration.stubs.response.EnumerationResponseContainer;
@@ -35,6 +42,7 @@ import gov.nih.nci.cagrid.common.Utils;
 import org.apache.axis.message.MessageElement;
 import java.io.StringReader;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -86,10 +94,16 @@ public class StockManagerClient extends StockManagerClientBase implements StockM
 			  StockManagerClient client = new StockManagerClient(args[1]);
 			  // place client calls here if you want to use this main as a
 			  // test....
+			  System.out.println("Get Stock Quote...");
 			  org.cagrid.introduce.tutorial.tools.beans.Quote quote = client.getQuote("GME");
 				System.out.println(org.cagrid.introduce.tutorial.tools.QuoteTools.Quote2String(quote));
+				
+				System.out.println("--------------------------------------");
+				System.out.println("Get Stock Chart...");
+				
 				//retrieve a transfer context reference to a Gamestop chart
 				TransferServiceContextReference ref = client.getChart("GME");
+				
 				//create a transfer context client for the reference
 				TransferServiceContextClient tclient = new TransferServiceContextClient(ref.getEndpointReference());
 				//use the TransferClientHelper to create an inputstream that I can use to transfer the data in the context to my computer
@@ -101,49 +115,88 @@ public class StockManagerClient extends StockManagerClientBase implements StockM
 				String filename = "gmechart.png";
 				FileOutputStream fos = new FileOutputStream(filename);
 				System.out.println("Saved GME chart in file " + filename);
-
+				
 				int bytes = 0;
 				while ((bytes = bis.read(buf)) != -1) {
 					fos.write(buf, 0, bytes);
 				}
 				fos.close();
-				
+
 				// create a new portfolio and add some stocks
-System.out.println("Creating Portfolio 1");
-org.cagrid.introduce.tutorial.stockmanager.portfolio.client.StockPortfolioManagerClient portfolio1 = client
-.createPortfolio("Portfolio 1");
+				System.out.println("--------------------------------------");
+				System.out.println("Creating Portfolio 1");
+				org.cagrid.introduce.tutorial.stockmanager.portfolio.client.StockPortfolioManagerClient portfolio1 = client
+					.createPortfolio("Portfolio 1");
+				
+				//subscribe to changes in the portfolio
+				System.out.println("Subscribing to the portfolio");
+				portfolio1.subscribe(org.cagrid.introduce.tutorial.stockmanager.portfolio.common.StockPortfolioManagerConstants.PORTFOLIO, new NotifyCallback () {
+				public void deliver(List topicPath, EndpointReferenceType producer, Object message) {
+					System.out.println("TESTING");
+					org.oasis.wsrf.properties.ResourcePropertyValueChangeNotificationType changeMessage = ((org.globus.wsrf.core.notification.ResourcePropertyValueChangeNotificationElementType) message)
+						.getResourcePropertyValueChangeNotification();
+				
+					if (changeMessage != null) {
+						try {
+							System.out.println("GOT NOTIFICATION: " + changeMessage.getNewValue().get_any()[0].getAsString());
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}
+				});
+				
+				//add a stock to the portfolio
+				System.out.println("Adding stock to portfolio 1");
+				portfolio1.addStock("GE");
+				
+				//sleep and wait on notification
+				Thread.sleep(5000);
+				System.out.println("TESTING5");
+				
+				
+				// Upload additional Symbols via Transfer
+				System.out.println("--------------------------------------");
+				System.out.println("Uploading additional stock symbols to be added to portfolio 1 via Transfer");
+				
+				org.cagrid.introduce.tutorial.stockmanager.portfolio.client.StockPortfolioManagerClient portfolio3 = client
+					.createPortfolio("Portfolio 3");
+			
+				
+				StockPortfolioManagerClient stockPortfolioMgrClient = new StockPortfolioManagerClient(portfolio3.getEndpointReference());
+				TransferServiceContextReference uploadTransferRef = stockPortfolioMgrClient.addPortfolioSymbols();
+				TransferServiceContextClient uploadClient = new TransferServiceContextClient (uploadTransferRef.getEndpointReference());
+				
+				// create Symbol object containing additional stock symbols to add 
+				List<String> symbolList = new ArrayList<String>();
+				symbolList.add("APPL");
+				symbolList.add("BLDP");
+				symbolList.add("MCD");
+				symbolList.add("JPM");
+				String[] symbolArray = new String[symbolList.size()];
+				symbolList.toArray(symbolArray);
+				Symbols symbols = new Symbols(symbolArray);
 
-//subscribe to changes in the portflio
-System.out.println("Subscribing to the portfolio");
-portfolio1.subscribe(org.cagrid.introduce.tutorial.stockmanager.portfolio.common.StockPortfolioManagerConstants.PORTFOLIO, new NotifyCallback () {
-public void deliver(List topicPath, EndpointReferenceType producer, Object message) {
-	System.out.println("TESTING");
-	org.oasis.wsrf.properties.ResourcePropertyValueChangeNotificationType changeMessage = ((org.globus.wsrf.core.notification.ResourcePropertyValueChangeNotificationElementType) message)
-		.getResourcePropertyValueChangeNotification();
-
-	if (changeMessage != null) {
-		try {
-			System.out.println("GOT NOTIFICATION: " + changeMessage.getNewValue().get_any()[0].getAsString());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-}
-});
-
-//add a stock to the portfolio
-System.out.println("Adding stock to portfolio 1");
-portfolio1.addStock("GE");
-
-//sleep and wait on notification
-Thread.sleep(5000);
-System.out.println("TESTING5");
-
-// now i can use the destroy method to remove the first
-// portfolio because i am done with it
-System.out.println("Destroying Portfolio 1");
-portfolio1.destroy();
+				// serialize the object
+				StringWriter sw = new StringWriter();
+		        Utils.serializeObject(symbols, new QName("Symbols"), sw);
+		        
+		        // upload the data
+		        InputStream is = new ByteArrayInputStream(sw.toString().getBytes());
+		        uploadClient.putData(is, sw.toString().length());
+				
+				// tell the resource that the data has been uploaded.
+				uploadClient.setStatus(Status.Staged);
+				
+				// Sleep to allow for update, then print the portfolio
+				Thread.sleep(5000);
+				System.out.println("Getting Quotes");
+				System.out.println(org.cagrid.introduce.tutorial.tools.QuoteTools.PortfolioInstance2String(portfolio3.getPortfolioQuote()));
+				
+				// now use the destroy method to remove the portfolio
+				System.out.println("Destroying Portfolio 3");
+				portfolio3.destroy();
 
 			} else {
 				usage();

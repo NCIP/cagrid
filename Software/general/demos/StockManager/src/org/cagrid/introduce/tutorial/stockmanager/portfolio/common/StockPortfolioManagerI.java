@@ -13,6 +13,12 @@ import java.rmi.RemoteException;
 public interface StockPortfolioManagerI {
 
   /**
+   * Add a set of stock symbols to an existing Portfolio via Transfer
+   *
+   */
+  public org.cagrid.transfer.context.stubs.types.TransferServiceContextReference addPortfolioSymbols() throws RemoteException ;
+
+  /**
    * adds a stock to monitor in this portfolio
    *
    * @param symbol
