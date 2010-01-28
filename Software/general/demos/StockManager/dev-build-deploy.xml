@@ -6,11 +6,20 @@
 	<!-- file. DO NOT REMOVE ANY TARGETS                                -->
 	<!-- ============================================================== -->
 
-
 	<!-- ============================================================== -->
 	<!-- Pre Deploy Tomcat                                              -->
 	<!-- ============================================================== -->
 	<target name="preDeployTomcat">
+		
+		<echo message="${webapp.deploy.etc.dir}/cagrid_TransferService" />
+		<condition property="transfer.not.installed">
+			<not>
+		  		<available file="${webapp.deploy.etc.dir}/cagrid_TransferService" type="dir" />
+			</not>
+		</condition> 
+		
+		<fail message="The caGrid Transfer service must be installed for this service" if="transfer.not.installed" />
+		<echo message="caGrid Transfer has been found" />
 
 	</target>
 	
@@ -27,7 +36,16 @@
 	<!-- Pre Deploy JBOSS                                               -->
 	<!-- ============================================================== -->
 	<target name="preDeployJBoss">
-
+		<echo message="${webapp.deploy.etc.dir}/cagrid_TransferService" />
+		<condition property="transfer.not.installed">
+			<not>
+		  		<available file="${webapp.deploy.etc.dir}/cagrid_TransferService}" type="dir" />
+			</not>
+		</condition> 
+		
+		<fail message="The caGrid Transfer service must be installed for this service" if="transfer.not.installed" />
+		<echo message="caGrid Transfer has been found" />
+		
 	</target>
 	
 	

@@ -259,12 +259,17 @@
      <ns20:ImportInformation fromIntroduce="false" inputMessage="ns29:SubscribeRequest" namespace="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" outputMessage="ns29:SubscribeResponse" packageName="org.oasis.wsn" portTypeName="NotificationProducer" wsdlFile="../wsrf/notification/WS-BaseN.wsdl" xmlns:ns29="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl"/>
      <ns20:ProviderInformation providerClass="SubscribeProvider"/>
     </ns20:Method>
+    <ns20:Method description="Add a set of stock symbols to an existing Portfolio via Transfer" isImported="false" isProvided="false" name="addPortfolioSymbols" xsi:type="ns20:MethodType">
+     <ns20:Inputs/>
+     <ns20:Output qName="ns30:TransferServiceContextReference" description="" isArray="false" xmlns:ns30="http://transfer.cagrid.org/TransferService/Context/types"/>
+     <ns20:Exceptions/>
+    </ns20:Method>
    </ns20:Methods>
-   <ns30:ResourcePropertiesList xsi:type="ns30:ResourcePropertiesListType" xmlns:ns30="gme://gov.nih.nci.cagrid.introduce/1/Resources">
-    <ns30:ResourceProperty qName="ns31:Portfolio" description="" fileLocation="StockPortfolioManager_portfolio.xml" populateFromFile="false" register="false" xsi:type="ns30:ResourcePropertyType" xmlns:ns31="http://tools.tutorial.introduce.cagrid.org/StockTools"/>
-    <ns30:ResourceProperty qName="ns32:CurrentTime" populateFromFile="false" register="false" xsi:type="ns30:ResourcePropertyType" xmlns:ns32="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
-    <ns30:ResourceProperty qName="ns33:TerminationTime" populateFromFile="false" register="false" xsi:type="ns30:ResourcePropertyType" xmlns:ns33="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
-   </ns30:ResourcePropertiesList>
+   <ns31:ResourcePropertiesList xsi:type="ns31:ResourcePropertiesListType" xmlns:ns31="gme://gov.nih.nci.cagrid.introduce/1/Resources">
+    <ns31:ResourceProperty qName="ns32:Portfolio" description="" fileLocation="StockPortfolioManager_portfolio.xml" populateFromFile="false" register="false" xsi:type="ns31:ResourcePropertyType" xmlns:ns32="http://tools.tutorial.introduce.cagrid.org/StockTools"/>
+    <ns31:ResourceProperty qName="ns33:CurrentTime" populateFromFile="false" register="false" xsi:type="ns31:ResourcePropertyType" xmlns:ns33="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+    <ns31:ResourceProperty qName="ns34:TerminationTime" populateFromFile="false" register="false" xsi:type="ns31:ResourcePropertyType" xmlns:ns34="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.xsd"/>
+   </ns31:ResourcePropertiesList>
    <ns3:description xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"></ns3:description>
    <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
     <ns3:Lifetime xsi:type="ns3:Lifetime"/>
@@ -274,62 +279,62 @@
    </ns3:ResourceFrameworkOptions>
   </ns3:Service>
   <ns3:Service name="CaGridEnumeration" namespace="http://gov.nih.nci.cagrid.enumeration/CaGridEnumeration" packageName="gov.nih.nci.cagrid.enumeration" xsi:type="ns3:ServiceType">
-   <ns34:Methods xsi:type="ns34:MethodsType" xmlns:ns34="gme://gov.nih.nci.cagrid.introduce/1/Methods">
-    <ns34:Method isImported="true" isProvided="true" name="PullOp" xsi:type="ns34:MethodType">
-     <ns34:Inputs>
-      <ns34:Input qName="ns35:Pull" isArray="false" name="pull" xmlns:ns35="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
-     </ns34:Inputs>
-     <ns34:Output qName="ns36:PullResponse" isArray="false" xmlns:ns36="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
-     <ns34:ImportInformation fromIntroduce="false" inputMessage="ns37:PullMessage" namespace="http://schemas.xmlsoap.org/ws/2004/09/enumeration" outputMessage="ns37:PullResponseMessage" packageName="org.globus.ws.enumeration" portTypeName="DataSource" wsdlFile="enumeration.wsdl" xmlns:ns37="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
-     <ns34:ProviderInformation providerClass="org.globus.ws.enumeration.EnumProvider"/>
-    </ns34:Method>
-    <ns34:Method isImported="true" isProvided="true" name="RenewOp" xsi:type="ns34:MethodType">
-     <ns34:Inputs>
-      <ns34:Input qName="ns38:Renew" isArray="false" name="renew" xmlns:ns38="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
-     </ns34:Inputs>
-     <ns34:Output qName="ns39:RenewResponse" isArray="false" xmlns:ns39="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
-     <ns34:ImportInformation fromIntroduce="false" inputMessage="ns40:RenewMessage" namespace="http://schemas.xmlsoap.org/ws/2004/09/enumeration" outputMessage="ns40:RenewResponseMessage" packageName="org.globus.ws.enumeration" portTypeName="DataSource" wsdlFile="enumeration.wsdl" xmlns:ns40="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
-     <ns34:ProviderInformation providerClass="org.globus.ws.enumeration.EnumProvider"/>
-    </ns34:Method>
-    <ns34:Method isImported="true" isProvided="true" name="GetStatusOp" xsi:type="ns34:MethodType">
-     <ns34:Inputs>
-      <ns34:Input qName="ns41:GetStatus" isArray="false" name="status" xmlns:ns41="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
-     </ns34:Inputs>
-     <ns34:Output qName="ns42:GetStatusResponse" isArray="false" xmlns:ns42="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
-     <ns34:ImportInformation fromIntroduce="false" inputMessage="ns43:GetStatusMessage" namespace="http://schemas.xmlsoap.org/ws/2004/09/enumeration" outputMessage="ns43:GetStatusResponseMessage" packageName="org.globus.ws.enumeration" portTypeName="DataSource" wsdlFile="enumeration.wsdl" xmlns:ns43="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
-     <ns34:ProviderInformation providerClass="org.globus.ws.enumeration.EnumProvider"/>
-    </ns34:Method>
-    <ns34:Method isImported="true" isProvided="true" name="ReleaseOp" xsi:type="ns34:MethodType">
-     <ns34:Inputs>
-      <ns34:Input qName="ns44:Release" isArray="false" name="release" xmlns:ns44="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
-     </ns34:Inputs>
-     <ns34:Output qName="void" isArray="false"/>
-     <ns34:ImportInformation fromIntroduce="false" inputMessage="ns45:ReleaseMessage" namespace="http://schemas.xmlsoap.org/ws/2004/09/enumeration" outputMessage="ns45:ReleaseResponseMessage" packageName="org.globus.ws.enumeration" portTypeName="DataSource" wsdlFile="enumeration.wsdl" xmlns:ns45="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
-     <ns34:ProviderInformation providerClass="org.globus.ws.enumeration.EnumProvider"/>
-    </ns34:Method>
-    <ns34:Method isImported="true" isProvided="true" name="getServiceSecurityMetadata" xsi:type="ns34:MethodType">
-     <ns34:Output qName="ns46:ServiceSecurityMetadata" isArray="false" isClientHandle="false" xmlns:ns46="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
-     <ns47:MethodSecurity xsi:type="ns47:MethodSecurity" xmlns:ns47="gme://gov.nih.nci.cagrid.introduce/1/Security">
-      <ns47:SecuritySetting xsi:type="ns47:SecuritySetting">None</ns47:SecuritySetting>
-      <ns47:MethodAuthorization xsi:type="ns47:MethodAuthorization">
-       <ns47:NoAuthorization xsi:type="ns47:NoAuthorization"/>
-      </ns47:MethodAuthorization>
-     </ns47:MethodSecurity>
-     <ns34:ImportInformation namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" packageName="gov.nih.nci.cagrid.introduce.security.stubs" portTypeName="ServiceSecurityPortType" wsdlFile="ServiceSecurity.wsdl"/>
-     <ns34:ProviderInformation providerClass="gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl"/>
-    </ns34:Method>
-   </ns34:Methods>
+   <ns35:Methods xsi:type="ns35:MethodsType" xmlns:ns35="gme://gov.nih.nci.cagrid.introduce/1/Methods">
+    <ns35:Method isImported="true" isProvided="true" name="PullOp" xsi:type="ns35:MethodType">
+     <ns35:Inputs>
+      <ns35:Input qName="ns36:Pull" isArray="false" name="pull" xmlns:ns36="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
+     </ns35:Inputs>
+     <ns35:Output qName="ns37:PullResponse" isArray="false" xmlns:ns37="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
+     <ns35:ImportInformation fromIntroduce="false" inputMessage="ns38:PullMessage" namespace="http://schemas.xmlsoap.org/ws/2004/09/enumeration" outputMessage="ns38:PullResponseMessage" packageName="org.globus.ws.enumeration" portTypeName="DataSource" wsdlFile="enumeration.wsdl" xmlns:ns38="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
+     <ns35:ProviderInformation providerClass="org.globus.ws.enumeration.EnumProvider"/>
+    </ns35:Method>
+    <ns35:Method isImported="true" isProvided="true" name="RenewOp" xsi:type="ns35:MethodType">
+     <ns35:Inputs>
+      <ns35:Input qName="ns39:Renew" isArray="false" name="renew" xmlns:ns39="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
+     </ns35:Inputs>
+     <ns35:Output qName="ns40:RenewResponse" isArray="false" xmlns:ns40="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
+     <ns35:ImportInformation fromIntroduce="false" inputMessage="ns41:RenewMessage" namespace="http://schemas.xmlsoap.org/ws/2004/09/enumeration" outputMessage="ns41:RenewResponseMessage" packageName="org.globus.ws.enumeration" portTypeName="DataSource" wsdlFile="enumeration.wsdl" xmlns:ns41="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
+     <ns35:ProviderInformation providerClass="org.globus.ws.enumeration.EnumProvider"/>
+    </ns35:Method>
+    <ns35:Method isImported="true" isProvided="true" name="GetStatusOp" xsi:type="ns35:MethodType">
+     <ns35:Inputs>
+      <ns35:Input qName="ns42:GetStatus" isArray="false" name="status" xmlns:ns42="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
+     </ns35:Inputs>
+     <ns35:Output qName="ns43:GetStatusResponse" isArray="false" xmlns:ns43="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
+     <ns35:ImportInformation fromIntroduce="false" inputMessage="ns44:GetStatusMessage" namespace="http://schemas.xmlsoap.org/ws/2004/09/enumeration" outputMessage="ns44:GetStatusResponseMessage" packageName="org.globus.ws.enumeration" portTypeName="DataSource" wsdlFile="enumeration.wsdl" xmlns:ns44="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
+     <ns35:ProviderInformation providerClass="org.globus.ws.enumeration.EnumProvider"/>
+    </ns35:Method>
+    <ns35:Method isImported="true" isProvided="true" name="ReleaseOp" xsi:type="ns35:MethodType">
+     <ns35:Inputs>
+      <ns35:Input qName="ns45:Release" isArray="false" name="release" xmlns:ns45="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
+     </ns35:Inputs>
+     <ns35:Output qName="void" isArray="false"/>
+     <ns35:ImportInformation fromIntroduce="false" inputMessage="ns46:ReleaseMessage" namespace="http://schemas.xmlsoap.org/ws/2004/09/enumeration" outputMessage="ns46:ReleaseResponseMessage" packageName="org.globus.ws.enumeration" portTypeName="DataSource" wsdlFile="enumeration.wsdl" xmlns:ns46="http://schemas.xmlsoap.org/ws/2004/09/enumeration"/>
+     <ns35:ProviderInformation providerClass="org.globus.ws.enumeration.EnumProvider"/>
+    </ns35:Method>
+    <ns35:Method isImported="true" isProvided="true" name="getServiceSecurityMetadata" xsi:type="ns35:MethodType">
+     <ns35:Output qName="ns47:ServiceSecurityMetadata" isArray="false" isClientHandle="false" xmlns:ns47="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"/>
+     <ns48:MethodSecurity xsi:type="ns48:MethodSecurity" xmlns:ns48="gme://gov.nih.nci.cagrid.introduce/1/Security">
+      <ns48:SecuritySetting xsi:type="ns48:SecuritySetting">None</ns48:SecuritySetting>
+      <ns48:MethodAuthorization xsi:type="ns48:MethodAuthorization">
+       <ns48:NoAuthorization xsi:type="ns48:NoAuthorization"/>
+      </ns48:MethodAuthorization>
+     </ns48:MethodSecurity>
+     <ns35:ImportInformation namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" packageName="gov.nih.nci.cagrid.introduce.security.stubs" portTypeName="ServiceSecurityPortType" wsdlFile="ServiceSecurity.wsdl"/>
+     <ns35:ProviderInformation providerClass="gov.nih.nci.cagrid.introduce.security.service.globus.ServiceSecurityProviderImpl"/>
+    </ns35:Method>
+   </ns35:Methods>
    <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
     <ns3:Custom xsi:type="ns3:Custom"/>
    </ns3:ResourceFrameworkOptions>
   </ns3:Service>
  </ns3:Services>
- <ns48:Extensions xsi:type="ns48:ExtensionsType" xmlns:ns48="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ns48:Extension name="caGrid_Transfer" version="1.3" xsi:type="ns48:ExtensionType"/>
-  <ns48:Extension name="cagrid_wsEnum" version="1.3" xsi:type="ns48:ExtensionType"/>
-  <ns48:Extension name="cagrid_metadata" version="1.3" xsi:type="ns48:ExtensionType"/>
- </ns48:Extensions>
- <ns49:ServiceProperties xmlns:ns49="gme://gov.nih.nci.cagrid.introduce/1/Property">
-  <ns49:Property description="" isFromETC="false" key="caGridWsEnumeration_iterImplType" value="CAGRID_CONCURRENT_COMPLETE"/>
- </ns49:ServiceProperties>
+ <ns49:Extensions xsi:type="ns49:ExtensionsType" xmlns:ns49="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns49:Extension name="caGrid_Transfer" version="1.3" xsi:type="ns49:ExtensionType"/>
+  <ns49:Extension name="cagrid_wsEnum" version="1.3" xsi:type="ns49:ExtensionType"/>
+  <ns49:Extension name="cagrid_metadata" version="1.3" xsi:type="ns49:ExtensionType"/>
+ </ns49:Extensions>
+ <ns50:ServiceProperties xmlns:ns50="gme://gov.nih.nci.cagrid.introduce/1/Property">
+  <ns50:Property description="" isFromETC="false" key="caGridWsEnumeration_iterImplType" value="CAGRID_CONCURRENT_COMPLETE"/>
+ </ns50:ServiceProperties>
 </ns1:ServiceDescription>
