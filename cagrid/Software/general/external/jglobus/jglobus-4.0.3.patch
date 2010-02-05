@@ -1,0 +1,1074 @@
+Binary files jglobus/lib/jaas.jar and jglobus-4.0.3/lib/jaas.jar differ
+Binary files jglobus/lib/ldap.jar and jglobus-4.0.3/lib/ldap.jar differ
+Binary files jglobus/lib/ldapbp.jar and jglobus-4.0.3/lib/ldapbp.jar differ
+Binary files jglobus/lib/ldapsec.jar and jglobus-4.0.3/lib/ldapsec.jar differ
+Binary files jglobus/lib/providerutil.jar and jglobus-4.0.3/lib/providerutil.jar differ
+diff -rupN jglobus/src/org/globus/gsi/CertificateRevocationLists.java jglobus-4.0.3/src/org/globus/gsi/CertificateRevocationLists.java
+--- jglobus/src/org/globus/gsi/CertificateRevocationLists.java	2005-10-28 15:45:42.000000000 -0400
++++ jglobus-4.0.3/src/org/globus/gsi/CertificateRevocationLists.java	2006-10-05 14:04:54.000000000 -0400
+@@ -1,12 +1,11 @@
+ /*
+- * Portions of this file Copyright 1999-2005 University of Chicago
+- * Portions of this file Copyright 1999-2005 The University of Southern California.
+- *
+- * This file or a portion of this file is licensed under the
+- * terms of the Globus Toolkit Public License, found at
+- * http://www.globus.org/toolkit/download/license.html.
+- * If you redistribute this file, with or without
+- * modifications, you must include this notice in the file.
++ * Portions of this file Copyright 1999-2005 University of Chicago Portions of
++ * this file Copyright 1999-2005 The University of Southern California. This
++ * file or a portion of this file is licensed under the terms of the Globus
++ * Toolkit Public License, found at
++ * http://www.globus.org/toolkit/download/license.html. If you redistribute this
++ * file, with or without modifications, you must include this notice in the
++ * file.
+  */
+ package org.globus.gsi;
+ 
+@@ -27,260 +26,253 @@ import org.globus.util.TimestampEntry;
+ import org.apache.commons.logging.Log;
+ import org.apache.commons.logging.LogFactory;
+ 
++
+ public class CertificateRevocationLists {
+-    
+-    private static Log logger =
+-	LogFactory.getLog(CertificateRevocationLists.class.getName());
+-
+-    public static final CrlFilter crlFileFilter = new CrlFilter();
+-
+-    // the list of ca cert locations needed for getDefaultCRL call
+-    private static String prevCaCertLocations = null;
+-    // the default crl locations list derived from prevCaCertLocations
+-    private static String defaultCrlLocations = null;
+-    private static CertificateRevocationLists defaultCrl  = null;
+-    
+-    private Map crlFileMap;
+-    private Map crlIssuerDNMap;
+-
+-    private CertificateRevocationLists() {}
+-
+-    private CertificateRevocationLists(Map crlFileMap, 
+-				       Map crlIssuerDNMap) {
+-	this.crlFileMap = crlFileMap;
+-	this.crlIssuerDNMap = crlIssuerDNMap;
+-    }
+-
+-    public X509CRL[] getCrls() {
+-	if (this.crlIssuerDNMap == null) {
+-	    return null;
+-	}
+-	Collection crls = this.crlIssuerDNMap.values();
+-	X509CRL[] retCrls = new X509CRL[crls.size()];
+-	Iterator iterator = crls.iterator();
+-	int i = 0;
+-	while (iterator.hasNext()) {
+-	    retCrls[i] = (X509CRL)iterator.next();
+-	    i++;
+-	}
+-	return retCrls;
+-    }
+-
+-    public X509CRL getCrl(String issuerName) {
+-	if (this.crlIssuerDNMap == null) {
+-	    return null;
+-	}
+-	return (X509CRL)this.crlIssuerDNMap.get(issuerName);
+-    }
+-
+-    public static FilenameFilter getCrlFilter() {
+-	return crlFileFilter;
+-    }
+-    
+-    public static class CrlFilter implements FilenameFilter {
+-	public boolean accept(File dir, String file) {
+-	    int length = file.length();
+-	    if (length > 3 && 
+-		file.charAt(length-3) == '.' &&
+-		file.charAt(length-2) == 'r' &&
+-		file.charAt(length-1) >= '0' && 
+-		file.charAt(length-1) <= '9') {
+-		return true;
+-	    }
+-	    return false;
+-	}
+-    }
+-
+-    public void refresh() {
+-        reload(null);
+-    }
+-
+-    public synchronized void reload(String locations) {
+-	if (locations == null) {
+-	    return;
+-	}
+-
+-        StringTokenizer tokens = new StringTokenizer(locations, ",");
+-        File crlFile = null;
+-	
+-	Map newCrlFileMap = new HashMap();
+-	Map newCrlIssuerDNMap = new HashMap();
+-
+-        while(tokens.hasMoreTokens()) {
+-            crlFile = new File(tokens.nextToken().toString().trim());
+-
+-            if (!crlFile.canRead()) {
+-                logger.debug("Cannot read: " + crlFile.getAbsolutePath());
+-                continue;
+-            }
+-
+-            if (crlFile.isDirectory()) {
+-                String[] crlFiles = crlFile.list(getCrlFilter());
+-                if (crlFiles == null) {
+-                    logger.debug("Cannot load CRLs from " +
+-                                 crlFile.getAbsolutePath() + " directory.");
+-                } else {
+-                    logger.debug("Loading CRLs from " +
+-                                 crlFile.getAbsolutePath() + " directory.");
+-                    for (int i = 0; i < crlFiles.length; i++) {
+-                        String crlFilename = crlFile.getPath() + 
+-                            File.separatorChar + crlFiles[i];
+-                        File crlFilenameFile = new File(crlFilename);
+-                        if (crlFilenameFile.canRead()) {
+-                            loadCrl(crlFilename, 
+-                                    crlFilenameFile.lastModified(),
+-                                    newCrlFileMap, newCrlIssuerDNMap);
+-                        } else {
+-                            logger.debug("Cannot read: " + 
+-                                         crlFilenameFile.getAbsolutePath());
+-                        }
+-                    }
+-                }
+-            } else {
+-                loadCrl(crlFile.getAbsolutePath(), 
+-			crlFile.lastModified(),
+-			newCrlFileMap, newCrlIssuerDNMap);
+-            }
+-        }
+-	
+-	this.crlFileMap = newCrlFileMap;
+-	this.crlIssuerDNMap = newCrlIssuerDNMap;
+-    }
+-
+-    /**
+-     * Method loads a CRL provided a mapping for it is<br>
+-     * a) Not already in the HashMap
+-     * b) In the HashMap, but
+-     *    - mapped to null object
+-     *    - the CRLEntry has a modified time that is older that latest time
+-     */
+-    private void loadCrl(String crlPath, 
+-			 long latestLastModified, 
+-			 Map newCrlFileMap,
+-			 Map newCrlIssuerDNMap) {
+-	X509CRL crl = null;
+-
+-	if (this.crlFileMap == null) {
+-	    this.crlFileMap = new HashMap();
+-	}
+-
+-	TimestampEntry crlEntry = (TimestampEntry)this.crlFileMap.get(crlPath);
+-	try {
+-	    if (crlEntry == null) {
+-		logger.debug("Loading " + crlPath + " CRL.");
+-		crl = CertUtil.loadCrl(crlPath);
+-		crlEntry = new TimestampEntry(crl, latestLastModified);
+-	    } else if (latestLastModified > crlEntry.getLastModified()) {
+-		logger.debug("Reloading " + crlPath + " CRL.");
+-		crl = CertUtil.loadCrl(crlPath);
+-		crlEntry.setValue(crl);
+-		crlEntry.setLastModified(latestLastModified);
+-	    } else {
+-		logger.debug("CRL " + crlPath + " is up-to-date.");
+-		crl = (X509CRL)crlEntry.getValue();
+-	    }
+-	    newCrlFileMap.put(crlPath, crlEntry);
+-	    newCrlIssuerDNMap.put(crl.getIssuerDN().getName(), crl);
+-	} catch (Exception e) {
+-	    logger.error("CRL " + crlPath + " failed to load.", e);
+-	}
+-    }
+-    
+-    public static CertificateRevocationLists getCertificateRevocationLists(String locations) {
+-	CertificateRevocationLists crl = new CertificateRevocationLists();
+-	crl.reload(locations);
+-	return crl;
+-    }
+-
+-    public static synchronized 
+-        CertificateRevocationLists getDefaultCertificateRevocationLists() {
+-	return getDefault();
+-    }
+-    
+-    public static void 
+-        setDefaultCertificateRevocationList(CertificateRevocationLists crl) {
+-	defaultCrl = crl;
+-    }
+-    
+-    public static synchronized CertificateRevocationLists getDefault() {
+-	if (defaultCrl == null) {
+-	    defaultCrl = new DefaultCertificateRevocationLists();
+-	}
+-	defaultCrl.refresh();
+-	return defaultCrl;
+-    }
+-
+-    public String toString() {
+-	if (this.crlIssuerDNMap == null) {
+-	    return  "crl list is empty";
+-	} else {
+-	    return this.crlIssuerDNMap.toString();
+-	}
+-    }
+-
+-    private static class DefaultCertificateRevocationLists 
+-        extends CertificateRevocationLists {
+-
+-        public void refresh() {
+-            reload(getDefaultCRLLocations());
+-        }
+-
+-        private static synchronized String getDefaultCRLLocations() {
+-            String caCertLocations = 
+-                CoGProperties.getDefault().getCaCertLocations();
+-            
+-            if (prevCaCertLocations == null || 
+-                !prevCaCertLocations.equals(caCertLocations)) {
+-                
+-                if (caCertLocations == null) { 
+-                logger.debug("No CA cert locations specified");
+-                prevCaCertLocations = null;
+-                defaultCrlLocations = null;
+-                } else {
+-                    StringTokenizer tokens = 
+-                        new StringTokenizer(caCertLocations, ",");
+-                    File crlFile = null;
+-                    LinkedList crlDirs = new LinkedList();
+-                    while(tokens.hasMoreTokens()) {
+-                        String crlFileName = 
+-                            tokens.nextToken().toString().trim();
+-                        crlFile = new File(crlFileName);
+-                        if (crlFile.isDirectory()) {
+-                            // all all directories
+-                        } else if (crlFile.isFile()) {
+-                            // add parent directory
+-                            crlFileName = crlFile.getParent();
+-                        } else {
+-                            // skip other types
+-                            continue;
+-                        }
+-                        
+-                        // don't add directories twice
+-                        if (crlFileName != null && 
+-                            !crlDirs.contains(crlFileName)) {
+-                            crlDirs.add(crlFileName);
+-                        }
+-                    }
+-                    
+-                    ListIterator iterator = crlDirs.listIterator(0);
+-                    String locations = null;
+-                    while (iterator.hasNext()) {
+-                        if (locations == null) {
+-                            locations = (String)iterator.next();
+-                        } else {
+-                            locations = locations + "," 
+-                                + (String)iterator.next();
+-                        }
+-                    }
+-                    
+-                    // set defaults
+-                    prevCaCertLocations = caCertLocations;
+-                    defaultCrlLocations = locations;
+-                }
+-            }
+-
+-            return defaultCrlLocations;
+-        }
+-    }
++
++	private static Log logger = LogFactory.getLog(CertificateRevocationLists.class.getName());
++
++	public static final CrlFilter crlFileFilter = new CrlFilter();
++
++	// the list of ca cert locations needed for getDefaultCRL call
++	private static String prevCaCertLocations = null;
++	// the default crl locations list derived from prevCaCertLocations
++	private static String defaultCrlLocations = null;
++	private static CertificateRevocationLists defaultCrl = null;
++
++	private Map crlFileMap;
++	private Map crlIssuerDNMap;
++
++
++	private CertificateRevocationLists() {
++	}
++
++
++	private CertificateRevocationLists(Map crlFileMap, Map crlIssuerDNMap) {
++		this.crlFileMap = crlFileMap;
++		this.crlIssuerDNMap = crlIssuerDNMap;
++	}
++
++
++	public X509CRL[] getCrls() {
++		if (this.crlIssuerDNMap == null) {
++			return null;
++		}
++		Collection crls = this.crlIssuerDNMap.values();
++		X509CRL[] retCrls = new X509CRL[crls.size()];
++		Iterator iterator = crls.iterator();
++		int i = 0;
++		while (iterator.hasNext()) {
++			retCrls[i] = (X509CRL) iterator.next();
++			i++;
++		}
++		return retCrls;
++	}
++
++
++	public X509CRL getCrl(String issuerName) {
++		if (this.crlIssuerDNMap == null) {
++			return null;
++		}
++		return (X509CRL) this.crlIssuerDNMap.get(issuerName);
++	}
++
++
++	public static FilenameFilter getCrlFilter() {
++		return crlFileFilter;
++	}
++
++
++	public static class CrlFilter implements FilenameFilter {
++		public boolean accept(File dir, String file) {
++			int length = file.length();
++			if (length > 3 && file.charAt(length - 3) == '.' && file.charAt(length - 2) == 'r'
++				&& file.charAt(length - 1) >= '0' && file.charAt(length - 1) <= '9') {
++				return true;
++			}
++			return false;
++		}
++	}
++
++
++	public void refresh() {
++		reload(null);
++	}
++
++
++	public synchronized void reload(String locations) {
++		synchronized (TrustedCertificatesLock.getInstance()) {
++			if (locations == null) {
++				return;
++			}
++
++			StringTokenizer tokens = new StringTokenizer(locations, ",");
++			File crlFile = null;
++
++			Map newCrlFileMap = new HashMap();
++			Map newCrlIssuerDNMap = new HashMap();
++
++			while (tokens.hasMoreTokens()) {
++				crlFile = new File(tokens.nextToken().toString().trim());
++
++				if (!crlFile.canRead()) {
++					logger.debug("Cannot read: " + crlFile.getAbsolutePath());
++					continue;
++				}
++
++				if (crlFile.isDirectory()) {
++					String[] crlFiles = crlFile.list(getCrlFilter());
++					if (crlFiles == null) {
++						logger.debug("Cannot load CRLs from " + crlFile.getAbsolutePath() + " directory.");
++					} else {
++						logger.debug("Loading CRLs from " + crlFile.getAbsolutePath() + " directory.");
++						for (int i = 0; i < crlFiles.length; i++) {
++							String crlFilename = crlFile.getPath() + File.separatorChar + crlFiles[i];
++							File crlFilenameFile = new File(crlFilename);
++							if (crlFilenameFile.canRead()) {
++								loadCrl(crlFilename, crlFilenameFile.lastModified(), newCrlFileMap, newCrlIssuerDNMap);
++							} else {
++								logger.debug("Cannot read: " + crlFilenameFile.getAbsolutePath());
++							}
++						}
++					}
++				} else {
++					loadCrl(crlFile.getAbsolutePath(), crlFile.lastModified(), newCrlFileMap, newCrlIssuerDNMap);
++				}
++			}
++
++			this.crlFileMap = newCrlFileMap;
++			this.crlIssuerDNMap = newCrlIssuerDNMap;
++		}
++	}
++
++
++	/**
++	 * Method loads a CRL provided a mapping for it is<br>
++	 * a) Not already in the HashMap b) In the HashMap, but - mapped to null
++	 * object - the CRLEntry has a modified time that is older that latest time
++	 */
++	private void loadCrl(String crlPath, long latestLastModified, Map newCrlFileMap, Map newCrlIssuerDNMap) {
++		X509CRL crl = null;
++
++		if (this.crlFileMap == null) {
++			this.crlFileMap = new HashMap();
++		}
++
++		TimestampEntry crlEntry = (TimestampEntry) this.crlFileMap.get(crlPath);
++		try {
++			if (crlEntry == null) {
++				logger.debug("Loading " + crlPath + " CRL.");
++				crl = CertUtil.loadCrl(crlPath);
++				crlEntry = new TimestampEntry(crl, latestLastModified);
++			} else if (latestLastModified > crlEntry.getLastModified()) {
++				logger.debug("Reloading " + crlPath + " CRL.");
++				crl = CertUtil.loadCrl(crlPath);
++				crlEntry.setValue(crl);
++				crlEntry.setLastModified(latestLastModified);
++			} else {
++				logger.debug("CRL " + crlPath + " is up-to-date.");
++				crl = (X509CRL) crlEntry.getValue();
++			}
++			newCrlFileMap.put(crlPath, crlEntry);
++			newCrlIssuerDNMap.put(crl.getIssuerDN().getName(), crl);
++		} catch (Exception e) {
++			logger.error("CRL " + crlPath + " failed to load.", e);
++		}
++	}
++
++
++	public static CertificateRevocationLists getCertificateRevocationLists(String locations) {
++		CertificateRevocationLists crl = new CertificateRevocationLists();
++		crl.reload(locations);
++		return crl;
++	}
++
++
++	public static synchronized CertificateRevocationLists getDefaultCertificateRevocationLists() {
++		return getDefault();
++	}
++
++
++	public static void setDefaultCertificateRevocationList(CertificateRevocationLists crl) {
++		defaultCrl = crl;
++	}
++
++
++	public static synchronized CertificateRevocationLists getDefault() {
++		if (defaultCrl == null) {
++			defaultCrl = new DefaultCertificateRevocationLists();
++		}
++		defaultCrl.refresh();
++		return defaultCrl;
++	}
++
++
++	public String toString() {
++		if (this.crlIssuerDNMap == null) {
++			return "crl list is empty";
++		} else {
++			return this.crlIssuerDNMap.toString();
++		}
++	}
++
++
++	private static class DefaultCertificateRevocationLists extends CertificateRevocationLists {
++
++		public void refresh() {
++			reload(getDefaultCRLLocations());
++		}
++
++
++		private static synchronized String getDefaultCRLLocations() {
++			String caCertLocations = CoGProperties.getDefault().getCaCertLocations();
++
++			if (prevCaCertLocations == null || !prevCaCertLocations.equals(caCertLocations)) {
++
++				if (caCertLocations == null) {
++					logger.debug("No CA cert locations specified");
++					prevCaCertLocations = null;
++					defaultCrlLocations = null;
++				} else {
++					StringTokenizer tokens = new StringTokenizer(caCertLocations, ",");
++					File crlFile = null;
++					LinkedList crlDirs = new LinkedList();
++					while (tokens.hasMoreTokens()) {
++						String crlFileName = tokens.nextToken().toString().trim();
++						crlFile = new File(crlFileName);
++						if (crlFile.isDirectory()) {
++							// all all directories
++						} else if (crlFile.isFile()) {
++							// add parent directory
++							crlFileName = crlFile.getParent();
++						} else {
++							// skip other types
++							continue;
++						}
++
++						// don't add directories twice
++						if (crlFileName != null && !crlDirs.contains(crlFileName)) {
++							crlDirs.add(crlFileName);
++						}
++					}
++
++					ListIterator iterator = crlDirs.listIterator(0);
++					String locations = null;
++					while (iterator.hasNext()) {
++						if (locations == null) {
++							locations = (String) iterator.next();
++						} else {
++							locations = locations + "," + (String) iterator.next();
++						}
++					}
++
++					// set defaults
++					prevCaCertLocations = caCertLocations;
++					defaultCrlLocations = locations;
++				}
++			}
++
++			return defaultCrlLocations;
++		}
++	}
+ 
+ }
+diff -rupN jglobus/src/org/globus/gsi/TrustedCertificates.java jglobus-4.0.3/src/org/globus/gsi/TrustedCertificates.java
+--- jglobus/src/org/globus/gsi/TrustedCertificates.java	2005-10-28 15:45:42.000000000 -0400
++++ jglobus-4.0.3/src/org/globus/gsi/TrustedCertificates.java	2006-10-05 14:04:32.000000000 -0400
+@@ -1,12 +1,11 @@
+ /*
+- * Portions of this file Copyright 1999-2005 University of Chicago
+- * Portions of this file Copyright 1999-2005 The University of Southern California.
+- *
+- * This file or a portion of this file is licensed under the
+- * terms of the Globus Toolkit Public License, found at
+- * http://www.globus.org/toolkit/download/license.html.
+- * If you redistribute this file, with or without
+- * modifications, you must include this notice in the file.
++ * Portions of this file Copyright 1999-2005 University of Chicago Portions of
++ * this file Copyright 1999-2005 The University of Southern California. This
++ * file or a portion of this file is licensed under the terms of the Globus
++ * Toolkit Public License, found at
++ * http://www.globus.org/toolkit/download/license.html. If you redistribute this
++ * file, with or without modifications, you must include this notice in the
++ * file.
+  */
+ package org.globus.gsi;
+ 
+@@ -27,248 +26,250 @@ import org.apache.commons.logging.LogFac
+ 
+ import java.io.Serializable;
+ 
++
+ public class TrustedCertificates implements Serializable {
+-    
+-    private static Log logger =
+-	LogFactory.getLog(TrustedCertificates.class.getName());
+-
+-    public static final CertFilter certFileFilter = new CertFilter();
+-
+-    private static TrustedCertificates trustedCertificates = null;
+-    
+-    private Map certSubjectDNMap;
+-    private Map certFileMap;
+-    private boolean changed;
+-    
+-    protected TrustedCertificates() {}
+-    
+-    public TrustedCertificates(X509Certificate [] certs) {
+-	this.certSubjectDNMap = new HashMap();
+-	for (int i=0;i<certs.length;i++) {
+-	    this.certSubjectDNMap.put(certs[i].getSubjectDN().toString(), 
+-				      certs[i]);
+-	}
+-    }
+-
+-    public X509Certificate[] getCertificates() {
+-	if (this.certSubjectDNMap == null) {
+-	    return null;
+-	}
+-	Collection certs = this.certSubjectDNMap.values();
+-	X509Certificate [] retCerts = new X509Certificate[certs.size()];
+-	Iterator iterator = certs.iterator();
+-	int i = 0;
+-	while (iterator.hasNext()) {
+-	    retCerts[i++] = (X509Certificate)iterator.next();
+-	}
+-	return retCerts;
+-    }
+-    
+-    public X509Certificate getCertificate(String subject) {
+-	if (this.certSubjectDNMap == null) {
+-	    return null;
+-	}
+-	return (X509Certificate)this.certSubjectDNMap.get(subject);
+-    }
+-
+-    /** 
+-     * Loads X509 certificates from specified locations. The locations
+-     * can be either files or directories. The directories will be
+-     * automatically traversed and all files in the form of 
+-     * <i>hashcode.number</i> will be loaded automatically.
+-     *
+-     * @param locations a list of certificate files/directories to load 
+-     *                  the certificates from. The locations are comma 
+-     *                  separated.
+-     *
+-     * @return <code>java.security.cert.X509Certificate</code> an array 
+-     *         of loaded certificates
+-     */    
+-    public static X509Certificate[] loadCertificates(String locations) {
+-	TrustedCertificates tc = TrustedCertificates.load(locations);
+-	return (tc == null) ? null : tc.getCertificates();
+-    }
+-
+-    public static TrustedCertificates load(String locations) {
+-	TrustedCertificates tc = new TrustedCertificates();
+-	tc.reload(locations);
+-	return tc;
+-    }
+-    
+-    public static FilenameFilter getCertFilter() {
+-	return certFileFilter;
+-    }
+-    
+-    public static class CertFilter implements FilenameFilter {
+-	public boolean accept(File dir, String file) {
+-	    int length = file.length();
+-	    if (length > 2 && 
+-		file.charAt(length-2) == '.' &&
+-		file.charAt(length-1) >= '0' && 
+-		file.charAt(length-1) <= '9') return true;
+-	    return false;
+-	}
+-    }
+-    
+-    public void refresh() {
+-        reload(null);
+-    }
+-
+-    public synchronized void reload(String locations) {
+-	if (locations == null) {
+-	    return;
+-	}
+-
+-	this.changed = false;
+-
+-	StringTokenizer tokens = new StringTokenizer(locations, ",");
+-	File caFile            = null;
+-
+-	Map newCertFileMap = new HashMap();
+-	Map newCertSubjectDNMap = new HashMap();
+-
+-	while(tokens.hasMoreTokens()) {
+-	    caFile = new File(tokens.nextToken().toString().trim());
+-
+-	    if (!caFile.canRead()) {
+-                logger.debug("Cannot read: " + caFile.getAbsolutePath());
+-                continue;
+-            }
+-            
+-	    if (caFile.isDirectory()) {
+-		String[] caCertFiles = caFile.list(getCertFilter());
+-                if (caCertFiles == null) {
+-                    logger.debug("Cannot load certificates from " + 
+-                                 caFile.getAbsolutePath() + " directory.");
+-                } else {
+-                    logger.debug("Loading certificates from " + 
+-                                 caFile.getAbsolutePath() + " directory.");
+-                    for (int i = 0; i < caCertFiles.length; i++) {
+-                        String caFilename = caFile.getPath() + 
+-                            File.separatorChar + caCertFiles[i];
+-                        File caFilenameFile = new File(caFilename);
+-                        if (caFilenameFile.canRead()) {
+-                            loadCert(caFilename,
+-                                     caFilenameFile.lastModified(),
+-                                     newCertFileMap, newCertSubjectDNMap);
+-                        } else {
+-                            logger.debug("Cannot read: " + 
+-                                         caFilenameFile.getAbsolutePath());
+-                        }
+-                    }
+-                }
+-	    } else {
+-		loadCert(caFile.getAbsolutePath(),
+-			 caFile.lastModified(),
+-			 newCertFileMap, newCertSubjectDNMap);
+-	    }
+-	}
+-	
+-	// in case certificates were removed
+-	if (!this.changed && 
+-	    this.certFileMap != null && 
+-	    this.certFileMap.size() != newCertFileMap.size()) {
+-	    this.changed = true;
+-	}
+-
+-	this.certFileMap = newCertFileMap;
+-	this.certSubjectDNMap = newCertSubjectDNMap;
+-    }
+-
+-    /**
+-     * Method loads a certificate provided a mapping for it is<br>
+-     * a) Not already in the HashMap
+-     * b) In the HashMap, but
+-     *    - mapped to null object
+-     *    - the CertEntry has a modified time that is older that latest time
+-     */
+-    private void loadCert(String certPath, 
+-			  long latestLastModified, 
+-			  Map newCertFileMap,
+-			  Map newCertSubjectDNMap) {
+-	X509Certificate cert = null;
++
++	private static Log logger = LogFactory.getLog(TrustedCertificates.class.getName());
++
++	public static final CertFilter certFileFilter = new CertFilter();
+ 	
+-	if (this.certFileMap == null) {
+-	    this.certFileMap = new HashMap();
++	private static TrustedCertificates trustedCertificates = null;
++
++	private Map certSubjectDNMap;
++	private Map certFileMap;
++	private boolean changed;
++
++
++	protected TrustedCertificates() {
++	}
++
++
++	public TrustedCertificates(X509Certificate[] certs) {
++		this.certSubjectDNMap = new HashMap();
++		for (int i = 0; i < certs.length; i++) {
++			this.certSubjectDNMap.put(certs[i].getSubjectDN().toString(), certs[i]);
++		}
++	}
++
++
++	public X509Certificate[] getCertificates() {
++		if (this.certSubjectDNMap == null) {
++			return null;
++		}
++		Collection certs = this.certSubjectDNMap.values();
++		X509Certificate[] retCerts = new X509Certificate[certs.size()];
++		Iterator iterator = certs.iterator();
++		int i = 0;
++		while (iterator.hasNext()) {
++			retCerts[i++] = (X509Certificate) iterator.next();
++		}
++		return retCerts;
++	}
++
++
++	public X509Certificate getCertificate(String subject) {
++		if (this.certSubjectDNMap == null) {
++			return null;
++		}
++		return (X509Certificate) this.certSubjectDNMap.get(subject);
++	}
++
++
++	/**
++	 * Loads X509 certificates from specified locations. The locations can be
++	 * either files or directories. The directories will be automatically
++	 * traversed and all files in the form of <i>hashcode.number</i> will be
++	 * loaded automatically.
++	 * 
++	 * @param locations
++	 *            a list of certificate files/directories to load the
++	 *            certificates from. The locations are comma separated.
++	 * @return <code>java.security.cert.X509Certificate</code> an array of
++	 *         loaded certificates
++	 */
++	public static X509Certificate[] loadCertificates(String locations) {
++		TrustedCertificates tc = TrustedCertificates.load(locations);
++		return (tc == null) ? null : tc.getCertificates();
++	}
++
++
++	public static TrustedCertificates load(String locations) {
++		TrustedCertificates tc = new TrustedCertificates();
++		tc.reload(locations);
++		return tc;
++	}
++
++
++	public static FilenameFilter getCertFilter() {
++		return certFileFilter;
++	}
++
++
++	public static class CertFilter implements FilenameFilter {
++		public boolean accept(File dir, String file) {
++			int length = file.length();
++			if (length > 2 && file.charAt(length - 2) == '.' && file.charAt(length - 1) >= '0'
++				&& file.charAt(length - 1) <= '9')
++				return true;
++			return false;
++		}
++	}
++
++
++	public void refresh() {
++		reload(null);
++	}
++
++
++	public synchronized void reload(String locations) {
++		synchronized (TrustedCertificatesLock.getInstance()) {
++
++			if (locations == null) {
++				return;
++			}
++
++			this.changed = false;
++
++			StringTokenizer tokens = new StringTokenizer(locations, ",");
++			File caFile = null;
++
++			Map newCertFileMap = new HashMap();
++			Map newCertSubjectDNMap = new HashMap();
++
++			while (tokens.hasMoreTokens()) {
++				caFile = new File(tokens.nextToken().toString().trim());
++
++				if (!caFile.canRead()) {
++					logger.debug("Cannot read: " + caFile.getAbsolutePath());
++					continue;
++				}
++
++				if (caFile.isDirectory()) {
++					String[] caCertFiles = caFile.list(getCertFilter());
++					if (caCertFiles == null) {
++						logger.debug("Cannot load certificates from " + caFile.getAbsolutePath() + " directory.");
++					} else {
++						logger.debug("Loading certificates from " + caFile.getAbsolutePath() + " directory.");
++						for (int i = 0; i < caCertFiles.length; i++) {
++							String caFilename = caFile.getPath() + File.separatorChar + caCertFiles[i];
++							File caFilenameFile = new File(caFilename);
++							if (caFilenameFile.canRead()) {
++								loadCert(caFilename, caFilenameFile.lastModified(), newCertFileMap, newCertSubjectDNMap);
++							} else {
++								logger.debug("Cannot read: " + caFilenameFile.getAbsolutePath());
++							}
++						}
++					}
++				} else {
++					loadCert(caFile.getAbsolutePath(), caFile.lastModified(), newCertFileMap, newCertSubjectDNMap);
++				}
++			}
++
++			// in case certificates were removed
++			if (!this.changed && this.certFileMap != null && this.certFileMap.size() != newCertFileMap.size()) {
++				this.changed = true;
++			}
++
++			this.certFileMap = newCertFileMap;
++			this.certSubjectDNMap = newCertSubjectDNMap;
++		}
++	}
++
++
++	/**
++	 * Method loads a certificate provided a mapping for it is<br>
++	 * a) Not already in the HashMap b) In the HashMap, but - mapped to null
++	 * object - the CertEntry has a modified time that is older that latest time
++	 */
++	private void loadCert(String certPath, long latestLastModified, Map newCertFileMap, Map newCertSubjectDNMap) {
++		X509Certificate cert = null;
++
++		if (this.certFileMap == null) {
++			this.certFileMap = new HashMap();
++		}
++
++		TimestampEntry certEntry = (TimestampEntry) this.certFileMap.get(certPath);
++		try {
++			if (certEntry == null) {
++				logger.debug("Loading " + certPath + " certificate.");
++				cert = CertUtil.loadCertificate(certPath);
++				certEntry = new TimestampEntry(cert, latestLastModified);
++				this.changed = true;
++			} else if (latestLastModified > certEntry.getLastModified()) {
++				logger.debug("Reloading " + certPath + " certificate.");
++				cert = CertUtil.loadCertificate(certPath);
++				certEntry.setValue(cert);
++				certEntry.setLastModified(latestLastModified);
++				this.changed = true;
++			} else {
++				logger.debug("Certificate " + certPath + " is up-to-date.");
++				cert = (X509Certificate) certEntry.getValue();
++			}
++			newCertFileMap.put(certPath, certEntry);
++			newCertSubjectDNMap.put(cert.getSubjectDN().getName(), cert);
++		} catch (Exception e) {
++			logger.error("Certificate " + certPath + " failed to load.", e);
++		}
++	}
++
++
++	/**
++	 * Indicates if the last reload caused new certificates to be loaded or
++	 * existing certificates to be reloaded or any certificates removed
++	 */
++	public boolean isChanged() {
++		return this.changed;
++	}
++
++
++	/**
++	 * Obtains the default set of trusted certificates.
++	 * 
++	 * @return TrustedCertificates object.
++	 */
++	public static synchronized TrustedCertificates getDefaultTrustedCertificates() {
++		return getDefault();
++	}
++
++
++	/**
++	 * Sets the default set of trusted certificates to use.
++	 * 
++	 * @param trusted
++	 *            the new set of trusted certificates to use.
++	 */
++	public static void setDefaultTrustedCertificates(TrustedCertificates trusted) {
++		trustedCertificates = trusted;
++	}
++
++
++	/**
++	 * Obtains the default set of trusted certificates.
++	 * 
++	 * @return TrustedCertificates object.
++	 */
++	public static synchronized TrustedCertificates getDefault() {
++		if (trustedCertificates == null) {
++			trustedCertificates = new DefaultTrustedCertificates();
++		}
++		trustedCertificates.refresh();
++		return trustedCertificates;
++	}
++
++
++	public String toString() {
++		if (this.certSubjectDNMap == null) {
++			return "cert list is empty";
++		} else {
++			return this.certSubjectDNMap.toString();
++		}
++	}
++
++
++	private static class DefaultTrustedCertificates extends TrustedCertificates {
++
++		public void refresh() {
++			reload(CoGProperties.getDefault().getCaCertLocations());
++		}
+ 	}
+-	
+-	TimestampEntry certEntry = 
+-	    (TimestampEntry)this.certFileMap.get(certPath);
+-	try {
+-	    if (certEntry == null) {
+-		logger.debug("Loading " + certPath + " certificate.");
+-		cert = CertUtil.loadCertificate(certPath);
+-		certEntry = new TimestampEntry(cert, latestLastModified);
+-		this.changed = true;
+-	    } else if (latestLastModified > certEntry.getLastModified()) {
+-		logger.debug("Reloading " + certPath + " certificate.");
+-		cert = CertUtil.loadCertificate(certPath);
+-		certEntry.setValue(cert);
+-		certEntry.setLastModified(latestLastModified);
+-		this.changed = true;
+-	    } else {
+-		logger.debug("Certificate " + certPath + " is up-to-date.");
+-		cert = (X509Certificate)certEntry.getValue();
+-	    }
+-	    newCertFileMap.put(certPath, certEntry);
+-	    newCertSubjectDNMap.put(cert.getSubjectDN().getName(), cert);
+-	} catch (Exception e) {
+-	    logger.error("Certificate " + certPath + " failed to load.", e);
+-	}
+-    }
+-    
+-    /**
+-     * Indicates if the last reload caused new certificates to be loaded or
+-     * existing certificates to be reloaded or any certificates removed
+-     */
+-    public boolean isChanged() {
+-	return this.changed;
+-    }
+-
+-    /**
+-     * Obtains the default set of trusted certificates. 
+-     *
+-     * @return TrustedCertificates object.
+-     */
+-    public static synchronized TrustedCertificates getDefaultTrustedCertificates() {
+-	return getDefault();
+-    }
+-
+-    /**
+-     * Sets the default set of trusted certificates to use.
+-     *
+-     * @param trusted the new set of trusted certificates to use.
+-     */    
+-    public static void setDefaultTrustedCertificates(TrustedCertificates trusted) {
+-	trustedCertificates = trusted;
+-    }
+-    
+-    /**
+-     * Obtains the default set of trusted certificates.
+-     *
+-     * @return TrustedCertificates object. 
+-     */
+-    public static synchronized TrustedCertificates getDefault() {
+-	if (trustedCertificates == null) {
+-	    trustedCertificates = new DefaultTrustedCertificates();
+-	}
+-	trustedCertificates.refresh();
+-	return trustedCertificates;
+-    }
+-    
+-    public String toString() {
+-	if (this.certSubjectDNMap == null) {
+-	    return  "cert list is empty";
+-	} else {
+-	    return this.certSubjectDNMap.toString();
+-	}
+-    }
+-
+-    private static class DefaultTrustedCertificates 
+-        extends TrustedCertificates {
+-        
+-        public void refresh() {
+-            reload(CoGProperties.getDefault().getCaCertLocations());
+-        }
+-    }
+ }
+diff -rupN jglobus/src/org/globus/gsi/TrustedCertificatesLock.java jglobus-4.0.3/src/org/globus/gsi/TrustedCertificatesLock.java
+--- jglobus/src/org/globus/gsi/TrustedCertificatesLock.java	1969-12-31 19:00:00.000000000 -0500
++++ jglobus-4.0.3/src/org/globus/gsi/TrustedCertificatesLock.java	2006-10-05 14:04:14.000000000 -0400
+@@ -0,0 +1,19 @@
++package org.globus.gsi;
++
++public class TrustedCertificatesLock {
++	private static TrustedCertificatesLock lock;
++
++
++	private TrustedCertificatesLock() {
++
++	}
++
++
++	public static synchronized TrustedCertificatesLock getInstance() {
++		if (lock == null) {
++			lock = new TrustedCertificatesLock();
++		}
++		return lock;
++	}
++
++}
