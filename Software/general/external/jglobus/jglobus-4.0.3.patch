@@ -1072,3 +1072,14 @@ diff -rupN jglobus/src/org/globus/gsi/TrustedCertificatesLock.java jglobus-4.0.3
 +	}
 +
 +}
+diff -rupN jglobus/src/org/globus/net/protocol/https/Handler.java jglobus-4.0.3/src/org/globus/net/protocol/https/Handler.java
+--- jglobus/src/org/globus/net/protocol/https/Handler.java	2005-04-18 11:36:31.000000000 -0400
++++ jglobus-4.0.3/src/org/globus/net/protocol/https/Handler.java	2010-02-05 15:48:49.000000000 -0500
+@@ -21,4 +21,7 @@ public class Handler extends org.globus.
+         return conn;
+     }
+ 
++    protected int getDefaultPort() {
++        return 443;
++    }
+ }
