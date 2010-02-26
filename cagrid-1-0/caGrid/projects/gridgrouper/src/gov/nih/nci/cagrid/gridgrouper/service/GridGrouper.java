@@ -1001,16 +1001,16 @@ public class GridGrouper {
 			session = GrouperSession.start(caller);
 			Group target = GroupFinder.findByName(session, group.getGroupName());
 			Set set = null;
-			if (filter.equals(MemberFilter.All)) {
+			if (MemberFilter.All.equals(filter)) {
 				set = target.getMembers();
-			} else if (filter.equals(MemberFilter.EffectiveMembers)) {
+			} else if (MemberFilter.EffectiveMembers.equals(filter)) {
 				set = target.getEffectiveMembers();
-			} else if (filter.equals(MemberFilter.ImmediateMembers)) {
+			} else if (MemberFilter.ImmediateMembers.equals(filter)) {
 				set = target.getImmediateMembers();
-			} else if (filter.equals(MemberFilter.CompositeMembers)) {
+			} else if (MemberFilter.CompositeMembers.equals(filter)) {
 				set = target.getCompositeMembers();
 			} else {
-				throw new Exception("Unsuppoted member filter type!!!");
+				throw new Exception("Unsupported member filter type!!!");
 			}
 
 			MemberDescriptor[] members = new MemberDescriptor[set.size()];
