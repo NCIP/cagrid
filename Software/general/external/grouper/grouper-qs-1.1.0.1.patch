@@ -1,0 +1,64 @@
+diff -rupN grouper-qs/grouper/src/grouper/edu/internet2/middleware/grouper/PrivilegeResolver.java grouper-qs-1.1.0.1/grouper/src/grouper/edu/internet2/middleware/grouper/PrivilegeResolver.java
+--- grouper-qs/grouper/src/grouper/edu/internet2/middleware/grouper/PrivilegeResolver.java	2006-11-03 04:47:00.000000000 -0500
++++ grouper-qs-1.1.0.1/grouper/src/grouper/edu/internet2/middleware/grouper/PrivilegeResolver.java	2010-03-15 15:32:33.000000000 -0400
+@@ -230,12 +230,16 @@ 
+       ms = (Membership) iter.next();
+       ms.setSession(s);
+       try {
+-        if (FieldType.ACCESS.equals(ms.getList().getType())) {
+-          canPrivDispatch(
+-            s, ms.getGroup(), s.getSubject(), ms.getList().getReadPriv()
+-          );
+-        }
+-        mships.add(ms);
++          if ( FieldType.NAMING.equals( ms.getList().getType() ) ) {
++              canPrivDispatch( s, ms.getStem(), s.getSubject(), ms.getList().getReadPriv() );
++              mships.add(ms);
++          } else {
++          	canPrivDispatch( s, ms.getGroup(), s.getSubject(), ms.getList().getReadPriv() );
++              mships.add(ms);
++          }
++      }
++      catch (StemNotFoundException eGNF)         {
++          ErrorLog.error(PrivilegeResolver.class, msg + eGNF.getMessage());
+       }
+       catch (GroupNotFoundException eGNF)         {
+         ErrorLog.error(PrivilegeResolver.class, msg + eGNF.getMessage());
+diff -rupN grouper-qs/grouper/src/test/edu/internet2/middleware/grouper/TestPrivVIEW.java grouper-qs-1.1.0.1/grouper/src/test/edu/internet2/middleware/grouper/TestPrivVIEW.java
+--- grouper-qs/grouper/src/test/edu/internet2/middleware/grouper/TestPrivVIEW.java	2006-11-03 04:47:00.000000000 -0500
++++ grouper-qs-1.1.0.1/grouper/src/test/edu/internet2/middleware/grouper/TestPrivVIEW.java	2010-03-15 14:20:44.000000000 -0400
+@@ -18,6 +18,7 @@
+ package edu.internet2.middleware.grouper;
+ import  edu.internet2.middleware.subject.*;
+ import  java.util.*;
++
+ import  junit.framework.*;
+ import  org.apache.commons.logging.*;
+ 
+@@ -412,6 +413,26 @@ public class TestPrivVIEW extends TestCa
+     MembershipTestHelper.testImmMship(nrs, b, a, Group.getDefaultList());
+     MembershipTestHelper.testEffMship(nrs, b, subj1, Group.getDefaultList(), a, 1);
+   } // public void testAddGroupAsMemberWithAllVIEW()
++  
++  public void testViewGroupMembersWithREAD() {
++	    LOG.info("testViewGroupMembersWithREAD");
++	    PrivHelper.grantPriv(s, i2, subj0, AccessPrivilege.READ);
++	    GroupHelper.addMember(i2, subj1, m);
++	    Group b = GroupHelper.findByName(nrs, i2.getName());
++	    Set<?> members = b.getMembers();
++	    assertEquals("Should see members", 1, members.size());
++  } // public void testViewGroupMembersWithREAD()
++
++  public void testViewGroupMembersWithOutRead() {
++	    LOG.info("testViewGroupMembersWithOutRead");
++	    GroupHelper.addMember(uofc, subj1, m);    
++	    PrivHelper.revokePriv(s, uofc,  SubjectFinder.findAllSubject(), AccessPrivilege.READ); 
++	    Group b = GroupHelper.findByName(nrs, uofc.getName());
++	    // The revokePriv method removes the privileges cache on the s session but not the nrs session
++	    nrs.getAccessCache().removeAll();
++	    Set<?> members = b.getMembers();
++	    assertEquals("Should not see members", 0, members.size());
++  } // public void testViewGroupMembersWithOutRead()
+ 
+ }
+ 
