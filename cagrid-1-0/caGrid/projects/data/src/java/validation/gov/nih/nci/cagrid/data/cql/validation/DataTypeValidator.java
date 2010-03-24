@@ -3,7 +3,12 @@ package gov.nih.nci.cagrid.data.cql.validation;
 import gov.nih.nci.cagrid.data.MalformedQueryException;
 
 import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -63,11 +68,26 @@ public class DataTypeValidator {
 
 
 	private static void validateDate(String value) throws MalformedQueryException {
-		try {
-			DateFormat.getInstance().parse(value);
-		} catch (Exception ex) {
-			throw new MalformedQueryException("Value " + value + " does not parse as a Date");
-		}
+	    // try short date / time, time, then XSD dateTime, just XSD date
+	    List<SimpleDateFormat> formats = new ArrayList<SimpleDateFormat>(4);
+	    formats.add((SimpleDateFormat) DateFormat.getInstance());
+	    formats.add(new SimpleDateFormat("HH:mm:ss"));
+	    formats.add(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"));
+	    formats.add(new SimpleDateFormat("yyyy-MM-dd"));
+	    
+	    Date date = null;
+	    Iterator<SimpleDateFormat> formatIter = formats.iterator();
+	    while (date == null && formatIter.hasNext()) {
+	        SimpleDateFormat formatter = formatIter.next();
+	        try {
+	            date = formatter.parse(value);
+	        } catch (ParseException ex) {
+	            LOG.debug(value + " was not parsable by pattern " + formatter.toPattern());
+	        }
+	    }
+	    if (date == null) {
+	        throw new MalformedQueryException("Value " + value + " does not parse as a Date");
+	    }
 	}
 
 
