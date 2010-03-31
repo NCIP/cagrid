@@ -41,6 +41,10 @@ public class DataTypeValidator {
 			validateBoolean(value);
 		} else if (dataType.equals(Character.class.getName()) || dataType.equals("CHARACTER")) {
 			validateCharacter(value);
+		} else if (dataType.equals(Double.class.getName())) {
+		    validateDouble(value);
+		} else if (dataType.equals(Float.class.getName())) {
+		    validateFloat(value);
 		} else {
 			LOG.warn("Data type " + dataType + " not recognized; Validated only as a String");
 		}
@@ -104,5 +108,23 @@ public class DataTypeValidator {
 		if (value.length() > 1) {
 			throw new MalformedQueryException("Value " + value + " is not a single Character or empty");
 		}
+	}
+	
+	
+	private static void validateDouble(String value) throws MalformedQueryException {
+	    try {
+	        Double.valueOf(value);
+	    } catch (Exception ex) {
+	        throw new MalformedQueryException("Value " + value + " does not parse as a Double");
+	    }
+	}
+	
+	
+	private static void validateFloat(String value) throws MalformedQueryException {
+	    try {
+	        Float.valueOf(value);
+	    } catch (Exception ex) {
+	        throw new MalformedQueryException("Value " + value + " does not parse as a Float");
+	    }
 	}
 }
