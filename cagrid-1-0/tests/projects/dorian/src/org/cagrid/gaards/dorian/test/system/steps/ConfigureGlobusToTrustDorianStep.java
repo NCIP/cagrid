@@ -78,4 +78,8 @@ public class ConfigureGlobusToTrustDorianStep extends Step {
 			policyFile.delete();
 		}
 	}
+	
+	public File getCA() {
+		return caFile;
+	}
 }
