@@ -156,14 +156,19 @@ public class TavernaWorkflowServiceHelper {
 		//	list.remove(0);
 		//	list.remove(list.size() - 1);
 		//	array = (String[]) list.toArray(new String[list.size()]);
+		boolean thisIsHeader = true;
 		for(int i = 0; i< rows.length; i++ ){
 			
 			String[] cols = rows[i].split("\\s+");
+			if(cols.length < 3){
+				continue;
+			}
 			String bgcolor = "bgcolor=\"yellow\"";
-			if ((cols[1].equals(cols[2])) && (cols[2].equals(cols[3])))    		
+			if (cols[1].equals(cols[2]))    		
 				bgcolor= "";
-			if(i == 0){ // Because this is a Header of the table.
+			if(thisIsHeader){ // Because this is a Header of the table.
 				outputTable = outputTable + "<TR bgcolor=\"#333366\" height=\"200%\">";
+				thisIsHeader = false;
 			}
 			else {
 				outputTable = outputTable + "<TR " + bgcolor + ">";
