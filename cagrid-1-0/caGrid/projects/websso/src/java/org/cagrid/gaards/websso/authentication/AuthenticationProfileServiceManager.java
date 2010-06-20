@@ -159,9 +159,9 @@ public class AuthenticationProfileServiceManager extends Runner implements Initi
 					AuthenticationServiceInformation serviceInformation = authenticationServiceHandle
 							.getAuthenticationServiceInformation();
 					authenticationServices.add(serviceInformation);
-				}				
+				}
+				break;
 			}
-			break;
 		}
 		return authenticationServices;
 	}
@@ -172,8 +172,12 @@ public class AuthenticationProfileServiceManager extends Runner implements Initi
 		Set<QName> authenticationServiceProfiles = new HashSet<QName>();
 		for (AuthenticationServiceInformation authenticationServiceInformation : authenticationServices) {
 			if (authenticationServiceInformation.getAuthenticationServiceURL().equals(authenticationServiceURL)) {
-				authenticationServiceProfiles
-						.addAll(authenticationServiceInformation.getAuthenticationServiceProfiles());
+				Set<QName> tempasProfiles = authenticationServiceInformation.getAuthenticationServiceProfiles();
+				if(tempasProfiles!=null && tempasProfiles.size()>0){
+					authenticationServiceProfiles.addAll(tempasProfiles);
+				}else{
+					log.error("Authentication Profile was not specified for Authentication Service "+authenticationServiceURL +" in Credential Provider Database");
+				}
 				break;
 			}
 		}
