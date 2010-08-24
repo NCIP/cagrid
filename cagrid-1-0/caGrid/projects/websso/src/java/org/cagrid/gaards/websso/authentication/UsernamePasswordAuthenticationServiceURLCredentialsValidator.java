@@ -1,7 +1,5 @@
 package org.cagrid.gaards.websso.authentication;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -10,12 +8,12 @@ import org.springframework.validation.Validator;
  * A validator to check if UserNamePasswordCredentials is valid.
  * 
  * @author Scott Battaglia
- * @version $Revision: 1.5.2.1 $ $Date: 2009-01-30 22:44:54 $
+ * @version $Revision: 1.6 $ $Date: 2009-01-31 00:03:07 $
  * @since 3.0
  */
 public final class UsernamePasswordAuthenticationServiceURLCredentialsValidator implements Validator {
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
 	public boolean supports(final Class clazz) {
         return UsernamePasswordAuthenticationServiceURLCredentials.class.isAssignableFrom(clazz);
     }
