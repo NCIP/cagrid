@@ -204,6 +204,11 @@ class XMIHandler extends BaseXMIHandler {
         String tag = atts.getValue(XMIConstants.XMI_UML_TAGGED_VALUE_TAG);
         String modelElement = atts.getValue(XMIConstants.XMI_UML_TAGGED_VALUE_MODEL_ELEMENT);
         String value = atts.getValue(XMIConstants.XMI_UML_TAGGED_VALUE_VALUE);
+        
+        if (tag == null) {
+            LOG.error("No tag attribute on TaggedValue element!!!  modelElement = " + modelElement + ", value = " + value);
+            return;
+        }
 
         LOG.debug(tag + " on " + modelElement);            
         if (tag.startsWith(XMIConstants.XMI_TAG_PROPERTY)) {
