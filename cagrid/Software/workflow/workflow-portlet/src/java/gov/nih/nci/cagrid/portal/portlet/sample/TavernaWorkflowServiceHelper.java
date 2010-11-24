@@ -70,7 +70,7 @@ public class TavernaWorkflowServiceHelper {
 
 
 		logger.info("Submitting Workflow to : " + tavernaWorkflowServiceUrl);
-		EndpointReferenceType resourceEPR = TavernaWorkflowServiceClient.setupWorkflow(tavernaWorkflowServiceUrl, scuflDoc, workflowName);
+		EndpointReferenceType resourceEPR = TavernaWorkflowServiceClient.setupWorkflow(tavernaWorkflowServiceUrl, scuflDoc, workflowName,null);
 		WorkflowStatusType workflowStatus =  TavernaWorkflowServiceClient.startWorkflow(inputArgs, resourceEPR);
 
 		return resourceEPR;
