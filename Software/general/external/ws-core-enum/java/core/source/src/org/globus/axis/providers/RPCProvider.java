@@ -26,7 +26,7 @@ import org.apache.axis.enum.Scope;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.globus.axis.description.ServiceDescUtil;
-import org.globus.gsi.jaas.JaasSubject;
+import org.globus.gsi.gssapi.jaas.JaasSubject;
 import org.globus.wsrf.impl.security.authentication.Constants;
 
 public class RPCProvider extends org.apache.axis.providers.java.RPCProvider {

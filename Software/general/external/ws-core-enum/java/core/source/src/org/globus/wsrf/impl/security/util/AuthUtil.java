@@ -46,7 +46,7 @@ import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 import org.apache.xml.security.signature.XMLSignatureException;
 import org.apache.xml.security.utils.Base64;
 import org.globus.axis.gsi.GSIConstants;
-import org.globus.gsi.jaas.GlobusPrincipal;
+import org.globus.gsi.gssapi.jaas.GlobusPrincipal;
 import org.globus.util.I18n;
 import org.globus.wsrf.NoResourceHomeException;
 import org.globus.wsrf.ResourceContext;

@@ -18,8 +18,8 @@ import javax.xml.rpc.handler.MessageContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.globus.gsi.jaas.UserNamePrincipal;
-import org.globus.security.gridmap.GridMap;
+import org.globus.gsi.gridmap.GridMap;
+import org.globus.gsi.gssapi.jaas.UserNamePrincipal;
 import org.globus.util.I18n;
 import org.globus.wsrf.Resource;
 import org.globus.wsrf.ResourceContext;

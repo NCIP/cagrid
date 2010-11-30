@@ -28,9 +28,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.globus.gsi.GlobusCredential;
 import org.globus.gsi.GlobusCredentialException;
+import org.globus.gsi.X509Credential;
+import org.globus.gsi.gridmap.GridMap;
 import org.globus.gsi.gssapi.GlobusGSSCredentialImpl;
-import org.globus.gsi.jaas.JaasGssUtil;
-import org.globus.security.gridmap.GridMap;
+import org.globus.gsi.gssapi.JaasGssUtil;
 import org.globus.util.I18n;
 import org.globus.wsrf.Constants;
 import org.globus.wsrf.config.ConfigException;
@@ -300,9 +301,8 @@ public abstract class SecurityConfig {
     // Convert to GSS
     public static GSSCredential toGSSCredential(GlobusCredential cred)
         throws GSSException {
-        return new GlobusGSSCredentialImpl(
-                   cred, GSSCredential.INITIATE_AND_ACCEPT
-        );
+    	X509Credential x509cred = new X509Credential(cred.getPrivateKey(), cred.getCertificateChain());
+    	return new GlobusGSSCredentialImpl(x509cred, GSSCredential.INITIATE_AND_ACCEPT);
     }
 
     // load gridmap

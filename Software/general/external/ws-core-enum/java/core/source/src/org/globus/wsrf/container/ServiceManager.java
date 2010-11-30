@@ -29,7 +29,7 @@ import org.apache.axis.server.AxisServer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.globus.axis.description.ServiceDescUtil;
-import org.globus.gsi.jaas.JaasSubject;
+import org.globus.gsi.gssapi.jaas.JaasSubject;
 import org.globus.util.I18n;
 import org.globus.wsrf.NoResourceHomeException;
 import org.globus.wsrf.ResourceContext;

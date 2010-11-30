@@ -22,7 +22,7 @@ import org.apache.axis.types.URI;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.globus.gsi.gssapi.GSSConstants;
-import org.globus.gsi.jaas.JaasGssUtil;
+import org.globus.gsi.gssapi.JaasGssUtil;
 import org.globus.util.Base64;
 import org.globus.util.I18n;
 import org.globus.ws.sc.SecurityContextTokenType;

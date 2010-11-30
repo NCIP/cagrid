@@ -18,7 +18,7 @@ import org.apache.axis.AxisEngine;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.globus.axis.util.Util;
-import org.globus.gsi.jaas.JaasGssUtil;
+import org.globus.gsi.gssapi.JaasGssUtil;
 import org.globus.wsrf.impl.security.descriptor.ContainerSecurityConfig;
 import org.ietf.jgss.GSSCredential;
 

@@ -31,6 +31,7 @@ import org.apache.ws.security.message.WSSignEnvelope;
 import org.apache.ws.security.util.WSSecurityUtil;
 import org.apache.xml.security.signature.XMLSignature;
 import org.globus.gsi.GlobusCredential;
+import org.globus.gsi.X509Credential;
 import org.globus.gsi.gssapi.GlobusGSSCredentialImpl;
 import org.globus.util.I18n;
 import org.globus.wsrf.impl.security.authentication.Constants;
@@ -78,7 +79,8 @@ public class X509WSSignedSOAPEnvelopeBuilder
             GlobusCredential defaultCredential =
                 GlobusCredential.getDefaultCredential();
             if (defaultCredential != null) {
-                return new GlobusGSSCredentialImpl(defaultCredential,
+            	X509Credential x509cred = new X509Credential(defaultCredential.getPrivateKey(), defaultCredential.getCertificateChain());
+                return new GlobusGSSCredentialImpl(x509cred,
                                                    GSSCredential
                                                    .INITIATE_AND_ACCEPT);
             }

@@ -46,7 +46,7 @@ import org.globus.wsrf.samples.counter.Counter;
 
 import org.globus.wsrf.client.BaseClient;
 
-import org.globus.security.gridmap.GridMap;
+import org.globus.gsi.gridmap.GridMap;
 
 import com.counter.CounterPortType;
 import com.counter.CreateCounter;

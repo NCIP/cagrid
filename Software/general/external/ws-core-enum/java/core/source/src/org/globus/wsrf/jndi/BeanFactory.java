@@ -22,7 +22,7 @@ import javax.security.auth.Subject;
 import org.apache.axis.AxisEngine;
 import org.apache.axis.MessageContext;
 import org.apache.axis.server.AxisServer;
-import org.globus.gsi.jaas.JaasSubject;
+import org.globus.gsi.gssapi.jaas.JaasSubject;
 import org.globus.wsrf.container.ServiceManager;
 import org.globus.wsrf.impl.security.descriptor.ServiceSecurityConfig;
 import org.globus.wsrf.security.SecurityManager;

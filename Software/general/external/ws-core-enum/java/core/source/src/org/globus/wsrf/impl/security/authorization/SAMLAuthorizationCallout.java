@@ -37,7 +37,7 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.globus.axis.gsi.GSIConstants;
 import org.globus.gsi.CertUtil;
 import org.globus.gsi.gssapi.GlobusGSSCredentialImpl;
-import org.globus.gsi.jaas.JaasGssUtil;
+import org.globus.gsi.gssapi.JaasGssUtil;
 import org.globus.util.I18n;
 import org.globus.wsrf.impl.security.SecurityMessageElement;
 import org.globus.wsrf.impl.security.authentication.Constants;
@@ -54,6 +54,7 @@ import org.globus.wsrf.security.authorization.PDP;
 import org.globus.wsrf.security.authorization.PDPConfig;
 import org.globus.wsrf.security.authorization.SAMLRequestPortType;
 import org.globus.wsrf.utils.ContextUtils;
+import org.ietf.jgss.GSSException;
 import org.opensaml.ExtendedAuthorizationDecisionQuery;
 import org.opensaml.QName;
 import org.opensaml.SAMLAction;
@@ -423,6 +424,10 @@ public class SAMLAuthorizationCallout implements PDP {
                 request.sign(XMLSignature.ALGO_ID_SIGNATURE_RSA,
                              credential.getPrivateKey(), certs, false);
             } catch (SAMLException exp) {
+                String err = i18n.getMessage("samlSign");
+                logger.debug(err, exp);
+                throw new AuthorizationException(err, exp);
+            } catch (GSSException exp) {
                 String err = i18n.getMessage("samlSign");
                 logger.debug(err, exp);
                 throw new AuthorizationException(err, exp);

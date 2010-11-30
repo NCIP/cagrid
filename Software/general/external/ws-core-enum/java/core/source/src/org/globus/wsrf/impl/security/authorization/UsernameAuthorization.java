@@ -25,7 +25,7 @@ import javax.security.auth.login.LoginException;
 import javax.xml.namespace.QName;
 import javax.xml.rpc.handler.MessageContext;
 
-import org.globus.gsi.jaas.PasswordCredential;
+import org.globus.gsi.gssapi.jaas.PasswordCredential;
 import org.globus.wsrf.impl.security.authorization.exceptions.AuthorizationException;
 import org.globus.wsrf.impl.security.authorization.exceptions.CloseException;
 import org.globus.wsrf.impl.security.authorization.exceptions.InitializeException;

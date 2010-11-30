@@ -12,7 +12,7 @@ package org.globus.wsrf.impl.security.descriptor;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.globus.security.gridmap.GridMap;
+import org.globus.gsi.gridmap.GridMap;
 import org.globus.wsrf.Resource;
 import org.globus.wsrf.config.ConfigException;
 import org.globus.wsrf.impl.security.authorization.ServiceAuthorizationChain;

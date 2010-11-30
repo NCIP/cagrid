@@ -20,9 +20,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.xml.security.signature.XMLSignature;
 import org.globus.gsi.GlobusCredential;
+import org.globus.gsi.X509Credential;
 import org.globus.gsi.gssapi.GlobusGSSCredentialImpl;
-import org.globus.gsi.jaas.JaasGssUtil;
-import org.globus.gsi.jaas.JaasSubject;
+import org.globus.gsi.gssapi.JaasGssUtil;
+import org.globus.gsi.gssapi.jaas.JaasSubject;
 import org.globus.gsi.proxy.ProxyPathValidator;
 import org.globus.wsrf.impl.security.authentication.Constants;
 import org.globus.wsrf.impl.security.authentication.secureconv.service.SecurityContext;
@@ -101,8 +102,9 @@ public class WSSecurityResponseEngine extends WSSecurityEngine {
             credential = GlobusCredential.getDefaultCredential();
         } else {
             if (cred instanceof GlobusGSSCredentialImpl) {
-                credential =
-                    ((GlobusGSSCredentialImpl) cred).getGlobusCredential();
+                X509Credential x509credential =
+                    ((GlobusGSSCredentialImpl) cred).getX509Credential();
+                credential = new GlobusCredential(x509credential.getPrivateKey(), x509credential.getCertificateChain());
             }
         }
 

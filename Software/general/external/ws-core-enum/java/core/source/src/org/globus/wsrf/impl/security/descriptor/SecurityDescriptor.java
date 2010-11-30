@@ -18,7 +18,7 @@ import java.io.Serializable;
 import javax.security.auth.Subject;
 import javax.xml.namespace.QName;
 
-import org.globus.security.gridmap.GridMap;
+import org.globus.gsi.gridmap.GridMap;
 import org.globus.util.I18n;
 import org.globus.wsrf.impl.security.authorization.ServiceAuthorizationChain;
 import org.globus.wsrf.impl.security.descriptor.util.ElementParser;

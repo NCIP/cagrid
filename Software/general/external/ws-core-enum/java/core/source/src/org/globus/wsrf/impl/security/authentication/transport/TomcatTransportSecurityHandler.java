@@ -23,7 +23,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.globus.axis.gsi.GSIConstants;
 import org.globus.gsi.gssapi.GSSConstants;
-import org.globus.gsi.jaas.GlobusPrincipal;
+import org.globus.gsi.gssapi.jaas.GlobusPrincipal;
 import org.globus.util.I18n;
 import org.globus.wsrf.impl.security.authentication.Constants;
 import org.globus.wsrf.utils.Resources;

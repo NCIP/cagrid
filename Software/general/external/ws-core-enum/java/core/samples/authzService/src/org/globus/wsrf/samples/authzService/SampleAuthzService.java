@@ -31,6 +31,8 @@ import org.apache.axis.MessageContext;
 import org.apache.axis.message.MessageElement;
 import org.apache.axis.utils.XMLUtils;
 
+import org.ietf.jgss.GSSException;
+
 import org.opensaml.ExtendedAuthorizationDecisionQuery;
 import org.opensaml.SAMLAction;
 import org.opensaml.SAMLAssertion;
@@ -46,7 +48,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import org.globus.gsi.gssapi.GlobusGSSCredentialImpl;
-import org.globus.gsi.jaas.JaasGssUtil;
+import org.globus.gsi.gssapi.JaasGssUtil;
 import org.globus.wsrf.ResourceContext;
 import org.globus.wsrf.impl.security.SecurityMessageElement;
 import org.globus.wsrf.impl.security.authorization.SAMLAuthorizationConstants;
@@ -237,6 +239,10 @@ public class SampleAuthzService {
                 response.sign(XMLSignature.ALGO_ID_SIGNATURE_RSA,
                              credential.getPrivateKey(), certs, false);
             } catch (SAMLException exp) {
+                String err = "Error signing SAMLResponse";
+                logger.debug(err, exp);
+                throw new RemoteException(err, exp);
+            } catch (GSSException exp) {
                 String err = "Error signing SAMLResponse";
                 logger.debug(err, exp);
                 throw new RemoteException(err, exp);
