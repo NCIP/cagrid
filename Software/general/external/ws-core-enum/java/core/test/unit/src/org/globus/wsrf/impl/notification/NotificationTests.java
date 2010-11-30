@@ -11,16 +11,14 @@
 package org.globus.wsrf.impl.notification;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
-
-import org.oasis.wsrf.lifetime.Destroy;
-import org.oasis.wsn.Subscribe;
-import org.oasis.wsn.TopicExpressionType;
-import org.oasis.wsn.SubscribeResponse;
-
 import org.globus.wsrf.NotificationConsumerManager;
 import org.globus.wsrf.WSNConstants;
 import org.globus.wsrf.core.notification.SubscriptionManager;
 import org.globus.wsrf.test.GridTestSuite;
+import org.oasis.wsn.Subscribe;
+import org.oasis.wsn.SubscribeResponse;
+import org.oasis.wsn.TopicExpressionType;
+import org.oasis.wsrf.lifetime.Destroy;
 
 public class NotificationTests extends NotificationTestCase {
 

@@ -17,8 +17,9 @@ import java.util.HashMap;
 
 import javax.xml.namespace.QName;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 import org.apache.axis.Message;
 import org.apache.axis.MessageContext;
@@ -26,12 +27,8 @@ import org.apache.axis.client.AxisClient;
 import org.apache.axis.configuration.NullProvider;
 import org.apache.axis.message.SOAPEnvelope;
 import org.apache.axis.message.addressing.Constants;
-
-import org.gridforum.jgss.ExtendedGSSManager;
-import org.ietf.jgss.GSSContext;
-import org.ietf.jgss.GSSCredential;
-import org.ietf.jgss.GSSManager;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.globus.gsi.GlobusCredential;
 import org.globus.gsi.gssapi.GSSConstants;
 import org.globus.wsrf.impl.security.authentication.encryption.GssEncryptedSOAPEnvelopeBuilder;
@@ -41,9 +38,10 @@ import org.globus.wsrf.impl.security.authentication.signature.GssSignedSOAPEnvel
 import org.globus.wsrf.impl.security.authentication.signature.X509WSSignedSOAPEnvelopeBuilder;
 import org.globus.wsrf.impl.security.authentication.wssec.GSSConfig;
 import org.globus.wsrf.impl.security.authentication.wssec.WSSecurityException;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.gridforum.jgss.ExtendedGSSManager;
+import org.ietf.jgss.GSSContext;
+import org.ietf.jgss.GSSCredential;
+import org.ietf.jgss.GSSManager;
 
 public class TestWSSecurity extends TestCase {
     private static Log logger =

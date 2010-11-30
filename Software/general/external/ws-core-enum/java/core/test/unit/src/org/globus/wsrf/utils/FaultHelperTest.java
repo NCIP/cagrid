@@ -10,12 +10,11 @@
  */
 package org.globus.wsrf.utils;
 
+import javax.xml.namespace.QName;
+
 import junit.framework.TestCase;
 
 import org.globus.wsrf.encoding.ObjectSerializer;
-
-import javax.xml.namespace.QName;
-
 import org.oasis.wsrf.faults.BaseFaultType;
 
 public class FaultHelperTest extends TestCase {

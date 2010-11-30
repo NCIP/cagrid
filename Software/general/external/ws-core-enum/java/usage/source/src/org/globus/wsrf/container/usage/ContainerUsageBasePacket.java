@@ -10,11 +10,10 @@
  */
 package org.globus.wsrf.container.usage;
 
-import org.globus.usage.packets.IPTimeMonitorPacket;
-import org.globus.usage.packets.CustomByteBuffer;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.globus.usage.packets.CustomByteBuffer;
+import org.globus.usage.packets.IPTimeMonitorPacket;
 
 public class ContainerUsageBasePacket extends IPTimeMonitorPacket {
 

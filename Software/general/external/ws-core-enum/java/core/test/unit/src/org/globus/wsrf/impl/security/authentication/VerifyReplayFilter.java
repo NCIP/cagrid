@@ -10,10 +10,10 @@
  */
 package org.globus.wsrf.impl.security.authentication;
 
+import java.util.Calendar;
+
 import org.globus.wsrf.impl.security.authentication.wssec.ReplayAttackFilter;
 import org.globus.wsrf.impl.security.authentication.wssec.WSSecurityException;
-
-import java.util.Calendar;
 
 public class VerifyReplayFilter extends ReplayAttackFilter {
 

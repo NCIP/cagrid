@@ -13,11 +13,11 @@ package org.globus.wsrf.impl.security.authentication;
 import java.util.Calendar;
 import java.util.Random;
 
-import org.globus.wsrf.impl.security.authentication.wssec.WSSecurityException;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
+import org.globus.wsrf.impl.security.authentication.wssec.WSSecurityException;
 
 public class TestReplayAttackFilter extends TestCase {
 

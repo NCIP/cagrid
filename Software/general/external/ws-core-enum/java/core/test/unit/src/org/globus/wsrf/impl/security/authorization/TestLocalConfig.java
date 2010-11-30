@@ -10,23 +10,19 @@
  */
 package org.globus.wsrf.impl.security.authorization;
 
+import java.io.File;
+
+import javax.security.auth.Subject;
+import javax.xml.namespace.QName;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import java.io.File;
-
-import javax.xml.namespace.QName;
-
-import org.globus.gsi.jaas.GlobusPrincipal;
-
+import org.apache.axis.MessageContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import javax.security.auth.Subject;
-
-import org.apache.axis.MessageContext;
-
+import org.globus.gsi.jaas.GlobusPrincipal;
 import org.globus.wsrf.security.authorization.PDP;
 
 public class TestLocalConfig extends TestCase {

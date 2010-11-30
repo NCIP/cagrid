@@ -11,8 +11,8 @@
 package org.globus.wsrf.impl.security.authorization;
 
 import junit.framework.Test;
-import junit.framework.TestSuite;
 import junit.framework.TestResult;
+import junit.framework.TestSuite;
 
 import org.globus.wsrf.test.GridTestSuite;
 

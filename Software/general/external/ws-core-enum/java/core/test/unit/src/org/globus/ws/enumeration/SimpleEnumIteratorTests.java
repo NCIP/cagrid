@@ -15,18 +15,17 @@
  */
 package org.globus.ws.enumeration;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import javax.xml.namespace.QName;
 
-import org.apache.axis.message.MessageElement;
+import junit.framework.TestCase;
 
+import org.apache.axis.message.MessageElement;
 import org.globus.wsrf.encoding.ObjectDeserializer;
 import org.globus.wsrf.encoding.ObjectSerializer;
-
-import junit.framework.TestCase;
 
 public class SimpleEnumIteratorTests extends TestCase {
 

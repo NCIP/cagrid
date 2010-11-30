@@ -19,10 +19,9 @@ import java.util.NoSuchElementException;
 
 import javax.xml.soap.SOAPElement;
 
+import org.apache.axis.AxisFault;
 import org.xmlsoap.schemas.ws._2004._09.enumeration.DataSource;
 import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerationContextType;
-
-import org.apache.axis.AxisFault;
 
 public class ClientEnumIteratorTests extends EnumerationTestCase {
 

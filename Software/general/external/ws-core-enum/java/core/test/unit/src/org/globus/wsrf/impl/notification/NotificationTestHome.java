@@ -12,12 +12,12 @@ package org.globus.wsrf.impl.notification;
 
 import javax.xml.namespace.QName;
 
-import org.globus.wsrf.ResourceKey;
-import org.globus.wsrf.ResourceException;
 import org.globus.wsrf.InvalidateResourceMapping;
+import org.globus.wsrf.ResourceException;
+import org.globus.wsrf.ResourceKey;
+import org.globus.wsrf.container.Lock;
 import org.globus.wsrf.impl.ResourceHomeImpl;
 import org.globus.wsrf.impl.SimpleResourceKey;
-import org.globus.wsrf.container.Lock;
 
 public class NotificationTestHome extends ResourceHomeImpl
     implements InvalidateResourceMapping {

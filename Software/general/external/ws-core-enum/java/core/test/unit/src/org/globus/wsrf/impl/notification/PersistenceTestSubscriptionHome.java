@@ -11,10 +11,9 @@
 package org.globus.wsrf.impl.notification;
 
 import org.globus.wsrf.InvalidateResourceMapping;
-import org.globus.wsrf.ResourceKey;
 import org.globus.wsrf.ResourceException;
+import org.globus.wsrf.ResourceKey;
 import org.globus.wsrf.container.Lock;
-import org.globus.wsrf.container.LockManager;
 
 public class PersistenceTestSubscriptionHome extends SubscriptionHome
     implements InvalidateResourceMapping

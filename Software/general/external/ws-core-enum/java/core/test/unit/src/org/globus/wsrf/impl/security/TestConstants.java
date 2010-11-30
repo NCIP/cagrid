@@ -10,18 +10,16 @@
  */
 package org.globus.wsrf.impl.security;
 
-import org.globus.gsi.CertUtil;
-import org.globus.gsi.GlobusCredential;
-
-import org.globus.wsrf.impl.security.authentication.encryption.EncryptionCredentials;
+import java.security.cert.X509Certificate;
 
 import javax.security.auth.Subject;
 
-import java.security.cert.X509Certificate;
-
+import org.globus.gsi.CertUtil;
+import org.globus.gsi.GlobusCredential;
+import org.globus.wsrf.impl.security.authentication.encryption.EncryptionCredentials;
 import org.globus.wsrf.impl.security.authorization.Authorization;
-import org.globus.wsrf.impl.security.authorization.SelfAuthorization;
 import org.globus.wsrf.impl.security.authorization.HostAuthorization;
+import org.globus.wsrf.impl.security.authorization.SelfAuthorization;
 
 public class TestConstants {
 

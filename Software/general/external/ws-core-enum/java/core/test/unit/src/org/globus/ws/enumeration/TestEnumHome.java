@@ -17,11 +17,10 @@ package org.globus.ws.enumeration;
 
 import javax.xml.namespace.QName;
 
+import org.globus.wsrf.ResourceKey;
 import org.globus.wsrf.impl.ResourceHomeImpl;
 import org.globus.wsrf.impl.SimpleResourceKey;
 import org.globus.wsrf.impl.TestResource;
-
-import org.globus.wsrf.ResourceKey;
 
 public class TestEnumHome extends ResourceHomeImpl {
 

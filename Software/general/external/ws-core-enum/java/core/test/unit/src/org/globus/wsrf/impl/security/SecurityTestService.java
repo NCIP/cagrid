@@ -16,12 +16,12 @@ import java.security.cert.X509Certificate;
 
 import javax.security.auth.Subject;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.apache.axis.MessageContext;
 import org.apache.axis.message.addressing.EndpointReferenceType;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.globus.gsi.gssapi.GlobusGSSCredentialImpl;
+import org.globus.gsi.jaas.JaasGssUtil;
 import org.globus.security.gridmap.GridMap;
 import org.globus.wsrf.ResourceContext;
 import org.globus.wsrf.ResourceKey;
@@ -58,8 +58,6 @@ import org.globus.wsrf.tests.security.SetAnonymousAuthzResponse;
 import org.globus.wsrf.tests.security.SetServiceAuthzOutput;
 import org.globus.wsrf.utils.AddressingUtils;
 import org.globus.wsrf.utils.ContextUtils;
-import org.globus.gsi.gssapi.GlobusGSSCredentialImpl;
-import org.globus.gsi.jaas.JaasGssUtil;
 
 /**
  * This class is used by two test services. The first one is used to

@@ -15,17 +15,10 @@ import java.util.Map;
 
 import javax.xml.rpc.Stub;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.types.URI;
-
-import org.oasis.wsn.TopicExpressionType;
-import org.oasis.wsn.Subscribe;
-import org.oasis.wsn.SubscribeResponse;
-import org.oasis.wsrf.lifetime.Destroy;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.globus.axis.gsi.GSIConstants;
 import org.globus.wsrf.NotificationConsumerManager;
 import org.globus.wsrf.WSNConstants;
@@ -37,18 +30,22 @@ import org.globus.wsrf.impl.notification.NotificationTestService;
 import org.globus.wsrf.impl.notification.NotifyThread;
 import org.globus.wsrf.impl.notification.TestNotifyCallback;
 import org.globus.wsrf.impl.security.TestConstants;
+import org.globus.wsrf.impl.security.authorization.Authorization;
+import org.globus.wsrf.impl.security.authorization.NoAuthorization;
 import org.globus.wsrf.impl.security.descriptor.ClientSecurityDescriptor;
 import org.globus.wsrf.security.Constants;
 import org.globus.wsrf.test.GridTestSuite;
-import org.globus.wsrf.tests.basic.TestPortType;
 import org.globus.wsrf.tests.basic.CreateResource;
 import org.globus.wsrf.tests.basic.CreateResourceResponse;
+import org.globus.wsrf.tests.basic.TestPortType;
 import org.globus.wsrf.tests.basic.service.TestServiceAddressingLocator;
 import org.globus.wsrf.tests.security.SecurityTestPortType;
 import org.globus.wsrf.tests.security.SetAnonymousAuthz;
 import org.globus.wsrf.tests.security.service.SecurityTestServiceAddressingLocator;
-import org.globus.wsrf.impl.security.authorization.Authorization;
-import org.globus.wsrf.impl.security.authorization.NoAuthorization;
+import org.oasis.wsn.Subscribe;
+import org.oasis.wsn.SubscribeResponse;
+import org.oasis.wsn.TopicExpressionType;
+import org.oasis.wsrf.lifetime.Destroy;
 
 public class GSIServiceContainerTest extends NotificationTestCase {
 

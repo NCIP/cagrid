@@ -12,28 +12,24 @@ package org.globus.wsrf.impl.properties;
 
 import java.util.Calendar;
 
-import org.globus.wsrf.impl.TestHome;
-import org.globus.wsrf.impl.TestResource;
+import javax.xml.namespace.QName;
 
 import org.apache.axis.message.MessageElement;
-
 import org.globus.wsrf.WSRFConstants;
 import org.globus.wsrf.encoding.ObjectDeserializer;
 import org.globus.wsrf.encoding.ObjectSerializer;
+import org.globus.wsrf.impl.TestHome;
+import org.globus.wsrf.impl.TestResource;
 import org.globus.wsrf.tests.basic.TestPortType;
-
-import org.oasis.wsrf.properties.ResourceUnknownFaultType;
-import org.oasis.wsrf.properties.GetResourcePropertyResponse;
-import org.oasis.wsrf.properties.InvalidResourcePropertyQNameFaultType;
-import org.oasis.wsrf.properties.SetResourcePropertyRequestFailedFaultType;
-import org.oasis.wsrf.properties.UnableToModifyResourcePropertyFaultType;
-import org.oasis.wsrf.properties.SetResourceProperties_Element;
-import org.oasis.wsrf.properties.SetResourcePropertiesResponse;
 import org.oasis.wsrf.properties.DeleteType;
+import org.oasis.wsrf.properties.GetResourcePropertyResponse;
 import org.oasis.wsrf.properties.InsertType;
+import org.oasis.wsrf.properties.InvalidResourcePropertyQNameFaultType;
+import org.oasis.wsrf.properties.ResourceUnknownFaultType;
+import org.oasis.wsrf.properties.SetResourcePropertiesResponse;
+import org.oasis.wsrf.properties.SetResourceProperties_Element;
+import org.oasis.wsrf.properties.UnableToModifyResourcePropertyFaultType;
 import org.oasis.wsrf.properties.UpdateType;
-
-import javax.xml.namespace.QName;
 
 public class SetResourcePropertiesTests extends PropertiesTestCase {
 

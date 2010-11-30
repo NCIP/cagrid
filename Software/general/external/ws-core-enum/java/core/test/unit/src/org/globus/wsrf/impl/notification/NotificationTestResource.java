@@ -18,8 +18,6 @@ import java.io.ObjectOutputStream;
 import java.rmi.RemoteException;
 import java.util.Calendar;
 
-import org.oasis.wsrf.faults.BaseFaultType;
-
 import org.globus.wsrf.InvalidResourceKeyException;
 import org.globus.wsrf.NoSuchResourceException;
 import org.globus.wsrf.PersistentResource;
@@ -41,6 +39,7 @@ import org.globus.wsrf.impl.SimpleTopicListMetaData;
 import org.globus.wsrf.tests.notification.JobStatusType;
 import org.globus.wsrf.utils.FilePersistenceHelper;
 import org.globus.wsrf.utils.SubscriptionPersistenceUtils;
+import org.oasis.wsrf.faults.BaseFaultType;
 
 public class NotificationTestResource implements ResourceProperties,
                                                  TopicListAccessor,

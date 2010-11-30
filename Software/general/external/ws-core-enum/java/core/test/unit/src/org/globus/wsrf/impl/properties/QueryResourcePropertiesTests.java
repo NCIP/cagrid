@@ -10,40 +10,33 @@
  */
 package org.globus.wsrf.impl.properties;
 
-import java.util.Iterator;
 import java.io.IOException;
+import java.util.Iterator;
 
-import org.globus.wsrf.impl.TestHome;
-import org.globus.wsrf.impl.TestResource;
-import org.globus.wsrf.encoding.DialectDependentSerializer;
+import javax.xml.namespace.QName;
+import javax.xml.rpc.Service;
+import javax.xml.rpc.encoding.TypeMapping;
+import javax.xml.rpc.encoding.TypeMappingRegistry;
 
 import org.apache.axis.AxisFault;
 import org.apache.axis.Constants;
-import org.apache.axis.message.MessageElement;
-import org.apache.axis.message.Text;
 import org.apache.axis.encoding.ser.SimpleSerializerFactory;
-
+import org.apache.axis.message.MessageElement;
+import org.apache.axis.types.URI;
 import org.globus.wsrf.WSRFConstants;
-import org.globus.wsrf.utils.AnyHelper;
+import org.globus.wsrf.encoding.DialectDependentSerializer;
+import org.globus.wsrf.impl.TestHome;
+import org.globus.wsrf.impl.TestResource;
 import org.globus.wsrf.tests.basic.TestPortType;
-
-import org.oasis.wsrf.properties.QueryExpressionType;
-import org.oasis.wsrf.properties.QueryResourceProperties_Element;
-import org.oasis.wsrf.properties.QueryResourcePropertiesResponse;
+import org.globus.wsrf.utils.AnyHelper;
 import org.oasis.wsrf.properties.InvalidQueryExpressionFaultType;
 import org.oasis.wsrf.properties.QueryEvaluationErrorFaultType;
+import org.oasis.wsrf.properties.QueryExpressionType;
+import org.oasis.wsrf.properties.QueryResourcePropertiesResponse;
+import org.oasis.wsrf.properties.QueryResourceProperties_Element;
 import org.oasis.wsrf.properties.ResourceUnknownFaultType;
 import org.oasis.wsrf.properties.UnknownQueryExpressionDialectFaultType;
-
-import org.apache.axis.types.URI;
-
-import javax.xml.namespace.QName;
-
 import org.w3c.dom.Node;
-
-import javax.xml.rpc.Service;
-import javax.xml.rpc.encoding.TypeMappingRegistry;
-import javax.xml.rpc.encoding.TypeMapping;
 
 public class QueryResourcePropertiesTests extends PropertiesTestCase {
 

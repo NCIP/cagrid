@@ -10,24 +10,22 @@
  */
 package org.globus.wsrf.impl.notification;
 
-import org.oasis.wsrf.lifetime.Destroy;
+import javax.xml.rpc.Stub;
+
+import org.apache.axis.message.addressing.EndpointReferenceType;
+import org.globus.wsrf.NotificationConsumerManager;
+import org.globus.wsrf.WSNConstants;
+import org.globus.wsrf.core.notification.SubscriptionManager;
+import org.globus.wsrf.core.notification.service.SubscriptionManagerServiceAddressingLocator;
+import org.globus.wsrf.impl.security.descriptor.ClientSecurityDescriptor;
+import org.globus.wsrf.security.Constants;
+import org.globus.wsrf.test.GridTestSuite;
+import org.globus.wsrf.tests.notification.NotificationTestPortType;
+import org.globus.wsrf.tests.notification.service.NotificationTestServiceAddressingLocator;
 import org.oasis.wsn.Subscribe;
 import org.oasis.wsn.SubscribeResponse;
 import org.oasis.wsn.TopicExpressionType;
-
-import org.apache.axis.message.addressing.EndpointReferenceType;
-
-import javax.xml.rpc.Stub;
-
-import org.globus.wsrf.WSNConstants;
-import org.globus.wsrf.NotificationConsumerManager;
-import org.globus.wsrf.core.notification.SubscriptionManager;
-import org.globus.wsrf.security.Constants;
-import org.globus.wsrf.impl.security.descriptor.ClientSecurityDescriptor;
-import org.globus.wsrf.tests.notification.NotificationTestPortType;
-import org.globus.wsrf.tests.notification.service.NotificationTestServiceAddressingLocator;
-import org.globus.wsrf.core.notification.service.SubscriptionManagerServiceAddressingLocator;
-import org.globus.wsrf.test.GridTestSuite;
+import org.oasis.wsrf.lifetime.Destroy;
 
 public class NotifyThread extends Thread {
 

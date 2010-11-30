@@ -10,49 +10,41 @@
  */
 package org.globus.wsrf.impl.security.descriptor;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.security.cert.X509Certificate;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.Vector;
+
+import javax.security.auth.Subject;
+import javax.xml.namespace.QName;
+
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import org.xml.sax.InputSource;
-
-import org.globus.wsrf.utils.XmlUtils;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
-import javax.xml.namespace.QName;
-
-import java.io.File;
-import java.io.ObjectOutputStream;
-import java.io.FileOutputStream;
-import java.io.FileInputStream;
-import java.io.ByteArrayInputStream;
-
-import javax.security.auth.Subject;
+import org.globus.axis.gsi.GSIConstants;
 import org.globus.gsi.GlobusCredential;
+import org.globus.gsi.gssapi.GlobusGSSCredentialImpl;
 import org.globus.gsi.jaas.GlobusPrincipal;
 import org.globus.gsi.jaas.PasswordCredential;
 import org.globus.security.gridmap.GridMap;
-import org.globus.gsi.gssapi.GlobusGSSCredentialImpl;
-import java.security.cert.X509Certificate;
+import org.globus.wsrf.impl.security.authentication.Constants;
 import org.globus.wsrf.impl.security.authentication.encryption.EncryptionCredentials;
-
-import org.globus.wsrf.test.GridTestCase;
-
-import java.util.Set;
-import java.util.List;
-import java.util.Vector;
-import java.util.Iterator;
-
-import org.globus.axis.gsi.GSIConstants;
-
+import org.globus.wsrf.impl.security.authorization.HostAuthorization;
 import org.globus.wsrf.impl.security.util.AuthUtil;
 import org.globus.wsrf.impl.security.util.FixedObjectInputStream;
-import org.globus.wsrf.impl.security.authentication.Constants;
-import org.globus.wsrf.impl.security.authorization.HostAuthorization;
+import org.globus.wsrf.test.GridTestCase;
+import org.globus.wsrf.utils.XmlUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
 
 public class TestSecurityDescriptor extends GridTestCase {
 

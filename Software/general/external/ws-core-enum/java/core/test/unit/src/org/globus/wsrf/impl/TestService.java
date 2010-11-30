@@ -13,30 +13,27 @@ package org.globus.wsrf.impl;
 import java.net.URL;
 import java.rmi.RemoteException;
 
-import org.apache.axis.message.addressing.EndpointReferenceType;
-
-import org.globus.wsrf.ResourceContext;
-import org.globus.wsrf.ResourceKey;
-import org.globus.wsrf.utils.AddressingUtils;
-import org.globus.axis.transport.local.LocalTransportUtils;
-
-import org.globus.wsrf.tests.basic.service.TestServiceAddressingLocator;
-import org.globus.wsrf.tests.basic.TestPortType;
-import org.globus.wsrf.tests.basic.CreateResourceResponse;
-import org.globus.wsrf.tests.basic.CreateResource;
-import org.globus.wsrf.tests.basic.ResetNumInstancesResponse;
-import org.globus.wsrf.tests.basic.ResetNumInstances;
-import org.globus.wsrf.tests.basic.GetInstanceInfoResponse;
-import org.globus.wsrf.tests.basic.GetInstanceInfo;
-import org.globus.wsrf.tests.basic.TestLocalInvocation;
-import org.globus.wsrf.tests.basic.TestLocalInvocationResponse;
-import org.globus.wsrf.tests.basic.NoPermissionFault;
-
-import org.oasis.wsrf.lifetime.Destroy;
-
-import javax.xml.rpc.server.ServiceLifecycle;
 import javax.xml.rpc.ServiceException;
 import javax.xml.rpc.Stub;
+import javax.xml.rpc.server.ServiceLifecycle;
+
+import org.apache.axis.message.addressing.EndpointReferenceType;
+import org.globus.axis.transport.local.LocalTransportUtils;
+import org.globus.wsrf.ResourceContext;
+import org.globus.wsrf.ResourceKey;
+import org.globus.wsrf.tests.basic.CreateResource;
+import org.globus.wsrf.tests.basic.CreateResourceResponse;
+import org.globus.wsrf.tests.basic.GetInstanceInfo;
+import org.globus.wsrf.tests.basic.GetInstanceInfoResponse;
+import org.globus.wsrf.tests.basic.NoPermissionFault;
+import org.globus.wsrf.tests.basic.ResetNumInstances;
+import org.globus.wsrf.tests.basic.ResetNumInstancesResponse;
+import org.globus.wsrf.tests.basic.TestLocalInvocation;
+import org.globus.wsrf.tests.basic.TestLocalInvocationResponse;
+import org.globus.wsrf.tests.basic.TestPortType;
+import org.globus.wsrf.tests.basic.service.TestServiceAddressingLocator;
+import org.globus.wsrf.utils.AddressingUtils;
+import org.oasis.wsrf.lifetime.Destroy;
 
 public class TestService implements ServiceLifecycle {
 

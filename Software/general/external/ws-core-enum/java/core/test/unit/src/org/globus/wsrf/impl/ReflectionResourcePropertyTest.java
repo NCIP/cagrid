@@ -10,24 +10,22 @@
  */
 package org.globus.wsrf.impl;
 
-import java.util.Vector;
-import java.util.Iterator;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Vector;
 
 import javax.xml.namespace.QName;
-import javax.xml.soap.SOAPElement;
 import javax.xml.soap.Name;
+import javax.xml.soap.SOAPElement;
 
-import org.w3c.dom.Element;
+import junit.framework.TestCase;
 
+import org.apache.axis.Constants;
 import org.globus.wsrf.ResourceProperty;
 import org.globus.wsrf.ResourcePropertyMetaData;
 import org.globus.wsrf.encoding.ObjectDeserializer;
 import org.globus.wsrf.encoding.ObjectSerializer;
-
-import org.apache.axis.Constants;
-
-import junit.framework.TestCase;
+import org.w3c.dom.Element;
 
 // o add test with beans
 public class ReflectionResourcePropertyTest extends TestCase {

@@ -10,14 +10,14 @@
  */
 package org.oasis.wsrf.properties;
 
-import java.util.List;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.io.Serializable;
-
-import org.oasis.AnyListType;
+import java.util.List;
 
 import javax.xml.namespace.QName;
+
+import org.oasis.AnyListType;
 
 public class SetResourceProperties_Element implements AnyListType, Serializable {
     

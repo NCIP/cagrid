@@ -16,15 +16,16 @@ import java.util.Calendar;
 
 import javax.naming.Context;
 
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
 import org.globus.wsrf.Constants;
 import org.globus.wsrf.jndi.JNDIUtils;
 
 import commonj.timers.Timer;
 import commonj.timers.TimerListener;
 import commonj.timers.TimerManager;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 public class TimerTest extends TestCase
 {

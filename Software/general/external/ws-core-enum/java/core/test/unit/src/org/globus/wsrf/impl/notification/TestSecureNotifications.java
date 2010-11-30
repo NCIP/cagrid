@@ -14,17 +14,10 @@ import java.util.Vector;
 
 import javax.xml.rpc.Stub;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.types.URI;
-
-import org.oasis.wsn.TopicExpressionType;
-import org.oasis.wsn.Subscribe;
-import org.oasis.wsn.SubscribeResponse;
-import org.oasis.wsrf.properties.ResourcePropertyValueChangeNotificationType;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.globus.wsrf.NotificationConsumerManager;
 import org.globus.wsrf.WSNConstants;
 import org.globus.wsrf.core.notification.ResourcePropertyValueChangeNotificationElementType;
@@ -37,9 +30,13 @@ import org.globus.wsrf.impl.security.descriptor.GSISecureConvAuthMethod;
 import org.globus.wsrf.impl.security.descriptor.GSISecureMsgAuthMethod;
 import org.globus.wsrf.impl.security.descriptor.ResourceSecurityDescriptor;
 import org.globus.wsrf.test.GridTestSuite;
-import org.globus.wsrf.tests.security.SecurityTestPortType;
 import org.globus.wsrf.tests.security.CreateResourceResponse;
+import org.globus.wsrf.tests.security.SecurityTestPortType;
 import org.globus.wsrf.tests.security.service.SecurityTestServiceAddressingLocator;
+import org.oasis.wsn.Subscribe;
+import org.oasis.wsn.SubscribeResponse;
+import org.oasis.wsn.TopicExpressionType;
+import org.oasis.wsrf.properties.ResourcePropertyValueChangeNotificationType;
 
 public class TestSecureNotifications extends NotificationTestCase {
 

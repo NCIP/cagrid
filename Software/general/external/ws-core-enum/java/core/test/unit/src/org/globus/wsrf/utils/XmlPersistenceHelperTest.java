@@ -10,19 +10,18 @@
  */
 package org.globus.wsrf.utils;
 
-import java.util.List;
-import java.util.Iterator;
 import java.util.HashMap;
-
-import org.globus.wsrf.ResourceKey;
-import org.globus.wsrf.impl.SimpleResourceKey;
-import org.globus.wsrf.impl.ReflectionResource;
-
-import org.globus.wsrf.tests.basic.TestRP;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.xml.namespace.QName;
 
 import junit.framework.TestCase;
+
+import org.globus.wsrf.ResourceKey;
+import org.globus.wsrf.impl.ReflectionResource;
+import org.globus.wsrf.impl.SimpleResourceKey;
+import org.globus.wsrf.tests.basic.TestRP;
 
 public class XmlPersistenceHelperTest extends TestCase {
 

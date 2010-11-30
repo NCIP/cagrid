@@ -10,39 +10,32 @@
  */
 package org.globus.wsrf.handlers;
 
-import org.globus.wsrf.WSRFConstants;
-import org.globus.wsrf.encoding.ObjectSerializer;
-import org.globus.axis.gsi.GSIConstants;
-import org.globus.gsi.gssapi.auth.NoAuthorization;
-import org.globus.gsi.gssapi.GlobusGSSCredentialImpl;
-import org.globus.gsi.GlobusCredential;
-
-import org.oasis.wsrf.properties.GetResourcePropertyResponse;
-
-import org.globus.wsrf.impl.TestService;
-import org.globus.wsrf.test.GridTestCase;
-import org.globus.wsrf.tests.basic.CreateResource;
-import org.globus.wsrf.tests.basic.CreateResourceResponse;
-import org.globus.wsrf.tests.basic.TestPortType;
-import org.globus.wsrf.tests.basic.service.TestServiceAddressingLocator;
-import org.globus.wsrf.tests.security.SecurityTestPortType;
-import org.globus.wsrf.tests.security.service.SecurityTestServiceAddressingLocator;
-import org.globus.wsrf.tests.security.GsiSecConvIntegrity;
-
 import java.io.InputStream;
 
 import javax.xml.namespace.QName;
-
-import org.apache.axis.message.addressing.Constants;
-import org.apache.axis.message.addressing.EndpointReferenceType;
-import org.apache.axis.message.addressing.AddressingHeaders;
-import org.apache.axis.AxisFault;
-import org.apache.axis.client.Call;
-import org.apache.axis.types.URI;
-import org.apache.axis.message.SOAPEnvelope;
-
 import javax.xml.rpc.Stub;
 
+import org.apache.axis.AxisFault;
+import org.apache.axis.client.Call;
+import org.apache.axis.message.SOAPEnvelope;
+import org.apache.axis.message.addressing.AddressingHeaders;
+import org.apache.axis.message.addressing.Constants;
+import org.apache.axis.message.addressing.EndpointReferenceType;
+import org.apache.axis.types.URI;
+import org.globus.axis.gsi.GSIConstants;
+import org.globus.gsi.GlobusCredential;
+import org.globus.gsi.gssapi.GlobusGSSCredentialImpl;
+import org.globus.gsi.gssapi.auth.NoAuthorization;
+import org.globus.wsrf.WSRFConstants;
+import org.globus.wsrf.encoding.ObjectSerializer;
+import org.globus.wsrf.impl.TestService;
+import org.globus.wsrf.test.GridTestCase;
+import org.globus.wsrf.tests.basic.CreateResource;
+import org.globus.wsrf.tests.basic.TestPortType;
+import org.globus.wsrf.tests.basic.service.TestServiceAddressingLocator;
+import org.globus.wsrf.tests.security.GsiSecConvIntegrity;
+import org.globus.wsrf.tests.security.SecurityTestPortType;
+import org.globus.wsrf.tests.security.service.SecurityTestServiceAddressingLocator;
 import org.ietf.jgss.GSSCredential;
 
 public class WSATests extends GridTestCase {

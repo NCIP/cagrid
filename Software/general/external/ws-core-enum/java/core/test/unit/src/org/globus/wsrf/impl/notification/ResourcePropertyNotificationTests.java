@@ -17,16 +17,15 @@ import javax.xml.namespace.QName;
 import org.apache.axis.Constants;
 import org.apache.axis.message.MessageElement;
 import org.apache.axis.message.addressing.EndpointReferenceType;
-
 import org.globus.wsrf.NotificationConsumerManager;
 import org.globus.wsrf.WSNConstants;
 import org.globus.wsrf.core.notification.ResourcePropertyValueChangeNotificationElementType;
 import org.globus.wsrf.encoding.ObjectSerializer;
 import org.globus.wsrf.test.GridTestSuite;
 import org.globus.wsrf.tests.notification.JobStatusType;
-import org.oasis.wsn.TopicExpressionType;
 import org.oasis.wsn.Subscribe;
 import org.oasis.wsn.SubscribeResponse;
+import org.oasis.wsn.TopicExpressionType;
 import org.oasis.wsrf.properties.InsertType;
 import org.oasis.wsrf.properties.ResourcePropertyValueChangeNotificationType;
 import org.oasis.wsrf.properties.SetResourceProperties_Element;

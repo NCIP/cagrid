@@ -13,16 +13,15 @@ package org.globus.wsrf.impl.notification;
 import javax.xml.namespace.QName;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
-
 import org.globus.wsrf.NotificationConsumerManager;
 import org.globus.wsrf.WSNConstants;
 import org.globus.wsrf.test.GridTestSuite;
 import org.oasis.wsn.ResourceUnknownFaultType;
+import org.oasis.wsn.Subscribe;
+import org.oasis.wsn.SubscribeResponse;
 import org.oasis.wsn.TopicExpressionType;
 import org.oasis.wsn.TopicNotSupportedFaultType;
 import org.oasis.wsn.TopicPathDialectUnknownFaultType;
-import org.oasis.wsn.Subscribe;
-import org.oasis.wsn.SubscribeResponse;
 
 public class SubscribeTests extends NotificationTestCase
 {

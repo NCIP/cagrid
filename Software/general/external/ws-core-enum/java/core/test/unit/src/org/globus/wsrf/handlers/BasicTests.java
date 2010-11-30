@@ -23,11 +23,6 @@ import javax.xml.rpc.Stub;
 import org.apache.axis.AxisFault;
 import org.apache.axis.MessageContext;
 import org.apache.axis.transport.http.HTTPConstants;
-
-import org.oasis.wsrf.lifetime.Destroy;
-import org.oasis.wsrf.lifetime.ImmediateResourceTermination;
-import org.oasis.wsrf.lifetime.WSResourceLifetimeServiceAddressingLocator;
-
 import org.globus.util.http.HTTPProtocol;
 import org.globus.util.http.HTTPResponseParser;
 import org.globus.wsrf.impl.TestService;
@@ -39,6 +34,9 @@ import org.globus.wsrf.tests.basic.NoPermissionFault;
 import org.globus.wsrf.tests.basic.TestLocalInvocation;
 import org.globus.wsrf.tests.basic.TestPortType;
 import org.globus.wsrf.tests.basic.service.TestServiceAddressingLocator;
+import org.oasis.wsrf.lifetime.Destroy;
+import org.oasis.wsrf.lifetime.ImmediateResourceTermination;
+import org.oasis.wsrf.lifetime.WSResourceLifetimeServiceAddressingLocator;
 
 public class BasicTests extends GridTestCase {
 

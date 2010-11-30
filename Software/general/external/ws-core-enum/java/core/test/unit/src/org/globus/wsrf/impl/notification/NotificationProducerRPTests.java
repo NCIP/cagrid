@@ -13,7 +13,6 @@ package org.globus.wsrf.impl.notification;
 import org.apache.axis.Constants;
 import org.apache.axis.message.MessageElement;
 import org.apache.axis.types.URI;
-
 import org.globus.wsrf.WSNConstants;
 import org.oasis.wsrf.properties.GetResourcePropertyResponse;
 

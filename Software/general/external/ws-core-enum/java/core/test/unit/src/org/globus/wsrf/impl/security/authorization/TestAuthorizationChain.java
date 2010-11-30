@@ -10,14 +10,12 @@
  */
 package org.globus.wsrf.impl.security.authorization;
 
+import javax.security.auth.Subject;
 import javax.xml.namespace.QName;
 import javax.xml.rpc.handler.MessageContext;
 
-import javax.security.auth.Subject;
-
-import org.globus.wsrf.security.authorization.Interceptor;
-
 import org.globus.wsrf.impl.security.authorization.exceptions.AuthorizationException;
+import org.globus.wsrf.security.authorization.Interceptor;
 
 public class TestAuthorizationChain extends ServiceAuthorizationChain {
     

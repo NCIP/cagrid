@@ -12,12 +12,13 @@ package org.globus.wsrf.impl.security;
 
 import javax.xml.rpc.Stub;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.types.URI;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.globus.axis.gsi.GSIConstants;
 import org.globus.wsrf.impl.security.authentication.Constants;
 import org.globus.wsrf.impl.security.authorization.Authorization;
@@ -31,13 +32,11 @@ import org.globus.wsrf.tests.security.GsiSecConvDeleg;
 import org.globus.wsrf.tests.security.GsiSecConvIntegrity;
 import org.globus.wsrf.tests.security.GsiSecConvOnly;
 import org.globus.wsrf.tests.security.GsiSecConvPrivacy;
+import org.globus.wsrf.tests.security.GsiSecMsgIntegrity;
 import org.globus.wsrf.tests.security.GsiSecMsgOnly;
 import org.globus.wsrf.tests.security.GsiSecMsgPrivacy;
-import org.globus.wsrf.tests.security.GsiSecMsgIntegrity;
 import org.globus.wsrf.tests.security.SecurityTestPortType;
 import org.globus.wsrf.tests.security.service.SecurityTestServiceAddressingLocator;
-import junit.framework.Test;
-import junit.framework.TestSuite;
 
 public class SecureServiceAccessTest extends GridTestCase {
 

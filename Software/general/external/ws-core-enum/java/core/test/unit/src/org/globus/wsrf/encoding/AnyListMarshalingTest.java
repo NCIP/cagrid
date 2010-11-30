@@ -10,30 +10,25 @@
  */
 package org.globus.wsrf.encoding;
 
-import org.oasis.AnyListType;
-import org.oasis.wsrf.properties.SetResourceProperties_Element;
-
-import java.io.StringWriter;
 import java.io.StringReader;
-
+import java.io.StringWriter;
 import java.util.Calendar;
-
-import org.apache.axis.MessageContext;
-import org.apache.axis.message.MessageElement;
-import org.apache.axis.encoding.SerializationContext;
-import org.apache.axis.client.AxisClient;
-
-import org.globus.wsrf.utils.XmlUtils;
-
-import org.xml.sax.InputSource;
-
-import junit.framework.TestCase;
 
 import javax.xml.namespace.QName;
 
+import junit.framework.TestCase;
+
+import org.apache.axis.MessageContext;
+import org.apache.axis.client.AxisClient;
+import org.apache.axis.encoding.SerializationContext;
+import org.apache.axis.message.MessageElement;
+import org.globus.wsrf.utils.XmlUtils;
+import org.oasis.AnyListType;
 import org.oasis.wsrf.properties.DeleteType;
 import org.oasis.wsrf.properties.InsertType;
+import org.oasis.wsrf.properties.SetResourceProperties_Element;
 import org.oasis.wsrf.properties.UpdateType;
+import org.xml.sax.InputSource;
 
 public class AnyListMarshalingTest extends TestCase {
 

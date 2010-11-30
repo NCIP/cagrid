@@ -12,11 +12,10 @@ package org.globus.wsrf.impl.notification;
 
 import java.util.List;
 
-import org.apache.axis.message.addressing.EndpointReferenceType;
-
-import org.globus.wsrf.NotifyCallback;
-
 import javax.xml.namespace.QName;
+
+import org.apache.axis.message.addressing.EndpointReferenceType;
+import org.globus.wsrf.NotifyCallback;
 
 public class TestNotifyCallback implements NotifyCallback
 {

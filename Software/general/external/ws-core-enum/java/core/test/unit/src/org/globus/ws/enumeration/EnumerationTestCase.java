@@ -15,34 +15,30 @@
  */
 package org.globus.ws.enumeration;
 
-import org.xmlsoap.schemas.ws._2004._09.enumeration.service.EnumerationServiceAddressingLocator;
-import org.xmlsoap.schemas.ws._2004._09.enumeration.DataSourceStart;
-import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerateResponse;
-import org.xmlsoap.schemas.ws._2004._09.enumeration.Enumerate;
-import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerationContextType;
-
-import com.enumeration.EnumerationPortType;
-import com.enumeration.StartEnumerationResponse;
-import com.enumeration.StartEnumeration;
-
-import org.globus.wsrf.ResourceKey;
-import org.globus.wsrf.encoding.ObjectDeserializer;
-import org.globus.wsrf.encoding.ObjectSerializer;
-
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
-import javax.xml.soap.SOAPElement;
 import javax.xml.namespace.QName;
+import javax.xml.soap.SOAPElement;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.message.addressing.ReferencePropertiesType;
 import org.apache.axis.types.URI;
-
+import org.globus.wsrf.ResourceKey;
+import org.globus.wsrf.encoding.ObjectDeserializer;
+import org.globus.wsrf.encoding.ObjectSerializer;
+import org.globus.wsrf.test.GridTestCase;
 import org.globus.wsrf.types.profiling.Timestamp;
 import org.globus.wsrf.types.profiling.TimestampType;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.DataSourceStart;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.Enumerate;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerateResponse;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerationContextType;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.service.EnumerationServiceAddressingLocator;
 
-import org.globus.wsrf.test.GridTestCase;
+import com.enumeration.EnumerationPortType;
+import com.enumeration.StartEnumeration;
+import com.enumeration.StartEnumerationResponse;
 
 public class EnumerationTestCase extends GridTestCase {
 

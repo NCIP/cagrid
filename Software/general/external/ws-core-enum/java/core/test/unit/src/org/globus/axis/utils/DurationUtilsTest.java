@@ -18,9 +18,9 @@ package org.globus.axis.utils;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-import org.apache.axis.types.Duration;
-
 import junit.framework.TestCase;
+
+import org.apache.axis.types.Duration;
 
 public class DurationUtilsTest extends TestCase {
 

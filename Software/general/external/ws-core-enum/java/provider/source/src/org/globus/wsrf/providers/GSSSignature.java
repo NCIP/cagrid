@@ -19,9 +19,8 @@ import java.security.SignatureSpi;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.ietf.jgss.GSSException;
 import org.ietf.jgss.GSSContext;
+import org.ietf.jgss.GSSException;
 
 public class GSSSignature extends SignatureSpi
 {

@@ -16,9 +16,11 @@ import java.util.Vector;
 import javax.security.auth.Subject;
 import javax.xml.namespace.QName;
 
+import junit.framework.Test;
+import junit.framework.TestSuite;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.globus.axis.gsi.GSIConstants;
 import org.globus.gsi.jaas.GlobusPrincipal;
 import org.globus.security.gridmap.GridMap;
@@ -28,8 +30,6 @@ import org.globus.wsrf.jndi.JNDIUtils;
 import org.globus.wsrf.security.SecureResource;
 import org.globus.wsrf.security.SecurityManager;
 import org.globus.wsrf.test.GridTestCase;
-import junit.framework.Test;
-import junit.framework.TestSuite;
 
 public class TestSecurityConfig extends GridTestCase {
 

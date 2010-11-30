@@ -10,11 +10,10 @@
  */
 package org.globus.wsrf.impl.notification;
 
-import org.oasis.wsn.Subscribe;
-
-import org.globus.wsrf.ResourceContext;
 import org.globus.wsrf.Resource;
+import org.globus.wsrf.ResourceContext;
 import org.globus.wsrf.ResourceKey;
+import org.oasis.wsn.Subscribe;
 
 public class PersistentSubscribeHelper extends SubscribeHelper
 {

@@ -13,14 +13,13 @@ package org.globus.wsrf.impl;
 import java.util.Iterator;
 
 import javax.xml.namespace.QName;
-import javax.xml.soap.SOAPElement;
 import javax.xml.soap.Name;
-
-import org.w3c.dom.Element;
-
-import org.globus.wsrf.encoding.ObjectSerializer;
+import javax.xml.soap.SOAPElement;
 
 import junit.framework.TestCase;
+
+import org.globus.wsrf.encoding.ObjectSerializer;
+import org.w3c.dom.Element;
 
 public class SimpleResourcePropertyTest extends TestCase {
     

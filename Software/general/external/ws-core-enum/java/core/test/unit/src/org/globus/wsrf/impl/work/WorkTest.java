@@ -12,10 +12,14 @@ package org.globus.wsrf.impl.work;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.naming.Context;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 import org.globus.wsrf.Constants;
 import org.globus.wsrf.jndi.JNDIUtils;
@@ -23,11 +27,8 @@ import org.globus.wsrf.jndi.JNDIUtils;
 import commonj.work.Work;
 import commonj.work.WorkEvent;
 import commonj.work.WorkItem;
-import commonj.work.WorkManager;
 import commonj.work.WorkListener;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import commonj.work.WorkManager;
 
 public class
     WorkTest extends TestCase

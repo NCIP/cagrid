@@ -12,22 +12,19 @@ package org.globus.wsrf.impl.properties;
 
 import java.util.Calendar;
 
-import org.globus.wsrf.impl.TestHome;
+import javax.xml.namespace.QName;
 
 import org.apache.axis.message.MessageElement;
-
-import org.globus.wsrf.WSRFConstants;
 import org.globus.wsrf.Constants;
+import org.globus.wsrf.WSRFConstants;
+import org.globus.wsrf.impl.TestHome;
 import org.globus.wsrf.tests.basic.TestPortType;
-
-import org.oasis.wsrf.properties.ResourceUnknownFaultType;
-import org.oasis.wsrf.properties.GetMultipleResourceProperties_Element;
-import org.oasis.wsrf.properties.GetMultipleResourcePropertiesResponse;
-import org.oasis.wsrf.properties.InvalidResourcePropertyQNameFaultType;
 import org.oasis.wsrf.lifetime.SetTerminationTime;
 import org.oasis.wsrf.lifetime.SetTerminationTimeResponse;
-
-import javax.xml.namespace.QName;
+import org.oasis.wsrf.properties.GetMultipleResourcePropertiesResponse;
+import org.oasis.wsrf.properties.GetMultipleResourceProperties_Element;
+import org.oasis.wsrf.properties.InvalidResourcePropertyQNameFaultType;
+import org.oasis.wsrf.properties.ResourceUnknownFaultType;
 
 public class GetMultipleResourcePropertiesTests extends PropertiesTestCase {
 

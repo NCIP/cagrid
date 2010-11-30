@@ -27,7 +27,6 @@ import javax.crypto.ShortBufferException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.ietf.jgss.GSSContext;
 
 public class GSSCipher extends CipherSpi {

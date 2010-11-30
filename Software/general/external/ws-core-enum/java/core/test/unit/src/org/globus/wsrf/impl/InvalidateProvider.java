@@ -12,12 +12,12 @@ package org.globus.wsrf.impl;
 
 import java.rmi.RemoteException;
 
-import org.globus.wsrf.tests.invalidate.InvalidateRequest;
-import org.globus.wsrf.tests.invalidate.InvalidateResponse;
+import org.globus.wsrf.InvalidateResourceMapping;
+import org.globus.wsrf.ResourceContext;
 import org.globus.wsrf.ResourceHome;
 import org.globus.wsrf.ResourceKey;
-import org.globus.wsrf.ResourceContext;
-import org.globus.wsrf.InvalidateResourceMapping;
+import org.globus.wsrf.tests.invalidate.InvalidateRequest;
+import org.globus.wsrf.tests.invalidate.InvalidateResponse;
 
 public class InvalidateProvider
 {

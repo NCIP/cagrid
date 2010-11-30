@@ -10,27 +10,21 @@
  */
 package org.globus.wsrf.impl.security.authorization;
 
+import javax.naming.Context;
+import javax.security.auth.Subject;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import javax.naming.Context;
-
-import org.globus.wsrf.impl.security.descriptor.ServiceSecurityConfig;
-
-import org.globus.gsi.jaas.GlobusPrincipal;
-
+import org.apache.axis.MessageContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.globus.wsrf.jndi.JNDIUtils;
-
-import javax.security.auth.Subject;
-
-import org.apache.axis.MessageContext;
-
-import org.globus.wsrf.security.authorization.PDP;
+import org.globus.gsi.jaas.GlobusPrincipal;
 import org.globus.wsrf.impl.security.authorization.exceptions.AuthorizationException;
+import org.globus.wsrf.impl.security.descriptor.ServiceSecurityConfig;
+import org.globus.wsrf.jndi.JNDIUtils;
+import org.globus.wsrf.security.authorization.PDP;
 
 public class TestSelfAuthorization extends TestCase {
     static Log logger =

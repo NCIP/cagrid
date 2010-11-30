@@ -10,10 +10,10 @@
  */
 package org.globus.wsrf.handlers;
 
-import org.globus.wsrf.test.GridTestSuite;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
+
+import org.globus.wsrf.test.GridTestSuite;
 
 public class PackageTests extends GridTestSuite {
     

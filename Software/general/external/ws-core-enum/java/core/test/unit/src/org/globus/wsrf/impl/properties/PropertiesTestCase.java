@@ -10,20 +10,16 @@
  */
 package org.globus.wsrf.impl.properties;
 
-import org.globus.wsrf.impl.TestService;
-
-import org.globus.wsrf.ResourceKey;
-import org.globus.wsrf.tests.basic.service.TestServiceAddressingLocator;
-import org.globus.wsrf.tests.basic.TestPortType;
-
-import org.globus.wsrf.tests.basic.CreateResource;
-import org.globus.wsrf.tests.basic.CreateResourceResponse;
-
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.message.addressing.ReferencePropertiesType;
 import org.apache.axis.types.URI;
-
+import org.globus.wsrf.ResourceKey;
+import org.globus.wsrf.impl.TestService;
 import org.globus.wsrf.test.GridTestCase;
+import org.globus.wsrf.tests.basic.CreateResource;
+import org.globus.wsrf.tests.basic.CreateResourceResponse;
+import org.globus.wsrf.tests.basic.TestPortType;
+import org.globus.wsrf.tests.basic.service.TestServiceAddressingLocator;
 
 public class PropertiesTestCase extends GridTestCase {
 

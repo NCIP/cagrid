@@ -13,8 +13,9 @@ package org.globus.wsrf.impl.security.authentication;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 import org.apache.axis.Message;
 import org.apache.axis.MessageContext;
@@ -22,19 +23,16 @@ import org.apache.axis.client.AxisClient;
 import org.apache.axis.configuration.NullProvider;
 import org.apache.axis.message.SOAPBodyElement;
 import org.apache.axis.message.SOAPEnvelope;
-
-import org.gridforum.jgss.ExtendedGSSManager;
-import org.ietf.jgss.GSSContext;
-import org.ietf.jgss.GSSCredential;
-import org.ietf.jgss.GSSManager;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.globus.gsi.gssapi.GSSConstants;
 import org.globus.wsrf.impl.security.authentication.encryption.GssEncryptedSOAPEnvelopeBuilder;
 import org.globus.wsrf.impl.security.authentication.secureconv.service.SecurityContext;
 import org.globus.wsrf.impl.security.authentication.wssec.GSSConfig;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.gridforum.jgss.ExtendedGSSManager;
+import org.ietf.jgss.GSSContext;
+import org.ietf.jgss.GSSCredential;
+import org.ietf.jgss.GSSManager;
 
 
 public class TestGssXMLEncryption extends TestCase {

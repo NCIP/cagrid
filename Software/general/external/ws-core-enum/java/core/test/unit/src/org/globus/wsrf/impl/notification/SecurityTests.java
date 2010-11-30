@@ -10,9 +10,10 @@
  */
 package org.globus.wsrf.impl.notification;
 
-import org.globus.wsrf.test.GridTestSuite;
 import junit.framework.Test;
 import junit.framework.TestSuite;
+
+import org.globus.wsrf.test.GridTestSuite;
 
 public class SecurityTests extends GridTestSuite {
 

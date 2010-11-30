@@ -10,10 +10,9 @@
  */
 package org.globus.wsrf.impl.security.descriptor;
 
-import org.globus.wsrf.config.ConfigException;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.globus.wsrf.config.ConfigException;
 
 public class TestContainerSecurityConfig extends ContainerSecurityConfig {
 

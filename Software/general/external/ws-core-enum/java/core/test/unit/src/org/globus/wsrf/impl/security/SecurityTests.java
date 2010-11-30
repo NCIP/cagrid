@@ -10,11 +10,11 @@
  */
 package org.globus.wsrf.impl.security;
 
-import org.globus.wsrf.test.GridTestSuite;
-
 import junit.framework.Test;
-import junit.framework.TestSuite;
 import junit.framework.TestResult;
+import junit.framework.TestSuite;
+
+import org.globus.wsrf.test.GridTestSuite;
 
 public class SecurityTests extends GridTestSuite {
 

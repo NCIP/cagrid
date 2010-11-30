@@ -16,11 +16,9 @@ import java.util.Vector;
 import javax.security.auth.Subject;
 import javax.xml.namespace.QName;
 
+import org.apache.axis.MessageContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.apache.axis.MessageContext;
-
 import org.globus.security.gridmap.GridMap;
 import org.globus.wsrf.Resource;
 import org.globus.wsrf.ResourceProperties;

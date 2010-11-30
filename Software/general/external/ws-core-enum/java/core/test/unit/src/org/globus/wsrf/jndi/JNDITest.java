@@ -19,8 +19,6 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.globus.wsrf.jndi.JNDIUtils;
-
 public class JNDITest extends TestCase
 {
     private static Context initialContext = null;

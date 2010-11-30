@@ -13,10 +13,9 @@ package org.globus.wsrf.impl.security.authentication;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-import org.apache.xml.security.signature.XMLSignatureException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 import org.apache.axis.Message;
 import org.apache.axis.MessageContext;
@@ -25,7 +24,13 @@ import org.apache.axis.configuration.NullProvider;
 import org.apache.axis.message.SOAPBodyElement;
 import org.apache.axis.message.SOAPEnvelope;
 import org.apache.axis.message.SOAPHeaderElement;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.xml.security.signature.XMLSignatureException;
+import org.globus.gsi.gssapi.GSSConstants;
+import org.globus.wsrf.impl.security.authentication.signature.GssSignedSOAPEnvelopeBuilder;
+import org.globus.wsrf.impl.security.authentication.wssec.GSSConfig;
+import org.globus.wsrf.impl.security.authentication.wssec.WSSecurityException;
 import org.gridforum.jgss.ExtendedGSSManager;
 import org.ietf.jgss.GSSContext;
 import org.ietf.jgss.GSSCredential;
@@ -34,14 +39,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
-
-import org.globus.gsi.gssapi.GSSConstants;
-import org.globus.wsrf.impl.security.authentication.signature.GssSignedSOAPEnvelopeBuilder;
-import org.globus.wsrf.impl.security.authentication.wssec.GSSConfig;
-import org.globus.wsrf.impl.security.authentication.wssec.WSSecurityException;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 public class TestGssXMLSignature extends TestCase {
     static Log logger = LogFactory.getLog(TestGssXMLSignature.class.getName());

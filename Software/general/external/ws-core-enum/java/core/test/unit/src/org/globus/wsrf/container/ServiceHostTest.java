@@ -10,12 +10,11 @@
  */
 package org.globus.wsrf.container;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import junit.framework.TestCase;
 
 import org.apache.axis.MessageContext;
-
-import junit.framework.TestCase;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class ServiceHostTest extends TestCase {
 

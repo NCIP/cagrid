@@ -13,19 +13,17 @@ package org.globus.wsrf.impl.notification;
 import java.util.Calendar;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
-
-import org.oasis.wsn.Subscribe;
-import org.oasis.wsn.TopicExpressionType;
-import org.oasis.wsn.SubscribeResponse;
-import org.oasis.wsrf.lifetime.Destroy;
-import org.oasis.wsrf.lifetime.ResourceUnknownFaultType;
-
 import org.globus.wsrf.NotificationConsumerManager;
 import org.globus.wsrf.WSNConstants;
-import org.globus.wsrf.tests.invalidate.InvalidateRequest;
-import org.globus.wsrf.core.notification.service.PersistenceTestSubscriptionManagerServiceAddressingLocator;
 import org.globus.wsrf.core.notification.PersistenceTestSubscriptionManager;
+import org.globus.wsrf.core.notification.service.PersistenceTestSubscriptionManagerServiceAddressingLocator;
 import org.globus.wsrf.test.GridTestSuite;
+import org.globus.wsrf.tests.invalidate.InvalidateRequest;
+import org.oasis.wsn.Subscribe;
+import org.oasis.wsn.SubscribeResponse;
+import org.oasis.wsn.TopicExpressionType;
+import org.oasis.wsrf.lifetime.Destroy;
+import org.oasis.wsrf.lifetime.ResourceUnknownFaultType;
 
 public class PersistentSubscriptionTests extends NotificationTestCase
 {

@@ -10,23 +10,20 @@
  */
 package org.globus.wsrf.impl.notification;
 
-import org.apache.axis.message.MessageElement;
-
 import javax.xml.namespace.QName;
 
+import org.apache.axis.message.MessageElement;
 import org.globus.wsrf.WSNConstants;
 import org.globus.wsrf.encoding.ObjectDeserializer;
-
-import org.oasis.wsn.ResourceUnknownFaultType;
+import org.globus.wsrf.tests.notification.JobStatusType;
+import org.oasis.wsn.GetCurrentMessage;
+import org.oasis.wsn.GetCurrentMessageResponse;
 import org.oasis.wsn.NoCurrentMessageOnTopicFaultType;
+import org.oasis.wsn.ResourceUnknownFaultType;
 import org.oasis.wsn.TopicExpressionType;
 import org.oasis.wsn.TopicNotSupportedFaultType;
 import org.oasis.wsn.TopicPathDialectUnknownFaultType;
-import org.oasis.wsn.GetCurrentMessage;
-import org.oasis.wsn.GetCurrentMessageResponse;
 import org.oasis.wsrf.properties.ResourcePropertyValueChangeNotificationType;
-
-import org.globus.wsrf.tests.notification.JobStatusType;
 
 public class GetCurrentMessageTests extends NotificationTestCase
 {

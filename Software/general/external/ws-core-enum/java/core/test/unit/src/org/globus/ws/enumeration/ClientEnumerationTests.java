@@ -15,26 +15,23 @@
  */
 package org.globus.ws.enumeration;
 
-import java.util.Calendar;
 import java.rmi.RemoteException;
+import java.util.Calendar;
 
 import javax.xml.namespace.QName;
 import javax.xml.rpc.Stub;
 
+import org.apache.axis.AxisFault;
+import org.apache.axis.types.Duration;
+import org.globus.axis.utils.DurationUtils;
+import org.globus.wsrf.ResourceKey;
+import org.globus.wsrf.encoding.ObjectSerializer;
+import org.globus.wsrf.test.GridTestSuite;
+import org.globus.wsrf.utils.AnyHelper;
 import org.xmlsoap.schemas.ws._2004._09.enumeration.DataSource;
 import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerationContextType;
 
 import com.enumeration.EnumerationPortType;
-
-import org.globus.wsrf.ResourceKey;
-import org.globus.axis.utils.DurationUtils;
-import org.globus.wsrf.utils.AnyHelper;
-import org.globus.wsrf.encoding.ObjectSerializer;
-
-import org.apache.axis.AxisFault;
-import org.apache.axis.types.Duration;
-
-import org.globus.wsrf.test.GridTestSuite;
 
 public class ClientEnumerationTests extends EnumerationTestCase {
 

@@ -10,22 +10,21 @@
  */
 package org.globus.wsrf.handlers;
 
-import org.globus.wsrf.impl.TestService;
-import org.globus.wsrf.test.GridTestCase;
-import org.globus.wsrf.tests.basic.CreateResourceResponse;
-
+import java.net.URL;
 import java.util.Iterator;
 import java.util.Map;
-import java.net.URL;
 
+import javax.xml.namespace.QName;
 import javax.xml.rpc.Call;
 import javax.xml.rpc.Service;
 import javax.xml.rpc.ServiceFactory;
 import javax.xml.rpc.encoding.TypeMapping;
 import javax.xml.rpc.encoding.TypeMappingRegistry;
-import javax.xml.namespace.QName;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
+import org.globus.wsrf.impl.TestService;
+import org.globus.wsrf.test.GridTestCase;
+import org.globus.wsrf.tests.basic.CreateResourceResponse;
 
 public class DIITests extends GridTestCase {
 

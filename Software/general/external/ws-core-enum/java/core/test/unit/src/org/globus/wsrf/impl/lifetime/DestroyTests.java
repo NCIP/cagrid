@@ -11,12 +11,10 @@
 package org.globus.wsrf.impl.lifetime;
 
 import org.globus.wsrf.impl.TestHome;
-
 import org.globus.wsrf.tests.basic.TestPortType;
-
-import org.oasis.wsrf.lifetime.ResourceUnknownFaultType;
-import org.oasis.wsrf.lifetime.ResourceNotDestroyedFaultType;
 import org.oasis.wsrf.lifetime.Destroy;
+import org.oasis.wsrf.lifetime.ResourceNotDestroyedFaultType;
+import org.oasis.wsrf.lifetime.ResourceUnknownFaultType;
 
 public class DestroyTests extends LifetimeTestCase {
 

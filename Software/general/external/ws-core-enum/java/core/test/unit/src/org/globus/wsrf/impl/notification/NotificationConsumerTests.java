@@ -16,17 +16,15 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
-
-import org.w3c.dom.Element;
-
 import org.globus.wsrf.NotificationConsumerManager;
 import org.globus.wsrf.WSNConstants;
 import org.globus.wsrf.test.GridTestSuite;
 import org.globus.wsrf.tests.notification.NotificationTestPortType;
 import org.globus.wsrf.tests.notification.SelfSubscribeRequest;
-import org.oasis.wsn.TopicExpressionType;
 import org.oasis.wsn.Subscribe;
 import org.oasis.wsn.SubscribeResponse;
+import org.oasis.wsn.TopicExpressionType;
+import org.w3c.dom.Element;
 
 public class NotificationConsumerTests extends NotificationTestCase
 {

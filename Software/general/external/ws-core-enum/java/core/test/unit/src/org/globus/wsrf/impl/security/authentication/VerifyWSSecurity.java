@@ -12,26 +12,22 @@ package org.globus.wsrf.impl.security.authentication;
 
 import java.security.PrivateKey;
 
+import javax.xml.namespace.QName;
 import javax.xml.rpc.handler.MessageContext;
 import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPHeaderElement;
 
-import org.apache.xml.security.signature.XMLSignature;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.ietf.jgss.GSSContext;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
+import org.apache.xml.security.signature.XMLSignature;
 import org.globus.gsi.GlobusCredential;
 import org.globus.gsi.proxy.ProxyPathValidator;
 import org.globus.wsrf.impl.security.authentication.secureconv.service.SecurityContext;
 import org.globus.wsrf.impl.security.authentication.wssec.WSSecurityEngine;
 import org.globus.wsrf.providers.GSSPublicKey;
-
-import javax.xml.namespace.QName;
+import org.ietf.jgss.GSSContext;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class VerifyWSSecurity extends WSSecurityEngine {
 

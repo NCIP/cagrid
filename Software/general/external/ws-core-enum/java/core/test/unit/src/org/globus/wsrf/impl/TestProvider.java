@@ -10,8 +10,8 @@
  */
 package org.globus.wsrf.impl;
 
-import javax.xml.rpc.server.ServiceLifecycle;
 import javax.xml.rpc.ServiceException;
+import javax.xml.rpc.server.ServiceLifecycle;
 
 public class TestProvider implements ServiceLifecycle {
 

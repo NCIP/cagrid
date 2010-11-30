@@ -15,14 +15,10 @@ import java.util.Arrays;
 
 import junit.framework.TestCase;
 
-import org.globus.util.Base64;
-
 import org.apache.axis.Constants;
 import org.apache.axis.message.MessageElement;
-
+import org.globus.util.Base64;
 import org.xml.sax.InputSource;
-
-import javax.xml.soap.SOAPElement;
 
 public class ObjectDeserializerTest extends TestCase {
     

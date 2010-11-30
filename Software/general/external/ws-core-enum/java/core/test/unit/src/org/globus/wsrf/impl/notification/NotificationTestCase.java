@@ -16,21 +16,16 @@ import javax.xml.rpc.ServiceException;
 import javax.xml.rpc.Stub;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
-
-import org.oasis.wsrf.lifetime.Destroy;
-
-import org.globus.wsrf.core.notification.service.SubscriptionManagerServiceAddressingLocator;
 import org.globus.wsrf.core.notification.SubscriptionManager;
+import org.globus.wsrf.core.notification.service.SubscriptionManagerServiceAddressingLocator;
+import org.globus.wsrf.impl.security.TestConstants;
+import org.globus.wsrf.impl.security.authentication.Constants;
+import org.globus.wsrf.impl.security.descriptor.ClientSecurityDescriptor;
 import org.globus.wsrf.test.GridTestCase;
 import org.globus.wsrf.tests.notification.NotificationTestPortType;
 import org.globus.wsrf.tests.notification.service.NotificationTestServiceAddressingLocator;
 import org.globus.wsrf.utils.AddressingUtils;
-import org.globus.wsrf.impl.security.descriptor.ClientSecurityDescriptor;
-import org.globus.wsrf.impl.security.authentication.Constants;
-import org.globus.wsrf.impl.security.authorization.SelfAuthorization;
-import org.globus.wsrf.impl.security.authorization.HostAuthorization;
-
-import org.globus.wsrf.impl.security.TestConstants;
+import org.oasis.wsrf.lifetime.Destroy;
 
 public class NotificationTestCase extends GridTestCase
 {

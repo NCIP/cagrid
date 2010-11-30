@@ -10,18 +10,15 @@
  */
 package org.globus.wsrf.encoding;
 
-import org.globus.wsrf.utils.AnyHelper;
-
-import org.globus.wsrf.types.profiling.Timestamp;
-import org.globus.wsrf.types.profiling.TimestampType;
-
-import org.apache.axis.message.MessageElement;
-
-import junit.framework.TestCase;
-
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPElement;
 
+import junit.framework.TestCase;
+
+import org.apache.axis.message.MessageElement;
+import org.globus.wsrf.types.profiling.Timestamp;
+import org.globus.wsrf.types.profiling.TimestampType;
+import org.globus.wsrf.utils.AnyHelper;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 

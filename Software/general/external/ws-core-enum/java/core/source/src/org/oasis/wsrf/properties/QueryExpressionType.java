@@ -14,7 +14,6 @@ import java.io.Serializable;
 
 import org.apache.axis.encoding.SimpleType;
 import org.apache.axis.types.URI;
-
 import org.oasis.DialectDependentType;
 
 public class QueryExpressionType 

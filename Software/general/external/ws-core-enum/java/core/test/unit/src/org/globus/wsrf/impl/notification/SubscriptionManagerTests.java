@@ -16,27 +16,25 @@ import javax.xml.namespace.QName;
 
 import org.apache.axis.message.MessageElement;
 import org.apache.axis.message.addressing.EndpointReferenceType;
-
-import org.globus.wsrf.NotificationConsumerManager;
-import org.globus.wsrf.WSRFConstants;
-import org.globus.wsrf.WSNConstants;
 import org.globus.wsrf.Constants;
+import org.globus.wsrf.NotificationConsumerManager;
+import org.globus.wsrf.WSNConstants;
+import org.globus.wsrf.WSRFConstants;
 import org.globus.wsrf.core.notification.SubscriptionManager;
 import org.globus.wsrf.core.notification.service.SubscriptionManagerServiceAddressingLocator;
 import org.globus.wsrf.impl.SimpleResourceKey;
 import org.globus.wsrf.test.GridTestSuite;
 import org.globus.wsrf.utils.AddressingUtils;
-
-import org.oasis.wsrf.lifetime.Destroy;
-import org.oasis.wsrf.lifetime.SetTerminationTime;
+import org.oasis.wsn.PauseSubscription;
 import org.oasis.wsn.ResourceUnknownFaultType;
-import org.oasis.wsn.TopicExpressionType;
+import org.oasis.wsn.ResumeSubscription;
 import org.oasis.wsn.Subscribe;
 import org.oasis.wsn.SubscribeResponse;
-import org.oasis.wsn.PauseSubscription;
-import org.oasis.wsn.ResumeSubscription;
-import org.oasis.wsrf.properties.QueryExpressionType;
+import org.oasis.wsn.TopicExpressionType;
+import org.oasis.wsrf.lifetime.Destroy;
+import org.oasis.wsrf.lifetime.SetTerminationTime;
 import org.oasis.wsrf.properties.GetResourcePropertyResponse;
+import org.oasis.wsrf.properties.QueryExpressionType;
 
 public class SubscriptionManagerTests extends NotificationTestCase
 {

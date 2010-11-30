@@ -10,15 +10,15 @@
  */
 package org.globus.wsrf.impl;
 
-import org.globus.wsrf.Resource;
-import org.globus.wsrf.ResourceProperty;
-import org.globus.wsrf.ResourceProperties;
-import org.globus.wsrf.ResourcePropertySet;
-import org.globus.wsrf.ResourceLifetime;
-
 import java.util.Calendar;
 
 import javax.xml.namespace.QName;
+
+import org.globus.wsrf.Resource;
+import org.globus.wsrf.ResourceLifetime;
+import org.globus.wsrf.ResourceProperties;
+import org.globus.wsrf.ResourceProperty;
+import org.globus.wsrf.ResourcePropertySet;
 
 public class TestResource
     implements Resource,

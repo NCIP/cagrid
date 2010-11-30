@@ -15,20 +15,19 @@
  */
 package org.globus.ws.enumeration;
 
-import com.enumeration.StartEnumerationResponse;
-import com.enumeration.StartEnumeration;
+import java.io.File;
+import java.rmi.RemoteException;
+import java.util.List;
 
-import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerateResponse;
-import org.xmlsoap.schemas.ws._2004._09.enumeration.Enumerate;
+import javax.xml.namespace.QName;
 
 import org.globus.wsrf.ResourceKey;
 import org.globus.wsrf.utils.io.IndexedObjectFileUtils;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.Enumerate;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerateResponse;
 
-import java.io.File;
-import java.util.List;
-import java.rmi.RemoteException;
-
-import javax.xml.namespace.QName;
+import com.enumeration.StartEnumeration;
+import com.enumeration.StartEnumerationResponse;
 
 public class TestEnumService {
 

@@ -10,21 +10,19 @@
  */
 package org.globus.wsrf.impl.properties;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.axis.message.MessageElement;
 import org.apache.axis.message.Text;
-
+import org.globus.util.I18n;
+import org.globus.wsrf.ResourcePropertySet;
 import org.globus.wsrf.query.ExpressionEvaluator;
+import org.globus.wsrf.query.InvalidQueryExpressionException;
+import org.globus.wsrf.query.QueryEvaluationException;
 import org.globus.wsrf.query.QueryException;
 import org.globus.wsrf.query.UnsupportedQueryDialectException;
-import org.globus.wsrf.query.QueryEvaluationException;
-import org.globus.wsrf.query.InvalidQueryExpressionException;
-import org.globus.wsrf.ResourcePropertySet;
 import org.globus.wsrf.utils.Resources;
-import org.globus.util.I18n;
-
 import org.oasis.wsrf.properties.QueryExpressionType;
 
 public class TestExpressionEvaluator implements ExpressionEvaluator {
