@@ -1,0 +1,149 @@
+<?xml version="1.0"?>
+
+<project default="all" name="globus_wsrf_core_samples" basedir=".">
+    <description>
+        WSRF Core Authz Service Sample
+    </description>
+
+    <!-- 
+    Give user a chance to override without editing this file
+    (and without typing -D each time it compiles it) 
+    -->
+    
+    <property environment="env"/>
+ 
+    <property file="build.properties"/>
+    <property file="${user.home}/build.properties"/>
+    
+    <property name="env.GLOBUS_LOCATION" location="../../../../install"/>
+    <property name="deploy.dir" location="${env.GLOBUS_LOCATION}"/>
+    <property name="base.name" value="wsrf_core_samples_authzService"/>
+    <property name="package.name" value="globus_${base.name}"/>
+    <property name="gar.name" value="${package.name}.gar"/>
+    <property name="jar.name" value="${base.name}.jar"/>
+    <property name="stubs.jar.name" value="${base.name}_stubs.jar"/>
+    <property name="build.dir"  location="build"/>
+    <property name="build.dest" location="build/classes"/>
+    <property name="build.lib.dir" location="build/lib"/>
+    <property name="stubs.dir" location="build/stubs"/>
+    <property name="stubs.src" location="build/stubs/src"/>
+    <property name="stubs.dest" location="build/stubs/classes"/>
+    <property name="build.packages" location=
+        "${deploy.dir}/share/globus_wsrf_common/build-packages.xml"/>
+    <property name="build.stubs" location=
+        "${deploy.dir}/share/globus_wsrf_tools/build-stubs.xml"/>
+    <property name="java.debug" value="on"/>
+
+    <property name="schema.src" location="${deploy.dir}/share/schema"/>
+    <property name="schema.local"   location="schema"/>
+    <property name="schema.dest"  location="${build.dir}/schema"/>
+
+    <property name="garjars.id" value="garjars"/>
+    <fileset dir="${build.lib.dir}" id="garjars"/>
+
+    <property name="garschema.id" value="garschema"/>
+    <fileset dir="${schema.dest}" id="garschema">
+        <include name="core/samples/**/*"/>
+    </fileset>
+
+    <target name="init">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${build.dest}"/>
+        <mkdir dir="${build.lib.dir}"/>
+
+        <mkdir dir="${stubs.dir}"/>
+        <mkdir dir="${stubs.src}"/>
+        <mkdir dir="${stubs.dest}"/>
+
+        <mkdir dir="${schema.dest}"/>
+        <copy toDir="${schema.dest}">
+            <fileset dir="${schema.src}" casesensitive="yes">
+                <include name="wsrf/**/*"/>
+                <include name="ws/**/*"/>
+                <include name="core/security/**/*"/>
+                <include name="core/samples/authzService/*"/>
+            </fileset>
+        </copy>
+
+        <available property="stubs.present" type="dir" 
+                   file="${stubs.src}/org/globus/wsrf/samples/authzService" />
+    </target>
+
+    <target name="stubs" unless="stubs.present" depends="init">
+        <ant antfile="${build.stubs}" target="generateStubs">
+            <property name="source.stubs.dir" 
+                location="${schema.dest}/core/samples/authzService"/>
+            <property name="target.stubs.dir" location="${stubs.src}"/>
+            <property name="wsdl.file" 
+                value="authzService_service.wsdl"/>
+        </ant>
+    </target>
+  
+    <target name="compileStubs" depends="stubs">
+       <javac srcdir="${stubs.src}" destdir="${stubs.dest}" 
+            debug="${java.debug}">
+            <include name="**/*.java"/>
+            <classpath>
+                <fileset dir="${deploy.dir}/lib">
+                    <include name="*.jar"/>
+                    <exclude name="${stubs.jar.name}"/>
+                    <exclude name="${jar.name}"/>
+                </fileset>
+            </classpath>
+        </javac>
+        <copy todir="${build.dest}" >
+              <fileset dir="src" includes="**/*.properties" />
+              <fileset dir="src" includes="**/*.xml" />
+        </copy>
+    </target>
+
+    <target name="compile" depends="compileStubs">
+        <javac srcdir="src" destdir="${build.dest}"
+            debug="${java.debug}">
+            <include name="**/*.java"/>
+            <classpath>
+                <pathelement location="${stubs.dest}"/>
+                <fileset dir="${deploy.dir}/lib">
+                    <include name="*.jar"/>
+                    <exclude name="${stubs.jar.name}"/>
+                    <exclude name="${jar.name}"/>
+                </fileset>
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="jarStubs" depends="compileStubs">
+        <jar destfile="${build.lib.dir}/${stubs.jar.name}" 
+             basedir="${stubs.dest}"/>
+    </target>
+
+    <target name="jar" depends="compile">
+        <jar destfile="${build.lib.dir}/${jar.name}" basedir="${build.dest}"/>
+    </target>
+
+    <target name="dist" depends="jarStubs, jar">
+        <ant antfile="${build.packages}" target="makeGar">
+            <reference refid="${garjars.id}"/>  
+            <reference refid="${garschema.id}"/>  
+        </ant>            
+    </target>
+
+    <target name="clean">
+        <delete dir="tmp"/>
+        <delete dir="${build.dir}"/>
+        <delete file="${gar.name}"/>
+    </target>
+
+    <target name="deploy" depends="dist">
+        <ant antfile="${build.packages}" target="deployGar"/>
+    </target>  
+
+    <target name="undeploy">
+        <ant antfile="${build.packages}" target="undeployGar">
+            <property name="gar.id" value="${package.name}"/>
+        </ant>
+    </target>
+
+    <target name="all" depends="deploy"/>
+
+</project>

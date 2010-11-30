@@ -1,0 +1,6 @@
+/lib/wsrf_core_samples_mgmt_stubs.jar
+/lib/wsrf_core_samples_mgmt.jar
+/etc/gpt/./packages/globus_wsrf_core_samples_mgmt/undeploy.xml
+/etc/globus_wsrf_core_samples_mgmt/server-config.wsdd
+/etc/globus_wsrf_core_samples_mgmt/jndi-config.xml
+/etc/globus_wsrf_core_samples_mgmt/security-config.xml

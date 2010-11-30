@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+
+<project default="all" name="globus_wsrf_test_base" basedir=".">
+
+    <description>
+        Targets for building basic testing infrastucture
+    </description>
+
+    <!-- 
+    Give user a chance to override without editing this file
+    (and without typing -D each time it compiles it) 
+    -->
+    
+    <property environment="env"/>
+    
+    <property file="build.properties"/>
+    <property file="${user.home}/build.properties"/>
+    
+    <property name="env.GLOBUS_LOCATION" value="../../../../install"/>
+    <property name="deploy.dir" location="${env.GLOBUS_LOCATION}"/>
+    <property name="base.name" value="wsrf_test"/>
+    <property name="package.name" value="globus_${base.name}"/>
+    <property name="gar.name" value="${package.name}.gar"/>
+    <property name="jar.name" value="${base.name}.jar"/>
+    <property name="build.dir"  location="build"/>
+    <property name="build.dest" location="build/classes"/>
+    <property name="build.lib.dir" location="build/lib"/>
+    <property name="java.debug" value="on"/>
+    <property name="java.deprecation" value="true"/>
+    <property name="build.packages" location=
+        "${deploy.dir}/share/globus_wsrf_common/build-packages.xml"/>
+
+    <property name="garjars.id" value="garjars"/>
+    <fileset dir="${build.lib.dir}" id="garjars"/>
+
+    <property name="garshare.id" value="garshare"/>
+    <fileset dir="share" id="garshare"/>
+
+    <target name="init">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${build.dest}"/>
+        <mkdir dir="${build.lib.dir}"/>
+        <copy todir="${build.lib.dir}"> 
+          <fileset dir="lib"/>
+        </copy>
+    </target>
+
+    <target name="compile" depends="init">
+        <javac srcdir="src" destdir="${build.dest}" 
+               debug="${java.debug}" deprecation="${java.deprecation}">
+            <include name="**/*.java"/>
+            <classpath>
+                <pathelement location="${stubs.dest}"/>
+                <fileset dir="${deploy.dir}/lib">
+                    <include name="*.jar"/>
+                    <exclude name="${jar.name}"/>
+                </fileset>
+                <fileset dir="./lib">
+                    <include name="*.jar"/>
+                </fileset>
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="jar" depends="compile">
+        <jar destfile="${build.lib.dir}/${jar.name}" basedir="${build.dest}"/>
+    </target>
+
+    <target name="dist" depends="jar">
+        <ant antfile="${build.packages}" target="makeGar">
+            <reference refid="${garjars.id}"/>  
+            <reference refid="${garshare.id}"/>  
+        </ant>
+    </target>
+
+    <target name="deploy" depends="dist">
+        <ant antfile="${build.packages}" target="deployGar"/>
+    </target>  
+
+    <target name="undeploy">
+        <ant antfile="${build.packages}" target="undeployGar">
+            <property name="gar.id" value="${package.name}"/>
+        </ant>
+    </target>
+
+   <target name="all" depends="deploy"/>
+
+   <target name="clean">
+        <delete dir="tmp"/>
+        <delete dir="${build.dir}"/>
+        <delete file="${gar.name}"/>
+   </target>
+
+</project>

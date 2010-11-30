@@ -1,0 +1,7 @@
+etc/gpt/./packages/globus_wsrf_test_interop/undeploy.xml
+etc/globus_wsrf_test_interop/jndi-config.xml
+etc/globus_wsrf_test_interop/server-config.wsdd
+lib/wsrf_test_interop.jar
+lib/wsrf_test_interop_stubs.jar
+bin/widget-create
+test/globus_wsrf_test_interop/TESTS.pl

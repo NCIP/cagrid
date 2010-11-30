@@ -1,0 +1,160 @@
+/**
+ * MembershipContentRule.java
+ *
+ * This file was auto-generated from WSDL
+ * by the Apache Axis 1.2RC2 Apr 28, 2006 (12:42:00 EDT) WSDL2Java emitter.
+ */
+
+package org.oasis.wsrf.servicegroup;
+
+public class MembershipContentRule  implements java.io.Serializable {
+    private javax.xml.namespace.QName memberInterface;  // attribute
+    private javax.xml.namespace.QName[] contentElements;  // attribute
+
+    public MembershipContentRule() {
+    }
+
+    public MembershipContentRule(
+           javax.xml.namespace.QName[] contentElements,
+           javax.xml.namespace.QName memberInterface) {
+           this.memberInterface = memberInterface;
+           this.contentElements = contentElements;
+    }
+
+
+    /**
+     * Gets the memberInterface value for this MembershipContentRule.
+     * 
+     * @return memberInterface
+     */
+    public javax.xml.namespace.QName getMemberInterface() {
+        return memberInterface;
+    }
+
+
+    /**
+     * Sets the memberInterface value for this MembershipContentRule.
+     * 
+     * @param memberInterface
+     */
+    public void setMemberInterface(javax.xml.namespace.QName memberInterface) {
+        this.memberInterface = memberInterface;
+    }
+
+
+    /**
+     * Gets the contentElements value for this MembershipContentRule.
+     * 
+     * @return contentElements
+     */
+    public javax.xml.namespace.QName[] getContentElements() {
+        return contentElements;
+    }
+
+
+    /**
+     * Sets the contentElements value for this MembershipContentRule.
+     * 
+     * @param contentElements
+     */
+    public void setContentElements(javax.xml.namespace.QName[] contentElements) {
+        this.contentElements = contentElements;
+    }
+
+    private java.lang.Object __equalsCalc = null;
+    public synchronized boolean equals(java.lang.Object obj) {
+        if (!(obj instanceof MembershipContentRule)) return false;
+        MembershipContentRule other = (MembershipContentRule) obj;
+        if (obj == null) return false;
+        if (this == obj) return true;
+        if (__equalsCalc != null) {
+            return (__equalsCalc == obj);
+        }
+        __equalsCalc = obj;
+        boolean _equals;
+        _equals = true && 
+            ((this.memberInterface==null && other.getMemberInterface()==null) || 
+             (this.memberInterface!=null &&
+              this.memberInterface.equals(other.getMemberInterface()))) &&
+            ((this.contentElements==null && other.getContentElements()==null) || 
+             (this.contentElements!=null &&
+              java.util.Arrays.equals(this.contentElements, other.getContentElements())));
+        __equalsCalc = null;
+        return _equals;
+    }
+
+    private boolean __hashCodeCalc = false;
+    public synchronized int hashCode() {
+        if (__hashCodeCalc) {
+            return 0;
+        }
+        __hashCodeCalc = true;
+        int _hashCode = 1;
+        if (getMemberInterface() != null) {
+            _hashCode += getMemberInterface().hashCode();
+        }
+        if (getContentElements() != null) {
+            for (int i=0;
+                 i<java.lang.reflect.Array.getLength(getContentElements());
+                 i++) {
+                java.lang.Object obj = java.lang.reflect.Array.get(getContentElements(), i);
+                if (obj != null &&
+                    !obj.getClass().isArray()) {
+                    _hashCode += obj.hashCode();
+                }
+            }
+        }
+        __hashCodeCalc = false;
+        return _hashCode;
+    }
+
+    // Type metadata
+    private static org.apache.axis.description.TypeDesc typeDesc =
+        new org.apache.axis.description.TypeDesc(MembershipContentRule.class, true);
+
+    static {
+        typeDesc.setXmlType(new javax.xml.namespace.QName("http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.xsd", ">MembershipContentRule"));
+        org.apache.axis.description.AttributeDesc attrField = new org.apache.axis.description.AttributeDesc();
+        attrField.setFieldName("memberInterface");
+        attrField.setXmlName(new javax.xml.namespace.QName("", "MemberInterface"));
+        attrField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "QName"));
+        typeDesc.addFieldDesc(attrField);
+        attrField = new org.apache.axis.description.AttributeDesc();
+        attrField.setFieldName("contentElements");
+        attrField.setXmlName(new javax.xml.namespace.QName("", "ContentElements"));
+        attrField.setXmlType(new javax.xml.namespace.QName("http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.xsd", "ContentElementsType"));
+        typeDesc.addFieldDesc(attrField);
+    }
+
+    /**
+     * Return type metadata object
+     */
+    public static org.apache.axis.description.TypeDesc getTypeDesc() {
+        return typeDesc;
+    }
+
+    /**
+     * Get Custom Serializer
+     */
+    public static org.apache.axis.encoding.Serializer getSerializer(
+           java.lang.String mechType, 
+           java.lang.Class _javaType,  
+           javax.xml.namespace.QName _xmlType) {
+        return 
+          new  org.apache.axis.encoding.ser.BeanSerializer(
+            _javaType, _xmlType, typeDesc);
+    }
+
+    /**
+     * Get Custom Deserializer
+     */
+    public static org.apache.axis.encoding.Deserializer getDeserializer(
+           java.lang.String mechType, 
+           java.lang.Class _javaType,  
+           javax.xml.namespace.QName _xmlType) {
+        return 
+          new  org.apache.axis.encoding.ser.BeanDeserializer(
+            _javaType, _xmlType, typeDesc);
+    }
+
+}

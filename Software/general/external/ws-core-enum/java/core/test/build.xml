@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+
+<project default="all" name="globus_wsrf_core_test" basedir=".">
+
+    <description>
+        Targets for testing the core
+    </description>
+
+    <!-- 
+    Give user a chance to override without editing this file
+    (and without typing -D each time it compiles it) 
+    -->
+    
+    <property environment="env"/>
+    
+    <property file="build.properties"/>
+    <property file="${user.home}/build.properties"/>
+    
+    <property name="env.GLOBUS_LOCATION" value="../../../install"/>
+    <property name="deploy.dir" location="${env.GLOBUS_LOCATION}"/>
+    <property name="sample.dir" location="../samples"/>
+
+    <target name="init">
+        <ant dir="${sample.dir}" target="deploy"/>
+    </target>
+
+    <target name="compile">
+        <!-- have to deploy base otherwise rest won't compile -->
+        <ant dir="base" target="deploy"/>
+        <ant dir="interop" target="compile"/>
+        <ant dir="unit" target="compile"/>
+    </target>
+
+    <target name="deploy" depends="init">
+        <ant dir="base" target="deploy"/>
+        <ant dir="interop" target="deploy"/>
+        <ant dir="unit" target="deploy"/>
+    </target>
+
+   <target name="clean">
+        <ant dir="base" target="clean"/>
+        <ant dir="interop" target="clean"/>
+        <ant dir="unit" target="clean"/>
+    </target>
+
+   <target name="test">
+        <ant dir="interop" target="test"/>
+        <ant dir="unit" target="test"/>
+    </target>
+
+   <target name="testServer">
+        <ant dir="interop" target="testServer"/>
+        <ant dir="unit" target="testServer"/>
+    </target>
+
+   <target name="all" depends="compile"/>
+
+</project>

@@ -1,0 +1,152 @@
+<?xml version="1.0"?>
+
+<project default="all" name="globus_wsrf_tools_test" basedir=".">
+    <description>
+        Targets for testing the tooling
+    </description>
+
+    <!-- 
+    Give user a chance to override without editing this file
+    (and without typing -D each time it compiles it) 
+    -->
+    
+    <property environment="env"/>
+    
+    <property file="build.properties"/>
+    <property file="${user.home}/build.properties"/>
+    
+    <property name="env.GLOBUS_LOCATION" value="../../../install"/>
+    <property name="deploy.dir" location="${env.GLOBUS_LOCATION}"/>
+    <property name="package.name" value="globus_wsrf_tools_test"/>
+    <property name="jar.name" value="${package.name}.jar"/>
+    <property name="gar.name" value="${package.name}.gar"/>
+    <property name="wsdl.dir" location="wsdl"/>
+    <property name="build.packages" location=
+        "${deploy.dir}/share/globus_wsrf_common/build-packages.xml"/>
+    <property name="build.stubs" location=
+        "${deploy.dir}/share/globus_wsrf_tools/build-stubs.xml"/>
+    <property name="java.debug" value="on"/>
+
+    <property name="build.dir"  location="build"/>
+    <property name="build.dest" location="${build.dir}/classes"/>
+    <property name="stubs.dir" location="${build.dir}/stubs"/>
+    <property name="build.lib.dir" location="${build.dir}/lib"/>
+    <property name="schema.src"   location="${deploy.dir}/share/schema"/>
+    <property name="schema.dest"  location="${build.dir}/schema"/>
+    <property name="garjars.id" value="garjars"/>
+    <fileset dir="${build.lib.dir}" id="garjars"/>
+
+    <property name="junit.reports.dir" value="test-reports"/>
+    <property name="junit.haltonfailure" value="true"/>
+    <property name="junit.timeout" value="60000"/>
+    <property name="junit.jvmarg" value="-Dignore" />
+
+    <property name="test.server.url" 
+              value="http://localhost:8080/wsrf/services/"/>
+
+    <target name="init">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${build.dest}"/>
+        <mkdir dir="${build.lib.dir}"/>
+        <mkdir dir="${stubs.dir}"/>
+        <mkdir dir="${schema.dest}"/>
+        <copy toDir="${schema.dest}">
+            <fileset dir="${schema.src}" casesensitive="yes">
+                <include name="wsrf/**/*"/>
+                <include name="ws/**/*"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="compile" depends="init">
+        <javac srcdir="src" destdir="${build.dest}" debug="${java.debug}">
+            <include name="**/*.java"/>
+            <classpath>
+                <fileset dir="${deploy.dir}/lib">
+                    <include name="*.jar"/>
+                </fileset>
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="jar" depends="compile">
+        <jar destfile="${build.lib.dir}/${jar.name}" basedir="${build.dest}"/>
+    </target>
+
+    <target name="dist" depends="jar">
+        <ant antfile="${build.packages}" target="makeGar">
+            <reference refid="${garjars.id}"/>  
+        </ant>
+    </target>
+
+    <target name="deploy" depends="dist">
+        <ant antfile="${build.packages}" target="deployGar"/>
+    </target>  
+
+    <target name="testStubs" depends="init">
+        <copy toDir="${schema.dest}">
+            <fileset dir="${wsdl.dir}" casesensitive="yes">
+                <include name="*.wsdl"/>
+            </fileset>
+        </copy>
+
+    	<ant antfile="${build.stubs}" target="flatten">
+            <property name="source.flatten.dir" location="${schema.dest}"/>
+            <property name="target.flatten.dir" location="${schema.dest}"/>
+            <property name="wsdl.source" value="test.wsdl"/>
+            <property name="wsdl.target" value="test_flattened.wsdl"/>
+            <property name="wsdl.porttype" value="test"/>
+    	</ant> 
+    </target>
+
+    <target name="test" depends="compile">
+      <antcall target="testStubs"/>
+      <property name="server.arg" value="-Dignore" />
+      <antcall target="runTests"/>
+    </target>
+
+    <target name="testServer" depends="compile">
+      <antcall target="testStubs"/>
+      <property name="server.arg" 
+                value="-Dweb.server.url=${test.server.url}" />
+      <antcall target="runTests"/>
+    </target>
+
+    <target name="runTests">
+        <mkdir dir="${junit.reports.dir}" />
+        <junit printsummary="yes" 
+             haltonfailure="${junit.haltonfailure}" 
+             fork="yes" 
+             timeout="${junit.timeout}">
+            <sysproperty key="GLOBUS_LOCATION"
+                value="${deploy.dir}"/>
+            <classpath>
+                <pathelement location="${build.dest}"/>
+                <pathelement location="${deploy.dir}"/>
+                <fileset dir="${deploy.dir}/lib">
+                    <include name="*.jar"/>
+                    <exclude name="${stubs.jar.name}"/>
+                    <exclude name="${jar.name}"/>
+                </fileset>
+            </classpath>
+        <formatter type="xml" />
+        <batchtest todir="${junit.reports.dir}">
+         <fileset dir="${build.dest}">
+            <include name="**/PackageTests.class" />
+         </fileset>
+        </batchtest>
+        <jvmarg value="-Djava.endorsed.dirs=${deploy.dir}/endorsed"/>
+        <jvmarg line="${junit.jvmarg}" />
+      </junit>
+    </target>
+
+    <target name="all" depends="deploy"/>
+
+    <target name="clean">
+        <delete dir="tmp"/>
+        <delete dir="${build.dir}"/>
+        <delete file="${gar.name}"/>
+        <delete dir="${test.reports.dir}"/>
+    </target>
+        
+</project>

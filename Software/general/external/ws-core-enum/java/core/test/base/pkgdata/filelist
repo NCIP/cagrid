@@ -1,0 +1,5 @@
+etc/gpt/./packages/globus_wsrf_test/undeploy.xml
+lib/wsrf_test.jar
+lib/junit.jar
+share/licenses/junit.LICENSE
+share/globus_wsrf_test/runtests.xml

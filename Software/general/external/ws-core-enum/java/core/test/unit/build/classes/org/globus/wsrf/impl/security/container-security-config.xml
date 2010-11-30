@@ -1,0 +1,7 @@
+<securityConfig xmlns="http://www.globus.org">
+  <reject-limited-proxy value="true"/>
+  <authz value="gridmap"/>
+  <context-timer-interval value="12000"/>
+  <replay-attack-window value="10000"/>
+  <replay-attack-filter value="randomValue"/>
+</securityConfig>
