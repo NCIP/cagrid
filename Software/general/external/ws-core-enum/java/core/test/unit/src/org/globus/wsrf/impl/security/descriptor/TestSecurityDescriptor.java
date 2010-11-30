@@ -31,10 +31,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.globus.axis.gsi.GSIConstants;
 import org.globus.gsi.GlobusCredential;
+import org.globus.gsi.X509Credential;
+import org.globus.gsi.gridmap.GridMap;
 import org.globus.gsi.gssapi.GlobusGSSCredentialImpl;
-import org.globus.gsi.jaas.GlobusPrincipal;
-import org.globus.gsi.jaas.PasswordCredential;
-import org.globus.security.gridmap.GridMap;
+import org.globus.gsi.gssapi.jaas.GlobusPrincipal;
+import org.globus.gsi.gssapi.jaas.PasswordCredential;
 import org.globus.wsrf.impl.security.authentication.Constants;
 import org.globus.wsrf.impl.security.authentication.encryption.EncryptionCredentials;
 import org.globus.wsrf.impl.security.authorization.HostAuthorization;
@@ -465,7 +466,7 @@ public class TestSecurityDescriptor extends GridTestCase {
         subject.getPublicCredentials()
             .add(new EncryptionCredentials(credential.getCertificateChain()));
         subject.getPrivateCredentials()
-            .add(new GlobusGSSCredentialImpl(credential, 1));
+            .add(new GlobusGSSCredentialImpl(new X509Credential(credential.getPrivateKey(),credential.getCertificateChain()), 1));
         subject.getPrivateCredentials().add(new PasswordCredential("newPass"));
         return subject;
     }

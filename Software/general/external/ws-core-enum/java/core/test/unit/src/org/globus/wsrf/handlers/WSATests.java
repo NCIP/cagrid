@@ -24,11 +24,12 @@ import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.types.URI;
 import org.globus.axis.gsi.GSIConstants;
 import org.globus.gsi.GlobusCredential;
+import org.globus.gsi.X509Credential;
 import org.globus.gsi.gssapi.GlobusGSSCredentialImpl;
-import org.globus.gsi.gssapi.auth.NoAuthorization;
 import org.globus.wsrf.WSRFConstants;
 import org.globus.wsrf.encoding.ObjectSerializer;
 import org.globus.wsrf.impl.TestService;
+import org.globus.wsrf.impl.security.authorization.NoAuthorization;
 import org.globus.wsrf.test.GridTestCase;
 import org.globus.wsrf.tests.basic.CreateResource;
 import org.globus.wsrf.tests.basic.TestPortType;
@@ -136,7 +137,7 @@ public class WSATests extends GridTestCase {
         setStubProperties((Stub)port);
 
         GSSCredential cred = 
-            new GlobusGSSCredentialImpl(new GlobusCredential(in),
+            new GlobusGSSCredentialImpl(new X509Credential(in),
                                         GSSCredential.INITIATE_ONLY);
         
         ((Stub)port)._setProperty(GSIConstants.GSI_CREDENTIALS,

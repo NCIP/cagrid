@@ -10,18 +10,17 @@
  */
 package org.globus.registry;
 
+import javax.xml.namespace.QName;
+
 import org.globus.wsrf.Resource;
 import org.globus.wsrf.ResourceProperties;
 import org.globus.wsrf.ResourceProperty;
 import org.globus.wsrf.ResourcePropertySet;
 import org.globus.wsrf.WSRFConstants;
-import org.globus.wsrf.impl.SimpleResourcePropertySet;
 import org.globus.wsrf.impl.ReflectionResourceProperty;
-
+import org.globus.wsrf.impl.SimpleResourcePropertySet;
 import org.oasis.wsrf.servicegroup.EntryType;
 import org.oasis.wsrf.servicegroup.MembershipContentRule;
-
-import javax.xml.namespace.QName;
 
 public class RegistryService implements Resource, ResourceProperties {
 

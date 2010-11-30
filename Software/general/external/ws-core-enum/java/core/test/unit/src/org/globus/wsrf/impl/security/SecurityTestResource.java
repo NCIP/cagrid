@@ -19,7 +19,7 @@ import javax.xml.namespace.QName;
 import org.apache.axis.MessageContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.globus.security.gridmap.GridMap;
+import org.globus.gsi.gridmap.GridMap;
 import org.globus.wsrf.Resource;
 import org.globus.wsrf.ResourceProperties;
 import org.globus.wsrf.ResourceProperty;

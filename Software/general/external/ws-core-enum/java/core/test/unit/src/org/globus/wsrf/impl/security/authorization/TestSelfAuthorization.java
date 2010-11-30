@@ -20,7 +20,7 @@ import junit.framework.TestSuite;
 import org.apache.axis.MessageContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.globus.gsi.jaas.GlobusPrincipal;
+import org.globus.gsi.gssapi.jaas.GlobusPrincipal;
 import org.globus.wsrf.impl.security.authorization.exceptions.AuthorizationException;
 import org.globus.wsrf.impl.security.descriptor.ServiceSecurityConfig;
 import org.globus.wsrf.jndi.JNDIUtils;

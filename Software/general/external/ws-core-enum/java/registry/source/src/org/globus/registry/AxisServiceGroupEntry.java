@@ -10,17 +10,16 @@
  */
 package org.globus.registry;
 
+import javax.xml.namespace.QName;
+
+import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.globus.wsrf.Resource;
 import org.globus.wsrf.ResourceProperties;
 import org.globus.wsrf.ResourceProperty;
 import org.globus.wsrf.ResourcePropertySet;
 import org.globus.wsrf.WSRFConstants;
-import org.globus.wsrf.impl.SimpleResourcePropertySet;
 import org.globus.wsrf.impl.ReflectionResourceProperty;
-
-import org.apache.axis.message.addressing.EndpointReferenceType;
-
-import javax.xml.namespace.QName;
+import org.globus.wsrf.impl.SimpleResourcePropertySet;
 
 public class AxisServiceGroupEntry implements Resource, ResourceProperties {
 

@@ -10,41 +10,37 @@
  */
 package org.globus.registry;
 
-import java.util.Map;
+import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.net.URL;
-import java.io.IOException;
+import java.util.Map;
+
+import javax.xml.namespace.QName;
 
 import org.apache.axis.AxisEngine;
-import org.apache.axis.MessageContext;
 import org.apache.axis.EngineConfiguration;
+import org.apache.axis.MessageContext;
 import org.apache.axis.WSDDEngineConfiguration;
 import org.apache.axis.deployment.wsdd.WSDDDeployment;
 import org.apache.axis.deployment.wsdd.WSDDService;
-
+import org.apache.axis.message.addressing.AttributedURI;
+import org.apache.axis.message.addressing.EndpointReferenceType;
+import org.apache.axis.message.addressing.ReferencePropertiesType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.globus.wsrf.Resource;
-import org.globus.wsrf.ResourceKey;
-import org.globus.wsrf.ResourceHome;
-import org.globus.wsrf.RemoveNotSupportedException;
-import org.globus.wsrf.ResourceException;
+import org.globus.util.I18n;
 import org.globus.wsrf.InvalidResourceKeyException;
 import org.globus.wsrf.NoSuchResourceException;
+import org.globus.wsrf.RemoveNotSupportedException;
+import org.globus.wsrf.Resource;
+import org.globus.wsrf.ResourceException;
+import org.globus.wsrf.ResourceHome;
+import org.globus.wsrf.ResourceKey;
 import org.globus.wsrf.config.ContainerConfig;
 import org.globus.wsrf.impl.SimpleResourceKey;
-import org.globus.util.I18n;
 import org.globus.wsrf.utils.Resources;
-
 import org.oasis.wsrf.servicegroup.EntryType;
-
-import org.apache.axis.message.addressing.EndpointReferenceType;
-import org.apache.axis.message.addressing.AttributedURI;
-import org.apache.axis.message.addressing.ReferencePropertiesType;
-
-import javax.xml.namespace.QName;
 
 public class AxisRegistryHome implements ResourceHome {
 
