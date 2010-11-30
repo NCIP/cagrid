@@ -203,7 +203,8 @@
     </target>
   
     <target name="compileStubs" depends="stubs">
-       <javac srcdir="${stubs.src}" destdir="${stubs.dest}" 
+       <javac srcdir="${stubs.src}" destdir="${stubs.dest}"
+       		source="1.4"
             debug="${java.debug}" deprecation="${java.deprecation}">
             <include name="**/*.java"/>
             <classpath>
@@ -218,6 +219,7 @@
 
     <target name="compile" depends="compileStubs">
         <javac srcdir="${src.dir}" destdir="${build.dest}"
+       		source="1.4"
             debug="${java.debug}" deprecation="${java.deprecation}">
             <include name="**/*.java"/>
             <exclude name="org/oasis/**"/>
