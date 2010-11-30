@@ -21,7 +21,6 @@ import javax.naming.InitialContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.globus.wsrf.Constants;
 import org.globus.wsrf.jndi.Initializable;
 

@@ -14,17 +14,15 @@ import java.net.URL;
 
 import javax.xml.soap.SOAPElement;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.apache.axis.message.addressing.Address;
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.message.addressing.ReferencePropertiesType;
-
-import org.globus.wsrf.ResourceKey;
-import org.globus.wsrf.ResourceContext;
-import org.globus.wsrf.container.ServiceHost;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.globus.util.I18n;
+import org.globus.wsrf.ResourceContext;
+import org.globus.wsrf.ResourceKey;
+import org.globus.wsrf.container.ServiceHost;
 
 /**
  * Utility class for construction WS-Addressing endpoint references and for

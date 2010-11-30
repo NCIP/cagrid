@@ -10,12 +10,11 @@
  */
 package org.globus.wsrf.utils;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.globus.wsrf.encoding.ObjectSerializer;
 import org.globus.wsrf.types.profiling.Timestamp;
 import org.globus.wsrf.types.profiling.TimestampType;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 public class PerformanceLog {
 

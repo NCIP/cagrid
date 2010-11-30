@@ -10,39 +10,31 @@
  */
 package org.globus.wsrf.impl.security.authorization;
 
-import org.globus.wsrf.Resource;
-import org.globus.wsrf.ResourceContext;
-import org.globus.wsrf.ResourceException;
-import org.globus.wsrf.ResourceContextException;
-import org.globus.wsrf.config.ConfigException;
-
-import org.globus.wsrf.impl.security.util.AuthUtil;
-import org.globus.wsrf.impl.security.descriptor.SecurityPropertiesHelper;
-
-import org.globus.gsi.jaas.UserNamePrincipal;
-import org.globus.security.gridmap.GridMap;
-
-import org.globus.util.I18n;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.io.IOException;
 
 import javax.security.auth.Subject;
-
 import javax.xml.namespace.QName;
 import javax.xml.rpc.handler.MessageContext;
 
-import java.io.IOException;
-
-import org.w3c.dom.Node;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.globus.gsi.jaas.UserNamePrincipal;
+import org.globus.security.gridmap.GridMap;
+import org.globus.util.I18n;
+import org.globus.wsrf.Resource;
+import org.globus.wsrf.ResourceContext;
+import org.globus.wsrf.ResourceContextException;
+import org.globus.wsrf.ResourceException;
+import org.globus.wsrf.config.ConfigException;
+import org.globus.wsrf.impl.security.authorization.exceptions.AuthorizationException;
+import org.globus.wsrf.impl.security.authorization.exceptions.CloseException;
+import org.globus.wsrf.impl.security.authorization.exceptions.InitializeException;
+import org.globus.wsrf.impl.security.authorization.exceptions.InvalidPolicyException;
+import org.globus.wsrf.impl.security.descriptor.SecurityPropertiesHelper;
+import org.globus.wsrf.impl.security.util.AuthUtil;
 import org.globus.wsrf.security.authorization.PDP;
 import org.globus.wsrf.security.authorization.PDPConfig;
-
-import org.globus.wsrf.impl.security.authorization.exceptions.InitializeException;
-import org.globus.wsrf.impl.security.authorization.exceptions.CloseException;
-import org.globus.wsrf.impl.security.authorization.exceptions.InvalidPolicyException;
-import org.globus.wsrf.impl.security.authorization.exceptions.AuthorizationException;
+import org.w3c.dom.Node;
 
 /**
  * Performs gridmap authorization and implements {@link PDP}

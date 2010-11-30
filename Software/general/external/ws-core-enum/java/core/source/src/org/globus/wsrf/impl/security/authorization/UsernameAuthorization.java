@@ -10,35 +10,29 @@
  */
 package org.globus.wsrf.impl.security.authorization;
 
+import java.io.IOException;
+import java.security.Principal;
+import java.util.Set;
+
 import javax.security.auth.Subject;
+import javax.security.auth.callback.Callback;
+import javax.security.auth.callback.CallbackHandler;
+import javax.security.auth.callback.NameCallback;
+import javax.security.auth.callback.PasswordCallback;
+import javax.security.auth.callback.UnsupportedCallbackException;
 import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
-
 import javax.xml.namespace.QName;
 import javax.xml.rpc.handler.MessageContext;
 
-import org.w3c.dom.Node;
-
-import org.globus.wsrf.security.authorization.PDP;
-import org.globus.wsrf.security.authorization.PDPConfig;
-
+import org.globus.gsi.jaas.PasswordCredential;
+import org.globus.wsrf.impl.security.authorization.exceptions.AuthorizationException;
 import org.globus.wsrf.impl.security.authorization.exceptions.CloseException;
 import org.globus.wsrf.impl.security.authorization.exceptions.InitializeException;
 import org.globus.wsrf.impl.security.authorization.exceptions.InvalidPolicyException;
-import org.globus.wsrf.impl.security.authorization.exceptions.AuthorizationException;
-
-import org.globus.gsi.jaas.PasswordCredential;
-
-import javax.security.auth.callback.NameCallback;
-import javax.security.auth.callback.PasswordCallback;
-import javax.security.auth.callback.Callback;
-import javax.security.auth.callback.CallbackHandler;
-import javax.security.auth.callback.UnsupportedCallbackException;
-
-import java.security.Principal;
-
-import java.util.Set;
-import java.io.IOException;
+import org.globus.wsrf.security.authorization.PDP;
+import org.globus.wsrf.security.authorization.PDPConfig;
+import org.w3c.dom.Node;
 
 /**
  * Uses Java Login module to authorize based on user name and password

@@ -10,9 +10,9 @@
  */
 package org.globus.wsrf.impl.security.descriptor;
 
-import javax.xml.rpc.handler.MessageContext;
-
 import java.io.Serializable;
+
+import javax.xml.rpc.handler.MessageContext;
 
 /**
  * Interface for representing authentication method. 

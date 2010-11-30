@@ -15,26 +15,23 @@ import java.util.Set;
 
 import javax.naming.Context;
 import javax.naming.LinkRef;
+import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
 import javax.naming.RefAddr;
 import javax.naming.Reference;
 import javax.naming.StringRefAddr;
-import javax.naming.NameNotFoundException;
 
-import org.apache.naming.ResourceRef;
-
+import org.apache.axis.AxisEngine;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import org.apache.naming.ResourceRef;
+import org.globus.util.I18n;
 import org.globus.wsrf.tools.jndi.ConfigContext;
 import org.globus.wsrf.tools.jndi.Environment;
 import org.globus.wsrf.tools.jndi.Resource;
 import org.globus.wsrf.tools.jndi.ResourceLink;
 import org.globus.wsrf.tools.jndi.ResourceParameters;
 import org.globus.wsrf.utils.Resources;
-import org.globus.util.I18n;
-
-import org.apache.axis.AxisEngine;
 
 public class NamingContext
 {

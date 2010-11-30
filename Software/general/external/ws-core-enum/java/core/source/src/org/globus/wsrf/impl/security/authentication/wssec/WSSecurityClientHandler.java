@@ -10,28 +10,22 @@
  */
 package org.globus.wsrf.impl.security.authentication.wssec;
 
-import org.globus.wsrf.impl.security.authentication.Constants;
-
-import org.globus.wsrf.security.SecurityException;
-
-import org.globus.wsrf.impl.security.util.AuthUtil;
-
-import org.globus.wsrf.impl.security.authorization.Authorization;
-import org.globus.wsrf.impl.security.authorization.HostAuthorization;
-import org.globus.wsrf.impl.security.authorization.exceptions.AuthorizationException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import javax.security.auth.Subject;
-
 import javax.xml.rpc.handler.MessageContext;
 import javax.xml.rpc.handler.soap.SOAPMessageContext;
-
 import javax.xml.soap.SOAPBody;
 import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.globus.wsrf.impl.security.authentication.Constants;
+import org.globus.wsrf.impl.security.authorization.Authorization;
+import org.globus.wsrf.impl.security.authorization.HostAuthorization;
+import org.globus.wsrf.impl.security.authorization.exceptions.AuthorizationException;
+import org.globus.wsrf.impl.security.util.AuthUtil;
+import org.globus.wsrf.security.SecurityException;
 
 // client-side handler
 public class WSSecurityClientHandler extends WSSecurityBasicHandler {

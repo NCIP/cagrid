@@ -10,34 +10,26 @@
  */
 package org.globus.wsrf.impl.security.descriptor;
 
-import org.ietf.jgss.GSSManager;
-import org.ietf.jgss.GSSCredential;
-
-import org.gridforum.jgss.ExtendedGSSManager;
-
-import org.globus.wsrf.impl.security.util.PDPUtils;
-import org.globus.wsrf.impl.security.authorization.ServiceAuthorizationChain;
-
-import org.globus.wsrf.impl.security.descriptor.util.ElementParserException;
-
-import org.globus.wsrf.config.ContainerConfig;
-import org.globus.wsrf.config.ConfigException;
-
-import org.globus.gsi.jaas.JaasGssUtil;
-import org.globus.security.gridmap.GridMap;
-import org.globus.util.I18n;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.w3c.dom.Document;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.security.auth.Subject;
 
-import java.util.Map;
-import java.util.HashMap;
-
 import org.apache.axis.MessageContext;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.globus.gsi.jaas.JaasGssUtil;
+import org.globus.security.gridmap.GridMap;
+import org.globus.util.I18n;
+import org.globus.wsrf.config.ConfigException;
+import org.globus.wsrf.config.ContainerConfig;
+import org.globus.wsrf.impl.security.authorization.ServiceAuthorizationChain;
+import org.globus.wsrf.impl.security.descriptor.util.ElementParserException;
+import org.globus.wsrf.impl.security.util.PDPUtils;
+import org.gridforum.jgss.ExtendedGSSManager;
+import org.ietf.jgss.GSSCredential;
+import org.ietf.jgss.GSSManager;
+import org.w3c.dom.Document;
 
 /**
  * Helper class for initialization of container security descriptor. All

@@ -10,36 +10,28 @@
  */
 package org.globus.wsrf.impl.security.authorization;
 
-import org.ietf.jgss.GSSException;
-import org.ietf.jgss.GSSManager;
-import org.ietf.jgss.GSSName;
-
-import org.globus.wsrf.impl.security.util.AuthUtil;
-
-import org.globus.util.I18n;
-
-import org.gridforum.jgss.ExtendedGSSManager;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import javax.security.auth.Subject;
-
-import javax.xml.namespace.QName;
-import javax.xml.rpc.handler.MessageContext;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.w3c.dom.Node;
+import javax.security.auth.Subject;
+import javax.xml.namespace.QName;
+import javax.xml.rpc.handler.MessageContext;
 
-import org.globus.wsrf.security.authorization.PDP;
-import org.globus.wsrf.security.authorization.PDPConfig;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.globus.util.I18n;
+import org.globus.wsrf.impl.security.authorization.exceptions.AuthorizationException;
 import org.globus.wsrf.impl.security.authorization.exceptions.CloseException;
 import org.globus.wsrf.impl.security.authorization.exceptions.InitializeException;
 import org.globus.wsrf.impl.security.authorization.exceptions.InvalidPolicyException;
-import org.globus.wsrf.impl.security.authorization.exceptions.AuthorizationException;
+import org.globus.wsrf.impl.security.util.AuthUtil;
+import org.globus.wsrf.security.authorization.PDP;
+import org.globus.wsrf.security.authorization.PDPConfig;
+import org.gridforum.jgss.ExtendedGSSManager;
+import org.ietf.jgss.GSSException;
+import org.ietf.jgss.GSSManager;
+import org.ietf.jgss.GSSName;
+import org.w3c.dom.Node;
 
 /**
  * Performs host based authorization and implements {@link PDP}

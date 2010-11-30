@@ -10,30 +10,26 @@
  */
 package org.globus.wsrf.utils;
 
-import java.io.Writer;
-import java.io.StringWriter;
 import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.List;
 
-import javax.xml.soap.SOAPElement;
 import javax.xml.namespace.QName;
+import javax.xml.soap.SOAPElement;
 
 import org.apache.axis.MessageContext;
-import org.apache.axis.message.MessageElement;
-import org.apache.axis.message.Text;
 import org.apache.axis.encoding.AnyContentType;
 import org.apache.axis.encoding.SerializationContext;
-
+import org.apache.axis.message.MessageElement;
+import org.apache.axis.message.Text;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.globus.wsrf.Constants;
 import org.globus.wsrf.config.ContainerConfig;
-
-import org.xml.sax.InputSource;
-
-import org.w3c.dom.Element;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
 
 /**
  * The <code>AnyHelper</code> is a utility that provides common functions

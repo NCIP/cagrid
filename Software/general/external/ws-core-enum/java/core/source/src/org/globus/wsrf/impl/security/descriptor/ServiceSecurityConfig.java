@@ -10,31 +10,21 @@
  */
 package org.globus.wsrf.impl.security.descriptor;
 
-import org.globus.wsrf.impl.security.util.AuthUtil;
-import org.globus.wsrf.impl.security.util.PDPUtils;
-
-import org.globus.wsrf.security.SecurityException;
-
-import org.globus.wsrf.impl.security.authorization.ServiceAuthorizationChain;
-
-import org.globus.wsrf.impl.security.descriptor.util.ElementParserException;
-
-import org.globus.wsrf.config.ConfigException;
-
-import org.globus.wsrf.utils.ContextUtils;
-
-import org.globus.security.gridmap.GridMap;
-
-import org.globus.util.I18n;
+import javax.security.auth.Subject;
 
 import org.apache.axis.MessageContext;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import org.globus.security.gridmap.GridMap;
+import org.globus.util.I18n;
+import org.globus.wsrf.config.ConfigException;
+import org.globus.wsrf.impl.security.authorization.ServiceAuthorizationChain;
+import org.globus.wsrf.impl.security.descriptor.util.ElementParserException;
+import org.globus.wsrf.impl.security.util.AuthUtil;
+import org.globus.wsrf.impl.security.util.PDPUtils;
+import org.globus.wsrf.security.SecurityException;
+import org.globus.wsrf.utils.ContextUtils;
 import org.w3c.dom.Document;
-
-import javax.security.auth.Subject;
 
 /**
  * Helper class for initialization of service security descriptor. All

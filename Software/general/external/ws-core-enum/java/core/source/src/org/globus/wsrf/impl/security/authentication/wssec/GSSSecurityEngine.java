@@ -16,6 +16,9 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.security.auth.callback.CallbackHandler;
 
+import org.apache.axis.MessageContext;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.ws.security.WSSConfig;
 import org.apache.ws.security.WSSecurityEngine;
 import org.apache.ws.security.conversation.message.token.SecurityContextToken;
@@ -24,16 +27,6 @@ import org.apache.ws.security.message.token.SecurityTokenReference;
 import org.apache.ws.security.util.WSSecurityUtil;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.keys.KeyInfo;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.apache.axis.MessageContext;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-
 import org.globus.wsrf.Constants;
 import org.globus.wsrf.ResourceException;
 import org.globus.wsrf.ResourceHome;
@@ -42,6 +35,9 @@ import org.globus.wsrf.impl.SimpleResourceKey;
 import org.globus.wsrf.impl.security.authentication.secureconv.service.AuthenticationServiceConstants;
 import org.globus.wsrf.impl.security.authentication.secureconv.service.SecurityContext;
 import org.globus.wsrf.providers.GSSPrivateKey;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 public class GSSSecurityEngine extends WSSecurityEngine
 {

@@ -11,10 +11,8 @@
 package org.globus.wsrf.impl.security.authorization;
 
 import org.apache.axis.MessageContext;
-
-import org.globus.wsrf.impl.security.util.AuthUtil;
-
 import org.globus.wsrf.config.ContainerConfig;
+import org.globus.wsrf.impl.security.util.AuthUtil;
 
 /**
  * PDP Configuration class that set/retrieves data from global

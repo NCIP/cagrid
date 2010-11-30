@@ -11,7 +11,6 @@
 package org.globus.wsrf.query;
 
 import org.globus.wsrf.ResourcePropertySet;
-
 import org.oasis.wsrf.properties.QueryExpressionType;
 
 /**

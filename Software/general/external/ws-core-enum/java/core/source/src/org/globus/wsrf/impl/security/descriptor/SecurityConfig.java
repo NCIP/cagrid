@@ -10,49 +10,37 @@
  */
 package org.globus.wsrf.impl.security.descriptor;
 
-import org.ietf.jgss.GSSCredential;
-import org.ietf.jgss.GSSException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 
-import org.globus.wsrf.Constants;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NameNotFoundException;
+import javax.naming.NamingException;
+import javax.security.auth.Subject;
+import javax.xml.parsers.ParserConfigurationException;
 
-import org.globus.wsrf.config.ContainerConfig;
-import org.globus.wsrf.config.ConfigException;
-
-import org.globus.wsrf.jndi.JNDIUtils;
-import org.globus.wsrf.utils.XmlUtils;
-
+import org.apache.axis.MessageContext;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.globus.gsi.GlobusCredential;
 import org.globus.gsi.GlobusCredentialException;
 import org.globus.gsi.gssapi.GlobusGSSCredentialImpl;
 import org.globus.gsi.jaas.JaasGssUtil;
-
 import org.globus.security.gridmap.GridMap;
-
 import org.globus.util.I18n;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.w3c.dom.Document;
-
-import javax.security.auth.Subject;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.naming.NameNotFoundException;
-
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.apache.axis.MessageContext;
-
+import org.globus.wsrf.Constants;
+import org.globus.wsrf.config.ConfigException;
+import org.globus.wsrf.config.ContainerConfig;
 import org.globus.wsrf.impl.security.authorization.ServiceAuthorizationChain;
+import org.globus.wsrf.jndi.JNDIUtils;
+import org.globus.wsrf.utils.XmlUtils;
+import org.ietf.jgss.GSSCredential;
+import org.ietf.jgss.GSSException;
+import org.w3c.dom.Document;
 
 /**
  * Helper base class for initialization and storing of security

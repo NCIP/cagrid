@@ -11,7 +11,6 @@
 package org.globus.wsrf.security.authorization;
 
 import javax.security.auth.Subject;
-
 import javax.xml.namespace.QName;
 import javax.xml.rpc.handler.MessageContext;
 

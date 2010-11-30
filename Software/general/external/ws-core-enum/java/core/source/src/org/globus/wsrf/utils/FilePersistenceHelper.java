@@ -18,12 +18,11 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import org.globus.util.I18n;
 import org.globus.wsrf.Constants;
 import org.globus.wsrf.ResourceException;
 import org.globus.wsrf.ResourceKey;
 import org.globus.wsrf.config.ContainerConfig;
-import org.globus.util.I18n;
 
 /**
  * This helper contains common functions for managing persistent information

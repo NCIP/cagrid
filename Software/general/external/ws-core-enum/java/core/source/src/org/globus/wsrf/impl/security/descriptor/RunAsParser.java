@@ -10,16 +10,14 @@
  */
 package org.globus.wsrf.impl.security.descriptor;
 
+import javax.xml.namespace.QName;
+
+import org.globus.util.I18n;
 import org.globus.wsrf.impl.security.descriptor.util.ElementHandler;
 import org.globus.wsrf.impl.security.descriptor.util.ElementParser;
 import org.globus.wsrf.impl.security.descriptor.util.ElementParserException;
-
-import org.globus.util.I18n;
-
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-
-import javax.xml.namespace.QName;
 
 public class RunAsParser implements ElementHandler, RunAsConstants {
     private static I18n i18n = I18n.getI18n(SecurityDescriptor.RESOURCE);

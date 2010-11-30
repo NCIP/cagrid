@@ -17,11 +17,6 @@ import javax.security.auth.Subject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.ietf.jgss.GSSCredential;
-import org.ietf.jgss.GSSException;
-import org.w3c.dom.Document;
-
 import org.globus.gsi.CertUtil;
 import org.globus.gsi.GlobusCredential;
 import org.globus.gsi.GlobusCredentialException;
@@ -29,6 +24,9 @@ import org.globus.util.I18n;
 import org.globus.wsrf.config.ConfigException;
 import org.globus.wsrf.impl.security.authentication.encryption.EncryptionCredentials;
 import org.globus.wsrf.impl.security.descriptor.util.ElementParserException;
+import org.ietf.jgss.GSSCredential;
+import org.ietf.jgss.GSSException;
+import org.w3c.dom.Document;
 
 /**
  * Helper API for dealing with <code>ClientSecurityDescriptor</code>

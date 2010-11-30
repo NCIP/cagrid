@@ -10,35 +10,22 @@
  */
 package org.globus.wsrf.impl.security.util;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.net.MalformedURLException;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.Vector;
 import java.util.StringTokenizer;
-
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.util.Vector;
 
 import javax.security.auth.Subject;
-
 import javax.xml.namespace.QName;
 import javax.xml.rpc.Stub;
 import javax.xml.rpc.handler.MessageContext;
 import javax.xml.soap.SOAPHeaderElement;
-
-import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
-import org.apache.xml.security.c14n.CanonicalizationException;
-import org.apache.xml.security.c14n.Canonicalizer;
-import org.apache.xml.security.c14n.InvalidCanonicalizerException;
-import org.apache.xml.security.signature.XMLSignatureException;
-import org.apache.xml.security.utils.Base64;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import org.apache.axis.AxisFault;
 import org.apache.axis.Message;
@@ -50,22 +37,22 @@ import org.apache.axis.message.MessageElement;
 import org.apache.axis.message.SOAPBodyElement;
 import org.apache.axis.message.SOAPEnvelope;
 import org.apache.axis.message.addressing.AddressingHeaders;
-
-import org.ietf.jgss.GSSCredential;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
+import org.apache.xml.security.c14n.CanonicalizationException;
+import org.apache.xml.security.c14n.Canonicalizer;
+import org.apache.xml.security.c14n.InvalidCanonicalizerException;
+import org.apache.xml.security.signature.XMLSignatureException;
+import org.apache.xml.security.utils.Base64;
 import org.globus.axis.gsi.GSIConstants;
 import org.globus.gsi.jaas.GlobusPrincipal;
 import org.globus.util.I18n;
+import org.globus.wsrf.NoResourceHomeException;
 import org.globus.wsrf.ResourceContext;
 import org.globus.wsrf.ResourceContextException;
-import org.globus.wsrf.NoResourceHomeException;
 import org.globus.wsrf.config.ConfigException;
-
 import org.globus.wsrf.impl.security.authentication.Constants;
-
 import org.globus.wsrf.impl.security.authorization.Authorization;
 import org.globus.wsrf.impl.security.authorization.GridMapAuthorization;
 import org.globus.wsrf.impl.security.authorization.HostAuthorization;
@@ -74,13 +61,15 @@ import org.globus.wsrf.impl.security.authorization.NoAuthorization;
 import org.globus.wsrf.impl.security.authorization.SAMLAuthorizationCallout;
 import org.globus.wsrf.impl.security.authorization.SelfAuthorization;
 import org.globus.wsrf.impl.security.authorization.UsernameAuthorization;
-
 import org.globus.wsrf.impl.security.descriptor.ContainerSecurityConfig;
 import org.globus.wsrf.impl.security.descriptor.SecurityConfig;
 import org.globus.wsrf.impl.security.descriptor.ServiceSecurityConfig;
-
 import org.globus.wsrf.security.SecurityException;
 import org.globus.wsrf.utils.ContextUtils;
+import org.ietf.jgss.GSSCredential;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 /**
  * Utility class, mostly methods that deal with message context

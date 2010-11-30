@@ -10,20 +10,17 @@
  */
 package org.globus.wsrf.utils;
 
-import org.oasis.wsrf.faults.BaseFaultType;
-import org.oasis.wsrf.faults.BaseFaultTypeDescription;
-import org.oasis.wsrf.faults.BaseFaultTypeErrorCode;
-
-import org.apache.axis.Constants;
-import org.apache.axis.utils.JavaUtils;
-import org.apache.axis.types.URI;
-
-import org.globus.util.I18n;
-
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.Calendar;
 
+import org.apache.axis.Constants;
+import org.apache.axis.types.URI;
+import org.apache.axis.utils.JavaUtils;
+import org.globus.util.I18n;
+import org.oasis.wsrf.faults.BaseFaultType;
+import org.oasis.wsrf.faults.BaseFaultTypeDescription;
+import org.oasis.wsrf.faults.BaseFaultTypeErrorCode;
 import org.w3c.dom.Element;
 
 /**

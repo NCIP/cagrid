@@ -27,6 +27,9 @@ import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPHeader;
 import javax.xml.soap.SOAPHeaderElement;
 
+import org.apache.axis.message.addressing.MessageID;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.ws.security.WSSConfig;
 import org.apache.ws.security.message.EnvelopeIdResolver;
 import org.apache.ws.security.message.token.SecurityTokenReference;
@@ -41,23 +44,6 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.utils.EncryptionConstants;
 import org.apache.xml.security.utils.IdResolver;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.apache.axis.message.addressing.MessageID;
-
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
-import org.ietf.jgss.GSSContext;
-import org.ietf.jgss.GSSName;
-import org.ietf.jgss.GSSCredential;
-import org.gridforum.jgss.ExtendedGSSContext;
-
 import org.globus.gsi.CertUtil;
 import org.globus.gsi.CertificateRevocationLists;
 import org.globus.gsi.TrustedCertificates;
@@ -80,6 +66,16 @@ import org.globus.wsrf.impl.security.descriptor.SecurityPropertiesHelper;
 import org.globus.wsrf.impl.security.util.EnvelopeConverter;
 import org.globus.wsrf.utils.ContextUtils;
 import org.globus.wsrf.utils.XmlUtils;
+import org.gridforum.jgss.ExtendedGSSContext;
+import org.ietf.jgss.GSSContext;
+import org.ietf.jgss.GSSCredential;
+import org.ietf.jgss.GSSName;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 
 public abstract class WSSecurityEngine {
 

@@ -10,15 +10,13 @@
  */
 package org.globus.wsrf.security.authorization;
 
-import org.w3c.dom.Node;
-
 import javax.security.auth.Subject;
-
 import javax.xml.namespace.QName;
 import javax.xml.rpc.handler.MessageContext;
 
-import org.globus.wsrf.impl.security.authorization.exceptions.InvalidPolicyException;
 import org.globus.wsrf.impl.security.authorization.exceptions.AuthorizationException;
+import org.globus.wsrf.impl.security.authorization.exceptions.InvalidPolicyException;
+import org.w3c.dom.Node;
 
 /**
  * Interface that must be implemented by all PDPs in an interceptor chain

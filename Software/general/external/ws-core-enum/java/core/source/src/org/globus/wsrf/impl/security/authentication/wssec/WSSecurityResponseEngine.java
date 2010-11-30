@@ -16,15 +16,9 @@ import javax.security.auth.Subject;
 import javax.xml.rpc.handler.MessageContext;
 import javax.xml.soap.SOAPEnvelope;
 
-import org.apache.xml.security.signature.XMLSignature;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.ietf.jgss.GSSCredential;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
+import org.apache.xml.security.signature.XMLSignature;
 import org.globus.gsi.GlobusCredential;
 import org.globus.gsi.gssapi.GlobusGSSCredentialImpl;
 import org.globus.gsi.jaas.JaasGssUtil;
@@ -34,6 +28,9 @@ import org.globus.wsrf.impl.security.authentication.Constants;
 import org.globus.wsrf.impl.security.authentication.secureconv.service.SecurityContext;
 import org.globus.wsrf.impl.security.util.AuthUtil;
 import org.globus.wsrf.providers.GSSPublicKey;
+import org.ietf.jgss.GSSCredential;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class WSSecurityResponseEngine extends WSSecurityEngine {
 

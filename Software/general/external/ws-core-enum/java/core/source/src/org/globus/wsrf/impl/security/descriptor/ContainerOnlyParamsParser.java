@@ -10,12 +10,11 @@
  */
 package org.globus.wsrf.impl.security.descriptor;
 
+import javax.xml.namespace.QName;
+
 import org.globus.wsrf.impl.security.descriptor.util.ElementHandler;
 import org.globus.wsrf.impl.security.descriptor.util.ElementParserException;
-
 import org.w3c.dom.Element;
-
-import javax.xml.namespace.QName;
 
 /**
  * Handles elements that are configured only in contianer security

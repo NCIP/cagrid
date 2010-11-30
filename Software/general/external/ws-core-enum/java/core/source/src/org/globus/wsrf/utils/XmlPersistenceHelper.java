@@ -10,26 +10,24 @@
  */
 package org.globus.wsrf.utils;
 
-import java.io.Writer;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 
 import javax.xml.namespace.QName;
 
-import org.xml.sax.InputSource;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import org.globus.util.I18n;
 import org.globus.wsrf.NoSuchResourceException;
 import org.globus.wsrf.ResourceException;
-import org.globus.wsrf.impl.ReflectionResource;
 import org.globus.wsrf.encoding.ObjectDeserializationContext;
 import org.globus.wsrf.encoding.ObjectSerializer;
-import org.globus.util.I18n;
+import org.globus.wsrf.impl.ReflectionResource;
+import org.xml.sax.InputSource;
 
 /**
  * This helper is used to persist a {@link ReflectionResource

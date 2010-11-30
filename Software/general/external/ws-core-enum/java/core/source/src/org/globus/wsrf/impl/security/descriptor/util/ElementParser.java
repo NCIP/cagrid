@@ -10,15 +10,14 @@
  */
 package org.globus.wsrf.impl.security.descriptor.util;
 
-import org.globus.util.I18n;
-
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.namespace.QName;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.globus.util.I18n;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 public class ElementParser implements ElementHandler {
 

@@ -10,16 +10,13 @@
  */
 package org.globus.wsrf.impl.security.authorization;
 
-import org.globus.util.I18n;
-
-import org.apache.axis.MessageContext;
-
 import java.util.StringTokenizer;
 
+import org.apache.axis.MessageContext;
+import org.globus.util.I18n;
+import org.globus.wsrf.impl.security.authorization.exceptions.ConfigException;
 import org.globus.wsrf.security.authorization.PDPConfig;
 import org.globus.wsrf.security.authorization.PDPConstants;
-
-import org.globus.wsrf.impl.security.authorization.exceptions.ConfigException;
 
 /**
  * Base class that implements the {@link PDPConfig PDPConfig} interface.

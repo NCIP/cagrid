@@ -10,44 +10,34 @@
  */
 package org.globus.wsrf.impl.security.authorization;
 
-import org.ietf.jgss.GSSName;
-import org.ietf.jgss.GSSCredential;
-import org.ietf.jgss.GSSException;
-import org.ietf.jgss.GSSManager;
-
-import org.globus.wsrf.security.SecurityManager;
-import org.globus.wsrf.security.SecurityException;
-
-import org.globus.wsrf.Resource;
-import org.globus.wsrf.ResourceContext;
-import org.globus.wsrf.ResourceException;
-import org.globus.wsrf.ResourceContextException;
-
-import org.globus.axis.gsi.GSIConstants;
-import org.globus.gsi.jaas.JaasGssUtil;
-import org.globus.gsi.jaas.JaasSubject;
-
-import org.gridforum.jgss.ExtendedGSSManager;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import javax.security.auth.Subject;
-
 import javax.xml.namespace.QName;
 import javax.xml.rpc.handler.MessageContext;
 
-import org.w3c.dom.Node;
-
-import org.globus.wsrf.security.authorization.PDP;
-import org.globus.wsrf.security.authorization.PDPConfig;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.globus.axis.gsi.GSIConstants;
+import org.globus.gsi.jaas.JaasGssUtil;
+import org.globus.gsi.jaas.JaasSubject;
+import org.globus.util.I18n;
+import org.globus.wsrf.Resource;
+import org.globus.wsrf.ResourceContext;
+import org.globus.wsrf.ResourceContextException;
+import org.globus.wsrf.ResourceException;
+import org.globus.wsrf.impl.security.authorization.exceptions.AuthorizationException;
 import org.globus.wsrf.impl.security.authorization.exceptions.CloseException;
 import org.globus.wsrf.impl.security.authorization.exceptions.InitializeException;
 import org.globus.wsrf.impl.security.authorization.exceptions.InvalidPolicyException;
-import org.globus.wsrf.impl.security.authorization.exceptions.AuthorizationException;
-
-import org.globus.util.I18n;
+import org.globus.wsrf.security.SecurityException;
+import org.globus.wsrf.security.SecurityManager;
+import org.globus.wsrf.security.authorization.PDP;
+import org.globus.wsrf.security.authorization.PDPConfig;
+import org.gridforum.jgss.ExtendedGSSManager;
+import org.ietf.jgss.GSSCredential;
+import org.ietf.jgss.GSSException;
+import org.ietf.jgss.GSSManager;
+import org.ietf.jgss.GSSName;
+import org.w3c.dom.Node;
 
 /**
  * Enforces that the client and server have the same identity.

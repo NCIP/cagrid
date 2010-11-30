@@ -11,9 +11,7 @@
 package org.globus.wsrf.impl.security.authentication.wssec;
 
 import java.rmi.RemoteException;
-
 import java.text.MessageFormat;
-
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 

@@ -10,12 +10,11 @@
  */
 package org.globus.wsrf.impl.security.authorization;
 
-import org.apache.axis.handlers.BasicHandler;
-import org.apache.axis.MessageContext;
 import org.apache.axis.AxisFault;
-
-import org.globus.wsrf.impl.security.authentication.Constants;
+import org.apache.axis.MessageContext;
+import org.apache.axis.handlers.BasicHandler;
 import org.globus.axis.gsi.GSIConstants;
+import org.globus.wsrf.impl.security.authentication.Constants;
 
 /**
  * Handler used to set appropriate authorization properties when transport

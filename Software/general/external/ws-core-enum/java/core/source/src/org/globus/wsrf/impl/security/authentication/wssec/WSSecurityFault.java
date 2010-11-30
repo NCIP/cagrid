@@ -10,7 +10,9 @@
  */
 package org.globus.wsrf.impl.security.authentication.wssec;
 
-import org.apache.axis.utils.XMLUtils;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Properties;
 
 import javax.xml.namespace.QName;
 import javax.xml.rpc.soap.SOAPFaultException;
@@ -20,10 +22,7 @@ import javax.xml.soap.Name;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPFactory;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
-import java.util.Properties;
+import org.apache.axis.utils.XMLUtils;
 
 public class WSSecurityFault {
     public static final QName FAILURE =

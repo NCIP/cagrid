@@ -10,39 +10,35 @@
  */
 package org.globus.wsrf.jndi;
 
-import java.io.InputStream;
-import java.io.FileInputStream;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.StringTokenizer;
+import java.io.InputStream;
 import java.util.Hashtable;
+import java.util.StringTokenizer;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
-import javax.naming.NameNotFoundException;
-import javax.naming.NamingException;
-import javax.naming.NamingEnumeration;
 import javax.naming.NameClassPair;
+import javax.naming.NameNotFoundException;
+import javax.naming.NamingEnumeration;
+import javax.naming.NamingException;
 
-import org.apache.naming.ContextBindings;
-import org.apache.naming.SynchronizedContext;
-
+import org.apache.axis.AxisEngine;
+import org.apache.axis.Constants;
+import org.apache.axis.MessageContext;
 import org.apache.commons.digester.Digester;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.apache.axis.AxisEngine;
-import org.apache.axis.MessageContext;
-import org.apache.axis.Constants;
-
+import org.apache.naming.ContextBindings;
+import org.apache.naming.SynchronizedContext;
 import org.globus.tools.DeployConstants;
+import org.globus.util.I18n;
 import org.globus.wsrf.config.ContainerConfig;
 import org.globus.wsrf.tools.jndi.JNDIConfigRuleSet;
 import org.globus.wsrf.utils.Resources;
-import org.globus.util.I18n;
-
 import org.xml.sax.SAXException;
 
 /**

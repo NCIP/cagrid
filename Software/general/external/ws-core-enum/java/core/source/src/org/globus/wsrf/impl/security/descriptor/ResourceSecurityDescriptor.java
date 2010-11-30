@@ -10,10 +10,9 @@
  */
 package org.globus.wsrf.impl.security.descriptor;
 
-import org.globus.wsrf.security.authorization.PDPConfig;
-
-import org.globus.wsrf.impl.security.authorization.exceptions.InitializeException;
 import org.globus.wsrf.impl.security.authorization.ServiceAuthorizationChain;
+import org.globus.wsrf.impl.security.authorization.exceptions.InitializeException;
+import org.globus.wsrf.security.authorization.PDPConfig;
 
 /**
  * Represents a resouce's security descriptor. 

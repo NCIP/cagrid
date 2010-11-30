@@ -10,35 +10,27 @@
  */
 package org.globus.wsrf.impl.security.authorization;
 
-import org.globus.wsrf.impl.security.util.AuthUtil;
-import org.globus.gsi.jaas.GlobusPrincipal;
-
-import org.gridforum.jgss.ExtendedGSSManager;
+import java.security.Principal;
+import java.util.Set;
 
 import javax.security.auth.Subject;
-
-import org.globus.util.I18n;
-
-import java.security.Principal;
-
 import javax.xml.namespace.QName;
 import javax.xml.rpc.handler.MessageContext;
 
-import org.ietf.jgss.GSSException;
-import org.ietf.jgss.GSSManager;
-import org.ietf.jgss.GSSName;
-
-import java.util.Set;
-
-import org.w3c.dom.Node;
-
-import org.globus.wsrf.security.authorization.PDP;
-import org.globus.wsrf.security.authorization.PDPConfig;
-
+import org.globus.gsi.jaas.GlobusPrincipal;
+import org.globus.util.I18n;
+import org.globus.wsrf.impl.security.authorization.exceptions.AuthorizationException;
 import org.globus.wsrf.impl.security.authorization.exceptions.CloseException;
 import org.globus.wsrf.impl.security.authorization.exceptions.InitializeException;
 import org.globus.wsrf.impl.security.authorization.exceptions.InvalidPolicyException;
-import org.globus.wsrf.impl.security.authorization.exceptions.AuthorizationException;
+import org.globus.wsrf.impl.security.util.AuthUtil;
+import org.globus.wsrf.security.authorization.PDP;
+import org.globus.wsrf.security.authorization.PDPConfig;
+import org.gridforum.jgss.ExtendedGSSManager;
+import org.ietf.jgss.GSSException;
+import org.ietf.jgss.GSSManager;
+import org.ietf.jgss.GSSName;
+import org.w3c.dom.Node;
 
 /**
  * Does identity authorization and and implements {@link PDP}

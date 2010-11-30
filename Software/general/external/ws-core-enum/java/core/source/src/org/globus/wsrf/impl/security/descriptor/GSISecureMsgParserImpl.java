@@ -10,9 +10,9 @@
  */
 package org.globus.wsrf.impl.security.descriptor;
 
-import org.globus.wsrf.impl.security.descriptor.util.ElementParser;
-
 import javax.xml.namespace.QName;
+
+import org.globus.wsrf.impl.security.descriptor.util.ElementParser;
 
 public class GSISecureMsgParserImpl extends ElementParser
     implements GSIAuthMethodParser {

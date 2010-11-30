@@ -10,19 +10,17 @@
  */
 package org.globus.wsrf.impl.security.descriptor;
 
-import org.globus.wsrf.impl.security.descriptor.util.ElementHandler;
-import org.globus.wsrf.impl.security.descriptor.util.ElementParser;
-import org.globus.wsrf.impl.security.descriptor.util.ElementParserException;
-
-import org.globus.util.I18n;
-
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
+import java.util.List;
+import java.util.Vector;
 
 import javax.xml.namespace.QName;
 
-import java.util.List;
-import java.util.Vector;
+import org.globus.util.I18n;
+import org.globus.wsrf.impl.security.descriptor.util.ElementHandler;
+import org.globus.wsrf.impl.security.descriptor.util.ElementParser;
+import org.globus.wsrf.impl.security.descriptor.util.ElementParserException;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 /**
  * Handles &lt;auth-method&gt; element of the security descriptor

@@ -10,20 +10,16 @@
  */
 package org.globus.wsrf.impl.security.authorization;
 
-import org.globus.util.I18n;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import javax.security.auth.Subject;
-
-import javax.xml.rpc.handler.MessageContext;
-
 import java.security.Principal;
-
 import java.util.Iterator;
 import java.util.Set;
 
+import javax.security.auth.Subject;
+import javax.xml.rpc.handler.MessageContext;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.globus.util.I18n;
 import org.globus.wsrf.impl.security.authorization.exceptions.AuthorizationException;
 
 /**

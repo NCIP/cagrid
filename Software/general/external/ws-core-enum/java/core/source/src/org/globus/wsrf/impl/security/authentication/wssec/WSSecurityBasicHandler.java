@@ -11,18 +11,14 @@
 package org.globus.wsrf.impl.security.authentication.wssec;
 
 import javax.xml.namespace.QName;
-
 import javax.xml.rpc.handler.GenericHandler;
 import javax.xml.rpc.handler.soap.SOAPMessageContext;
-
 import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPMessage;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.globus.wsrf.impl.security.util.EnvelopeConverter;
-
 import org.w3c.dom.Document;
 
 public abstract class WSSecurityBasicHandler extends GenericHandler {

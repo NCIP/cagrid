@@ -26,32 +26,14 @@ import javax.xml.rpc.ServiceException;
 import javax.xml.rpc.Stub;
 import javax.xml.rpc.handler.MessageContext;
 
-import org.apache.xml.security.signature.XMLSignature;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.apache.axis.message.MessageElement;
 import org.apache.axis.message.addressing.Address;
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.types.URI;
 import org.apache.axis.utils.XMLUtils;
-
-import org.opensaml.ExtendedAuthorizationDecisionQuery;
-import org.opensaml.QName;
-import org.opensaml.SAMLAction;
-import org.opensaml.SAMLAssertion;
-import org.opensaml.SAMLAuthorizationDecisionStatement;
-import org.opensaml.SAMLDecision;
-import org.opensaml.SAMLException;
-import org.opensaml.SAMLRequest;
-import org.opensaml.SAMLResponse;
-import org.opensaml.SAMLSubject;
-import org.opensaml.SimpleAuthorizationDecisionStatement;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.xml.security.signature.XMLSignature;
 import org.globus.axis.gsi.GSIConstants;
 import org.globus.gsi.CertUtil;
 import org.globus.gsi.gssapi.GlobusGSSCredentialImpl;
@@ -72,6 +54,21 @@ import org.globus.wsrf.security.authorization.PDP;
 import org.globus.wsrf.security.authorization.PDPConfig;
 import org.globus.wsrf.security.authorization.SAMLRequestPortType;
 import org.globus.wsrf.utils.ContextUtils;
+import org.opensaml.ExtendedAuthorizationDecisionQuery;
+import org.opensaml.QName;
+import org.opensaml.SAMLAction;
+import org.opensaml.SAMLAssertion;
+import org.opensaml.SAMLAuthorizationDecisionStatement;
+import org.opensaml.SAMLDecision;
+import org.opensaml.SAMLException;
+import org.opensaml.SAMLRequest;
+import org.opensaml.SAMLResponse;
+import org.opensaml.SAMLSubject;
+import org.opensaml.SimpleAuthorizationDecisionStatement;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
 import protocol._0._1.SAML.tc.names.oasis.Request;
 import protocol._0._1.SAML.tc.names.oasis.Response;
 

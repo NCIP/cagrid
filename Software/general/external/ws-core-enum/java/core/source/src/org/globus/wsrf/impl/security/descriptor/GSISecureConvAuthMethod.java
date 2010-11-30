@@ -10,11 +10,10 @@
  */
 package org.globus.wsrf.impl.security.descriptor;
 
-import org.globus.wsrf.impl.security.authentication.Constants;
+import javax.xml.rpc.handler.MessageContext;
 
 import org.globus.util.I18n;
-
-import javax.xml.rpc.handler.MessageContext;
+import org.globus.wsrf.impl.security.authentication.Constants;
 
 /**
  * Represents GSI Secure Conversation

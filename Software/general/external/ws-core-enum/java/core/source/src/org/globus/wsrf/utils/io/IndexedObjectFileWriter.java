@@ -15,13 +15,13 @@
  */
 package org.globus.wsrf.utils.io;
 
-import java.io.RandomAccessFile;
-import java.io.IOException;
 import java.io.ByteArrayOutputStream;
-import java.io.ObjectOutputStream;
 import java.io.FileNotFoundException;
-import java.util.List;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Writes Java objects to an indexed file. The indexing allows for random

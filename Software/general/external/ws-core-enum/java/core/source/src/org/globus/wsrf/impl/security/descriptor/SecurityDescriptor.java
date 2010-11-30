@@ -12,22 +12,18 @@ package org.globus.wsrf.impl.security.descriptor;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
 import java.io.ObjectOutputStream;
-
-import org.globus.wsrf.impl.security.descriptor.util.ElementParser;
-
-import org.globus.wsrf.impl.security.util.AuthUtil;
-import org.globus.wsrf.impl.security.util.FixedObjectInputStream;
-import org.globus.wsrf.impl.security.authorization.ServiceAuthorizationChain;
-
-import org.globus.util.I18n;
-
-import javax.xml.namespace.QName;
+import java.io.Serializable;
 
 import javax.security.auth.Subject;
+import javax.xml.namespace.QName;
 
 import org.globus.security.gridmap.GridMap;
+import org.globus.util.I18n;
+import org.globus.wsrf.impl.security.authorization.ServiceAuthorizationChain;
+import org.globus.wsrf.impl.security.descriptor.util.ElementParser;
+import org.globus.wsrf.impl.security.util.AuthUtil;
+import org.globus.wsrf.impl.security.util.FixedObjectInputStream;
 
 /**
  * Base class for security descriptor. Stores credential parameters,

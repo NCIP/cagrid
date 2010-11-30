@@ -15,15 +15,15 @@
  */
 package org.globus.wsrf.utils.io;
 
-import java.util.List;
-import java.util.Arrays;
 import java.io.File;
-import java.io.IOException;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
+import org.globus.util.I18n;
 import org.globus.wsrf.utils.FilePersistenceHelper;
 import org.globus.wsrf.utils.Resources;
-import org.globus.util.I18n;
 
 /**
  * Utility functions for indexed object files.

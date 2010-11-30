@@ -10,17 +10,14 @@
  */
 package org.globus.wsrf.security;
 
-import javax.xml.rpc.handler.soap.SOAPMessageContext;
-
-import org.globus.wsrf.impl.security.descriptor.ResourceSecurityDescriptor;
-
-import javax.security.auth.Subject;
-
 import java.security.Principal;
 
-import org.globus.wsrf.Resource;
+import javax.security.auth.Subject;
+import javax.xml.rpc.handler.soap.SOAPMessageContext;
 
+import org.globus.wsrf.Resource;
 import org.globus.wsrf.impl.security.SecurityManagerImpl;
+import org.globus.wsrf.impl.security.descriptor.ResourceSecurityDescriptor;
 
 public abstract class SecurityManager {
 

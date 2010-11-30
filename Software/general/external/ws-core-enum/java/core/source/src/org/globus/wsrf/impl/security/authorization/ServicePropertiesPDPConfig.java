@@ -10,14 +10,11 @@
  */
 package org.globus.wsrf.impl.security.authorization;
 
-import org.globus.wsrf.utils.ContextUtils;
-
 import org.apache.axis.MessageContext;
-
-import org.globus.wsrf.impl.security.util.AuthUtil;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.globus.wsrf.impl.security.util.AuthUtil;
+import org.globus.wsrf.utils.ContextUtils;
 
 /**
  * This class is used to store configuration information of interceptors

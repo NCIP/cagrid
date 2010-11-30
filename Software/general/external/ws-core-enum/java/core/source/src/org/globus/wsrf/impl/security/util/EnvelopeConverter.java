@@ -10,10 +10,10 @@
  */
 package org.globus.wsrf.impl.security.util;
 
-import org.w3c.dom.Document;
-
 import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPMessage;
+
+import org.w3c.dom.Document;
 
 
 public abstract class EnvelopeConverter {

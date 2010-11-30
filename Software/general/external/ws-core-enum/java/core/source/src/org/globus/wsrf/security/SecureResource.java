@@ -11,7 +11,6 @@
 package org.globus.wsrf.security;
 
 import org.globus.wsrf.Resource;
-
 import org.globus.wsrf.impl.security.descriptor.ResourceSecurityDescriptor;
 
 /**

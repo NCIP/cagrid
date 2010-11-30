@@ -15,14 +15,13 @@
  */
 package org.globus.wsrf.utils;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
-
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Arrays;
 
 import org.globus.util.I18n;
 

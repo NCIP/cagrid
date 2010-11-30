@@ -10,10 +10,10 @@
  */
 package org.globus.wsrf.utils;
 
-import org.apache.axis.handlers.soap.SOAPService;
 import org.apache.axis.AxisEngine;
-import org.apache.axis.MessageContext;
 import org.apache.axis.AxisFault;
+import org.apache.axis.MessageContext;
+import org.apache.axis.handlers.soap.SOAPService;
 
 public class ContextUtils {
 

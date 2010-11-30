@@ -12,12 +12,12 @@ package org.globus.wsrf.jndi;
 
 import java.util.Hashtable;
 
-import javax.naming.Name;
 import javax.naming.Context;
+import javax.naming.Name;
 import javax.naming.NamingException;
 
-import org.globus.wsrf.utils.Resources;
 import org.globus.util.I18n;
+import org.globus.wsrf.utils.Resources;
 
 public class BasicBeanFactory extends org.apache.naming.factory.BeanFactory {
     

@@ -10,22 +10,9 @@
  */
 package org.globus.wsrf.impl.security.authorization;
 
-import org.globus.util.I18n;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.w3c.dom.Node;
-
-import javax.security.auth.Subject;
-
-import javax.xml.namespace.QName;
-import javax.xml.rpc.handler.MessageContext;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -34,16 +21,22 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
-import org.globus.wsrf.security.authorization.PDP;
-import org.globus.wsrf.security.authorization.PDPConfig;
-import org.globus.wsrf.security.authorization.PDPConstants;
+import javax.security.auth.Subject;
+import javax.xml.namespace.QName;
+import javax.xml.rpc.handler.MessageContext;
 
-import org.globus.wsrf.impl.security.util.AuthUtil;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.globus.util.I18n;
+import org.globus.wsrf.impl.security.authorization.exceptions.AuthorizationException;
 import org.globus.wsrf.impl.security.authorization.exceptions.CloseException;
 import org.globus.wsrf.impl.security.authorization.exceptions.InitializeException;
 import org.globus.wsrf.impl.security.authorization.exceptions.InvalidPolicyException;
-import org.globus.wsrf.impl.security.authorization.exceptions.AuthorizationException;
+import org.globus.wsrf.impl.security.util.AuthUtil;
+import org.globus.wsrf.security.authorization.PDP;
+import org.globus.wsrf.security.authorization.PDPConfig;
+import org.globus.wsrf.security.authorization.PDPConstants;
+import org.w3c.dom.Node;
 
 /**
  * A <code>PDP<code> implementation that is intended to be used

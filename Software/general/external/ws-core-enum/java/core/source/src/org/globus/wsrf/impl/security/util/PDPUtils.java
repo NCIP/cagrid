@@ -10,27 +10,22 @@
  */
 package org.globus.wsrf.impl.security.util;
 
-import org.globus.wsrf.config.ConfigException;
-
-import org.apache.axis.MessageContext;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.HashMap;
 
 import javax.xml.rpc.Stub;
 
-import java.io.FileReader;
-import java.io.BufferedReader;
-import java.util.HashMap;
-
-import org.globus.wsrf.security.authorization.PDPConfig;
-import org.globus.wsrf.security.authorization.PDPConstants;
-
+import org.apache.axis.MessageContext;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.globus.wsrf.config.ConfigException;
 import org.globus.wsrf.impl.security.authorization.ContainerPDPConfig;
 import org.globus.wsrf.impl.security.authorization.ServiceAuthorizationChain;
 import org.globus.wsrf.impl.security.authorization.ServicePropertiesPDPConfig;
-
 import org.globus.wsrf.impl.security.authorization.exceptions.InitializeException;
+import org.globus.wsrf.security.authorization.PDPConfig;
+import org.globus.wsrf.security.authorization.PDPConstants;
 
 /**
  * Collection of utility methods used by PDP based services

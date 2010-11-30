@@ -16,11 +16,11 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
 
-import org.globus.wsrf.utils.Resources;
 import org.globus.util.I18n;
+import org.globus.wsrf.utils.Resources;
 
-import EDU.oswego.cs.dl.util.concurrent.PooledExecutor;
 import EDU.oswego.cs.dl.util.concurrent.LinkedQueue;
+import EDU.oswego.cs.dl.util.concurrent.PooledExecutor;
 
 import commonj.work.Work;
 import commonj.work.WorkEvent;

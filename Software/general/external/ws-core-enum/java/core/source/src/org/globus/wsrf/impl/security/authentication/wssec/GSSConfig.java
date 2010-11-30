@@ -11,7 +11,6 @@
 package org.globus.wsrf.impl.security.authentication.wssec;
 
 import org.apache.xml.security.Init;
-
 import org.globus.wsrf.providers.JCEProvider;
 
 public class GSSConfig

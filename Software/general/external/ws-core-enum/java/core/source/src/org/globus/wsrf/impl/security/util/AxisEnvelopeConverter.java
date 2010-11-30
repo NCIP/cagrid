@@ -10,23 +10,18 @@
  */
 package org.globus.wsrf.impl.security.util;
 
-import org.xml.sax.InputSource;
-
-import org.apache.axis.Message;
-import org.apache.axis.encoding.DeserializationContext;
-
-import org.apache.xml.security.c14n.Canonicalizer;
-
-import org.globus.wsrf.config.ContainerConfig;
-
-import org.w3c.dom.Document;
+import java.io.ByteArrayInputStream;
 
 import javax.xml.rpc.handler.MessageContext;
-import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPMessage;
 
-import java.io.ByteArrayInputStream;
+import org.apache.axis.Message;
+import org.apache.axis.encoding.DeserializationContext;
+import org.apache.xml.security.c14n.Canonicalizer;
+import org.globus.wsrf.config.ContainerConfig;
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
 
 public class AxisEnvelopeConverter extends EnvelopeConverter {
 

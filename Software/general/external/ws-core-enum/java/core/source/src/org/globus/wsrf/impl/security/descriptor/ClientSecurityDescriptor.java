@@ -10,22 +10,19 @@
  */
 package org.globus.wsrf.impl.security.descriptor;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import javax.security.auth.Subject;
 import javax.xml.namespace.QName;
 
-import org.ietf.jgss.GSSCredential;
-
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-
-import org.globus.wsrf.impl.security.util.AuthUtil;
-import org.globus.wsrf.impl.security.util.FixedObjectInputStream;
-
 import org.globus.util.I18n;
 import org.globus.wsrf.impl.security.authorization.Authorization;
 import org.globus.wsrf.impl.security.descriptor.util.ElementParser;
+import org.globus.wsrf.impl.security.util.AuthUtil;
+import org.globus.wsrf.impl.security.util.FixedObjectInputStream;
+import org.ietf.jgss.GSSCredential;
 
 /**
  * Represents a client's security descriptor.

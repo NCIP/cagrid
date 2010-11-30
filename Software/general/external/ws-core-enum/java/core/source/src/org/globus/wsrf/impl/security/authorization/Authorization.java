@@ -13,12 +13,10 @@ package org.globus.wsrf.impl.security.authorization;
 import java.io.Serializable;
 
 import javax.security.auth.Subject;
-
 import javax.xml.rpc.handler.MessageContext;
 
-import org.ietf.jgss.GSSName;
-
 import org.globus.wsrf.impl.security.authorization.exceptions.AuthorizationException;
+import org.ietf.jgss.GSSName;
 
 /**
  * Interface to be implemented by client side authorization mechanism.

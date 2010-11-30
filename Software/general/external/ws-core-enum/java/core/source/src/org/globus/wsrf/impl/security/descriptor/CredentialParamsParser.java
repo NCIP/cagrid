@@ -10,15 +10,13 @@
  */
 package org.globus.wsrf.impl.security.descriptor;
 
-import org.globus.wsrf.impl.security.descriptor.util.ElementHandler;
-import org.globus.wsrf.impl.security.descriptor.util.ElementParserException;
+import javax.xml.namespace.QName;
 
 import org.globus.util.I18n;
-
+import org.globus.wsrf.impl.security.descriptor.util.ElementHandler;
+import org.globus.wsrf.impl.security.descriptor.util.ElementParserException;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-
-import javax.xml.namespace.QName;
 
 /**
  * Handles elements that are used to specify credentials in the

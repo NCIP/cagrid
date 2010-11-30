@@ -11,11 +11,7 @@
 package org.globus.wsrf.utils.cache;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.NoSuchElementException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * Special purpose double linked list implementation. 

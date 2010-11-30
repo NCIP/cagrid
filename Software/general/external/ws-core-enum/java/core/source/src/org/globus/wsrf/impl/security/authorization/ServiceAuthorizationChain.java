@@ -10,41 +10,32 @@
  */
 package org.globus.wsrf.impl.security.authorization;
 
-import org.globus.util.I18n;
-
-import org.apache.axis.AxisFault;
-import org.apache.axis.utils.XMLUtils;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.w3c.dom.Node;
-import org.w3c.dom.Element;
-import org.w3c.dom.Document;
+import java.io.Serializable;
+import java.util.ArrayList;
 
 import javax.security.auth.Subject;
-
 import javax.xml.namespace.QName;
 import javax.xml.rpc.handler.MessageContext;
 
-import java.io.Serializable;
-
-import java.util.ArrayList;
-
-import org.globus.wsrf.security.authorization.PIP;
-import org.globus.wsrf.security.authorization.PDP;
-import org.globus.wsrf.security.authorization.PDPConfig;
-import org.globus.wsrf.security.authorization.Interceptor;
-import org.globus.wsrf.security.authorization.PDPConstants;
-
-import org.globus.wsrf.security.SecurityException;
-
-import org.globus.wsrf.impl.security.util.AuthUtil;
-
+import org.apache.axis.AxisFault;
+import org.apache.axis.utils.XMLUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.globus.util.I18n;
+import org.globus.wsrf.impl.security.authorization.exceptions.AuthorizationException;
 import org.globus.wsrf.impl.security.authorization.exceptions.CloseException;
 import org.globus.wsrf.impl.security.authorization.exceptions.InitializeException;
 import org.globus.wsrf.impl.security.authorization.exceptions.InvalidPolicyException;
-import org.globus.wsrf.impl.security.authorization.exceptions.AuthorizationException;
+import org.globus.wsrf.impl.security.util.AuthUtil;
+import org.globus.wsrf.security.SecurityException;
+import org.globus.wsrf.security.authorization.Interceptor;
+import org.globus.wsrf.security.authorization.PDP;
+import org.globus.wsrf.security.authorization.PDPConfig;
+import org.globus.wsrf.security.authorization.PDPConstants;
+import org.globus.wsrf.security.authorization.PIP;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 /**
  * The <code>ServiceAuthorizationChain</code> class ties together and

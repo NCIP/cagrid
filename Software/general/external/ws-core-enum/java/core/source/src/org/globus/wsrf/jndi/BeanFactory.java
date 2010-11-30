@@ -10,26 +10,22 @@
  */
 package org.globus.wsrf.jndi;
 
+import java.security.PrivilegedActionException;
+import java.security.PrivilegedExceptionAction;
 import java.util.Hashtable;
 
-import javax.naming.Name;
 import javax.naming.Context;
+import javax.naming.Name;
 import javax.naming.NamingException;
+import javax.security.auth.Subject;
 
 import org.apache.axis.AxisEngine;
 import org.apache.axis.MessageContext;
 import org.apache.axis.server.AxisServer;
-
-import org.globus.wsrf.security.SecurityManager;
-import org.globus.wsrf.impl.security.descriptor.ServiceSecurityConfig;
-
-import org.globus.wsrf.container.ServiceManager;
 import org.globus.gsi.jaas.JaasSubject;
-
-import java.security.PrivilegedExceptionAction;
-import java.security.PrivilegedActionException;
- 
-import javax.security.auth.Subject;
+import org.globus.wsrf.container.ServiceManager;
+import org.globus.wsrf.impl.security.descriptor.ServiceSecurityConfig;
+import org.globus.wsrf.security.SecurityManager;
 
 public class BeanFactory extends BasicBeanFactory {
 

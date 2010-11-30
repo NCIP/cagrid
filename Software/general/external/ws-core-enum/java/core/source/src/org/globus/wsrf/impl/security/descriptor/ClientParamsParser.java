@@ -10,23 +10,17 @@
  */
 package org.globus.wsrf.impl.security.descriptor;
 
-import org.globus.wsrf.impl.security.descriptor.util.ElementHandler;
-import org.globus.wsrf.impl.security.descriptor.util.ElementParserException;
-
-import org.globus.wsrf.impl.security.util.AuthUtil;
-
-import org.globus.wsrf.impl.security.authorization.Authorization;
-
-import org.globus.wsrf.impl.security.authentication.Constants;
+import javax.xml.namespace.QName;
 
 import org.globus.axis.gsi.GSIConstants;
-
 import org.globus.util.I18n;
-
-import org.w3c.dom.Node;
+import org.globus.wsrf.impl.security.authentication.Constants;
+import org.globus.wsrf.impl.security.authorization.Authorization;
+import org.globus.wsrf.impl.security.descriptor.util.ElementHandler;
+import org.globus.wsrf.impl.security.descriptor.util.ElementParserException;
+import org.globus.wsrf.impl.security.util.AuthUtil;
 import org.w3c.dom.Element;
-
-import javax.xml.namespace.QName;
+import org.w3c.dom.Node;
 
 /**
  * Handles all elements that are set on the client security descriptor

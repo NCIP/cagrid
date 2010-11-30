@@ -18,15 +18,10 @@ import javax.security.auth.Subject;
 import javax.xml.rpc.handler.MessageContext;
 import javax.xml.soap.SOAPEnvelope;
 
-import org.apache.xml.security.keys.KeyInfo;
-import org.apache.xml.security.signature.XMLSignature;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
+import org.apache.xml.security.keys.KeyInfo;
+import org.apache.xml.security.signature.XMLSignature;
 import org.globus.gsi.gssapi.GlobusGSSCredentialImpl;
 import org.globus.gsi.proxy.ProxyPathValidator;
 import org.globus.wsrf.Resource;
@@ -39,6 +34,8 @@ import org.globus.wsrf.impl.security.descriptor.SecurityPropertiesHelper;
 import org.globus.wsrf.providers.GSSPublicKey;
 import org.globus.wsrf.security.SecurityManager;
 import org.globus.wsrf.utils.ContextUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class WSSecurityRequestEngine extends WSSecurityEngine {
 
