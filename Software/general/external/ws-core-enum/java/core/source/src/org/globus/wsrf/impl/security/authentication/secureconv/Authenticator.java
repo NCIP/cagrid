@@ -12,15 +12,10 @@ package org.globus.wsrf.impl.security.authentication.secureconv;
 
 import java.rmi.RemoteException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.apache.axis.message.MessageElement;
 import org.apache.axis.message.addressing.EndpointReferenceType;
-
-import org.ietf.jgss.GSSContext;
-import org.ietf.jgss.GSSException;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.globus.util.Base64;
 import org.globus.ws.trust.BinaryExchangeType;
 import org.globus.ws.trust.RequestSecurityTokenResponseType;
@@ -28,6 +23,8 @@ import org.globus.ws.trust.RequestSecurityTokenType;
 import org.globus.ws.trust.holders.RequestSecurityTokenResponseTypeHolder;
 import org.globus.wsrf.encoding.SerializationException;
 import org.globus.wsrf.security.impl.secconv.SecureConversation;
+import org.ietf.jgss.GSSContext;
+import org.ietf.jgss.GSSException;
 
 /**
  * Establishes a security context.

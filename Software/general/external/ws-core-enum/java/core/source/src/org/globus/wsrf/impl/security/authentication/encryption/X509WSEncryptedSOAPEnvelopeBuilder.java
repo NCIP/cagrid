@@ -15,17 +15,14 @@ import java.security.cert.X509Certificate;
 import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPMessage;
 
-import org.apache.ws.security.message.WSEncryptBody;
-import org.apache.xml.security.utils.EncryptionConstants;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.w3c.dom.Document;
-
+import org.apache.ws.security.message.WSEncryptBody;
+import org.apache.xml.security.utils.EncryptionConstants;
 import org.globus.wsrf.impl.security.authentication.ContextCrypto;
 import org.globus.wsrf.impl.security.authentication.wssec.GSSConfig;
 import org.globus.wsrf.impl.security.util.EnvelopeConverter;
+import org.w3c.dom.Document;
 
 /**
  * Used for GSI secure message encryption. Encrypts the body of

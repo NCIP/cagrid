@@ -18,34 +18,31 @@ import java.util.List;
 import java.util.Map;
 
 import javax.xml.namespace.QName;
+import javax.xml.soap.Name;
+import javax.xml.soap.SOAPElement;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import org.globus.util.I18n;
+import org.globus.wsrf.NoSuchResourceException;
+import org.globus.wsrf.ResourceContext;
 import org.globus.wsrf.ResourceProperties;
 import org.globus.wsrf.ResourceProperty;
 import org.globus.wsrf.ResourcePropertySet;
-import org.globus.wsrf.ResourceContext;
-import org.globus.wsrf.NoSuchResourceException;
 import org.globus.wsrf.WSRFConstants;
 import org.globus.wsrf.impl.SimpleResourcePropertyMetaData;
-import org.globus.wsrf.utils.Resources;
 import org.globus.wsrf.utils.FaultHelper;
-import org.globus.util.I18n;
-
-import javax.xml.soap.SOAPElement;
-import javax.xml.soap.Name;
-
+import org.globus.wsrf.utils.Resources;
 import org.oasis.wsrf.properties.DeleteType;
 import org.oasis.wsrf.properties.InsertType;
-import org.oasis.wsrf.properties.UpdateType;
 import org.oasis.wsrf.properties.InvalidResourcePropertyQNameFaultType;
 import org.oasis.wsrf.properties.InvalidSetResourcePropertiesRequestContentFaultType;
 import org.oasis.wsrf.properties.ResourceUnknownFaultType;
+import org.oasis.wsrf.properties.SetResourcePropertiesResponse;
+import org.oasis.wsrf.properties.SetResourceProperties_Element;
 import org.oasis.wsrf.properties.SetResourcePropertyRequestFailedFaultType;
 import org.oasis.wsrf.properties.UnableToModifyResourcePropertyFaultType;
-import org.oasis.wsrf.properties.SetResourceProperties_Element;
-import org.oasis.wsrf.properties.SetResourcePropertiesResponse;
+import org.oasis.wsrf.properties.UpdateType;
 
 public class SetResourcePropertiesProvider {
 

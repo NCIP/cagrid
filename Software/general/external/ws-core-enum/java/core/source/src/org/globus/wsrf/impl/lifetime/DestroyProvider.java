@@ -12,18 +12,17 @@ package org.globus.wsrf.impl.lifetime;
 
 import java.rmi.RemoteException;
 
+import org.globus.util.I18n;
+import org.globus.wsrf.NoSuchResourceException;
 import org.globus.wsrf.ResourceContext;
 import org.globus.wsrf.ResourceHome;
 import org.globus.wsrf.ResourceKey;
-import org.globus.wsrf.NoSuchResourceException;
 import org.globus.wsrf.utils.FaultHelper;
 import org.globus.wsrf.utils.Resources;
-import org.globus.util.I18n;
-
-import org.oasis.wsrf.lifetime.ResourceNotDestroyedFaultType;
-import org.oasis.wsrf.lifetime.ResourceUnknownFaultType;
 import org.oasis.wsrf.lifetime.Destroy;
 import org.oasis.wsrf.lifetime.DestroyResponse;
+import org.oasis.wsrf.lifetime.ResourceNotDestroyedFaultType;
+import org.oasis.wsrf.lifetime.ResourceUnknownFaultType;
 
 public class DestroyProvider {
 

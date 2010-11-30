@@ -10,23 +10,19 @@
  */
 package org.globus.wsrf.impl;
 
-import org.globus.wsrf.ResourceProperty;
-import org.globus.wsrf.ResourcePropertyMetaData;
-import org.globus.wsrf.utils.Resources;
-import org.globus.util.I18n;
-
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPElement;
 
-import org.w3c.dom.Element;
-
-import org.globus.wsrf.encoding.ObjectDeserializer;
-import org.globus.wsrf.encoding.ObjectSerializer;
-
 import org.apache.axis.message.MessageElement;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.globus.util.I18n;
+import org.globus.wsrf.ResourceProperty;
+import org.globus.wsrf.ResourcePropertyMetaData;
+import org.globus.wsrf.encoding.ObjectDeserializer;
+import org.globus.wsrf.encoding.ObjectSerializer;
+import org.globus.wsrf.utils.Resources;
+import org.w3c.dom.Element;
 
 public abstract class BaseResourceProperty implements ResourceProperty {
 

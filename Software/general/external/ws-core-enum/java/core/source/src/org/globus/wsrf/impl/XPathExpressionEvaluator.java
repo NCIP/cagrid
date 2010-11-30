@@ -10,45 +10,40 @@
  */
 package org.globus.wsrf.impl;
 
-import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.axis.message.MessageElement;
 import org.apache.axis.message.Text;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.xpath.XPathAPI;
 import org.apache.xpath.objects.XBoolean;
 import org.apache.xpath.objects.XNodeSet;
 import org.apache.xpath.objects.XNumber;
 import org.apache.xpath.objects.XObject;
 import org.apache.xpath.objects.XString;
-
+import org.globus.util.I18n;
+import org.globus.wsrf.ResourcePropertySet;
 import org.globus.wsrf.WSRFConstants;
 import org.globus.wsrf.query.ExpressionEvaluator;
+import org.globus.wsrf.query.InvalidQueryExpressionException;
+import org.globus.wsrf.query.QueryEvaluationException;
 import org.globus.wsrf.query.QueryException;
 import org.globus.wsrf.query.UnsupportedQueryDialectException;
-import org.globus.wsrf.query.QueryEvaluationException;
-import org.globus.wsrf.query.InvalidQueryExpressionException;
-import org.globus.wsrf.ResourcePropertySet;
-import org.globus.wsrf.utils.XmlUtils;
 import org.globus.wsrf.utils.Resources;
-import org.globus.util.I18n;
-
+import org.globus.wsrf.utils.XmlUtils;
+import org.oasis.wsrf.properties.QueryExpressionType;
 import org.w3c.dom.Attr;
+import org.w3c.dom.CharacterData;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.CharacterData;
-
-import org.oasis.wsrf.properties.QueryExpressionType;
 
 /**
  * Evaluator supporting XPath queries using Xalan-J XPathAPI.

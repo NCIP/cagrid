@@ -12,10 +12,10 @@ package org.globus.wsrf.impl;
 
 import javax.xml.namespace.QName;
 
-import org.globus.wsrf.WSRFConstants;
-import org.globus.wsrf.ResourcePropertyMetaData;
-import org.globus.wsrf.utils.Resources;
 import org.globus.util.I18n;
+import org.globus.wsrf.ResourcePropertyMetaData;
+import org.globus.wsrf.WSRFConstants;
+import org.globus.wsrf.utils.Resources;
 
 public class SimpleResourcePropertyMetaData 
     implements ResourcePropertyMetaData {

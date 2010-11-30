@@ -16,7 +16,6 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.globus.wsrf.NotificationConsumerManager;
 import org.globus.wsrf.config.ContainerConfig;
 import org.globus.wsrf.container.ContainerException;

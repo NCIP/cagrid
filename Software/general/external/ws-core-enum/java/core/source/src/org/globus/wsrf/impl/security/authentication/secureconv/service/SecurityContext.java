@@ -10,11 +10,10 @@
  */
 package org.globus.wsrf.impl.security.authentication.secureconv.service;
 
-import org.ietf.jgss.GSSContext;
-import org.ietf.jgss.GSSCredential;
-
 import org.globus.wsrf.Resource;
 import org.globus.wsrf.ResourceIdentifier;
+import org.ietf.jgss.GSSContext;
+import org.ietf.jgss.GSSCredential;
 
 /**
  * Associates a GSSContext with a context Id. It is used for GSI secure

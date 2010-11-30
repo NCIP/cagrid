@@ -10,41 +10,37 @@
  */
 package org.globus.wsrf.impl;
 
-import java.util.List;
 import java.io.Serializable;
+import java.util.List;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.xml.rpc.Stub;
 
+import org.apache.axis.EngineConfiguration;
+import org.apache.axis.client.AxisClient;
+import org.apache.axis.configuration.EngineConfigurationFactoryFinder;
+import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.apache.axis.message.addressing.EndpointReferenceType;
-
+import org.globus.util.I18n;
 import org.globus.wsrf.ResourceException;
 import org.globus.wsrf.ResourceHome;
 import org.globus.wsrf.ResourceKey;
 import org.globus.wsrf.Subscription;
 import org.globus.wsrf.Topic;
-import org.globus.wsrf.topicexpression.TopicExpressionEngine;
-import org.globus.wsrf.topicexpression.TopicExpressionEvaluator;
 import org.globus.wsrf.TopicListener;
-import org.globus.wsrf.utils.Resources;
 import org.globus.wsrf.impl.security.authentication.Constants;
 import org.globus.wsrf.impl.security.authorization.NoAuthorization;
 import org.globus.wsrf.impl.security.descriptor.ClientSecurityDescriptor;
-import org.globus.util.I18n;
-
+import org.globus.wsrf.topicexpression.TopicExpressionEngine;
+import org.globus.wsrf.topicexpression.TopicExpressionEvaluator;
+import org.globus.wsrf.utils.Resources;
 import org.oasis.wsn.NotificationConsumer;
 import org.oasis.wsn.NotificationMessageHolderType;
+import org.oasis.wsn.Notify;
 import org.oasis.wsn.TopicExpressionType;
 import org.oasis.wsn.WSBaseNotificationServiceAddressingLocator;
-import org.oasis.wsn.Notify;
-
-import org.apache.axis.client.AxisClient;
-import org.apache.axis.EngineConfiguration;
-import org.apache.axis.configuration.EngineConfigurationFactoryFinder;
 
 /**
  * Topic listener implementation that will trigger notifications when a topic

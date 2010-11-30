@@ -10,25 +10,24 @@
  */
 package org.globus.wsrf.impl;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
-import java.io.IOException;
 
 import javax.xml.namespace.QName;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.globus.util.I18n;
 import org.globus.wsrf.Topic;
 import org.globus.wsrf.TopicList;
 import org.globus.wsrf.WSNConstants;
 import org.globus.wsrf.topicexpression.InvalidTopicExpressionException;
-import org.globus.wsrf.topicexpression.TopicExpressionResolutionException;
 import org.globus.wsrf.topicexpression.TopicExpressionEvaluator;
 import org.globus.wsrf.topicexpression.TopicExpressionException;
+import org.globus.wsrf.topicexpression.TopicExpressionResolutionException;
 import org.globus.wsrf.topicexpression.UnsupportedTopicExpressionDialectException;
 import org.globus.wsrf.utils.Resources;
 import org.oasis.wsn.TopicExpressionType;

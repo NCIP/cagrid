@@ -10,16 +10,15 @@
  */
 package org.globus.wsrf.impl.notification;
 
+import javax.xml.namespace.QName;
+import javax.xml.soap.SOAPElement;
+
 import org.globus.wsrf.WSRFConstants;
 import org.globus.wsrf.core.notification.ResourcePropertyValueChangeNotificationElementType;
-import org.oasis.wsrf.properties.ResourcePropertyValueChangeNotificationType;
-
-import org.globus.wsrf.encoding.ObjectSerializer;
 import org.globus.wsrf.encoding.ObjectConverter;
+import org.globus.wsrf.encoding.ObjectSerializer;
 import org.globus.wsrf.encoding.SerializationException;
-
-import javax.xml.soap.SOAPElement;
-import javax.xml.namespace.QName;
+import org.oasis.wsrf.properties.ResourcePropertyValueChangeNotificationType;
 
 public class NotificationTypeConverter implements ObjectConverter {
 

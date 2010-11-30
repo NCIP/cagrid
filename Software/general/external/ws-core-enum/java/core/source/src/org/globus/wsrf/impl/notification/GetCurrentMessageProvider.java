@@ -16,34 +16,31 @@ import java.util.Collection;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NameNotFoundException;
+import javax.xml.soap.SOAPElement;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import org.globus.util.I18n;
+import org.globus.wsrf.Constants;
+import org.globus.wsrf.NoSuchResourceException;
+import org.globus.wsrf.ResourceContext;
 import org.globus.wsrf.Topic;
 import org.globus.wsrf.TopicList;
 import org.globus.wsrf.TopicListAccessor;
-import org.globus.wsrf.ResourceContext;
-import org.globus.wsrf.NoSuchResourceException;
-import org.globus.wsrf.Constants;
+import org.globus.wsrf.encoding.ObjectConverter;
+import org.globus.wsrf.encoding.ObjectSerializer;
+import org.globus.wsrf.jndi.JNDIUtils;
 import org.globus.wsrf.topicexpression.UnsupportedTopicExpressionDialectException;
 import org.globus.wsrf.utils.AnyHelper;
-import org.globus.wsrf.utils.Resources;
 import org.globus.wsrf.utils.FaultHelper;
-import org.globus.wsrf.jndi.JNDIUtils;
-import org.globus.wsrf.encoding.ObjectSerializer;
-import org.globus.wsrf.encoding.ObjectConverter;
-import org.globus.util.I18n;
-
+import org.globus.wsrf.utils.Resources;
+import org.oasis.wsn.GetCurrentMessage;
+import org.oasis.wsn.GetCurrentMessageResponse;
 import org.oasis.wsn.InvalidTopicExpressionFaultType;
 import org.oasis.wsn.NoCurrentMessageOnTopicFaultType;
 import org.oasis.wsn.ResourceUnknownFaultType;
 import org.oasis.wsn.TopicNotSupportedFaultType;
-import org.oasis.wsn.GetCurrentMessage;
-import org.oasis.wsn.GetCurrentMessageResponse;
 import org.oasis.wsn.TopicPathDialectUnknownFaultType;
-
-import javax.xml.soap.SOAPElement;
 
 public class GetCurrentMessageProvider
 {

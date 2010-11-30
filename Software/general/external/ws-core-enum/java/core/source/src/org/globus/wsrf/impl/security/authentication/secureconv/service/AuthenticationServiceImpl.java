@@ -15,32 +15,21 @@ import java.rmi.RemoteException;
 import javax.security.auth.Subject;
 import javax.xml.soap.SOAPElement;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.apache.axis.MessageContext;
 import org.apache.axis.message.MessageElement;
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.types.URI;
-
-import org.gridforum.jgss.ExtendedGSSContext;
-import org.gridforum.jgss.ExtendedGSSManager;
-import org.ietf.jgss.GSSContext;
-import org.ietf.jgss.GSSCredential;
-import org.ietf.jgss.GSSManager;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.globus.gsi.gssapi.GSSConstants;
 import org.globus.gsi.jaas.JaasGssUtil;
-
-import org.globus.util.I18n;
 import org.globus.util.Base64;
-
+import org.globus.util.I18n;
 import org.globus.ws.sc.SecurityContextTokenType;
 import org.globus.ws.trust.BinaryExchangeType;
 import org.globus.ws.trust.RequestSecurityTokenResponseType;
 import org.globus.ws.trust.RequestSecurityTokenType;
 import org.globus.ws.trust.holders.RequestSecurityTokenResponseTypeHolder;
-
 import org.globus.wsrf.Resource;
 import org.globus.wsrf.ResourceContext;
 import org.globus.wsrf.ResourceContextException;
@@ -49,24 +38,25 @@ import org.globus.wsrf.ResourceKey;
 import org.globus.wsrf.encoding.ObjectSerializer;
 import org.globus.wsrf.impl.ResourceContextImpl;
 import org.globus.wsrf.impl.SimpleResourceKey;
-
+import org.globus.wsrf.impl.security.authentication.secureconv.SecureConversationMessage;
+import org.globus.wsrf.impl.security.descriptor.SecurityPropertiesHelper;
 import org.globus.wsrf.security.SecurityException;
 import org.globus.wsrf.security.SecurityManager;
-
-import org.globus.wsrf.impl.security.descriptor.SecurityPropertiesHelper;
-import org.globus.wsrf.impl.security.authentication.secureconv.SecureConversationMessage;
-
-import org.globus.wsrf.security.impl.secconv.SecureConversation;
-import org.globus.wsrf.security.impl.secconv.InvalidContextIdFaultType;
-import org.globus.wsrf.security.impl.secconv.MalformedMessageFaultType;
 import org.globus.wsrf.security.impl.secconv.BinaryExchangeFaultType;
 import org.globus.wsrf.security.impl.secconv.EncodingTypeNotSupportedFaultType;
+import org.globus.wsrf.security.impl.secconv.InvalidContextIdFaultType;
+import org.globus.wsrf.security.impl.secconv.MalformedMessageFaultType;
 import org.globus.wsrf.security.impl.secconv.RequestTypeNotSupportedFaultType;
+import org.globus.wsrf.security.impl.secconv.SecureConversation;
 import org.globus.wsrf.security.impl.secconv.TokenTypeNotSupportedFaultType;
 import org.globus.wsrf.security.impl.secconv.ValueTypeNotSupportedFaultType;
-
-import org.globus.wsrf.utils.FaultHelper;
 import org.globus.wsrf.utils.AddressingUtils;
+import org.globus.wsrf.utils.FaultHelper;
+import org.gridforum.jgss.ExtendedGSSContext;
+import org.gridforum.jgss.ExtendedGSSManager;
+import org.ietf.jgss.GSSContext;
+import org.ietf.jgss.GSSCredential;
+import org.ietf.jgss.GSSManager;
 
 /**
  * This is used by the services to establish a security context. This class must

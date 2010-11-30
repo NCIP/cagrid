@@ -10,20 +10,17 @@
  */
 package org.globus.wsrf.impl.security.authentication;
 
-import org.globus.wsrf.impl.security.authentication.wssec.WSSecurityFault;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import javax.xml.namespace.QName;
 import javax.xml.rpc.handler.GenericHandler;
 import javax.xml.rpc.handler.MessageContext;
 import javax.xml.rpc.handler.soap.SOAPMessageContext;
-
 import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPMessage;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.globus.util.I18n;
+import org.globus.wsrf.impl.security.authentication.wssec.WSSecurityFault;
 
 /**
  * Used for username/password. Adds relevant information into the

@@ -10,27 +10,20 @@
  */
 package org.globus.wsrf.impl.security.authentication.secureconv;
 
-import org.globus.wsrf.impl.security.authentication.wssec.WSSecurityFault;
-
-import org.globus.wsrf.impl.security.authentication.Constants;
-
-import org.globus.wsrf.impl.security.authentication.encryption.GssEncryptedSOAPEnvelopeBuilder;
-
-import org.globus.wsrf.impl.security.authentication.secureconv.service.SecurityContext;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import javax.xml.namespace.QName;
-
 import javax.xml.rpc.handler.GenericHandler;
 import javax.xml.rpc.handler.MessageContext;
 import javax.xml.rpc.handler.soap.SOAPMessageContext;
-
 import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPMessage;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.globus.util.I18n;
+import org.globus.wsrf.impl.security.authentication.Constants;
+import org.globus.wsrf.impl.security.authentication.encryption.GssEncryptedSOAPEnvelopeBuilder;
+import org.globus.wsrf.impl.security.authentication.secureconv.service.SecurityContext;
+import org.globus.wsrf.impl.security.authentication.wssec.WSSecurityFault;
 /**
  * GSI Secure Conversation encryption.
  */

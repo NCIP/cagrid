@@ -10,8 +10,8 @@
  */
 package org.globus.wsrf.impl;
 
-import java.net.URL;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Iterator;
 
 import javax.naming.Context;
@@ -27,11 +27,9 @@ import javax.xml.soap.SOAPHeader;
 import javax.xml.soap.SOAPHeaderElement;
 import javax.xml.soap.SOAPMessage;
 
+import org.apache.axis.MessageContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.apache.axis.MessageContext;
-
 import org.globus.util.I18n;
 import org.globus.wsrf.Constants;
 import org.globus.wsrf.NoResourceHomeException;

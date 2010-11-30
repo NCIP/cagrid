@@ -10,33 +10,24 @@
  */
 package org.globus.wsrf.impl.security.authentication.securemsg;
 
-import org.ietf.jgss.GSSCredential;
-
-import org.globus.wsrf.impl.security.authentication.Constants;
-
-import org.globus.wsrf.impl.security.authentication.signature.X509WSSignedSOAPEnvelopeBuilder;
-
-import org.globus.wsrf.impl.security.authentication.wssec.WSSecurityFault;
-
-import org.globus.wsrf.impl.security.util.AuthUtil;
-
-import org.globus.gsi.jaas.JaasGssUtil;
-import org.globus.gsi.jaas.JaasSubject;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import javax.security.auth.Subject;
-
 import javax.xml.namespace.QName;
 import javax.xml.rpc.handler.GenericHandler;
 import javax.xml.rpc.handler.MessageContext;
 import javax.xml.rpc.handler.soap.SOAPMessageContext;
-
 import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPMessage;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.globus.gsi.jaas.JaasGssUtil;
+import org.globus.gsi.jaas.JaasSubject;
 import org.globus.util.I18n;
+import org.globus.wsrf.impl.security.authentication.Constants;
+import org.globus.wsrf.impl.security.authentication.signature.X509WSSignedSOAPEnvelopeBuilder;
+import org.globus.wsrf.impl.security.authentication.wssec.WSSecurityFault;
+import org.globus.wsrf.impl.security.util.AuthUtil;
+import org.ietf.jgss.GSSCredential;
 
 /**
  * Used for GSI Secure Message. Signs and adds relevant information

@@ -20,20 +20,10 @@ import javax.xml.rpc.handler.GenericHandler;
 import javax.xml.rpc.handler.HandlerInfo;
 import javax.xml.rpc.handler.MessageContext;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.apache.axis.message.addressing.AddressingHeaders;
 import org.apache.axis.message.addressing.To;
-
-import org.gridforum.jgss.ExtendedGSSContext;
-import org.gridforum.jgss.ExtendedGSSManager;
-import org.ietf.jgss.GSSContext;
-import org.ietf.jgss.GSSCredential;
-import org.ietf.jgss.GSSManager;
-import org.ietf.jgss.GSSName;
-import org.ietf.jgss.Oid;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.globus.axis.gsi.GSIConstants;
 import org.globus.gsi.gssapi.GSSConstants;
 import org.globus.gsi.jaas.JaasGssUtil;
@@ -48,6 +38,13 @@ import org.globus.wsrf.impl.security.authorization.SelfAuthorization;
 import org.globus.wsrf.impl.security.util.AuthUtil;
 import org.globus.wsrf.security.impl.secconv.SecureConversation;
 import org.globus.wsrf.security.impl.secconv.SecureConversationServiceAddressingLocator;
+import org.gridforum.jgss.ExtendedGSSContext;
+import org.gridforum.jgss.ExtendedGSSManager;
+import org.ietf.jgss.GSSContext;
+import org.ietf.jgss.GSSCredential;
+import org.ietf.jgss.GSSManager;
+import org.ietf.jgss.GSSName;
+import org.ietf.jgss.Oid;
 /**
  * A separate instance of the handler is created per service Stub instance
  * (e.g. NotificationSourcePortType, etc.) If multiple method invocations

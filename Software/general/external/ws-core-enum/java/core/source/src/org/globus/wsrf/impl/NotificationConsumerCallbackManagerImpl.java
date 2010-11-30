@@ -19,9 +19,8 @@ import javax.xml.namespace.QName;
 
 import org.globus.wsrf.NotificationConsumerCallbackManager;
 import org.globus.wsrf.NotifyCallback;
-
-import org.globus.wsrf.security.SecureResource;
 import org.globus.wsrf.impl.security.descriptor.ResourceSecurityDescriptor;
+import org.globus.wsrf.security.SecureResource;
 
 public class NotificationConsumerCallbackManagerImpl
     implements NotificationConsumerCallbackManager, SecureResource

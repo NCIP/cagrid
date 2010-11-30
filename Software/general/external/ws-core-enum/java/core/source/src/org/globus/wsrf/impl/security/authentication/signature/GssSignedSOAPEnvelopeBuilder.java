@@ -22,6 +22,8 @@ import javax.xml.soap.SOAPHeader;
 import javax.xml.soap.SOAPHeaderElement;
 import javax.xml.soap.SOAPMessage;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.ws.security.SOAPConstants;
 import org.apache.ws.security.WSSConfig;
 import org.apache.ws.security.conversation.message.token.SecurityContextToken;
@@ -37,20 +39,15 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.transforms.params.InclusiveNamespaces;
 import org.apache.xml.security.utils.XMLUtils;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.ietf.jgss.GSSContext;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-
 import org.globus.wsrf.impl.security.authentication.Constants;
 import org.globus.wsrf.impl.security.authentication.secureconv.SecureConversationMessage;
 import org.globus.wsrf.impl.security.authentication.wssec.GSSConfig;
 import org.globus.wsrf.impl.security.util.EnvelopeConverter;
 import org.globus.wsrf.providers.GSSPrivateKey;
+import org.ietf.jgss.GSSContext;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 public class GssSignedSOAPEnvelopeBuilder
     extends WSSignEnvelope {

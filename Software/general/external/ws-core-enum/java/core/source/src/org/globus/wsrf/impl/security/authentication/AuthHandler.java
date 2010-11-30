@@ -15,12 +15,10 @@ import java.util.Vector;
 
 import javax.xml.namespace.QName;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.apache.axis.AxisFault;
 import org.apache.axis.MessageContext;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.globus.wsrf.impl.security.descriptor.AuthMethod;
 import org.globus.wsrf.impl.security.descriptor.NoneAuthMethod;
 import org.globus.wsrf.impl.security.descriptor.ResourceSecurityDescriptor;

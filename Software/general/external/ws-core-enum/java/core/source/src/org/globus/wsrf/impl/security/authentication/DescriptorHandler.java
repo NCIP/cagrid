@@ -10,26 +10,21 @@
  */
 package org.globus.wsrf.impl.security.authentication;
 
-import org.globus.wsrf.impl.security.descriptor.ResourceSecurityDescriptor;
-import org.globus.wsrf.impl.security.descriptor.SecureResourcePropertiesHelper;
-import org.globus.wsrf.impl.security.descriptor.ServiceSecurityDescriptor;
-import org.globus.wsrf.impl.security.descriptor.ServiceSecurityConfig;
-
-import org.globus.wsrf.ResourceException;
-import org.globus.wsrf.ResourceContextException;
-
-import org.globus.wsrf.config.ConfigException;
-import org.globus.wsrf.utils.ContextUtils;
-
 import org.apache.axis.AxisFault;
 import org.apache.axis.MessageContext;
 import org.apache.axis.handlers.BasicHandler;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.globus.wsrf.Resource;
 import org.globus.wsrf.ResourceContext;
+import org.globus.wsrf.ResourceContextException;
+import org.globus.wsrf.ResourceException;
+import org.globus.wsrf.config.ConfigException;
+import org.globus.wsrf.impl.security.descriptor.ResourceSecurityDescriptor;
+import org.globus.wsrf.impl.security.descriptor.SecureResourcePropertiesHelper;
+import org.globus.wsrf.impl.security.descriptor.ServiceSecurityConfig;
+import org.globus.wsrf.impl.security.descriptor.ServiceSecurityDescriptor;
+import org.globus.wsrf.utils.ContextUtils;
 
 /**
  * Handler used for enforcing security policy on server side. Parses

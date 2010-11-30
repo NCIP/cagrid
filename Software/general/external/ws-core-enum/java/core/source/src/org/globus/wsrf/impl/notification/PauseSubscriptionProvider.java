@@ -14,18 +14,16 @@ import java.rmi.RemoteException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.globus.wsrf.Subscription;
-import org.globus.wsrf.ResourceContext;
-import org.globus.wsrf.NoSuchResourceException;
-import org.globus.wsrf.utils.Resources;
-import org.globus.wsrf.utils.FaultHelper;
 import org.globus.util.I18n;
-
+import org.globus.wsrf.NoSuchResourceException;
+import org.globus.wsrf.ResourceContext;
+import org.globus.wsrf.Subscription;
+import org.globus.wsrf.utils.FaultHelper;
+import org.globus.wsrf.utils.Resources;
 import org.oasis.wsn.PauseFailedFaultType;
-import org.oasis.wsn.ResourceUnknownFaultType;
-import org.oasis.wsn.PauseSubscriptionResponse;
 import org.oasis.wsn.PauseSubscription;
+import org.oasis.wsn.PauseSubscriptionResponse;
+import org.oasis.wsn.ResourceUnknownFaultType;
 
 public class PauseSubscriptionProvider
 {

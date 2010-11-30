@@ -13,21 +13,17 @@ package org.globus.wsrf.impl.security.authentication;
 import org.apache.axis.AxisFault;
 import org.apache.axis.MessageContext;
 import org.apache.axis.handlers.BasicHandler;
-
-import org.globus.wsrf.config.ConfigException;
-
-import org.globus.axis.gsi.GSIConstants;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.globus.wsrf.impl.security.descriptor.ClientSecurityConfig;
-import org.globus.wsrf.impl.security.descriptor.ClientSecurityDescriptor;
+import org.globus.axis.gsi.GSIConstants;
+import org.globus.wsrf.config.ConfigException;
 import org.globus.wsrf.impl.security.authorization.Authorization;
 import org.globus.wsrf.impl.security.authorization.HostAuthorization;
+import org.globus.wsrf.impl.security.authorization.IdentityAuthorization;
 import org.globus.wsrf.impl.security.authorization.NoAuthorization;
 import org.globus.wsrf.impl.security.authorization.SelfAuthorization;
-import org.globus.wsrf.impl.security.authorization.IdentityAuthorization;
+import org.globus.wsrf.impl.security.descriptor.ClientSecurityConfig;
+import org.globus.wsrf.impl.security.descriptor.ClientSecurityDescriptor;
 
 /**
  * Handler that translates security settings in client security descriptor

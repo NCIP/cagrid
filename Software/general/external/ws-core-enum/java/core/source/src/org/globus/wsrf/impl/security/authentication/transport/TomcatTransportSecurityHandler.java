@@ -10,30 +10,26 @@
  */
 package org.globus.wsrf.impl.security.authentication.transport;
 
+import java.security.cert.X509Certificate;
+
 import javax.security.auth.Subject;
 import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import org.apache.axis.AxisFault;
 import org.apache.axis.MessageContext;
 import org.apache.axis.handlers.BasicHandler;
 import org.apache.axis.transport.http.HTTPConstants;
-
-import org.ietf.jgss.GSSContext;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.globus.axis.gsi.GSIConstants;
-import org.globus.gsi.jaas.GlobusPrincipal;
-import org.globus.wsrf.impl.security.authentication.Constants;
-
-import java.security.cert.X509Certificate;
-import org.gridforum.jgss.ExtendedGSSContext;
 import org.globus.gsi.gssapi.GSSConstants;
-import org.ietf.jgss.GSSException;
-
-import org.globus.wsrf.utils.Resources;
+import org.globus.gsi.jaas.GlobusPrincipal;
 import org.globus.util.I18n;
+import org.globus.wsrf.impl.security.authentication.Constants;
+import org.globus.wsrf.utils.Resources;
+import org.gridforum.jgss.ExtendedGSSContext;
+import org.ietf.jgss.GSSContext;
+import org.ietf.jgss.GSSException;
 
 public class TomcatTransportSecurityHandler extends BasicHandler {
 

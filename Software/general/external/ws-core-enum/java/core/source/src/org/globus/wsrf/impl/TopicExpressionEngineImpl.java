@@ -24,17 +24,16 @@ import javax.naming.NamingException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.globus.util.I18n;
-import org.globus.wsrf.TopicList;
 import org.globus.wsrf.Constants;
+import org.globus.wsrf.TopicList;
+import org.globus.wsrf.jndi.JNDIUtils;
 import org.globus.wsrf.topicexpression.InvalidTopicExpressionException;
 import org.globus.wsrf.topicexpression.TopicExpressionEngine;
-import org.globus.wsrf.topicexpression.TopicExpressionResolutionException;
 import org.globus.wsrf.topicexpression.TopicExpressionEvaluator;
 import org.globus.wsrf.topicexpression.TopicExpressionException;
+import org.globus.wsrf.topicexpression.TopicExpressionResolutionException;
 import org.globus.wsrf.topicexpression.UnsupportedTopicExpressionDialectException;
-import org.globus.wsrf.jndi.JNDIUtils;
 import org.globus.wsrf.utils.Resources;
 import org.oasis.wsn.TopicExpressionType;
 

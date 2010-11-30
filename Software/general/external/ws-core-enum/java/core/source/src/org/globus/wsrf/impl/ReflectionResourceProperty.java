@@ -11,29 +11,26 @@
 package org.globus.wsrf.impl;
 
 import java.lang.reflect.Array;
-import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Arrays;
 
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPElement;
 
+import org.apache.axis.Constants;
+import org.apache.axis.utils.cache.MethodCache;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.w3c.dom.Element;
-
+import org.globus.util.I18n;
 import org.globus.wsrf.ResourcePropertyMetaData;
 import org.globus.wsrf.encoding.ObjectSerializer;
 import org.globus.wsrf.encoding.SerializationException;
 import org.globus.wsrf.utils.Resources;
-import org.globus.util.I18n;
-
-import org.apache.axis.Constants;
-import org.apache.axis.utils.cache.MethodCache;
+import org.w3c.dom.Element;
 
 public class ReflectionResourceProperty extends BaseResourceProperty {
 

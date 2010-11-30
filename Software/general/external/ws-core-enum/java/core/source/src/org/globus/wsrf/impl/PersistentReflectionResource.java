@@ -18,15 +18,14 @@ import javax.xml.namespace.QName;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import org.globus.util.I18n;
 import org.globus.wsrf.PersistenceCallback;
 import org.globus.wsrf.RemoveCallback;
 import org.globus.wsrf.ResourceException;
 import org.globus.wsrf.ResourceKey;
 import org.globus.wsrf.ResourceProperty;
-import org.globus.wsrf.utils.XmlPersistenceHelper;
 import org.globus.wsrf.utils.Resources;
-import org.globus.util.I18n;
+import org.globus.wsrf.utils.XmlPersistenceHelper;
 
 /**
  * A persistent specialization of

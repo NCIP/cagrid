@@ -18,23 +18,20 @@ import javax.xml.soap.SOAPElement;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.w3c.dom.Element;
-
+import org.globus.util.I18n;
 import org.globus.wsrf.ResourceProperty;
+import org.globus.wsrf.ResourcePropertyMetaData;
 import org.globus.wsrf.Topic;
 import org.globus.wsrf.TopicListener;
-import org.globus.wsrf.ResourcePropertyMetaData;
-import org.globus.wsrf.utils.Resources;
-import org.globus.wsrf.utils.AnyHelper;
-import org.globus.wsrf.encoding.SerializationException;
 import org.globus.wsrf.core.notification.ResourcePropertyValueChangeNotificationElementType;
-import org.globus.util.I18n;
-
+import org.globus.wsrf.encoding.SerializationException;
+import org.globus.wsrf.utils.AnyHelper;
+import org.globus.wsrf.utils.Resources;
 import org.oasis.wsn.TopicExpressionType;
 import org.oasis.wsrf.properties.ResourcePropertyValueChangeNotificationType;
 import org.oasis.wsrf.properties.ResourcePropertyValueChangeNotificationTypeNewValue;
 import org.oasis.wsrf.properties.ResourcePropertyValueChangeNotificationTypeOldValue;
+import org.w3c.dom.Element;
 
 /**
  * This class can be used to expose arbitrary ResourceProperty as a Topic.

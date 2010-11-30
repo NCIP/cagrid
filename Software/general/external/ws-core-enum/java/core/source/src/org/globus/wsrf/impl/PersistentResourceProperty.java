@@ -12,18 +12,13 @@
 package org.globus.wsrf.impl;
 
 import java.util.Iterator;
-import java.util.List;
 
 import javax.xml.soap.SOAPElement;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.w3c.dom.Element;
 
 import org.globus.wsrf.ResourceProperty;
 import org.globus.wsrf.ResourcePropertyMetaData;
 import org.globus.wsrf.encoding.SerializationException;
+import org.w3c.dom.Element;
 
 /**
  * A wrapper for a ResourceProperty object. If

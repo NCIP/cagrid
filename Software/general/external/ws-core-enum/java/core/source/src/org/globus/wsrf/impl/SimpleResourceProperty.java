@@ -15,15 +15,14 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.namespace.QName;
-
-import org.w3c.dom.Element;
 import javax.xml.soap.SOAPElement;
 
 import org.globus.util.I18n;
+import org.globus.wsrf.ResourcePropertyMetaData;
 import org.globus.wsrf.encoding.ObjectSerializer;
 import org.globus.wsrf.encoding.SerializationException;
-import org.globus.wsrf.ResourcePropertyMetaData;
 import org.globus.wsrf.utils.Resources;
+import org.w3c.dom.Element;
 
 /**
  * A simple in-memory implementation of the <code>ResourceProperty</code>

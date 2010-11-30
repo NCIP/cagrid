@@ -16,13 +16,7 @@ import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.util.Calendar;
 
-import org.globus.wsrf.impl.security.util.FixedObjectInputStream;
-
 import org.apache.axis.message.addressing.EndpointReferenceType;
-
-import org.oasis.wsn.TopicExpressionType;
-import org.oasis.wsrf.properties.QueryExpressionType;
-
 import org.globus.util.I18n;
 import org.globus.wsrf.InvalidResourceKeyException;
 import org.globus.wsrf.NoSuchResourceException;
@@ -31,8 +25,11 @@ import org.globus.wsrf.ResourceException;
 import org.globus.wsrf.ResourceKey;
 import org.globus.wsrf.impl.security.descriptor.ClientSecurityDescriptor;
 import org.globus.wsrf.impl.security.descriptor.ResourceSecurityDescriptor;
+import org.globus.wsrf.impl.security.util.FixedObjectInputStream;
 import org.globus.wsrf.utils.FilePersistenceHelper;
 import org.globus.wsrf.utils.Resources;
+import org.oasis.wsn.TopicExpressionType;
+import org.oasis.wsrf.properties.QueryExpressionType;
 
 public class PersistentSubscription extends SimpleSubscription
     implements PersistenceCallback

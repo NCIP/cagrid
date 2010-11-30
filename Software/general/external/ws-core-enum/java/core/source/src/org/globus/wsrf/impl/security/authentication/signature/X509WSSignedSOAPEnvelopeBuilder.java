@@ -19,6 +19,9 @@ import javax.xml.rpc.handler.MessageContext;
 import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPMessage;
 
+import org.apache.axis.AxisFault;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.ws.security.SOAPConstants;
 import org.apache.ws.security.WSConstants;
 import org.apache.ws.security.WSEncryptionPart;
@@ -27,15 +30,6 @@ import org.apache.ws.security.message.WSAddTimestamp;
 import org.apache.ws.security.message.WSSignEnvelope;
 import org.apache.ws.security.util.WSSecurityUtil;
 import org.apache.xml.security.signature.XMLSignature;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.apache.axis.AxisFault;
-
-import org.ietf.jgss.GSSCredential;
-import org.w3c.dom.Document;
-
 import org.globus.gsi.GlobusCredential;
 import org.globus.gsi.gssapi.GlobusGSSCredentialImpl;
 import org.globus.util.I18n;
@@ -44,6 +38,8 @@ import org.globus.wsrf.impl.security.authentication.ContextCredential;
 import org.globus.wsrf.impl.security.authentication.ContextCrypto;
 import org.globus.wsrf.impl.security.authentication.wssec.GSSConfig;
 import org.globus.wsrf.impl.security.util.EnvelopeConverter;
+import org.ietf.jgss.GSSCredential;
+import org.w3c.dom.Document;
 
 public class X509WSSignedSOAPEnvelopeBuilder
     extends WSSignEnvelope {

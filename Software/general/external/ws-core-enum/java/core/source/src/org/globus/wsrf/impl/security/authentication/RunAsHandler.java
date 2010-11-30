@@ -10,30 +10,24 @@
  */
 package org.globus.wsrf.impl.security.authentication;
 
-import org.globus.wsrf.security.SecurityManager;
-import org.globus.wsrf.security.SecurityException;
-
-import org.globus.wsrf.impl.security.descriptor.RunAsConstants;
-import org.globus.wsrf.impl.security.descriptor.ServiceSecurityDescriptor;
-import org.globus.wsrf.impl.security.descriptor.ResourceSecurityDescriptor;
-
-import org.globus.util.I18n;
+import javax.security.auth.Subject;
+import javax.xml.namespace.QName;
 
 import org.apache.axis.AxisFault;
 import org.apache.axis.MessageContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.globus.wsrf.impl.security.util.AuthUtil;
-
-import javax.security.auth.Subject;
-
-import javax.xml.namespace.QName;
-
+import org.globus.util.I18n;
 import org.globus.wsrf.Resource;
 import org.globus.wsrf.ResourceContext;
-import org.globus.wsrf.ResourceException;
 import org.globus.wsrf.ResourceContextException;
+import org.globus.wsrf.ResourceException;
+import org.globus.wsrf.impl.security.descriptor.ResourceSecurityDescriptor;
+import org.globus.wsrf.impl.security.descriptor.RunAsConstants;
+import org.globus.wsrf.impl.security.descriptor.ServiceSecurityDescriptor;
+import org.globus.wsrf.impl.security.util.AuthUtil;
+import org.globus.wsrf.security.SecurityException;
+import org.globus.wsrf.security.SecurityManager;
 
 /**
  * Handler that sets the credentials to be used for this invocation.

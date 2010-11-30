@@ -10,25 +10,19 @@
  */
 package org.globus.wsrf.impl.security.authentication;
 
+import java.util.List;
+import java.util.Vector;
+
+import org.apache.axis.AxisFault;
+import org.apache.axis.MessageContext;
+import org.globus.gsi.gssapi.GSSConstants;
+import org.globus.util.I18n;
+import org.globus.wsrf.config.ConfigException;
 import org.globus.wsrf.impl.security.descriptor.ContainerSecurityConfig;
 import org.globus.wsrf.impl.security.descriptor.ContainerSecurityDescriptor;
 import org.globus.wsrf.impl.security.descriptor.ResourceSecurityDescriptor;
 import org.globus.wsrf.impl.security.descriptor.ServiceSecurityDescriptor;
-
-import org.globus.wsrf.config.ConfigException;
-
-import org.apache.axis.AxisFault;
-import org.apache.axis.MessageContext;
-
-import java.util.List;
-import java.util.Vector;
-
-import org.globus.gsi.gssapi.GSSConstants;
-
 import org.gridforum.jgss.ExtendedGSSContext;
-
-import org.globus.util.I18n;
-
 import org.ietf.jgss.GSSException;
 
 /**

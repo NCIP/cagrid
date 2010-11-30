@@ -10,29 +10,27 @@
  */
 package org.globus.wsrf.impl;
 
+import java.util.Hashtable;
+
 import javax.naming.Context;
 import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.naming.NamingEnumeration;
 import javax.naming.NameClassPair;
-
-import org.globus.wsrf.Constants;
-import org.globus.wsrf.ResourcePropertySet;
-import org.globus.wsrf.query.ExpressionEvaluator;
-import org.globus.wsrf.query.QueryEngine;
-import org.globus.wsrf.query.QueryException;
-import org.globus.wsrf.query.UnsupportedQueryDialectException;
-import org.globus.wsrf.query.QueryEvaluationException;
-import org.globus.wsrf.query.InvalidQueryExpressionException;
-import org.globus.wsrf.jndi.JNDIUtils;
-import org.globus.wsrf.utils.Resources;
-import org.globus.util.I18n;
+import javax.naming.NamingEnumeration;
+import javax.naming.NamingException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import java.util.Hashtable;
-
+import org.globus.util.I18n;
+import org.globus.wsrf.Constants;
+import org.globus.wsrf.ResourcePropertySet;
+import org.globus.wsrf.jndi.JNDIUtils;
+import org.globus.wsrf.query.ExpressionEvaluator;
+import org.globus.wsrf.query.InvalidQueryExpressionException;
+import org.globus.wsrf.query.QueryEngine;
+import org.globus.wsrf.query.QueryEvaluationException;
+import org.globus.wsrf.query.QueryException;
+import org.globus.wsrf.query.UnsupportedQueryDialectException;
+import org.globus.wsrf.utils.Resources;
 import org.oasis.wsrf.properties.QueryExpressionType;
 
 /**

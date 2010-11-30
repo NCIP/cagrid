@@ -14,6 +14,8 @@ import javax.xml.rpc.handler.MessageContext;
 import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPMessage;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.ws.security.WSConstants;
 import org.apache.ws.security.WSSConfig;
 import org.apache.ws.security.conversation.message.token.SecurityContextToken;
@@ -21,20 +23,15 @@ import org.apache.ws.security.message.WSEncryptBody;
 import org.apache.ws.security.message.token.Reference;
 import org.apache.ws.security.message.token.SecurityTokenReference;
 import org.apache.ws.security.util.WSSecurityUtil;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.ietf.jgss.GSSContext;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
 import org.globus.wsrf.impl.security.authentication.ContextCrypto;
-import org.globus.wsrf.impl.security.authentication.secureconv.service.SecurityContext;
 import org.globus.wsrf.impl.security.authentication.secureconv.SecureConversationMessage;
+import org.globus.wsrf.impl.security.authentication.secureconv.service.SecurityContext;
 import org.globus.wsrf.impl.security.authentication.wssec.GSSConfig;
 import org.globus.wsrf.impl.security.util.EnvelopeConverter;
 import org.globus.wsrf.providers.GSSKey;
+import org.ietf.jgss.GSSContext;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  * Used for GSI secure conversation encryption. Encrypts the body of

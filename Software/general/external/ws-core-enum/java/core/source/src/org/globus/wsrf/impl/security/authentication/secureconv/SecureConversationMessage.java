@@ -14,18 +14,17 @@ import javax.xml.namespace.QName;
 
 import org.apache.axis.message.MessageElement;
 import org.apache.axis.types.URI;
-
 import org.globus.util.I18n;
 import org.globus.ws.sc.SecurityContextTokenType;
 import org.globus.ws.trust.BinaryExchangeType;
+import org.globus.wsrf.encoding.DeserializationException;
 import org.globus.wsrf.encoding.ObjectDeserializer;
 import org.globus.wsrf.encoding.ObjectSerializer;
 import org.globus.wsrf.encoding.SerializationException;
-import org.globus.wsrf.encoding.DeserializationException;
-import org.globus.wsrf.security.impl.secconv.MalformedMessageFaultType;
-import org.globus.wsrf.security.impl.secconv.TokenTypeNotSupportedFaultType;
-import org.globus.wsrf.security.impl.secconv.RequestTypeNotSupportedFaultType;
 import org.globus.wsrf.security.impl.secconv.EncodingTypeNotSupportedFaultType;
+import org.globus.wsrf.security.impl.secconv.MalformedMessageFaultType;
+import org.globus.wsrf.security.impl.secconv.RequestTypeNotSupportedFaultType;
+import org.globus.wsrf.security.impl.secconv.TokenTypeNotSupportedFaultType;
 import org.globus.wsrf.security.impl.secconv.ValueTypeNotSupportedFaultType;
 import org.globus.wsrf.utils.FaultHelper;
 

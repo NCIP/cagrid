@@ -16,14 +16,9 @@ import javax.xml.soap.SOAPMessage;
 
 import org.apache.ws.security.WSConstants;
 import org.apache.ws.security.message.WSSAddUsernameToken;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.w3c.dom.Document;
-
 import org.globus.wsrf.impl.security.util.EnvelopeConverter;
 import org.globus.wsrf.security.Constants;
+import org.w3c.dom.Document;
 
 /**
  * Used to add in username/password and construct the relevant

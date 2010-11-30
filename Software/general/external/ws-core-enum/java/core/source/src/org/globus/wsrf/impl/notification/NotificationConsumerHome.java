@@ -10,12 +10,10 @@
  */
 package org.globus.wsrf.impl.notification;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.apache.axis.components.uuid.UUIDGen;
 import org.apache.axis.components.uuid.UUIDGenFactory;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.globus.wsrf.NotificationConsumerCallbackManager;
 import org.globus.wsrf.ResourceKey;
 import org.globus.wsrf.impl.NotificationConsumerCallbackManagerImpl;

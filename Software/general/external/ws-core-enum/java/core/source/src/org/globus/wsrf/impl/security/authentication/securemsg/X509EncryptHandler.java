@@ -10,33 +10,26 @@
  */
 package org.globus.wsrf.impl.security.authentication.securemsg;
 
-import org.globus.wsrf.impl.security.authentication.Constants;
-
-import org.globus.wsrf.impl.security.authentication.encryption.X509WSEncryptedSOAPEnvelopeBuilder;
-import org.globus.wsrf.impl.security.authentication.encryption.EncryptionCredentials;
-
-import org.globus.wsrf.impl.security.authentication.wssec.WSSecurityException;
-import org.globus.wsrf.impl.security.authentication.wssec.WSSecurityFault;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.security.cert.X509Certificate;
+import java.util.Iterator;
+import java.util.Set;
 
 import javax.security.auth.Subject;
-import java.security.cert.X509Certificate;
-
 import javax.xml.namespace.QName;
-
 import javax.xml.rpc.handler.GenericHandler;
 import javax.xml.rpc.handler.MessageContext;
 import javax.xml.rpc.handler.soap.SOAPMessageContext;
-
 import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPMessage;
 
-import java.util.Set;
-import java.util.Iterator;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.globus.util.I18n;
+import org.globus.wsrf.impl.security.authentication.Constants;
+import org.globus.wsrf.impl.security.authentication.encryption.EncryptionCredentials;
+import org.globus.wsrf.impl.security.authentication.encryption.X509WSEncryptedSOAPEnvelopeBuilder;
+import org.globus.wsrf.impl.security.authentication.wssec.WSSecurityException;
+import org.globus.wsrf.impl.security.authentication.wssec.WSSecurityFault;
 
 /**
  * Used for GSI Secure Message. Encrypts and adds relevant information

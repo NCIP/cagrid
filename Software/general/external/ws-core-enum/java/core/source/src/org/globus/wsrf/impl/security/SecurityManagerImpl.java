@@ -18,11 +18,9 @@ import java.util.Vector;
 import javax.security.auth.Subject;
 import javax.xml.rpc.handler.soap.SOAPMessageContext;
 
+import org.apache.axis.MessageContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.apache.axis.MessageContext;
-
 import org.globus.gsi.jaas.GlobusPrincipal;
 import org.globus.gsi.jaas.JaasSubject;
 import org.globus.gsi.jaas.UserNamePrincipal;

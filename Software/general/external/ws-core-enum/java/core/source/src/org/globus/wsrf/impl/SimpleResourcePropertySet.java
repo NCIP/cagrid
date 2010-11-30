@@ -10,32 +10,29 @@
  */
 package org.globus.wsrf.impl;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.io.StringWriter;
-
-import org.globus.wsrf.ResourceProperty;
-import org.globus.wsrf.ResourcePropertySet;
-import org.globus.wsrf.ResourcePropertyMetaData;
-import org.globus.wsrf.encoding.SerializationException;
-import org.globus.wsrf.utils.XmlUtils;
-import org.globus.wsrf.utils.AnyHelper;
-import org.globus.wsrf.utils.StringBufferReader;
-import org.globus.util.I18n;
-import org.globus.wsrf.utils.Resources;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPElement;
 
+import org.apache.axis.message.MessageElement;
+import org.globus.util.I18n;
+import org.globus.wsrf.ResourceProperty;
+import org.globus.wsrf.ResourcePropertyMetaData;
+import org.globus.wsrf.ResourcePropertySet;
+import org.globus.wsrf.encoding.SerializationException;
+import org.globus.wsrf.utils.AnyHelper;
+import org.globus.wsrf.utils.Resources;
+import org.globus.wsrf.utils.StringBufferReader;
+import org.globus.wsrf.utils.XmlUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
 import org.xml.sax.InputSource;
-
-import org.apache.axis.message.MessageElement;
 
 /**
  * Simple in-memory implementation of <code>ResourcePropertySet</code>.

@@ -21,13 +21,13 @@ import javax.xml.namespace.QName;
 import org.apache.commons.collections.map.ReferenceMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.globus.util.I18n;
 import org.globus.wsrf.Constants;
 import org.globus.wsrf.InvalidResourceKeyException;
 import org.globus.wsrf.NoSuchResourceException;
 import org.globus.wsrf.PersistenceCallback;
 import org.globus.wsrf.RemoveCallback;
+import org.globus.wsrf.RemoveNotSupportedException;
 import org.globus.wsrf.Resource;
 import org.globus.wsrf.ResourceException;
 import org.globus.wsrf.ResourceHome;
@@ -40,6 +40,7 @@ import org.globus.wsrf.jndi.Initializable;
 import org.globus.wsrf.jndi.JNDIUtils;
 import org.globus.wsrf.utils.Resources;
 import org.globus.wsrf.utils.cache.Cache;
+
 import commonj.timers.Timer;
 import commonj.timers.TimerManager;
 

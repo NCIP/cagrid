@@ -10,17 +10,16 @@
  */
 package org.globus.wsrf.impl;
 
-import org.globus.wsrf.ResourceKey;
-import org.globus.wsrf.InvalidResourceKeyException;
-import org.globus.wsrf.encoding.SerializationException;
-import org.globus.wsrf.encoding.ObjectSerializer;
-import org.globus.wsrf.encoding.ObjectDeserializer;
-
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPElement;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.globus.wsrf.InvalidResourceKeyException;
+import org.globus.wsrf.ResourceKey;
+import org.globus.wsrf.encoding.ObjectDeserializer;
+import org.globus.wsrf.encoding.ObjectSerializer;
+import org.globus.wsrf.encoding.SerializationException;
 
 /**
  * A basic implementation of <code>ResourceKey</code>. 

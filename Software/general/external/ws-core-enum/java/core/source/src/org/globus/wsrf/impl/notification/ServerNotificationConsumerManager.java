@@ -10,15 +10,14 @@
  */
 package org.globus.wsrf.impl.notification;
 
-import java.net.URL;
 import java.io.IOException;
+import java.net.URL;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.globus.wsrf.NotificationConsumerManager;
-import org.globus.wsrf.container.ServiceHost;
 import org.globus.wsrf.container.ContainerException;
+import org.globus.wsrf.container.ServiceHost;
 
 public class ServerNotificationConsumerManager
     extends NotificationConsumerManager {

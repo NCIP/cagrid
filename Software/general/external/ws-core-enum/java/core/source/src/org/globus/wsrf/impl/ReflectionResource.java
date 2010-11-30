@@ -15,14 +15,12 @@ import java.util.Calendar;
 
 import javax.xml.namespace.QName;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.apache.axis.description.ElementDesc;
 import org.apache.axis.description.FieldDesc;
 import org.apache.axis.description.TypeDesc;
 import org.apache.axis.utils.cache.MethodCache;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.globus.util.I18n;
 import org.globus.wsrf.Resource;
 import org.globus.wsrf.ResourceException;

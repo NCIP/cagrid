@@ -16,36 +16,33 @@ import java.util.List;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.xml.soap.SOAPElement;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import org.globus.util.I18n;
 import org.globus.wsrf.Constants;
+import org.globus.wsrf.NoSuchResourceException;
+import org.globus.wsrf.ResourceContext;
 import org.globus.wsrf.ResourceProperties;
 import org.globus.wsrf.ResourcePropertySet;
-import org.globus.wsrf.ResourceContext;
-import org.globus.wsrf.NoSuchResourceException;
-import org.globus.wsrf.query.QueryEngine;
-import org.globus.wsrf.query.UnsupportedQueryDialectException;
-import org.globus.wsrf.query.QueryException;
-import org.globus.wsrf.query.QueryEvaluationException;
-import org.globus.wsrf.query.InvalidQueryExpressionException;
-import org.globus.wsrf.utils.AnyHelper;
 import org.globus.wsrf.jndi.JNDIUtils;
+import org.globus.wsrf.query.InvalidQueryExpressionException;
+import org.globus.wsrf.query.QueryEngine;
+import org.globus.wsrf.query.QueryEvaluationException;
+import org.globus.wsrf.query.QueryException;
+import org.globus.wsrf.query.UnsupportedQueryDialectException;
+import org.globus.wsrf.utils.AnyHelper;
 import org.globus.wsrf.utils.FaultHelper;
 import org.globus.wsrf.utils.Resources;
-import org.globus.util.I18n;
-
 import org.oasis.wsrf.properties.InvalidQueryExpressionFaultType;
 import org.oasis.wsrf.properties.InvalidResourcePropertyQNameFaultType;
 import org.oasis.wsrf.properties.QueryEvaluationErrorFaultType;
 import org.oasis.wsrf.properties.QueryExpressionType;
+import org.oasis.wsrf.properties.QueryResourcePropertiesResponse;
+import org.oasis.wsrf.properties.QueryResourceProperties_Element;
 import org.oasis.wsrf.properties.ResourceUnknownFaultType;
 import org.oasis.wsrf.properties.UnknownQueryExpressionDialectFaultType;
-import org.oasis.wsrf.properties.QueryResourceProperties_Element;
-import org.oasis.wsrf.properties.QueryResourcePropertiesResponse;
-
-import javax.xml.soap.SOAPElement;
 
 /**
  * QueryResourceProperties operation implementation. It looks for a QueryEngine

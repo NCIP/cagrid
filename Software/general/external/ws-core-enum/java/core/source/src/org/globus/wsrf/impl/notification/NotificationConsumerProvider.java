@@ -14,24 +14,21 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import org.globus.util.I18n;
+import org.globus.wsrf.NoSuchResourceException;
 import org.globus.wsrf.NotificationConsumerCallbackManager;
 import org.globus.wsrf.NotifyCallback;
 import org.globus.wsrf.ResourceContext;
-import org.globus.wsrf.NoSuchResourceException;
-import org.globus.wsrf.topicexpression.TopicExpressionEngine;
-import org.globus.wsrf.utils.Resources;
-import org.globus.wsrf.utils.AnyHelper;
 import org.globus.wsrf.impl.TopicExpressionEngineImpl;
-import org.globus.util.I18n;
-
-import org.oasis.wsn.ResourceUnknownFaultType;
+import org.globus.wsrf.topicexpression.TopicExpressionEngine;
+import org.globus.wsrf.utils.AnyHelper;
+import org.globus.wsrf.utils.Resources;
 import org.oasis.wsn.NotificationMessageHolderType;
-import org.oasis.wsn.TopicExpressionType;
 import org.oasis.wsn.Notify;
+import org.oasis.wsn.ResourceUnknownFaultType;
+import org.oasis.wsn.TopicExpressionType;
 
 public class NotificationConsumerProvider
 {

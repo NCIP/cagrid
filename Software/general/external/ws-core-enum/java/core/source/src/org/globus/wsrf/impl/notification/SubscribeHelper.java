@@ -20,19 +20,9 @@ import javax.naming.InitialContext;
 import javax.security.auth.Subject;
 import javax.xml.namespace.QName;
 
+import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.apache.axis.message.addressing.EndpointReferenceType;
-
-import org.oasis.wsn.InvalidTopicExpressionFaultType;
-import org.oasis.wsn.SubscribeCreationFailedFaultType;
-import org.oasis.wsn.TopicNotSupportedFaultType;
-import org.oasis.wsn.TopicPathDialectUnknownFaultType;
-import org.oasis.wsn.Subscribe;
-
-import org.ietf.jgss.GSSCredential;
-
 import org.globus.gsi.jaas.JaasSubject;
 import org.globus.security.gridmap.GridMap;
 import org.globus.util.I18n;
@@ -47,6 +37,7 @@ import org.globus.wsrf.TopicListAccessor;
 import org.globus.wsrf.TopicListenerList;
 import org.globus.wsrf.config.ConfigException;
 import org.globus.wsrf.container.ServiceHost;
+import org.globus.wsrf.encoding.ObjectSerializer;
 import org.globus.wsrf.impl.SimpleSubscriptionTopicListener;
 import org.globus.wsrf.impl.security.authorization.Authorization;
 import org.globus.wsrf.impl.security.descriptor.ClientSecurityDescriptor;
@@ -63,7 +54,12 @@ import org.globus.wsrf.topicexpression.UnsupportedTopicExpressionDialectExceptio
 import org.globus.wsrf.utils.AddressingUtils;
 import org.globus.wsrf.utils.FaultHelper;
 import org.globus.wsrf.utils.Resources;
-import org.globus.wsrf.encoding.ObjectSerializer;
+import org.ietf.jgss.GSSCredential;
+import org.oasis.wsn.InvalidTopicExpressionFaultType;
+import org.oasis.wsn.Subscribe;
+import org.oasis.wsn.SubscribeCreationFailedFaultType;
+import org.oasis.wsn.TopicNotSupportedFaultType;
+import org.oasis.wsn.TopicPathDialectUnknownFaultType;
 
 /**
  * Helper class to allow callers outside of SubscribeProvider to generate

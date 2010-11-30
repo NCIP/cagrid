@@ -12,12 +12,12 @@ package org.globus.wsrf.impl;
 
 import javax.xml.namespace.QName;
 
-import org.globus.wsrf.Resource;
-import org.globus.wsrf.ResourceHome;
-import org.globus.wsrf.ResourceKey;
-import org.globus.wsrf.ResourceException;
 import org.globus.wsrf.NoSuchResourceException;
 import org.globus.wsrf.RemoveNotSupportedException;
+import org.globus.wsrf.Resource;
+import org.globus.wsrf.ResourceException;
+import org.globus.wsrf.ResourceHome;
+import org.globus.wsrf.ResourceKey;
 
 /** 
  * A <code>ResourceHome</code> that always returns a single resource object.

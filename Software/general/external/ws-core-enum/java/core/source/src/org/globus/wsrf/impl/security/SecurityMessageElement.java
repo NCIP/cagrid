@@ -10,11 +10,9 @@
  */
 package org.globus.wsrf.impl.security;
 
-import org.w3c.dom.Element;
-
-import org.apache.axis.message.MessageElement;
-
 import org.apache.axis.encoding.SerializationContext;
+import org.apache.axis.message.MessageElement;
+import org.w3c.dom.Element;
 
 /**
  * Wrapper class for message element to eliminate some serialization

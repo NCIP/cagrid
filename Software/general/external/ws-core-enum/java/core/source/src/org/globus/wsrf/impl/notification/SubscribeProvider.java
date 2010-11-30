@@ -12,19 +12,9 @@ package org.globus.wsrf.impl.notification;
 
 import java.rmi.RemoteException;
 
+import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.apache.axis.message.addressing.EndpointReferenceType;
-
-import org.oasis.wsn.ResourceUnknownFaultType;
-import org.oasis.wsn.SubscribeCreationFailedFaultType;
-import org.oasis.wsn.TopicPathDialectUnknownFaultType;
-import org.oasis.wsn.Subscribe;
-import org.oasis.wsn.SubscribeResponse;
-import org.oasis.wsn.InvalidTopicExpressionFaultType;
-import org.oasis.wsn.TopicNotSupportedFaultType;
-
 import org.globus.util.I18n;
 import org.globus.wsrf.NoSuchResourceException;
 import org.globus.wsrf.Resource;
@@ -33,6 +23,13 @@ import org.globus.wsrf.ResourceKey;
 import org.globus.wsrf.impl.ResourceContextImpl;
 import org.globus.wsrf.utils.FaultHelper;
 import org.globus.wsrf.utils.Resources;
+import org.oasis.wsn.InvalidTopicExpressionFaultType;
+import org.oasis.wsn.ResourceUnknownFaultType;
+import org.oasis.wsn.Subscribe;
+import org.oasis.wsn.SubscribeCreationFailedFaultType;
+import org.oasis.wsn.SubscribeResponse;
+import org.oasis.wsn.TopicNotSupportedFaultType;
+import org.oasis.wsn.TopicPathDialectUnknownFaultType;
 
 public class SubscribeProvider
 {

@@ -11,7 +11,6 @@
 package org.globus.wsrf.impl.security.authentication.encryption;
 
 import java.io.Serializable;
-
 import java.security.cert.X509Certificate;
 
 /**

@@ -22,13 +22,11 @@ import javax.xml.namespace.QName;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.oasis.wsn.TopicExpressionType;
-
 import org.globus.util.I18n;
 import org.globus.wsrf.Topic;
 import org.globus.wsrf.TopicListener;
 import org.globus.wsrf.utils.Resources;
+import org.oasis.wsn.TopicExpressionType;
 
 /**
  * Simple in-memory implementation of the Topic interface

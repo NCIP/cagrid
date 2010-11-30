@@ -10,15 +10,13 @@
  */
 package org.globus.wsrf.impl.security.authentication.secureconv.service;
 
-import org.globus.wsrf.config.ContainerConfig;
-import org.globus.axis.description.ServiceDescUtil;
-
 import org.apache.axis.AxisFault;
 import org.apache.axis.MessageContext;
 import org.apache.axis.handlers.BasicHandler;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.globus.axis.description.ServiceDescUtil;
+import org.globus.wsrf.config.ContainerConfig;
 
 /**
  * This handler is responsible for mapping incoming GSI Secure Conversation

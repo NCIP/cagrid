@@ -19,18 +19,13 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.xml.namespace.QName;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.apache.axis.components.uuid.UUIDGen;
 import org.apache.axis.components.uuid.UUIDGenFactory;
 import org.apache.axis.message.addressing.EndpointReferenceType;
-
-import org.oasis.wsn.TopicExpressionType;
-import org.oasis.wsrf.properties.QueryExpressionType;
-
-import org.globus.wsrf.RemoveCallback;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.globus.wsrf.PersistenceCallback;
+import org.globus.wsrf.RemoveCallback;
 import org.globus.wsrf.ResourceException;
 import org.globus.wsrf.ResourceHome;
 import org.globus.wsrf.ResourceIdentifier;
@@ -52,6 +47,8 @@ import org.globus.wsrf.impl.SimpleSubscriptionTopicListener;
 import org.globus.wsrf.impl.security.descriptor.ClientSecurityDescriptor;
 import org.globus.wsrf.impl.security.descriptor.ResourceSecurityDescriptor;
 import org.globus.wsrf.security.SecureResource;
+import org.oasis.wsn.TopicExpressionType;
+import org.oasis.wsrf.properties.QueryExpressionType;
 
 /**
  * Simple in-memory implementation of a subscription resource

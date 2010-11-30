@@ -17,7 +17,6 @@ import java.util.Vector;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.globus.util.I18n;
 import org.globus.wsrf.NoSuchResourceException;
 import org.globus.wsrf.ResourceContext;
@@ -30,13 +29,12 @@ import org.globus.wsrf.TopicListAccessor;
 import org.globus.wsrf.WSRFConstants;
 import org.globus.wsrf.utils.FaultHelper;
 import org.globus.wsrf.utils.Resources;
-
 import org.oasis.wsrf.lifetime.ResourceUnknownFaultType;
-import org.oasis.wsrf.lifetime.TerminationTimeChangeRejectedFaultType;
-import org.oasis.wsrf.lifetime.UnableToSetTerminationTimeFaultType;
 import org.oasis.wsrf.lifetime.SetTerminationTime;
 import org.oasis.wsrf.lifetime.SetTerminationTimeResponse;
 import org.oasis.wsrf.lifetime.TerminationNotification;
+import org.oasis.wsrf.lifetime.TerminationTimeChangeRejectedFaultType;
+import org.oasis.wsrf.lifetime.UnableToSetTerminationTimeFaultType;
 
 /**
  * SetTerminationTime operation implementation. The resource must provide

@@ -25,22 +25,18 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.Properties;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.ws.security.WSSecurityException;
 import org.apache.ws.security.components.crypto.CredentialException;
 import org.apache.ws.security.components.crypto.Crypto;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.bouncycastle.asn1.ASN1Sequence;
 import org.bouncycastle.asn1.DEREncodableVector;
 import org.bouncycastle.asn1.DERObject;
 import org.bouncycastle.asn1.DERSequence;
-
 import org.globus.gsi.CertUtil;
 import org.globus.gsi.bc.BouncyCastleUtil;
 import org.globus.gsi.gssapi.GlobusGSSCredentialImpl;
-
 import org.globus.util.I18n;
 
 public class ContextCrypto implements Crypto {

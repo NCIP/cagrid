@@ -22,9 +22,6 @@ import javax.xml.namespace.QName;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.oasis.wsn.TopicExpressionType;
-
 import org.globus.wsrf.ResourceProperties;
 import org.globus.wsrf.ResourceProperty;
 import org.globus.wsrf.ResourcePropertySet;
@@ -39,6 +36,7 @@ import org.globus.wsrf.topicexpression.TopicExpressionEvaluator;
 import org.globus.wsrf.topicexpression.TopicExpressionException;
 import org.globus.wsrf.topicexpression.TopicExpressionResolutionException;
 import org.globus.wsrf.topicexpression.UnsupportedTopicExpressionDialectException;
+import org.oasis.wsn.TopicExpressionType;
 
 /**
  * Simplistic in memory topic list.

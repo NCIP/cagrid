@@ -10,27 +10,26 @@
  */
 package org.globus.wsrf.impl.properties;
 
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.namespace.QName;
+import javax.xml.soap.SOAPElement;
+
+import org.globus.util.I18n;
+import org.globus.wsrf.NoSuchResourceException;
+import org.globus.wsrf.ResourceContext;
+import org.globus.wsrf.ResourceProperties;
+import org.globus.wsrf.ResourceProperty;
+import org.globus.wsrf.ResourcePropertySet;
+import org.globus.wsrf.utils.AnyHelper;
+import org.globus.wsrf.utils.FaultHelper;
+import org.globus.wsrf.utils.Resources;
 import org.oasis.wsrf.properties.GetMultipleResourcePropertiesResponse;
 import org.oasis.wsrf.properties.GetMultipleResourceProperties_Element;
 import org.oasis.wsrf.properties.InvalidResourcePropertyQNameFaultType;
 import org.oasis.wsrf.properties.ResourceUnknownFaultType;
-
-import org.globus.wsrf.ResourcePropertySet;
-import org.globus.wsrf.ResourceProperties;
-import org.globus.wsrf.ResourceProperty;
-import org.globus.wsrf.ResourceContext;
-import org.globus.wsrf.NoSuchResourceException;
-import org.globus.wsrf.utils.AnyHelper;
-import org.globus.wsrf.utils.Resources;
-import org.globus.wsrf.utils.FaultHelper;
-import org.globus.util.I18n;
-
-import java.rmi.RemoteException;
-import java.util.List;
-import java.util.ArrayList;
-
-import javax.xml.namespace.QName;
-import javax.xml.soap.SOAPElement;
 
 public class GetMultipleResourcePropertiesProvider {
 

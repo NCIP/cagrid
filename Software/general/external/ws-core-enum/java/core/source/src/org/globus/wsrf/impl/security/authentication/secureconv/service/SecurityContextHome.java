@@ -16,21 +16,17 @@ import java.util.Set;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
-import javax.naming.NamingException;
 
 import org.apache.axis.components.uuid.UUIDGen;
 import org.apache.axis.components.uuid.UUIDGenFactory;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.ietf.jgss.GSSContext;
-
 import org.globus.wsrf.Constants;
 import org.globus.wsrf.impl.ResourceHomeImpl;
 import org.globus.wsrf.impl.SimpleResourceKey;
 import org.globus.wsrf.impl.security.descriptor.ContainerSecurityConfig;
 import org.globus.wsrf.impl.security.descriptor.ContainerSecurityDescriptor;
+import org.ietf.jgss.GSSContext;
 
 import commonj.timers.Timer;
 import commonj.timers.TimerListener;
