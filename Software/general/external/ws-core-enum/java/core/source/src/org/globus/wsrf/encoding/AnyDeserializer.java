@@ -10,14 +10,13 @@
  */
 package org.globus.wsrf.encoding;
 
+import java.util.List;
+
 import org.apache.axis.MessageContext;
 import org.apache.axis.encoding.DeserializationContext;
 import org.apache.axis.encoding.DeserializerImpl;
 import org.apache.axis.message.MessageElement;
-
 import org.xml.sax.SAXException;
-
-import java.util.List;
 
 /**
  * Deserializer for MessageElements

@@ -10,16 +10,15 @@
  */
 package org.globus.wsrf.handlers;
 
-import java.net.URL;
 import java.net.MalformedURLException;
+import java.net.URL;
 
-import org.globus.wsrf.config.ContainerConfig;
-import org.globus.axis.description.ServiceDescUtil;
-
-import org.apache.axis.AxisFault;
 import org.apache.axis.AxisEngine;
-import org.apache.axis.handlers.BasicHandler;
+import org.apache.axis.AxisFault;
 import org.apache.axis.MessageContext;
+import org.apache.axis.handlers.BasicHandler;
+import org.globus.axis.description.ServiceDescUtil;
+import org.globus.wsrf.config.ContainerConfig;
 
 /**
  * Sets the target service from <i>MessageContext.TRANS_URL</i> MessageContext

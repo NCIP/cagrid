@@ -10,15 +10,12 @@
  */
 package org.globus.wsrf.client;
 
-import org.oasis.wsrf.lifetime.WSResourceLifetimeServiceAddressingLocator;
-import org.oasis.wsrf.lifetime.ImmediateResourceTermination;
-import org.oasis.wsrf.faults.BaseFaultType;
-
-import org.globus.wsrf.utils.FaultHelper;
-
 import javax.xml.rpc.Stub;
 
 import org.apache.commons.cli.ParseException;
+import org.globus.wsrf.utils.FaultHelper;
+import org.oasis.wsrf.lifetime.ImmediateResourceTermination;
+import org.oasis.wsrf.lifetime.WSResourceLifetimeServiceAddressingLocator;
 
 public class Destroy extends BaseClient {
 

@@ -15,15 +15,15 @@
  */
 package org.globus.ws.enumeration;
 
-import org.globus.wsrf.ResourceKey;
-import org.globus.wsrf.ResourceException;
-import org.globus.wsrf.ResourceContextException;
-import org.globus.wsrf.jndi.JNDIUtils;
-import org.globus.wsrf.impl.ResourceHomeImpl;
-import org.globus.wsrf.impl.SimpleResourceKey;
-
 import javax.naming.Context;
 import javax.naming.NamingException;
+
+import org.globus.wsrf.ResourceContextException;
+import org.globus.wsrf.ResourceException;
+import org.globus.wsrf.ResourceKey;
+import org.globus.wsrf.impl.ResourceHomeImpl;
+import org.globus.wsrf.impl.SimpleResourceKey;
+import org.globus.wsrf.jndi.JNDIUtils;
 
 /**
  * Resource home for enumerations.

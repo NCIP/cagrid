@@ -12,20 +12,17 @@ package org.globus.wsrf.client;
 
 import java.util.List;
 
-import org.oasis.wsn.WSBaseNotificationServiceAddressingLocator;
-import org.oasis.wsn.NotificationProducer;
-import org.oasis.wsn.TopicExpressionType;
-
-import org.globus.wsrf.utils.FaultHelper;
-
-import org.apache.commons.cli.ParseException;
-import org.apache.commons.cli.CommandLine;
-
-import org.globus.wsrf.WSNConstants;
-import org.globus.wsrf.utils.AnyHelper;
-
 import javax.xml.namespace.QName;
 import javax.xml.rpc.Stub;
+
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.ParseException;
+import org.globus.wsrf.WSNConstants;
+import org.globus.wsrf.utils.AnyHelper;
+import org.globus.wsrf.utils.FaultHelper;
+import org.oasis.wsn.NotificationProducer;
+import org.oasis.wsn.TopicExpressionType;
+import org.oasis.wsn.WSBaseNotificationServiceAddressingLocator;
 
 public class GetCurrentMessage extends BaseClient {
 

@@ -11,13 +11,13 @@
 package org.globus.wsrf;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 
-import org.globus.wsrf.topicexpression.UnsupportedTopicExpressionDialectException;
-import org.globus.wsrf.topicexpression.TopicExpressionResolutionException;
 import org.globus.wsrf.topicexpression.InvalidTopicExpressionException;
 import org.globus.wsrf.topicexpression.TopicExpressionException;
+import org.globus.wsrf.topicexpression.TopicExpressionResolutionException;
+import org.globus.wsrf.topicexpression.UnsupportedTopicExpressionDialectException;
 import org.oasis.wsn.TopicExpressionType;
 
 /**

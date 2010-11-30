@@ -17,11 +17,10 @@ package org.globus.ws.enumeration;
 
 import java.util.List;
 
-import org.apache.axis.message.MessageElement;
-
-import org.globus.util.I18n;
-
 import javax.xml.soap.SOAPElement;
+
+import org.apache.axis.message.MessageElement;
+import org.globus.util.I18n;
 
 /**
  * Represents the iteration results returned by the <tt>pull</tt> operation

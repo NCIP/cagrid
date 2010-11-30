@@ -10,11 +10,10 @@
  */
 package org.globus.axis.providers;
 
-import org.apache.axis.MessageContext;
-
 import java.lang.reflect.Method;
-
 import java.security.PrivilegedExceptionAction;
+
+import org.apache.axis.MessageContext;
 
 class PrivilegedInvokeMethodAction implements PrivilegedExceptionAction {
 

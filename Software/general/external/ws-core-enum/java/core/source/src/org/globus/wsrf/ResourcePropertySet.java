@@ -10,13 +10,12 @@
  */
 package org.globus.wsrf;
 
-import org.globus.wsrf.encoding.SerializationException;
-
 import java.util.Iterator;
 
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPElement;
 
+import org.globus.wsrf.encoding.SerializationException;
 import org.w3c.dom.Element;
 
 /**

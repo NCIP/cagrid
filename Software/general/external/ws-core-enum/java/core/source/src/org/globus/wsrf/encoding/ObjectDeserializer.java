@@ -10,19 +10,16 @@
  */
 package org.globus.wsrf.encoding;
 
-import org.apache.axis.encoding.AnyContentType;
-import org.apache.axis.description.TypeDesc;
-import org.apache.axis.message.MessageElement;
-
-import org.w3c.dom.Element;
-
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPElement;
 
-import org.xml.sax.InputSource;
-
-import org.globus.wsrf.utils.Resources;
+import org.apache.axis.description.TypeDesc;
+import org.apache.axis.encoding.AnyContentType;
+import org.apache.axis.message.MessageElement;
 import org.globus.util.I18n;
+import org.globus.wsrf.utils.Resources;
+import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
 
 /**
  * Converts Java DOM Elements and SOAP Elements to Java objects.

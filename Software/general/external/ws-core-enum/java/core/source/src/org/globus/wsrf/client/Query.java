@@ -12,20 +12,18 @@ package org.globus.wsrf.client;
 
 import java.util.List;
 
-import org.oasis.wsrf.properties.WSResourcePropertiesServiceAddressingLocator;
-import org.oasis.wsrf.properties.QueryResourceProperties_Element;
-import org.oasis.wsrf.properties.QueryResourcePropertiesResponse;
-import org.oasis.wsrf.properties.QueryExpressionType;
-import org.oasis.wsrf.properties.QueryResourceProperties_PortType;
+import javax.xml.rpc.Stub;
 
-import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.CommandLine;
-
+import org.apache.commons.cli.ParseException;
 import org.globus.wsrf.WSRFConstants;
 import org.globus.wsrf.utils.AnyHelper;
 import org.globus.wsrf.utils.FaultHelper;
-
-import javax.xml.rpc.Stub;
+import org.oasis.wsrf.properties.QueryExpressionType;
+import org.oasis.wsrf.properties.QueryResourcePropertiesResponse;
+import org.oasis.wsrf.properties.QueryResourceProperties_Element;
+import org.oasis.wsrf.properties.QueryResourceProperties_PortType;
+import org.oasis.wsrf.properties.WSResourcePropertiesServiceAddressingLocator;
 
 public class Query extends BaseClient {
 

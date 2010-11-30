@@ -10,27 +10,17 @@
  */
 package org.globus.wsrf.container;
 
-import java.net.ServerSocket;
-import java.net.URL;
 import java.util.Map;
 
 import javax.security.auth.Subject;
 
+import org.apache.axis.AxisEngine;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.apache.axis.AxisEngine;
-
-import org.ietf.jgss.GSSCredential;
-
 import org.globus.axis.util.Util;
 import org.globus.gsi.jaas.JaasGssUtil;
-import org.globus.net.ServerSocketFactory;
-import org.globus.util.I18n;
-import org.globus.wsrf.config.ContainerConfig;
-import org.globus.wsrf.impl.security.descriptor.ContainerSecurityDescriptor;
 import org.globus.wsrf.impl.security.descriptor.ContainerSecurityConfig;
-import org.globus.wsrf.utils.Resources;
+import org.ietf.jgss.GSSCredential;
 
 public class GSIServiceContainer extends ServiceContainer {
 

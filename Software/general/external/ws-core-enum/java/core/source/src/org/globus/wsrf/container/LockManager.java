@@ -10,8 +10,8 @@
  */
 package org.globus.wsrf.container;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Manages a set of locks.

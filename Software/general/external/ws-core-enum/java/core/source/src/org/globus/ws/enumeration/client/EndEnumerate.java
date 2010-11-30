@@ -15,25 +15,21 @@
  */
 package org.globus.ws.enumeration.client;
 
-import java.util.List;
 import java.io.FileInputStream;
+import java.util.List;
 
-import org.globus.ws.enumeration.ClientEnumeration;
-
-import org.xmlsoap.schemas.ws._2004._09.enumeration.service.EnumerationServiceAddressingLocator;
-import org.xmlsoap.schemas.ws._2004._09.enumeration.DataSource;
-import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerationContextType;
-
-import org.globus.wsrf.client.BaseClient;
-import org.globus.wsrf.utils.FaultHelper;
-import org.globus.wsrf.encoding.ObjectDeserializer;
+import javax.xml.rpc.Stub;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.ParseException;
-
+import org.globus.ws.enumeration.ClientEnumeration;
+import org.globus.wsrf.client.BaseClient;
+import org.globus.wsrf.encoding.ObjectDeserializer;
+import org.globus.wsrf.utils.FaultHelper;
 import org.xml.sax.InputSource;
-
-import javax.xml.rpc.Stub;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.DataSource;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerationContextType;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.service.EnumerationServiceAddressingLocator;
 
 public class EndEnumerate extends BaseClient {
 

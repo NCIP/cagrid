@@ -10,23 +10,20 @@
  */
 package org.globus.wsrf.encoding;
 
-import java.io.Writer;
 import java.io.StringWriter;
-
-import org.globus.wsrf.utils.AnyHelper;
-import org.globus.wsrf.utils.Resources;
-import org.globus.wsrf.utils.StringBufferReader;
-import org.globus.util.I18n;
-
-import org.apache.axis.Constants;
-import org.apache.axis.message.MessageElement;
-
-import org.w3c.dom.Element;
-
-import org.xml.sax.InputSource;
+import java.io.Writer;
 
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPElement;
+
+import org.apache.axis.Constants;
+import org.apache.axis.message.MessageElement;
+import org.globus.util.I18n;
+import org.globus.wsrf.utils.AnyHelper;
+import org.globus.wsrf.utils.Resources;
+import org.globus.wsrf.utils.StringBufferReader;
+import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
 
 /**
  * Converts Java Objects to DOM Elements and SOAP Elements.

@@ -14,9 +14,8 @@ import java.util.Iterator;
 
 import javax.xml.soap.SOAPElement;
 
-import org.w3c.dom.Element;
-
 import org.globus.wsrf.encoding.SerializationException;
+import org.w3c.dom.Element;
 
 /**
  * Represents a single resource property. A resource property can have multiple

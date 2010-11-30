@@ -15,20 +15,19 @@
  */
 package org.globus.ws.enumeration;
 
-import java.util.Iterator;
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
-
-import org.globus.wsrf.encoding.ObjectSerializer;
-import org.globus.wsrf.encoding.SerializationException;
 
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPElement;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.globus.wsrf.encoding.ObjectSerializer;
+import org.globus.wsrf.encoding.SerializationException;
 
 /**
  * A basic {@link EnumIterator EnumIterator} implementation that can enumerate

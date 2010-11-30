@@ -17,22 +17,21 @@ package org.globus.ws.enumeration;
 
 import java.rmi.RemoteException;
 
+import javax.xml.rpc.Stub;
+import javax.xml.soap.SOAPElement;
+
+import org.globus.util.I18n;
+import org.globus.wsrf.utils.AdapterProxy;
 import org.xmlsoap.schemas.ws._2004._09.enumeration.DataSource;
 import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerationContextType;
-import org.xmlsoap.schemas.ws._2004._09.enumeration.Release;
-import org.xmlsoap.schemas.ws._2004._09.enumeration.PullResponse;
-import org.xmlsoap.schemas.ws._2004._09.enumeration.Pull;
-import org.xmlsoap.schemas.ws._2004._09.enumeration.RenewResponse;
-import org.xmlsoap.schemas.ws._2004._09.enumeration.Renew;
-import org.xmlsoap.schemas.ws._2004._09.enumeration.ItemListType;
-import org.xmlsoap.schemas.ws._2004._09.enumeration.GetStatusResponse;
 import org.xmlsoap.schemas.ws._2004._09.enumeration.GetStatus;
-
-import org.globus.wsrf.utils.AdapterProxy;
-import org.globus.util.I18n;
-
-import javax.xml.soap.SOAPElement;
-import javax.xml.rpc.Stub;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.GetStatusResponse;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.ItemListType;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.Pull;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.PullResponse;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.Release;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.Renew;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.RenewResponse;
 
 /**
  * Provides basic client-side API for managing enumeration lifetime and

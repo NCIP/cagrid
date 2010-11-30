@@ -15,24 +15,23 @@
  */
 package org.globus.ws.enumeration;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.NoSuchElementException;
 import java.io.File;
-import java.io.Serializable;
 import java.io.IOException;
 import java.io.ObjectStreamException;
-
-import org.globus.wsrf.encoding.ObjectSerializer;
-import org.globus.wsrf.encoding.SerializationException;
-import org.globus.wsrf.utils.io.IndexedObjectFileReader;
-import org.globus.util.I18n;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPElement;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.globus.util.I18n;
+import org.globus.wsrf.encoding.ObjectSerializer;
+import org.globus.wsrf.encoding.SerializationException;
+import org.globus.wsrf.utils.io.IndexedObjectFileReader;
 
 /**
  * A memory efficient implementation of the {@link EnumIterator EnumIterator}

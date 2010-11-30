@@ -13,7 +13,6 @@ package org.globus.tools.gar;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-
 import java.util.Enumeration;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;

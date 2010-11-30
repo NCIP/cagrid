@@ -15,21 +15,18 @@
  */
 package org.globus.ws.enumeration.client;
 
-import org.xmlsoap.schemas.ws._2004._09.enumeration.service.EnumerationServiceAddressingLocator;
-import org.xmlsoap.schemas.ws._2004._09.enumeration.DataSourceStart;
-import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerateResponse;
-import org.xmlsoap.schemas.ws._2004._09.enumeration.Enumerate;
-import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerationContextType;
-
-import org.globus.wsrf.client.BaseClient;
-import org.globus.wsrf.utils.FaultHelper;
-import org.globus.wsrf.encoding.ObjectSerializer;
+import javax.xml.namespace.QName;
+import javax.xml.rpc.Stub;
 
 import org.apache.commons.cli.CommandLine;
-
-import javax.xml.namespace.QName;
-
-import javax.xml.rpc.Stub;
+import org.globus.wsrf.client.BaseClient;
+import org.globus.wsrf.encoding.ObjectSerializer;
+import org.globus.wsrf.utils.FaultHelper;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.DataSourceStart;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.Enumerate;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerateResponse;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerationContextType;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.service.EnumerationServiceAddressingLocator;
 
 public class StartEnumerate extends BaseClient {
 

@@ -11,37 +11,27 @@
 package org.globus.wsrf.container;
 
 import java.io.OutputStream;
+import java.security.cert.X509Certificate;
 
 import javax.security.auth.Subject;
 
+import org.apache.axis.AxisEngine;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.apache.axis.AxisEngine;
-
-import org.gridforum.jgss.ExtendedGSSContext;
-import org.gridforum.jgss.ExtendedGSSManager;
-import org.ietf.jgss.GSSCredential;
-import org.ietf.jgss.GSSManager;
-
 import org.globus.axis.gsi.GSIConstants;
-
 import org.globus.gsi.gssapi.GSSConstants;
 import org.globus.gsi.gssapi.net.GssSocket;
 import org.globus.gsi.gssapi.net.GssSocketFactory;
 import org.globus.gsi.jaas.GlobusPrincipal;
-
-import org.globus.wsrf.impl.security.authentication.Constants;
-
-import org.globus.wsrf.utils.Resources;
-
-import org.globus.util.I18n;
-
-import java.security.cert.X509Certificate;
-
-import org.globus.wsrf.impl.security.descriptor.ContainerSecurityConfig;
 import org.globus.gsi.jaas.JaasGssUtil;
-import javax.security.auth.Subject;
+import org.globus.util.I18n;
+import org.globus.wsrf.impl.security.authentication.Constants;
+import org.globus.wsrf.impl.security.descriptor.ContainerSecurityConfig;
+import org.globus.wsrf.utils.Resources;
+import org.gridforum.jgss.ExtendedGSSContext;
+import org.gridforum.jgss.ExtendedGSSManager;
+import org.ietf.jgss.GSSCredential;
+import org.ietf.jgss.GSSManager;
 
 class GSIServiceThread extends ServiceThread {
 

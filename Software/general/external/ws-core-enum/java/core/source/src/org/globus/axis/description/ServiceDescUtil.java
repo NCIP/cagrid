@@ -10,6 +10,7 @@
  */
 package org.globus.axis.description;
 
+import java.io.File;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.URL;
@@ -20,37 +21,36 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.Vector;
-import java.io.File;
 
 import javax.wsdl.Binding;
+import javax.wsdl.Fault;
+import javax.wsdl.Message;
 import javax.wsdl.Operation;
 import javax.wsdl.OperationType;
-import javax.wsdl.PortType;
-import javax.wsdl.Fault;
 import javax.wsdl.Part;
-import javax.wsdl.Message;
+import javax.wsdl.PortType;
 import javax.wsdl.WSDLException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import javax.xml.namespace.QName;
 
 import org.apache.axis.AxisEngine;
 import org.apache.axis.AxisFault;
 import org.apache.axis.EngineConfiguration;
 import org.apache.axis.MessageContext;
 import org.apache.axis.WSDDEngineConfiguration;
+import org.apache.axis.constants.Style;
+import org.apache.axis.constants.Use;
 import org.apache.axis.deployment.wsdd.WSDDDeployment;
 import org.apache.axis.deployment.wsdd.WSDDGlobalConfiguration;
+import org.apache.axis.description.FaultDesc;
 import org.apache.axis.description.JavaServiceDesc;
 import org.apache.axis.description.OperationDesc;
 import org.apache.axis.description.ParameterDesc;
 import org.apache.axis.description.ServiceDesc;
-import org.apache.axis.description.FaultDesc;
 import org.apache.axis.description.TypeDesc;
-import org.apache.axis.constants.Style;
-import org.apache.axis.constants.Use;
 import org.apache.axis.enum.Scope;
 import org.apache.axis.handlers.soap.SOAPService;
+import org.apache.axis.message.addressing.handler.AddressingHandler;
+import org.apache.axis.message.addressing.util.AddressingUtils;
 import org.apache.axis.providers.java.JavaProvider;
 import org.apache.axis.utils.cache.ClassCache;
 import org.apache.axis.utils.cache.JavaClass;
@@ -60,21 +60,17 @@ import org.apache.axis.wsdl.symbolTable.Parameters;
 import org.apache.axis.wsdl.symbolTable.SymbolTable;
 import org.apache.axis.wsdl.symbolTable.TypeEntry;
 import org.apache.axis.wsdl.toJava.JavaGeneratorFactory;
-import org.apache.axis.message.addressing.handler.AddressingHandler;
-import org.apache.axis.message.addressing.util.AddressingUtils;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.globus.axis.providers.RPCProvider;
 import org.globus.util.I18n;
 import org.globus.wsrf.Constants;
 import org.globus.wsrf.config.ContainerConfig;
 import org.globus.wsrf.container.ServiceHost;
 import org.globus.wsrf.container.ServiceManager;
-
-import javax.xml.namespace.QName;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 /**
  * This class updates the Java service description with information retreived

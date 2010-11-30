@@ -10,20 +10,18 @@
  */
 package org.globus.wsrf.container;
 
-import org.globus.common.CoGProperties;
-import org.globus.wsrf.config.ContainerConfig;
-import org.globus.axis.util.Util;
-
-import org.apache.axis.MessageContext;
-import org.apache.axis.AxisEngine;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.URL;
 import java.net.MalformedURLException;
+import java.net.URL;
+
+import org.apache.axis.AxisEngine;
+import org.apache.axis.MessageContext;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.globus.axis.util.Util;
+import org.globus.common.CoGProperties;
+import org.globus.wsrf.config.ContainerConfig;
 
 /**
  * Host lookup used to support multi-homed host configurations

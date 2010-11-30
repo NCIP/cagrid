@@ -12,20 +12,17 @@ package org.globus.wsrf.client;
 
 import java.util.List;
 
-import org.oasis.wsrf.properties.WSResourcePropertiesServiceAddressingLocator;
+import javax.xml.namespace.QName;
+import javax.xml.rpc.Stub;
+
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.ParseException;
+import org.globus.wsrf.utils.AnyHelper;
+import org.globus.wsrf.utils.FaultHelper;
 import org.oasis.wsrf.properties.GetMultipleResourcePropertiesResponse;
 import org.oasis.wsrf.properties.GetMultipleResourceProperties_Element;
 import org.oasis.wsrf.properties.GetMultipleResourceProperties_PortType;
-
-import org.apache.commons.cli.ParseException;
-import org.apache.commons.cli.CommandLine;
-
-import org.globus.wsrf.utils.AnyHelper;
-import org.globus.wsrf.utils.FaultHelper;
-
-import javax.xml.namespace.QName;
-
-import javax.xml.rpc.Stub;
+import org.oasis.wsrf.properties.WSResourcePropertiesServiceAddressingLocator;
 
 public class GetProperties extends BaseClient {
 

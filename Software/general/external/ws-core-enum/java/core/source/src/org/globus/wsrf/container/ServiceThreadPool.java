@@ -10,11 +10,11 @@
  */
 package org.globus.wsrf.container;
 
+import java.util.Vector;
+
 import org.apache.axis.AxisEngine;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import java.util.Vector;
 
 /**
  * This class is responsible for managing a set of threads.

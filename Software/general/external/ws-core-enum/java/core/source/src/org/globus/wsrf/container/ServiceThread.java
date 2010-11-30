@@ -10,39 +10,14 @@
  */
 package org.globus.wsrf.container;
 
-import org.globus.wsrf.utils.PerformanceLog;
-import org.globus.wsrf.utils.Resources;
-import org.globus.wsrf.config.ContainerConfig;
-import org.globus.util.I18n;
-
-import org.apache.axis.AxisEngine;
-import org.apache.axis.AxisFault;
-import org.apache.axis.Constants; 
-
-import org.apache.axis.Message;
-import org.apache.axis.MessageContext;
-import org.apache.axis.client.Service;
-import org.apache.axis.message.SOAPEnvelope;
-import org.apache.axis.message.SOAPFault;
-import org.apache.axis.transport.http.HTTPConstants;
-import org.apache.axis.transport.http.NonBlockingBufferedInputStream;
-import org.apache.axis.transport.http.ChunkedInputStream;
-import org.apache.axis.transport.http.ChunkedOutputStream;
-import org.apache.axis.utils.XMLUtils;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.w3c.dom.Document;
-
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InterruptedIOException;
 import java.io.OutputStream;
-import java.io.FileNotFoundException;
-import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
@@ -52,6 +27,27 @@ import java.net.SocketException;
 import java.net.URL;
 
 import javax.xml.namespace.QName;
+
+import org.apache.axis.AxisEngine;
+import org.apache.axis.AxisFault;
+import org.apache.axis.Constants;
+import org.apache.axis.Message;
+import org.apache.axis.MessageContext;
+import org.apache.axis.client.Service;
+import org.apache.axis.message.SOAPEnvelope;
+import org.apache.axis.message.SOAPFault;
+import org.apache.axis.transport.http.ChunkedInputStream;
+import org.apache.axis.transport.http.ChunkedOutputStream;
+import org.apache.axis.transport.http.HTTPConstants;
+import org.apache.axis.transport.http.NonBlockingBufferedInputStream;
+import org.apache.axis.utils.XMLUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.globus.util.I18n;
+import org.globus.wsrf.config.ContainerConfig;
+import org.globus.wsrf.utils.PerformanceLog;
+import org.globus.wsrf.utils.Resources;
+import org.w3c.dom.Document;
 
 /**
  * This class is responsible for reading the request from the request queue,

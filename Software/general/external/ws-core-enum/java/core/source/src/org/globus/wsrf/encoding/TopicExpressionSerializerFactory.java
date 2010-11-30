@@ -10,11 +10,11 @@
  */
 package org.globus.wsrf.encoding;
 
-import org.apache.axis.encoding.ser.BaseSerializerFactory;
+import javax.xml.namespace.QName;
+
 import org.apache.axis.encoding.Serializer;
 import org.apache.axis.encoding.SerializerFactory;
-
-import javax.xml.namespace.QName;
+import org.apache.axis.encoding.ser.BaseSerializerFactory;
 
 /**
  * SerializerFactory for TopicExpression MessageElements

@@ -10,14 +10,13 @@
  */
 package org.globus.wsrf.encoding;
 
+import javax.xml.namespace.QName;
+
 import org.apache.axis.Constants;
 import org.apache.axis.encoding.ser.SimpleDeserializerFactory;
 import org.apache.axis.types.URI;
-
 import org.globus.wsrf.WSRFConstants;
 import org.oasis.wsrf.properties.QueryExpressionType;
-
-import javax.xml.namespace.QName;
 
 public class QueryExpressionDeserializer extends DialectDependentDeserializer {
 

@@ -12,8 +12,8 @@ package org.globus.wsrf.handlers;
 
 import javax.xml.rpc.soap.SOAPFaultException;
 
-import org.apache.axis.MessageContext;
 import org.apache.axis.AxisFault;
+import org.apache.axis.MessageContext;
 
 /**
  * A handler that converts SOAPFaultException into AxisFault so that

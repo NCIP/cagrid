@@ -15,43 +15,36 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.ServerSocket;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Arrays;
-import java.util.Comparator;
 
+import javax.security.auth.Subject;
 import javax.xml.rpc.Stub;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import org.apache.axis.AxisEngine;
 import org.apache.axis.client.Service;
-
-import org.oasis.wsrf.properties.GetResourceProperty;
-import org.oasis.wsrf.properties.WSResourcePropertiesServiceLocator;
-import org.oasis.wsrf.properties.GetResourcePropertyResponse;
-import org.oasis.wsrf.servicegroup.EntryType;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.globus.axis.gsi.GSIConstants;
 import org.globus.gsi.gssapi.auth.NoAuthorization;
+import org.globus.gsi.jaas.JaasGssUtil;
 import org.globus.net.ServerSocketFactory;
 import org.globus.util.I18n;
 import org.globus.wsrf.WSRFConstants;
 import org.globus.wsrf.client.BaseClient;
 import org.globus.wsrf.config.ContainerConfig;
 import org.globus.wsrf.encoding.ObjectDeserializer;
+import org.globus.wsrf.impl.security.descriptor.ContainerSecurityConfig;
 import org.globus.wsrf.utils.FaultHelper;
 import org.globus.wsrf.utils.Resources;
-
-import org.globus.gsi.jaas.JaasGssUtil;
-
-import javax.security.auth.Subject;
-
-import org.globus.wsrf.impl.security.descriptor.ContainerSecurityConfig;
-
 import org.ietf.jgss.GSSCredential;
+import org.oasis.wsrf.properties.GetResourceProperty;
+import org.oasis.wsrf.properties.GetResourcePropertyResponse;
+import org.oasis.wsrf.properties.WSResourcePropertiesServiceLocator;
+import org.oasis.wsrf.servicegroup.EntryType;
 
 /**
  * Http Server that can be used in embedded or standalone mode to host

@@ -10,17 +10,16 @@
  */
 package org.globus.wsrf.container;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.StringTokenizer;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 
+import org.apache.axis.deployment.wsdd.WSDDService;
 import org.globus.wsrf.container.usage.ContainerUsageBasePacket;
 import org.globus.wsrf.container.usage.ContainerUsageStartPacketV2;
 import org.globus.wsrf.container.usage.ContainerUsageStopPacketV2;
-
-import org.apache.axis.deployment.wsdd.WSDDService;
 
 public class UsageConfig {
     

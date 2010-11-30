@@ -10,22 +10,19 @@
  */
 package org.globus.wsrf.encoding;
 
-import org.xml.sax.Attributes;
+import java.io.IOException;
+
+import javax.xml.namespace.QName;
 
 import org.apache.axis.Constants;
 import org.apache.axis.encoding.SerializationContext;
 import org.apache.axis.encoding.Serializer;
 import org.apache.axis.message.MessageElement;
 import org.apache.axis.wsdl.fromJava.Types;
-
-import org.globus.wsrf.utils.Resources;
 import org.globus.util.I18n;
-
+import org.globus.wsrf.utils.Resources;
 import org.w3c.dom.Element;
-
-import javax.xml.namespace.QName;
-
-import java.io.IOException;
+import org.xml.sax.Attributes;
 
 /**
  * Serializer for Any MessageElements.

@@ -10,30 +10,27 @@
  */
 package org.globus.wsrf.handlers;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
-import org.globus.wsrf.config.ContainerConfig;
+import javax.xml.namespace.QName;
 
 import org.apache.axis.AxisEngine;
-import org.apache.axis.MessageContext;
 import org.apache.axis.AxisFault;
-import org.apache.axis.message.MessageElement;
+import org.apache.axis.MessageContext;
 import org.apache.axis.description.OperationDesc;
 import org.apache.axis.description.ServiceDesc;
 import org.apache.axis.handlers.soap.SOAPService;
-
-import org.apache.axis.message.addressing.Constants;
-import org.apache.axis.message.addressing.To;
-import org.apache.axis.message.addressing.AddressingHeaders;
+import org.apache.axis.message.MessageElement;
 import org.apache.axis.message.addressing.Action;
+import org.apache.axis.message.addressing.AddressingHeaders;
+import org.apache.axis.message.addressing.Constants;
 import org.apache.axis.message.addressing.ReferencePropertiesType;
+import org.apache.axis.message.addressing.To;
 import org.apache.axis.message.addressing.util.AddressingUtils;
 import org.apache.axis.types.URI;
-
 import org.globus.axis.description.ServiceDescUtil;
-
-import javax.xml.namespace.QName;
+import org.globus.wsrf.config.ContainerConfig;
 
 /**
  * Extends the Apache WS-Addressing AddressingHandler to customize how

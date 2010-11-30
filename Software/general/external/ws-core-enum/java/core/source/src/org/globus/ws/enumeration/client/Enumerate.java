@@ -15,33 +15,28 @@
  */
 package org.globus.ws.enumeration.client;
 
+import java.io.FileInputStream;
 import java.util.List;
 import java.util.Properties;
-import java.io.FileInputStream;
 
-import org.globus.ws.enumeration.ClientEnumeration;
-import org.globus.ws.enumeration.IterationConstraints;
-import org.globus.ws.enumeration.IterationResult;
-
-import org.xmlsoap.schemas.ws._2004._09.enumeration.service.EnumerationServiceAddressingLocator;
-import org.xmlsoap.schemas.ws._2004._09.enumeration.DataSource;
-import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerationContextType;
+import javax.xml.rpc.Stub;
 
 import org.apache.axis.types.Duration;
-
-import org.globus.wsrf.client.BaseClient;
-import org.globus.wsrf.encoding.ObjectDeserializer;
-import org.globus.wsrf.utils.FaultHelper;
-import org.globus.axis.utils.DurationUtils;
-
-import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionBuilder;
-
+import org.apache.commons.cli.ParseException;
+import org.globus.axis.utils.DurationUtils;
+import org.globus.ws.enumeration.ClientEnumeration;
+import org.globus.ws.enumeration.IterationConstraints;
+import org.globus.ws.enumeration.IterationResult;
+import org.globus.wsrf.client.BaseClient;
+import org.globus.wsrf.encoding.ObjectDeserializer;
+import org.globus.wsrf.utils.FaultHelper;
 import org.xml.sax.InputSource;
-
-import javax.xml.rpc.Stub;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.DataSource;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerationContextType;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.service.EnumerationServiceAddressingLocator;
 
 public class Enumerate extends BaseClient {
 

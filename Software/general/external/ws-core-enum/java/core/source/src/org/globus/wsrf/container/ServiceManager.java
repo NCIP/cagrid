@@ -10,35 +10,33 @@
  */
 package org.globus.wsrf.container;
 
+import java.security.PrivilegedActionException;
+import java.security.PrivilegedExceptionAction;
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.security.PrivilegedExceptionAction;
-import java.security.PrivilegedActionException;
 
 import javax.security.auth.Subject;
 
-import org.apache.axis.server.AxisServer;
-import org.apache.axis.MessageContext;
-import org.apache.axis.EngineConfiguration;
-import org.apache.axis.WSDDEngineConfiguration;
 import org.apache.axis.AxisEngine;
+import org.apache.axis.EngineConfiguration;
+import org.apache.axis.MessageContext;
+import org.apache.axis.WSDDEngineConfiguration;
 import org.apache.axis.deployment.wsdd.WSDDDeployment;
 import org.apache.axis.deployment.wsdd.WSDDService;
-import org.apache.axis.handlers.soap.SOAPService;
 import org.apache.axis.description.ServiceDesc;
-
-import org.globus.wsrf.ResourceContext;
-import org.globus.wsrf.NoResourceHomeException;
-import org.globus.wsrf.jndi.JNDIUtils;
-import org.globus.wsrf.utils.Resources;
-import org.globus.wsrf.security.SecurityManager;
-import org.globus.wsrf.impl.security.descriptor.ServiceSecurityConfig;
+import org.apache.axis.handlers.soap.SOAPService;
+import org.apache.axis.server.AxisServer;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.globus.axis.description.ServiceDescUtil;
 import org.globus.gsi.jaas.JaasSubject;
 import org.globus.util.I18n;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.globus.wsrf.NoResourceHomeException;
+import org.globus.wsrf.ResourceContext;
+import org.globus.wsrf.impl.security.descriptor.ServiceSecurityConfig;
+import org.globus.wsrf.jndi.JNDIUtils;
+import org.globus.wsrf.security.SecurityManager;
+import org.globus.wsrf.utils.Resources;
 
 /**
  * This class manages a set of services. It it used to startup, intialize

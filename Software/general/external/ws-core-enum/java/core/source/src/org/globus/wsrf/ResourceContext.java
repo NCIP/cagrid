@@ -10,8 +10,8 @@
  */
 package org.globus.wsrf;
 
-import java.util.Iterator;
 import java.net.URL;
+import java.util.Iterator;
 
 import javax.xml.namespace.QName;
 import javax.xml.rpc.handler.soap.SOAPMessageContext;

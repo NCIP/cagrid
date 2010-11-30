@@ -14,27 +14,24 @@ import java.util.Calendar;
 
 import javax.xml.soap.SOAPElement;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.apache.axis.AxisFault;
 import org.apache.axis.Message;
 import org.apache.axis.MessageContext;
 import org.apache.axis.SOAPPart;
 import org.apache.axis.handlers.BasicHandler;
-import org.apache.axis.message.addressing.To;
 import org.apache.axis.message.addressing.Address;
 import org.apache.axis.message.addressing.AddressingHeaders;
 import org.apache.axis.message.addressing.Constants;
 import org.apache.axis.message.addressing.EndpointReference;
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.message.addressing.ReferencePropertiesType;
-
+import org.apache.axis.message.addressing.To;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.globus.util.I18n;
 import org.globus.wsrf.ResourceContext;
 import org.globus.wsrf.impl.ResourceContextImpl;
 import org.globus.wsrf.utils.Resources;
-import org.globus.util.I18n;
-
 import org.oasis.wsrf.faults.BaseFaultType;
 
 // must be after the AddressingHandler

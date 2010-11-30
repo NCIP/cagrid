@@ -15,10 +15,9 @@
  */
 package org.globus.ws.enumeration;
 
+import org.apache.axis.types.Duration;
 import org.globus.axis.utils.DurationUtils;
 import org.globus.util.I18n;
-
-import org.apache.axis.types.Duration;
 
 /**
  * Represents the iteration constraints that can be specified on the pull

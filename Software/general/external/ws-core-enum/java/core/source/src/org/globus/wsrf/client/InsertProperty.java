@@ -10,28 +10,24 @@
  */
 package org.globus.wsrf.client;
 
-import java.util.List;
-import java.util.ArrayList;
 import java.io.FileInputStream;
-
-import org.oasis.wsrf.properties.WSResourcePropertiesServiceAddressingLocator;
-import org.oasis.wsrf.properties.SetResourceProperties_PortType;
-import org.oasis.wsrf.properties.SetResourceProperties_Element;
-import org.oasis.wsrf.properties.InsertType;
-
-import org.apache.axis.message.MessageElement;
-
-import org.apache.commons.cli.ParseException;
-import org.apache.commons.cli.CommandLine;
-
-import org.globus.wsrf.utils.XmlUtils;
-import org.globus.wsrf.utils.FaultHelper;
-
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Node;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.rpc.Stub;
+
+import org.apache.axis.message.MessageElement;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.ParseException;
+import org.globus.wsrf.utils.FaultHelper;
+import org.globus.wsrf.utils.XmlUtils;
+import org.oasis.wsrf.properties.InsertType;
+import org.oasis.wsrf.properties.SetResourceProperties_Element;
+import org.oasis.wsrf.properties.SetResourceProperties_PortType;
+import org.oasis.wsrf.properties.WSResourcePropertiesServiceAddressingLocator;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 public class InsertProperty extends BaseClient {
 

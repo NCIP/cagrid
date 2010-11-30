@@ -10,22 +10,20 @@
  */
 package org.globus.wsrf.client;
 
-import java.util.Calendar;
-import java.util.TimeZone;
-import java.util.List;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.List;
+import java.util.TimeZone;
 
-import org.oasis.wsrf.lifetime.WSResourceLifetimeServiceAddressingLocator;
-import org.oasis.wsrf.lifetime.ScheduledResourceTermination;
+import javax.xml.rpc.Stub;
 
-import org.globus.wsrf.utils.FaultHelper;
-
-import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionBuilder;
-
-import javax.xml.rpc.Stub;
+import org.apache.commons.cli.ParseException;
+import org.globus.wsrf.utils.FaultHelper;
+import org.oasis.wsrf.lifetime.ScheduledResourceTermination;
+import org.oasis.wsrf.lifetime.WSResourceLifetimeServiceAddressingLocator;
 
 public class SetTerminationTime extends BaseClient {
 

@@ -13,9 +13,7 @@ package org.globus.wsrf;
 import java.util.Calendar;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
-
 import org.globus.wsrf.impl.security.descriptor.ClientSecurityDescriptor;
-
 import org.oasis.wsn.TopicExpressionType;
 import org.oasis.wsrf.properties.QueryExpressionType;
 

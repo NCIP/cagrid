@@ -10,11 +10,10 @@
  */
 package org.globus.axis.handlers;
 
-import org.globus.axis.description.ServiceDescUtil;
-
 import org.apache.axis.AxisFault;
 import org.apache.axis.MessageContext;
 import org.apache.axis.handlers.BasicHandler;
+import org.globus.axis.description.ServiceDescUtil;
 
 public class ServiceDescHandler extends BasicHandler {
 

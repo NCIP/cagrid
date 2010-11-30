@@ -17,9 +17,8 @@ package org.globus.ws.enumeration;
 
 import java.util.Calendar;
 
-import org.globus.util.I18n;
-
 import org.apache.axis.types.Duration;
+import org.globus.util.I18n;
 
 /**
  * Represents the expiration time of an enumeration context. The expiration

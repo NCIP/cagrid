@@ -10,17 +10,16 @@
  */
 package org.globus.wsrf.client;
 
-import java.net.URL;
-import java.net.MalformedURLException;
 import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.globus.wsrf.Constants;
-import org.globus.wsrf.utils.Resources;
-import org.globus.wsrf.container.ServiceHost;
 import org.globus.util.I18n;
+import org.globus.wsrf.Constants;
+import org.globus.wsrf.container.ServiceHost;
+import org.globus.wsrf.utils.Resources;
 
 public class ServiceURL {
 

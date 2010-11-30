@@ -16,9 +16,6 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.apache.axis.Constants;
 import org.apache.axis.encoding.SerializationContext;
 import org.apache.axis.encoding.Serializer;
@@ -26,15 +23,14 @@ import org.apache.axis.encoding.SerializerFactory;
 import org.apache.axis.encoding.TypeMapping;
 import org.apache.axis.types.URI;
 import org.apache.axis.wsdl.fromJava.Types;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.globus.util.I18n;
+import org.globus.wsrf.utils.Resources;
+import org.oasis.DialectDependentType;
 import org.w3c.dom.Element;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.AttributesImpl;
-
-import org.globus.wsrf.utils.Resources;
-import org.globus.util.I18n;
-
-import org.oasis.DialectDependentType;
 
 public abstract class DialectDependentSerializer implements Serializer
 {

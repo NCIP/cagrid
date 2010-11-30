@@ -10,15 +10,14 @@
  */
 package org.globus.wsrf.container;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
+import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.io.IOException;
 
-import org.globus.wsrf.utils.Resources;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.globus.util.I18n;
+import org.globus.wsrf.utils.Resources;
 
 public class ServiceContainerCollection {
     private static Hashtable containers = new Hashtable();

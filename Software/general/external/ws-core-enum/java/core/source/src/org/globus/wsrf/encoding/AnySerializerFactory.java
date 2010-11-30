@@ -10,8 +10,8 @@
  */
 package org.globus.wsrf.encoding;
 
-import org.apache.axis.encoding.ser.BaseSerializerFactory;
 import org.apache.axis.encoding.Serializer;
+import org.apache.axis.encoding.ser.BaseSerializerFactory;
 
 /**
  * SerializerFactory for Any MessageElements

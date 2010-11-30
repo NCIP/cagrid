@@ -10,39 +10,33 @@
  */
 package org.globus.wsrf.client;
 
-import java.util.List;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 
-import org.oasis.wsn.WSBaseNotificationServiceAddressingLocator;
-import org.oasis.wsn.NotificationProducer;
-import org.oasis.wsn.TopicExpressionType;
-import org.oasis.wsrf.properties.ResourcePropertyValueChangeNotificationType;
+import javax.xml.namespace.QName;
+import javax.xml.rpc.Stub;
 
-import org.apache.commons.cli.ParseException;
+import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionBuilder;
-
-import org.apache.axis.message.addressing.EndpointReferenceType;
-
-import org.globus.wsrf.NotifyCallback;
+import org.apache.commons.cli.ParseException;
 import org.globus.wsrf.NotificationConsumerManager;
+import org.globus.wsrf.NotifyCallback;
 import org.globus.wsrf.WSNConstants;
-import org.globus.wsrf.utils.AnyHelper;
-import org.globus.wsrf.utils.XmlUtils;
-import org.globus.wsrf.utils.FaultHelper;
-import org.globus.wsrf.encoding.ObjectSerializer;
 import org.globus.wsrf.core.notification.ResourcePropertyValueChangeNotificationElementType;
-
-import org.w3c.dom.Element;
-
-import javax.xml.namespace.QName;
-
-import javax.xml.rpc.Stub;
-
+import org.globus.wsrf.encoding.ObjectSerializer;
 import org.globus.wsrf.impl.security.descriptor.ResourceSecurityConfig;
 import org.globus.wsrf.impl.security.descriptor.ResourceSecurityDescriptor;
+import org.globus.wsrf.utils.AnyHelper;
+import org.globus.wsrf.utils.FaultHelper;
+import org.globus.wsrf.utils.XmlUtils;
+import org.oasis.wsn.NotificationProducer;
+import org.oasis.wsn.TopicExpressionType;
+import org.oasis.wsn.WSBaseNotificationServiceAddressingLocator;
+import org.oasis.wsrf.properties.ResourcePropertyValueChangeNotificationType;
+import org.w3c.dom.Element;
 
 // add support for subscribing to ResourceDestructionNotification?
 public class Subscribe extends BaseClient implements NotifyCallback {

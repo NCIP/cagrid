@@ -20,6 +20,9 @@ import javax.security.auth.Subject;
 import javax.xml.namespace.QName;
 import javax.xml.rpc.Stub;
 
+import org.apache.axis.message.addressing.Address;
+import org.apache.axis.message.addressing.EndpointReferenceType;
+import org.apache.axis.message.addressing.ReferencePropertiesType;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
@@ -28,13 +31,6 @@ import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
-
-import org.apache.axis.message.addressing.Address;
-import org.apache.axis.message.addressing.EndpointReferenceType;
-import org.apache.axis.message.addressing.ReferencePropertiesType;
-
-import org.xml.sax.InputSource;
-
 import org.globus.axis.gsi.GSIConstants;
 import org.globus.axis.util.Util;
 import org.globus.gsi.CertUtil;
@@ -46,6 +42,7 @@ import org.globus.wsrf.impl.security.authorization.HostAuthorization;
 import org.globus.wsrf.impl.security.authorization.IdentityAuthorization;
 import org.globus.wsrf.impl.security.authorization.NoAuthorization;
 import org.globus.wsrf.impl.security.authorization.SelfAuthorization;
+import org.xml.sax.InputSource;
 
 public abstract class BaseClient {
 

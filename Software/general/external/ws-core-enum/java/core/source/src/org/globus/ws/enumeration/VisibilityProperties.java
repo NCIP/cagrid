@@ -17,10 +17,10 @@ package org.globus.ws.enumeration;
 
 import java.io.Serializable;
 
-import org.globus.wsrf.ResourceKey;
+import org.globus.util.I18n;
 import org.globus.wsrf.ResourceContext;
 import org.globus.wsrf.ResourceContextException;
-import org.globus.util.I18n;
+import org.globus.wsrf.ResourceKey;
 
 /**
  * Represents visibility properties. Visibility properties are used to restrict

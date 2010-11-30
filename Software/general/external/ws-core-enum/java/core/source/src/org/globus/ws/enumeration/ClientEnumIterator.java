@@ -15,22 +15,19 @@
  */
 package org.globus.ws.enumeration;
 
-import org.xmlsoap.schemas.ws._2004._09.enumeration.DataSource;
-import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerationContextType;
-
+import java.rmi.RemoteException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.rmi.RemoteException;
 
-import org.w3c.dom.Element;
-
-import org.globus.wsrf.encoding.ObjectDeserializer;
-import org.globus.util.I18n;
+import javax.xml.rpc.Stub;
+import javax.xml.soap.SOAPElement;
 
 import org.apache.axis.message.MessageElement;
-
-import javax.xml.soap.SOAPElement;
-import javax.xml.rpc.Stub;
+import org.globus.util.I18n;
+import org.globus.wsrf.encoding.ObjectDeserializer;
+import org.w3c.dom.Element;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.DataSource;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerationContextType;
 
 /**
  * Provides simple-to-use, client-side API for enumerating over data using

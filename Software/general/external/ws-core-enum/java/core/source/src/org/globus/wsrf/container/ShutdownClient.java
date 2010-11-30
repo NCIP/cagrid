@@ -17,7 +17,6 @@ import javax.xml.rpc.Stub;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.ParseException;
-
 import org.globus.wsrf.client.BaseClient;
 import org.globus.wsrf.core.shutdown.ShutdownPortType;
 import org.globus.wsrf.core.shutdown.service.ShutdownServiceAddressingLocator;

@@ -15,34 +15,9 @@
  */
 package org.globus.ws.enumeration;
 
-import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerateResponse;
-import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerationContextType;
-import org.xmlsoap.schemas.ws._2004._09.enumeration.PullResponse;
-import org.xmlsoap.schemas.ws._2004._09.enumeration.Pull;
-import org.xmlsoap.schemas.ws._2004._09.enumeration.RenewResponse;
-import org.xmlsoap.schemas.ws._2004._09.enumeration.Renew;
-import org.xmlsoap.schemas.ws._2004._09.enumeration.GetStatusResponse;
-import org.xmlsoap.schemas.ws._2004._09.enumeration.GetStatus;
-import org.xmlsoap.schemas.ws._2004._09.enumeration.Release;
-import org.xmlsoap.schemas.ws._2004._09.enumeration.ItemListType;
-import org.xmlsoap.schemas.ws._2004._09.enumeration.ExpirationType;
-
-import org.globus.axis.utils.DurationUtils;
-import org.globus.wsrf.utils.AnyHelper;
-import org.globus.wsrf.encoding.SerializationException;
-import org.globus.wsrf.ResourceKey;
-import org.globus.wsrf.ResourceException;
-import org.globus.wsrf.ResourceContext;
-import org.globus.wsrf.TerminationTimeRejectedException;
-import org.globus.wsrf.InvalidResourceKeyException;
-import org.globus.wsrf.ResourceContextException;
-import org.globus.wsrf.NoSuchResourceException;
-import org.globus.wsrf.impl.SimpleResourceKey;
-import org.globus.util.I18n;
-
+import java.rmi.RemoteException;
 import java.util.Calendar;
 import java.util.NoSuchElementException;
-import java.rmi.RemoteException;
 
 import javax.naming.NamingException;
 import javax.xml.namespace.QName;
@@ -50,11 +25,33 @@ import javax.xml.soap.SOAPElement;
 
 import org.apache.axis.AxisFault;
 import org.apache.axis.Constants;
-import org.apache.axis.types.PositiveInteger;
 import org.apache.axis.types.Duration;
-
+import org.apache.axis.types.PositiveInteger;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.globus.axis.utils.DurationUtils;
+import org.globus.util.I18n;
+import org.globus.wsrf.InvalidResourceKeyException;
+import org.globus.wsrf.NoSuchResourceException;
+import org.globus.wsrf.ResourceContext;
+import org.globus.wsrf.ResourceContextException;
+import org.globus.wsrf.ResourceException;
+import org.globus.wsrf.ResourceKey;
+import org.globus.wsrf.TerminationTimeRejectedException;
+import org.globus.wsrf.encoding.SerializationException;
+import org.globus.wsrf.impl.SimpleResourceKey;
+import org.globus.wsrf.utils.AnyHelper;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerateResponse;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.EnumerationContextType;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.ExpirationType;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.GetStatus;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.GetStatusResponse;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.ItemListType;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.Pull;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.PullResponse;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.Release;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.Renew;
+import org.xmlsoap.schemas.ws._2004._09.enumeration.RenewResponse;
 
 /**
  * WS-Enumeration operation provider. It implements four WS-Enumeration 

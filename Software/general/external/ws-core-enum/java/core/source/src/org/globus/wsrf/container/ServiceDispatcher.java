@@ -17,22 +17,19 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.apache.axis.AxisEngine;
 import org.apache.axis.Constants;
 import org.apache.axis.MessageContext;
-import org.apache.axis.server.AxisServer;
 import org.apache.axis.configuration.DirProvider;
-
+import org.apache.axis.server.AxisServer;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.globus.tools.DeployConstants;
 import org.globus.util.I18n;
 import org.globus.wsrf.config.ContainerConfig;
-import org.globus.wsrf.utils.Resources;
 import org.globus.wsrf.container.usage.ContainerUsageBasePacket;
 import org.globus.wsrf.impl.security.descriptor.ContainerSecurityDescriptor;
-import org.globus.wsrf.impl.security.descriptor.ContainerSecurityConfig;
+import org.globus.wsrf.utils.Resources;
 
 /**
  * Dispatcher reading requests off the socket and putting them into a

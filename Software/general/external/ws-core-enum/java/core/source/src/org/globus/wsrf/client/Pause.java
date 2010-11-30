@@ -10,16 +10,14 @@
  */
 package org.globus.wsrf.client;
 
-import org.oasis.wsn.WSBaseNotificationServiceAddressingLocator;
-import org.oasis.wsn.SubscriptionManager;
-import org.oasis.wsn.PauseSubscription;
-
-import org.globus.wsrf.utils.FaultHelper;
-
-import org.apache.commons.cli.ParseException;
-import org.apache.commons.cli.CommandLine;
-
 import javax.xml.rpc.Stub;
+
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.ParseException;
+import org.globus.wsrf.utils.FaultHelper;
+import org.oasis.wsn.PauseSubscription;
+import org.oasis.wsn.SubscriptionManager;
+import org.oasis.wsn.WSBaseNotificationServiceAddressingLocator;
 
 public class Pause extends BaseClient {
 

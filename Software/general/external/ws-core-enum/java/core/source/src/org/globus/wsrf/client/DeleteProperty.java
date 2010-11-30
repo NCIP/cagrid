@@ -12,19 +12,16 @@ package org.globus.wsrf.client;
 
 import java.util.List;
 
-import org.oasis.wsrf.properties.WSResourcePropertiesServiceAddressingLocator;
-import org.oasis.wsrf.properties.SetResourceProperties_PortType;
-import org.oasis.wsrf.properties.SetResourceProperties_Element;
-import org.oasis.wsrf.properties.DeleteType;
-
-import org.globus.wsrf.utils.FaultHelper;
-
-import org.apache.commons.cli.ParseException;
-import org.apache.commons.cli.CommandLine;
-
 import javax.xml.namespace.QName;
-
 import javax.xml.rpc.Stub;
+
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.ParseException;
+import org.globus.wsrf.utils.FaultHelper;
+import org.oasis.wsrf.properties.DeleteType;
+import org.oasis.wsrf.properties.SetResourceProperties_Element;
+import org.oasis.wsrf.properties.SetResourceProperties_PortType;
+import org.oasis.wsrf.properties.WSResourcePropertiesServiceAddressingLocator;
 
 public class DeleteProperty extends BaseClient {
 

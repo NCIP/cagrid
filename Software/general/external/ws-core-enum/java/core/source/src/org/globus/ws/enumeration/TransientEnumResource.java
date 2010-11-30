@@ -17,8 +17,8 @@ package org.globus.ws.enumeration;
 
 import java.util.Hashtable;
 
-import org.globus.wsrf.ResourceKey;
 import org.globus.wsrf.ResourceException;
+import org.globus.wsrf.ResourceKey;
 
 /**
  * Represents a transient enumeration context (a context that only exists while

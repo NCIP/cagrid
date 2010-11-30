@@ -12,10 +12,10 @@ package org.globus.ant;
 
 import java.io.File;
 
+import org.apache.tools.ant.BuildEvent;
+import org.apache.tools.ant.BuildListener;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.ProjectHelper;
-import org.apache.tools.ant.BuildListener;
-import org.apache.tools.ant.BuildEvent;
 
 public class AntTaskLauncher {
 

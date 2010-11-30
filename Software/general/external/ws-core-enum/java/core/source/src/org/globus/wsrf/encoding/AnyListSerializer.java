@@ -10,23 +10,20 @@
  */
 package org.globus.wsrf.encoding;
 
-import org.oasis.AnyListType;
-
 import java.io.IOException;
 import java.util.Iterator;
 
 import javax.xml.namespace.QName;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.apache.axis.Constants;
+import org.apache.axis.description.TypeDesc;
 import org.apache.axis.encoding.SerializationContext;
 import org.apache.axis.encoding.Serializer;
 import org.apache.axis.utils.Messages;
 import org.apache.axis.wsdl.fromJava.Types;
-import org.apache.axis.description.TypeDesc;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.oasis.AnyListType;
 import org.w3c.dom.Element;
 import org.xml.sax.Attributes;
 

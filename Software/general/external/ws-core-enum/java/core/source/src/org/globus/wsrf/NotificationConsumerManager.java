@@ -11,23 +11,21 @@
 package org.globus.wsrf;
 
 import java.net.URL;
-import java.util.List;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.apache.axis.MessageContext;
 import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.message.addressing.ReferencePropertiesType;
 import org.apache.axis.server.AxisServer;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.globus.util.I18n;
 import org.globus.wsrf.container.ContainerException;
 import org.globus.wsrf.impl.SimpleResourceKey;

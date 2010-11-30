@@ -10,12 +10,12 @@
  */
 package org.globus.wsrf;
 
-import org.globus.wsrf.encoding.SerializationException;
-
 import java.io.Serializable;
 
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPElement;
+
+import org.globus.wsrf.encoding.SerializationException;
 
 /**
  * A basic representation of a resource key. A resource key is composed of
