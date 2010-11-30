@@ -79,13 +79,12 @@ Obtain URL of where the installer properties (cagrid.installer.properties) will 
 
 ----- create installer release -----
 cd projects/installer
+Edit the properties in build.properties
 #NOTE: if you cannot provide these values yet, you can use placeholders, and then edit: <directory for release>/cagrid.installer.properties
 #  the download.properties.url is the only property value that is actually built into the created installer zip
 #  so it is strongly encouraged you know the value of that before hand (as to change it you must edit the value
 #  in the download.properties file, inside the caGrid-installer-1.2.jar, inside the caGrid-1.2.zip
-ant -Ddownload.properties.url=<PROPS URL> \
-  -Dcagrid.download.url=<CAGRID URL>/caGrid-1.2.zip \
-  clean dist-installer
+ant clean dist-installer
 mv build/caGrid-installer-1.2.zip <directory for release>
 mv build/cagrid.installer.properties <directory for release>
 #uncomment and edit the value of the cagrid.md5.checksum property in <directory for release>/cagrid.installer.properties to be that of the value of <CAGRID MD5> 
