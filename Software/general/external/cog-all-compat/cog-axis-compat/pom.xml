@@ -1,0 +1,25 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <artifactId>cog-all-compat</artifactId>
+    <groupId>org.globus</groupId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>cog-axis-compat</artifactId>
+  <name>CoG Axis Compatability Library</name>
+  <dependencies>
+  	<dependency>
+  		<groupId>org.jglobus</groupId>
+  		<artifactId>ssl-proxies</artifactId>
+  		<version>2.0-SNAPSHOT</version>
+  		<scope>compile</scope>
+  	</dependency>
+  	<dependency>
+  		<groupId>axis</groupId>
+  		<artifactId>axis</artifactId>
+  		<version>1.2</version>
+  		<type>jar</type>
+  		<scope>provided</scope>
+  	</dependency>
+  </dependencies>
+</project>
