@@ -4,10 +4,23 @@
   <artifactId>cog-all-compat</artifactId>
   <packaging>pom</packaging>
   <version>0.0.1-SNAPSHOT</version>
+  <name>CoG Compability Libraries</name>
   <modules>
 	<module>cog-axis-compat</module>
 	<module>cog-jglobus-compat</module>
 	<module>cog-tomcat-compat</module>
 	<module>cog-url-compat</module>
   </modules>
+  <build> 
+  	<plugins> 
+		<plugin> 
+			<artifactId>maven-compiler-plugin</artifactId> 
+			<configuration> 
+				<source>1.6</source> 
+				<target>1.6</target> 
+			</configuration> 
+		</plugin> 
+	</plugins> 
+  </build> 
+
 </project>
