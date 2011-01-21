@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>cog-jglobus-compat</artifactId>
   <name>CoG Java Compatability Library</name>
-  <dependencies>
+  <dependencies> 
   	<dependency>
   		<groupId>org.jglobus</groupId>
   		<artifactId>gss</artifactId>

@@ -255,10 +255,7 @@ public class BaseHTTPSServerSocketFactory extends ServerSocketFactory {
         TrustedCertificates trustedCerts = null;
 
         if (caCertDir != null) {
-        	logger.error("Setting trusted certs to " + caCertDir);
             trustedCerts = TrustedCertificates.load(caCertDir);
-        } else {
-        	logger.error("No trusted certs");
         }
 
         HTTPSServerSocket serverSocket =
@@ -370,11 +367,8 @@ public class BaseHTTPSServerSocketFactory extends ServerSocketFactory {
                               Boolean.TRUE);
 
             if (this._trustedCerts != null) {
-            	logger.error("_trustedCerts is NOT null");
                 context.setOption(GSSConstants.TRUSTED_CERTIFICATES,
                                   this._trustedCerts);
-            } else {
-            	logger.error("_trustedCerts is null");
             }
 
             context.requestConf(this._encrypt);

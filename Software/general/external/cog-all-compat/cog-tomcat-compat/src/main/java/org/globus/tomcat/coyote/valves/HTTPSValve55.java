@@ -48,18 +48,15 @@ public final class HTTPSValve55 extends ValveBase {
     private HTTPSSocket getSocketFromInputStream(
                            org.apache.coyote.Request request) {
         InputBuffer inputBuffer = request.getInputBuffer();
-        System.out.println("AT1 getSocketFromInputStream");
         if (inputBuffer instanceof InternalInputBuffer) {
             InternalInputBuffer internalInputBuffer = (InternalInputBuffer)inputBuffer;
             if (internalInputBuffer.getInputStream() 
                 instanceof HTTPSSocket.SocketGSIGssInputStream) {
                 HTTPSSocket.SocketGSIGssInputStream in = 
                     (HTTPSSocket.SocketGSIGssInputStream)internalInputBuffer.getInputStream();
-                System.out.println("AT2 getSocketFromInputStream");
                 return in.getSocket();
             }
         }
-        System.out.println("AT3 getSocketFromInputStream");
         return null;
     }
 
