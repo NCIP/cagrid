@@ -223,7 +223,6 @@ Southern California. All Rights Reserved.
         <copy toDir="${tomcat.dir}/server/lib">
             <fileset dir="${abs.deploy.dir}/lib" casesensitive="yes">
                 <include name="cog-tomcat-compat-0.0.1-SNAPSHOT.jar"/>
-                <include name="ssl-proxies-2.0-SNAPSHOT.jar"/>
             </fileset>
 	</copy>
 
