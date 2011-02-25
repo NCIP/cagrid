@@ -1,0 +1,59 @@
+<project basedir="."  name="caGrid Taverna Portlet" xmlns:ivy="antlib:org.apache.ivy.ant">
+	
+	<property environment="env"/>
+	<property name="portlet.deploy.dir" value="${env.HOME}/portal-liferay/deploy"/>
+
+    <property name="portlet.lib.dir" value="${basedir}/lib"/>
+    <property name="globus.lib.dir" value="${portlet.lib.dir}/globus"/>
+    <property name="portlet.ext.lib.dir" value="${portlet.lib.dir}/ext"/>
+
+    <property name="portlet.build.dir" value="${basedir}/build"/>
+    <property name="portlet.build.war.dir" value="${portlet.build.dir}/war"/>
+    <property name="portlet.classes.dir" value="${portlet.build.war.dir}/WEB-INF/classes"/>
+    <property name="portlet.src.java.dir" value="${basedir}/src/main/java"/>
+    <property name="portlet.src.war.dir" value="${basedir}/src/main/webapp"/>
+
+    <property name="portlet.context.name" value="taverna-portlet"/>
+    <property name="portlet.debug" value="true"/>
+
+	<taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant">
+		<classpath><fileset dir="${portlet.lib.dir}" includes="ivy-*.jar" /></classpath>
+	</taskdef>
+
+	<target name="ivy" description="Ivy Dependencies">		
+		<delete includeemptydirs="true" failonerror="false"><fileset dir="${portlet.ext.lib.dir}"><include name="**/*" /></fileset></delete>
+		<ivy:settings id="ivy.instance" url="http://software.cagrid.org/repository-1.4/ivysettings.xml" override="true"/>
+		<ivy:retrieve type="jar" pattern="${portlet.ext.lib.dir}/[artifact]-[revision].[ext]"/>
+		<ivy:report todir="${portlet.build.dir}" />
+	</target>
+	
+	<target name="clean" description="Clean project">
+		<delete dir="${portlet.build.dir}"/>
+	</target>
+	
+    <target name="compile" depends="">
+        <mkdir dir="${portlet.classes.dir}"/>
+        <javac srcdir="${portlet.src.java.dir}" destdir="${portlet.classes.dir}" debug="${portlet.debug}">
+            <classpath>
+	            	<fileset dir="${portlet.lib.dir}" includes="*.jar"/>
+					<fileset dir="${portlet.src.war.dir}/WEB-INF/lib" includes="*.jar"/>
+					<fileset dir="${portlet.ext.lib.dir}" includes="*.jar"/>
+			</classpath>
+		</javac>
+	</target>
+
+    <target name="war" depends="compile"  description="Will create a deployable war for the Portlet">
+        <mkdir dir="${portlet.build.war.dir}/WEB-INF/lib"/>
+        <copy todir="${portlet.build.war.dir}/WEB-INF/lib" overwrite="true" flatten="true">
+            <fileset dir="${portlet.ext.lib.dir}" includes="*.jar"/>
+        </copy>
+        <mkdir dir="${portlet.build.war.dir}/WEB-INF/classes"/>
+        <copy todir="${portlet.build.war.dir}" overwrite="true"><fileset dir="${portlet.src.war.dir}"/></copy>
+	<jar destfile="${portlet.build.dir}/${portlet.context.name}.war" basedir="${portlet.build.war.dir}"/>
+    </target>
+	
+	<target name="deploy" description="Deploy to portal server">
+		<copy todir="${portlet.deploy.dir}" verbose="true" file="${portlet.build.dir}/${portlet.context.name}.war"/>
+	</target>
+	
+</project>

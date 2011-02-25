@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beansProjectDescription>
+	<version>1</version>
+	<pluginVersion><![CDATA[2.5.2.201101201000-SR2]]></pluginVersion>
+	<configSuffixes>
+		<configSuffix><![CDATA[xml]]></configSuffix>
+	</configSuffixes>
+	<enableImports><![CDATA[false]]></enableImports>
+	<configs>
+		<config>src/main/webapp/WEB-INF/context/taverna-portlet.xml</config>
+		<config>src/main/webapp/WEB-INF/context/ajax-servlet.xml</config>
+		<config>src/main/webapp/WEB-INF/context/views.xml</config>
+	</configs>
+	<configSets>
+		<configSet>
+			<name><![CDATA[portlet-context]]></name>
+			<allowBeanDefinitionOverriding>true</allowBeanDefinitionOverriding>
+			<incomplete>false</incomplete>
+			<configs>
+				<config>src/main/webapp/WEB-INF/context/applicationContext.xml</config>
+				<config>src/main/webapp/WEB-INF/context/taverna-portlet.xml</config>
+				<config>src/main/webapp/WEB-INF/context/ajax-servlet.xml</config>
+				<config>src/main/webapp/WEB-INF/context/views.xml</config>
+			</configs>
+		</configSet>
+	</configSets>
+</beansProjectDescription>

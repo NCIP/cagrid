@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+   
+   	<bean class="org.springframework.web.servlet.view.XmlViewResolver">
+        <property name="order" value="0"/>
+        <property name="location" value="/WEB-INF/context/views.xml"/>
+    </bean>
+
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="order" value="10"/>
+        <property name="cache" value="true"/>
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:cagrid.properties"/>
+	</bean>
+    
+    <bean id="sessionEprs" class="gov.nih.nci.cagrid.portal.portlet.workflow.domain.SessionEprs" scope="session">
+    	<aop:scoped-proxy/>
+    </bean>
+    
+    <bean id="ajaxResponseController" class="org.jasig.web.servlet.mvc.AjaxResponseController">
+    </bean>
+        
+	<bean id="tavernaWorkflowController" class="gov.nih.nci.cagrid.portal.portlet.workflow.mvc.TavernaPortletController">
+        <property name="commandClass" value="gov.nih.nci.cagrid.portal.portlet.workflow.domain.WorkflowBean"/>
+        <property name="commandName" value="cmd"/>
+        <property name="formView" value="view"/>
+        <property name="successView" value="submitted"/>
+        <property name="sessionEprs" ref="sessionEprs" />
+        
+        <property name="workflowService" ref="tavernaWorkflowService"/>
+		<property name="registry" ref="myExperimentWorkflowRegistry"/>
+    </bean>
+    
+	<bean id="tavernaWorkflowService" class="gov.nih.nci.cagrid.portal.portlet.workflow.service.impl.TavernaWorkflowService">
+		<property name="tavernaWorkflowServiceUrl" value="${tws.target.grid.url}" />
+    </bean>
+    
+    <bean id="myExperimentWorkflowRegistry" class="gov.nih.nci.cagrid.portal.portlet.workflow.service.impl.MyExperimentWorkflowRegistry">
+    	<property name="username" value="kedzie"/>
+    	<property name="password" value="Catch-22"/>
+    	<property name="server" value="sandbox.myexperiment.org"/>
+    </bean>
+        
+</beans>
