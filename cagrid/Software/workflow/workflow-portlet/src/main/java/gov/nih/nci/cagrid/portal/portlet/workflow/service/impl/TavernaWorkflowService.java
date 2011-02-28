@@ -16,7 +16,7 @@ import org.apache.commons.logging.LogFactory;
  * 
  * @author Dinanath Sulakhe sulakhe@mcs.anl.gov
  */
-public class TavernaWorkflowService implements WorkflowService {
+public class TavernaWorkflowService extends WorkflowService {
 	protected final Log log = LogFactory.getLog(getClass());
 
 	private String tavernaWorkflowServiceUrl;

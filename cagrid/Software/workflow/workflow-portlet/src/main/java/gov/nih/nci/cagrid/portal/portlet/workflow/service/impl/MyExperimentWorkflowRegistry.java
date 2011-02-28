@@ -86,7 +86,7 @@ public class MyExperimentWorkflowRegistry implements WorkflowRegistryService {
 			
 			List<WorkflowDescription> list = new ArrayList<WorkflowDescription>(workflows.size());
 			for(Workflows.WorkflowStub stub : workflows) {
-				GetMethod getStub = new GetMethod(stub.getUri()+"&elements=id,title,description,content-uri,uploader");
+				GetMethod getStub = new GetMethod(stub.getUri()+"&elements=id,title,description,content-uri,uploader,preview");
 				http.executeMethod(getStub);
 				WorkflowDescription wd = unmarshalWorkflow(getStub.getResponseBodyAsStream());
 				list.add(wd);
@@ -110,6 +110,22 @@ public class MyExperimentWorkflowRegistry implements WorkflowRegistryService {
 		return cache;
 	}
 
+	@Override
+	public WorkflowDescription getWorkflowStub(String id) throws WorkflowException {
+		log.debug("Fetching workflow #" + id);
+		GetMethod get = new GetMethod("http://"+this.getServer()+"/workflow.xml?id="+id+"&elements=id,title,description,content-uri,uploader,preview");
+		try {
+			http.executeMethod(get);
+			WorkflowDescription wd = unmarshalWorkflow(get.getResponseBodyAsStream());
+			return wd;
+		} catch (Exception e) {
+			log.error("Http Exception", e);
+			throw new WorkflowException(e);
+		} finally {
+			get.releaseConnection();
+		}
+	}
+	
 	@Override
 	public WorkflowDescription getWorkflow(String id) throws WorkflowException {
 		log.debug("Fetching workflow #" + id);
