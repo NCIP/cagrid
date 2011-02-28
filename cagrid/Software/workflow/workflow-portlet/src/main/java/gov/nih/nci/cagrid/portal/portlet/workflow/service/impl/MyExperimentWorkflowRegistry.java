@@ -31,6 +31,7 @@ public class MyExperimentWorkflowRegistry implements WorkflowRegistryService {
 	private static final Log log = LogFactory.getLog(MyExperimentWorkflowRegistry.class);
 	
 	private HttpClient http = new HttpClient();	
+	@SuppressWarnings("unused")
 	private Cookie sessionCookie;
 	
 	private String username;
@@ -71,6 +72,22 @@ public class MyExperimentWorkflowRegistry implements WorkflowRegistryService {
 		}
 	}
 
+	/**
+	 * Download the workflow definition to local filesystem
+	 * @param wd Workflow Definition
+	 * @throws Exception 
+	 */
+	private void saveWorkflowDefinition(WorkflowDescription wd) throws Exception {
+		String defPath = System.getProperty("java.io.tmpdir")+"/"+wd.getWorkflowId()+".t2flow";
+		log.debug("Downloading workflow definition: " + defPath);
+		GetMethod getScufl = new GetMethod(wd.getFilePath());
+		http.executeMethod(getScufl);
+		FileOutputStream fos = new FileOutputStream(defPath);
+		fos.write(getScufl.getResponseBody());
+		wd.setScuflLocation(defPath);
+		fos.close();
+		log.debug("Downloaded definition");
+	}
 	/**
 	 * Retrieve workflows with a specific tag from MyExperiment.org
 	 * @param tag MyExperiment.org workflow tag
@@ -134,15 +151,7 @@ public class MyExperimentWorkflowRegistry implements WorkflowRegistryService {
 			http.executeMethod(get);
 			WorkflowDescription wd = unmarshalWorkflow(get.getResponseBodyAsStream());
 			
-			String defPath = "/home/marek/portal-liferay/"+id+".t2flow";
-			log.debug("Downloading workflow definition: " + defPath);
-			GetMethod getScufl = new GetMethod(wd.getFilePath());
-			http.executeMethod(getScufl);
-			FileOutputStream fos = new FileOutputStream(defPath);
-			fos.write(getScufl.getResponseBody());
-			wd.setScuflLocation(defPath);
-			fos.close();
-			log.debug("Downloaded definition");
+			saveWorkflowDefinition(wd);
 			
 			if(wd.getComponents() == null) {
 				log.warn("Workflow definition specifies no inputs: " + wd.getComponents());
@@ -162,7 +171,7 @@ public class MyExperimentWorkflowRegistry implements WorkflowRegistryService {
 			}
 			return wd;
 		} catch (Exception e) {
-			log.error("Http Exception", e);
+			log.error("Exception fetching workflow #"+id, e);
 			throw new WorkflowException(e);
 		} finally {
 			get.releaseConnection();

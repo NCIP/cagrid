@@ -24,6 +24,7 @@ jQuery(function($){
 	});
 });
 </script>
+	<h3>Workflow Portlet</h3>
 	<table border=0>
 		<c:forEach var="workflow" items="${cmd.allWorkflows}">
 			<tr>
