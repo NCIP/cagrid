@@ -9,7 +9,8 @@
     <%@ include file="/css/base.css" %>
 </style>
 
-<div class="content">
+<div id="ajax" class="content">
+	<button id="ajaxButton" onclick="jQuery('#ajax').load('<portlet:renderURL><portlet:param name="action" value="viewInstances"/></portlet:renderURL>');">AJAX Update</button>
 	<TABLE BORDER="2">
 		<TR bgcolor="grey">
 			<TH> Job ID </TH><TH> Workflow ID </TH><TH> Status </TH><TH> Output </TH>
@@ -28,11 +29,12 @@
 		<TD>
 		<c:choose>
 			<c:when test="${entry.value.status == 'Done'}">
-					<form action="<portlet:actionURL><portlet:param name="action" value="viewOutput"/></portlet:actionURL>" method="post">
-						<input type="hidden" name="formState" value="4">
-						<input type="hidden" name="selectedUUID" value="${entry.key}">
-						<input type="submit" name="Output" value = "Output">
-					</form>
+					<a href="<portlet:renderURL><portlet:param name="action" value="viewOutput"/><portlet:param name="uuid" value="${entry.key}"/></portlet:renderURL>">View Output</a>
+<!--					<form action="<portlet:actionURL><portlet:param name="action" value="viewOutput"/><portlet:param name="uuid" value="${entry.key}"/></portlet:actionURL>" method="post">-->
+<!--						<input type="hidden" name="formState" value="4">-->
+<!--						<input type="hidden" name="selectedUUID" value="${entry.key}">-->
+<!--						<input type="submit" name="Output" value = "Output">-->
+<!--					</form>-->
 			</c:when>
 			<c:otherwise>
 					<button type="button" disabled="disabled">Output</button>

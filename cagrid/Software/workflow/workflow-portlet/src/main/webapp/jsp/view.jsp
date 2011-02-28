@@ -9,6 +9,7 @@
 </style>
 
 <div class="content">
+
 	<table border=0>
 		<c:forEach var="workflow" items="${cmd.allWorkflows}">
 			<tr>
@@ -25,21 +26,18 @@
 				</td>
 			</tr>
 			<tr>
-				<td><b><font size="2"> Number of Input Ports: </font></b>
-				${workflow.inputPorts}</td>
-			</tr>
-			<tr>
 				<td><b><font size="2"> Author: </font></b> ${workflow.author}
 			</tr>
 			<tr>
 				<td><br>
-				<form action="<portlet:actionURL><portlet:param name="action" value="selectWorkflow"/><portlet:param name="id" value="${workflow.workflowId}"/></portlet:actionURL>" method="post">
-					<span style="color: red"><form:errors path="*" /></span> 
-					<input type="hidden" name="keyword" value="${workflow.name}">
-					<input type="hidden" name="workflowId" value="${workflow.workflowId}"> 
-					<input type="hidden" name="formState" value="1"> 
-					<input type="submit" value="Select Workflow">
-				</form>
+				<a href="<portlet:renderURL><portlet:param name="action" value="newInstance"/><portlet:param name="id" value="${workflow.workflowId}"/></portlet:renderURL>">Select Workflow</a>
+<!--				<form id="fm" action="<portlet:actionURL><portlet:param name="action" value="selectWorkflow"/><portlet:param name="id" value="${workflow.workflowId}"/></portlet:actionURL>" method="post">-->
+<!--					<span style="color: red"><form:errors path="*" /></span> -->
+<!--					<input type="hidden" name="keyword" value="${workflow.name}">-->
+<!--					<input type="hidden" name="workflowId" value="${workflow.workflowId}"> -->
+<!--					<input type="hidden" name="formState" value="1"> -->
+<!--					<input type="submit" value="Select Workflow">-->
+<!--				</form>-->
 				<br>
 				<hr>
 				</td>

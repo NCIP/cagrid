@@ -24,7 +24,7 @@
 
 		<TR>
 			<TD>
-			<form action="<portlet:actionURL><portlet:param name="action" value="newInstance"/></portlet:actionURL>" method="post">
+			<form action="<portlet:actionURL><portlet:param name="action" value="newInstance"/><portlet:param name="id" value="${cmd.theWorkflow.workflowId}"/></portlet:actionURL>" method="post">
 			</TD>
 		</TR>
 		<tr>
@@ -33,25 +33,19 @@
 			<BR>
 			</font></b></td>
 		</tr>
-		<tr>
-			<td><b><font size="2">Example Input Values:
-			${cmd.theWorkflow.sampleInputs}<BR>
-			<BR>
-			</font></b></td>
-		</tr>
 
-		<c:forEach var="i" begin="1" end="${cmd.theWorkflow.inputPorts}" step="1" varStatus="status">
+		<c:forEach var="item" items="${cmd.theWorkflow.inputs}">
 			<tr>
-				<td><b><font size="2"> Input Port: ${i}</font></b></td>
+				<td><b><font size="2"> Input Port: ${item.name}</font></b></td>
 			</tr>
 			<TR>
-				<TD><TEXTAREA name="inputValues" rows="5" cols="80">${cmd.theWorkflow.sampleInputs}</TEXTAREA><BR>
+				<TD><TEXTAREA name="inputValues" rows="5" cols="80">${item.name}</TEXTAREA><BR>
 				<BR>
 				</TD>
 			</TR>
 		</c:forEach>
 		<TR>
-			<TD><input type="hidden" name="workflowId" value="${cmd.theWorkflow.workflowId }">
+			<TD><input type="hidden" name="workflow" value="${cmd.theWorkflow}">
 				<input type="hidden" name="formState" value="2">
 				<input type="submit" value="Submit">
 			</form>

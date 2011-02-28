@@ -25,11 +25,11 @@
 			<map>
 				<entry key="view">
 					<map>
-						<entry key="selectWorkflow" value-ref="tavernaWorkflowController"/>
-						<entry key="newInstance" value-ref="tavernaWorkflowController"/>
-						<entry key="viewInstances" value-ref="tavernaWorkflowController"/>
-						<entry key="viewOutput" value-ref="tavernaWorkflowController"/>
-						<entry key="viewDefinitions" value-ref="tavernaWorkflowController"/>
+						<entry key="viewDefinitions" value-ref="viewDefinitionsController"/>
+						<entry key="selectWorkflow" value-ref="newInstanceFormController"/>
+						<entry key="newInstance" value-ref="newInstanceFormController"/>
+						<entry key="viewInstances" value-ref="viewInstancesController"/>
+						<entry key="viewOutput" value-ref="viewOutputController"/>
 					</map>
 				</entry>
 			</map>
@@ -40,7 +40,7 @@
     	<property name="order" value="10"/>
         <property name="portletModeMap">
             <map>
-                <entry key="view" value-ref="tavernaWorkflowController"/>
+                <entry key="view" value-ref="viewDefinitionsController"/>
             </map>
         </property>
     </bean>

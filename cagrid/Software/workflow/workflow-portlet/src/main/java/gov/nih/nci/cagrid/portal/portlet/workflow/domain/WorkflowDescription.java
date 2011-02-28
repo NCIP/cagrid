@@ -1,10 +1,14 @@
 package gov.nih.nci.cagrid.portal.portlet.workflow.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.springframework.beans.factory.InitializingBean;
@@ -21,7 +25,6 @@ import org.springframework.core.io.ResourceLoader;
 @XmlType(name="workflow" )
 @XmlAccessorType(XmlAccessType.NONE)
 public class WorkflowDescription implements ResourceLoaderAware, InitializingBean{
-	
 	@XmlAttribute(name="uri")
 	private String uri;
 	@XmlAttribute(name="resource")
@@ -47,9 +50,17 @@ public class WorkflowDescription implements ResourceLoaderAware, InitializingBea
 	@XmlElement(name="preview", required=true, nillable=false)
 	private String imageFile;
 	
+	@XmlElement(name="components", required=true)
+	private Components components;
+	
 	private String scuflLocation;
-	private Integer inputPorts;		
+	
+	@XmlTransient
+	private List<Source> inputs = new ArrayList<Source>();
+	@XmlTransient
+	private int inputPorts=0;		
 	private String sampleInputs;
+	
 	private String viewResolver = "output";
 	private ResourceLoader resourceLoader;
 
@@ -77,10 +88,10 @@ public class WorkflowDescription implements ResourceLoaderAware, InitializingBea
 	public void setFilePath(String filePath) {
 		this.filePath = filePath;
 	}
-	public Integer getInputPorts() {
+	public int getInputPorts() {
 		return inputPorts;
 	}
-	public void setInputPorts(Integer inputPorts) {
+	public void setInputPorts(int inputPorts) {
 		this.inputPorts = inputPorts;
 	}
 	public String getWorkflowId() {
@@ -147,5 +158,17 @@ public class WorkflowDescription implements ResourceLoaderAware, InitializingBea
 	}
 	public void setVersion(int version) {
 		this.version = version;
+	}
+	public Components getComponents() {
+		return components;
+	}
+	public void setComponents(Components components) {
+		this.components = components;
+	}
+	public List<Source> getInputs() {
+		return inputs;
+	}
+	public void setInputs(List<Source> inputs) {
+		this.inputs = inputs;
 	}
 }

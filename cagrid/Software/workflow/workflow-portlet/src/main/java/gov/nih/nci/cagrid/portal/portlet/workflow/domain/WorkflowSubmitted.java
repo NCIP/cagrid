@@ -47,4 +47,7 @@ public class WorkflowSubmitted {
 	public void setWorkflowOutput(String[] workflowOutput) {
 		this.workflowOutput = workflowOutput;
 	}
+	public String toString() {
+		return getWorkflowDesc().toString() + " - status: [" + getStatus() + "]";
+	}
 }

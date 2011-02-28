@@ -6,7 +6,6 @@ import java.util.Map;
  * Class that is stored in the session. This holds all the submitted workflows and the EPR.
  * 
  * @author Dinanath Sulakhe sulakhe@mcs.anl.gov
- * 
  */
 public class SessionEprs {
 	
@@ -15,19 +14,13 @@ public class SessionEprs {
 	public Map<String, WorkflowSubmitted> getEprs() {
 		return eprs;
 	}
-
 	public void setEprs(Map<String, WorkflowSubmitted> eprs) {
 		this.eprs = eprs;
 	}
-	
-	public void putEpr(String epr, WorkflowSubmitted status)
-	{
+	public void putEpr(String epr, WorkflowSubmitted status) {
 		this.eprs.put(epr, status);
 	}
-	
-	public Integer numberOfEprs()
-	{
+	public int numberOfEprs() {
 		return eprs.size();
 	}
-	
 }

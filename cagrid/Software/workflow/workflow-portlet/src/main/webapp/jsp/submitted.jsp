@@ -13,11 +13,8 @@
 				<font color="blue" size="2">${cmd.result}</font><BR>
 				<hr/>
 				</span>
-				
-			<form action="<portlet:actionURL><portlet:param name="action" value="viewInstances"/></portlet:actionURL>" method="post">
-				<input type="hidden" name="formState" value="3"	/>	
-				<input type="submit" value="Views All Submitted Workflows"/>
-			</form>
+			
+			<a href="<portlet:renderURL><portlet:param name="action" value="viewInstances"/></portlet:renderURL>">View Submitted Workflows</a>
 			
          </c:if>
 

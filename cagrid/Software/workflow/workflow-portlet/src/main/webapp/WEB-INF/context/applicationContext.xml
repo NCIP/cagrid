@@ -12,10 +12,11 @@
         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
    
-   	<bean class="org.springframework.web.servlet.view.XmlViewResolver">
-        <property name="order" value="0"/>
-        <property name="location" value="/WEB-INF/context/views.xml"/>
-    </bean>
+<!--   	<bean class="org.springframework.web.servlet.view.XmlViewResolver">-->
+<!--        <property name="order" value="0"/>-->
+<!--        <property name="location" value="/WEB-INF/context/views.xml"/>-->
+<!--    </bean>-->
+<!--    <bean id="ajaxResponseController" class="org.jasig.web.servlet.mvc.AjaxResponseController"/>-->
 
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="order" value="10"/>
@@ -33,19 +34,46 @@
     	<aop:scoped-proxy/>
     </bean>
     
-    <bean id="ajaxResponseController" class="org.jasig.web.servlet.mvc.AjaxResponseController">
-    </bean>
-        
-	<bean id="tavernaWorkflowController" class="gov.nih.nci.cagrid.portal.portlet.workflow.mvc.TavernaPortletController">
+<!--	<bean id="tavernaWorkflowController" class="gov.nih.nci.cagrid.portal.portlet.workflow.mvc.TavernaPortletController">-->
+<!--        <property name="commandClass" value="gov.nih.nci.cagrid.portal.portlet.workflow.domain.WorkflowBean"/>-->
+<!--        <property name="commandName" value="cmd"/>-->
+<!--        <property name="formView" value="view"/>-->
+<!--        <property name="successView" value="submitted"/>-->
+<!--        <property name="sessionEprs" ref="sessionEprs" />-->
+<!--        -->
+<!--        <property name="workflowService" ref="tavernaWorkflowService"/>-->
+<!--		<property name="registry" ref="myExperimentWorkflowRegistry"/>-->
+<!--    </bean>-->
+    
+    <bean id="newInstanceFormController" class="gov.nih.nci.cagrid.portal.portlet.workflow.mvc.NewInstanceFormController">
         <property name="commandClass" value="gov.nih.nci.cagrid.portal.portlet.workflow.domain.WorkflowBean"/>
         <property name="commandName" value="cmd"/>
-        <property name="formView" value="view"/>
+        <property name="formView" value="newInstance"/>
         <property name="successView" value="submitted"/>
+
         <property name="sessionEprs" ref="sessionEprs" />
-        
         <property name="workflowService" ref="tavernaWorkflowService"/>
 		<property name="registry" ref="myExperimentWorkflowRegistry"/>
     </bean>
+
+	<bean id="viewDefinitionsController" class="gov.nih.nci.cagrid.portal.portlet.workflow.mvc.ViewDefinitionsController">
+        <property name="sessionEprs" ref="sessionEprs" />
+        <property name="workflowService" ref="tavernaWorkflowService"/>
+		<property name="registry" ref="myExperimentWorkflowRegistry"/>
+    </bean>
+
+	<bean id="viewInstancesController" class="gov.nih.nci.cagrid.portal.portlet.workflow.mvc.ViewInstancesController">
+        <property name="sessionEprs" ref="sessionEprs" />
+        <property name="workflowService" ref="tavernaWorkflowService"/>
+		<property name="registry" ref="myExperimentWorkflowRegistry"/>
+    </bean>
+    
+    <bean id="viewOutputController" class="gov.nih.nci.cagrid.portal.portlet.workflow.mvc.ViewOutputController">
+        <property name="sessionEprs" ref="sessionEprs" />
+        <property name="workflowService" ref="tavernaWorkflowService"/>
+		<property name="registry" ref="myExperimentWorkflowRegistry"/>
+    </bean>
+
     
 	<bean id="tavernaWorkflowService" class="gov.nih.nci.cagrid.portal.portlet.workflow.service.impl.TavernaWorkflowService">
 		<property name="tavernaWorkflowServiceUrl" value="${tws.target.grid.url}" />
