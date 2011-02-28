@@ -9,37 +9,24 @@
     <%@ include file="/css/base.css" %>
 </style>
 
-<div id="<portlet:namespace/>ajax" class="content">
-	<button id="ajaxButton" onclick="jQuery('#<portlet:namespace/>ajaxTable').load('<portlet:renderURL windowState="exclusive"><portlet:param name="action" value="viewInstances"/></portlet:renderURL>');">AJAX Update</button>
-	<TABLE id="<portlet:namespace/>ajaxTable" BORDER="2">
-		<TR bgcolor="grey">
-			<TH> Job ID </TH><TH> Workflow ID </TH><TH> Status </TH><TH> Output </TH>
-		</TR>
-	<c:forEach var="entry" items="${cmd.eprsMap}">
-		<TR>
-		<TD>
-			${entry.key}
-		</TD>
-		<TD>
-			${entry.value.workflowDesc.workflowId }
-		</TD>
-		<TD>
-		<b><font size="2" > ${entry.value.status}</font></b>
-		</TD>
-		<TD>
-		<c:choose>
-			<c:when test="${entry.value.status == 'Done'}">
-					<a href="<portlet:renderURL windowState="normal"><portlet:param name="action" value="viewOutput"/><portlet:param name="uuid" value="${entry.key}"/></portlet:renderURL>">View Output</a>
-			</c:when>
-			<c:otherwise>
-					<button type="button" disabled="disabled">Output</button>
-			</c:otherwise>
-		</c:choose>
-		</TD>
+<div class="content">
+<script type="text/javascript">
+function ajaxUpdate() {
+	console.log("AJAX updating...");
+	jQuery('#<portlet:namespace/>ajaxDiv').load('<portlet:renderURL windowState="exclusive"><portlet:param name="action" value="viewInstancesNoAJAX"/></portlet:renderURL>', 
+		function() {
+			console.log('Load was performed.');
+			setTimeout('ajaxUpdate()',3000);
+		});
+}
 
-		</TR>
-	</c:forEach>
-	
-	</TABLE>
-	<a href="<portlet:renderURL portletMode="view" windowState="normal"/>">View Workflow Definitions</a>
+jQuery(function($) { 
+$(document).ready(function() {
+		console.log("Ready");
+		ajaxUpdate();
+	});
+});
+</script>
+	<div id="<portlet:namespace/>ajaxDiv" >
+	</div>
 </div>

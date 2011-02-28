@@ -11,12 +11,12 @@
 
 <div id="div" class="content">
 <script type="text/javascript">
-jQuery(function($){
+jQuery(function($) {
 	var <portlet:namespace/>form = $('#'+'<portlet:namespace />fm');
 	<portlet:namespace/>form.bind("submit",function(event){
 		   event.preventDefault();
 		   var inputs = $("input, textarea, select", <portlet:namespace/>form);
-		   var url = '<portlet:actionURL windowState="<%= LiferayWindowState.EXCLUSIVE.toString() %>"><portlet:param name="action" value="newInstance"/><portlet:param name="id" value="${cmd.theWorkflow.workflowId}"/></portlet:actionURL>' + "&" + inputs.serialize();
+		   var url = '<portlet:actionURL windowState="exclusive"><portlet:param name="action" value="newInstance"/><portlet:param name="id" value="${cmd.theWorkflow.workflowId}"/></portlet:actionURL>' + "&" + inputs.serialize();
 		   $('#<portlet:namespace/>results').load(url);
 	});
 });

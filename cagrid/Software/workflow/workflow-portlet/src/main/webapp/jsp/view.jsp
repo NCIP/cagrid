@@ -10,10 +10,18 @@
 
 <div class="content">
 <script type="text/javascript">
+function ajaxUpdate() {
+	console.log("AJAX Updating...")
+	jQuery('#<portlet:namespace/>ajaxDiv').load('<portlet:renderURL windowState="exclusive"><portlet:param name="action" value="viewInstancesNoAJAX"/></portlet:renderURL>', 
+		function() {
+			console.log("AJAX Updated.")
+		});	
+}
+
 jQuery(function($){
 	$(document).ready(function() {
-		$('#<portlet:namespace/>ajaxDiv').load('<portlet:renderURL windowState="exclusive"><portlet:param name="action" value="viewInstances"/></portlet:renderURL>');   
-		 });
+		ajaxUpdate();   
+	});
 });
 </script>
 	<table border=0>

@@ -26,7 +26,7 @@ public class ViewInstancesController extends AbstractController {
     	WorkflowBean cmd = new WorkflowBean();
     	workflowService.updateSession(getSessionEprs());
 		cmd.setEprsMap(eprs.getEprs());
-    	return new ModelAndView("viewInstances", "cmd", cmd);
+    	return new ModelAndView(action, "cmd", cmd);
 	}	
 
 	public SessionEprs getSessionEprs() {

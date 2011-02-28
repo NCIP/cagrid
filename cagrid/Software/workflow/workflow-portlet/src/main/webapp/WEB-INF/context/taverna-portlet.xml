@@ -29,6 +29,7 @@
 						<entry key="selectWorkflow" value-ref="newInstanceFormController"/>
 						<entry key="newInstance" value-ref="newInstanceFormController"/>
 						<entry key="viewInstances" value-ref="viewInstancesController"/>
+						<entry key="viewInstancesNoAJAX" value-ref="viewInstancesController"/>
 						<entry key="viewOutput" value-ref="viewOutputController"/>
 					</map>
 				</entry>
