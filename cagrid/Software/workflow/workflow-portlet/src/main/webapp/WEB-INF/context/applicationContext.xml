@@ -65,15 +65,11 @@
 	<bean id="viewInstancesController" class="gov.nih.nci.cagrid.portal.portlet.workflow.mvc.ViewInstancesController">
         <property name="sessionEprs" ref="sessionEprs" />
         <property name="workflowService" ref="tavernaWorkflowService"/>
-		<property name="registry" ref="myExperimentWorkflowRegistry"/>
     </bean>
     
     <bean id="viewOutputController" class="gov.nih.nci.cagrid.portal.portlet.workflow.mvc.ViewOutputController">
         <property name="sessionEprs" ref="sessionEprs" />
-        <property name="workflowService" ref="tavernaWorkflowService"/>
-		<property name="registry" ref="myExperimentWorkflowRegistry"/>
     </bean>
-
     
 	<bean id="tavernaWorkflowService" class="gov.nih.nci.cagrid.portal.portlet.workflow.service.impl.TavernaWorkflowService">
 		<property name="tavernaWorkflowServiceUrl" value="${tws.target.grid.url}" />

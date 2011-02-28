@@ -9,9 +9,9 @@
     <%@ include file="/css/base.css" %>
 </style>
 
-<div id="ajax" class="content">
-	<button id="ajaxButton" onclick="jQuery('#ajax').load('<portlet:renderURL><portlet:param name="action" value="viewInstances"/></portlet:renderURL>');">AJAX Update</button>
-	<TABLE BORDER="2">
+<div id="<portlet:namespace/>ajax" class="content">
+	<button id="ajaxButton" onclick="jQuery('#<portlet:namespace/>ajaxTable').load('<portlet:renderURL windowState="exclusive"><portlet:param name="action" value="viewInstances"/></portlet:renderURL>');">AJAX Update</button>
+	<TABLE id="<portlet:namespace/>ajaxTable" BORDER="2">
 		<TR bgcolor="grey">
 			<TH> Job ID </TH><TH> Workflow ID </TH><TH> Status </TH><TH> Output </TH>
 		</TR>
@@ -29,12 +29,7 @@
 		<TD>
 		<c:choose>
 			<c:when test="${entry.value.status == 'Done'}">
-					<a href="<portlet:renderURL><portlet:param name="action" value="viewOutput"/><portlet:param name="uuid" value="${entry.key}"/></portlet:renderURL>">View Output</a>
-<!--					<form action="<portlet:actionURL><portlet:param name="action" value="viewOutput"/><portlet:param name="uuid" value="${entry.key}"/></portlet:actionURL>" method="post">-->
-<!--						<input type="hidden" name="formState" value="4">-->
-<!--						<input type="hidden" name="selectedUUID" value="${entry.key}">-->
-<!--						<input type="submit" name="Output" value = "Output">-->
-<!--					</form>-->
+					<a href="<portlet:renderURL windowState="normal"><portlet:param name="action" value="viewOutput"/><portlet:param name="uuid" value="${entry.key}"/></portlet:renderURL>">View Output</a>
 			</c:when>
 			<c:otherwise>
 					<button type="button" disabled="disabled">Output</button>
@@ -46,5 +41,5 @@
 	</c:forEach>
 	
 	</TABLE>
-
+	<a href="<portlet:renderURL portletMode="view" windowState="normal"/>">View Workflow Definitions</a>
 </div>

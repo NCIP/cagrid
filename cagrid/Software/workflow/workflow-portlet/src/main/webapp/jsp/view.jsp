@@ -9,7 +9,13 @@
 </style>
 
 <div class="content">
-
+<script type="text/javascript">
+jQuery(function($){
+	$(document).ready(function() {
+		$('#<portlet:namespace/>ajaxDiv').load('<portlet:renderURL windowState="exclusive"><portlet:param name="action" value="viewInstances"/></portlet:renderURL>');   
+		 });
+});
+</script>
 	<table border=0>
 		<c:forEach var="workflow" items="${cmd.allWorkflows}">
 			<tr>
@@ -22,67 +28,22 @@
 				</td>
 			</tr>
 			<tr>
-				<td><b><font size="2"> Scufl Path: </font></b>${workflow.scuflLocation}
-				</td>
-			</tr>
-			<tr>
 				<td><b><font size="2"> Author: </font></b> ${workflow.author}
 			</tr>
+			<TR>
+				<TD><img src="<c:url value="${workflow.imageFile}"/>" width="100%" /></TD>
+			</TR>
 			<tr>
 				<td><br>
-				<a href="<portlet:renderURL><portlet:param name="action" value="newInstance"/><portlet:param name="id" value="${workflow.workflowId}"/></portlet:renderURL>">Select Workflow</a>
-<!--				<form id="fm" action="<portlet:actionURL><portlet:param name="action" value="selectWorkflow"/><portlet:param name="id" value="${workflow.workflowId}"/></portlet:actionURL>" method="post">-->
-<!--					<span style="color: red"><form:errors path="*" /></span> -->
-<!--					<input type="hidden" name="keyword" value="${workflow.name}">-->
-<!--					<input type="hidden" name="workflowId" value="${workflow.workflowId}"> -->
-<!--					<input type="hidden" name="formState" value="1"> -->
-<!--					<input type="submit" value="Select Workflow">-->
-<!--				</form>-->
+				<a href="<portlet:renderURL windowState="normal"><portlet:param name="action" value="newInstance"/><portlet:param name="id" value="${workflow.workflowId}"/></portlet:renderURL>">Select Workflow</a>
 				<br>
 				<hr>
 				</td>
 			</tr>
 		</c:forEach>
 	</table>
-	<c:choose>
-		<c:when test="${cmd.keyword =='0'}">
-		</c:when>
-		<c:otherwise>
-			<b><font size="3" color="red"> Workflows in Session
-			(Currently Running or Completed).. </font></b>
-			<br>
-			<br>
-	.<TABLE BORDER=2>
-				<TR bgcolor="#333366" height="200%">
-					<TH>Job ID</TH>
-					<TH>Workflow ID</TH>
-					<TH>Status</TH>
-					<TH>Output</TH>
-				</TR>
-				<c:forEach var="entry" items="${cmd.eprsMap}">
-					<TR>
-						<TD>${entry.key}</TD>
-						<TD>${entry.value.workflowDesc.workflowId }</TD>
-						<TD><b><font size="2"> ${entry.value.status}</font></b></TD>
-						<c:choose>
-							<c:when test="${entry.value.status == 'Done'}">
-								<TD>
-								<form action="<portlet:actionURL><portlet:param name="action" value="viewOutput"/></portlet:actionURL>" method="post">
-									<input type="hidden" name="formState" value="4">
-									<input type="hidden" name="selectedUUID" value="${entry.key}">
-									<input type="submit" name="Output" value="Output">
-								</form>
-								</TD>
-							</c:when>
-							<c:otherwise>
-								<TD>
-								<button type="button" disabled="disabled">Output</button>
-								</TD>
-							</c:otherwise>
-						</c:choose>
-					</TR>
-				</c:forEach>
-			</TABLE>
-		</c:otherwise>
-	</c:choose>
+	<div id="<portlet:namespace/>ajaxDiv">
+	
+	</div>
+	
 </div>
