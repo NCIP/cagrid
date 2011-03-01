@@ -165,6 +165,7 @@ Southern California. All Rights Reserved.
                 <include name="*.zip"/>
                 <exclude name="servlet.jar"/>
                 <exclude name="xml-apis.jar"/>
+		<exclude name="bcprov-jdk15-145.jar" />
                 <exclude name="cog-tomcat.jar"/>
                 <exclude name="cog-jglobus.jar"/>
                 <exclude name="cog-jglobus-compat-0.0.1-SNAPSHOT.jar"/>
@@ -195,16 +196,18 @@ Southern California. All Rights Reserved.
 
         <copy toDir="${tomcat.dir}/common/lib" >
             <fileset dir="${abs.deploy.dir}/lib" casesensitive="yes">
+	        <include name="bcprov-jdk15-145.jar" />
                 <include name="cog-jglobus-compat-0.0.1-SNAPSHOT.jar"/>
                 <include name="commons-el.jar"/>
+<!--
                 <include name="cryptix32.jar"/>
                 <include name="cryptix-asn1.jar"/>
                 <include name="cryptix.jar"/>
+-->
                 <include name="gss-2.0-SNAPSHOT.jar"/>
                 <include name="jasper-compiler.jar"/>
                 <include name="jasper-compiler-jdt.jar"/>
                 <include name="jasper-runtime.jar"/>
-                <include name="jce-jdk13-145.jar"/>
                 <include name="jgss.jar"/>
                 <include name="jsp-api.jar"/>
                 <include name="jsse-2.0-SNAPSHOT.jar"/>
@@ -213,7 +216,9 @@ Southern California. All Rights Reserved.
                 <include name="naming-factory.jar"/>
                 <include name="naming-resources.jar"/>
                 <include name="org.springframework.core-3.0.1.RELEASE-A.jar"/>
+<!--
                 <include name="puretls.jar"/>
+-->
                 <include name="servlet-api.jar"/>
                 <include name="ssl-proxies-2.0-SNAPSHOT.jar"/>
                 <include name="xml-apis.jar"/>
@@ -239,6 +244,7 @@ Southern California. All Rights Reserved.
         <delete dir="${tomcat.dir}/webapps/${webapp.name}"/>
         <delete>
             <fileset dir="${tomcat.dir}/common/lib" casesensitive="yes">
+	        <include name="bcprov-jdk15-145.jar" />
                 <include name="cog-jglobus.jar"/>
                 <include name="xml-apis.jar"/>
                 <include name="cryptix.jar"/>
