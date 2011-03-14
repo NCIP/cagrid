@@ -1,10 +1,4 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="portlet" uri="http://java.sun.com/portlet" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-
-<style type="text/css">
-    <%@ include file="/css/base.css" %>
-</style>
+<%@ include file="include.jsp" %>
 
 <div class="content">
      <div class="result">
