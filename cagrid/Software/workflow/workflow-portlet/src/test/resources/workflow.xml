@@ -1,0 +1,1202 @@
+<?xml version="1.0" ?>
+<workflow uri="http://www.myexperiment.org/workflow.xml?id=746" resource="http://www.myexperiment.org/workflows/746" version="7">
+  <id>746</id>
+  <title> Lymphoma type prediction based on microarray data </title>
+  <description>Scientific value Using gene-expression patterns associated with DLBCL and FL to predict the lymphoma type of an unknown sample. Using SVM (Support Vector Machine) to classify data, and predicting the tumor types of unknown examples. Steps Querying training data from experiments stored in caArray. Preprocessing, or normalize the microarray data. Adding training and testing data into SVM service to get classification result.</description>
+  <type uri="http://www.myexperiment.org/type.xml?id=2">Taverna 2</type>
+  <uploader resource="http://www.myexperiment.org/users/1019" uri="http://www.myexperiment.org/user.xml?id=1019">Wei Tan</uploader>
+  <created-at>Tue May 11 19:04:30 +0100 2010</created-at>
+  <updated-at>Tue May 11 19:04:32 +0100 2010</updated-at>
+  <preview>http://www.myexperiment.org/workflow/image/746/_lymphoma_type_prediction_based_on_microarray_data_.png</preview>
+  <thumbnail>http://www.myexperiment.org/workflow/image/746/thumb/_lymphoma_type_prediction_based_on_microarray_data_.png</thumbnail>
+  <thumbnail-big>http://www.myexperiment.org/workflow/image/746/medium/_lymphoma_type_prediction_based_on_microarray_data_.png</thumbnail-big>
+  <svg>http://www.myexperiment.org/workflow/svg/746/_lymphoma_type_prediction_based_on_microarray_data_.svg.xml</svg>
+  <license-type uri="http://www.myexperiment.org/license.xml?id=2" resource="http://www.myexperiment.org/licenses/2">by-sa</license-type>
+  <content-uri>http://www.myexperiment.org/workflows/746/download/_lymphoma_type_prediction_based_on_microarray_data__547084.t2flow</content-uri>
+  <content-type>application/vnd.taverna.t2flow+xml</content-type>
+
+  <components>
+    <dataflows>
+      <dataflow id="3bd356a4-fc82-4ec8-8fcb-5960f40b2e8f" role="top">
+        <sources>
+          <source>
+            <name>EXPID</name>
+            <descriptions>
+              <description>The experiment ID through which to query microArray data from caArray grid service.</description></descriptions>
+            <examples>
+              <example>95</example></examples></source></sources>
+        <sinks>
+          <sink>
+            <name>Result_CSV</name>
+            <descriptions></descriptions>
+            <examples></examples></sink></sinks>
+        <processors>
+          <processor>
+            <name>Extract_Microarray</name>
+            <type>workflow</type>
+            <dataflow-id>3f178e8e-0beb-43c2-b7f5-c82cf65763f0</dataflow-id></processor>
+          <processor>
+            <name>Preprocess_Microarray</name>
+            <type>workflow</type>
+            <dataflow-id>f1213efc-01f1-4707-bd4f-03edce13ed47</dataflow-id></processor>
+          <processor>
+            <name>Predict_Lymphoma_Type</name>
+            <type>workflow</type>
+            <dataflow-id>079f19aa-786b-4059-9665-f83fbadee52e</dataflow-id></processor></processors>
+        <datalinks>
+          <datalink>
+            <sink>
+              <node>Extract_Microarray</node>
+              <port>EXP_ID</port></sink>
+            <source>
+              <node>EXPID</node></source></datalink>
+          <datalink>
+            <sink>
+              <node>Preprocess_Microarray</node>
+              <port>testData</port></sink>
+            <source>
+              <node>Extract_Microarray</node>
+              <port>testData</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>Preprocess_Microarray</node>
+              <port>trainingData</port></sink>
+            <source>
+              <node>Extract_Microarray</node>
+              <port>trainingData</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>Predict_Lymphoma_Type</node>
+              <port>trainingData</port></sink>
+            <source>
+              <node>Preprocess_Microarray</node>
+              <port>trainingData</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>Predict_Lymphoma_Type</node>
+              <port>testData</port></sink>
+            <source>
+              <node>Preprocess_Microarray</node>
+              <port>testData</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>Predict_Lymphoma_Type</node>
+              <port>trainingClass</port></sink>
+            <source>
+              <node>Extract_Microarray</node>
+              <port>trainingClass</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>Predict_Lymphoma_Type</node>
+              <port>testClass</port></sink>
+            <source>
+              <node>Extract_Microarray</node>
+              <port>testClass</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>Result_CSV</node></sink>
+            <source>
+              <node>Predict_Lymphoma_Type</node>
+              <port>Result_CSV</port></source></datalink></datalinks></dataflow>
+      <dataflow id="3f178e8e-0beb-43c2-b7f5-c82cf65763f0" role="nested">
+        <sources>
+          <source>
+            <name>EXP_ID</name>
+            <descriptions></descriptions>
+            <examples></examples></source></sources>
+        <sinks>
+          <sink>
+            <name>testClass</name>
+            <descriptions></descriptions>
+            <examples></examples></sink>
+          <sink>
+            <name>trainingClass</name>
+            <descriptions></descriptions>
+            <examples></examples></sink>
+          <sink>
+            <name>trainingData</name>
+            <descriptions></descriptions>
+            <examples></examples></sink>
+          <sink>
+            <name>testData</name>
+            <descriptions></descriptions>
+            <examples></examples></sink></sinks>
+        <processors>
+          <processor>
+            <name>searchForHybridizations</name>
+            <type>wsdl</type>
+            <wsdl>http://array.nci.nih.gov/wsrf/services/cagrid/CaArraySvc_v1_0?wsdl</wsdl>
+            <wsdl-operation>searchForHybridizations</wsdl-operation></processor>
+          <processor>
+            <name>Beanshell</name>
+            <type>beanshell</type>
+            <script>searchHyb = "&lt;SearchForHybridizationsRequest xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://grid.v1_0.external.services.caarray.nci.nih.gov/CaArraySvc_v1_0\"&gt;&lt;criteria&gt;&lt;ns1:HybridizationSearchCriteria xmlns:ns1=\"gme://External.caArray.caBIG/1.0/gov.nih.nci.caarray.external.query\"&gt;&lt;ns1:experiment id=\"URN:LSID:caarray.nci.nih.gov:gov.nih.nci.caarray.external.v1_0.experiment.Experiment:"+expid+"\"/&gt;&lt;ns1:names/&gt;&lt;ns1:biomaterials/&gt;&lt;/ns1:HybridizationSearchCriteria&gt;&lt;/criteria&gt;&lt;limitOffset&gt;&lt;ns2:LimitOffset xsi:nil=\"true\" xmlns:ns2=\"gme://External.caArray.caBIG/1.0/gov.nih.nci.caarray.external.query\"/&gt;&lt;/limitOffset&gt;&lt;/SearchForHybridizationsRequest&gt;";</script></processor>
+          <processor>
+            <name>Beanshell2</name>
+            <type>beanshell</type>
+            <script>import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+try{
+DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+		docBuilderFactory.setNamespaceAware(true);
+        DocumentBuilder docBuilder;
+docBuilder = docBuilderFactory.newDocumentBuilder();
+
+   Document doc2 = docBuilder.parse( new InputSource(new StringReader(i)));
+				Element el = doc2.getDocumentElement();
+			   
+			XPath xpath = XPathFactory.newInstance().newXPath();
+			
+			String findHybridizationExpression = 
+			"//*[local-name()='AbstractCaArrayEntity' and namespace-uri()='gme://External.caArray.caBIG/1.0/gov.nih.nci.caarray.external.sample']/@id";
+			//id="URN:LSID:caarray.nci.nih.gov:gov.nih.nci.caarray.external.v1_0.sample.Hybridization:8388"
+			NodeList  nodes = (NodeList) xpath.evaluate(findHybridizationExpression, el, XPathConstants.NODESET);
+			System.out.println(nodes.getLength());
+			
+			StringBuffer cql = new StringBuffer("&lt;dataSetRequest&gt;&lt;ns1:DataSetRequest xmlns:ns1=\"gme://External.caArray.caBIG/1.0/gov.nih.nci.caarray.external.query\"&gt;&lt;ns1:quantitationTypes&gt;&lt;ns2:CaArrayEntityReference id=\"URN:LSID:caarray.nci.nih.gov:gov.nih.nci.caarray.external.v1_0.data.QuantitationType:5\" xmlns:ns2=\"gme://External.caArray.caBIG/1.0/gov.nih.nci.caarray.external\"/&gt;&lt;/ns1:quantitationTypes&gt;&lt;ns1:hybridizations&gt;");
+			for (int i=0;i&lt;nodes.getLength();i++){
+				Node n = nodes.item(i);
+				//System.out.println(n.getTextContent());
+				
+				cql.append("&lt;ns4:CaArrayEntityReference id=\""+ n.getTextContent() + "\" xmlns:ns4=\"gme://External.caArray.caBIG/1.0/gov.nih.nci.caarray.external\"/&gt;");		
+			}
+			cql.append("&lt;/ns1:hybridizations&gt;&lt;ns1:dataFiles/&gt;&lt;/ns1:DataSetRequest&gt;&lt;/dataSetRequest&gt;");
+			o = cql.toString();
+		    	
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (XPathExpressionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}</script></processor>
+          <processor>
+            <name>getDataSet</name>
+            <type>wsdl</type>
+            <wsdl>http://array.nci.nih.gov/wsrf/services/cagrid/CaArraySvc_v1_0?wsdl</wsdl>
+            <wsdl-operation>getDataSet</wsdl-operation></processor>
+          <processor>
+            <name>getDataSet_input</name>
+            <type>xmlsplitter</type></processor>
+          <processor>
+            <name>Beanshell3</name>
+            <type>beanshell</type>
+            <script>import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.zip.GZIPInputStream;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import java.util.zip.GZIPInputStream;
+
+public  byte[] doubleArrayToBytes(double [][] doubles)
+{
+	if(null == doubles || 0 == doubles.length)
+		return null;
+	int numRows = doubles.length;
+	int numColumns = doubles[0].length;
+	ByteArrayOutputStream bos = new ByteArrayOutputStream();
+	DataOutputStream dos = new DataOutputStream(bos);
+	try
+	{
+		for(int i = 0; i &lt; numRows; i++)
+		{
+			for(int j = 0; j &lt; numColumns; j++)
+				dos.writeDouble(doubles[i][j]);
+
+		}
+
+	}
+	catch(IOException e)
+	{
+		e.printStackTrace(System.err);
+		throw new RuntimeException((new StringBuilder()).append("Error converting double array to byte array: ").append(e).toString());
+	}
+	return bos.toByteArray();
+}
+
+public float [] getFloatArray(String columnString){	
+	//trim the string
+	columnString = columnString.trim();
+	int columnSize = 0;
+	for(int i=0;i&lt;columnString.length();i++){
+		if(columnString.charAt(i)==' '){
+			columnSize++;				
+		}			
+	}	
+	columnSize++;
+	String[] array = columnString.split(" ");
+	float [] columnArray = new float[columnSize];
+	for(int i=0;i&lt;columnSize;i++){
+		columnArray[i] = Float.valueOf(array[i]);
+		
+	}
+	return columnArray;
+}
+	
+
+///////////////////////////////////////////////////////////////////////////////
+result = "";
+int sampleLength = 0;
+int sampleNo = 0;
+		
+try{
+
+	DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+	docBuilderFactory.setNamespaceAware(true);
+	DocumentBuilder docBuilder;
+	docBuilder = docBuilderFactory.newDocumentBuilder();
+	//parse data column
+	Document doc = docBuilder.parse( new InputSource(new StringReader(i)));	
+	//Document doc = docBuilder.parse( new File(dataFile));	
+	Element el = doc.getDocumentElement();   
+	XPath xpath = XPathFactory.newInstance().newXPath();
+	String findDataColumn = 
+		"//*[local-name()='values' and namespace-uri()='gme://External.caArray.caBIG/1.0/gov.nih.nci.caarray.external.v1_0.data']";
+
+	String findDesignElements = 
+	"//*[local-name()='DesignElement' and namespace-uri()='gme://External.caArray.caBIG/1.0/gov.nih.nci.caarray.external.data']/@name";
+	NodeList  designElementsNodes = (NodeList) xpath.evaluate(findDesignElements, el, XPathConstants.NODESET);
+	NodeList  dataNodes = (NodeList) xpath.evaluate(findDataColumn, el, XPathConstants.NODESET);
+	//get class information: DLBCL or FL
+	String findFactorValue = 
+		"//*[local-name()='term' and namespace-uri()='gme://External.caArray.caBIG/1.0/gov.nih.nci.caarray.external.value']/@value";
+	NodeList  termNodes = (NodeList) xpath.evaluate(findFactorValue, el, XPathConstants.NODESET);
+	sampleLength = designElementsNodes.getLength();
+	sampleNo = dataNodes.getLength();
+	System.out.println(sampleNo);
+	//77*7129
+	float [][] dataColumnValue = new float [dataNodes.getLength()][designElementsNodes.getLength()];
+	for(int i=0;i&lt;dataNodes.getLength();i++){
+		dataColumnValue[i] = getFloatArray(dataNodes.item(i).getTextContent());
+	}
+	
+		///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+		/////////////////////////////////prepare data for SVM
+		
+		//read a double (int?) [][] from .gct file
+		//concert [][] into byte []
+		//base64 encode
+		//
+		int length = dataColumnValue[0].length;
+		System.out.println(length);
+		double [][] trainingMicroArrayData  = new double[length][];
+		double [][] testMicroArrayData  = new double[length][];
+		int trainingLength;//39
+		int testLength;//38
+		if(dataColumnValue.length%2==1){
+		trainingLength=dataColumnValue.length/2+1;
+		}
+		else {
+		trainingLength=dataColumnValue.length/2;
+		}
+		testLength=dataColumnValue.length/2;
+		for(int i=0;i&lt;dataColumnValue[0].length;i++){
+		trainingMicroArrayData[i] = new double[trainingLength];
+		testMicroArrayData[i] =  new double[testLength];
+		}
+
+		for(int i=0;i&lt;dataColumnValue.length;i++){
+			if(i%2==0){//to training
+				for(int j=0;j&lt;dataColumnValue[i].length;j++){
+					trainingMicroArrayData[j][i/2] = (double)dataColumnValue[i][j];			
+				}
+			}
+			else{//to test
+				for(int j=0;j&lt;dataColumnValue[i].length;j++){
+					testMicroArrayData[j][i/2] = (double)dataColumnValue[i][j];	
+					}
+			}
+			
+		}
+		//termNodes.getLength() is odd
+		int [] trainingType = new int[trainingLength];
+		int [] testType =new int[testLength];
+		String type0 = termNodes.item(0).getTextContent();
+		for (int i=0;i&lt;termNodes.getLength();i++){
+			Node n = termNodes.item(i);
+			String ntype = n.getTextContent();
+			int itype = ntype.equals(type0)?0:1;
+			if(i%2==0){
+				trainingType[i/2]= itype;
+			}
+			else {
+				testType[i/2] = itype; 
+				
+			}
+		}
+
+		
+	    byte [] trainingMicroArrayByte = doubleArrayToBytes(trainingMicroArrayData);
+	    byte [] testMicroArrayByte = doubleArrayToBytes(testMicroArrayData);
+	    sun.misc.BASE64Encoder base64Encoder = new sun.misc.BASE64Encoder();
+	    String trainingMicroArrayBase64String = base64Encoder.encode(trainingMicroArrayByte);
+	    String testMicroArrayBase64String = base64Encoder.encode(testMicroArrayByte);
+	    //System.out.println(microArrayBase64String);
+	    
+	    //construct classmembership elements
+	    //training
+	    StringBuffer trainingClassMembershipXMLString = new StringBuffer ("&lt;ns1:ClassMembership xmlns:ns1=\"gme://GenePattern.caBIG/1/gridExtensions\"&gt;");
+	    trainingClassMembershipXMLString.append("&lt;classNames xmlns=\"\"&gt;DLBCL&lt;/classNames&gt;&lt;classNames xmlns=\"\"&gt;FL&lt;/classNames&gt;");
+	    trainingClassMembershipXMLString.append("&lt;numSamples xmlns=\"\"&gt;"+trainingType.length+"&lt;/numSamples&gt;");
+	    for(int i=0;i&lt;trainingType.length;i++){
+	    	trainingClassMembershipXMLString.append("&lt;sampleClasses xmlns=\"\"&gt;"+trainingType[i]+"&lt;/sampleClasses&gt;");
+	    }
+	    for(int i=0;i&lt;trainingType.length;i++){
+	    	trainingClassMembershipXMLString.append("&lt;sampleNames xmlns=\"\"&gt;trainingSample_"+i+"&lt;/sampleNames&gt;");
+	    }
+	    trainingClassMembershipXMLString.append("&lt;/ns1:ClassMembership&gt;");
+	    //System.out.println(trainingClassMembershipXMLString);
+	    //test
+	    StringBuffer testClassMembershipXMLString = new StringBuffer ("&lt;ns1:ClassMembership xmlns:ns1=\"gme://GenePattern.caBIG/1/gridExtensions\"&gt;");
+	    testClassMembershipXMLString.append("&lt;classNames xmlns=\"\"&gt;DLBCL&lt;/classNames&gt;&lt;classNames xmlns=\"\"&gt;FL&lt;/classNames&gt;");
+	    testClassMembershipXMLString.append("&lt;numSamples xmlns=\"\"&gt;"+testType.length+"&lt;/numSamples&gt;");
+	    for(int i=0;i&lt;testType.length;i++){
+	    	testClassMembershipXMLString.append("&lt;sampleClasses xmlns=\"\"&gt;"+testType[i]+"&lt;/sampleClasses&gt;");
+	    }
+	    for(int i=0;i&lt;testType.length;i++){
+	    	testClassMembershipXMLString.append("&lt;sampleNames xmlns=\"\"&gt;testSample_"+i+"&lt;/sampleNames&gt;");
+	    }
+	    testClassMembershipXMLString.append("&lt;/ns1:ClassMembership&gt;");
+	    //System.out.println(testClassMembershipXMLString);
+	    
+	     //construct Data elements
+	    //training data-----------------------------------------------------------------
+	    StringBuffer trainingDataXMLString = new StringBuffer ("&lt;ns3:Data xmlns:ns3=\"gme://RProteomics.caBIG/2.0/edu.duke.cabig.rproteomics.model.statml\"" +
+	    		" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"&gt;");
+	   //&lt;data&gt; contains four &lt;list&gt;:
+	    // 1 add the base64value
+	    trainingDataXMLString.append("&lt;ns3:list&gt;&lt;ns3:name&gt;data&lt;/ns3:name&gt;&lt;ns3:type xsi:nil=\"true\"/&gt;&lt;ns3:length xsi:nil=\"true\"/&gt;&lt;ns3:array&gt;&lt;ns3:dimensions&gt;"
+	    		+trainingMicroArrayData.length+","+trainingMicroArrayData[0].length+
+	    		"&lt;/ns3:dimensions&gt;&lt;ns3:name&gt;data&lt;/ns3:name&gt;&lt;ns3:type&gt;double&lt;/ns3:type&gt;&lt;ns3:base64Value&gt;"+
+	    		trainingMicroArrayBase64String+ "&lt;/ns3:base64Value&gt;&lt;/ns3:array&gt;&lt;/ns3:list&gt;");
+	    //2 add markerNames
+	    trainingDataXMLString.append("&lt;ns3:list&gt;&lt;ns3:name&gt;markerNames&lt;/ns3:name&gt;&lt;ns3:type xsi:nil=\"true\"/&gt;&lt;ns3:length xsi:nil=\"true\"/&gt;");
+	    for(int i=0;i&lt;trainingMicroArrayData.length;i++){
+	    	trainingDataXMLString.append("&lt;ns3:scalar&gt;&lt;ns3:name&gt;markerNames&lt;/ns3:name&gt;&lt;ns3:type&gt;string&lt;/ns3:type&gt;&lt;ns3:value&gt;Gene_"+i+"&lt;/ns3:value&gt;&lt;/ns3:scalar&gt;");
+	    	
+	    }
+	    trainingDataXMLString.append("&lt;/ns3:list&gt;");
+	      //3 add markerDescriptions
+	    trainingDataXMLString.append("&lt;ns3:list&gt;&lt;ns3:name&gt;markerDescriptions&lt;/ns3:name&gt;&lt;ns3:type xsi:nil=\"true\"/&gt;&lt;ns3:length xsi:nil=\"true\"/&gt;");
+	    for(int i=0;i&lt;trainingMicroArrayData.length;i++){
+	    	trainingDataXMLString.append("&lt;ns3:scalar&gt;&lt;ns3:name&gt;markerDescriptions&lt;/ns3:name&gt;&lt;ns3:type&gt;string&lt;/ns3:type&gt;&lt;ns3:value&gt;Gene_"+i+"&lt;/ns3:value&gt;&lt;/ns3:scalar&gt;");    	
+	    }
+	    trainingDataXMLString.append("&lt;/ns3:list&gt;");
+	    
+	    
+	    //4 add sampleNames
+	    trainingDataXMLString.append("&lt;ns3:list&gt;&lt;ns3:name&gt;sampleNames&lt;/ns3:name&gt;&lt;ns3:type xsi:nil=\"true\"/&gt;&lt;ns3:length xsi:nil=\"true\"/&gt;");
+	    for(int i=0;i&lt;trainingMicroArrayData[0].length;i++){
+	    	trainingDataXMLString.append("&lt;ns3:scalar&gt;&lt;ns3:name&gt;sampleNames&lt;/ns3:name&gt;&lt;ns3:type&gt;string&lt;/ns3:type&gt;&lt;ns3:value&gt;trainingSample_"+i+"&lt;/ns3:value&gt;&lt;/ns3:scalar&gt;");    	
+	    }
+	    trainingDataXMLString.append("&lt;/ns3:list&gt;");	    
+	    trainingDataXMLString.append("&lt;/ns3:Data&gt;");
+	   
+	    //test data-----------------------------------------------------------------	 
+	    StringBuffer testDataXMLString = new StringBuffer ("&lt;ns3:Data xmlns:ns3=\"gme://RProteomics.caBIG/2.0/edu.duke.cabig.rproteomics.model.statml\"" +
+		" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"&gt;");
+	    //&lt;data&gt; contains four &lt;list&gt;:
+	    // 1 add the base64value
+	    testDataXMLString.append("&lt;ns3:list&gt;&lt;ns3:name&gt;data&lt;/ns3:name&gt;&lt;ns3:type xsi:nil=\"true\"/&gt;&lt;ns3:length xsi:nil=\"true\"/&gt;&lt;ns3:array&gt;&lt;ns3:dimensions&gt;"
+		+testMicroArrayData.length+","+testMicroArrayData[0].length+
+		"&lt;/ns3:dimensions&gt;&lt;ns3:name&gt;data&lt;/ns3:name&gt;&lt;ns3:type&gt;double&lt;/ns3:type&gt;&lt;ns3:base64Value&gt;"+
+		testMicroArrayBase64String+ "&lt;/ns3:base64Value&gt;&lt;/ns3:array&gt;&lt;/ns3:list&gt;");
+	    
+	    //2 add markerNames
+	    testDataXMLString.append("&lt;ns3:list&gt;&lt;ns3:name&gt;markerNames&lt;/ns3:name&gt;&lt;ns3:type xsi:nil=\"true\"/&gt;&lt;ns3:length xsi:nil=\"true\"/&gt;");
+	    for(int i=0;i&lt;testMicroArrayData.length;i++){
+	    	testDataXMLString.append("&lt;ns3:scalar&gt;&lt;ns3:name&gt;markerNames&lt;/ns3:name&gt;&lt;ns3:type&gt;string&lt;/ns3:type&gt;&lt;ns3:value&gt;Gene_"+i+"&lt;/ns3:value&gt;&lt;/ns3:scalar&gt;");
+	    	}
+	    testDataXMLString.append("&lt;/ns3:list&gt;");
+	    //3 add markerDescriptions
+	    testDataXMLString.append("&lt;ns3:list&gt;&lt;ns3:name&gt;markerDescriptions&lt;/ns3:name&gt;&lt;ns3:type xsi:nil=\"true\"/&gt;&lt;ns3:length xsi:nil=\"true\"/&gt;");
+	    for(int i=0;i&lt;testMicroArrayData.length;i++){
+	    	testDataXMLString.append("&lt;ns3:scalar&gt;&lt;ns3:name&gt;markerDescriptions&lt;/ns3:name&gt;&lt;ns3:type&gt;string&lt;/ns3:type&gt;&lt;ns3:value&gt;Gene_");
+	    	testDataXMLString.append(i);
+	    	testDataXMLString.append("&lt;/ns3:value&gt;&lt;/ns3:scalar&gt;");    	
+	    }
+	    testDataXMLString.append("&lt;/ns3:list&gt;");
+	    //4 add sampleNames
+	    testDataXMLString.append("&lt;ns3:list&gt;&lt;ns3:name&gt;sampleNames&lt;/ns3:name&gt;&lt;ns3:type xsi:nil=\"true\"/&gt;&lt;ns3:length xsi:nil=\"true\"/&gt;");
+	    for(int i=0;i&lt;testMicroArrayData[0].length;i++){
+	    	testDataXMLString.append("&lt;ns3:scalar&gt;&lt;ns3:name&gt;sampleNames&lt;/ns3:name&gt;&lt;ns3:type&gt;string&lt;/ns3:type&gt;&lt;ns3:value&gt;testSample_"+i+"&lt;/ns3:value&gt;&lt;/ns3:scalar&gt;");    	
+	    }
+	    testDataXMLString.append("&lt;/ns3:list&gt;");	    
+	    testDataXMLString.append("&lt;/ns3:Data&gt;");
+	    //System.out.println(testDataXMLString);
+		trainingClass = trainingClassMembershipXMLString.toString();
+		testClass = testClassMembershipXMLString.toString();
+   		trainingDataString = trainingDataXMLString.toString();
+		testDataString = testDataXMLString.toString();
+		
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} catch (XPathExpressionException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} catch (SAXException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} catch (ParserConfigurationException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+				
+			///////////////////////////////////////////////////	</script></processor></processors>
+        <datalinks>
+          <datalink>
+            <sink>
+              <node>searchForHybridizations</node>
+              <port>parameters</port></sink>
+            <source>
+              <node>Beanshell</node>
+              <port>searchHyb</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>Beanshell</node>
+              <port>expid</port></sink>
+            <source>
+              <node>EXP_ID</node></source></datalink>
+          <datalink>
+            <sink>
+              <node>Beanshell2</node>
+              <port>i</port></sink>
+            <source>
+              <node>searchForHybridizations</node>
+              <port>parameters</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>getDataSet</node>
+              <port>parameters</port></sink>
+            <source>
+              <node>getDataSet_input</node>
+              <port>output</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>getDataSet_input</node>
+              <port>dataSetRequest</port></sink>
+            <source>
+              <node>Beanshell2</node>
+              <port>o</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>Beanshell3</node>
+              <port>i</port></sink>
+            <source>
+              <node>getDataSet</node>
+              <port>parameters</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>testClass</node></sink>
+            <source>
+              <node>Beanshell3</node>
+              <port>testClass</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>trainingClass</node></sink>
+            <source>
+              <node>Beanshell3</node>
+              <port>trainingClass</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>trainingData</node></sink>
+            <source>
+              <node>Beanshell3</node>
+              <port>trainingDataString</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>testData</node></sink>
+            <source>
+              <node>Beanshell3</node>
+              <port>testDataString</port></source></datalink></datalinks></dataflow>
+      <dataflow id="079f19aa-786b-4059-9665-f83fbadee52e" role="nested">
+        <sources>
+          <source>
+            <name>testData</name>
+            <descriptions></descriptions>
+            <examples></examples></source>
+          <source>
+            <name>testClass</name>
+            <descriptions></descriptions>
+            <examples></examples></source>
+          <source>
+            <name>trainingClass</name>
+            <descriptions></descriptions>
+            <examples></examples></source>
+          <source>
+            <name>trainingData</name>
+            <descriptions></descriptions>
+            <examples></examples></source></sources>
+        <sinks>
+          <sink>
+            <name>SVM_Result</name>
+            <descriptions></descriptions>
+            <examples></examples></sink>
+          <sink>
+            <name>KNN_Result</name>
+            <descriptions></descriptions>
+            <examples></examples></sink>
+          <sink>
+            <name>Result_CSV</name>
+            <descriptions></descriptions>
+            <examples></examples></sink></sinks>
+        <processors>
+          <processor>
+            <name>parametersXML10</name>
+            <type>xmlsplitter</type></processor>
+          <processor>
+            <name>trainingDataXML</name>
+            <type>xmlsplitter</type></processor>
+          <processor>
+            <name>testClassXML</name>
+            <type>xmlsplitter</type></processor>
+          <processor>
+            <name>PerformeSVM</name>
+            <type>wsdl</type>
+            <wsdl>http://node255.broadinstitute.org:6060/wsrf/services/cagrid/SVM?wsdl</wsdl>
+            <wsdl-operation>performAnalysis</wsdl-operation></processor>
+          <processor>
+            <name>testDataXML</name>
+            <type>xmlsplitter</type></processor>
+          <processor>
+            <name>trainingClassXML</name>
+            <type>xmlsplitter</type></processor>
+          <processor>
+            <name>PerformeKNN</name>
+            <type>wsdl</type>
+            <wsdl>http://node255.broadinstitute.org:6060/wsrf/services/cagrid/KNN?wsdl</wsdl>
+            <wsdl-operation>performAnalysis</wsdl-operation></processor>
+          <processor>
+            <name>performAnalysis2_input</name>
+            <type>xmlsplitter</type></processor>
+          <processor>
+            <name>String_constant</name>
+            <type>stringconstant</type>
+            <value>&lt;parameterList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://knn.genepattern.org/KNN"&gt;&lt;ns5:ParameterList xmlns:ns5="gme://parameter.asbp/1/org.cabig.icr.asbp.parameter"&gt;&lt;parameterCollection xsi:type="ns5:IntegerParameter" xmlns=""&gt;&lt;name&gt;num.features&lt;/name&gt;&lt;value&gt;10&lt;/value&gt;&lt;/parameterCollection&gt;&lt;parameterCollection xsi:type="ns5:StringParameter" xmlns=""&gt;&lt;name&gt;feature.selection.statistic&lt;/name&gt;&lt;value&gt;T-test&lt;/value&gt;&lt;/parameterCollection&gt;&lt;parameterCollection xsi:type="ns5:FloatParameter" xmlns=""&gt;&lt;name&gt;min.std&lt;/name&gt;&lt;value&gt;0.0&lt;/value&gt;&lt;/parameterCollection&gt;&lt;parameterCollection xsi:type="ns5:IntegerParameter" xmlns=""&gt;&lt;name&gt;num.neighbors&lt;/name&gt;&lt;value&gt;3&lt;/value&gt;&lt;/parameterCollection&gt;&lt;parameterCollection xsi:type="ns5:StringParameter" xmlns=""&gt;&lt;name&gt;weighting.type&lt;/name&gt;&lt;value&gt;distance&lt;/value&gt;&lt;/parameterCollection&gt;&lt;parameterCollection xsi:type="ns5:StringParameter" xmlns=""&gt;&lt;name&gt;distance.measure&lt;/name&gt;&lt;value&gt;Cosine Distance&lt;/value&gt;&lt;/parameterCollection&gt;&lt;/ns5:ParameterList&gt;&lt;/parameterList&gt;</value></processor>
+          <processor>
+            <name>Result_CSV</name>
+            <type>beanshell</type>
+            <script>import java.io.File;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+
+	// parse the output file to get a string
+		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+		docBuilderFactory.setNamespaceAware(true);
+        DocumentBuilder docBuilder;
+		try {
+			
+			
+			//----------------------------------------------------------
+			docBuilder = docBuilderFactory.newDocumentBuilder();
+			
+			  //----------------------------------------------------------
+			    
+			Document doc0 = docBuilder.parse( new InputSource(new StringReader(in0)));
+			Document doc1 = docBuilder.parse( new InputSource(new StringReader(in1)));
+			Element svmElement = doc0.getDocumentElement();   
+			Element knnElement = doc1.getDocumentElement();   
+			XPath xpath1 = XPathFactory.newInstance().newXPath();
+			String sampleName = 
+				"//*[local-name()='sampleName' and namespace-uri()='']/text()";
+			String svmClass = 
+				"//*[local-name()='predictedClass' and namespace-uri()='']/text()";
+			String trueClass = 
+				"//*[local-name()='trueClass' and namespace-uri()='']/text()";
+			String knnClass = 
+				"//*[local-name()='predictedClass' and namespace-uri()='']/text()";
+			NodeList  sampleNameNodes = (NodeList) xpath1.evaluate(sampleName, svmElement, XPathConstants.NODESET);
+			NodeList  svmClassNodes = (NodeList) xpath1.evaluate(svmClass, svmElement, XPathConstants.NODESET);
+			NodeList  trueClassNodes = (NodeList) xpath1.evaluate(trueClass, svmElement, XPathConstants.NODESET);
+			NodeList  knnClassNodes = (NodeList) xpath1.evaluate(knnClass, knnElement, XPathConstants.NODESET);
+			StringBuffer scvSB = new StringBuffer();
+			String   newline   =   System.getProperty("line.separator");     
+			scvSB.append(newline+ "SampleName\tTrueClass\tSVMPrediction\tKNNPrediction" + newline);
+			
+			for (int i=0;i&lt;sampleNameNodes.getLength();i++){	
+				scvSB.append(sampleNameNodes.item(i).getTextContent()+"\t"+trueClassNodes.item(i).getTextContent()+"\t"+svmClassNodes.item(i).getTextContent()+"\t"+knnClassNodes.item(i).getTextContent()+ newline);
+			}	
+		out0 = scvSB.toString();	
+		System.out.println(out0);
+		}
+		 catch(Exception ex)
+		    {
+		       ex.printStackTrace();
+		       
+		    }</script></processor></processors>
+        <datalinks>
+          <datalink>
+            <sink>
+              <node>parametersXML10</node>
+              <port>trainingData</port></sink>
+            <source>
+              <node>trainingDataXML</node>
+              <port>output</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>parametersXML10</node>
+              <port>testData</port></sink>
+            <source>
+              <node>testDataXML</node>
+              <port>output</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>parametersXML10</node>
+              <port>trainingClass</port></sink>
+            <source>
+              <node>trainingClassXML</node>
+              <port>output</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>parametersXML10</node>
+              <port>testClass</port></sink>
+            <source>
+              <node>testClassXML</node>
+              <port>output</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>trainingDataXML</node>
+              <port>Data</port></sink>
+            <source>
+              <node>trainingData</node></source></datalink>
+          <datalink>
+            <sink>
+              <node>testClassXML</node>
+              <port>ClassMembership</port></sink>
+            <source>
+              <node>testClass</node></source></datalink>
+          <datalink>
+            <sink>
+              <node>PerformeSVM</node>
+              <port>parameters</port></sink>
+            <source>
+              <node>parametersXML10</node>
+              <port>output</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>testDataXML</node>
+              <port>Data</port></sink>
+            <source>
+              <node>testData</node></source></datalink>
+          <datalink>
+            <sink>
+              <node>trainingClassXML</node>
+              <port>ClassMembership</port></sink>
+            <source>
+              <node>trainingClass</node></source></datalink>
+          <datalink>
+            <sink>
+              <node>PerformeKNN</node>
+              <port>parameters</port></sink>
+            <source>
+              <node>performAnalysis2_input</node>
+              <port>output</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>performAnalysis2_input</node>
+              <port>testClass</port></sink>
+            <source>
+              <node>testClassXML</node>
+              <port>output</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>performAnalysis2_input</node>
+              <port>trainingClass</port></sink>
+            <source>
+              <node>trainingClassXML</node>
+              <port>output</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>performAnalysis2_input</node>
+              <port>parameterList</port></sink>
+            <source>
+              <node>String_constant</node>
+              <port>value</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>performAnalysis2_input</node>
+              <port>trainingData</port></sink>
+            <source>
+              <node>trainingDataXML</node>
+              <port>output</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>performAnalysis2_input</node>
+              <port>testData</port></sink>
+            <source>
+              <node>testDataXML</node>
+              <port>output</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>Result_CSV</node>
+              <port>in1</port></sink>
+            <source>
+              <node>PerformeKNN</node>
+              <port>parameters</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>Result_CSV</node>
+              <port>in0</port></sink>
+            <source>
+              <node>PerformeSVM</node>
+              <port>parameters</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>SVM_Result</node></sink>
+            <source>
+              <node>PerformeSVM</node>
+              <port>parameters</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>KNN_Result</node></sink>
+            <source>
+              <node>PerformeKNN</node>
+              <port>parameters</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>Result_CSV</node></sink>
+            <source>
+              <node>Result_CSV</node>
+              <port>out0</port></source></datalink></datalinks></dataflow>
+      <dataflow id="f1213efc-01f1-4707-bd4f-03edce13ed47" role="nested">
+        <sources>
+          <source>
+            <name>trainingData</name>
+            <descriptions></descriptions>
+            <examples></examples></source>
+          <source>
+            <name>testData</name>
+            <descriptions></descriptions>
+            <examples></examples></source></sources>
+        <sinks>
+          <sink>
+            <name>trainingData</name>
+            <descriptions></descriptions>
+            <examples></examples></sink>
+          <sink>
+            <name>testData</name>
+            <descriptions></descriptions>
+            <examples></examples></sink></sinks>
+        <processors>
+          <processor>
+            <name>dataXML</name>
+            <type>xmlsplitter</type></processor>
+          <processor>
+            <name>PreprocessDatasetParameterSetXML1</name>
+            <type>xmlsplitter</type></processor>
+          <processor>
+            <name>dataXML1</name>
+            <type>xmlsplitter</type></processor>
+          <processor>
+            <name>preprocessDatasetParameterSetXML2</name>
+            <type>xmlsplitter</type></processor>
+          <processor>
+            <name>PreprocessDatasetParameterSetXML3</name>
+            <type>xmlsplitter</type></processor>
+          <processor>
+            <name>parametersXML13</name>
+            <type>xmlsplitter</type></processor>
+          <processor>
+            <name>preProcessTrainingData</name>
+            <type>wsdl</type>
+            <wsdl>http://node255.broadinstitute.org:6060/wsrf/services/cagrid/PreprocessDatasetSTATMLService?wsdl</wsdl>
+            <wsdl-operation>performAnalysis</wsdl-operation></processor>
+          <processor>
+            <name>preProcessTestData</name>
+            <type>wsdl</type>
+            <wsdl>http://node255.broadinstitute.org:6060/wsrf/services/cagrid/PreprocessDatasetSTATMLService?wsdl</wsdl>
+            <wsdl-operation>performAnalysis</wsdl-operation></processor>
+          <processor>
+            <name>parametersXML12</name>
+            <type>xmlsplitter</type></processor>
+          <processor>
+            <name>parametersXML11</name>
+            <type>xmlsplitter</type></processor>
+          <processor>
+            <name>preprocessDatasetParameterSetXML</name>
+            <type>xmlsplitter</type></processor>
+          <processor>
+            <name>parametersXML14</name>
+            <type>xmlsplitter</type></processor>
+          <processor>
+            <name>ceiling</name>
+            <type>stringconstant</type>
+            <value>2.1</value></processor>
+          <processor>
+            <name>ct</name>
+            <type>stringconstant</type>
+            <value>0.0</value></processor>
+          <processor>
+            <name>filterFlag</name>
+            <type>stringconstant</type>
+            <value>false</value></processor>
+          <processor>
+            <name>lbt</name>
+            <type>stringconstant</type>
+            <value>false</value></processor>
+          <processor>
+            <name>msb</name>
+            <type>stringconstant</type>
+            <value>1</value></processor>
+          <processor>
+            <name>minChange</name>
+            <type>stringconstant</type>
+            <value>3.0</value></processor>
+          <processor>
+            <name>minD</name>
+            <type>stringconstant</type>
+            <value>100.0</value></processor>
+          <processor>
+            <name>n</name>
+            <type>stringconstant</type>
+            <value>1</value></processor>
+          <processor>
+            <name>numE</name>
+            <type>stringconstant</type>
+            <value>0</value></processor>
+          <processor>
+            <name>pFlag</name>
+            <type>stringconstant</type>
+            <value>no-disc-or-norm</value></processor>
+          <processor>
+            <name>pt</name>
+            <type>stringconstant</type>
+            <value>1.0</value></processor>
+          <processor>
+            <name>t</name>
+            <type>stringconstant</type>
+            <value>20.0</value></processor></processors>
+        <datalinks>
+          <datalink>
+            <sink>
+              <node>dataXML</node>
+              <port>Data</port></sink>
+            <source>
+              <node>testData</node></source></datalink>
+          <datalink>
+            <sink>
+              <node>PreprocessDatasetParameterSetXML1</node>
+              <port>threshold</port></sink>
+            <source>
+              <node>t</node>
+              <port>value</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>PreprocessDatasetParameterSetXML1</node>
+              <port>numExclude</port></sink>
+            <source>
+              <node>numE</node>
+              <port>value</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>PreprocessDatasetParameterSetXML1</node>
+              <port>preprocessingFlag</port></sink>
+            <source>
+              <node>pFlag</node>
+              <port>value</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>PreprocessDatasetParameterSetXML1</node>
+              <port>logBaseTwo</port></sink>
+            <source>
+              <node>lbt</node>
+              <port>value</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>PreprocessDatasetParameterSetXML1</node>
+              <port>filterFlag</port></sink>
+            <source>
+              <node>filterFlag</node>
+              <port>value</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>PreprocessDatasetParameterSetXML1</node>
+              <port>minDelta</port></sink>
+            <source>
+              <node>minD</node>
+              <port>value</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>PreprocessDatasetParameterSetXML1</node>
+              <port>ceiling</port></sink>
+            <source>
+              <node>ceiling</node>
+              <port>value</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>PreprocessDatasetParameterSetXML1</node>
+              <port>minChange</port></sink>
+            <source>
+              <node>minChange</node>
+              <port>value</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>PreprocessDatasetParameterSetXML1</node>
+              <port>columnThreshold</port></sink>
+            <source>
+              <node>ct</node>
+              <port>value</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>PreprocessDatasetParameterSetXML1</node>
+              <port>maxSigmaBinning</port></sink>
+            <source>
+              <node>msb</node>
+              <port>value</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>PreprocessDatasetParameterSetXML1</node>
+              <port>probabilityThreshold</port></sink>
+            <source>
+              <node>pt</node>
+              <port>value</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>PreprocessDatasetParameterSetXML1</node>
+              <port>numberOfColumnsAboveThreshold</port></sink>
+            <source>
+              <node>n</node>
+              <port>value</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>dataXML1</node>
+              <port>Data</port></sink>
+            <source>
+              <node>trainingData</node></source></datalink>
+          <datalink>
+            <sink>
+              <node>preprocessDatasetParameterSetXML2</node>
+              <port>PreprocessDatasetParameterSet</port></sink>
+            <source>
+              <node>PreprocessDatasetParameterSetXML3</node>
+              <port>output</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>PreprocessDatasetParameterSetXML3</node>
+              <port>preprocessingFlag</port></sink>
+            <source>
+              <node>pFlag</node>
+              <port>value</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>PreprocessDatasetParameterSetXML3</node>
+              <port>probabilityThreshold</port></sink>
+            <source>
+              <node>pt</node>
+              <port>value</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>PreprocessDatasetParameterSetXML3</node>
+              <port>logBaseTwo</port></sink>
+            <source>
+              <node>lbt</node>
+              <port>value</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>PreprocessDatasetParameterSetXML3</node>
+              <port>numberOfColumnsAboveThreshold</port></sink>
+            <source>
+              <node>n</node>
+              <port>value</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>PreprocessDatasetParameterSetXML3</node>
+              <port>threshold</port></sink>
+            <source>
+              <node>t</node>
+              <port>value</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>PreprocessDatasetParameterSetXML3</node>
+              <port>numExclude</port></sink>
+            <source>
+              <node>numE</node>
+              <port>value</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>PreprocessDatasetParameterSetXML3</node>
+              <port>maxSigmaBinning</port></sink>
+            <source>
+              <node>msb</node>
+              <port>value</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>PreprocessDatasetParameterSetXML3</node>
+              <port>minChange</port></sink>
+            <source>
+              <node>minChange</node>
+              <port>value</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>PreprocessDatasetParameterSetXML3</node>
+              <port>minDelta</port></sink>
+            <source>
+              <node>minD</node>
+              <port>value</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>PreprocessDatasetParameterSetXML3</node>
+              <port>ceiling</port></sink>
+            <source>
+              <node>ceiling</node>
+              <port>value</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>PreprocessDatasetParameterSetXML3</node>
+              <port>filterFlag</port></sink>
+            <source>
+              <node>filterFlag</node>
+              <port>value</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>PreprocessDatasetParameterSetXML3</node>
+              <port>columnThreshold</port></sink>
+            <source>
+              <node>ct</node>
+              <port>value</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>parametersXML13</node>
+              <port>data</port></sink>
+            <source>
+              <node>dataXML1</node>
+              <port>output</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>parametersXML13</node>
+              <port>preprocessDatasetParameterSet</port></sink>
+            <source>
+              <node>preprocessDatasetParameterSetXML2</node>
+              <port>output</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>preProcessTrainingData</node>
+              <port>parameters</port></sink>
+            <source>
+              <node>parametersXML13</node>
+              <port>output</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>preProcessTestData</node>
+              <port>parameters</port></sink>
+            <source>
+              <node>parametersXML11</node>
+              <port>output</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>parametersXML12</node>
+              <port>input</port></sink>
+            <source>
+              <node>preProcessTestData</node>
+              <port>parameters</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>parametersXML11</node>
+              <port>data</port></sink>
+            <source>
+              <node>dataXML</node>
+              <port>output</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>parametersXML11</node>
+              <port>preprocessDatasetParameterSet</port></sink>
+            <source>
+              <node>preprocessDatasetParameterSetXML</node>
+              <port>output</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>preprocessDatasetParameterSetXML</node>
+              <port>PreprocessDatasetParameterSet</port></sink>
+            <source>
+              <node>PreprocessDatasetParameterSetXML1</node>
+              <port>output</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>parametersXML14</node>
+              <port>input</port></sink>
+            <source>
+              <node>preProcessTrainingData</node>
+              <port>parameters</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>trainingData</node></sink>
+            <source>
+              <node>parametersXML14</node>
+              <port>Data</port></source></datalink>
+          <datalink>
+            <sink>
+              <node>testData</node></sink>
+            <source>
+              <node>parametersXML12</node>
+              <port>Data</port></source></datalink></datalinks></dataflow></dataflows></components>
+  <privileges>
+    <privilege type="view"></privilege>
+    <privilege type="download"></privilege></privileges></workflow>
