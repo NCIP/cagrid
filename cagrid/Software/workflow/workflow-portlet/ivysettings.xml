@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivysettings>
+	<settings defaultResolver="main" />
+
+	<caches>
+		<cache basedir="${user.home}/.ivy2/cache"  useOrigin="true"/>
+	</caches>
+	
+	<resolvers>
+		<chain name="main">
+		    <url name="com.springsource.repository.bundles.release">
+				<ivy pattern="http://repository.springsource.com/ivy/bundles/release/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" />
+				<artifact pattern="http://repository.springsource.com/ivy/bundles/release/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" />
+			</url>
+			<url name="com.springsource.repository.bundles.external">
+				<ivy pattern="http://repository.springsource.com/ivy/bundles/external/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" />
+				<artifact pattern="http://repository.springsource.com/ivy/bundles/external/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" /> 
+			</url>
+			<url name="remote-caGrid-ivy-resolver">
+				<ivy pattern="http://quality.cagrid.org/job/caGrid-1.4-rc8-ivy-repository/lastStableBuild/artifact/caGrid/ivy-repository/[organisation]/[module]/ivy-[revision].xml"/>
+				<artifact pattern="http://quality.cagrid.org/job/caGrid-1.4-rc8-ivy-repository/lastStableBuild/artifact/caGrid/ivy-repository/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"/>
+				<artifact pattern="http://quality.cagrid.org/job/caGrid-1.4-rc8-ivy-repository/lastStableBuild/artifact/caGrid/ivy-repository/[organisation]/[module]/[revision]/[artifact].[ext]"/>
+			</url>
+			<ibiblio name="ibiblio-ivy" m2compatible="true" />
+		</chain>
+	</resolvers>
+	
+	
+	
+
+</ivysettings>
