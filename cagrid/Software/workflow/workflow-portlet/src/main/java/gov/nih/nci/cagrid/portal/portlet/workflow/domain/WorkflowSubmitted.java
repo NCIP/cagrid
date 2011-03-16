@@ -16,6 +16,12 @@ public class WorkflowSubmitted {
 	private String status;
 	private String[] workflowOutput;
 
+	public WorkflowSubmitted(EndpointReferenceType epr, WorkflowDescription desc, String status)	{
+		this.epr = epr;
+		this.workflowDesc = desc;
+		this.status = status;
+	}
+	
 	public WorkflowSubmitted(EndpointReferenceType epr, WorkflowDescription desc, String status, String[] outputs)	{
 		this.epr = epr;
 		this.workflowDesc = desc;
