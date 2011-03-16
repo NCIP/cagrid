@@ -8,8 +8,9 @@
 
     <property name="portlet.build.dir" value="${basedir}/build"/>
     <property name="portlet.build.war.dir" value="${portlet.build.dir}/war"/>
-    <property name="portlet.classes.dir" value="${portlet.build.war.dir}/WEB-INF/classes"/>
+    <property name="portlet.classes.dir" value="${portlet.build.dir}/classes"/>
     <property name="portlet.src.java.dir" value="${basedir}/src/main/java"/>
+	<property name="portlet.test.src.java.dir" value="${basedir}/src/test/java"/>
     <property name="portlet.src.war.dir" value="${basedir}/src/main/webapp"/>
 
     <property name="portlet.context.name" value="workflow-portlet"/>
@@ -47,10 +48,20 @@
 					<fileset dir="${portlet.src.war.dir}/WEB-INF/lib" includes="*.jar"/>
 			</classpath>
 		</javac>
+    	<javac srcdir="${portlet.test.src.java.dir}" destdir="${portlet.classes.dir}">
+    	            <classpath>
+    		            	<fileset dir="${portlet.lib.dir}" includes="**/*.jar"/>
+    						<fileset dir="${portlet.src.war.dir}/WEB-INF/lib" includes="*.jar"/>
+    				</classpath>
+    			</javac>
+    	<copy todir="${portlet.classes.dir}" >
+			<fileset dir="${basedir}/src/main/resources" includes="**/*"/>
+		</copy>
 	</target>
 
     <target name="war" depends="compile"  description="Will create a deployable war for the Portlet">
         <mkdir dir="${portlet.build.war.dir}/WEB-INF/lib"/>
+    	 <copy todir="${portlet.build.war.dir}/WEB-INF/classes" overwrite="true"><fileset dir="${portlet.build.dir}/classes" includes="**/*"/></copy>
     	 <copy todir="${portlet.build.war.dir}/WEB-INF/lib" overwrite="true"><fileset dir="${portlet.lib.dir}/ivy/compile" includes="*.jar"/></copy>
         <copy todir="${portlet.build.war.dir}" overwrite="true"><fileset dir="${portlet.src.war.dir}" includes="**/*"/></copy>
 		<jar destfile="${portlet.build.dir}/${portlet.context.name}.war" basedir="${portlet.build.war.dir}"/>
@@ -62,6 +73,13 @@
 	
 	<target name="undeploy" description="unDeploy to portal server">
 		<delete  dir="${portlet.undeploy.dir}/${portlet.context.name}.war" verbose="true"/>
+	</target>
+	
+	<target name="install" description="Retrieve Dependencies, Build and Deploy to Portal Server">
+		<antcall target="clean"/>
+		<antcall target="ivy"/>
+		<antcall target="war"/>
+		<antcall target="deploy"/>
 	</target>
 	
 </project>

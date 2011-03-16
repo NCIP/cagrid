@@ -7,7 +7,7 @@
     </configurations>
     
     <dependencies>
-        <dependency org="caGrid" name="TavernaWorkflowService" rev="1.4" conf="compile->client"/>
+        <dependency org="caGrid" name="TavernaWorkflowService" rev="1.4" conf="compile->*"/>
         
 		<dependency org="org.springframework" name="org.springframework.core" rev="3.0.0.RELEASE"  conf="compile->compile"/>
 		<dependency org="org.springframework" name="org.springframework.asm" rev="3.0.0.RELEASE"   conf="compile->compile" />
@@ -20,28 +20,15 @@
 		<dependency org="org.springframework" name="org.springframework.web" rev="3.0.0.RELEASE"  conf="compile->compile"/>
 		<dependency org="org.springframework" name="org.springframework.web.servlet" rev="3.0.0.RELEASE"   conf="compile->compile"/>
 		<dependency org="org.springframework" name="org.springframework.web.portlet" rev="3.0.0.RELEASE"  conf="compile->compile" />
-		<!--
-		<dependency org="org.springframework" name="spring-core" rev="3.0.5.RELEASE"  conf="compile->default"/>
-		<dependency org="org.springframework" name="spring-asm" rev="3.0.5.RELEASE"   conf="compile->default" />
-		<dependency org="org.springframework" name="spring-aop" rev="3.0.5.RELEASE"  conf="compile->default" />
-		<dependency org="org.springframework" name="spring-aspects" rev="3.0.5.RELEASE"  conf="compile->default" />
-		<dependency org="org.springframework" name="spring-beans" rev="3.0.5.RELEASE" conf="compile->default" />
-		<dependency org="org.springframework" name="spring-context.support" rev="3.0.5.RELEASE" conf="compile->default" />
-		<dependency org="org.springframework" name="spring-context" rev="3.0.5.RELEASE"  conf="compile->default"/>
-		<dependency org="org.springframework" name="spring-expression" rev="3.0.5.RELEASE"  conf="compile->default"/>
-		<dependency org="org.springframework" name="spring-web" rev="3.0.5.RELEASE"  conf="compile->default"/>
-		<dependency org="org.springframework" name="spring-webmvc" rev="3.0.5.RELEASE"  conf="compile->default"/>
-		<dependency org="org.springframework" name="spring-webmvc-servlet" rev="3.0.5.RELEASE"   conf="compile->default"/>
-		<dependency org="org.springframework" name="spring-webmvc-portlet" rev="3.0.5.RELEASE"  conf="compile->default" />
-		-->
+	
 		<dependency org="javax.portlet" name="portlet-api" rev="2.0" conf="provided->default" />
 		<dependency org="commons-logging" name="commons-logging" rev="1.1.1" conf="provided->default"/>
 		<dependency org="commons-httpclient" name="commons-httpclient" rev="3.1" conf="provided->default"/>
 		<dependency org="commons-discovery" name="commons-discovery" rev="0.4" conf="provided->default"/>
 		<dependency org="log4j" name="log4j" rev="1.2.15"  conf="test->default" />
-		
-		<!--<dependency org="org.apache.axis" name="axis" rev="1.4"  conf="compile->default" />-->
-		<dependency org="net.sourceforge.addressing" name="addressing" rev="1.1.1" conf="compile->default"/>
+		<!---
+		<dependency org="org.apache.axis" name="axis" rev="1.4"  conf="compile->default" />
+		<dependency org="net.sourceforge.addressing" name="addressing" rev="1.1.1" conf="compile->default"/-->
 
 		<dependency org="junit" name="junit" rev="4.8.2" conf="provided->default" />
    </dependencies>
