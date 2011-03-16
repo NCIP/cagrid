@@ -15,15 +15,7 @@ public interface WorkflowRegistryService {
 	 * @return Workflow stubs
 	 * @throws WorkflowException
 	 */
-	public Map<String, WorkflowDescription> getWorkflows() throws WorkflowException ;
-	
-	/**
-	 * Get workflow definition stub
-	 * @param id workflow ID
-	 * @return <code>WorkflowDescription</code> Workflow definition stub
-	 * @throws WorkflowException
-	 */
-	public WorkflowDescription getWorkflowStub(String id) throws WorkflowException;
+	public Map<String, WorkflowDescription> getWorkflows() throws WorkflowException;
 	
 	/**
 	 * Get Full workflow definition
@@ -32,5 +24,4 @@ public interface WorkflowRegistryService {
 	 * @throws WorkflowException
 	 */
 	public WorkflowDescription getWorkflow(String id) throws WorkflowException;
-	
 }
