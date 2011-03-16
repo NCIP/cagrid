@@ -2,22 +2,18 @@ package gov.nih.nci.cagrid.portal.portlet.workflow.service.impl;
 
 import gov.nih.nci.cagrid.portal.portlet.workflow.WorkflowException;
 import gov.nih.nci.cagrid.portal.portlet.workflow.WorkflowRegistryService;
-import gov.nih.nci.cagrid.portal.portlet.workflow.domain.Components;
-import gov.nih.nci.cagrid.portal.portlet.workflow.domain.Source;
 import gov.nih.nci.cagrid.portal.portlet.workflow.domain.WorkflowDescription;
-import gov.nih.nci.cagrid.portal.portlet.workflow.domain.Workflows;
-import gov.nih.nci.cagrid.portal.portlet.workflow.domain.Workflows.WorkflowStub;
+import gov.nih.nci.cagrid.portal.portlet.workflow.service.impl.MyExperimentWorkflows.WorkflowStub;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.ws.http.HTTPException;
 
 import org.apache.commons.httpclient.Cookie;
 import org.apache.commons.httpclient.HttpClient;
@@ -27,30 +23,99 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+/**
+ * Workflow registry implementation using MyExperiment.org REST API.
+ * @author Marek Kedzierski
+ */
 public class MyExperimentWorkflowRegistry implements WorkflowRegistryService {
 	private static final Log log = LogFactory.getLog(MyExperimentWorkflowRegistry.class);
 	
 	private HttpClient http = new HttpClient();	
-	@SuppressWarnings("unused")
 	private Cookie sessionCookie;
 	
+	/** MyExperiment.org username */
 	private String username;
+	/** MyExperiment.org password */
 	private String password;
+	/** MyExperiment.org server. i.e. main or sandbox */
 	private String server;
-	
-	private Map<String, WorkflowDescription> cache = new HashMap<String, WorkflowDescription>();
+	/** MyExperiment.org workflow definition tag */
+	private String tag;
 	
 	public MyExperimentWorkflowRegistry() {
 		log.info("Initializing MyExperiment.org registry.");
 	}
-	
-	public MyExperimentWorkflowRegistry(String username, String password, String server) {
-		this.username = username;
-		this.password = password;
-		this.server = server;
-	}
 
-	public void getSessionCookie() {
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.cagrid.portal.portlet.workflow.WorkflowRegistryService#getWorkflows()
+	 */
+	public Map<String, WorkflowDescription> getWorkflows() throws WorkflowException {
+		return getWorkflows(this.getTag());
+	}
+	
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.cagrid.portal.portlets.workflow.WorkflowRegistryService#getWorkflow(java.lang.String)
+	 */
+	public WorkflowDescription getWorkflow(String id) throws WorkflowException {
+		log.debug("Fetching workflow #" + id);
+		GetMethod get = new GetMethod("http://"+this.getServer()+"/workflow.xml?id="+id+"&elements=id,title,description,content-uri,uploader,preview,thumbnail,thumbnail-big,svg,components");
+		try {
+			http.executeMethod(get);	
+			WorkflowDescription wd = unmarshalWorkflow(get.getResponseBodyAsStream());
+			if (wd.getComponents() == null && wd.getComponents().getDataflow() != null) {
+				log.debug("Getting workflow inputs.  Found " + wd.getComponents().getDataflow().size() + " dataflows");
+				for( WorkflowDescription.Dataflow df : wd.getComponents().getDataflow() ) {
+					if(df.getRole().equals("top") && df.getSource()!=null && df.getSource().size()>0) {
+						log.debug("Found root dataflow with " + df.getSource().size() + " sources");
+						wd.setInputs(df.getSource());
+						return wd;
+					}
+				}
+			}
+			return wd;
+		} catch (Exception e) {
+			throw new WorkflowException(e);
+		}
+		finally {
+			get.releaseConnection();
+		}
+	}
+	
+	/**
+	 * Retrieve workflows with a specific tag from MyExperiment.org
+	 * @param tag MyExperiment.org workflow tag
+	 * @return <code>List&lt;WorkflowDescription&gt; containing the workflow definitions
+	 * @throws <code>WorkflowException</code>
+	 */
+	private Map<String, WorkflowDescription> getWorkflows(String tag) throws WorkflowException {
+		GetMethod get = new GetMethod("http://"+this.getServer()+"/workflows.xml?tag="+tag);
+		try {
+			http.executeMethod(get);
+			List<MyExperimentWorkflows.WorkflowStub> workflows = unmarshalWorkflows(get.getResponseBodyAsStream());
+			log.debug("found " + workflows.size() + " workflow stubs for tag: " + tag);
+			Map<String, WorkflowDescription> list = new HashMap<String, WorkflowDescription>(workflows.size());
+			for(MyExperimentWorkflows.WorkflowStub stub : workflows) {
+				GetMethod getStub = new GetMethod(stub.getUri()+"&elements=id,title,description,content-uri,uploader,preview,thumbnail,thumbnail-big");
+				http.executeMethod(getStub);
+				WorkflowDescription wd = unmarshalWorkflow(getStub.getResponseBodyAsStream()); 
+				list.put(wd.getId(), wd);
+			}
+			log.debug("returning " + list.size() + " workflows");
+			return list;
+		} catch(HTTPException e) {
+			throw new WorkflowException(e);
+		} catch(IOException e) {
+			throw new WorkflowException(e);
+		} 
+			finally { get.releaseConnection(); }
+	}
+	
+	/**
+	 * @return
+	 * @throws HttpException
+	 * @throws IOException
+	 */
+	Cookie getSessionCookie() throws HttpException, IOException {
 		log.debug("Getting Session Cookie");
 		PostMethod authMethod = new PostMethod("http://"+this.server+"/session/create");
 		try {
@@ -63,118 +128,9 @@ public class MyExperimentWorkflowRegistry implements WorkflowRegistryService {
 			String cookieName = c[0];
 			String cookieValue = c[1];
 		    this.sessionCookie = new Cookie(this.getServer(), cookieName, cookieValue, "/", 99, true);
-		} catch (HttpException e) {
-			log.error("Http Exception", e);
-		} catch(IOException e) {
-			log.error("IOException", e);
+		    return this.sessionCookie;
 		} finally {
 			authMethod.releaseConnection();
-		}
-	}
-
-	/**
-	 * Download the workflow definition to local filesystem
-	 * @param wd Workflow Definition
-	 * @throws Exception 
-	 */
-	private void saveWorkflowDefinition(WorkflowDescription wd) throws Exception {
-		String defPath = System.getProperty("java.io.tmpdir")+"/"+wd.getWorkflowId()+".t2flow";
-		log.debug("Downloading workflow definition: " + defPath);
-		GetMethod getScufl = new GetMethod(wd.getFilePath());
-		http.executeMethod(getScufl);
-		FileOutputStream fos = new FileOutputStream(defPath);
-		fos.write(getScufl.getResponseBody());
-		wd.setScuflLocation(defPath);
-		fos.close();
-		log.debug("Downloaded definition");
-	}
-	/**
-	 * Retrieve workflows with a specific tag from MyExperiment.org
-	 * @param tag MyExperiment.org workflow tag
-	 * @return <code>List&lt;WorkflowDescription&gt; containing the workflow definitions
-	 * @throws <code>WorkflowException</code>
-	 */
-	private List<WorkflowDescription> getWorkflows(String tag) throws WorkflowException {
-		GetMethod get = new GetMethod("http://"+this.getServer()+"/workflows.xml?tag="+tag);
-		try {
-			http.executeMethod(get);
-			List<Workflows.WorkflowStub> workflows = unmarshalWorkflows(get.getResponseBodyAsStream());
-			log.debug("found " + workflows.size() + " workflow stubs for tag: " + tag);
-			
-			List<WorkflowDescription> list = new ArrayList<WorkflowDescription>(workflows.size());
-			for(Workflows.WorkflowStub stub : workflows) {
-				GetMethod getStub = new GetMethod(stub.getUri()+"&elements=id,title,description,content-uri,uploader,preview");
-				http.executeMethod(getStub);
-				WorkflowDescription wd = unmarshalWorkflow(getStub.getResponseBodyAsStream());
-				list.add(wd);
-			}
-			log.debug("returning " + list.size() + " workflows");
-			return list;
-		} catch (Exception e) {
-			log.error("Http Exception", e);
-			throw new WorkflowException(e);
-		} finally {
-			get.releaseConnection();
-		}
-	}
-	
-	@Override
-	public Map<String, WorkflowDescription> getWorkflows() throws WorkflowException {
-		cache.clear();
-		for(WorkflowDescription wd : getWorkflows("cabig")) {
-			cache.put(wd.getWorkflowId(), wd);
-		}
-		return cache;
-	}
-
-	@Override
-	public WorkflowDescription getWorkflowStub(String id) throws WorkflowException {
-		log.debug("Fetching workflow #" + id);
-		GetMethod get = new GetMethod("http://"+this.getServer()+"/workflow.xml?id="+id+"&elements=id,title,description,content-uri,uploader,preview");
-		try {
-			http.executeMethod(get);
-			WorkflowDescription wd = unmarshalWorkflow(get.getResponseBodyAsStream());
-			return wd;
-		} catch (Exception e) {
-			log.error("Http Exception", e);
-			throw new WorkflowException(e);
-		} finally {
-			get.releaseConnection();
-		}
-	}
-	
-	@Override
-	public WorkflowDescription getWorkflow(String id) throws WorkflowException {
-		log.debug("Fetching workflow #" + id);
-		GetMethod get = new GetMethod("http://"+this.getServer()+"/workflow.xml?id="+id+"&elements=id,title,description,content-uri,uploader,preview,components");
-		try {
-			http.executeMethod(get);
-			WorkflowDescription wd = unmarshalWorkflow(get.getResponseBodyAsStream());
-			
-			saveWorkflowDefinition(wd);
-			
-			if(wd.getComponents() == null) {
-				log.warn("Workflow definition specifies no inputs: " + wd.getComponents());
-				wd.setInputPorts(0);
-				return wd;
-			}
-			if (wd.getComponents().getDataflow() != null) {
-				log.debug("Getting workflow inputs.  Found " + wd.getComponents().getDataflow().size() + " dataflows");
-				for( Components.Dataflow df : wd.getComponents().getDataflow() ) {
-					if(df.getRole().equals("top") && df.getSource()!=null && df.getSource().size()>0) {
-						log.debug("Found root dataflow with " + df.getSource().size() + " sources");
-						wd.setInputs(df.getSource());
-						wd.setInputPorts(df.getSource().size());
-						return wd;
-					}
-				}
-			}
-			return wd;
-		} catch (Exception e) {
-			log.error("Exception fetching workflow #"+id, e);
-			throw new WorkflowException(e);
-		} finally {
-			get.releaseConnection();
 		}
 	}
 	
@@ -184,8 +140,12 @@ public class MyExperimentWorkflowRegistry implements WorkflowRegistryService {
 	 * @return	<code>Workflow</code> representation of workflow list xml
 	 * @throws JAXBException
 	 */
-	public static List<WorkflowStub> unmarshalWorkflows(InputStream is) throws JAXBException {
-		return ((Workflows)JAXBContext.newInstance(Workflows.class, WorkflowStub.class).createUnmarshaller().unmarshal(is)).workflow;
+	static List<WorkflowStub> unmarshalWorkflows(InputStream is) throws WorkflowException {
+		try {
+		return ((MyExperimentWorkflows)JAXBContext.newInstance(MyExperimentWorkflows.class, WorkflowStub.class).createUnmarshaller().unmarshal(is)).workflow;
+		} catch(JAXBException e) {
+			throw new WorkflowException("Error unmarshalling" , e);
+		}
 	}
 	
 	/**
@@ -194,26 +154,20 @@ public class MyExperimentWorkflowRegistry implements WorkflowRegistryService {
 	 * @return	<code>WorkfowDescription</code> representation of workflow xml
 	 * @throws JAXBException
 	 */
-	public static WorkflowDescription unmarshalWorkflow(InputStream is) throws JAXBException {
-		return (WorkflowDescription)JAXBContext.newInstance(WorkflowDescription.class, Components.class, Components.Dataflow.class, Source.class).createUnmarshaller().unmarshal(is);
+	static WorkflowDescription unmarshalWorkflow(InputStream is) throws WorkflowException {
+		try {
+			return (WorkflowDescription)JAXBContext.newInstance(WorkflowDescription.class, WorkflowDescription.Components.class, WorkflowDescription.Dataflow.class, WorkflowDescription.Source.class).createUnmarshaller().unmarshal(is);
+		} catch (JAXBException e) {
+			throw new WorkflowException("Error marshalling" , e);
+		}
 	}
 	
-	public String getUsername() {
-		return username;
-	}
-	public void setUsername(String username) {
-		this.username = username;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	public String getServer() {
-		return server;
-	}
-	public void setServer(String server) {
-		this.server = server;
-	}
+	public String getUsername() { return username; }
+	public void setUsername(String username) { this.username = username; }
+	public String getPassword() { return password; } 
+	public void setPassword(String password) { this.password = password; }
+	public String getServer() { return server; }
+	public void setServer(String server) { this.server = server; }
+	public String getTag() { return tag; }
+	public void setTag(String tag) { this.tag = tag; }
 }

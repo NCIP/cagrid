@@ -1,6 +1,7 @@
 package gov.nih.nci.cagrid.portal.portlet.workflow.service.impl;
 
-import gov.nih.nci.cagrid.portal.portlet.workflow.WorkflowService;
+import gov.nih.nci.cagrid.portal.portlet.workflow.WorkflowException;
+import gov.nih.nci.cagrid.portal.portlet.workflow.WorkflowExecutionService;
 import gov.nih.nci.cagrid.workflow.factory.client.TavernaWorkflowServiceClient;
 
 import java.rmi.RemoteException;
@@ -16,25 +17,42 @@ import org.apache.commons.logging.LogFactory;
  * 
  * @author Dinanath Sulakhe sulakhe@mcs.anl.gov
  */
-public class TavernaWorkflowService extends WorkflowService {
+public class TavernaWorkflowService extends WorkflowExecutionService {
 	protected final Log log = LogFactory.getLog(getClass());
 
 	private String tavernaWorkflowServiceUrl;
 	
-	public String getStatus(EndpointReferenceType epr) throws MalformedURIException, RemoteException {
-		return TavernaWorkflowServiceClient.getStatus(epr).getValue();
+	public String getStatus(EndpointReferenceType epr) throws WorkflowException {
+		try {
+			return TavernaWorkflowServiceClient.getStatus(epr).getValue();
+		} catch (MalformedURIException e) {
+			throw new WorkflowException(e);
+		} catch (RemoteException e) {
+			throw new WorkflowException(e);
+		}
 	}
 
-	public  String[] getOutput(EndpointReferenceType epr) throws MalformedURIException, RemoteException {
+	public  String[] getOutput(EndpointReferenceType epr)  throws WorkflowException {
 		if(!this.getStatus(epr).equals("Done")) return null;
-		return TavernaWorkflowServiceClient.getOutput(epr).getOutputFile();
+		try {
+			return TavernaWorkflowServiceClient.getOutput(epr).getOutputFile();
+		} catch (MalformedURIException e) {
+			throw new WorkflowException(e);
+		} catch (RemoteException e) {
+			throw new WorkflowException(e);
+		} 
 	}
 
-	public EndpointReferenceType submitWorkflow(String workflowName, String scuflDoc, String[] inputArgs) throws Exception {
+	@SuppressWarnings("deprecation")
+	public EndpointReferenceType submitWorkflow(String workflowName, String scuflDoc, String[] inputArgs) throws WorkflowException {
 		log.info("Submitting Workflow: " + workflowName + ". scuflDoc size = " + scuflDoc.length() + " bytes");
-		EndpointReferenceType resourceEPR = TavernaWorkflowServiceClient.setupWorkflow(tavernaWorkflowServiceUrl, scuflDoc, workflowName,null);
-		TavernaWorkflowServiceClient.startWorkflow(inputArgs, resourceEPR);
-		return resourceEPR;
+		try {
+			EndpointReferenceType resourceEPR = TavernaWorkflowServiceClient.setupWorkflow(tavernaWorkflowServiceUrl, scuflDoc, workflowName,null);
+			TavernaWorkflowServiceClient.startWorkflow(inputArgs, resourceEPR);
+			return resourceEPR;
+		} catch (Exception e) {
+			throw new WorkflowException("Exception submitted workflow : " + workflowName + " @" + scuflDoc, e);
+		}
 	}
 
 	public String getTavernaWorkflowServiceUrl() {return tavernaWorkflowServiceUrl;}

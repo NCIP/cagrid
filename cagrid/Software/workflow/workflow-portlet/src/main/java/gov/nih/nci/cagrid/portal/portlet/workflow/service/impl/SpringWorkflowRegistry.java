@@ -1,30 +1,31 @@
 package gov.nih.nci.cagrid.portal.portlet.workflow.service.impl;
 
-import java.util.Map;
-
-import gov.nih.nci.cagrid.portal.portlet.workflow.WorkflowException;
 import gov.nih.nci.cagrid.portal.portlet.workflow.WorkflowRegistryService;
 import gov.nih.nci.cagrid.portal.portlet.workflow.domain.WorkflowDescription;
 
-public class SpringWorkflowRegistry implements WorkflowRegistryService {
+import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+public class SpringWorkflowRegistry implements WorkflowRegistryService {
+	private static Log log = LogFactory.getLog(SpringWorkflowRegistry.class);
 	private Map<String, WorkflowDescription> workflows;
 	
-	@Override
+	public SpringWorkflowRegistry() {
+		log.info("Created Spring Workflow Registry.");
+	}
+	
 	public Map<String, WorkflowDescription> getWorkflows() {
+		log.debug("Returning Spring Workflows");
 		return this.workflows;
 	}
 	
 	public void setWorkflowList(Map<String, WorkflowDescription> workflowList) {
 		this.workflows = workflowList;
 	}
-	@Override
 	public WorkflowDescription getWorkflow(String id) {
-		return this.workflows.get(id);
-	}
-
-	@Override
-	public WorkflowDescription getWorkflowStub(String id) throws WorkflowException {
-		return this.workflows.get(id);
+		log.debug("Returning Spring Workflow #" + id);
+		return workflows.get(id);
 	}
 }
