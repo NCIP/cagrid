@@ -1,8 +1,10 @@
 package gov.nih.nci.cagrid.portal.portlet.workflow.mvc;
 
 import gov.nih.nci.cagrid.portal.portlet.workflow.domain.SessionEprs;
-import gov.nih.nci.cagrid.portal.portlet.workflow.domain.WorkflowBean;
 import gov.nih.nci.cagrid.portal.portlet.workflow.domain.WorkflowSubmitted;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
@@ -22,12 +24,13 @@ public class ViewOutputController extends AbstractController {
 	protected ModelAndView handleRenderRequestInternal(RenderRequest request, RenderResponse response) throws Exception {
 		String uuid = PortletRequestUtils.getStringParameter(request, "uuid", "NaN");
     	log.info("handleRenderRequest.  Action: " + PortletRequestUtils.getStringParameter(request, "action", "NaN") + "  uuid : " + uuid);
-    	WorkflowBean cmd = new WorkflowBean();
 		WorkflowSubmitted wSub = (WorkflowSubmitted) eprs.getEprs().get(uuid);
 		String[] temp = wSub.getWorkflowOutput();
 		for(int i =0; i<temp.length; i++) temp[i] = temp[i].replaceAll("\\n", "<BR>");
-		cmd.setOutputs(temp);
-    	return new ModelAndView("output", "cmd", cmd);
+		Map<String,Object> model = new HashMap<String,Object>();
+		model.put("outputs", temp);
+		model.put("uuid", uuid);
+    	return new ModelAndView("output", "model", model);
 	}	
 	public SessionEprs getSessionEprs() {
 		return eprs;

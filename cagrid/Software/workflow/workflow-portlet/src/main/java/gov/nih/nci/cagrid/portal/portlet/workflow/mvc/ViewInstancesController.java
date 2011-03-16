@@ -1,8 +1,10 @@
 package gov.nih.nci.cagrid.portal.portlet.workflow.mvc;
 
-import gov.nih.nci.cagrid.portal.portlet.workflow.WorkflowService;
+import gov.nih.nci.cagrid.portal.portlet.workflow.WorkflowExecutionService;
 import gov.nih.nci.cagrid.portal.portlet.workflow.domain.SessionEprs;
-import gov.nih.nci.cagrid.portal.portlet.workflow.domain.WorkflowBean;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
@@ -16,17 +18,20 @@ import org.springframework.web.portlet.mvc.AbstractController;
 public class ViewInstancesController extends AbstractController {
 	protected final Log log = LogFactory.getLog(ViewInstancesController.class);
 
-	private WorkflowService workflowService;
+	private WorkflowExecutionService workflowService;
 	private SessionEprs eprs;
 	
 	@Override
 	protected ModelAndView handleRenderRequestInternal(RenderRequest request, RenderResponse response) throws Exception {
 		String action = PortletRequestUtils.getStringParameter(request, "action", "NaN");
     	log.info("handleRenderRequest.  Action: " + action);
-    	WorkflowBean cmd = new WorkflowBean();
-    	workflowService.updateSession(getSessionEprs());
-		cmd.setEprsMap(eprs.getEprs());
-    	return new ModelAndView(action, "cmd", cmd);
+    	boolean isAllDone = workflowService.updateSession(getSessionEprs());
+    	Map<String, Object> model = new HashMap<String, Object>();
+    	model.put( "eprs", eprs.getEprs());
+    	model.put("isEmpty", eprs.size()==0);
+    	model.put("isAllDone", isAllDone); //whether all instances are in a stopped state.  No more polling necessary
+    	log.debug("Model contents: " + model);
+    	return new ModelAndView(action,model);
 	}	
 
 	public SessionEprs getSessionEprs() {
@@ -35,10 +40,10 @@ public class ViewInstancesController extends AbstractController {
 	public void setSessionEprs(SessionEprs sessionEprs) {
 		this.eprs = sessionEprs;
 	}
-	public WorkflowService getWorkflowService() {
+	public WorkflowExecutionService getWorkflowService() {
 		return workflowService;
 	}
-	public void setWorkflowService(WorkflowService workflowService) {
+	public void setWorkflowService(WorkflowExecutionService workflowService) {
 		this.workflowService = workflowService;
 	}
 }
