@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <faceted-project>
-<runtime name="Portal Liferay Runtime"/>
-  <fixed facet="wst.jsdt.web"/>
+  <runtime name="caGrid Portal Server"/>
   <fixed facet="jst.web"/>
-  <fixed facet="java"/>
-  <installed facet="java" version="1.6"/>
-  <installed facet="jst.web" version="2.4"/>
+  <installed facet="jst.web" version="2.5"/>
+  <installed facet="java" version="1.5"/>
   <installed facet="wst.jsdt.web" version="1.0"/>
 </faceted-project>
