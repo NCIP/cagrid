@@ -1,50 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:p="http://www.springframework.org/schema/p"
-       xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:aop="http://www.springframework.org/schema/aop"
-       xmlns:util="http://www.springframework.org/schema/util"
-       xsi:schemaLocation="
-        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
-        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
-        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
-        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-	<bean id="parameterMappingInterceptor" class="org.springframework.web.portlet.handler.ParameterMappingInterceptor"/>
-
-    <bean id="portletModeParameterHandlerMapping" class="org.springframework.web.portlet.handler.PortletModeParameterHandlerMapping">
-        <property name="order" value="1"/>
-		<property name="interceptors">
-			<list>
-				<ref bean="parameterMappingInterceptor"/>
-			</list>
-		</property>
-		<property name="portletModeParameterMap">
-			<map>
-				<entry key="view">
-					<map>
-						<entry key="viewDefinitions" value-ref="viewDefinitionsController"/>
-						<entry key="selectWorkflow" value-ref="newInstanceFormController"/>
-						<entry key="newInstance" value-ref="newInstanceFormController"/>
-						<entry key="viewInstances" value-ref="viewInstancesController"/>
-						<entry key="viewInstancesNoAJAX" value-ref="viewInstancesController"/>
-						<entry key="viewOutput" value-ref="viewOutputController"/>
-					</map>
-				</entry>
-			</map>
+	
+	<!--<context:component-scan base-package="gov.nih.nci.cagrid.portal.portlet.workflow"/> -->
+	
+	<bean class="org.springframework.web.portlet.handler.SimpleMappingExceptionResolver">
+		<property name="defaultErrorView"   value="error" />		
+		<property name="exceptionMappings">
+				<props>
+					<prop key="java.lang.Exception">error</prop>
+					<prop key="gov.nih.nci.cagrid.portal.portlet.workflow.WorkflowExecutionException">error</prop>
+				</props>
 		</property>
 	</bean>
 
-    <bean id="portletModeHandlerMapping" class="org.springframework.web.portlet.handler.PortletModeHandlerMapping">
-    	<property name="order" value="10"/>
-        <property name="portletModeMap">
-            <map>
-                <entry key="view" value-ref="viewDefinitionsController"/>
-            </map>
-        </property>
-    </bean>
-	
+	<bean id="parameterHandlerMapping" class="org.springframework.web.portlet.handler.ParameterHandlerMapping">
+			<property name="defaultHandler"   ref="viewDefinitionsController" />		
+			<property name="interceptors"><list><bean class="org.springframework.web.portlet.handler.ParameterMappingInterceptor"/></list></property>
+			<property name="parameterMap">
+			<map>
+					<entry key="viewDefinitions" value-ref="viewDefinitionsController"/>
+					<entry key="newInstance" value-ref="newInstanceFormController"/>
+					<entry key="viewInstances" value-ref="viewInstancesController"/>
+					<entry key="viewInstancesNoAJAX" value-ref="viewInstancesController"/>
+					<entry key="viewOutput" value-ref="viewOutputController"/>
+			</map>
+		</property>
+	</bean>
 	
 </beans>

@@ -11,6 +11,7 @@
 			ajaxPollingUpdate('<portlet:renderURL windowState="exclusive"><portlet:param name="action" value="viewInstancesNoAJAX"/></portlet:renderURL>', '<portlet:namespace/>ajaxDiv' , false, 0);
 		});
 	</script>
+	
 	<h3>Workflow Portlet</h3>
 	
 	<div id="<portlet:namespace/>accordion">

@@ -16,15 +16,19 @@
 					   $('#<portlet:namespace/>results').load(url, 
 							   function() {
 						   			console.log('AJAX Submittal returned.');
-						   			jQuery()('#<portlet:namespace />dialog').dialog('close');
+						   			jQuery('#<portlet:namespace />dialog').dialog('close');
 					   			} );
 					});
 		});
 	</script>
+	
+	<ul id="<portlet:namespace/>navigation"  class="navigation" class="menu" title="Navigation">
+		<li class="menu-item"><a href="<portlet:renderURL windowState="normal" ><portlet:param name="action" value="viewInstances"/></portlet:renderURL>">View Submitted Workflows</a><br/></li>
+		<li class="menu-item"><a href="<portlet:renderURL windowState="normal"><portlet:param name="action" value="viewDefinitions"/></portlet:renderURL>">View Workflow Definitions</a></li>		
+	</ul>
+			
 	<form id="<portlet:namespace/>fm" class="uni-form" action="#" method="post">
 		<table border=0 cellspacing=2 cellpadding=2>
-			<tr><td>Portlet Namespace :</td><td> ${ns}</td></tr>
-			<tr><td>URL :</td><td> ${newInstanceURL}</td></tr>
 			<tr>
 				<td>Workflow Name :</td><td> ${cmd.theWorkflow.name}</td>
 			</tr>
@@ -34,7 +38,7 @@
 			<tr>
 				<td>Description:</td> <td>${cmd.theWorkflow.description}</td>
 			</tr>
-			<tr><td rowspan="2">
+			<tr><td  colspan="2">
 					Workflow inputs:
 			</td></tr>
 			<c:forEach var="item" items="${cmd.theWorkflow.inputs}">
@@ -45,19 +49,22 @@
 						</fieldset>
 					</tr>
 			</c:forEach>
-			<tr><td>
-				<input id="<portlet:namespace/>submitButton" type="submit" value="Submit"  title="Launch Workflow Instance"/>
-			</td></tr>
+			<tr>
+				<td>
+					<input id="<portlet:namespace/>submitButton" type="submit" value="Submit"  title="Launch Workflow Instance"/>
+				</td>
+				<td>
+					<div id="<portlet:namespace/>results" class="results"></div>					
+				</td>
+			</tr>
 		</table>
 		<TR>
-			<TD><font size="4">Workflow Image: </font></TD>
-			<TD><img src="<c:url value="${cmd.theWorkflow.previewImageURI}"/>" width="100%" /></TD>
+			<TD>Workflow Diagram: </TD>
+			<TD><img title="Workflow Definition Diagram" src="<c:url value="${cmd.theWorkflow.previewImageURI}"/>" /></TD>
 		</TR>
 	</form>
 	<HR/>
-	<div id="<portlet:namespace/>results" class="result">
-	</div>
-	<div id="<portlet:namespace />dialog"  title="Wait Dialog">
+	<div id="<portlet:namespace />dialog"  title="Wait Dialog"   class="hidden">
 		<p>Please Wait</p>
 	</div>
 </div>

@@ -4,6 +4,22 @@
 <liferay-portlet-app>
 	<portlet>
 		<portlet-name>workflow</portlet-name>
+		<ajaxable>true</ajaxable>
+		<header-portlet-css>/css/base.css</header-portlet-css>
+		<header-portlet-css>/css/base/jquery.ui.all.css</header-portlet-css>
+<!-- 		<header-portlet-css>/css/vader/jquery-ui-1.8.10.custom.css</header-portlet-css> -->
+		<header-portlet-javascript>/js/workflow.js</header-portlet-javascript>
+<!-- 		<header-portlet-javascript>/js/jquery-1.5.1.js</header-portlet-javascript> -->
+<!-- 		<header-portlet-javascript>/js/jquery.ui.core.js</header-portlet-javascript> -->
+<!-- 		<header-portlet-javascript>/js/jquery.ui.widget.js</header-portlet-javascript> -->
+<!-- 		<header-portlet-javascript>/js/jquery.ui.accordion.js</header-portlet-javascript> -->
+<!-- 		<header-portlet-javascript>/js/jquery.ui.tooltip.js</header-portlet-javascript> -->
+<!-- 		<header-portlet-javascript>/js/jquery.ui.menu.js</header-portlet-javascript> -->
+<!-- 		<header-portlet-javascript>/js/jquery.ui.button.js</header-portlet-javascript> -->
+<!-- 		<header-portlet-javascript>/js/jquery.ui.tabs.js</header-portlet-javascript> -->
+<!-- 		<header-portlet-javascript>/js/jquery.effects.highlight.js</header-portlet-javascript> -->
+<!-- 		<header-portlet-javascript>/js/jquery.ui.dialog.js</header-portlet-javascript> -->
+<!-- 		<header-portlet-javascript>/js/jquery.ui.progressbar.js</header-portlet-javascript> -->
 	</portlet>
 	<role-mapper>
 		<role-name>administrator</role-name>

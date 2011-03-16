@@ -1,84 +1,106 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:p="http://www.springframework.org/schema/p"
-       xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:aop="http://www.springframework.org/schema/aop"
-       xmlns:util="http://www.springframework.org/schema/util"
-       xsi:schemaLocation="
-        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
-        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
-        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
-        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
-   
-<!--   	<bean class="org.springframework.web.servlet.view.XmlViewResolver">-->
-<!--        <property name="order" value="0"/>-->
-<!--        <property name="location" value="/WEB-INF/context/views.xml"/>-->
-<!--    </bean>-->
-<!--    <bean id="ajaxResponseController" class="org.jasig.web.servlet.mvc.AjaxResponseController"/>-->
-
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd"
+>
+	
+	
+	<!--
+	<cache:annotation-driven cache-manager='cacheManager'   mode='proxy | aspectj'  proxy-target-class='true' />
+	<bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
+		<property name="caches">
+			<set><\
+				<bean class="org.springframework.cache.concurrent.ConcurrentCacheFactoryBean" p:name="default"/>
+				<bean class="org.springframework.cache.concurrent.ConcurrentCacheFactoryBean" p:name="books"/>
+			</set>
+		</property>
+	</bean>
+ -->
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="order" value="10"/>
-        <property name="cache" value="true"/>
-        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
-        <property name="prefix" value="/jsp/"/>
-        <property name="suffix" value=".jsp"/>
+		<property name="cache" value="true"/>
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+		<property name="prefix" value="/jsp/"/>
+		<property name="suffix" value=".jsp"/>
     </bean>
 
-	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="location" value="classpath:cagrid.properties"/>
-	</bean>
-    
-    <bean id="sessionEprs" class="gov.nih.nci.cagrid.portal.portlet.workflow.domain.SessionEprs" scope="session">
+    <bean id="sessionEprs" class="gov.nih.nci.cagrid.portal.portlet.workflow.domain.SessionEprs" scope="session" autowire-candidate="true">
     	<aop:scoped-proxy/>
     </bean>
     
-<!--	<bean id="tavernaWorkflowController" class="gov.nih.nci.cagrid.portal.portlet.workflow.mvc.TavernaPortletController">-->
-<!--        <property name="commandClass" value="gov.nih.nci.cagrid.portal.portlet.workflow.domain.WorkflowBean"/>-->
-<!--        <property name="commandName" value="cmd"/>-->
-<!--        <property name="formView" value="view"/>-->
-<!--        <property name="successView" value="submitted"/>-->
-<!--        <property name="sessionEprs" ref="sessionEprs" />-->
-<!--        -->
-<!--        <property name="workflowService" ref="tavernaWorkflowService"/>-->
-<!--		<property name="registry" ref="myExperimentWorkflowRegistry"/>-->
-<!--    </bean>-->
-    
-    <bean id="newInstanceFormController" class="gov.nih.nci.cagrid.portal.portlet.workflow.mvc.NewInstanceFormController">
-        <property name="commandClass" value="gov.nih.nci.cagrid.portal.portlet.workflow.domain.WorkflowBean"/>
-        <property name="commandName" value="cmd"/>
-        <property name="formView" value="newInstance"/>
-        <property name="successView" value="submitted"/>
-
-        <property name="sessionEprs" ref="sessionEprs" />
-        <property name="workflowService" ref="tavernaWorkflowService"/>
-		<property name="registry" ref="myExperimentWorkflowRegistry"/>
-    </bean>
-
-	<bean id="viewDefinitionsController" class="gov.nih.nci.cagrid.portal.portlet.workflow.mvc.ViewDefinitionsController">
-        <property name="sessionEprs" ref="sessionEprs" />
-        <property name="workflowService" ref="tavernaWorkflowService"/>
-		<property name="registry" ref="myExperimentWorkflowRegistry"/>
-    </bean>
-
-	<bean id="viewInstancesController" class="gov.nih.nci.cagrid.portal.portlet.workflow.mvc.ViewInstancesController">
-        <property name="sessionEprs" ref="sessionEprs" />
-        <property name="workflowService" ref="tavernaWorkflowService"/>
+    <bean id="workflowService" class="gov.nih.nci.cagrid.portal.portlet.workflow.service.impl.TavernaWorkflowService" autowire-candidate="true">
+		<property name="tavernaWorkflowServiceUrl" value="https://cabig-workflow.ci.uchicago.edu:5005/wsrf/services/cagrid/TavernaWorkflowService" />
     </bean>
     
-    <bean id="viewOutputController" class="gov.nih.nci.cagrid.portal.portlet.workflow.mvc.ViewOutputController">
-        <property name="sessionEprs" ref="sessionEprs" />
-    </bean>
+	<bean id="springRegistry" class="gov.nih.nci.cagrid.portal.portlet.workflow.service.impl.SpringWorkflowRegistry" autowire-candidate="true">
+		<property name="workflowList">
+			<map>
+				<entry key="workflow-1">
+					<bean id="workflow-1" class="gov.nih.nci.cagrid.portal.portlet.workflow.domain.WorkflowDescription">
+						<property name="id" value="workflow-1" />
+						<property name="name" value="Concatenate two Strings (for testing)." />
+						<property name="description" value="It is a simple workflow that takes two strings as input and returns a concatenated string as output." />
+						<property name="author" value="Dinanath Sulakhe" />
+						<property name="contentURI" value="/home/marek/portal-liferay/data/taverna/fishsoup.t2flow" />
+						<property name="previewImageURI" value="http://www.myexperiment.org/workflow/version/image/1669/_untitled_.png" />
+						<property name="thumbnailBigURI" value="http://www.myexperiment.org/workflow/version/image/1669/_untitled_.png" />
+						<property name="thumbnailURI" value="http://www.myexperiment.org/workflow/version/image/1669/thumb/_untitled_.png" />
+					</bean>
+				</entry>
+				<entry key="workflow-2">
+					<bean id="workflow-2" class="gov.nih.nci.cagrid.portal.portlet.workflow.domain.WorkflowDescription">
+				        <property name="id" value="workflow-2"/>
+				        <property name="name" value="caDSR metadata query in caGrid"/>
+				        <property name="description" value="This workflow uses caDSR (Cancer Data Standards Repository) service, which defines a comprehensive set of standardized metadata descriptors for cancer research terminology used in information collection and analysis. This Sample workflow is to find all the concepts related to a given context, for example caCore. The workflow uses context information to invoke findProjects in caDSR and get the project(s) information."/>
+				        <property name="author" value="Wei Tan"/>
+				        <property name="contentURI" value="/home/marek/portal-liferay/data/taverna/caDSR-Workflow.t2flow"/>
+				        <property name="previewImageURI" value="http://www.myexperiment.org/workflow/version/image/1669/_untitled_.png" />
+						<property name="thumbnailBigURI" value="http://www.myexperiment.org/workflow/version/image/1669/_untitled_.png" />
+						<property name="thumbnailURI" value="http://www.myexperiment.org/workflow/version/image/1669/thumb/_untitled_.png" />
+				   </bean>			
+				</entry>
+			</map>
+		</property>
+	</bean>
     
-	<bean id="tavernaWorkflowService" class="gov.nih.nci.cagrid.portal.portlet.workflow.service.impl.TavernaWorkflowService">
-		<property name="tavernaWorkflowServiceUrl" value="${tws.target.grid.url}" />
-    </bean>
-    
-    <bean id="myExperimentWorkflowRegistry" class="gov.nih.nci.cagrid.portal.portlet.workflow.service.impl.MyExperimentWorkflowRegistry">
+    <bean id="registry" class="gov.nih.nci.cagrid.portal.portlet.workflow.service.impl.MyExperimentWorkflowRegistry" autowire-candidate="true">
+    	<property name="tag" value="cagrid"/>
     	<property name="username" value="kedzie"/>
     	<property name="password" value="Catch-22"/>
     	<property name="server" value="sandbox.myexperiment.org"/>
     </bean>
-        
+    
+	<bean id="viewDefinitionsController" class="gov.nih.nci.cagrid.portal.portlet.workflow.mvc.ViewDefinitionsController" autowire="byName">
+        <!--<property name="sessionEprs" ref="sessionEprs" /> -->
+      <!--  <property name="workflowService" ref="workflowService"/> -->
+		<!--<property name="registry" ref="registry"/>-->
+    </bean>
+	
+    <bean id="newInstanceFormController" class="gov.nih.nci.cagrid.portal.portlet.workflow.mvc.NewInstanceFormController" autowire="byName">
+    	<property name="commandClass" value="gov.nih.nci.cagrid.portal.portlet.workflow.domain.SubmitWorkflowCommand" />
+    	<property name="commandName" value="cmd"/>
+    	<property name="successView" value="submitted"/>
+    	<property name="formView" value="view"/>
+        <property name="sessionEprs" ref="sessionEprs" />
+        <property name="workflowService" ref="workflowService"/>
+		<property name="registry" ref="registry"/>
+    </bean>
+
+	<bean id="viewInstancesController" class="gov.nih.nci.cagrid.portal.portlet.workflow.mvc.ViewInstancesController" autowire="byName">
+        <property name="sessionEprs" ref="sessionEprs" />
+        <property name="workflowService" ref="workflowService"/>
+    </bean>
+    
+    <bean id="viewOutputController" class="gov.nih.nci.cagrid.portal.portlet.workflow.mvc.ViewOutputController"  autowire="byName">
+        <property name="sessionEprs" ref="sessionEprs" />
+    </bean>
+    
 </beans>
+

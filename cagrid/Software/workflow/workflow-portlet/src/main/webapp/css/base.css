@@ -1,0 +1,40 @@
+.menu {
+	margin-bottom: 0px;
+	margin-left: 0px;
+	padding-left: 0px;
+	margin-right: 0px;
+}
+.menu .menu-item {
+            display: inline;
+            //font-weight: bold;
+            font-size: 1.0em;
+            list-style-type: none;
+            margin-left: 0px;
+            padding-left: 0px;
+            padding-right: 20px;
+}
+
+.menu .menu-item a {
+        color: black;
+			background-color: white;
+		text-decoration: none;
+	}
+	
+.menu .menu-item a:HOVER {
+	background-color: blue;
+	color: white;
+	}
+
+.results {
+	font-size: 14px;;
+	font-weight: bold;
+	color: blue;
+}
+
+.hidden {
+	visibility: hidden;	
+}
+
+.standard {
+	font-size: 11px;
+	}
