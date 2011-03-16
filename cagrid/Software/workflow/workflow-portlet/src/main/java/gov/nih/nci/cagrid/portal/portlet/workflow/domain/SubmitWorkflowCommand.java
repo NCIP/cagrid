@@ -9,17 +9,13 @@ import java.util.Map;
  * Status: This class needs to split into multiple Model classes later when PortletModeParameterHandlerMappings will be used to 
  *   create multiple Controllers.
  */
-public class WorkflowBean {
+public class SubmitWorkflowCommand {
 
-    private String keyword;
     private String result;
     private String scuflDoc;
 	private String serviceUrl;
-	private WorkflowDescription[] allWorkflows;
 	
-	private String workflowId;
 	private WorkflowDescription theWorkflow;
-	private String formState;
 	
 	private String[] inputValues;
 	
@@ -27,14 +23,7 @@ public class WorkflowBean {
 	private String selectedUUID;
 	
 	private String[] outputs;
-	private String viewResolver;
-	
 
-	public String getViewResolver() { return viewResolver; }
-
-	public void setViewResolver(String viewResolver) {
-		this.viewResolver = viewResolver;
-	}
 	public String[] getOutputs() {
 		return outputs;
 	}
@@ -64,36 +53,12 @@ public class WorkflowBean {
 		this.inputValues = inputValues;
 	}
 
-	public String getFormState() {
-		return formState;
-	}
-
-	public void setFormState(String formState) {
-		this.formState = formState;
-	}
-
-	public String getWorkflowId() {
-		return workflowId;
-	}
-
-	public void setWorkflowId(String workflowId) {
-		this.workflowId = workflowId;
-	}
-
 	public WorkflowDescription getTheWorkflow() {
 		return theWorkflow;
 	}
 
 	public void setTheWorkflow(WorkflowDescription theWorkflow) {
 		this.theWorkflow = theWorkflow;
-	}
-
-	public WorkflowDescription[] getAllWorkflows() {
-		return allWorkflows;
-	}
-
-	public void setAllWorkflows(WorkflowDescription[] allWorkflows) {
-		this.allWorkflows = allWorkflows;
 	}
 
 	public String getScuflDoc() {
@@ -119,13 +84,5 @@ public class WorkflowBean {
 
     public void setResult(String result) {
         this.result = result;
-    }
-
-    public String getKeyword() {
-        return keyword;
-    }
-
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
     }
 }

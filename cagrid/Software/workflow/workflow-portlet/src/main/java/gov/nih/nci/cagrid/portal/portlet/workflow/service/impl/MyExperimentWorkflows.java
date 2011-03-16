@@ -1,4 +1,4 @@
-package gov.nih.nci.cagrid.portal.portlet.workflow.domain;
+package gov.nih.nci.cagrid.portal.portlet.workflow.service.impl;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlType;
 
 @XmlRootElement(name="workflows")
 @XmlAccessorType(XmlAccessType.NONE)
-public class Workflows {
+public class MyExperimentWorkflows {
 	@XmlElement(name="workflow")
 	public List<WorkflowStub> workflow;
 	
