@@ -1,4 +1,4 @@
-<project basedir="."  name="caGrid Taverna Portlet" xmlns:ivy="antlib:org.apache.ivy.ant">
+<project basedir="."  name="caGrid Taverna Portlet" xmlns:ivy="antlib:org.apache.ivy.ant" default="install">
 	
 	<property environment="env"/>
 	<property name="portlet.deploy.dir" value="${env.HOME}/portal-liferay/deploy"/>
@@ -75,7 +75,7 @@
 		<delete  dir="${portlet.undeploy.dir}/${portlet.context.name}.war" verbose="true"/>
 	</target>
 	
-	<target name="install" description="Retrieve Dependencies, Build and Deploy to Portal Server">
+	<target name="install" description="**[]Retrieve Dependencies, Build and Deploy to Portal Server]**">
 		<antcall target="clean"/>
 		<antcall target="ivy"/>
 		<antcall target="war"/>

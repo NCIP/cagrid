@@ -9,17 +9,19 @@
     <dependencies>
         <dependency org="caGrid" name="TavernaWorkflowService" rev="1.4" conf="compile->*"/>
         
-		<dependency org="org.springframework" name="org.springframework.core" rev="3.0.0.RELEASE"  conf="compile->compile"/>
 		<dependency org="org.springframework" name="org.springframework.asm" rev="3.0.0.RELEASE"   conf="compile->compile" />
 		<dependency org="org.springframework" name="org.springframework.aop" rev="3.0.0.RELEASE"  conf="compile->compile" />
 		<dependency org="org.springframework" name="org.springframework.aspects" rev="3.0.0.RELEASE"  conf="compile->compile" />
 		<dependency org="org.springframework" name="org.springframework.beans" rev="3.0.0.RELEASE" conf="compile->compile" />
 		<dependency org="org.springframework" name="org.springframework.context.support" rev="3.0.0.RELEASE" conf="compile->compile" />
 		<dependency org="org.springframework" name="org.springframework.context" rev="3.0.0.RELEASE"  conf="compile->compile"/>
+		<dependency org="org.springframework" name="org.springframework.core" rev="3.0.0.RELEASE"  conf="compile->compile"/>
 		<dependency org="org.springframework" name="org.springframework.expression" rev="3.0.0.RELEASE"  conf="compile->compile"/>
 		<dependency org="org.springframework" name="org.springframework.web" rev="3.0.0.RELEASE"  conf="compile->compile"/>
 		<dependency org="org.springframework" name="org.springframework.web.servlet" rev="3.0.0.RELEASE"   conf="compile->compile"/>
 		<dependency org="org.springframework" name="org.springframework.web.portlet" rev="3.0.0.RELEASE"  conf="compile->compile" />
+	
+<!-- 		<dependency org="javax.persistence" name="persistence-api" rev="2.0" conf="provided->default" /> -->
 	
 		<dependency org="javax.portlet" name="portlet-api" rev="2.0" conf="provided->default" />
 		<dependency org="commons-logging" name="commons-logging" rev="1.1.1" conf="provided->default"/>
