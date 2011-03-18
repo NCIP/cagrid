@@ -1,29 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<beans xmlns="http://www.springframework.org/schema/beans" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:p="http://www.springframework.org/schema/p" 
-	xmlns:aop="http://www.springframework.org/schema/aop" 
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:lang="http://www.springframework.org/schema/lang"
 	xsi:schemaLocation="
-	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
-	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
-	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd"
->
-	
-	
-	<!--
-	<cache:annotation-driven cache-manager='cacheManager'   mode='proxy | aspectj'  proxy-target-class='true' />
-	<bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
-		<property name="caches">
-			<set><\
-				<bean class="org.springframework.cache.concurrent.ConcurrentCacheFactoryBean" p:name="default"/>
-				<bean class="org.springframework.cache.concurrent.ConcurrentCacheFactoryBean" p:name="books"/>
-			</set>
-		</property>
-	</bean>
- -->
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-3.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+		http://www.springframework.org/schema/oxm http://www.springframework.org/schema/context/spring-oxm-3.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+ 
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="cache" value="true"/>
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
@@ -78,9 +72,6 @@
     </bean>
     
 	<bean id="viewDefinitionsController" class="gov.nih.nci.cagrid.portal.portlet.workflow.mvc.ViewDefinitionsController" autowire="byName">
-        <!--<property name="sessionEprs" ref="sessionEprs" /> -->
-      <!--  <property name="workflowService" ref="workflowService"/> -->
-		<!--<property name="registry" ref="registry"/>-->
     </bean>
 	
     <bean id="newInstanceFormController" class="gov.nih.nci.cagrid.portal.portlet.workflow.mvc.NewInstanceFormController" autowire="byName">
@@ -88,19 +79,15 @@
     	<property name="commandName" value="cmd"/>
     	<property name="successView" value="submitted"/>
     	<property name="formView" value="view"/>
-        <property name="sessionEprs" ref="sessionEprs" />
-        <property name="workflowService" ref="workflowService"/>
-		<property name="registry" ref="registry"/>
     </bean>
 
 	<bean id="viewInstancesController" class="gov.nih.nci.cagrid.portal.portlet.workflow.mvc.ViewInstancesController" autowire="byName">
-        <property name="sessionEprs" ref="sessionEprs" />
-        <property name="workflowService" ref="workflowService"/>
     </bean>
     
     <bean id="viewOutputController" class="gov.nih.nci.cagrid.portal.portlet.workflow.mvc.ViewOutputController"  autowire="byName">
-        <property name="sessionEprs" ref="sessionEprs" />
     </bean>
-    
+
+    <bean id="jsonController" class="gov.nih.nci.cagrid.portal.portlet.workflow.mvc.JSONController" autowire="byName"  />
+
 </beans>
 

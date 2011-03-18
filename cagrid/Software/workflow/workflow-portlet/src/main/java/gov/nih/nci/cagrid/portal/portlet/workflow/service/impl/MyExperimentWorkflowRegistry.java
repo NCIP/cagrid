@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.portlet.PortletContext;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.ws.http.HTTPException;
@@ -22,13 +23,20 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.web.portlet.context.PortletContextAware;
 
 /**
  * Workflow registry implementation using MyExperiment.org REST API.
  * @author Marek Kedzierski
  */
-public class MyExperimentWorkflowRegistry implements WorkflowRegistryService {
+public class MyExperimentWorkflowRegistry implements WorkflowRegistryService, ApplicationContextAware, PortletContextAware {
 	private static final Log log = LogFactory.getLog(MyExperimentWorkflowRegistry.class);
+	
+	private ApplicationContext applicationContext;
+	private PortletContext portletContext;
 	
 	private HttpClient http = new HttpClient();	
 	private Cookie sessionCookie;
@@ -170,4 +178,12 @@ public class MyExperimentWorkflowRegistry implements WorkflowRegistryService {
 	public void setServer(String server) { this.server = server; }
 	public String getTag() { return tag; }
 	public void setTag(String tag) { this.tag = tag; }
+
+	public void setPortletContext(PortletContext ctx) {
+		this.portletContext = ctx;
+	}
+
+	public void setApplicationContext(ApplicationContext ctx) throws BeansException {
+		this.applicationContext = ctx;
+	}
 }

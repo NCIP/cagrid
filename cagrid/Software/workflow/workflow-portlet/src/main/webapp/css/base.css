@@ -1,29 +1,16 @@
-.menu {
-	margin-bottom: 0px;
+#workflow-portlet-menu  ul {
+
+	list-style-type: none;
 	margin-left: 0px;
-	padding-left: 0px;
-	margin-right: 0px;
-}
-.menu .menu-item {
-            display: inline;
-            //font-weight: bold;
-            font-size: 1.0em;
-            list-style-type: none;
-            margin-left: 0px;
-            padding-left: 0px;
-            padding-right: 20px;
+	padding: 0px;
+	width: 500px;
 }
 
-.menu .menu-item a {
-        color: black;
-			background-color: white;
-		text-decoration: none;
-	}
-	
-.menu .menu-item a:HOVER {
-	background-color: blue;
-	color: white;
-	}
+#workflow-portlet-menu li {
+
+	display: inline;	
+	width: 250px;
+}
 
 .results {
 	font-size: 14px;;
@@ -31,10 +18,18 @@
 	color: blue;
 }
 
-.hidden {
-	visibility: hidden;	
-}
-
 .standard {
 	font-size: 11px;
 	}
+	
+table.statusTable {
+	border-color: black;
+	border-style: double;
+	border-width: thick;
+	}
+	
+tr.statusTableHeader {
+	background-color: blue;
+	color: white;
+	}
+	
