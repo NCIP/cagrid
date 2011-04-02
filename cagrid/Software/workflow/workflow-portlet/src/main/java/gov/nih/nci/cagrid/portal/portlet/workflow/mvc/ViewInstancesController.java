@@ -11,10 +11,14 @@ import javax.portlet.RenderResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.ModelAndView;
 import org.springframework.web.portlet.bind.PortletRequestUtils;
 import org.springframework.web.portlet.mvc.AbstractController;
 
+@Controller
+@RequestMapping(params={"action=viewInstances"})
 public class ViewInstancesController extends AbstractController {
 	protected final Log log = LogFactory.getLog(ViewInstancesController.class);
 
@@ -31,7 +35,7 @@ public class ViewInstancesController extends AbstractController {
     	model.put("isEmpty", eprs.size()==0);
     	model.put("isAllDone", isAllDone); //whether all instances are in a stopped state.  No more polling necessary
     	log.debug("Model contents: " + model);
-    	return new ModelAndView(action,model);
+    	return new ModelAndView("viewInstances",model);
 	}	
 
 	public SessionEprs getSessionEprs() {
