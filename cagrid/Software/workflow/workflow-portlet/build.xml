@@ -31,6 +31,7 @@
 	</target>
 	
 	<target name="ivy" description="Retrieve libs">
+		<delete dir="${portlet.lib.dir}/ivy"/>
 		<mkdir dir="${portlet.lib.dir}/ivy"/>
 		<mkdir dir="${portlet.lib.dir}/ivy/provided"/>
 		<mkdir dir="${portlet.lib.dir}/ivy/compile"/>
@@ -40,7 +41,7 @@
 		<ivy:retrieve conf="compile" pattern="${portlet.lib.dir}/ivy/compile/[artifact]-[revision].[ext]"  resolveid="ivy.compile"/>
 	</target>
 	
-    <target name="compile" depends="clean, ivy">
+    <target name="compile" depends="clean">
         <mkdir dir="${portlet.classes.dir}"/>
         <javac srcdir="${portlet.src.java.dir}" destdir="${portlet.classes.dir}">
             <classpath>

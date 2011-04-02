@@ -21,11 +21,12 @@
 				<artifact pattern="http://quality.cagrid.org/job/caGrid-1.4-rc8-ivy-repository/lastStableBuild/artifact/caGrid/ivy-repository/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"/>
 				<artifact pattern="http://quality.cagrid.org/job/caGrid-1.4-rc8-ivy-repository/lastStableBuild/artifact/caGrid/ivy-repository/[organisation]/[module]/[revision]/[artifact].[ext]"/>
 			</url>
+			
+         	<ibiblio name="Maven Central II" m2compatible="true" root="http://repo2.maven.org/maven2"  pattern="[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"/>
 			<ibiblio name="ibiblio-ivy" m2compatible="true" />
+			<ibiblio name="codehaus" m2compatible="true" root="http://repository.codehaus.org"  pattern="[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"/>/>
+			<ibiblio name="jboss" m2compatible="true" root="http://repository.jboss.org/maven2"  pattern="[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"/>/>
 		</chain>
 	</resolvers>
-	
-	
-	
 
 </ivysettings>
