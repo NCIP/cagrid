@@ -11,7 +11,7 @@
 			<value>/WEB-INF/context/taverna-portlet.xml</value>
 		</init-param>
 		
-		<expiration-cache>0</expiration-cache>
+		<expiration-cache>90</expiration-cache>
 		<cache-scope>public</cache-scope>
 		
 		<supports>

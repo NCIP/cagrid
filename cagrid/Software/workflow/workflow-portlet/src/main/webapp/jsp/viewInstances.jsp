@@ -2,8 +2,8 @@
 
 <div class="content">
 	<script type="text/javascript">
-		jQuery(function($) {
-			ajaxPollingUpdate('<portlet:renderURL windowState="exclusive"><portlet:param name="action" value="viewInstances"/></portlet:renderURL> #<portlet:namespace/>ajaxDiv', '<portlet:namespace/>ajaxDiv' , true, 2);
+		jQuery(document).ready(function($) {
+			ajaxPollingUpdate('${ajaxStatusURL} #<portlet:namespace/>ajaxDiv', '<portlet:namespace/>ajaxDiv' , true, 2);
 		});
 	</script>
 	
@@ -18,12 +18,14 @@
 			<c:forEach var="entry" items="${eprs}">
 				<TR><TD>${entry.key}</TD><TD>${entry.value.workflowDesc.id }</TD><TD><b><font size="2" > ${entry.value.status}</font></b></TD><TD>
 						<c:if test="${entry.value.status == 'Done'}">
-								<a href="<portlet:renderURL windowState="normal"><portlet:param name="action" value="viewOutput"/><portlet:param name="uuid" value="${entry.key}"/></portlet:renderURL>">View Output</a>
+								<button id="<portlet:namespace/>viewOutputButton"  onclick="jQuery('<portletnamespace/>output').html('${entry.value.output}')">View Output</button>
 						</c:if>
 					</TD>
 				</TR>
 		</c:forEach>
 		</TABLE>
+		</div>
+		<div id="<portlet:namespace/>output" class="output">
 		</div>
 	</div>
 	

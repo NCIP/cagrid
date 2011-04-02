@@ -7,25 +7,16 @@
 		<ajaxable>true</ajaxable>
 		<header-portlet-css>/css/flora/flora.all.css</header-portlet-css>
 		<header-portlet-css>/css/base.css</header-portlet-css>
-		<header-portlet-javascript>/js/workflow.js</header-portlet-javascript>
+		<header-portlet-javascript>/js/workflow3.js</header-portlet-javascript>
+		<header-portlet-javascript>/js/effects.core.js</header-portlet-javascript>
+		<header-portlet-javascript>/js/effects.explode.js</header-portlet-javascript>
+		<header-portlet-javascript>/js/ui.accordion.js</header-portlet-javascript>
+		<header-portlet-javascript>/js/ui.resizable.js</header-portlet-javascript>
+<!-- 		<header-portlet-javascript>/js/ui.tabs.js</header-portlet-javascript> -->
+<!-- 		<header-portlet-javascript>/js/ui.tree.js</header-portlet-javascript> -->
 		<header-portlet-javascript>/js/ui.progressbar.js</header-portlet-javascript>
-		<header-portlet-javascript>/js/ui.spinner.js</header-portlet-javascript>
-		<header-portlet-javascript>/js/ui.magnifier.js</header-portlet-javascript>
+<!-- 		<header-portlet-javascript>/js/ui.spinner.js</header-portlet-javascript> -->
+<!-- 		<header-portlet-javascript>/js/ui.magnifier.js</header-portlet-javascript> -->
+		<css-class-wrapper>workflow-portlet-css</css-class-wrapper>
 	</portlet>
-	<role-mapper>
-		<role-name>administrator</role-name>
-		<role-link>Administrator</role-link>
-	</role-mapper>
-	<role-mapper>
-		<role-name>guest</role-name>
-		<role-link>Guest</role-link>
-	</role-mapper>
-	<role-mapper>
-		<role-name>power-user</role-name>
-		<role-link>Power User</role-link>
-	</role-mapper>
-	<role-mapper>
-		<role-name>user</role-name>
-		<role-link>User</role-link>
-	</role-mapper>
 </liferay-portlet-app>

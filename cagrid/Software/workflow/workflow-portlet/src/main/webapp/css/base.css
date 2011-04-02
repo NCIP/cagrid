@@ -1,15 +1,24 @@
-#workflow-portlet-menu  ul {
-
-	list-style-type: none;
-	margin-left: 0px;
-	padding: 0px;
-	width: 500px;
+ul.ui-menu {
+	list-style-type:none;
+	padding: 4px;
+	margin: 4;
 }
-
-#workflow-portlet-menu li {
-
-	display: inline;	
-	width: 250px;
+ul.ui-menu li.ui-menu-item {
+	display:inline;
+	float: left;
+	background-color: blue;
+}
+ul.uimenu li.ui-menu-item a {
+	display:block;
+	width:140px;
+	background-color: blue;
+	color: white;
+}
+ul.uimenu li.ui-menu-item a:HOVER {
+	display:block;
+	width:140px;
+	color:white;
+	background-color: red;
 }
 
 .results {
@@ -18,11 +27,28 @@
 	color: blue;
 }
 
-.standard {
-	font-size: 11px;
+.content {
+	font-size: 12px;
+	color: black;
+	}
+	
+div.content {
+	font-size: 12px;
+	color: black;
+	}
+	
+.content td {
+	font-size: 12px;
+	color: black;
+}
+
+.content p {
+	font-size: 12px;
+	color: black;
 	}
 	
 table.statusTable {
+	border: medium;
 	border-color: black;
 	border-style: double;
 	border-width: thick;
