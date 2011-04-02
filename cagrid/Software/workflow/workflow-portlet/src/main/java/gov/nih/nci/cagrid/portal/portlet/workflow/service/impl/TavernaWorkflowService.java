@@ -10,6 +10,7 @@ import org.apache.axis.message.addressing.EndpointReferenceType;
 import org.apache.axis.types.URI.MalformedURIException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Service;
 
 /**
  * Helper class that is used to hold some of the Spring injected dependencies and the class that submits the workflow 
@@ -17,6 +18,7 @@ import org.apache.commons.logging.LogFactory;
  * 
  * @author Dinanath Sulakhe sulakhe@mcs.anl.gov
  */
+@Service
 public class TavernaWorkflowService extends WorkflowExecutionService {
 	protected final Log log = LogFactory.getLog(getClass());
 
@@ -26,9 +28,9 @@ public class TavernaWorkflowService extends WorkflowExecutionService {
 		try {
 			return TavernaWorkflowServiceClient.getStatus(epr).getValue();
 		} catch (MalformedURIException e) {
-			throw new WorkflowException(e);
+			throw new WorkflowException(e.getMessage(), e);
 		} catch (RemoteException e) {
-			throw new WorkflowException(e);
+			throw new WorkflowException(e.getMessage(), e);
 		}
 	}
 
@@ -37,9 +39,9 @@ public class TavernaWorkflowService extends WorkflowExecutionService {
 		try {
 			return TavernaWorkflowServiceClient.getOutput(epr).getOutputFile();
 		} catch (MalformedURIException e) {
-			throw new WorkflowException(e);
+			throw new WorkflowException(e.getMessage(),e);
 		} catch (RemoteException e) {
-			throw new WorkflowException(e);
+			throw new WorkflowException(e.getMessage(), e);
 		} 
 	}
 
@@ -51,7 +53,7 @@ public class TavernaWorkflowService extends WorkflowExecutionService {
 			TavernaWorkflowServiceClient.startWorkflow(inputArgs, resourceEPR);
 			return resourceEPR;
 		} catch (Exception e) {
-			throw new WorkflowException("Exception submitted workflow : " + workflowName + " @" + scuflDoc, e);
+			throw new WorkflowException(e.getMessage(), e);
 		}
 	}
 

@@ -7,7 +7,11 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Repository;
 
+@Repository
+@Qualifier("Spring")
 public class SpringWorkflowRegistry implements WorkflowRegistryService {
 	private static Log log = LogFactory.getLog(SpringWorkflowRegistry.class);
 	private Map<String, WorkflowDescription> workflows;

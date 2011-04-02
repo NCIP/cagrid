@@ -2,8 +2,8 @@ package gov.nih.nci.cagrid.portal.portlet.workflow.service.impl;
 
 import gov.nih.nci.cagrid.portal.portlet.workflow.WorkflowException;
 import gov.nih.nci.cagrid.portal.portlet.workflow.WorkflowRegistryService;
+import gov.nih.nci.cagrid.portal.portlet.workflow.domain.MyExperimentWorkflows;
 import gov.nih.nci.cagrid.portal.portlet.workflow.domain.WorkflowDescription;
-import gov.nih.nci.cagrid.portal.portlet.workflow.service.impl.MyExperimentWorkflows.WorkflowStub;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,9 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.portlet.PortletContext;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.ws.http.HTTPException;
+import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.httpclient.Cookie;
 import org.apache.commons.httpclient.HttpClient;
@@ -24,22 +22,38 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.oxm.Unmarshaller;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.portlet.context.PortletContextAware;
+
+import com.googlecode.ehcache.annotations.Cacheable;
 
 /**
  * Workflow registry implementation using MyExperiment.org REST API.
  * @author Marek Kedzierski
  */
+@Repository
+@Qualifier("MyExperiment")
 public class MyExperimentWorkflowRegistry implements WorkflowRegistryService, ApplicationContextAware, PortletContextAware {
 	private static final Log log = LogFactory.getLog(MyExperimentWorkflowRegistry.class);
+	/**  specify which elements to return from MyExperiment.org Rest API  */
+	public static final String LAZY_ELEMENTS = "id,title,description,content-uri,uploader,preview,thumbnail,thumbnail-big,svg";
+	public static final String ALL_ELEMENTS = "id,title,description,content-uri,uploader,preview,thumbnail,thumbnail-big,svg,components";
 	
+	@Autowired
 	private ApplicationContext applicationContext;
+	@Autowired
 	private PortletContext portletContext;
 	
 	private HttpClient http = new HttpClient();	
 	private Cookie sessionCookie;
+	
+	private Unmarshaller workflowsJaxbUnmarshaller;
+	private Unmarshaller workflowDescriptionJaxbUnmarshaller;
 	
 	/** MyExperiment.org username */
 	private String username;
@@ -57,19 +71,48 @@ public class MyExperimentWorkflowRegistry implements WorkflowRegistryService, Ap
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.cagrid.portal.portlet.workflow.WorkflowRegistryService#getWorkflows()
 	 */
+	@SuppressWarnings("unchecked")
+	@Cacheable(cacheName="workflowListCache")
 	public Map<String, WorkflowDescription> getWorkflows() throws WorkflowException {
-		return getWorkflows(this.getTag());
+		GetMethod get = new GetMethod("http://"+this.getServer()+"/workflows.xml?tag="+getTag());
+		try {
+			http.executeMethod(get);
+			MyExperimentWorkflows workflow = unmarshalMyExperimentWorkflows(get.getResponseBodyAsStream());
+			List<MyExperimentWorkflows.WorkflowStub> workflows = workflow.workflow;
+			log.debug("found " + workflows.size() + " workflow stubs for tag: " + tag);
+			Map<String, WorkflowDescription> list = new HashMap<String, WorkflowDescription>(workflows.size());
+			for(MyExperimentWorkflows.WorkflowStub stub : workflows) {
+//				WorkflowDescription wd = downloadWorkflow(stub.getUri()+"&elements="+MyExperimentWorkflowRegistry.ELEMENTS);
+//				list.put(wd.getId(), wd);
+				GetMethod getStub = new GetMethod(stub.getUri()+"&elements=id,title,description,content-uri,uploader,preview,thumbnail,thumbnail-big,svg");
+				http.executeMethod(getStub);
+				WorkflowDescription wd = (WorkflowDescription)getWorkflowDescriptionJaxbUnmarshaller().unmarshal(new StreamSource(getStub.getResponseBodyAsStream())); 
+				list.put(wd.getId(), wd);
+			}
+			log.debug("returning " + list.size() + " workflows");
+			return list;
+		} catch(Exception e) {
+			throw new WorkflowException(e);
+		} 
+			finally { get.releaseConnection(); }
 	}
 	
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.cagrid.portal.portlets.workflow.WorkflowRegistryService#getWorkflow(java.lang.String)
 	 */
+	@Cacheable(cacheName="workflowCache")
 	public WorkflowDescription getWorkflow(String id) throws WorkflowException {
 		log.debug("Fetching workflow #" + id);
-		GetMethod get = new GetMethod("http://"+this.getServer()+"/workflow.xml?id="+id+"&elements=id,title,description,content-uri,uploader,preview,thumbnail,thumbnail-big,svg,components");
+		return downloadWorkflow( "http://"+this.getServer()+"/workflow.xml?id="+id+"&elements="+MyExperimentWorkflowRegistry.ALL_ELEMENTS );
+	}
+	
+	@SuppressWarnings("unchecked")
+	private WorkflowDescription downloadWorkflow(String uri) throws WorkflowException {
+		log.debug("Downloading workflow #" + uri);
+		GetMethod get = new GetMethod(uri);
 		try {
 			http.executeMethod(get);	
-			WorkflowDescription wd = unmarshalWorkflow(get.getResponseBodyAsStream());
+			WorkflowDescription wd = unmarshalWorkflowDescription(get.getResponseBodyAsStream());
 			if (wd.getComponents() == null && wd.getComponents().getDataflow() != null) {
 				log.debug("Getting workflow inputs.  Found " + wd.getComponents().getDataflow().size() + " dataflows");
 				for( WorkflowDescription.Dataflow df : wd.getComponents().getDataflow() ) {
@@ -83,39 +126,17 @@ public class MyExperimentWorkflowRegistry implements WorkflowRegistryService, Ap
 			return wd;
 		} catch (Exception e) {
 			throw new WorkflowException(e);
-		}
-		finally {
-			get.releaseConnection();
-		}
+		}finally {get.releaseConnection();}
 	}
 	
-	/**
-	 * Retrieve workflows with a specific tag from MyExperiment.org
-	 * @param tag MyExperiment.org workflow tag
-	 * @return <code>List&lt;WorkflowDescription&gt; containing the workflow definitions
-	 * @throws <code>WorkflowException</code>
-	 */
-	private Map<String, WorkflowDescription> getWorkflows(String tag) throws WorkflowException {
-		GetMethod get = new GetMethod("http://"+this.getServer()+"/workflows.xml?tag="+tag);
-		try {
-			http.executeMethod(get);
-			List<MyExperimentWorkflows.WorkflowStub> workflows = unmarshalWorkflows(get.getResponseBodyAsStream());
-			log.debug("found " + workflows.size() + " workflow stubs for tag: " + tag);
-			Map<String, WorkflowDescription> list = new HashMap<String, WorkflowDescription>(workflows.size());
-			for(MyExperimentWorkflows.WorkflowStub stub : workflows) {
-				GetMethod getStub = new GetMethod(stub.getUri()+"&elements=id,title,description,content-uri,uploader,preview,thumbnail,thumbnail-big");
-				http.executeMethod(getStub);
-				WorkflowDescription wd = unmarshalWorkflow(getStub.getResponseBodyAsStream()); 
-				list.put(wd.getId(), wd);
-			}
-			log.debug("returning " + list.size() + " workflows");
-			return list;
-		} catch(HTTPException e) {
-			throw new WorkflowException(e);
-		} catch(IOException e) {
-			throw new WorkflowException(e);
-		} 
-			finally { get.releaseConnection(); }
+	WorkflowDescription unmarshalWorkflowDescription(InputStream is) throws IOException {
+		log.debug("Unmarshalling WOrkflow Description");
+		 return (WorkflowDescription)getWorkflowDescriptionJaxbUnmarshaller().unmarshal(new StreamSource(is));
+	}
+	
+	MyExperimentWorkflows unmarshalMyExperimentWorkflows(InputStream is ) throws IOException {
+		log.debug("Unmarshalling MyExperimentWOrkflows.");
+		return (MyExperimentWorkflows)getWorkflowsJaxbUnmarshaller().unmarshal(new StreamSource(is));
 	}
 	
 	/**
@@ -142,34 +163,6 @@ public class MyExperimentWorkflowRegistry implements WorkflowRegistryService, Ap
 		}
 	}
 	
-	/**
-	 * Unmarshall a list of workflows from xml
-	 * @param is <code>InputStream</code> of xml
-	 * @return	<code>Workflow</code> representation of workflow list xml
-	 * @throws JAXBException
-	 */
-	static List<WorkflowStub> unmarshalWorkflows(InputStream is) throws WorkflowException {
-		try {
-		return ((MyExperimentWorkflows)JAXBContext.newInstance(MyExperimentWorkflows.class, WorkflowStub.class).createUnmarshaller().unmarshal(is)).workflow;
-		} catch(JAXBException e) {
-			throw new WorkflowException("Error unmarshalling" , e);
-		}
-	}
-	
-	/**
-	 * Unmarshall a single workflow from xml
-	 * @param is	<code>InputStream</code> of xml
-	 * @return	<code>WorkfowDescription</code> representation of workflow xml
-	 * @throws JAXBException
-	 */
-	static WorkflowDescription unmarshalWorkflow(InputStream is) throws WorkflowException {
-		try {
-			return (WorkflowDescription)JAXBContext.newInstance(WorkflowDescription.class, WorkflowDescription.Components.class, WorkflowDescription.Dataflow.class, WorkflowDescription.Source.class).createUnmarshaller().unmarshal(is);
-		} catch (JAXBException e) {
-			throw new WorkflowException("Error marshalling" , e);
-		}
-	}
-	
 	public String getUsername() { return username; }
 	public void setUsername(String username) { this.username = username; }
 	public String getPassword() { return password; } 
@@ -178,12 +171,10 @@ public class MyExperimentWorkflowRegistry implements WorkflowRegistryService, Ap
 	public void setServer(String server) { this.server = server; }
 	public String getTag() { return tag; }
 	public void setTag(String tag) { this.tag = tag; }
-
-	public void setPortletContext(PortletContext ctx) {
-		this.portletContext = ctx;
-	}
-
-	public void setApplicationContext(ApplicationContext ctx) throws BeansException {
-		this.applicationContext = ctx;
-	}
+	public void setPortletContext(PortletContext ctx) {this.portletContext = ctx;}
+	public void setApplicationContext(ApplicationContext ctx) throws BeansException {this.applicationContext = ctx;}
+	public Unmarshaller getWorkflowsJaxbUnmarshaller() { return workflowsJaxbUnmarshaller;}
+	public void setWorkflowsJaxbUnmarshaller(Unmarshaller workflowsJaxbUnmarshaller) {this.workflowsJaxbUnmarshaller = workflowsJaxbUnmarshaller;}
+	public Unmarshaller getWorkflowDescriptionJaxbUnmarshaller() {return workflowDescriptionJaxbUnmarshaller;}
+	public void setWorkflowDescriptionJaxbUnmarshaller(Unmarshaller workflowDescriptionJaxbUnmarshaller) {this.workflowDescriptionJaxbUnmarshaller = workflowDescriptionJaxbUnmarshaller;}
 }
