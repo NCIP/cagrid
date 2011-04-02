@@ -15,7 +15,7 @@ public class WorkflowSubmitted {
 	private WorkflowDescription workflowDesc;
 	private String status;
 	private String[] workflowOutput;
-
+	
 	public WorkflowSubmitted(EndpointReferenceType epr, WorkflowDescription desc, String status)	{
 		this.epr = epr;
 		this.workflowDesc = desc;
