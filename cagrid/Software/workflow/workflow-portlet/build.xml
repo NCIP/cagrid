@@ -44,19 +44,20 @@
     <target name="compile" depends="clean">
         <mkdir dir="${portlet.classes.dir}"/>
         <javac srcdir="${portlet.src.java.dir}" destdir="${portlet.classes.dir}">
-            <classpath>
-	            	<fileset dir="${portlet.lib.dir}" includes="**/*.jar"/>
-					<fileset dir="${portlet.src.war.dir}/WEB-INF/lib" includes="*.jar"/>
+			<classpath>
+				<fileset dir="${portlet.lib.dir}" includes="**/*.jar"/>
+				<fileset dir="${portlet.src.war.dir}/WEB-INF/lib" includes="*.jar"/>
 			</classpath>
 		</javac>
     	<javac srcdir="${portlet.test.src.java.dir}" destdir="${portlet.classes.dir}">
-    	            <classpath>
-    		            	<fileset dir="${portlet.lib.dir}" includes="**/*.jar"/>
-    						<fileset dir="${portlet.src.war.dir}/WEB-INF/lib" includes="*.jar"/>
-    				</classpath>
-    			</javac>
+			<classpath>
+				<fileset dir="${portlet.lib.dir}" includes="**/*.jar"/>
+				<fileset dir="${portlet.src.war.dir}/WEB-INF/lib" includes="*.jar"/>
+			</classpath>
+    	</javac>
     	<copy todir="${portlet.classes.dir}" >
 			<fileset dir="${basedir}/src/main/resources" includes="**/*"/>
+    		<fileset dir="${basedir}/src/test/resources" includes="**/*"/>
 		</copy>
 	</target>
 
