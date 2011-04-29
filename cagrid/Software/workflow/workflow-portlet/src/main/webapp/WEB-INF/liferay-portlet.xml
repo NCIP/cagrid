@@ -7,7 +7,7 @@
 		<ajaxable>true</ajaxable>
 		<header-portlet-css>/css/flora/flora.all.css</header-portlet-css>
 		<header-portlet-css>/css/base.css</header-portlet-css>
-		<header-portlet-javascript>/js/workflow3.js</header-portlet-javascript>
+		<header-portlet-javascript>/js/workflow.js</header-portlet-javascript>
 		<header-portlet-javascript>/js/effects.core.js</header-portlet-javascript>
 		<header-portlet-javascript>/js/effects.explode.js</header-portlet-javascript>
 		<header-portlet-javascript>/js/ui.accordion.js</header-portlet-javascript>

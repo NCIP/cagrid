@@ -9,89 +9,71 @@
 	xmlns:util="http://www.springframework.org/schema/util"
 	xmlns:lang="http://www.springframework.org/schema/lang"
 	xmlns:oxm="http://www.springframework.org/schema/oxm"
+	xmlns:ehcache="http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring"
 	xsi:schemaLocation="http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-3.0.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 		http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-3.0.xsd
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring/ehcache-spring-1.1.xsd
+		">
 
- 
-	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	<bean id="beanNameViewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver">
+		<property name="order" value="1"/>
+    </bean>
+    
+	<bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="order" value="2"/>
 		<property name="cache" value="true"/>
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
 		<property name="prefix" value="/jsp/"/>
 		<property name="suffix" value=".jsp"/>
     </bean>
+    
+    <bean id="jacksonView" class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" >
+    </bean>
+    
+    <ehcache:annotation-driven />
 
- <bean id="registry" class="gov.nih.nci.cagrid.portal.portlet.workflow.service.impl.MyExperimentWorkflowRegistry" autowire-candidate="true">
+	<ehcache:config cache-manager="cacheManager">
+		<ehcache:evict-expired-elements interval="60" />
+	</ehcache:config>
+
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<property name="configLocation"  value="/WEB-INF/ehcache.xml"/>
+	</bean>
+
+	<bean id="myExperimentRegistry" class="gov.nih.nci.cagrid.portal.portlet.workflow.service.impl.MyExperimentWorkflowRegistry" autowire-candidate="true">
  		<qualifier value="MyExperiment"/>
     	<property name="tag" value="cagrid"/>
-    	<property name="username" value="kedzie"/>
-    	<property name="password" value="Catch-22"/>
     	<property name="server" value="sandbox.myexperiment.org"/>
-    	<property name="workflowsJaxbUnmarshaller" >
-	    	<oxm:jaxb2-marshaller id="workflowsJaxbMarshaller"><oxm:class-to-be-bound name="gov.nih.nci.cagrid.portal.portlet.workflow.domain.MyExperimentWorkflows"/></oxm:jaxb2-marshaller>
-    	</property>
-    	<property name="workflowDescriptionJaxbUnmarshaller"  >
-    		<oxm:jaxb2-marshaller id="workflowDescriptionJaxbMarshaller" ><oxm:class-to-be-bound name="gov.nih.nci.cagrid.portal.portlet.workflow.domain.WorkflowDescription"/></oxm:jaxb2-marshaller>
-    	</property>
+    	<property name="workflowsJaxbUnmarshaller" ><oxm:jaxb2-marshaller id="workflowsJaxbMarshaller"><oxm:class-to-be-bound name="gov.nih.nci.cagrid.portal.portlet.workflow.domain.MyExperimentWorkflows"/></oxm:jaxb2-marshaller></property>
+    	<property name="workflowDescriptionJaxbUnmarshaller" ><oxm:jaxb2-marshaller id="workflowDescriptionJaxbMarshaller" ><oxm:class-to-be-bound name="gov.nih.nci.cagrid.portal.portlet.workflow.domain.WorkflowDescription"/></oxm:jaxb2-marshaller></property>
     </bean>
     
-    <!--
-	<bean id="springRegistry" class="gov.nih.nci.cagrid.portal.portlet.workflow.service.impl.SpringWorkflowRegistry" autowire-candidate="true"  >
-		<qualifier value="Spring"/>
-		<property name="workflowList">
-			<map>
-				<entry key="workflow-1">
-					<bean id="workflow-1" class="gov.nih.nci.cagrid.portal.portlet.workflow.domain.WorkflowDescription">
-						<property name="id" value="1" />
-						<property name="name" value="Concatenate two Strings (for testing)." />
-						<property name="description" value="It is a simple workflow that takes two strings as input and returns a concatenated string as output." />
-						<property name="author" value="Dinanath Sulakhe" />
-						<property name="contentURI" value="file:///home/marek/portal-liferay/data/taverna/fishsoup.t2flow" />
-						<property name="previewImageURI" value="http://www.myexperiment.org/workflow/version/image/1669/_untitled_.png" />
-						<property name="thumbnailBigURI" value="http://www.myexperiment.org/workflow/version/image/1669/_untitled_.png" />
-						<property name="thumbnailURI" value="http://www.myexperiment.org/workflow/version/image/1669/thumb/_untitled_.png" />
-					</bean>
-				</entry>
-				<entry key="workflow-2">
-					<bean id="workflow-2" class="gov.nih.nci.cagrid.portal.portlet.workflow.domain.WorkflowDescription">
-				        <property name="id" value="2"/>
-				        <property name="name" value="caDSR metadata query in caGrid"/>
-				        <property name="description" value="This workflow uses caDSR (Cancer Data Standards Repository) service, which defines a comprehensive set of standardized metadata descriptors for cancer research terminology used in information collection and analysis. This Sample workflow is to find all the concepts related to a given context, for example caCore. The workflow uses context information to invoke findProjects in caDSR and get the project(s) information."/>
-				        <property name="author" value="Wei Tan"/>
-				        <property name="contentURI" value="file:///home/marek/portal-liferay/data/taverna/caDSR-Workflow.t2flow"/>
-				        <property name="previewImageURI" value="http://www.myexperiment.org/workflow/version/image/1669/_untitled_.png" />
-						<property name="thumbnailBigURI" value="http://www.myexperiment.org/workflow/version/image/1669/_untitled_.png" />
-						<property name="thumbnailURI" value="http://www.myexperiment.org/workflow/version/image/1669/thumb/_untitled_.png" />
-				   </bean>			
-				</entry>
-			</map>
-		</property>
+	<bean id="sessionEprs" class="gov.nih.nci.cagrid.portal.portlet.workflow.domain.SessionEprs" scope="session" autowire-candidate="true" ><aop:scoped-proxy/></bean>
+    
+	<bean id="tavernaWorkflowService" class="gov.nih.nci.cagrid.portal.portlet.workflow.service.impl.TavernaWorkflowService" autowire-candidate="true">
+		<!--<property name="tavernaWorkflowServiceUrl" value="https://cagrid-workflow.nci.nih.gov:8443/wsrf/services/cagrid/TavernaWorkflowService"/>  https://cabig-workflow.ci.uchicago.edu:5005/wsrf/services/cagrid/TavernaWorkflowService-->
+		<property name="tavernaWorkflowServiceUrl" value="https://cabig-workflow.ci.uchicago.edu:5005/wsrf/services/cagrid/TavernaWorkflowService"/>
+		
 	</bean>
-	 -->
-
-    <bean id="sessionEprs" class="gov.nih.nci.cagrid.portal.portlet.workflow.domain.SessionEprs" scope="session" autowire-candidate="true"  >
-    	<aop:scoped-proxy/>
-    </bean>
     
-    <bean id="workflowService" class="gov.nih.nci.cagrid.portal.portlet.workflow.service.impl.TavernaWorkflowService" autowire-candidate="true">
-<!-- 		<property name="tavernaWorkflowServiceUrl" value="https://cabig-workflow.ci.uchicago.edu:5005/wsrf/services/cagrid/TavernaWorkflowService" /> -->
-		<property name="tavernaWorkflowServiceUrl" value="https://cagrid-workflow.nci.nih.gov:8443/wsrf/services/cagrid/TavernaWorkflowService"/>
-    </bean>
+	<bean id="newInstanceFormController" class="gov.nih.nci.cagrid.portal.portlet.workflow.mvc.NewInstanceFormController" autowire="byType">
+		<property name="commandClass" value="gov.nih.nci.cagrid.portal.portlet.workflow.domain.SubmitWorkflowCommand" />
+		<property name="commandName" value="cmd"/>
+		<property name="successView" value="json"/>
+		<property name="formView" value="newInstance"/>
+	</bean>
     
-    <bean id="newInstanceFormController" class="gov.nih.nci.cagrid.portal.portlet.workflow.mvc.NewInstanceFormController" autowire="byType">
-    	<property name="commandClass" value="gov.nih.nci.cagrid.portal.portlet.workflow.domain.SubmitWorkflowCommand" />
-    	<property name="commandName" value="cmd"/>
-    	<property name="successView" value="json"/>
-    	<property name="formView" value="newInstance"/>
-    </bean>
-    
-     <bean id="viewDefinitionsFormController" class="gov.nih.nci.cagrid.portal.portlet.workflow.mvc.ViewDefinitionsFormController" autowire="byType"/>
+	<bean id="viewDefinitionsFormController" class="gov.nih.nci.cagrid.portal.portlet.workflow.mvc.ViewDefinitionsFormController" autowire="byType">
+	
+	</bean>
 	<bean id="viewInstancesController" class="gov.nih.nci.cagrid.portal.portlet.workflow.mvc.ViewInstancesController" autowire="byType"/>
     <bean id="jsonController" class="gov.nih.nci.cagrid.portal.portlet.workflow.mvc.JSONController" autowire="byType"  />
     
+    <bean id="utilities" class="gov.nih.nci.cagrid.portal.portlet.workflow.util.Utils"  />
 </beans>
 

@@ -8,7 +8,6 @@
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:util="http://www.springframework.org/schema/util"
 	xmlns:lang="http://www.springframework.org/schema/lang"
-	xmlns:ehcache="http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring"
 	xsi:schemaLocation="
 		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-3.0.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
@@ -16,17 +15,14 @@
 		http://www.springframework.org/schema/oxm http://www.springframework.org/schema/context/spring-oxm-3.0.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
-		http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring/ehcache-spring-1.1.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 	
-   <ehcache:annotation-driven />
-    <ehcache:config cache-manager="cacheManager"><ehcache:evict-expired-elements interval="60" /></ehcache:config>
-    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"><property name="configLocation"  value="/WEB-INF/ehcache.xml"/></bean>
+    <context:annotation-config/>
     
-<!--   <bean class="org.springframework.web.portlet.mvc.annotation.DefaultAnnotationHandlerMapping"> -->
-<!-- 		<property name="order" value="2"/> -->
-<!--     <property name="interceptors"><bean class="org.springframework.web.portlet.handler.ParameterMappingInterceptor"/></property> -->
-<!--   </bean> -->
+	<bean class="org.springframework.web.portlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+		<property name="order" value="2"/>
+		<property name="interceptors"><bean class="org.springframework.web.portlet.handler.ParameterMappingInterceptor"/></property>
+	</bean>
 
 	<bean id="parameterHandlerMapping" class="org.springframework.web.portlet.handler.ParameterHandlerMapping">
 			<property name="defaultHandler"   ref="viewDefinitionsFormController" />		
@@ -40,15 +36,6 @@
 		</property>
 	</bean>
 
-<bean class="org.springframework.web.portlet.handler.SimpleMappingExceptionResolver">
-		<property name="defaultErrorView"   value="error" />		
-		<property name="exceptionMappings">
-				<props>
-					<prop key="java.lang.Exception">error</prop>
-					<prop key="gov.nih.nci.cagrid.portal.portlet.workflow.WorkflowException">error</prop>
-				</props>
-		</property>
-	</bean>
-	
+	<bean class="org.springframework.web.portlet.handler.SimpleMappingExceptionResolver"><property name="defaultErrorView" value="error" /></bean>
 	
 </beans>

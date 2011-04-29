@@ -19,7 +19,7 @@
 				<tr><TD rowspan="2"><img title="Workflow Definition Diagram"   width="200"  src="<c:url value="${cmd.theWorkflow.previewImageURI}"/>" /></TD><td>Author: ${cmd.theWorkflow.author}</td></tr> 
 				<tr><td>${cmd.theWorkflow.description}</td></tr>
 			
-				<div id="<portlet:namespace/>inputs">
+				<div id="<portlet:namespace/>inputs${cmd.theWorkflow.id}">
 					<tr><td  colspan="2">Inputs:</td></tr>
 					<c:forEach var="item" items="${cmd.theWorkflow.inputs}">
 							<tr>
@@ -50,7 +50,7 @@
 							   			var dialog = jQuery('#<portlet:namespace />dialog');
 							   			dialog.dialog('close');
 							   			dialog.hide();
-							   			ajaxPollingUpdate('${ajaxStatusURL} #<portlet:namespace/>ajaxDiv', '<portlet:namespace/>ajaxDiv' , false, 0);
+							   			ajaxPollingUpdate('${ajaxStatusURL} #<portlet:namespace/>ajaxDiv', '<portlet:namespace/>ajaxDiv' , true, 2);
 						   			} );
 						});
 			});

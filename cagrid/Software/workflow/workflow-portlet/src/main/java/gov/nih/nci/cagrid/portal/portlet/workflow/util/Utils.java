@@ -1,13 +1,16 @@
 package gov.nih.nci.cagrid.portal.portlet.workflow.util;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -23,6 +26,7 @@ public class Utils implements ApplicationContextAware {
 	
 	@Autowired
 	private ApplicationContext applicationContext;
+	private HttpClient http = new DefaultHttpClient();
 	
 	/**
 	 * Download a file
@@ -32,13 +36,10 @@ public class Utils implements ApplicationContextAware {
 	 */
 	public byte[] download(String uri) throws IOException {
 		log.debug("Downloading File: " + uri);
-		InputStream is = null;
-		try {
-			is = getApplicationContext().getResource(uri).getInputStream();
-			byte[] bytes = new byte[is.available()];
-			is.read(bytes);
-			return bytes;
-		} finally { if(is!=null) is.close(); }
+		HttpGet get = new HttpGet(uri);
+		ResponseHandler<String> responseHandler = new BasicResponseHandler();
+		String body = http.execute(get, responseHandler);
+		return body.getBytes();
 	}
 	
 	/**
@@ -49,7 +50,6 @@ public class Utils implements ApplicationContextAware {
 	public void saveFile(String filename, byte[] contents) throws IOException {
 		FileOutputStream fos = null;
 		try {
-			new File(filename).mkdirs();
 			fos = new FileOutputStream(filename);
 			fos.write(contents);
 			log.debug("Wrote" + contents.length + " bytes to: " + filename);

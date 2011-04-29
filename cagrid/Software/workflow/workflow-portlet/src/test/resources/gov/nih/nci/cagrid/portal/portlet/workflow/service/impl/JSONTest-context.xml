@@ -17,8 +17,17 @@
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-  <bean id="workflowService" class="gov.nih.nci.cagrid.portal.portlet.workflow.service.impl.TavernaWorkflowService" autowire-candidate="true">
-		<property name="tavernaWorkflowServiceUrl" value="https://cagrid-workflow.nci.nih.gov:8443/wsrf/services/cagrid/TavernaWorkflowService"/>
-    </bean>
+	<bean name="objectMapper" class="org.codehaus.jackson.map.ObjectMapper"/>
+	
+	<bean id="workflow" class="gov.nih.nci.cagrid.portal.portlet.workflow.domain.WorkflowDescription">
+		<property name="id" value="1" />
+		<property name="name" value="Concatenate two Strings (for testing)." />
+		<property name="description" value="It is a simple workflow that takes two strings as input and returns a concatenated string as output." />
+		<property name="author" value="Dinanath Sulakhe" />
+		<property name="contentURI" value="file:///home/marek/portal-liferay/data/myexperiment_752_v1.t2flow" />
+		<property name="previewImageURI" value="http://www.myexperiment.org/workflow/version/image/752/_untitled_.png" />
+		<property name="thumbnailBigURI" value="http://www.myexperiment.org/workflow/version/image/752/_untitled_.png" />
+		<property name="thumbnailURI" value="http://www.myexperiment.org/workflow/version/image/752/thumb/_untitled_.png" />
+	</bean>
     
 </beans>

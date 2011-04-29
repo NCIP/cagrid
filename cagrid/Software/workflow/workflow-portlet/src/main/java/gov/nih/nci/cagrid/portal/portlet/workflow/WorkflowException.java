@@ -1,11 +1,9 @@
 package gov.nih.nci.cagrid.portal.portlet.workflow;
 
-public class WorkflowException extends Exception {
-	private static final long serialVersionUID = 1L;
+import org.springframework.core.NestedCheckedException;
 
-	public WorkflowException() {
-		super();
-	}
+public class WorkflowException extends NestedCheckedException {
+	private static final long serialVersionUID = 1L;
 
 	public WorkflowException(String message, Throwable cause) {
 		super(message, cause);
@@ -14,9 +12,7 @@ public class WorkflowException extends Exception {
 	public WorkflowException(String message) {
 		super(message);
 	}
-
-	public WorkflowException(Throwable cause) {
-		super(cause);
-	}
-
+public WorkflowException(Throwable cause) {
+	super(cause.getMessage(), cause);
+}
 }

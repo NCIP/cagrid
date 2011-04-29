@@ -6,12 +6,12 @@
 <%@ taglib prefix="ui" uri="http://liferay.com/tld/ui" %>
 
 <portlet:renderURL   var="ajaxStatusURL"  portletMode="view" windowState="exclusive"><portlet:param name="action" value="viewInstances"/></portlet:renderURL>
-<portlet:renderURL   var="jsonURL"  portletMode="view" windowState="exclusive"><portlet:param name="action" value="json"/></portlet:renderURL>
+<portlet:renderURL   var="jacksonURL"  portletMode="view" windowState="exclusive"><portlet:param name="action" value="json"/><portlet:param name="mode" value="jackson"/></portlet:renderURL>
 
 <portlet:renderURL var="viewDefinitionsURL"  windowState="normal"><portlet:param name="action" value="viewDefinitions"/></portlet:renderURL>
 <portlet:renderURL var="viewInstancesURL"  windowState="normal"><portlet:param name="action" value="viewInstances"/></portlet:renderURL>
 
 
 <script type="text/javascript">
-	var kedzie = new WorkflowUtil( '${jsonURL}', '${ajaxStatusURL}' );
+	var kedzie = new WorkflowUtil();
 </script>

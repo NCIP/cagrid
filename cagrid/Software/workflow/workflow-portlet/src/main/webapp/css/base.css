@@ -7,6 +7,7 @@ ul.ui-menu li.ui-menu-item {
 	display:inline;
 	float: left;
 	background-color: blue;
+	color: white;
 }
 ul.uimenu li.ui-menu-item a {
 	display:block;
