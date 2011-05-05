@@ -5,17 +5,10 @@
 
 <div class="content">
 	<script type="text/javascript">
-		jQuery(document).ready(
-				function() {
-					jQuery('#<portlet:namespace/>accordion').accordion( { 
-							header : 'h3', autoHeight : false, event: 'click',
-							change: function(event, ui) {
-								//var id = ui.newHeader[0].id;
-								//var url = ui.newContent[0].title + " #<portlet:namespace/>inputs"+id;
-								//jQuery('#<portletnamespace/>inputs'+id).load(url);
-							}
-				 	} );
-			ajaxPollingUpdate('${ajaxStatusURL} #<portlet:namespace/>ajaxDiv', '<portlet:namespace/>ajaxDiv' , true, 2);
+	jQuery(document).ready(
+		function() {
+			jQuery('#<portlet:namespace/>accordion').accordion({ header : 'h3', autoHeight : false, event: 'click'} );
+			portlet_util.ajaxPollingUpdate('${ajaxStatusURL} #<portlet:namespace/>ajaxDiv', '<portlet:namespace/>ajaxDiv' , true, 2);
 		});
 	</script>
 	

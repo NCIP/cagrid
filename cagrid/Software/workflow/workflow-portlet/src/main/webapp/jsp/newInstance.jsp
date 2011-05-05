@@ -50,7 +50,7 @@
 							   			var dialog = jQuery('#<portlet:namespace />dialog');
 							   			dialog.dialog('close');
 							   			dialog.hide();
-							   			ajaxPollingUpdate('${ajaxStatusURL} #<portlet:namespace/>ajaxDiv', '<portlet:namespace/>ajaxDiv' , true, 2);
+							   			portlet_util.ajaxPollingUpdate('${ajaxStatusURL} #<portlet:namespace/>ajaxDiv', '<portlet:namespace/>ajaxDiv' , true, 2);
 						   			} );
 						});
 			});

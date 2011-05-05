@@ -14,6 +14,9 @@ function ajaxPollingUpdate(url, divId, doPoll, period) {
 		});	
 };
 
+/**
+ * Utility functions for creating portlet-related URL's along with some AJAX functionality
+ */
 function WorkflowUtil() {
 	this.namespace = "_workflow_WAR_workflowportlet_";
 
@@ -21,10 +24,6 @@ function WorkflowUtil() {
 		return this.createRenderURL('exclusive', 'json') + this.p('mode', 'jackson');
 	};
 
-	this.createTextURL= function( contents ) {
-		return this.createRenderURL('exclusive', 'json') + this.p('mode','text') + this.p('contents', contents);
-	};
-	
 	/**
 	 * @param windowState  Liferay windowstate.  i.e. <b>normal</b> or <b>exclusive</b> <i>(for ajax)</i>
 	 * @param action	portlet request action

@@ -3,7 +3,7 @@
 <div class="content">
 	<script type="text/javascript">
 		jQuery(document).ready(function($) {
-			ajaxPollingUpdate('${ajaxStatusURL} #<portlet:namespace/>ajaxDiv', '<portlet:namespace/>ajaxDiv' , true, 2);
+			portlet_util.ajaxPollingUpdate('${ajaxStatusURL} #<portlet:namespace/>ajaxDiv', '<portlet:namespace/>ajaxDiv' , true, 2);
 		});
 	</script>
 	
