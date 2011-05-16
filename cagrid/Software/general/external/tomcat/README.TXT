@@ -1,0 +1,1 @@
+These containers represent the minimal install of Tomcat 6 that will get caGrid services and Globus working.  The secure tomcat requires editing the conf/server.xml file to set the service's cert and key files as well as the hostname.
