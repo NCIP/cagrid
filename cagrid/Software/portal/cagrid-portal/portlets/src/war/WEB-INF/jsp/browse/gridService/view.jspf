@@ -26,7 +26,7 @@
         <div class="value">
         	
         	<c:if test="${gridService.currentStatus != 'ACTIVE'}">
-			style="color:red;"        	
+			<span style="color:red;" />        	
         	</c:if>
         	${gridService.currentStatus}
         </div>
