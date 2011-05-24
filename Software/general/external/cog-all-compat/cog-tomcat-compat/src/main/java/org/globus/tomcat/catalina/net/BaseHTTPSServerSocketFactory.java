@@ -363,8 +363,11 @@ public class BaseHTTPSServerSocketFactory extends ServerSocketFactory {
                                   this._mode);
             }
 
+            context.setOption(GSSConstants.REQUIRE_CLIENT_AUTH,
+                    Boolean.FALSE);
+
             context.setOption(GSSConstants.ACCEPT_NO_CLIENT_CERTS,
-                              Boolean.TRUE);
+                              Boolean.FALSE);
 
             if (this._trustedCerts != null) {
                 context.setOption(GSSConstants.TRUSTED_CERTIFICATES,
