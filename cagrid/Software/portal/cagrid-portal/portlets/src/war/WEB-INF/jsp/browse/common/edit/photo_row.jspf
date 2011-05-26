@@ -78,6 +78,11 @@
 
 
     jQuery(document).ready(function() {
+    
+    	if(document.getElementById("input-description").value !='Description'){    
+		document.getElementById("input-description").value = decodeURI("${catalogEntry.description}");    		
+    	}
+    
         jQuery("#${ns}catalogEntryImage")
                 .bind("click", function(evt) {
             ${ns}showUploadImageDialog();

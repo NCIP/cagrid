@@ -32,7 +32,13 @@ function ${ns}save(validated){
 				}},
     		errorHandler:function(errorString, exception){alert("Error validating: " + errorString);
     		}});
-	}else{${managerFacadeName}.save({
+	}else{
+		
+		<!-- The following is to handle description with multiple lines -->
+		var desc = document.getElementById("input-description").value;
+		${ns}setField("description",encodeURI(desc));
+		
+		${managerFacadeName}.save({
 			callback:function(id){
 				jQuery("form[name='${ns}editForm'] > *, :input[name='id']").val(id);
 				${ns}dirty = false;

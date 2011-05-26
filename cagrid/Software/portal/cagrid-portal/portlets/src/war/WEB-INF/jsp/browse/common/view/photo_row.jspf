@@ -3,7 +3,13 @@
                                 title="${catalogEntry.name}" alt="Image of ${catalogEntry.name}"/>
     </div>
     <div class="photoRightContent"><h1 class="entryName"><c:out value="${catalogEntry.name}"/></h1>
-        <p class="entryDescription"><c:out value="${catalogEntry.description}"/></p>
+        <p class="entryDescription">
+		<!-- The following is to handle description with multiple lines -->
+		<script type="text/javascript">
+			var desc =decodeURI("${catalogEntry.description}");
+			document.write(desc.replace(/\n/g, '<br>')); 
+	        </script>
+        </p>
         <div id="rateMe" title="Rate Me...">
             <a onclick="rateIt(this)" id="_1" title="ehh..." onmouseover="rating(this)" onmouseout="off(this)"></a>
             <a onclick="rateIt(this)" id="_2" title="Not Bad" onmouseover="rating(this)" onmouseout="off(this)"></a>
