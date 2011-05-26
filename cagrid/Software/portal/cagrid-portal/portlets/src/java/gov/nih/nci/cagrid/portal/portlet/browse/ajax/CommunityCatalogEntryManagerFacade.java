@@ -44,6 +44,18 @@ public class CommunityCatalogEntryManagerFacade extends
 			return "Invalid name. Contains two slashes";
 		}
 
+		if (name.indexOf(StringPool.COMMA) != -1) {
+			return "Invalid name. Contains comma";
+		}
+
+		if (name.indexOf(StringPool.STAR) != -1) {
+			return "Invalid name. Contains asterick";
+		}
+
+		if(Validator.isNumber(name)){
+			return "Invalid name. Contains only digits";
+		}
+
 		for (char c : name.toCharArray()) {
 			if (c == CharPool.SPACE)
 				c = CharPool.DASH;
@@ -79,7 +91,7 @@ public class CommunityCatalogEntryManagerFacade extends
 
 			id = saveInternal(ce);
 		} catch (Exception ex) {
-			String msg = "Error saving catalog entry. Please try again!";
+			String msg = "Error saving catalog entry. Name has invalid characters!";
 			logger.debug(msg, ex);
 			throw new RuntimeException(msg, ex);
 		}
@@ -88,7 +100,7 @@ public class CommunityCatalogEntryManagerFacade extends
 
 	@Override
 	protected Integer saveInternal(CatalogEntry catalogEntry) throws Exception {
-		
+
 		getCommunityService().updateCommunity(catalogEntry.getAuthor(),
 				(CommunityCatalogEntry) catalogEntry);
 		return catalogEntry.getId();
