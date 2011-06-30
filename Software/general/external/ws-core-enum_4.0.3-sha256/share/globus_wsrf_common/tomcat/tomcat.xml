@@ -158,78 +158,59 @@ Southern California. All Rights Reserved.
 
         <antcall target="_baseTomcatDeploy"/>
 
-	<echo>Copying files for secure tomcat</echo>
         <copy toDir="${webapp.webinf.lib.dir}" >
             <fileset dir="${abs.deploy.dir}/lib" casesensitive="yes">
                 <include name="*.jar"/>
                 <include name="*.zip"/>
                 <exclude name="servlet.jar"/>
                 <exclude name="xml-apis.jar"/>
-		<exclude name="bcprov-jdk15-145.jar" />
-                <exclude name="cog-tomcat.jar"/>
-                <exclude name="cog-jglobus.jar"/>
+                <exclude name="bcprov-jdk15-145.jar"/>
                 <exclude name="cog-jglobus-compat-0.0.1-SNAPSHOT.jar"/>
                 <exclude name="cog-tomcat-compat-0.0.1-SNAPSHOT.jar"/>
                 <exclude name="commons-el.jar"/>
                 <exclude name="commons-logging.jar"/>
-                <exclude name="cryptix.jar"/>
-                <exclude name="cryptix-asn1.jar"/>
-                <exclude name="cryptix32.jar"/>
                 <exclude name="jasper-compiler.jar"/>
                 <exclude name="jasper-compiler-jdt.jar"/>
                 <exclude name="jasper-runtime.jar"/>
-                <exclude name="jce-jdk13-*.jar"/>
                 <exclude name="jgss.jar"/>
                 <exclude name="jsp-api.jar"/>
-                <exclude name="jsse-2.0-SNAPSHOT.jar"/>
                 <exclude name="jgss.jar"/>
-                <exclude name="puretls.jar"/>
                 <exclude name="log4j-1.2.*.jar"/>
                 <exclude name="naming-factory-dbcp.jar"/>
                 <exclude name="puretls.jar"/>
                 <exclude name="servlet-api.jar"/>
                 <exclude name="servlet.jar"/>
-                <exclude name="ssl-proxies-2.0-SNAPSHOT.jar"/>
                 <exclude name="xml-apis.jar"/>
+                <exclude name="JGlobus-Core-2.0.*.jar"/>
             </fileset>
         </copy>
 
-        <copy toDir="${tomcat.dir}/common/lib" >
-            <fileset dir="${abs.deploy.dir}/lib" casesensitive="yes">
-	        <include name="bcprov-jdk15-145.jar" />
+        <copy toDir="${tomcat.dir}/common/lib">
+            <fileset casesensitive="yes" dir="${abs.deploy.dir}/lib">
+	        <include name="bcprov-jdk15-145.jar"/>
                 <include name="cog-jglobus-compat-0.0.1-SNAPSHOT.jar"/>
                 <include name="commons-el.jar"/>
-<!--
-                <include name="cryptix32.jar"/>
-                <include name="cryptix-asn1.jar"/>
-                <include name="cryptix.jar"/>
--->
-                <include name="gss-2.0-SNAPSHOT.jar"/>
                 <include name="jasper-compiler.jar"/>
                 <include name="jasper-compiler-jdt.jar"/>
                 <include name="jasper-runtime.jar"/>
                 <include name="jgss.jar"/>
                 <include name="jsp-api.jar"/>
-                <include name="jsse-2.0-SNAPSHOT.jar"/>
                 <include name="log4j-1.2.14.jar"/>
                 <include name="naming-factory-dbcp.jar"/>
                 <include name="naming-factory.jar"/>
                 <include name="naming-resources.jar"/>
                 <include name="org.springframework.core-3.0.1.RELEASE-A.jar"/>
-<!--
-                <include name="puretls.jar"/>
--->
                 <include name="servlet-api.jar"/>
-                <include name="ssl-proxies-2.0-SNAPSHOT.jar"/>
+                <include name="JGlobus-Core-2.0.*.jar"/>
                 <include name="xml-apis.jar"/>
             </fileset>
         </copy>
 
         <copy toDir="${tomcat.dir}/server/lib">
-            <fileset dir="${abs.deploy.dir}/lib" casesensitive="yes">
+            <fileset casesensitive="yes" dir="${abs.deploy.dir}/lib">
                 <include name="cog-tomcat-compat-0.0.1-SNAPSHOT.jar"/>
             </fileset>
-	</copy>
+        </copy>
 
         <replace file="${webapp.webinf.dir}/etc/globus_wsrf_core/server-config.wsdd">
             <replacetoken><![CDATA[<!-- @TOMCAT_SEC_HANDLER@ -->]]></replacetoken>
@@ -237,23 +218,14 @@ Southern California. All Rights Reserved.
         </replace>
     </target>
 
-    <target name="redeploySecureTomcat"
-        description="Redeploy GT4 into Tomcat (transport security enabled). Must specify -Dtomcat.dir=&lt;tomcat root&gt;">
-        <fail message="Must specify -Dtomcat.dir=&lt;tomcat root&gt;" 
-            unless="tomcat.dir"/>
+    <target description="Redeploy GT4 into Tomcat (transport security enabled). Must specify -Dtomcat.dir=&lt;tomcat root&gt;" name="redeploySecureTomcat">
+        <fail message="Must specify -Dtomcat.dir=&lt;tomcat root&gt;" unless="tomcat.dir"/>
         <delete dir="${tomcat.dir}/webapps/${webapp.name}"/>
         <delete>
-            <fileset dir="${tomcat.dir}/common/lib" casesensitive="yes">
-	        <include name="bcprov-jdk15-145.jar" />
-                <include name="cog-jglobus.jar"/>
+            <fileset casesensitive="yes" dir="${tomcat.dir}/common/lib">
+                <include name="bcprov-jdk15-145.jar"/>
                 <include name="xml-apis.jar"/>
-                <include name="cryptix.jar"/>
-                <include name="cryptix-asn1.jar"/>
-                <include name="cryptix32.jar"/>
-                <include name="jce-jdk13-125.jar"/>
                 <include name="jgss.jar"/>
-                <include name="log4j-1.2.8.jar"/>
-                <include name="puretls.jar"/>
             </fileset>
         </delete>
         <delete file="${tomcat.dir}/server/lib/cog-tomcat.jar"/>
