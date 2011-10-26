@@ -180,8 +180,9 @@ public class BetterLockoutManager {
      * @param userId
      */
     public synchronized void whitelistUser(String userId) {
-         this.whitelistedUsers.add(userId);
-         releaseLockout(userId);
+        LOG.debug("Adding user " + userId + " to whitelist");
+        this.whitelistedUsers.add(userId);
+        releaseLockout(userId);
     }
     
     
@@ -191,6 +192,7 @@ public class BetterLockoutManager {
      * @param userId
      */
     public void unWhitelistUser(String userId) {
+        LOG.debug("Removing user " + userId + " from the whitelist");
         this.whitelistedUsers.remove(userId);
     }
     
