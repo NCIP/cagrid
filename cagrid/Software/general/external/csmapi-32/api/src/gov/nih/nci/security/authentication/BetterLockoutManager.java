@@ -2,14 +2,18 @@ package gov.nih.nci.security.authentication;
 
 import gov.nih.nci.security.constants.Constants;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -21,6 +25,8 @@ public class BetterLockoutManager {
     
     private static Logger LOG = Logger.getLogger(BetterLockoutManager.class);
     
+    // the whitelisted users who will never be locked out
+    private Set<String> whitelistedUsers = null;
     // A map of users to a queue of their failed login attempt times
     private Map<String, Deque<Long>> failedLogins = null;
     // A map of users to the time at which they will be unlocked
@@ -70,6 +76,7 @@ public class BetterLockoutManager {
      * @param attemptMemoryDuration
      */
     public BetterLockoutManager(long lockoutDuration, int maxFailedAttempts, long attemptMemoryDuration) {
+        this.whitelistedUsers = new HashSet<String>();
         this.failedLogins = Collections.synchronizedMap(new HashMap<String, Deque<Long>>());
         this.lockedOutUsers = Collections.synchronizedMap(new HashMap<String, Long>());
         this.lockoutDuration = lockoutDuration;
@@ -83,6 +90,7 @@ public class BetterLockoutManager {
             LOG.debug("Lockouts disabled due to initialization with a 0 value");
         }
     }
+    
 
     /**
      * Determines if the user is currently locked out
@@ -114,15 +122,19 @@ public class BetterLockoutManager {
      */
     public boolean setFailedAttempt(String userId) {
         if (!disabled) {
-            LOG.debug("Setting failed attempt for user " + userId);
-            revalidateLockouts();
-            Deque<Long> failedAttempts = failedLogins.get(userId);
-            if (failedAttempts == null) {
-                failedAttempts = new LinkedList<Long>();
-                failedLogins.put(userId, failedAttempts);
+            if (whitelistedUsers.contains(userId)) {
+                LOG.debug("User " + userId + " is on the whitelist; ignoring failed login attempt");
+            } else {
+                LOG.debug("Setting failed attempt for user " + userId);
+                revalidateLockouts();
+                Deque<Long> failedAttempts = failedLogins.get(userId);
+                if (failedAttempts == null) {
+                    failedAttempts = new LinkedList<Long>();
+                    failedLogins.put(userId, failedAttempts);
+                }
+                failedAttempts.add(Long.valueOf(System.currentTimeMillis()));
+                LOG.debug("\tUser has " + failedAttempts.size() + " failed attempts on record");
             }
-            failedAttempts.add(Long.valueOf(System.currentTimeMillis()));
-            LOG.debug("\tUser has " + failedAttempts.size() + " failed attempts on record");
         }
         return isUserLockedOut(userId);
     }
@@ -162,6 +174,48 @@ public class BetterLockoutManager {
     }
     
     
+    /**
+     * Add a user ID to the whitelist, and remove any lockout they may
+     * currently have
+     * @param userId
+     */
+    public synchronized void whitelistUser(String userId) {
+         this.whitelistedUsers.add(userId);
+         releaseLockout(userId);
+    }
+    
+    
+    /**
+     * Remove a user from the whitelist, making them subject to lockouts again
+     * 
+     * @param userId
+     */
+    public void unWhitelistUser(String userId) {
+        this.whitelistedUsers.remove(userId);
+    }
+    
+    
+    /**
+     * Gets a list of all users currently on the whitelist and therefore
+     * not subject to lockout conditions
+     * 
+     * @return
+     */
+    public List<String> getWhitelistedUsers() {
+        List<String> users = new ArrayList<String>();
+        users.addAll(whitelistedUsers);
+        return users;
+    }
+    
+    
+    /**
+     * Re-validates all lockout data to determine if failed attempts have
+     * aged sufficiently to be "forgotten" about, if a user is locked out
+     * due to failed attempts, and if a lock should be released due to age.
+     * 
+     * This should be called at the start of any method that either checks
+     * for or updates a lockout condition.
+     */
     private synchronized void revalidateLockouts() {
         LOG.debug("Revalidating lockouts");
         long now = System.currentTimeMillis();

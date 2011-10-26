@@ -105,4 +105,23 @@ public class BetterLockoutManagerTest extends TestCase {
             assertFalse("Disabled lockout manager should never have locked out the account", manager.isUserLockedOut(userId));
         }
     }
+    
+    
+    public void testWhitelist() {
+        String userId = getFakeUserName();
+        manager.whitelistUser(userId);
+        assertTrue("User " + userId + " did not appear on whitelist", manager.getWhitelistedUsers().contains(userId));
+        for (int i = 0; i < MAX_ATTEMPTS * 2; i++) {
+            manager.setFailedAttempt(userId);
+        }
+        assertFalse("User was locked out even though user was on whitelist", manager.isUserLockedOut(userId));
+        manager.unWhitelistUser(userId);
+        assertFalse("User " + userId + " still appears on whitelist", manager.getWhitelistedUsers().contains(userId));
+        for (int i = 0; i < MAX_ATTEMPTS * 2; i++) {
+            manager.setFailedAttempt(userId);
+        }
+        assertTrue("User was not locked out", manager.isUserLockedOut(userId));
+        manager.whitelistUser(userId);
+        assertFalse("User was locked out after being whitelisted", manager.isUserLockedOut(userId));
+    }
 }
