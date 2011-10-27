@@ -239,9 +239,8 @@ public class BetterLockoutManager {
             }
         }
         // purge any lockouts older than _lockoutDuration_
-        Iterator<String> lockedOutUserIter = lockedOutUsers.keySet().iterator();
-        while (lockedOutUserIter.hasNext()) {
-            String userId = lockedOutUserIter.next();
+        List<String> lockedOutIds = new ArrayList<String>(lockedOutUsers.keySet());
+        for (String userId : lockedOutIds) {
             Long endOfLockout = lockedOutUsers.get(userId);
             if (now >= endOfLockout.longValue()) {
                 lockedOutUsers.remove(userId);
