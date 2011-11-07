@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -28,7 +27,7 @@ public class BetterLockoutManager {
     // the whitelisted users who will never be locked out
     private Set<String> whitelistedUsers = null;
     // A map of users to a queue of their failed login attempt times
-    private Map<String, Deque<Long>> failedLogins = null;
+    private Map<String, LinkedList<Long>> failedLogins = null;
     // A map of users to the time at which they will be unlocked
     private Map<String, Long> lockedOutUsers = null;
     // the amount of time a user is locked out for
@@ -77,7 +76,7 @@ public class BetterLockoutManager {
      */
     public BetterLockoutManager(long lockoutDuration, int maxFailedAttempts, long attemptMemoryDuration) {
         this.whitelistedUsers = new HashSet<String>();
-        this.failedLogins = Collections.synchronizedMap(new HashMap<String, Deque<Long>>());
+        this.failedLogins = Collections.synchronizedMap(new HashMap<String, LinkedList<Long>>());
         this.lockedOutUsers = Collections.synchronizedMap(new HashMap<String, Long>());
         this.lockoutDuration = lockoutDuration;
         this.maxFailedAttempts = maxFailedAttempts;
@@ -127,7 +126,7 @@ public class BetterLockoutManager {
             } else {
                 LOG.debug("Setting failed attempt for user " + userId);
                 revalidateLockouts();
-                Deque<Long> failedAttempts = failedLogins.get(userId);
+                LinkedList<Long> failedAttempts = failedLogins.get(userId);
                 if (failedAttempts == null) {
                     failedAttempts = new LinkedList<Long>();
                     failedLogins.put(userId, failedAttempts);
@@ -223,7 +222,7 @@ public class BetterLockoutManager {
         long now = System.currentTimeMillis();
         // clean out any failed logins that are older than _attemptMemoryDuration_
         for (String userId : failedLogins.keySet()) {
-            Deque<Long> attempts = failedLogins.get(userId);
+            LinkedList<Long> attempts = failedLogins.get(userId);
             Iterator<Long> reverseAttempts = attempts.descendingIterator();
             while (reverseAttempts.hasNext()) {
                 Long attemptTime = reverseAttempts.next();
