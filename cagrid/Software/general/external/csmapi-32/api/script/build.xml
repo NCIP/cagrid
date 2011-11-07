@@ -8,8 +8,6 @@
 	<property name="dist" location="dist" />
 	<property name="resources" location="resources" />
 	<property name="logs" location="${build}/logs" />
-	
-	<property name="java.source" value="1.5"/>
 
 	<target name="init">
 		<!-- Create the time stamp -->
@@ -24,7 +22,7 @@
 
 	<target name="compile" depends="init" description="compile the source ">
 		<!-- Compile the java code from ${src} into ${build} -->
-		<javac srcdir="${src}" destdir="${build}" debug="true" deprecation="true" source="${java.source}" target="${java.source}">
+		<javac srcdir="${src}" destdir="${build}" debug="true" deprecation="true">
 			<classpath>
 				<fileset dir="${lib}">
 					<include name="*.jar" />
