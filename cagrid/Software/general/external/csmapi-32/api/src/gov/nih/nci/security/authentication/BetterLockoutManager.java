@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -223,7 +224,7 @@ public class BetterLockoutManager {
         // clean out any failed logins that are older than _attemptMemoryDuration_
         for (String userId : failedLogins.keySet()) {
             LinkedList<Long> attempts = failedLogins.get(userId);
-            Iterator<Long> reverseAttempts = attempts.descendingIterator();
+            Iterator<Long> reverseAttempts = new ReverseIterator<Long>(attempts);
             while (reverseAttempts.hasNext()) {
                 Long attemptTime = reverseAttempts.next();
                 if ((now - attemptTime.longValue()) > attemptMemoryDuration) {
@@ -247,6 +248,30 @@ public class BetterLockoutManager {
             } else if (LOG.isDebugEnabled()) {
                 LOG.debug("User " + userId + " still locked out for " + (endOfLockout.longValue() - now) + "ms");
             }
+        }
+    }
+    
+    
+    private class ReverseIterator<E> implements Iterator<E> {
+        private ListIterator<E> internalIter = null;
+        
+        public ReverseIterator(LinkedList<E> list) {
+            this.internalIter = list.listIterator(list.size());
+        }
+
+        
+        public boolean hasNext() {
+            return internalIter.hasPrevious();
+        }
+        
+
+        public E next() {
+            return internalIter.previous();
+        }
+        
+        
+        public void remove() {
+            internalIter.remove();            
         }
     }
 }
