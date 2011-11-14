@@ -30,6 +30,7 @@
 		<!-- Create the time stamp -->
 		<tstamp />
 		<mkdir dir="${classes.dir}" />
+		<mkdir dir="${jars.dir}"/>
 	</target>
 
 	
