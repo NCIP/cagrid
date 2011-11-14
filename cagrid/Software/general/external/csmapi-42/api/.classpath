@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="config"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/acegi-security-1.0.3.jar"/>
+	<classpathentry kind="lib" path="lib/commons-collections-2.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang-1.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/ehcache-1.2.4.jar"/>
+	<classpathentry kind="lib" path="lib/jdom-1.1.jar"/>
+	<classpathentry kind="lib" path="lib/junit-3.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/spring-1.2.8.jar"/>
+	<classpathentry kind="lib" path="lib/checkstyle-4.4.jar"/>
+	<classpathentry kind="lib" path="lib/clm-4.1.jar"/>
+	<classpathentry kind="lib" path="lib/cobertura-1.9.jar"/>
+	<classpathentry kind="lib" path="lib/commons-logging-1.1.jar"/>
+	<classpathentry kind="lib" path="lib/ejb3-persistence-1.0.1.GA.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate3.jar" sourcepath="/Users/ervin/.m2/repository/org/hibernate/hibernate/3.2.0.ga/hibernate-3.2.0.ga-sources.jar"/>
+	<classpathentry kind="lib" path="lib/javancss-29.50.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-1.2.14.jar"/>
+	<classpathentry kind="lib" path="lib/pmd-4.2.1.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate-annotations-3.2.0.ga.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
