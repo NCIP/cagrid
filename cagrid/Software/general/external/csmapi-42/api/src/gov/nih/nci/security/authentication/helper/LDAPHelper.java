@@ -202,7 +202,10 @@ public class LDAPHelper {
 	 */
 	private static String getFullyDistinguishedName(Hashtable environment, Hashtable connectionProperties, String userName) throws CSInternalLoginException, CSInternalConfigurationException {
 		String[] attributeIDs = { (String) connectionProperties.get(Constants.LDAP_USER_ID_LABEL) }; //{"dn"} ;
-		String searchFilter = "(" + (String) connectionProperties.get(Constants.LDAP_USER_ID_LABEL) + "=" + userName + ")";
+		// String searchFilter = "(" + (String) connectionProperties.get(Constants.LDAP_USER_ID_LABEL) + "=" + userName + ")";
+		// changed to use parameters instead of a single static string
+		String searchFilter = "(" + (String) connectionProperties.get(Constants.LDAP_USER_ID_LABEL) + "={0})";
+		String[] filterArgs = new String[] {userName};
 
 		DirContext dirContext = null;
 		try
@@ -224,7 +227,9 @@ public class LDAPHelper {
 		NamingEnumeration searchEnum = null;
 		try
 		{
-			searchEnum = dirContext.search((String) connectionProperties.get(Constants.LDAP_SEARCHABLE_BASE), searchFilter, searchControls);
+			// searchEnum = dirContext.search((String) connectionProperties.get(Constants.LDAP_SEARCHABLE_BASE), searchFilter, searchControls);
+		    searchEnum = dirContext.search((String) connectionProperties.get(
+		        Constants.LDAP_SEARCHABLE_BASE), searchFilter, filterArgs, searchControls);
 		}
 		catch (NamingException e)
 		{
