@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="lib/cryptix-asn1.jar"/>
+	<classpathentry kind="lib" path="lib/cryptix.jar"/>
+	<classpathentry kind="lib" path="lib/cryptix32.jar"/>
+	<classpathentry kind="lib" path="lib/jaas.jar"/>
+	<classpathentry kind="lib" path="lib/jce-jdk13-125.jar"/>
+	<classpathentry kind="lib" path="lib/jgss.jar"/>
+	<classpathentry kind="lib" path="lib/junit.jar"/>
+	<classpathentry kind="lib" path="lib/ldap.jar"/>
+	<classpathentry kind="lib" path="lib/ldapbp.jar"/>
+	<classpathentry kind="lib" path="lib/ldapsec.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-1.2.8.jar"/>
+	<classpathentry kind="lib" path="lib/providerutil.jar"/>
+	<classpathentry kind="lib" path="lib/puretls.jar"/>
+	<classpathentry kind="lib" path="src/org/globus/mds/gsi/netscape/ldapjdk-patched.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
