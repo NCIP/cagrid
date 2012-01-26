@@ -35,7 +35,7 @@ public class ConfigUtil {
     private static String UID = null;
     
     static {
-	UID = System.getProperty("user.name");
+        UID = System.getProperty("user.name");
     }
     
     static {
@@ -129,8 +129,8 @@ public class ConfigUtil {
      * @return the user id
      */
     public static String getUID() throws IOException {
-	return UID;
-	/*
+        return UID;
+        /*
         String exec = "id";
         String osname = System.getProperty("os.name");
         if (osname != null) {
@@ -181,7 +181,7 @@ public class ConfigUtil {
             throw new IOException("Unable to perform 'id -u'");
         }
         return output.toString().trim();
-	*/
+         */
     } 
 
     /**
