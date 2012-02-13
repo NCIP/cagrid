@@ -1,9 +1,0 @@
-/bin/counter-client
-/bin/counter-add
-/bin/counter-create
-/lib/wsrf_core_samples_counter.jar
-/lib/wsrf_core_samples_counter_stubs.jar
-/etc/gpt/./packages/globus_wsrf_core_samples_counter/undeploy.xml
-/etc/globus_wsrf_core_samples_counter/security-config.xml
-/etc/globus_wsrf_core_samples_counter/server-config.wsdd
-/etc/globus_wsrf_core_samples_counter/jndi-config.xml
