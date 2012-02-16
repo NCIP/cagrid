@@ -10,10 +10,8 @@
  */
 package org.globus.util;
 
-import java.io.IOException;
 import java.io.File;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.IOException;
 
 public class ConfigUtil {
 
@@ -27,9 +25,6 @@ public class ConfigUtil {
 
     private static final String PROXY_NAME = "x509up_u";
 
-    private static final String SOLARIS_ID_EXEC =
-        "/usr/xpg4/bin/id";
-        
     public static String globus_dir = null;
 
     private static String UID = null;
@@ -74,7 +69,6 @@ public class ConfigUtil {
      * of the UID. That is, it returns ${tempdir}/x509up_u_${username}
      */
     public static String discoverProxyLocation() {
-
         String dir = null;
 
         if (getOS() == UNIX_OS) {
@@ -84,26 +78,7 @@ public class ConfigUtil {
             dir = (tmpDir == null) ? globus_dir : tmpDir;
         }
         
-        String uid = System.getProperty("UID");
-
-        if (uid != null) {
-            return getLocation(dir, PROXY_NAME + uid);
-        } else if (getOS() == UNIX_OS) {
-            try {
-                return getLocation(dir, PROXY_NAME + getUID());
-            } catch (IOException e) {
-            }
-        }
-        
-        /* If all else fails use username */
-        String suffix = System.getProperty("user.name");
-        if (suffix != null) {
-            suffix = suffix.toLowerCase();
-        } else {
-            suffix = "nousername";
-        }
-
-        return getLocation(dir, PROXY_NAME + "_" + suffix);
+        return getLocation(dir, PROXY_NAME + "_" + UID);
     }
 
     private static String getLocation(String dir, String file) {
@@ -130,58 +105,6 @@ public class ConfigUtil {
      */
     public static String getUID() throws IOException {
         return UID;
-        /*
-        String exec = "id";
-        String osname = System.getProperty("os.name");
-        if (osname != null) {
-            osname = osname.toLowerCase();
-            if ((osname.indexOf("solaris") != -1) ||
-                (osname.indexOf("sunos") != -1)) {
-                if ((new File(SOLARIS_ID_EXEC).exists())) {
-                    exec = SOLARIS_ID_EXEC;
-                }
-            } else if (osname.indexOf("windows") != -1) {
-                throw new IOException("Unable to determine the user id");
-            }
-        }
-
-        Runtime runTime = Runtime.getRuntime();
-        Process process = null;
-        BufferedReader buffInReader = null;
-        String s = null;
-        StringBuffer output = new StringBuffer();
-        int exitValue = -1;
-
-        try {
-            process = runTime.exec(exec + " -u");
-            buffInReader = new BufferedReader
-                ( new InputStreamReader(process.getInputStream()) ); 
-            while ((s = buffInReader.readLine()) != null) {
-                output.append(s);
-            }
-            exitValue = process.waitFor();
-        } catch (Exception e) {
-            throw new IOException("Unable to execute 'id -u'");
-        } finally {
-            if (buffInReader != null) {
-                try { 
-                    buffInReader.close();
-                } catch (IOException e) {}
-            }
-            if (process != null) {
-                try { 
-                    process.getErrorStream().close(); 
-                } catch (IOException e) {}
-                try { 
-                    process.getOutputStream().close(); 
-                } catch (IOException e) {}
-            }
-        }
-        if (exitValue != 0) {
-            throw new IOException("Unable to perform 'id -u'");
-        }
-        return output.toString().trim();
-         */
     } 
 
     /**
