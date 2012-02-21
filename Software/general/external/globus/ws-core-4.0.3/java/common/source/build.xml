@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+
+<project default="all" name="globus_wsrf_common" basedir=".">
+    <description>
+        Code and libraries shared by other Java WS Core packages
+    </description>
+
+    <!-- 
+    Give user a chance to override without editing this file
+    (and without typing -D each time it compiles it) 
+    -->
+
+    <property environment="env"/>
+    
+    <property file="build.properties"/>
+    <property file="${user.home}/build.properties"/>
+
+    <property name="name" value="Globus Toolkit Java WS Common"/>
+    <property name="version" value="4.0.3"/>
+    <property name="globus.copyright" value="Copyright &#169; 1999-2003 University of Chicago and The University of Southern California.  All rights reserved."/>
+    <property name="env.GLOBUS_LOCATION" value="../../../install"/>
+    <property name="deploy.dir" location="${env.GLOBUS_LOCATION}"/>
+    <property name="base.name" value="wsrf_common"/>
+    <property name="package.name" value="globus_${base.name}"/>
+    <property name="gar.name" value="${package.name}.gar"/>
+    <property name="jar.name" value="${base.name}.jar"/>
+    <property name="garjars.id" value="garjars"/>
+    <property name="garshare.id" value="garshare"/>
+    <property name="garetc.id" value="garetc"/>
+    <property name="src.dir" value="src"/>
+    <property name="build.dir" location="build"/>
+    <property name="build.dest" location="build/classes"/>
+    <property name="build.lib.dir" location="build/lib"/>
+    <property name="build.javadocs" value="${build.dir}/javadocs"/>
+    <property name="build.packages" location="share/build-packages.xml"/>
+    <property name="build.setup" 
+        location="etc/${package.name}-post-deploy.xml"/>
+    <property name="java.debug" value="on"/>
+    <property name="java.deprecation" value="true"/>
+
+    <fileset dir="share" id="garshare"/>
+    <fileset dir="${build.lib.dir}" id="garjars"/> 
+    <fileset dir="etc" id="garetc"/> 
+
+<!--
+    <property name="gardocs.id" value="gardocs"/>
+    <fileset dir="docs" id="gardocs"/> 
+-->
+
+    <target name="init">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${build.dest}"/>
+        <mkdir dir="${build.lib.dir}"/>
+    </target>
+
+    <target name="compile" depends="init">
+        <javac srcdir="${src.dir}" destdir="${build.dest}" 
+               debug="${java.debug}" deprecation="${java.deprecation}">
+            <include name="**/*.java"/>
+            <classpath>
+                <fileset dir=".">
+                    <include name="lib/*.jar"/>
+                    <exclude name="${jar.name}"/>
+                </fileset>
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="jar" depends="compile">
+        <jar destfile="${build.lib.dir}/${jar.name}" basedir="${build.dest}"
+             excludes="org/globus/bootstrap/*"/>
+        <jar destfile="${build.lib.dir}/bootstrap.jar" basedir="${build.dest}"
+             includes="org/globus/bootstrap/*"/>
+    </target>
+
+    <target name="dist" depends="jar">
+        <copy todir="${build.lib.dir}">
+          <fileset dir="lib" />
+        </copy>
+        <ant antfile="${build.packages}" target="makeGar">
+        	<reference refid="${garshare.id}"/>
+        	<reference refid="${garjars.id}"/>
+        	<reference refid="${garetc.id}"/> 
+       <!--     <reference refid="${gardocs.id}"/> -->
+        </ant>
+    </target>
+
+    <target name="clean">
+        <delete dir="tmp"/>
+        <delete dir="${build.dir}"/>
+        <delete file="${gar.name}"/>
+    </target>
+
+    <target name="deploy" depends="dist">
+        <ant antfile="${build.packages}" target="deployGar"/>
+    </target>  
+
+    <target name="undeploy">
+        <ant antfile="${build.packages}" target="undeployGar">
+            <property name="gar.id" value="${package.name}"/>
+        </ant>
+    </target>
+
+    <target name="setup">
+        <ant antfile="${build.setup}" target="setup"/>
+    </target>
+
+    <target name="all" depends="dist"/>
+
+   <target name="javadocs" depends="compile">
+    <mkdir dir="${build.javadocs}"/>
+    <javadoc destdir="${build.javadocs}"
+             author="true"
+             version="true"
+             use="true"
+             windowtitle="${name} ${version} API"
+             doctitle="${name} ${version}"
+             bottom="${globus.copyright}">
+      <classpath>
+        <fileset dir="${deploy.dir}/lib">
+          <include name="*.jar"/>
+        </fileset>
+      </classpath>
+      <link href="http://java.sun.com/j2se/1.3/docs/api/" />
+      <link href="http://java.sun.com/j2se/1.4.2/docs/api/"/>
+      <link href="http://ws.apache.org/axis/java/apiDocs/"/>
+      <packageset dir="${src.dir}" defaultexcludes="yes"/>
+    </javadoc>
+  </target>
+
+</project>

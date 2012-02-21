@@ -1,0 +1,4 @@
+lib/wsrf_core_samples_enumeration.jar
+lib/wsrf_core_samples_enumeration_stubs.jar
+etc/globus_packages/globus_wsrf_core_samples_enumeration/undeploy.xml
+etc/globus_wsrf_core_samples_enumeration/server-config.wsdd

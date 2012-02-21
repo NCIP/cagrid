@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+
+<project default="all" name="globus_wsrf_schema" basedir=".">
+    <description>
+        WSDL and XML Schema files used by the Globus Toolkit
+    </description>
+
+    <!-- 
+    Give user a chance to override without editing this file
+    (and without typing -D each time it compiles it) 
+    -->
+    
+    <property environment="env"/>
+    
+    <property file="build.properties"/>
+    <property file="${user.home}/build.properties"/>
+    
+    <property name="env.GLOBUS_LOCATION" value="../install"/>
+    <property name="deploy.dir" location="${env.GLOBUS_LOCATION}"/>
+    <property name="abs.deploy.dir" location="${deploy.dir}"/>
+
+    <property name="package.name" value="globus_wsrf_schema"/>
+    <property name="gar.name" value="${package.name}.gar"/>
+    <property name="garschema.id" value="garschema"/>
+    <property name="build.dir" location="build"/>
+    <property name="schema.dest" location="${build.dir}/schema"/>
+    <property name="build.packages" location=
+        "${abs.deploy.dir}/share/globus_wsrf_common/build-packages.xml"/>
+    <property name="build.stubs" location=
+        "${abs.deploy.dir}/share/globus_wsrf_tools/build-stubs.xml"/>
+
+    <fileset dir="." id="garschema" casesensitive="yes">
+        <include name="core/**/*"/>
+        <include name="wsrf/**/*"/>
+        <include name="ws/**/*"/>
+    </fileset>
+    
+    <target name="dist">
+        <ant antfile="${build.packages}" target="makeGar">
+            <reference refid="${garschema.id}"/>
+        </ant>
+    </target>
+
+    <target name="clean">
+        <delete dir="tmp"/>
+        <delete file="${gar.name}"/>
+    </target>
+
+    <target name="deploy" depends="dist">
+        <ant antfile="${build.packages}" target="deployGar">
+            <property name="gar.id" value="${package.name}"/>
+        </ant>
+    </target>  
+
+    <target name="undeploy">
+        <ant antfile="${build.packages}" target="undeployGar">
+            <property name="gar.id" value="${package.name}"/>
+        </ant>
+    </target>
+
+    <target name="all" depends="dist"/>
+
+</project>

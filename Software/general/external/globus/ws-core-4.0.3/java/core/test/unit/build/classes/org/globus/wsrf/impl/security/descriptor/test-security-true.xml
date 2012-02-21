@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<securityConfig xmlns="http://www.globus.org">
+<context-lifetime value="1000"/>
+<authz value="self"/>
+<reject-limited-proxy value="true"/>
+</securityConfig>

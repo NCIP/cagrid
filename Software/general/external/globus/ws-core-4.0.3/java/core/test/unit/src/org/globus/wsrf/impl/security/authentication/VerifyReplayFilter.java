@@ -1,0 +1,27 @@
+/*
+ * Portions of this file Copyright 1999-2005 University of Chicago
+ * Portions of this file Copyright 1999-2005 The University of Southern California.
+ *
+ * This file or a portion of this file is licensed under the
+ * terms of the Globus Toolkit Public License, found at
+ * http://www.globus.org/toolkit/download/license.html.
+ * If you redistribute this file, with or without
+ * modifications, you must include this notice in the file.
+ */
+package org.globus.wsrf.impl.security.authentication;
+
+import org.globus.wsrf.impl.security.authentication.wssec.ReplayAttackFilter;
+import org.globus.wsrf.impl.security.authentication.wssec.WSSecurityException;
+
+import java.util.Calendar;
+
+public class VerifyReplayFilter extends ReplayAttackFilter {
+
+    public VerifyReplayFilter() {
+    }
+
+    public void checkMessageValidity(String nonceValue, Calendar created) 
+	throws WSSecurityException {
+	super.checkMessageValidity(nonceValue, created);
+    }
+}

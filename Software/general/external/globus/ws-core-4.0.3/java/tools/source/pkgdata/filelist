@@ -1,0 +1,4 @@
+bin/globus-edit-wsdd
+etc/gpt/./packages/globus_wsrf_tools/undeploy.xml
+lib/wsrf_tools.jar
+share/globus_wsrf_tools/build-stubs.xml

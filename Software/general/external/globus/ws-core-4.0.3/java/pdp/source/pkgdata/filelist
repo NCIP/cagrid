@@ -1,0 +1,4 @@
+etc/globus_packages/wsrf_security_pdp/undeploy.xml
+share/licenses/sunxacml.LICENSE
+lib/sunxacml.jar
+lib/wsrf_security_pdp.jar
