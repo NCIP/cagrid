@@ -113,10 +113,11 @@ Southern California. All Rights Reserved.
         <mkdir dir="${webapp.webinf.lib.dir}" />
         <copy file="${basedir}/web.xml" toDir="${webapp.webinf.dir}"/>
 
+    	<!-- no longer need endorsed jars in Tomcat 6 / JDK 5+
         <copy file="${abs.deploy.dir}/lib/xalan.jar" 
             toDir="${tomcat.dir}/common/endorsed" 
             failonerror="false"/>
-
+		-->
     </target>
 
     <target name="deployTomcat" 
@@ -173,11 +174,11 @@ Southern California. All Rights Reserved.
                 <exclude name="jgss.jar"/>
                 <exclude name="puretls.jar"/>
                 <exclude name="log4j-1.2.8.jar"/>
-                <exclude name="commons-logging.jar"/>
             </fileset>
         </copy>
 
-        <copy toDir="${tomcat.dir}/common/lib" >
+    	<!-- Tomcat 6 has everything in /lib, no longer /common/lib -->
+        <copy toDir="${tomcat.dir}/lib" >
             <fileset dir="${abs.deploy.dir}/lib" casesensitive="yes">
                 <include name="cog-jglobus.jar"/>
                 <include name="xml-apis.jar"/>
@@ -191,8 +192,9 @@ Southern California. All Rights Reserved.
             </fileset>
         </copy>
 
+    	<!-- Tomcat 6 has everything in /lib, no longer /common/lib -->
         <copy file="${abs.deploy.dir}/lib/cog-tomcat.jar" 
-            toDir="${tomcat.dir}/server/lib" 
+            toDir="${tomcat.dir}/lib" 
             failonerror="false"/>
 
         <replace file="${webapp.webinf.dir}/etc/globus_wsrf_core/server-config.wsdd">
@@ -207,7 +209,7 @@ Southern California. All Rights Reserved.
             unless="tomcat.dir"/>
         <delete dir="${tomcat.dir}/webapps/${webapp.name}"/>
         <delete>
-            <fileset dir="${tomcat.dir}/common/lib" casesensitive="yes">
+            <fileset dir="${tomcat.dir}/lib" casesensitive="yes">
                 <include name="cog-jglobus.jar"/>
                 <include name="xml-apis.jar"/>
                 <include name="cryptix.jar"/>
@@ -217,9 +219,9 @@ Southern California. All Rights Reserved.
                 <include name="jgss.jar"/>
                 <include name="log4j-1.2.8.jar"/>
                 <include name="puretls.jar"/>
+    			<include name="cog-tomcat.jar"/>
             </fileset>
         </delete>
-        <delete file="${tomcat.dir}/server/lib/cog-tomcat.jar"/>
         <antcall target="deploySecureTomcat" />
     </target>
 
