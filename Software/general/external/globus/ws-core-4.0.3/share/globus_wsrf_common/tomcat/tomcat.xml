@@ -303,6 +303,7 @@ Southern California. All Rights Reserved.
 				<include name="jgss.jar" />
 				<include name="log4j-1.2.8.jar" />
 				<include name="puretls.jar" />
+				<include name="commons-logging.jar"/>
 			</fileset>
 		</copy>
 
