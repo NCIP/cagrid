@@ -99,8 +99,6 @@ public class GlobusGSSContextImpl implements ExtendedGSSContext {
     
     private static final int GSI_MESSAGE_DIGEST_PADDING = 12;
     
-    private static final short [] NO_ENCRYPTION = {SSLPolicyInt.TLS_RSA_WITH_NULL_MD5};
-    
     private static final byte[] DELEGATION_TOKEN = new byte[] {GSIConstants.DELEGATION_CHAR};
     
     private static final int 
@@ -609,19 +607,55 @@ public class GlobusGSSContextImpl implements ExtendedGSSContext {
         throws GSSException {
 
         short [] cs;
-        if (this.encryption) {
-            // always make sure to add NULL cipher at the end
-            short [] ciphers = this.policy.getCipherSuites();
-            short [] newCiphers = new short[ciphers.length + 1];
-            System.arraycopy(ciphers, 0, newCiphers, 0, ciphers.length);
-            newCiphers[ciphers.length] = SSLPolicyInt.TLS_RSA_WITH_NULL_MD5;
-            cs = newCiphers;
-        } else {
-            // encryption not requested - accept only one cipher
-            // XXX: in the future might want to iterate through 
-            // all cipher and enable only the null encryption ones
-            cs = NO_ENCRYPTION;
-        }
+
+		// quick and dirty hack to force strong encryption
+		// by restricting the allowed cipher suites
+		short[] ciphers = this.policy.getCipherSuites();
+		short[] newCiphers;
+		int len;
+		if (this.encryption) {
+			newCiphers = new short[ciphers.length];
+			len = 0;
+		} else {
+			// null cipher allowed if privacy not required
+			newCiphers = new short[ciphers.length + 1];
+			newCiphers[0] = SSLPolicyInt.TLS_RSA_WITH_NULL_MD5;
+			len = 1;
+		}
+		int i;
+		for (i = 0; i < ciphers.length; i++) {
+			// evaluate name of cipher suite to determine whether it provides
+			// strong encryption -- for additional information, refer to
+			// http://www.openssl.org/docs/apps/ciphers.html
+			boolean strong = false;
+			String cipherSuiteName = SSLPolicyInt
+					.getCipherSuiteName(ciphers[i]);
+			if ((cipherSuiteName.indexOf("_3DES_") >= 0)
+					|| (cipherSuiteName.indexOf("_128_") >= 0)
+					|| (cipherSuiteName.indexOf("_256_") >= 0)
+					|| (cipherSuiteName.indexOf("_SEED_") >= 0)) {
+				strong = true;
+			}
+			// fixme: should MD5 be considered "strong"?
+			if ((cipherSuiteName.indexOf("EXPORT") >= 0)
+					|| (cipherSuiteName.indexOf("NULL") >= 0)) {
+				strong = false;
+			}
+
+			// if privacy required, allow only strong cipher suites
+			if (strong || !this.encryption) {
+				newCiphers[len] = ciphers[i];
+				len++;
+			}
+		}
+		if (len == 0) {
+			logger.error("No strong encryption cipher found!");
+		}
+		cs = new short[len];
+		for (i = 0; i < len; i++) {
+			cs[i] = newCiphers[i];
+		}
+        
         this.policy.setCipherSuites(cs);
         this.policy.requireClientAuth(this.requireClientAuth.booleanValue());
         this.policy.setAcceptNoClientCert(this.acceptNoClientCerts.booleanValue());
